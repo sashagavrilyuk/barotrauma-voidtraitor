@@ -1106,7 +1106,12 @@ Hook.Add("chatMessage", "Traitormod.ChatMessage", function(message, client)
 
     if Traitormod.Commands[command] then
         Traitormod.Log(Traitormod.ClientLogName(client) .. " used command: " .. message)
-        return Traitormod.Commands[command].Callback(client, split)
+        local result = { pcall(Traitormod.Commands[command].Callback, client, split) }
+        if not result[1] then
+            Traitormod.SendChatMessage(client, "Command error: " + tostring(result[2]))
+            return true
+        end
+        return table.unpack(result, 2)
     end
 
     if string.sub(command, 1, 1) == "!" then
