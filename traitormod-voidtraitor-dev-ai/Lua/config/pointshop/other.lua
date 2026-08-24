@@ -1,0 +1,199 @@
+local category = {}
+
+category.Identifier = "other"
+
+local randomItems = {}
+for prefab in ItemPrefab.Prefabs do
+    if prefab.CanBeSold or prefab.CanBeBought then
+        table.insert(randomItems, prefab)
+    end
+end
+
+local function addItems(items, inventory)
+	for _, value in ipairs(items) do
+		if type(value) == "table" then
+			for _ = 1, value[2] do
+				Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.Prefabs[value[1]], inventory)
+			end
+		else
+			Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.Prefabs[value], inventory)
+		end
+	end
+end
+
+category.Products = {
+    {
+        Price = 300,
+        Limit = 5,
+        Subcategory = "skillbooks",
+        Items = {"skillbooksubmarinewarfare"}
+    },
+
+    {
+        Price = 300,
+        Limit = 5,
+        Subcategory = "skillbooks",
+        Items = {"skillbookeuropanmedicine"}
+    },
+
+    {
+        Price = 300,
+        Limit = 5,
+        Subcategory = "skillbooks",
+        Items = {"skillbookhandyseaman"}
+    },
+
+    {
+        Price = 300,
+        Limit = 5,
+        Subcategory = "skillbooks",
+        Items = {"skillbooksailorsguide"}
+    },
+	
+    {
+        Price = 300,
+        Limit = 5,
+        Subcategory = "skillbooks",
+        Items = {"skillbooksurgery"}
+    },
+
+    {
+		Identifier = "maidfit",
+        Price = 500,
+        Limit = 1,
+        Items = {"arak_maidbonnet", "arak_maidoutfit",}
+    },
+
+	{
+		Identifier = "firstaidkit",
+		Price = 750,
+		Limit = 1,
+		IsLimitGlobal = false,
+		Action = function(client)
+			local medToolbox = ItemPrefab.GetItemPrefab("medtoolbox")
+			Entity.Spawner.AddItemToSpawnQueue(medToolbox, client.Character.Inventory, nil, nil, function(item)
+				local items = {
+					{ "blunttraumaointment",    1 },
+					{ "ringerssolution",        2 },
+					{ "needle",                 1 },
+					{ "ointment",               1 },
+					{ "antibleeding1", 		    4 },
+					{ "antibloodloss1",         1 },
+					{ "ethanol",                1 },
+					{ "pills1",                 2 },
+				}
+				addItems(items, item.OwnInventory)
+			end)
+		end
+    },
+    
+	{
+        Identifier = "gardeningkit",
+        Price = 100,
+        Limit = 2,
+        Items = {"raptorbaneseed", "creepingorangevineseed", "saltvineseed", "tobaccovineseed", "smallplanter", "fertilizer", "wateringcan"}
+    },
+
+    {
+        Identifier = "clownsuit",
+        Price = 450,
+        Limit = 2,
+        Items = {"clowncostume", "clownmask"}
+    },
+
+    {
+        Price = 40,
+        Limit = 20,
+        Items = {"bananapeel", "bananapeel", "bananapeel", "bananapeel"}
+    },
+	
+    {
+        Price = 340,
+        Limit = 1,
+        Items = {"shellshield"}
+    },
+
+    {
+        Price = 400,
+        Limit = 1,
+        Items = {"respawndivingsuit"}
+    },
+
+    {
+        Price = 50,
+        Limit = 1,
+        Items = {"divingmask"}
+    },
+
+    {
+        Price = 250,
+        Limit = 10,
+        Items = {"bikehorn"}
+    },
+
+    {
+        Price = 50,
+        Limit = 2,
+        Items = {"guitar"}
+    },
+
+    {
+        Price = 50,
+        Limit = 2,
+        Items = {"harmonica"}
+    },
+
+    {
+        Price = 50,
+        Limit = 2,
+        Items = {"accordion"}
+    },
+
+    {
+        Price = 30,
+        Limit = 5,
+        Items = {"petnametag"}
+    },
+    
+    {
+        Price = 75,
+        Limit = 4,
+        Items = {"ethanol"}
+    },
+
+    {
+        Price = 10,
+        Limit = 16,
+        Items = {"poop"},
+    },
+
+    {
+        Identifier = "randomegg",
+        Price = 50,
+        Limit = 5,
+        Items = {"smallmudraptoregg", "tigerthresheregg", "crawleregg", "peanutegg", "psilotoadegg", "orangeboyegg", "balloonegg"},
+        ItemRandom = true
+    },
+
+    {
+        Identifier = "assistantbot",
+        Price = 600,
+        Limit = 3,
+        IsLimitGlobal = true,
+        Action = function (client, product, items)
+			local info = CharacterInfo(Identifier("human"))
+			info.Name = "Assistant " .. info.Name
+			info.Job = Job(JobPrefab.Get("assistant"), false)
+			
+            local character = Character.Create(info, client.Character.WorldPosition, info.Name, 0, false, true)
+			
+			character.CanSpeak = false
+            character.TeamID = CharacterTeamType.Team1
+            character.GiveJobItems(false, nil)
+			
+			Traitormod.GhostRoles.Create("pointshop.assistant", character)
+        end
+    },
+}
+
+return category

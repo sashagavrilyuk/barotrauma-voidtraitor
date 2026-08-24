@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <Item name="Cinderblock (melee)" identifier="arak_cinderblock1" description="A solid chunk of concrete." category="Weapon" subcategory="Makeshift" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" Tags="smallitem,mountableweapon" scale="0.4" impactsoundtag="impact_metal_light">
+    <PreferredContainer primary="storagecab" />
+    <PreferredContainer secondary="wreckstorage,abandonedstoragecab" minamount="1" maxamount="1" spawnprobability="0.05" />
+    <Price baseprice="20" sold="false">
+      <Price storeidentifier="merchantoutpost" sold="false" multiplier="1.3" />
+      <Price storeidentifier="merchantcity" multiplier="1.25" minavailable="1" />
+      <Price storeidentifier="merchantresearch" multiplier="1.1" minavailable="1" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.9" minavailable="1" />
+      <Price storeidentifier="merchantmine" sold="false" multiplier="0.9" />
+    </Price>
+    <!--<Fabricate suitablefabricators="scavfabricator" requiredtime="5">
+      <RequiredItem identifier="arak_cement" />
+    </Fabricate>-->
+    <Deconstruct time="5">
+      <Item identifier="arak_cement" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/Arakneas' Mod/textures/icons/cinderblock.png" sourcerect="0,0,64,64" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/Arakneas' Mod/textures/cinderblock.png" sourcerect="0,0,104,64" origin="0.5,0.5" />
+    <Body width="104" height="64" density="100" />
+    <MeleeWeapon slots="Any,RightHand+LeftHand" aimpos="50,50" handle1="0,0" handle2="2,2" holdangle="30" reload="1.25" range="50" combatPriority="25" msg="ItemMsgPickUpSelect">
+      <Attack targetimpulse="4" severlimbsprobability="0.1" itemdamage="6" structuredamage="4" structuresoundtype="StructureSlash">
+        <Affliction identifier="blunttrauma" strength="15" />
+        <Affliction identifier="stun" strength="0.5" />
+        <StatusEffect type="OnUse" target="UseTarget">
+          <Conditional entitytype="eq Character" />
+          <Sound file="Content/Items/Weapons/Smack1.ogg" selectionmode="random" range="500" />
+          <Sound file="Content/Items/Weapons/Smack2.ogg" range="500" />
+        </StatusEffect>
+        <!-- 
+        <StatusEffect type="OnUse" target="UseTarget">
+          <Conditional entitytype="eq Character" />
+          <Sound file="%ModDir%/sounds/goofyhorn.ogg" range="1500" frequencymultiplier="0.9"/>
+          <Explosion range="250.0" force="12.0" shockwave="true" smoke="false" flash="true" sparks="false" flames="false" underwaterbubble="false" camerashake="5.0" >
+          <Affliction identifier="stun" strength="0.4" />
+        </Explosion>
+          <ParticleEmitter particle="whitespark" particleamount="8" anglemin="0" anglemax="360" scalemin="1.2" scalemax="1.8" lifetimemultiplier="1" velocitymin="130" velocitymax="460" colormultiplier="255,255,255,255" highqualitycollisiondetection="true"/>
+          <ParticleEmitter particle="whitespark" particleamount="8" anglemin="0" anglemax="360" scalemin="1.2" scalemax="1.8" lifetimemultiplier="1" velocitymin="130" velocitymax="460" colormultiplier="255,4,4,255" highqualitycollisiondetection="true"/>
+          <ParticleEmitter particle="whitespark" particleamount="8" anglemin="0" anglemax="360" scalemin="1.2" scalemax="1.8" lifetimemultiplier="1" velocitymin="130" velocitymax="460" colormultiplier="4,255,255,255" highqualitycollisiondetection="true"/>
+          <ParticleEmitter particle="whitespark" particleamount="8" anglemin="0" anglemax="360" scalemin="1.2" scalemax="1.8" lifetimemultiplier="1" velocitymin="130" velocitymax="460" colormultiplier="4,255,4,255" highqualitycollisiondetection="true"/>
+          <ParticleEmitter particle="whitespark" particleamount="8" anglemin="0" anglemax="360" scalemin="1.2" scalemax="1.8" lifetimemultiplier="1" velocitymin="130" velocitymax="460" colormultiplier="255,255,4,255" highqualitycollisiondetection="true"/>
+        </StatusEffect>-->
+      </Attack>
+    </MeleeWeapon>
+    <CustomInterface canbeselected="true" drawhudwhenequipped="true">
+      <GuiFrame relativesize="0.15,0.15" anchor="BottomLeft" absoluteoffset="20,20" style="ItemUI" />
+      <Button text="Swap to Ranged">
+        <StatusEffect type="OnUse" targettype="This">
+          <Remove />
+        </StatusEffect>
+        <StatusEffect type="OnUse" targettype="This">
+          <SpawnItem identifier="arak_cinderblock2" spawnposition="SameInventory" />
+        </StatusEffect>
+      </Button>
+    </CustomInterface>
+  </Item>
+  <!-- 
+  I gently opened the door
+  and then a brick fell on my cock
+  -->
+  <Item name="Cinderblock (ranged)" identifier="arak_cinderblock2" aliases="arak_concgun" description="A solid chunk of concrete." hideinmenus="true" category="Weapon" subcategory="Makeshift" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" Tags="smallitem,concreteblocktag,mountableweapon,catapultable,throwingweapontag" scale="0.4" impactsoundtag="impact_metal_light">
+    <PreferredContainer primary="storagecab" />
+    <PreferredContainer secondary="wreckstorage,abandonedstoragecab" minamount="1" maxamount="1" spawnprobability="0.05" />
+    <Price baseprice="20" sold="false">
+      <Price storeidentifier="merchantoutpost" sold="false" multiplier="1.3" />
+      <Price storeidentifier="merchantcity" multiplier="1.25" minavailable="1" />
+      <Price storeidentifier="merchantresearch" multiplier="1.1" minavailable="1" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.9" minavailable="1" />
+      <Price storeidentifier="merchantmine" sold="false" multiplier="0.9" />
+    </Price>
+    <Deconstruct time="5">
+      <Item identifier="arak_cement" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/Arakneas' Mod/textures/icons/cinderblock.png" sourcerect="0,0,64,64" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/Arakneas' Mod/textures/cinderblock.png" sourcerect="0,0,104,64" origin="0.5,0.5" />
+    <Body width="104" height="64" density="100" />
+     <Throwable slots="Any,RightHand+LeftHand" holdpos="0,0" handle1="0,0" handle2="2,2" throwforce="3" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnSecondaryUse" target="This" delay="0.1">
+        <Use />
+      </StatusEffect>
+    </Throwable>
+    <Projectile characterusable="false" launchimpulse="0.0" sticktocharacters="false">
+      <Attack structuredamage="5" targetimpulse="20">
+        <Affliction identifier="blunttrauma" strength="50" />
+        <Affliction identifier="concussion" strength="90" />
+        <Affliction identifier="stun" strength="10" />
+        <StatusEffect type="OnUse" target="UseTarget">
+          <Conditional entitytype="eq Character" />
+          <Sound file="Content/Items/Weapons/Smack1.ogg" selectionmode="random" range="500" />
+          <Sound file="Content/Items/Weapons/Smack2.ogg" range="500" />
+        </StatusEffect>
+      </Attack>
+    </Projectile>
+  </Item>
+  <Item name="Cinderblock Grenade" identifier="arak_cinderblock3" description="A hollowed chunk of concrete, with a frag grenade inside of it." category="Misc" subcategory="Unobtainables" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" Tags="smallitem,mountableweapon,explosive" scale="0.4" impactsoundtag="impact_metal_light">
+    <PreferredContainer primary="storagecab" />
+    <Price baseprice="80" sold="false"></Price>
+    <Deconstruct time="5">
+      <Item identifier="arak_cement" />
+      <Item identifier="fraggrenade" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/Arakneas' Mod/textures/icons/cinderblockex.png" sourcerect="0,0,64,64" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/Arakneas' Mod/textures/cinderblock.png" sourcerect="0,0,104,64" origin="0.5,0.5" />
+    <Body width="104" height="64" density="100" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnBroken" target="This">
+        <sound file="Content/Items/Weapons/ExplosionMedium1.ogg" range="5000" />
+        <sound file="Content/Items/Weapons/ExplosionMedium2.ogg" range="5000" />
+        <sound file="Content/Items/Weapons/ExplosionMedium3.ogg" range="5000" />
+        <Explosion range="750.0" ballastfloradamage="100" structuredamage="20" levelwalldamage="140" itemdamage="500" force="5" severlimbsprobability="0.5" debris="true" decal="explosion" decalsize="0.5">
+          <Affliction identifier="explosiondamage" strength="150" />
+          <Affliction identifier="bleeding" strength="100" />
+          <Affliction identifier="bleeding" strength="50" probability="0.1" dividebylimbcount="false" />
+          <Affliction identifier="stun" strength="7" />
+        </Explosion>
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <sound file="Content/Items/Weapons/ExplosionDebris1.ogg" range="3500" />
+        <sound file="Content/Items/Weapons/ExplosionDebris2.ogg" range="3500" />
+      </StatusEffect>
+    </ItemComponent>
+    <Throwable slots="Any,RightHand,LeftHand" holdpos="0,0" handle1="0,0" throwforce="3.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnSecondaryUse" target="This" Condition="-100.0" delay="2.0" disabledeltatime="true" checkconditionalalways="true" />
+    </Throwable>
+  </Item>
+  <Item name="Special Cinderblock" identifier="arak_specialcinderblock" description="A Blessed chunk of concrete." category="Material,Weapon" hideinmenus="true" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" Tags="smallitem,concreteblocktag,mountableweapon,explosive" scale="0.4" impactsoundtag="impact_metal_light">
+    <PreferredContainer primary="storagecab" />
+    <Price baseprice="200" sold="false">
+      <Price storeidentifier="merchantoutpost" sold="false" multiplier="1.3" />
+      <Price storeidentifier="merchantcity" multiplier="1.25" minavailable="1" />
+      <Price storeidentifier="merchantresearch" multiplier="1.1" minavailable="1" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.9" minavailable="1" />
+      <Price storeidentifier="merchantmine" sold="false" multiplier="0.9" />
+    </Price>
+    <Deconstruct time="5">
+      <Item identifier="arak_cement" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/Arakneas' Mod/textures/cinderblock.png" sourcerect="0,0,104,64" />
+    <Sprite texture="%ModDir%/Arakneas' Mod/textures/cinderblock.png" sourcerect="0,0,104,64" origin="0.5,0.5" />
+    <Body width="104" height="64" density="100" />
+    <Throwable slots="Any,RightHand+LeftHand" holdpos="0,0" handle1="0,0" handle2="2,2" throwforce="6" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnSecondaryUse" target="This" delay="0.1">
+        <Use />
+      </StatusEffect>
+    </Throwable>
+    <Projectile characterusable="false" launchimpulse="0.0" sticktocharacters="false">
+      <Attack structuredamage="5" targetimpulse="20">
+        <Affliction identifier="blunttrauma" strength="90" />
+        <Affliction identifier="concussion" strength="90" />
+        <Affliction identifier="stun" strength="10" />
+        <StatusEffect type="OnUse" target="UseTarget">
+          <Conditional entitytype="eq Character" />
+          <Sound file="Content/Items/Weapons/Smack1.ogg" selectionmode="random" range="500" />
+          <Sound file="Content/Items/Weapons/Smack2.ogg" range="500" />
+        </StatusEffect>
+      </Attack>
+    </Projectile>
+  </Item>
+  <Item name="Rock (melee)" identifier="arak_rockm" aliases="arak_cinderblock5" description="" category="Weapon" subcategory="Melee" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" Tags="smallitem,mountableweapon" scale="0.4" impactsoundtag="impact_metal_light">
+    <PreferredContainer primary="storagecab" />
+    <PreferredContainer secondary="wreckstorage,abandonedstoragecab" />
+<!--<Fabricate suitablefabricators="fabricator" requiredtime="5">
+      <RequiredItem identifier="arak_cement" amount="6" />
+      <RequiredItem identifier="arak_silver" />
+    </Fabricate>-->
+    <Deconstruct time="5">
+      <Item identifier="arak_cement" amount="6" />
+      <Item identifier="arak_silver" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/Arakneas' Mod/textures/icons/rock.png" sourcerect="0,0,64,64" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/Arakneas' Mod/textures/rock.png" sourcerect="0,0,104,64" origin="0.5,0.5" />
+    <Body width="104" height="64" density="100" />
+    <MeleeWeapon slots="Any,RightHand+LeftHand" aimpos="50,50" handle1="0,0" handle2="2,2" holdangle="30" reload="1.25" range="50" combatPriority="25" msg="ItemMsgPickUpSelect">
+      <Attack targetimpulse="4" severlimbsprobability="0.1" itemdamage="6" structuredamage="4" structuresoundtype="StructureSlash">
+        <Affliction identifier="blunttrauma" strength="25" />
+        <Affliction identifier="stun" strength="0.5" />
+        <!-- 
+        <StatusEffect type="OnUse" target="UseTarget">
+          <Conditional entitytype="eq Character" />
+          <Sound file="%ModDir%/sounds/goofyhorn.ogg" range="1500" frequencymultiplier="0.9"/>
+          <Explosion range="250.0" force="12.0" shockwave="true" smoke="false" flash="true" sparks="false" flames="false" underwaterbubble="false" camerashake="5.0" >
+          <Affliction identifier="stun" strength="0.1" />
+        </Explosion>
+          <ParticleEmitter particle="whitespark" particleamount="8" anglemin="0" anglemax="360" scalemin="1.2" scalemax="1.8" lifetimemultiplier="1" velocitymin="130" velocitymax="460" colormultiplier="255,255,255,255" highqualitycollisiondetection="true"/>
+          <ParticleEmitter particle="whitespark" particleamount="8" anglemin="0" anglemax="360" scalemin="1.2" scalemax="1.8" lifetimemultiplier="1" velocitymin="130" velocitymax="460" colormultiplier="255,4,4,255" highqualitycollisiondetection="true"/>
+          <ParticleEmitter particle="whitespark" particleamount="8" anglemin="0" anglemax="360" scalemin="1.2" scalemax="1.8" lifetimemultiplier="1" velocitymin="130" velocitymax="460" colormultiplier="4,255,255,255" highqualitycollisiondetection="true"/>
+          <ParticleEmitter particle="whitespark" particleamount="8" anglemin="0" anglemax="360" scalemin="1.2" scalemax="1.8" lifetimemultiplier="1" velocitymin="130" velocitymax="460" colormultiplier="4,255,4,255" highqualitycollisiondetection="true"/>
+          <ParticleEmitter particle="whitespark" particleamount="8" anglemin="0" anglemax="360" scalemin="1.2" scalemax="1.8" lifetimemultiplier="1" velocitymin="130" velocitymax="460" colormultiplier="255,255,4,255" highqualitycollisiondetection="true"/>
+        </StatusEffect>
+-->
+        <StatusEffect type="OnUse" target="UseTarget">
+          <Conditional entitytype="eq Character" />
+          <Sound file="Content/Items/Weapons/Smack1.ogg" selectionmode="random" range="500" />
+          <Sound file="Content/Items/Weapons/Smack2.ogg" range="500" />
+        </StatusEffect>
+      </Attack>
+    </MeleeWeapon>
+    <CustomInterface canbeselected="true" drawhudwhenequipped="true">
+      <GuiFrame relativesize="0.15,0.15" anchor="BottomLeft" absoluteoffset="20,20" style="ItemUI" />
+      <Button text="Swap to Ranged">
+        <StatusEffect type="OnUse" targettype="This">
+          <Remove />
+        </StatusEffect>
+        <StatusEffect type="OnUse" targettype="This">
+          <SpawnItem identifier="arak_rockr" spawnposition="SameInventory" />
+        </StatusEffect>
+      </Button>
+    </CustomInterface>
+  </Item>
+  <Item name="Rock (ranged)" identifier="arak_rockr" aliases="arak_cinderblock6" description="" hideinmenus="true" category="Weapon" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" Tags="smallitem,concreteblocktag,throwingweapontag,mountableweapon" scale="0.4" impactsoundtag="impact_metal_light">
+    <PreferredContainer primary="storagecab" />
+    <PreferredContainer secondary="wreckstorage,abandonedstoragecab" />
+<!--<Fabricate suitablefabricators="fabricator" requiredtime="5">
+      <RequiredItem identifier="arak_cement" amount="6" />
+      <RequiredItem identifier="arak_silver" />
+    </Fabricate>-->
+    <Deconstruct time="5">
+      <Item identifier="arak_cement" amount="6" />
+      <Item identifier="arak_silver" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/Arakneas' Mod/textures/icons/rock.png" sourcerect="0,0,64,64" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/Arakneas' Mod/textures/rock.png" sourcerect="0,0,104,64" origin="0.5,0.5" />
+    <Body width="104" height="64" density="100" />
+    <Holdable slots="Any,RightHand+LeftHand" controlpose="true" aimpos="25,40" handle1="10,0" aimangle="0" msg="ItemMsgPickUpSelect" canBeCombined="true">
+      <StatusEffect type="OnActive" target="This">
+        <SpawnItem identifiers="arak_rockr" spawnposition="ThisInventory" />
+      </StatusEffect>
+      <StatusEffect type="OnContained" target="This" interval="0.05" disabledeltatime="true" checkconditionalalways="true">
+        <Conditional hastag="neq throwingweapontag" targetcontainer="true" />
+        <SpawnItem identifiers="arak_rockr" spawnposition="ThisInventory" spawnifcantbecontained="false" spawnifinventoryfull="false" />
+      </StatusEffect>
+    </Holdable>
+    <RangedWeapon barrelpos="40,0" spread="1" unskilledspread="10" reload="1.5" combatPriority="25" drawhudwhenequipped="true" crosshairscale="0.2">
+      <Crosshair texture="Content/Items/Weapons/Crosshairs.png" sourcerect="0,256,256,256" />
+      <StatusEffect type="OnUse" target="This" condition="-100" disabledeltatime="true">
+        <Explosion range="50" force="5" shockwave="false" smoke="false" flames="false" flash="false" sparks="false" underwaterbubble="false" camerashake="0" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01" disabledeltatime="true" stackable="false" checkconditionalalways="true">
+        <Remove />
+      </StatusEffect>
+      <RequiredSkill identifier="weapons" level="30" />
+    </RangedWeapon>
+    <Projectile characterusable="false" launchimpulse="11.0" sticktocharacters="false">
+      <Attack structuredamage="5" itemdamage="5">
+        <Affliction identifier="blunttrauma" strength="30" />
+        <Affliction identifier="stun" strength="0.7" />
+        <StatusEffect type="OnUse" target="UseTarget">
+          <Conditional entitytype="eq Character" />
+          <Sound file="Content/Items/Weapons/Smack1.ogg" selectionmode="random" range="500" />
+          <Sound file="Content/Items/Weapons/Smack2.ogg" range="500" />
+        </StatusEffect>
+        <StatusEffect type="OnActive" target="This" setvalue="true" condition="100" disabledeltatime="true" />
+        <StatusEffect type="OnActive" target="This">
+          <SpawnItem identifiers="arak_rockr" spawnposition="ThisInventory" />
+        </StatusEffect>
+      </Attack>
+    </Projectile>
+    <ItemContainer autofill="False" hideitems="true" AllowDragAndDrop="false" capacity="1" drawinventory="false" showcontainedstateindicator="false" canbeselected="false" removecontaineditemsondeconstruct="true">
+      <Containable items="arak_rockr" />
+      <ContainedStateIndicator texture="Content/UI/ContainerIndicators.png" sourcerect="0,0,1,1" />
+    </ItemContainer>
+    <CustomInterface canbeselected="true" drawhudwhenequipped="true">
+      <GuiFrame relativesize="0.15,0.15" anchor="BottomLeft" absoluteoffset="20,20" style="ItemUI" />
+      <Button text="Swap to Melee">
+        <StatusEffect type="OnUse" targettype="This">
+          <Remove />
+        </StatusEffect>
+        <StatusEffect type="OnUse" targettype="This">
+          <SpawnItem identifier="arak_rockm" spawnposition="SameInventory" />
+        </StatusEffect>
+      </Button>
+    </CustomInterface>
+  </Item>
+</Items>

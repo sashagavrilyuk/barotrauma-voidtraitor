@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TalentTrees>
+  <TalentTree jobidentifier="coalition_scout">
+    <SubTree identifier="coalition_scout_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+  <TalentTree jobidentifier="coalition_soldier">
+    <SubTree identifier="coalition_soldier_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+  <TalentTree jobidentifier="coalition_stormtrooper">
+    <SubTree identifier="coalition_stormtrooper_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+  <TalentTree jobidentifier="coalition_sniper">
+    <SubTree identifier="coalition_sniper_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+  <TalentTree jobidentifier="coalition_medic">
+    <SubTree identifier="coalition_medic_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+  <TalentTree jobidentifier="coalition_clown">
+    <SubTree identifier="coalition_clown_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+  <TalentTree jobidentifier="coalition_juggernaut">
+    <SubTree identifier="coalition_juggernaut_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+  <TalentTree jobidentifier="coalition_captain">
+    <SubTree identifier="coalition_captain_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+  <TalentTree jobidentifier="coalition_engineer">
+    <SubTree identifier="coalition_engineer_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+  <TalentTree jobidentifier="coalition_gunner">
+    <SubTree identifier="coalition_gunner_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+<!--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+<!--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+<!--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+  <TalentTree jobidentifier="separatists_scout">
+    <SubTree identifier="separatists_scout_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+  <TalentTree jobidentifier="separatists_soldier">
+    <SubTree identifier="separatists_soldier_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+  <TalentTree jobidentifier="separatists_stormtrooper">
+    <SubTree identifier="separatists_stormtrooper_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+  <TalentTree jobidentifier="separatists_sniper">
+    <SubTree identifier="separatists_sniper_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+  <TalentTree jobidentifier="separatists_medic">
+    <SubTree identifier="separatists_medic_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+  <TalentTree jobidentifier="separatists_clown">
+    <SubTree identifier="separatists_clown_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+  <TalentTree jobidentifier="separatists_juggernaut">
+    <SubTree identifier="separatists_juggernaut_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+  <TalentTree jobidentifier="separatists_captain">
+    <SubTree identifier="separatists_captain_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+  <TalentTree jobidentifier="separatists_engineer">
+    <SubTree identifier="separatists_engineer_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+  <TalentTree jobidentifier="separatists_gunner">
+    <SubTree identifier="separatists_gunner_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
+</TalentTrees>

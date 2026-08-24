@@ -1,0 +1,41 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<contentpackage name="the void traitor pack" modversion="0.5.39" corepackage="False" steamworkshopid="3466169195" gameversion="1.13.4.0">
+  <RandomEvents file="%ModDir%/EH fix/HuskFactionEventsFix.xml" />
+  <RandomEvents file="%ModDir%/EH fix/huskevents.xml" />
+  <RandomEvents file="%ModDir%/EH fix/huskeventscampaign.xml" />
+  <RandomEvents file="%ModDir%/Vanilla/randomevents_lineardifficulty.xml" />
+  <Afflictions file="%ModDir%/Vanilla/Afflictions.xml" />
+  <Item file="%ModDir%/Vanilla/Item.xml" />
+  <Item file="%ModDir%/Arakneas' Mod/items/maid.xml" />
+  <Item file="%ModDir%/Arakneas' Mod/items/cinderblock.xml" />
+  <Text file="%ModDir%/the void traitor pack/lang.xml" />
+  <Missions file="%ModDir%/the void traitor pack/MissionsPvP.xml" />
+  <Jobs file="%ModDir%/the void traitor pack/jobs.xml" />
+  <UIStyle file="%ModDir%/the void traitor pack/style.xml" />
+  <Talents file="%ModDir%/the void traitor pack/Talents/Fighters/Fighters.xml" />
+  <TalentTrees file="%ModDir%/the void traitor pack/Talents/TalentTrees.xml" />
+  <Item file="%ModDir%/the void traitor pack/items/item.xml" />
+  <Submarine file="%ModDir%/void traitor pack submarine/fun boat/Я-HMS Elizabeth.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/fun boat/Я-↓The Coliseum Of Death.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/fun boat/Я-Racing.sub" />
+  <Outpost file="%ModDir%/void traitor pack submarine/fun boat/Hide and seek I in Residence.sub" />
+  <Outpost file="%ModDir%/void traitor pack submarine/fun boat/Hide and seek I Big station.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/normal boat/Stormaker.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/normal boat/Gorban.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/normal boat/Mercury.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/normal boat/Brynmawr.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/normal boat/Tartaruga.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/normal boat/Beaumaris.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/normal boat/Sever.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/normal boat/Dispatch.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/normal boat/Scarborough.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/normal boat/Kasserine.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/normal boat/Granthum.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/normal boat/Harlech.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/normal boat/PLN-12Y.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/normal boat/IceReaper - Mk1.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/normal boat/Креветка.sub" />
+  <Outpost file="%ModDir%/void traitor pack submarine/attack-defends/Attack&amp;Defend I Cold Caves.sub" />
+  <Outpost file="%ModDir%/void traitor pack submarine/attack-defends/Attack&amp;Defend I Shipbuilding.sub" />
+  <Sounds file="%ModDir%/Sounds/Sound.xml" />
+</contentpackage>

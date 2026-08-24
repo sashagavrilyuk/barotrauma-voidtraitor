@@ -1,0 +1,119 @@
+{
+  "output_folder": "Void traitor pack",
+  "workshop_root": "",
+  "mods": [
+    {
+      "workshop_id": "3478084070",
+      "package_name": "NT Surgery Plus",
+      "target_folder": "NT Surgery Plus"
+    },
+    {
+      "workshop_id": "3751439557",
+      "package_name": "NT Cybernetics Enhanced Forked",
+      "target_folder": "NT Cybernetics Enhanced Forked"
+    },
+    {
+      "workshop_id": "3592173710",
+      "package_name": "NT Nanite Integration",
+      "target_folder": "NT Nanite Integration"
+    },
+    {
+      "workshop_id": "3592320189",
+      "package_name": "NT Nanite Integration Cybernetics Addon",
+      "target_folder": "NT Nanite Integration Cybernetics Addon"
+    },
+    {
+      "workshop_id": "3525330358",
+      "package_name": "Guns Enhanced Unofficial Addon",
+      "target_folder": "Guns Enhanced Unofficial Addon",
+      "exclude": [
+        "barohallwayItemsDisplay.png",
+        "GunsEnhancedUnofficialAddonThumbnail.jpg",
+        "GunsEnhancedUnofficialAddonThumbnail.png",
+        "ItemExamplePicture.png"
+      ]
+    },
+    {
+      "workshop_id": "3371925534",
+      "package_name": "Guns Enhanced",
+      "target_folder": "Guns Enhanced",
+      "exclude": [
+        "GunsEnhancedThumbnail.gif"
+      ]
+    },
+    {
+      "workshop_id": "3101033027",
+      "package_name": "Enhanced Husks",
+      "target_folder": "Enhanced Husks",
+      "exclude": [
+        "ASSET"
+      ]
+    },
+    {
+      "workshop_id": "2776026770",
+      "package_name": "More Arts (AOCS)",
+      "target_folder": "More Arts (AOCS)"
+    },
+    {
+      "workshop_id": "3169182250",
+      "package_name": "All Jobs See Reports",
+      "target_folder": "All Jobs See Reports"
+    },
+    {
+      "workshop_id": "2958213033",
+      "package_name": "Belt Only Outerclothes",
+      "target_folder": "Belt Only Outerclothes",
+      "exclude": [
+        "BeltOnlyOuterClothesTHUMBNAIL.jpg"
+      ]
+    },
+    {
+      "workshop_id": "3005836987",
+      "package_name": "Improved  Stun",
+      "target_folder": "Improved  Stun"
+    },
+    {
+      "workshop_id": "3252428995",
+      "package_name": "Mission Mode Starting Options",
+      "target_folder": "Mission Mode Starting Options"
+    },
+    {
+      "workshop_id": "2946596727",
+      "package_name": "Old+New Clown Tree",
+      "target_folder": "Old+New Clown Tree"
+    },
+    {
+      "workshop_id": "3379528427",
+      "package_name": "Vanilla Super Mining Sonar FIXED",
+      "target_folder": "Vanilla Super Mining Sonar FIXED",
+      "exclude": [
+        "previewimage.png"
+      ]
+    },
+    {
+      "workshop_id": "3246408308",
+      "package_name": "Megahonk horn",
+      "target_folder": "Megahonk horn"
+    },
+    {
+      "workshop_id": "3353887060",
+      "package_name": "Gravitation Grаnade",
+      "target_folder": "Gravitation Grаnade"
+    }
+  ],
+  "lua_order": [
+    "NT Surgery Plus",
+    "NT Cybernetics Enhanced Forked",
+    "NT Nanite Integration"
+  ],
+  "override_winners": [
+    {
+      "winner": "NT Nanite Integration Cybernetics Addon",
+      "loser": "NT Cybernetics Enhanced Forked"
+    },
+    {
+      "winner": "Guns Enhanced Unofficial Addon",
+      "loser": "Guns Enhanced"
+    }
+  ]
+}

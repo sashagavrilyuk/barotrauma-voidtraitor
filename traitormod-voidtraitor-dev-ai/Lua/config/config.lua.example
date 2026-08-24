@@ -1,0 +1,26 @@
+local config = ...
+
+-- Lets say we want to change the respawn text in baseconfig.lua, we just do:
+-- config.RespawnText = "New text %s"
+
+-- Discord override examples (put webhooks and message ids here, this file is gitignored):
+-- config.Discord.Presence.Webhook = ""
+-- config.Discord.Round.Webhook = ""
+-- config.Discord.Status.Webhook = ""
+-- config.Discord.Status.MessageId = ""
+-- config.Discord.Logs.Enabled = false
+-- config.Discord.Logs.Webhook = ""
+
+-- GameVote override examples:
+-- config.GameVote.DurationSeconds = 60
+-- config.GameVote.AttackDefendOutpostName = "Random"
+-- config.GameVote.HideOutpostName = "Random"
+-- HideAndSeekV2 defaults (a selected outpost [traitormod] config has priority):
+-- config.GamemodeConfig.HideAndSeekV2.StartDelayMinutes = 1
+-- config.GamemodeConfig.HideAndSeekV2.RoundDurationMinutes = 6
+-- config.GamemodeConfig.HideAndSeekV2.ClassSelectionTimeoutMinutes = 3
+-- config.GamemodeConfig.HideAndSeekV2.ReconnectGraceSeconds = 60
+-- config.GamemodeConfig.HideAndSeekV2.WinningPointsBlue = 2000
+-- config.GamemodeConfig.HideAndSeekV2.WinningPointsRed = 2000
+
+return config

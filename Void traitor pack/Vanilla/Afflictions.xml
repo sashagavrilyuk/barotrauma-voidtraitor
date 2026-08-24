@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Afflictions>
+  <Override>
+    <!-- _________________________________________________________________ -->
+    <!--                     HUSK INFECTION AFFLICTION                     -->
+    <!-- _________________________________________________________________ -->
+    <AfflictionHusk name="Husk infection" identifier="huskinfection" description="Something alien moves within the mouth..." type="alieninfection" transferbuffs="true" targets="human,crawler,crawler_hatchling,crawlerbroodmother,swarmcrawler,mudraptor,mudraptor_unarmored,Mudraptor_veteran,mudraptor_hatchling,bonethresher,tigerthresher,tigerthresher_hatchling,hammerhead,hammerheadgold,hammerheadmatriarch,hammerheadspawn,hammerhead_m,hammerheadgold_m,moloch,moloch_m,molochblack,molochblack_m,molochbaby,mantis,Legacymantis,legacycrawler,coelanth,psilotoad,orangeboy,peanut,spineling,Spineling_morbusine,Spinelingmispawn,Mudraptormispawn,Spineling_giant,watcher,endworm,charybdis,latcher" huskedspeciesname="[speciesname]husk" IgnoreTreatmentIfAfflictedBy="husktransformimmunity,husktransformimmunitytemporary" causeofdeathdescription="Taken over by a husk parasite" selfcauseofdeathdescription="You have been taken over by the husk parasite." limbspecific="false" indicatorlimb="Torso" activationthreshold="0" showinhealthscannerthreshold="25" showiconthreshold="55" showicontoothersthreshold="65" activethreshold="75" transformthresholdondeath="75" transitionthreshold="100" karmachangeonapplied="-5" maxstrength="100" achievementonremoved="healhusk" iconcolors="60,140,195,255;60,107,195,255;60,0,195,255" causespeechimpediment="false" sendmessages="false" needsair="true">
+      <Effect minstrength="0" maxstrength="100" strengthchange="1.6">
+        <Description textidentifier="afflictiondescription.huskinfection.transition.self" target="Self" minstrength="60" maxstrength="75" />
+        <Description textidentifier="afflictiondescription.huskinfection.active.self" target="Self" minstrength="75" maxstrength="99" />
+        <Description textidentifier="afflictiondescription.huskinfection.transition.other" target="OtherCharacter" minstrength="50" maxstrength="75" />
+        <Description textidentifier="afflictiondescription.huskinfection.active.other" target="OtherCharacter" minstrength="75" maxstrength="99" />
+        <Description textidentifier="afflictiondescription.huskinfection.final" minstrength="99" maxstrength="100" />
+        <StatusEffect target="Character" PressureProtection="4000.0" setvalue="true">
+          <Conditional huskinfection="gte 75.0" />
+        </StatusEffect>
+      </Effect>
+      <PeriodicEffect mininterval="100" maxinterval="1000">
+        <StatusEffect target="Character" checkconditionalalways="true" comparison="or">
+          <Conditional dormanthuskinfection="lte 0" />
+          <Conditional husktransformimmunity="lte 0" />
+          <Affliction identifier="Nausearandomchance" amount="10" probability="0.02" />
+        </StatusEffect>
+      </PeriodicEffect>
+      <PeriodicEffect mininterval="3" maxinterval="6">
+        <StatusEffect target="Character" checkconditionalalways="true" comparison="and">
+          <Conditional huskinfection="gte 75.0" />
+          <Conditional isunconscious="false" />
+          <Reduceaffliction identifier="Oxygenlow" amount="15" />
+        </StatusEffect>
+        <!-- <Periodic damage when husk infection reaches 100 strength - Because they normally just take a long nap before turning into a problem, anyone can just run away or even drag the body outside of the submarine. This fixes this problem by killing the host faster.-->
+        <StatusEffect target="Character" comparison="and">
+          <Conditional isdead="false" />
+          <Conditional husktransformimmunity="lte 5" />
+          <Conditional huskinfection="eq 100.0" />
+          <ParticleEmitter particle="bloodsplash" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackblood" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="waterblood" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackwaterblood" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <Affliction identifier="internaldamage" amount="5" />
+        </StatusEffect>
+        <!-- <setting up so people take very LITTLE damage, but damage anyway which would kill anyone given enough time>.-->
+        <StatusEffect target="Character" comparison="and">
+          <Conditional isdead="false" />
+          <Conditional husktransformimmunity="gte 5" />
+          <Conditional huskinfection="eq 100.0" />
+          <ParticleEmitter particle="bloodsplash" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackblood" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="waterblood" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackwaterblood" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <Affliction identifier="internaldamage" amount="0.005" />
+        </StatusEffect>
+        <!-- Periodic damage when husk infection reaches 100 strength> -->
+        <!-- <Large Chonks - Because they have a shit ton of health, we need to damage them more when they are turning so that it can actually happen by the end of the round -->
+        <StatusEffect target="Character" comparison="and">
+          <Conditional isdead="false" />
+          <Conditional huskinfection="eq 100.0" />
+          <Conditional speciesname="moloch" />
+          <ParticleEmitter particle="bloodsplash" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackwaterblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="waterblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <Affliction identifier="internaldamage" amount="20" />
+        </StatusEffect>
+        <StatusEffect target="Character" comparison="and">
+          <Conditional isdead="false" />
+          <Conditional huskinfection="eq 100.0" />
+          <Conditional speciesname="moloch_m" />
+          <ParticleEmitter particle="bloodsplash" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackwaterblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="waterblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <Affliction identifier="internaldamage" amount="20" />
+        </StatusEffect>
+        <StatusEffect target="Character" comparison="and">
+          <Conditional isdead="false" />
+          <Conditional huskinfection="eq 100.0" />
+          <Conditional speciesname="molochblack" />
+          <ParticleEmitter particle="bloodsplash" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackwaterblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="waterblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <Affliction identifier="internaldamage" amount="20" />
+        </StatusEffect>
+        <StatusEffect target="Character" comparison="and">
+          <Conditional isdead="false" />
+          <Conditional huskinfection="eq 100.0" />
+          <Conditional speciesname="molochblack_m" />
+          <ParticleEmitter particle="bloodsplash" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackwaterblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="waterblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <Affliction identifier="internaldamage" amount="20" />
+        </StatusEffect>
+        <StatusEffect target="Character" comparison="and">
+          <Conditional isdead="false" />
+          <Conditional huskinfection="eq 100.0" />
+          <Conditional speciesname="hammerheadmatriarch" />
+          <ParticleEmitter particle="bloodsplash" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackwaterblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="waterblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <Affliction identifier="internaldamage" amount="10" />
+        </StatusEffect>
+        <StatusEffect target="Character" comparison="and">
+          <Conditional isdead="false" />
+          <Conditional huskinfection="eq 100.0" />
+          <Conditional speciesname="watcher" />
+          <ParticleEmitter particle="bloodsplash" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackwaterblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="waterblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <Affliction identifier="internaldamage" amount="10" />
+        </StatusEffect>
+        <StatusEffect target="Character" comparison="and">
+          <Conditional isdead="false" />
+          <Conditional huskinfection="eq 100.0" />
+          <Conditional speciesname="charybdis" />
+          <ParticleEmitter particle="bloodsplash" particlespersecond="10" scalemin="8" scalemax="13" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackwaterblood" particlespersecond="10" scalemin="8" scalemax="13" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="waterblood" particlespersecond="10" scalemin="8" scalemax="13" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackblood" particlespersecond="10" scalemin="8" scalemax="13" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <Affliction identifier="internaldamage" amount="50" />
+        </StatusEffect>
+        <StatusEffect target="Character" comparison="and">
+          <Conditional isdead="false" />
+          <Conditional huskinfection="eq 100.0" />
+          <Conditional speciesname="latcher" />
+          <ParticleEmitter particle="bloodsplash" particlespersecond="10" scalemin="8" scalemax="13" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackwaterblood" particlespersecond="10" scalemin="8" scalemax="13" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="waterblood" particlespersecond="10" scalemin="8" scalemax="13" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackblood" particlespersecond="10" scalemin="8" scalemax="13" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <Affliction identifier="internaldamage" amount="50" />
+        </StatusEffect>
+        <StatusEffect target="Character" interval="0.2" comparison="and">
+          <Conditional isdead="false" />
+          <Conditional huskinfection="gt 95" />
+          <Conditional speciesname="endworm" />
+          <Conditional bleedingnonstop="lte 0" />
+          <!-- The husk infection has this quirk where a monster cannot be transformed if they have lost any limbs. In this case we only want to check if it has been majorly dismembered, while if it has lost some armor, it doesn't matter. -->
+          <ParticleEmitter particle="bloodsplash" particlespersecond="10" scalemin="20" scalemax="30" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackwaterblood" particlespersecond="10" scalemin="20" scalemax="30" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="waterblood" particlespersecond="10" scalemin="20" scalemax="30" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackblood" particlespersecond="10" scalemin="20" scalemax="30" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <SpawnCharacter speciesname="endwormhusk" count="1" transfercontrol="true" spread="0" />
+          <RemoveCharacter />
+        </StatusEffect>
+        <StatusEffect target="Character" interval="0.2" comparison="and">
+          <Conditional isdead="false" />
+          <Conditional huskinfection="gt 85" />
+          <Conditional speciesname="hammerheadmatriarch" />
+          <!-- The hammerhead matriarch explodes on death, releasing a bunch of baby boys. I'd rather that not happen. -->
+          <ParticleEmitter particle="bloodsplash" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackwaterblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="waterblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackblood" particlespersecond="10" scalemin="8" scalemax="10" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <SpawnCharacter speciesname="hammerheadmatriarchhusk" count="1" transfercontrol="true" spread="0" />
+          <RemoveCharacter />
+        </StatusEffect>
+        <!-- Large Chonks> -->
+        <!-- <Pets - Because they explode on death, we need to spawn a husk before they die, otherwise nothing will spawn -->
+        <StatusEffect target="Character" interval="0.2" comparison="and">
+          <Conditional isdead="false" />
+          <Conditional huskinfection="gte 75.0" />
+          <Conditional speciesname="peanut" />
+          <ParticleEmitter particle="bloodsplash" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackblood" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="waterblood" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackwaterblood" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <SpawnCharacter speciesname="peanuthusk" count="1" transfercontrol="true" spread="0" />
+          <RemoveCharacter />
+        </StatusEffect>
+        <StatusEffect target="Character" interval="0.2" comparison="and">
+          <Conditional isdead="false" />
+          <Conditional huskinfection="gte 75.0" />
+          <Conditional speciesname="psilotoad" />
+          <ParticleEmitter particle="bloodsplash" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackblood" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="waterblood" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackwaterblood" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <SpawnCharacter speciesname="psilotoadhusk" count="1" transfercontrol="true" spread="0" />
+          <RemoveCharacter />
+        </StatusEffect>
+        <StatusEffect target="Character" interval="0.2" comparison="and">
+          <Conditional isdead="false" />
+          <Conditional huskinfection="gte 75.0" />
+          <Conditional speciesname="orangeboy" />
+          <ParticleEmitter particle="bloodsplash" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackblood" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="waterblood" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <ParticleEmitter particle="blackwaterblood" particlespersecond="10" scalemin="1" scalemax="2" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+          <SpawnCharacter speciesname="orangeboyhusk" count="1" transfercontrol="true" spread="0" />
+          <RemoveCharacter />
+        </StatusEffect>
+        <!-- Pets> -->
+        <!-- <Humans - The husk infection will progress more slowly on humans compared to monsters -->
+        <StatusEffect target="Character" comparison="and">
+          <Conditional isdead="false" />
+          <Conditional blacktoxin="lt 1" />
+          <Conditional huskinfection="gt 5.0" />
+          <Conditional huskinfection="lt 75.0" />
+          <Conditional speciesname="human" />
+          <ReduceAffliction identifier="huskinfection" amount="5" />
+        </StatusEffect>
+        <StatusEffect target="Character" comparison="and">
+          <Conditional isdead="false" />
+          <Conditional blacktoxin="lt 1" />
+          <Conditional huskinfection="gt 85.0" />
+          <Conditional huskinfection="lt 99.0" />
+          <Conditional speciesname="human" />
+          <ReduceAffliction identifier="huskinfection" amount="5" />
+        </StatusEffect>
+        <!-- Humans> -->
+        <!-- <Spread the infection and heal the host to hopefully make it survive. We don't want husks to kill everything and then just die themselves, leaving nothing for the humans to fight. -->
+        <StatusEffect target="Character" comparison="and">
+          <Conditional isdead="false" />
+          <Conditional huskinfection="gte 55" />
+          <Conditional speciesname="!eq human" />
+          <SpawnItem identifier="huskinfectionexplosion" spawnposition="This" count="1" spread="0" />
+          <ParticleEmitter particle="huskgoo" particlespersecond="5" scalemin="1.0" scalemax="1.2" velocitymin="0" velocitymax="0" anglemin="0" anglemax="360" copyentityangle="false" />
+          <ReduceAffliction type="damage" strength="2" />
+        </StatusEffect>
+        <!-- <Humans don't spread the infection but slowly heal if they have a good amount of husk infection and are unconscious> -->
+        <StatusEffect target="Character" comparison="and">
+          <Conditional isdead="false" />
+          <Conditional isunconscious="true" />
+          <Conditional huskinfection="gt 50" />
+          <Conditional huskinfection="lt 100" />
+          <Conditional speciesname="eq human" />
+          <SpawnItem identifier="humanhuskclickingsound" spawnposition="This" count="1" spread="0" />
+          <ReduceAffliction type="damage" strength="2" />
+        </StatusEffect>
+        <!-- Spread the infection> -->
+      </PeriodicEffect>
+      <Periodiceffect mininterval="15" maxinterval="25">
+        <StatusEffect target="Character" comparison="or">
+          <Conditional speciesname="eq peanut" />
+          <Conditional speciesname="eq orangeboy" />
+          <Conditional speciesname="eq psilotoad" />
+          <Affliction identifier="stun" amount="2" />
+          <ParticleEmitter particle="huskgoo" particlespersecond="5" scalemin="1.0" scalemax="1.2" velocitymin="0" velocitymax="0" anglemin="0" anglemax="360" copyentityangle="false" />
+          <Sound file="%ModDir%/Vanilla/infect.ogg" range="1000" />
+          <!-- Play a special sound when a pet is infected cause want people to know about it.-->
+        </StatusEffect>
+      </Periodiceffect>
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,640,128,128" color="60,107,195,255" origin="0,0" />
+    </AfflictionHusk>
+  </Override>
+</Afflictions>

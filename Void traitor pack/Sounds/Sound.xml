@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sounds>
+  <voteding file="%ModDir%/Sounds/voteding.ogg" volume="1.5" />
+</sounds>

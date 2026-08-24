@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Talents>
+  <Talent identifier="nothings">
+    <Icon texture="Content/UI/TalentsIcons3.png" sheetindex="0,2" sheetelementsize="128,128"/>
+    <Description tag="абсолютного ничего не дает">
+      <Replace tag="[amount]" value="20" color="gui.green"/>
+    </Description>
+  </Talent>
+</Talents>

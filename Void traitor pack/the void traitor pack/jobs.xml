@@ -1,0 +1,343 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+    <!--Шиза скаут под спидами-->
+<Jobs>
+  <Job identifier="coalition_scout" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="55,155,255" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="0,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/coalsmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+    <!--Ебанный солдат-->
+  <Job identifier="coalition_soldier" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="55,155,255" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="0,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/coalsmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+  <!--хуесос Штурмовик-->
+  <Job identifier="coalition_stormtrooper" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="55,155,255" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="0,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/coalsmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+  <!--Кемпер ебанный снайпер-->
+  <Job identifier="coalition_sniper" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="55,155,255" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="0,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/coalsmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+  <!--областная больница МЕДИК-->
+  <Job identifier="coalition_medic" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="55,155,255" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="0,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/coalsmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+  <!--клоун ебанный-->
+  <Job identifier="coalition_clown" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="55,155,255" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="0,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/coalsmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+  <!--жировая склатка Джаггернаут-->
+  <Job identifier="coalition_juggernaut" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="55,155,255" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="0,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/coalsmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+  <!--Даун на капитане-->
+  <Job identifier="coalition_captain" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="55,155,255" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="0,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/coalsmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+  <!--Инженер умер на заводе-->
+  <Job identifier="coalition_engineer" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="55,155,255" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="0,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/coalsmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+  <!--Артиллерист-->
+  <Job identifier="coalition_gunner" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="55,155,255" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="0,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/coalsmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+  <!--:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+  <Job identifier="separatists_scout" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="215,156,85" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="163,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/sepasmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+    <!--Ебанный солдат-->
+  <Job identifier="separatists_soldier" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="215,156,85" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="163,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/sepasmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+  <!--хуесос Штурмовик-->
+  <Job identifier="separatists_stormtrooper" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="215,156,85" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="163,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/sepasmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+  <!--Кемпер ебанный снайпер-->
+  <Job identifier="separatists_sniper" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="215,156,85" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="163,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/sepasmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+  <!--областная больница МЕДИК-->
+  <Job identifier="separatists_medic" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="215,156,85" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="163,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/sepasmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+  <!--клоун ебанный-->
+  <Job identifier="separatists_clown" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="215,156,85" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="163,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/sepasmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+  <!--жировая склатка Джаггернаут-->
+  <Job identifier="separatists_juggernaut" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="215,156,85" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="163,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/sepasmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+  <!--Даун на капитане-->
+  <Job identifier="separatists_captain" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="215,156,85" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="163,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/sepasmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+  <!--Инженер умер на заводе-->
+  <Job identifier="separatists_engineer" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="215,156,85" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="163,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/sepasmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+  <!--Артиллерист-->
+  <Job identifier="separatists_gunner" initialcount="0" allowalways="true" minkarma="0" vitalitymodifier="0" uicolor="215,156,85" hiddenjob="true" idlebehavior="Patrol">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/DE-IconsAtlas.png" sourcerect="163,0,163,160" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/sepasmall.png" sourcerect="0,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="weapons" level="50,50" primary="true" />
+      <Skill identifier="medical" level="50,50" />
+      <Skill identifier="mechanical" level="50,50" />
+      <Skill identifier="electrical" level="50,50" />
+      <Skill identifier="helm" level="50,50" />
+      <Skill identifier="surgery" level="50,50" />
+    </Skills>
+  </Job>
+</Jobs>

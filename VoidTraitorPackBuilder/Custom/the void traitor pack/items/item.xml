@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <Item name="" identifier="backpack_slow" NonInteractable="true" category="Equipment" tags="mediumitem,mobilecontainer,largemobilecontainer,tool" showcontentsintooltip="true" Scale="0.5" fireproof="true" description="" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Items/Tools/tools.png" sourcerect="3,259,68,110" origin="0.5,0.5" />
+    <Sprite texture="Content/Items/Tools/tools.png" sourcerect="3,259,68,110" depth="0.6" />
+    <Body width="60" height="100" density="15" />
+    <Wearable slots="Bag" msg="ItemMsgEquipSelect" canbeselected="false" canbepicked="true" pickkey="Select">
+      <StatusEffect type="OnWearing" target="Character" setvalue="true" disabledeltatime="true" />
+      <sprite name="Backpack" CanBeHiddenByOtherWearables="false" CanBeHiddenByItem="deepdivinglarge" texture="Content/Items/Tools/tools.png" sourcerect="3,259,68,110" limb="Torso" depthlimb="Waist" inherittexturescale="true" origin="1.1,0.5" />
+      <StatValue stattype="MovementSpeed" value="-0.3" />
+      <StatValue stattype="PropulsionSpeed" value="-0.3" />
+    </Wearable>
+    <ItemContainer capacity="12" maxstacksize="32" depth="0.5" >
+      <Containable items="smallitem" excludeditems="toolbelt,toolbox,bandolier" />
+      <StatValue stattype="MovementSpeed" value="-0.3" />
+    </ItemContainer>
+  </Item>
+
+  <!-- Void Traitor ghost pointshop creature preview icons START -->
+  <Item name="" identifier="vt_preview_creature_balloon" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Pets/pets.png" sourcerect="386,337,78,65" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Pets/pets.png" sourcerect="386,337,78,65" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_bonethresher" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Tigerthresher/Tigerthresher.png" sourcerect="762,236,146,95" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Tigerthresher/Tigerthresher.png" sourcerect="762,236,146,95" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_bonethresherhusk" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Tigerthresher/Tigerthresher.png" sourcerect="762,236,146,95" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Tigerthresher/Tigerthresher.png" sourcerect="762,236,146,95" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_carrier" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Carrier/carrier.png" sourcerect="0,0,393,778" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Carrier/carrier.png" sourcerect="0,0,393,778" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_charybdis" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Charybdis/Charybdis.png" sourcerect="1430,0,623,457" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Charybdis/Charybdis.png" sourcerect="1430,0,623,457" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_charybdishusk" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Charybdis/Charybdis.png" sourcerect="1430,0,623,457" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Charybdis/Charybdis.png" sourcerect="1430,0,623,457" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_clown_orangeboy" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Pets/pets.png" sourcerect="176,272,65,52" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Pets/pets.png" sourcerect="176,272,65,52" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_clown_peanut" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Pets/pets.png" sourcerect="386,337,78,65" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Pets/pets.png" sourcerect="386,337,78,65" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_clown_psilotoad" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Pets/pets.png" sourcerect="70,111,65,70" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Pets/pets.png" sourcerect="70,111,65,70" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_coelanthhusk" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Coelanth/coelanth.png" sourcerect="267,171,162,392" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Coelanth/coelanth.png" sourcerect="267,171,162,392" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_crawler" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Crawler/crawler.png" sourcerect="306,4,204,164" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Crawler/crawler.png" sourcerect="306,4,204,164" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_crawler_hatchling" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Crawler/crawler.png" sourcerect="306,4,204,164" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Crawler/crawler.png" sourcerect="306,4,204,164" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_crawlerhusk" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Crawlerhusk/crawlerhusk.png" sourcerect="306,4,204,164" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Crawlerhusk/crawlerhusk.png" sourcerect="306,4,204,164" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_defensebot" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Defensebot/DefenseBot.png" sourcerect="165,0,55,130" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Defensebot/DefenseBot.png" sourcerect="165,0,55,130" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_endworm" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Endworm/endworm.png" sourcerect="1,2,1071,1117" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Endworm/endworm.png" sourcerect="1,2,1071,1117" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_endwormhusk" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Endworm/endworm.png" sourcerect="1,2,1071,1117" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Endworm/endworm.png" sourcerect="1,2,1071,1117" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_endwormhuskhead" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Endworm/endworm.png" sourcerect="1,2,1071,1117" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Endworm/endworm.png" sourcerect="1,2,1071,1117" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_fractalguardian" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Fractalguardian/fractalguardian.png" sourcerect="207,355,149,149" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Fractalguardian/fractalguardian.png" sourcerect="207,355,149,149" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_hammerhead" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Hammerhead/Hammerhead.png" sourcerect="803,1,221,236" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Hammerhead/Hammerhead.png" sourcerect="803,1,221,236" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_hammerhead_mhusk" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Hammerhead/Hammerhead.png" sourcerect="803,1,221,236" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Hammerhead/Hammerhead.png" sourcerect="803,1,221,236" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_hammerheadmatriarch" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Hammerheadmatriarch/Hammerheadmatriarch.png" sourcerect="1655,0,381,563" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Hammerheadmatriarch/Hammerheadmatriarch.png" sourcerect="1655,0,381,563" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_humanhusk" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Legacyhusk/DivingSuit.png" sourcerect="95,0,33,25" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Legacyhusk/DivingSuit.png" sourcerect="95,0,33,25" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_huskmutantcrawler" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Crawlerhusk/crawlerhusk.png" sourcerect="306,4,204,164" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Crawlerhusk/crawlerhusk.png" sourcerect="306,4,204,164" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_huskmutanthunteraddict" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Crawlerhusk/crawlerhusk.png" sourcerect="306,4,204,164" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Crawlerhusk/crawlerhusk.png" sourcerect="306,4,204,164" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_huskmutanthunterranged" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Crawlerhusk/crawlerhusk.png" sourcerect="306,4,204,164" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Crawlerhusk/crawlerhusk.png" sourcerect="306,4,204,164" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_huskmutantmudraptor" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Mudraptor/Mudraptor.png" sourcerect="196,384,184,96" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Mudraptor/Mudraptor.png" sourcerect="196,384,184,96" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_huskmutanttigerthresher" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Legacytigerthresher/Legacytigerthresher.png" sourcerect="371,15,66,136" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Legacytigerthresher/Legacytigerthresher.png" sourcerect="371,15,66,136" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_latcher" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Latcher/Latcher.png" sourcerect="19,264,1497,887" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Latcher/Latcher.png" sourcerect="19,264,1497,887" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_legacycrawler" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Legacycrawler/legacycrawler.png" sourcerect="0,0,51,121" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Legacycrawler/legacycrawler.png" sourcerect="0,0,51,121" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_legacycrawlerhusk" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Legacycrawler/legacycrawler.png" sourcerect="0,0,51,121" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Legacycrawler/legacycrawler.png" sourcerect="0,0,51,121" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_legacyhusk" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Legacyhusk/DivingSuit.png" sourcerect="95,0,33,25" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Legacyhusk/DivingSuit.png" sourcerect="95,0,33,25" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_legacymoloch" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Legacymoloch/legacymoloch.png" sourcerect="0,0,628,1024" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Legacymoloch/legacymoloch.png" sourcerect="0,0,628,1024" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_leucocyte" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Map/Thalamus/thalamus.png" sourcerect="1856,834,192,190" origin="0.5,0.5" />
+    <Sprite texture="Content/Map/Thalamus/thalamus.png" sourcerect="1856,834,192,190" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_mantis" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Mantis/mantis.png" sourcerect="714,11,151,78" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Mantis/mantis.png" sourcerect="714,11,151,78" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_mantishusk" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Mantis/mantis.png" sourcerect="714,11,151,78" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Mantis/mantis.png" sourcerect="714,11,151,78" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_molochblack" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Molochblack/Molochblack.png" sourcerect="0,1216,864,832" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Molochblack/Molochblack.png" sourcerect="0,1216,864,832" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_molochblackhusk" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Molochblack/Molochblack.png" sourcerect="0,1216,864,832" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Molochblack/Molochblack.png" sourcerect="0,1216,864,832" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_molochhusk" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Moloch/Moloch.png" sourcerect="0,1216,864,832" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Moloch/Moloch.png" sourcerect="0,1216,864,832" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_mudraptor" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Mudraptor/Mudraptor.png" sourcerect="196,384,184,96" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Mudraptor/Mudraptor.png" sourcerect="196,384,184,96" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_mudraptor_hatchling" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Mudraptor/Mudraptor.png" sourcerect="196,384,184,96" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Mudraptor/Mudraptor.png" sourcerect="196,384,184,96" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_mudraptor_pet" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Mudraptor/Mudraptor.png" sourcerect="196,384,184,96" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Mudraptor/Mudraptor.png" sourcerect="196,384,184,96" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_mudraptor_veteran" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Mudraptor/Mudraptor.png" sourcerect="196,384,184,96" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Mudraptor/Mudraptor.png" sourcerect="196,384,184,96" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_orangeboy" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Pets/pets.png" sourcerect="176,272,65,52" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Pets/pets.png" sourcerect="176,272,65,52" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_peanut" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Pets/pets.png" sourcerect="386,337,78,65" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Pets/pets.png" sourcerect="386,337,78,65" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_psilotoad" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Pets/pets.png" sourcerect="70,111,65,70" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Pets/pets.png" sourcerect="70,111,65,70" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_snatcher" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Crawler/crawler.png" sourcerect="306,4,204,164" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Crawler/crawler.png" sourcerect="306,4,204,164" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_spineling" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Spineling/Spineling.png" sourcerect="138,0,91,121" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Spineling/Spineling.png" sourcerect="138,0,91,121" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_spineling_giant" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Spineling_giant/Spineling_giant.png" sourcerect="556,0,360,484" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Spineling_giant/Spineling_giant.png" sourcerect="556,0,360,484" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_stransformedmudraptor" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Mudraptor/Mudraptor.png" sourcerect="196,384,184,96" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Mudraptor/Mudraptor.png" sourcerect="196,384,184,96" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_tigerthresher" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Legacytigerthresher/Legacytigerthresher.png" sourcerect="371,15,66,136" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Legacytigerthresher/Legacytigerthresher.png" sourcerect="371,15,66,136" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_tigerthresher_hatchling" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Legacytigerthresher/Legacytigerthresher.png" sourcerect="371,15,66,136" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Legacytigerthresher/Legacytigerthresher.png" sourcerect="371,15,66,136" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_tigerthresherhusk" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Legacytigerthresher/Legacytigerthresher.png" sourcerect="371,15,66,136" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Legacytigerthresher/Legacytigerthresher.png" sourcerect="371,15,66,136" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <Item name="" identifier="vt_preview_creature_watcher" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Watcher/Watcher.png" sourcerect="1,635,386,390" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Watcher/Watcher.png" sourcerect="1,635,386,390" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+<Item name="" identifier="vt_preview_creature_spineling_morbusine" category="hidden" hideinmenus="true" noninteractable="true" tags="vtpreviewicon" scale="0.1" impactsoundtag="impact_soft">
+    <InventoryIcon texture="Content/Characters/Spineling/Spineling.png" sourcerect="138,0,91,121" origin="0.5,0.5" />
+    <Sprite texture="Content/Characters/Spineling/Spineling.png" sourcerect="138,0,91,121" depth="0.6" origin="0.5,0.5" />
+    <Body width="10" height="10" density="1" />
+  </Item>
+  <!-- Void Traitor ghost pointshop creature preview icons END -->
+</Items>

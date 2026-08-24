@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<contentpackage name="VoidTraitor-dev-ai" modversion="2.6.0" corepackage="False" gameversion="1.13.4.0" altnames="traitormod">
+  <Submarine file="%ModDir%/Submarines/Stream Chalk.sub" />
+</contentpackage>

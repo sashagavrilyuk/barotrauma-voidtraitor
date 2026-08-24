@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <Item name="Maid Outfit" identifier="arak_maidoutfit" category="Equipment" tags="smallitem,clothing" fireproof="false" subcategory="Clothing" cargocontaineridentifier="metalcrate" description="" scale="0.5" impactsoundtag="impact_soft">
+    <PreferredContainer primary="crewcab" />
+    <PreferredContainer secondary="admincabinet" spawnprobability="0.08" />
+    <Price baseprice="80" />
+    <Deconstruct time="10">
+      <Item identifier="organicfiber" />
+    </Deconstruct>
+    <Fabricate suitablefabricators="sewtable" requiredtime="20">
+      <RequiredItem identifier="organicfiber" amount="3" />
+    </Fabricate>
+    <InventoryIcon name="Maid Clothes Icon" texture="%ModDir%/Arakneas' Mod/textures/icons/maiddress.png" sourcerect="0,18,128,110" origin="0.5,0.5" />
+    <Sprite texture="Content/Items/Jobgear/MiscJobGear.png" sourcerect="130,14,118,55" depth="0.6" origin="0.5,0.5" />
+    <Body width="100" height="50" density="15" friction="0.8" restitution="0.01" />
+    <Wearable slots="Any,InnerClothes" msg="ItemMsgPickUpSelect">
+      <sprite name="Maid Uniform Torso" texture="%ModDir%/Arakneas' Mod/textures/maidoutfit0.png" limb="Torso" hidelimb="false" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Maid Uniform Right Hand" texture="%ModDir%/Arakneas' Mod/textures/maidoutfit0.png" limb="RightHand" hidelimb="false" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Maid Uniform Left Hand" texture="%ModDir%/Arakneas' Mod/textures/maidoutfit0.png" limb="LeftHand" hidelimb="false" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Maid Uniform Left Lower Arm" texture="%ModDir%/Arakneas' Mod/textures/maidoutfit0.png" limb="LeftForearm" hidelimb="false" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Maid Uniform Right Lower Arm" texture="%ModDir%/Arakneas' Mod/textures/maidoutfit0.png" limb="RightForearm" hidelimb="false" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Maid Uniform Left Upper Arm" texture="%ModDir%/Arakneas' Mod/textures/maidoutfit0.png" limb="LeftArm" hidelimb="false" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Maid Uniform Right Upper Arm" texture="%ModDir%/Arakneas' Mod/textures/maidoutfit0.png" limb="RightArm" hidelimb="false" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Maid Uniform Waist" texture="%ModDir%/Arakneas' Mod/textures/maidoutfit0.png" limb="Waist" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Maid Uniform Right Thigh" texture="%ModDir%/Arakneas' Mod/textures/maidoutfit0.png" limb="RightThigh" hidelimb="false" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Maid Uniform Left Thigh" texture="%ModDir%/Arakneas' Mod/textures/maidoutfit0.png" limb="LeftThigh" hidelimb="false" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Maid Uniform Right Leg" texture="%ModDir%/Arakneas' Mod/textures/maidoutfit0.png" limb="RightLeg" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Maid Uniform Left Leg" texture="%ModDir%/Arakneas' Mod/textures/maidoutfit0.png" limb="LeftLeg" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Maid Uniform Right Shoe" texture="%ModDir%/Arakneas' Mod/textures/maidoutfit0.png" limb="RightFoot" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Maid Uniform Left Shoe" texture="%ModDir%/Arakneas' Mod/textures/maidoutfit0.png" limb="LeftFoot" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <SkillModifier skillidentifier="electrical" skillvalue="5" />
+      <SkillModifier skillidentifier="helm" skillvalue="5" />
+      <SkillModifier skillidentifier="mechanical" skillvalue="5" />
+      <SkillModifier skillidentifier="medical" skillvalue="5" />
+      <SkillModifier skillidentifier="weapons" skillvalue="5" />
+      <damagemodifier armorsector="0.0,360.0" afflictionidentifiers="lacerations,bitewounds,blunttrauma,burn" damagemultiplier="0.80" />
+    </Wearable>
+  </Item>
+  <Item name="Maid Headwear" identifier="arak_maidbonnet" subcategory="Clothing" category="Equipment" tags="smallitem,clothing" cargocontaineridentifier="metalcrate" description="" impactsoundtag="impact_metal_heavy" scale="0.5">
+    <PreferredContainer primary="crewcab" />
+    <PreferredContainer secondary="admincabinet" spawnprobability="0.08" />
+    <Price baseprice="370"></Price>
+    <Deconstruct time="10">
+      <Item identifier="organicfiber" />
+    </Deconstruct>
+    <Sprite name="" texture="%ModDir%/Arakneas' Mod/textures/maidoutfit0.png" sourcerect="424,0,88,88" depth="0.6" origin="0.5,0.5" />
+    <Body radius="30" density="25" />
+    <Wearable slots="Any,Head" armorvalue="20.0" msg="ItemMsgPickUpSelect">
+      <damagemodifier armorsector="0.0,360.0" afflictionidentifiers="lacerations,bitewounds,blunttrauma,burn,gunshotwound" damagemultiplier="0.70" />
+      <sprite name="Vanguard Helmet Wearable" texture="%ModDir%/Arakneas' Mod/textures/maidoutfit0.png" limb="Head" inheritlimbdepth="true" inheritscale="true" ignorelimbscale="true" scale="0.7" sourcerect="424,0,88,88" origin="0.5,0.5" />
+      <StatusEffect target="Character" type="OnWearing">
+        <Conditional arak_frosinepoisoning="gt 0" />
+        <ReduceAffliction type="stun" amount="0.5" />
+        <ReduceAffliction type="damage" amount="0.5" />
+        <Affliction identifier="haste" amount="7.3" />
+      </StatusEffect>
+      <StatusEffect target="Character" type="OnWearing">
+        <Conditional arak_frosinepoisoning="gt 20" />
+        <ReduceAffliction type="damage" amount="1.5" />
+      </StatusEffect>
+      <StatusEffect target="Character" type="OnWearing">
+        <Conditional arak_frosinepoisoning="gt 60" />
+        <ReduceAffliction type="damage" amount="2.5" />
+      </StatusEffect>
+    </Wearable>
+  </Item>
+</Items>

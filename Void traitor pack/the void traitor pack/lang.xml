@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="Russian" nowhitespace="false" translatedname="Русский">
+
+<missiontype.AttackDefenceV2>Attack &amp; Defence V2</missiontype.AttackDefenceV2>
+<missionname.traitormod_attackdefencev2>Attack &amp; Defence V2</missionname.traitormod_attackdefencev2>
+
+<missionmessage0.traitormod_attackdefencev2>Коалиция победила!</missionmessage0.traitormod_attackdefencev2>
+<missionmessage1.traitormod_attackdefencev2>Сепаратисты победили!</missionmessage1.traitormod_attackdefencev2>
+
+<missiondescriptionneutral.traitormod_attackdefencev2>Атакующие против защитников.</missiondescriptionneutral.traitormod_attackdefencev2>
+<missiondescription1.traitormod_attackdefencev2>Вы - член Коалиции. Защищайте реактор от Сепаратистов!</missiondescription1.traitormod_attackdefencev2>
+<missiondescription2.traitormod_attackdefencev2>Вы - член Сепаратистов. Уничтожьте реактор Коалиции!</missiondescription2.traitormod_attackdefencev2>
+
+<missiontype.HideAndSeekV2>Прятки</missiontype.HideAndSeekV2>
+<missionname.traitormod_hideandseekv2>Прятки</missionname.traitormod_hideandseekv2>
+<missionteam1.traitormod_hideandseekv2>Прячущиеся</missionteam1.traitormod_hideandseekv2>
+<missionteam2.traitormod_hideandseekv2>Искатели</missionteam2.traitormod_hideandseekv2>
+
+<missionmessage0.traitormod_hideandseekv2>Прячущиеся продержались до конца!</missionmessage0.traitormod_hideandseekv2>
+<missionmessage1.traitormod_hideandseekv2>Искатели нашли всех прячущихся!</missionmessage1.traitormod_hideandseekv2>
+
+<missiondescriptionneutral.traitormod_hideandseekv2>Прячущиеся должны пережить раунд, а искатели — найти их всех.</missiondescriptionneutral.traitormod_hideandseekv2>
+<missiondescription1.traitormod_hideandseekv2>Вы — прячущийся. Спрячьтесь и останьтесь в живых до конца раунда.</missiondescription1.traitormod_hideandseekv2>
+<missiondescription2.traitormod_hideandseekv2>Вы — искатель. Найдите всех прячущихся до окончания времени.</missiondescription2.traitormod_hideandseekv2>
+
+</infotexts>
