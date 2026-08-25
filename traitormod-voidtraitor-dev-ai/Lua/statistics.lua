@@ -3,6 +3,7 @@ statistics.stats = {}
 local textPromptUtils = require("textpromptutils")
 
 local ItemsShown = 30 -- Sets how many lines will be shown. Should not be much more than 50
+local spairs
 
 statistics.LoadData = function ()
     if Traitormod.Config.PermanentStatistics then
@@ -153,7 +154,7 @@ statistics.Command = function (client, args)
     return true
 end
 
-function spairs(t, order)
+spairs = function(t, order)
     -- collect the keys
     local keys = {}
     for k in pairs(t) do keys[#keys+1] = k end

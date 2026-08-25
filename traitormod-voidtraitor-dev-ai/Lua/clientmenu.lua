@@ -24,6 +24,16 @@ local function parseInput(input)
     return Traitormod.ParseCommand(tostring(input or ""))
 end
 
+local function runCommand(commandName, client, input)
+    local command = Traitormod.Commands[commandName]
+    if command == nil or command.Callback == nil then
+        Traitormod.SendMessage(client, Traitormod.Language.CommandNotActive)
+        return true
+    end
+
+    return command.Callback(client, parseInput(input))
+end
+
 local function sendActionLog(client, actionId)
     Traitormod.Log(Traitormod.ClientLogName(client) .. " used client menu action: " .. tostring(actionId))
 end
@@ -77,8 +87,6 @@ local function canUseFakeHandcuffs(client)
     return item ~= nil and item.Prefab.Identifier == "handcuffs" and item.HasTag("fakehandcuffs")
 end
 
-local dropPointsCooldown = {}
-
 local actions = {}
 local orderedActions = {}
 
@@ -101,183 +109,44 @@ local function addAction(id, labelKey, hintKey, categoryKey, order, callback, in
     table.insert(orderedActions, action)
 end
 
-addAction("role", "ClientMenuRole", "ClientMenuHintRole", "ClientMenuCategoryMain", 10, function(client)
-    if client.Character == nil or client.Character.IsDead then
-        Traitormod.SendMessage(client, Traitormod.Language.CMDAliveToUse)
-        return true
-    end
-
-    local role = Traitormod.RoleManager.GetRole(client.Character)
-    if role == nil then
-        Traitormod.SendMessage(client, Traitormod.Language.CMDNoRole)
-    else
-        if Traitormod.ObjectiveHud ~= nil then
-            Traitormod.ObjectiveHud.SyncRole(role)
-        end
-        Traitormod.SendMessage(client, role:Greet())
-    end
-    return true
+addAction("role", "ClientMenuRole", "ClientMenuHintRole", "ClientMenuCategoryMain", 10, function(client, input)
+    return runCommand("!role", client, input)
 end, nil, nil, nil, nil, isAlive)
 
-addAction("points", "ClientMenuPoints", "ClientMenuHintPoints", "ClientMenuCategoryMain", 11, function(client)
-    Traitormod.SendMessage(client, Traitormod.GetDataInfo(client, true))
-    return true
+addAction("points", "ClientMenuPoints", "ClientMenuHintPoints", "ClientMenuCategoryMain", 11, function(client, input)
+    return runCommand("!points", client, input)
 end)
 
-addAction("status", "ClientMenuStatus", "ClientMenuHintStatus", "ClientMenuCategoryMain", 12, function(client)
-    if client.Character == nil or client.Character.IsDead then
-        Traitormod.SendMessage(client, Traitormod.Language.StatusAliveRequired)
-        return true
-    end
-    Traitormod.SendMessage(client, Traitormod.GetStatusMessage(client.Character))
-    return true
+addAction("status", "ClientMenuStatus", "ClientMenuHintStatus", "ClientMenuCategoryMain", 12, function(client, input)
+    return runCommand("!status", client, input)
 end, nil, nil, nil, nil, isAlive)
 
 addAction("toggletraitor", "ClientMenuToggleTraitor", "ClientMenuHintToggleTraitor", "ClientMenuCategoryMain", 13, function(client, input)
-    local args = parseInput(input)
-    local text = Traitormod.Language.CommandNotActive
-
-    if Traitormod.Config.OptionalTraitors then
-        local toggle = false
-        if #args > 0 then
-            toggle = string.lower(args[1]) == "on"
-        else
-            toggle = Traitormod.GetData(client, "NonTraitor") == true
-        end
-
-        text = toggle and Traitormod.Language.TraitorOn or Traitormod.Language.TraitorOff
-        Traitormod.SetData(client, "NonTraitor", not toggle)
-        Traitormod.SaveData()
-        Traitormod.Log(Traitormod.ClientLogName(client) .. " can become traitor: " .. tostring(toggle))
-    end
-
-    Traitormod.SendMessage(client, text)
-    return true
+    return runCommand("!toggletraitor", client, input)
 end, nil, nil, nil, nil, function() return Traitormod.Config.OptionalTraitors == true end)
 
-addAction("suicide", "ClientMenuSuicide", "ClientMenuHintSuicide", "ClientMenuCategoryCharacter", 20, function(client)
-    if client.Character == nil or client.Character.IsDead then
-        Traitormod.SendMessage(client, Traitormod.Language.CMDAlreadyDead)
-        return true
-    end
-
-    if Traitormod.SelectedGamemode.TraitormodSettings.LimitedSuicide and client.Character.IsHuman then
-        local item = client.Character.Inventory.GetItemInLimbSlot(InvSlotType.RightHand)
-        if item ~= nil and item.Prefab.Identifier == "handcuffs" then
-            Traitormod.SendMessage(client, Traitormod.Language.CMDHandcuffed)
-            return true
-        end
-
-        if client.Character.IsKnockedDown then
-            Traitormod.SendMessage(client, Traitormod.Language.CMDKnockedDown)
-            return true
-        end
-    end
-
-    if Traitormod.GhostRoles.ReturnGhostRole(client.Character) then
-        client.SetClientCharacter(nil)
-    else
-        client.Character.Kill(CauseOfDeathType.Unknown)
-    end
-    return true
+addAction("suicide", "ClientMenuSuicide", "ClientMenuHintSuicide", "ClientMenuCategoryCharacter", 20, function(client, input)
+    return runCommand("!suicide", client, input)
 end, "", "", "ClientMenuConfirmTitle", "ClientMenuConfirmSuicide", canUseSuicide)
 
 addAction("droppoints", "ClientMenuDropPoints", "ClientMenuHintDropPoints", "ClientMenuCategoryCharacter", 21, function(client, input)
-    if dropPointsCooldown[client] ~= nil and Timer.GetTime() < dropPointsCooldown[client] then
-        Traitormod.SendMessage(client, Traitormod.GetText("CMDCommandCooldown"))
-        return true
-    end
-
-    if client.Character == nil or client.Character.IsDead or client.Character.Inventory == nil then
-        Traitormod.SendMessage(client, Traitormod.Language.CMDAliveToUse)
-        return true
-    end
-
-    local amount = tonumber((parseInput(input))[1])
-    if amount == nil or amount ~= amount or amount < 100 or amount > 100000 then
-        Traitormod.SendMessage(client, Traitormod.GetText("CMDDropPointsInvalidAmount"))
-        return true
-    end
-
-    local availablePoints = Traitormod.GetData(client, "Points") or 0
-    if amount > availablePoints then
-        Traitormod.SendMessage(client, Traitormod.GetText("CMDDropPointsNotEnough"))
-        return true
-    end
-
-    if Traitormod.DropPointItem == nil or not Traitormod.DropPointItem(client, amount) then
-        Traitormod.SendMessage(client, Traitormod.GetText("CMDDropPointsFailed"))
-        return true
-    end
-
-    dropPointsCooldown[client] = Timer.GetTime() + 5
-    return true
+    return runCommand("!droppoints", client, input)
 end, "number", "ClientMenuInputDropPoints", nil, nil, canDropPoints)
 
-addAction("freehandcuffs", "ClientMenuFreeHandcuffs", "ClientMenuHintFreeHandcuffs", "ClientMenuCategoryCharacter", 23, function(client)
-    if client.Character == nil or client.Character.IsDead then
-        Traitormod.SendMessage(client, Traitormod.Language.CMDFreeHandcuffsDead)
-        return true
-    end
-    if not client.Character.IsHuman then return true end
-
-    local item = client.Character.Inventory.GetItemInLimbSlot(InvSlotType.RightHand)
-    if item ~= nil and item.Prefab.Identifier == "handcuffs" then
-        if not item.HasTag("fakehandcuffs") then
-            Traitormod.SendMessage(client, Traitormod.Language.CMDFreeHandcuffsNotFake)
-            return true
-        end
-        item.Drop(client.Character)
-    end
-    return true
+addAction("freehandcuffs", "ClientMenuFreeHandcuffs", "ClientMenuHintFreeHandcuffs", "ClientMenuCategoryCharacter", 23, function(client, input)
+    return runCommand("!freehandcuffs", client, input)
 end, nil, nil, nil, nil, canUseFakeHandcuffs)
 
-addAction("roundtime", "ClientMenuRoundTime", "ClientMenuHintRoundTime", "ClientMenuCategoryRound", 30, function(client)
-    Traitormod.SendMessage(client, string.format(Traitormod.Language.CMDRoundTime, Traitormod.FormatTime(math.ceil(Traitormod.RoundTime))))
-    return true
+addAction("roundtime", "ClientMenuRoundTime", "ClientMenuHintRoundTime", "ClientMenuCategoryRound", 30, function(client, input)
+    return runCommand("!roundtime", client, input)
 end)
 
-addAction("locatesub", "ClientMenuLocateSub", "ClientMenuHintLocateSub", "ClientMenuCategoryRound", 31, function(client)
-    if client.Character == nil or not client.InGame then
-        Traitormod.SendMessage(client, Traitormod.Language.CMDAliveToUse)
-        return true
-    end
-
-    if client.Character.IsHuman and client.Character.TeamID == CharacterTeamType.Team1 then
-        Traitormod.SendMessage(client, Traitormod.Language.CMDOnlyMonsters)
-        return true
-    end
-
-    local center = client.Character.WorldPosition
-    local target = Submarine.MainSub.WorldPosition
-    local distance = Vector2.Distance(center, target) * Physics.DisplayToRealWorldRatio
-    local diff = center - target
-    local angle = math.deg(math.atan2(diff.X, diff.Y)) + 180
-
-    Game.SendDirectChatMessage("", string.format(Traitormod.Language.CMDLocateSub, math.floor(distance), sendOClock(angle)), nil, ChatMessageType.Error, client)
-    return true
+addAction("locatesub", "ClientMenuLocateSub", "ClientMenuHintLocateSub", "ClientMenuCategoryRound", 31, function(client, input)
+    return runCommand("!locatesub", client, input)
 end, nil, nil, nil, nil, canLocateSub)
 
-addAction("alive", "ClientMenuAlive", "ClientMenuHintAlive", "ClientMenuCategoryRound", 32, function(client)
-    if not canUseAlive(client) then
-        Traitormod.SendMessage(client, Traitormod.Language.CMDAliveDeadOnly)
-        return true
-    end
-
-    if not Game.RoundStarted or Traitormod.SelectedGamemode == nil then
-        Traitormod.SendMessage(client, Traitormod.Language.RoundNotStarted)
-        return true
-    end
-
-    local message = ""
-    for _, character in pairs(Character.CharacterList) do
-        if character.IsHuman and not character.IsBot then
-            message = message .. character.Name .. (character.IsDead and " ---- " or " ++++ ") .. (character.IsDead and Traitormod.Language.Dead or Traitormod.Language.Alive) .. "\n"
-        end
-    end
-
-    Traitormod.SendMessage(client, message)
-    return true
+addAction("alive", "ClientMenuAlive", "ClientMenuHintAlive", "ClientMenuCategoryRound", 32, function(client, input)
+    return runCommand("!alive", client, input)
 end, nil, nil, nil, nil, canUseAlive)
 
 addAction("players", "ClientMenuPlayers", "ClientMenuHintPlayers", "ClientMenuCategoryRound", 33, function(client)
@@ -308,30 +177,20 @@ addAction("players", "ClientMenuPlayers", "ClientMenuHintPlayers", "ClientMenuCa
     return true
 end, nil, nil, nil, nil, function(client) return isGamemode("SubmarineRoyale") and isAlive(client) end)
 
-addAction("info", "ClientMenuInfo", "ClientMenuHintInfo", "ClientMenuCategoryInfo", 40, function(client)
-    Traitormod.SendWelcome(client)
-    return true
+addAction("info", "ClientMenuInfo", "ClientMenuHintInfo", "ClientMenuCategoryInfo", 40, function(client, input)
+    return runCommand("!info", client, input)
 end)
 
-addAction("playtime", "ClientMenuPlaytime", "ClientMenuHintPlaytime", "ClientMenuCategoryInfo", 41, function(client)
-    Traitormod.SendChatMessage(
-        client,
-        string.format(Traitormod.Language.CMDPlaytime, Traitormod.FormatTime(math.ceil(Traitormod.GetData(client, "Playtime") or 0))),
-        Color.Green
-    )
-    return true
+addAction("playtime", "ClientMenuPlaytime", "ClientMenuHintPlaytime", "ClientMenuCategoryInfo", 41, function(client, input)
+    return runCommand("!playtime", client, input)
 end)
 
-addAction("stats", "ClientMenuStats", "ClientMenuHintStats", "ClientMenuCategoryInfo", 42, function(client)
-    if Traitormod.Stats ~= nil and Traitormod.Stats.Command ~= nil then
-        return Traitormod.Stats.Command(client, {})
-    end
-    return true
+addAction("stats", "ClientMenuStats", "ClientMenuHintStats", "ClientMenuCategoryInfo", 42, function(client, input)
+    return runCommand("!stats", client, input)
 end)
 
-addAction("version", "ClientMenuVersion", "ClientMenuHintVersion", "ClientMenuCategoryInfo", 43, function(client)
-    Traitormod.SendMessage(client, string.format(Traitormod.Language.CMDVersion, Traitormod.VERSION))
-    return true
+addAction("version", "ClientMenuVersion", "ClientMenuHintVersion", "ClientMenuCategoryInfo", 43, function(client, input)
+    return runCommand("!version", client, input)
 end)
 
 table.sort(orderedActions, function(a, b)
@@ -515,7 +374,6 @@ if pointshopNet ~= nil then
 end
 
 Hook.Add("client.disconnected", "Traitormod.ClientMenu.Disconnect", function(client)
-    dropPointsCooldown[client] = nil
     if Traitormod.Pointshop ~= nil and Traitormod.Pointshop.ForgetGuiClient ~= nil then
         Traitormod.Pointshop.ForgetGuiClient(client)
     end

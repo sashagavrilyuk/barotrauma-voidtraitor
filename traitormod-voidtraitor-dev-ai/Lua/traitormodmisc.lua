@@ -6,11 +6,7 @@ local monsterBeaconConfig = Traitormod.Config.MonsterBeaconConfig or {}
 local pirateMissionDebugTimer = 0
 
 local function IsCharacterSpeciesAvailable(species)
-    local success, prefab = pcall(function()
-        return CharacterPrefab.FindBySpeciesName(Identifier(species))
-    end)
-
-    return success and prefab ~= nil
+    return CharacterPrefab.FindBySpeciesName(Identifier(species)) ~= nil
 end
 
 local function IsMonsterBeaconPoolValid(pool)

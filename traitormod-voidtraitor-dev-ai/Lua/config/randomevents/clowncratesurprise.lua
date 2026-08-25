@@ -19,11 +19,7 @@ local clownPetPool = {
 local namedNpcIds = nil
 
 local function isSpeciesAvailable(species)
-    local ok, prefab = pcall(function()
-        return CharacterPrefab.FindBySpeciesName(Identifier(species))
-    end)
-
-    return ok and prefab ~= nil
+    return CharacterPrefab.FindBySpeciesName(Identifier(species)) ~= nil
 end
 
 local function getSpawnPosition()
