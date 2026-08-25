@@ -4,6 +4,7 @@
 local gm = Traitormod.Gamemodes.Gamemode:new()
 local TeamID1 = CharacterTeamType.Team1
 local TeamID2 = CharacterTeamType.Team2
+local textPromptUtils = require("textpromptutils")
 
 local function GetOppositeTeamID(teamID)
 	return (teamID == TeamID1 or teamID == 1) and TeamID2 or TeamID1
@@ -40,6 +41,7 @@ function SpawnCharacter(client, team, class, jobId)
 
 	local character = Character.Create(characterInfo, spawnPoint.WorldPosition, client.CharacterInfo.Name, 0, true, true)
 	client.SetClientCharacter(character)
+	textPromptUtils.UnlockOption(client)
 
     GearUpCharacter(character, team, spawnPoint, class)
 end
@@ -89,12 +91,16 @@ end
 
 ---@param client Barotrauma.Networking.Client
 ---@protected
-function gm:_SetNewClient(client)
+function gm:_SetNewClient(client, lockClassSelection)
 	local char = client.Character
 	Timer.Wait(function()
 		if not client or not client.Connection then return end
 		client.SetClientCharacter(nil)
 		CleanRemove(char)
+
+		if lockClassSelection then
+			textPromptUtils.LockOption(client, Traitormod.Language.PointshopCancel)
+		end
 
 		local function loop()
 			if not client.InGame then
@@ -438,7 +444,7 @@ function gm:Start()
 		print(("Client %s is autobalanced to team %s"):format(client.Client.Name, client.NewTeamID))
 	end
 	for _, client in ipairs(newClients) do
-		self:_SetNewClient(client)
+		self:_SetNewClient(client, true)
 	end
 
 	---@param client Barotrauma.Networking.Client
@@ -477,6 +483,12 @@ function gm:Start()
 end
 
 function gm:End()
+	for _, team in pairs(self.Teams) do
+		for _, member in pairs(team.Members) do
+			textPromptUtils.UnlockOption(member)
+		end
+	end
+
     Hook.Remove("client.connected", "Traitormod.AttackDefendV2.ClientConnected")
 	Hook.Remove("character.giveJobItems", "Traitormod.AttackDefendV2.CharacterGiveJobItems")
 	Hook.Remove("netMessageReceived", "Traitormod.AttackDefendV2.ClientJoined")

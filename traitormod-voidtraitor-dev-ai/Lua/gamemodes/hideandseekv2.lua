@@ -2,6 +2,7 @@
 local gm = Traitormod.Gamemodes.Gamemode:new()
 local TeamID1 = CharacterTeamType.Team1
 local TeamID2 = CharacterTeamType.Team2
+local textPromptUtils = require("textpromptutils")
 
 gm.Name = "HideAndSeekV2"
 gm.RequiredGamemode = "pvp"
@@ -64,6 +65,7 @@ local function spawnCharacter(client, team, entry)
 
     local character = Character.Create(characterInfo, spawnPoint.WorldPosition, characterInfo.Name, 0, true, true)
     client.SetClientCharacter(character)
+    textPromptUtils.UnlockOption(client)
     gearUpCharacter(character, team, spawnPoint)
     entry.OnSpawn(character)
     entry.Spawned = true
@@ -101,12 +103,16 @@ local function shuffle(clients)
 end
 
 ---@param client Barotrauma.Networking.Client
-function gm:_SetNewClient(client)
+function gm:_SetNewClient(client, lockClassSelection)
     local character = client.Character
     Timer.Wait(function()
         if not client or not client.Connection then return end
         client.SetClientCharacter(nil)
         cleanRemove(character)
+
+        if lockClassSelection then
+            textPromptUtils.LockOption(client, Traitormod.Language.PointshopCancel)
+        end
 
         local function openClassSelection()
             for _, team in pairs(self.Teams) do
@@ -213,6 +219,9 @@ function gm:_ForfeitPlayer(team, id, messageKey)
     entry.DisconnectedCharacter = nil
 
     local member = team.Members[id]
+    if member ~= nil then
+        textPromptUtils.UnlockOption(member)
+    end
     if messageKey ~= nil then
         sendStatus(messageKey, member ~= nil and member.Name or tostring(id))
     end
@@ -507,7 +516,7 @@ function gm:Start()
 
     self:_AssignTeams(clients)
     for _, client in ipairs(clients) do
-        self:_SetNewClient(client)
+        self:_SetNewClient(client, true)
     end
 
     Hook.Add("client.connected", "Traitormod.HideAndSeekV2.ClientConnected", function(client)
@@ -553,6 +562,12 @@ function gm:Start()
 end
 
 function gm:End()
+    for _, team in pairs(self.Teams) do
+        for _, member in pairs(team.Members) do
+            textPromptUtils.UnlockOption(member)
+        end
+    end
+
     Hook.Remove("client.connected", "Traitormod.HideAndSeekV2.ClientConnected")
     Hook.Remove("clientDisconnected", "Traitormod.HideAndSeekV2.ClientDisconnected")
     Hook.Remove("character.giveJobItems", "Traitormod.HideAndSeekV2.CharacterGiveJobItems")
