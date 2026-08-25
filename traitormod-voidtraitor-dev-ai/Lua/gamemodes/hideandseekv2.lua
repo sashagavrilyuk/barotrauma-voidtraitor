@@ -2,6 +2,7 @@
 local gm = Traitormod.Gamemodes.Gamemode:new()
 local TeamID1 = CharacterTeamType.Team1
 local TeamID2 = CharacterTeamType.Team2
+local HiddenName = "​" -- U+200B ZERO WIDTH SPACE
 local textPromptUtils = require("textpromptutils")
 
 gm.Name = "HideAndSeekV2"
@@ -40,8 +41,9 @@ local function gearUpCharacter(character, team, waypoint)
     Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("idcard"), character.Inventory, nil, nil, function (newCard)
         local idCard = newCard.GetComponentString("IdCard")
         idCard.Initialize(waypoint, character)
-        idCard.OwnerName = ""
+        idCard.OwnerName = HiddenName
         newCard.RemoveTag(Identifier("name:" .. character.Name))
+        newCard.AddTag(Identifier("name:" .. HiddenName))
         newCard.NonPlayerTeamInteractable = true
         local lock = newCard.SerializableProperties[Identifier("NonPlayerTeamInteractable")]
         Networking.CreateEntityEvent(newCard, Item.ChangePropertyEventData(lock, newCard))
