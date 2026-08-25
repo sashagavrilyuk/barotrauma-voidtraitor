@@ -111,7 +111,7 @@ local function complete(event, successType, reward, message)
     end, delay * 1000)
 end
 
-local function checkEliminationWin(event)
+local function checkEliminationWin(event, aliveCrew)
     local state = event.UPCPirateState
     if state == nil or state.Completed or not state.EnteredMainSub then return end
 
@@ -125,7 +125,7 @@ local function checkEliminationWin(event)
 
     if trackedCount == 0 then return end
 
-    local aliveCrew = getAliveCrewOnMainSub()
+    aliveCrew = aliveCrew or getAliveCrewOnMainSub()
     if #aliveCrew > 0 then return end
 
     complete(
@@ -145,6 +145,7 @@ helper.Start = function (event)
         CaptureStartedAt = nil,
         CaptureAnnounced = false,
         Completed = false,
+        NextUpdateAt = 0,
         DeathHookId = event.Name .. ".UPCPirateDeath",
     }
 
@@ -177,6 +178,10 @@ helper.Update = function (event)
         return
     end
 
+    local now = Timer.GetTime()
+    if now < state.NextUpdateAt then return end
+    state.NextUpdateAt = now + 0.25
+
     local pirateOnMainSub = isPirateOnMainSub(event.Character)
 
     if pirateOnMainSub and not state.EnteredMainSub then
@@ -195,18 +200,18 @@ helper.Update = function (event)
     end
 
     if #aliveCrew == 0 then
-        checkEliminationWin(event)
+        checkEliminationWin(event, aliveCrew)
         if state.Completed then return end
     end
 
     if pirateOnMainSub and #aliveCrew == 0 then
         if state.CaptureStartedAt == nil then
-            state.CaptureStartedAt = Timer.GetTime()
+            state.CaptureStartedAt = now
             if not state.CaptureAnnounced then
                 state.CaptureAnnounced = true
                 Traitormod.RoundEvents.SendEventMessage(string.format(Traitormod.Language.PirateCaptureStarted, math.ceil(state.Config.CaptureDurationSeconds)), "GameModeIcon.PVP")
             end
-        elseif Timer.GetTime() >= state.CaptureStartedAt + state.Config.CaptureDurationSeconds then
+        elseif now >= state.CaptureStartedAt + state.Config.CaptureDurationSeconds then
             complete(
                 event,
                 "CapturedSubmarine",

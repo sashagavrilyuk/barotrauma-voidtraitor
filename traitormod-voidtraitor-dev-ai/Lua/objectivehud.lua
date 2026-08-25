@@ -5,7 +5,9 @@ hud.ObjectiveStates = setmetatable({}, { __mode = "k" })
 hud.NextRoleId = 0
 hud.NextObjectiveId = 0
 hud.LastThinkUpdate = 0
+hud.LastRemoveUpdate = 0
 hud.UpdateInterval = 15.0
+hud.RemoveInterval = 1.0
 hud.CompletedRemoveDelay = 5.0
 hud.Api = nil
 hud.ApiChecked = false
@@ -396,9 +398,13 @@ function hud.RemoveCompletedObjectives()
 end
 
 function hud.UpdateAll()
-    hud.RemoveCompletedObjectives()
-
     local now = Timer.GetTime()
+
+    if now >= hud.LastRemoveUpdate + hud.RemoveInterval then
+        hud.LastRemoveUpdate = now
+        hud.RemoveCompletedObjectives()
+    end
+
     if now < hud.LastThinkUpdate + hud.UpdateInterval then return end
     hud.LastThinkUpdate = now
 

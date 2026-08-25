@@ -5,6 +5,8 @@ rm.Objectives = {}
 
 rm.RoundRoles = {}
 
+local nextObjectiveCheck = 0
+
 rm.FindObjective = function(name)
     return rm.Objectives[name]
 end
@@ -229,6 +231,11 @@ end
 
 Hook.Add("think", "Traitormod.RoleManager.Think", function()
     if not Game.RoundStarted then return end
+
+    local now = Timer.GetTime()
+    if now < nextObjectiveCheck then return end
+    nextObjectiveCheck = now + 0.25
+
     rm.CheckObjectives(false)
 end)
 
