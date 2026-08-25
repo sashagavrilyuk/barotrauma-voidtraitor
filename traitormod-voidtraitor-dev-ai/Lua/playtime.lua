@@ -10,12 +10,3 @@ Hook.Add("think", "Traitormod.Playtime.think", function()
         Traitormod.AddData(client, "Playtime", elapsed)
     end
 end)
-
-Traitormod.AddCommand({"!playtime", "!pt"}, function (client, args)
-    Traitormod.SendChatMessage(
-        client,
-        string.format(Traitormod.Language.CMDPlaytime, Traitormod.FormatTime(math.ceil(Traitormod.GetData(client, "Playtime") or 0))),
-        Color.Green
-    )
-    return true
-end)
