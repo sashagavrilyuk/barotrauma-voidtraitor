@@ -1,22 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Override>
-  <Item name="" identifier="idcard" category="Equipment" Tags="smallitem,identitycard" cargocontaineridentifier="metalcrate">
-    <PreferredContainer primary="crewcab" />
-    <Price baseprice="10">
-      <Price storeidentifier="merchantoutpost" minavailable="4" />
-      <Price storeidentifier="merchantcity" minavailable="6" />
-      <Price storeidentifier="merchantresearch" minavailable="4" />
-      <Price storeidentifier="merchantmilitary" minavailable="4" />
-      <Price storeidentifier="merchantmine" minavailable="4" />
-    </Price>
+<Items>
+  <Item name="" identifier="vt_hideandseek_idcard" category="hidden" tags="smallitem,identitycard" hideinmenus="true">
     <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="192,64,64,64" origin="0.5,0.5" />
     <Sprite texture="Content/Items/idcard.png" depth="0.5" sourcerect="0,0,16,16" />
     <Body width="16" height="12" density="10.05" />
     <IdCard slots="Card,Any" msg="ItemMsgPickUpSelect" />
     <Wearable slots="Card" msg="ItemMsgPickUpSelect">
-      <StatusEffect type="OnWearing" target="This,Character" HideFace="true" setvalue="true" disabledeltatime="true">
-        <Conditional HasTag="name:​" />
-      </StatusEffect>
+      <StatusEffect type="OnWearing" target="Character" HideFace="true" setvalue="true" disabledeltatime="true" />
     </Wearable>
   </Item>
-</Override>
+</Items>
