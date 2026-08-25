@@ -4,10 +4,10 @@ hud.RoleStates = setmetatable({}, { __mode = "k" })
 hud.ObjectiveStates = setmetatable({}, { __mode = "k" })
 hud.NextRoleId = 0
 hud.NextObjectiveId = 0
-hud.LastThinkUpdate = 0
-hud.LastRemoveUpdate = 0
 hud.UpdateInterval = 15.0
 hud.RemoveInterval = 1.0
+hud.UpdateTimer = hud.UpdateInterval
+hud.RemoveTimer = hud.RemoveInterval
 hud.CompletedRemoveDelay = 5.0
 hud.Api = nil
 hud.ApiChecked = false
@@ -397,16 +397,16 @@ function hud.RemoveCompletedObjectives()
     end
 end
 
-function hud.UpdateAll()
-    local now = Timer.GetTime()
-
-    if now >= hud.LastRemoveUpdate + hud.RemoveInterval then
-        hud.LastRemoveUpdate = now
+function hud.UpdateAll(deltaTime)
+    hud.RemoveTimer = hud.RemoveTimer + deltaTime
+    if hud.RemoveTimer >= hud.RemoveInterval then
+        hud.RemoveTimer = 0
         hud.RemoveCompletedObjectives()
     end
 
-    if now < hud.LastThinkUpdate + hud.UpdateInterval then return end
-    hud.LastThinkUpdate = now
+    hud.UpdateTimer = hud.UpdateTimer + deltaTime
+    if hud.UpdateTimer < hud.UpdateInterval then return end
+    hud.UpdateTimer = 0
 
     if Traitormod.RoleManager == nil then return end
 
@@ -417,9 +417,9 @@ function hud.UpdateAll()
     end
 end
 
-Hook.Add("think", "Traitormod.ObjectiveHud.Think", function()
+Hook.Add("think", "Traitormod.ObjectiveHud.Think", function(deltaTime)
     if not Game.RoundStarted then return end
-    hud.UpdateAll()
+    hud.UpdateAll(deltaTime)
 end)
 
 Hook.Add("roundEnd", "Traitormod.ObjectiveHud.RoundEnd", function()
@@ -429,6 +429,8 @@ Hook.Add("roundEnd", "Traitormod.ObjectiveHud.RoundEnd", function()
     hud.Api = nil
     hud.Disabled = false
     hud.EventLogDisabled = false
+    hud.UpdateTimer = hud.UpdateInterval
+    hud.RemoveTimer = hud.RemoveInterval
 end)
 
 return hud

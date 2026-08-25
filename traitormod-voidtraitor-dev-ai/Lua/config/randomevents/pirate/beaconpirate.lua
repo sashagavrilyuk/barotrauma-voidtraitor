@@ -172,13 +172,13 @@ event.Start = function ()
 
     upcPirate.Start(event)
 
-    Hook.Add("think", "BeaconPirate.Think", function ()
+    Hook.Add("think", "BeaconPirate.Think", function (deltaTime)
         if character.IsDead then
             event.End()
             return
         end
 
-        upcPirate.Update(event)
+        upcPirate.Update(event, deltaTime)
     end)
 end
 

@@ -145,7 +145,7 @@ helper.Start = function (event)
         CaptureStartedAt = nil,
         CaptureAnnounced = false,
         Completed = false,
-        NextUpdateAt = 0,
+        UpdateTimer = 0.25,
         DeathHookId = event.Name .. ".UPCPirateDeath",
     }
 
@@ -172,16 +172,17 @@ helper.Start = function (event)
     return state
 end
 
-helper.Update = function (event)
+helper.Update = function (event, deltaTime)
     local state = event.UPCPirateState
     if state == nil or state.Completed or event.Character == nil or event.Character.IsDead then
         return
     end
 
-    local now = Timer.GetTime()
-    if now < state.NextUpdateAt then return end
-    state.NextUpdateAt = now + 0.25
+    state.UpdateTimer = state.UpdateTimer + deltaTime
+    if state.UpdateTimer < 0.25 then return end
+    state.UpdateTimer = 0
 
+    local now = Timer.GetTime()
     local pirateOnMainSub = isPirateOnMainSub(event.Character)
 
     if pirateOnMainSub and not state.EnteredMainSub then

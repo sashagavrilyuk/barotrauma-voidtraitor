@@ -5,7 +5,7 @@ rm.Objectives = {}
 
 rm.RoundRoles = {}
 
-local nextObjectiveCheck = 0
+local objectiveCheckTimer = 0.25
 
 rm.FindObjective = function(name)
     return rm.Objectives[name]
@@ -229,12 +229,15 @@ rm.CallObjectiveFunction = function (functionName, ...)
     end
 end
 
-Hook.Add("think", "Traitormod.RoleManager.Think", function()
-    if not Game.RoundStarted then return end
+Hook.Add("think", "Traitormod.RoleManager.Think", function(deltaTime)
+    if not Game.RoundStarted then
+        objectiveCheckTimer = 0.25
+        return
+    end
 
-    local now = Timer.GetTime()
-    if now < nextObjectiveCheck then return end
-    nextObjectiveCheck = now + 0.25
+    objectiveCheckTimer = objectiveCheckTimer + deltaTime
+    if objectiveCheckTimer < 0.25 then return end
+    objectiveCheckTimer = 0
 
     rm.CheckObjectives(false)
 end)
