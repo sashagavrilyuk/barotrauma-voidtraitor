@@ -37,7 +37,7 @@ local function gearUpCharacter(character, team, waypoint)
     if card ~= nil then
         Entity.Spawner.AddItemToRemoveQueue(card)
     end
-    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("idcard"), character.Inventory, nil, nil, function (newCard)
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("vt_hideandseek_idcard"), character.Inventory, nil, nil, function (newCard)
         local idCard = newCard.GetComponentString("IdCard")
         idCard.Initialize(waypoint, character)
         idCard.OwnerName = ""
