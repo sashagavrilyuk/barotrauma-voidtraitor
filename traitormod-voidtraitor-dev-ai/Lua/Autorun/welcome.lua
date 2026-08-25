@@ -6,7 +6,7 @@ local luaConfirmed = {}
 local clientTrackers = {}
 
 local WAIT_AFTER_DOWNLOAD = 20 
-local lastWelcomeUpdate = Timer.GetTime()
+local welcomeUpdateTimer = 0
 
 local function getWelcomeText()
     if Traitormod and Traitormod.GetText then
@@ -32,10 +32,13 @@ end
 
 Networking.Receive("VoidTraitor_LuaCheck", function(message, client)
     luaConfirmed[client] = true
+    clientTrackers[client] = nil
 end)
 
 Hook.Add("client.connected", "Welcome_Connect", function(client)
-    clientTrackers[client] = { timer = 0, sent = false }
+    if not luaConfirmed[client] then
+        clientTrackers[client] = { timer = -welcomeUpdateTimer }
+    end
 end)
 
 Hook.Add("client.disconnected", "Welcome_Disconnect", function(client)
@@ -43,36 +46,34 @@ Hook.Add("client.disconnected", "Welcome_Disconnect", function(client)
     luaConfirmed[client] = nil
 end)
 
-Hook.Add("think", "Welcome_Logic", function()
-    local now = Timer.GetTime()
-    local elapsed = now - lastWelcomeUpdate
-    if elapsed < 0.25 then return end
-    lastWelcomeUpdate = now
+Hook.Add("think", "Welcome_Logic", function(deltaTime)
+    if next(clientTrackers) == nil then
+        welcomeUpdateTimer = 0
+        return
+    end
+
+    welcomeUpdateTimer = welcomeUpdateTimer + deltaTime
+    if welcomeUpdateTimer < 0.25 then return end
+
+    local elapsed = welcomeUpdateTimer
+    welcomeUpdateTimer = 0
 
     for client, data in pairs(clientTrackers) do
-        if not data.sent then
-            if luaConfirmed[client] then
-                data.sent = true 
-            elseif IsDownloading(client) then
-                data.timer = 0
-            else
-                data.timer = data.timer + elapsed 
-                if data.timer > WAIT_AFTER_DOWNLOAD then
-                    if not luaConfirmed[client] then
-                        local ok, err = pcall(function()
-                            local chatMessage = ChatMessage.Create(getServerSenderText(), getWelcomeText(), ChatMessageType.ServerMessageBox, nil, nil)
-                            Game.SendDirectChatMessage(chatMessage, client)
-                        end)
+        if IsDownloading(client) then
+            data.timer = 0
+        else
+            data.timer = data.timer + elapsed 
+            if data.timer > WAIT_AFTER_DOWNLOAD then
+                local ok, err = pcall(function()
+                    local chatMessage = ChatMessage.Create(getServerSenderText(), getWelcomeText(), ChatMessageType.ServerMessageBox, nil, nil)
+                    Game.SendDirectChatMessage(chatMessage, client)
+                end)
 
-                        if not ok then
-                            data.timer = 0
-                            Traitormod.Error("Failed to send welcome message to " .. Traitormod.ClientLogName(client) .. ": " .. tostring(err))
-                        else
-                            data.sent = true
-                        end
-                    else
-                        data.sent = true
-                    end
+                if not ok then
+                    data.timer = 0
+                    Traitormod.Error("Failed to send welcome message to " .. Traitormod.ClientLogName(client) .. ": " .. tostring(err))
+                else
+                    clientTrackers[client] = nil
                 end
             end
         end

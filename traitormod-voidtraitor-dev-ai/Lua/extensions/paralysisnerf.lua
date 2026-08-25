@@ -2,11 +2,10 @@ local extension = {}
 
 extension.Identifier = "paralysisnerf"
 
-extension.CureTime = 60 * 7 -- 7 minutes
+extension.CureTime = 60 * 60 * 7 -- 7 minutes
 
 extension.Init = function ()
     local timer = {}
-    local lastUpdate = Timer.GetTime()
 
     local function GetParalysisAmount(character)
         local paralysis = character.CharacterHealth.GetAfflictionStrengthByIdentifier("paralysis")
@@ -22,11 +21,6 @@ extension.Init = function ()
     end
 
     Hook.Add("think", "ParalysisNerf", function (...)
-        local now = Timer.GetTime()
-        local deltaTime = now - lastUpdate
-        if deltaTime < 0.25 then return end
-        lastUpdate = now
-
         for _, client in pairs(Client.ClientList) do
             local character = client.Character
             if character then
@@ -35,10 +29,10 @@ extension.Init = function ()
                         timer[character] = 0
                     end
 
-                    timer[character] = timer[character] + deltaTime
+                    timer[character] = timer[character] + 1
 
                     if timer[character] > extension.CureTime then -- 7 minutes
-                        character.CharacterHealth.ApplyAffliction(character.AnimController.MainLimb, AfflictionPrefab.Prefabs["paralysis"].Instantiate(-60 * deltaTime))
+                        character.CharacterHealth.ApplyAffliction(character.AnimController.MainLimb, AfflictionPrefab.Prefabs["paralysis"].Instantiate(-1))
                     end
                 elseif timer[character] then
                     timer[character] = 0
@@ -51,7 +45,7 @@ extension.Init = function ()
                         affliction = character.CharacterHealth.GetAffliction("slowparalysis", true)
                     end
                     if affliction then
-                        affliction._strength = affliction._strength - 3 * deltaTime
+                        affliction._strength = affliction._strength - 0.05
                     end
                 end
             end
