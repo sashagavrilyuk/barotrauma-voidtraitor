@@ -193,18 +193,6 @@ local function getCharacterClientName(character)
     return nil
 end
 
-local function getAllRoundPlayers()
-    local players = {}
-
-    for _, client in pairs(Client.ClientList) do
-        if client and client.Character and client.Character.IsHuman and not client.SpectateOnly and client.Character.TeamID == TeamID1 then
-            table.insert(players, client.Character)
-        end
-    end
-
-    return players
-end
-
 local function getRoundRoleCharacters()
     local characters = {}
     local roleManager = Traitormod and Traitormod.RoleManager

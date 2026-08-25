@@ -329,18 +329,6 @@ local function hasSubTag(sub, tagName)
     return string.find(normalized, wanted, 1, true) ~= nil
 end
 
-local function containsText(list, wantedText)
-    wantedText = trim(wantedText)
-    if wantedText == "" then return false end
-
-    for _, value in ipairs(list or {}) do
-        if trim(value) == wantedText then
-            return true
-        end
-    end
-    return false
-end
-
 local function isForbiddenSecretSub(sub)
     local cfg = getVoteConfig()
 
@@ -381,14 +369,6 @@ local function getEligibleSecretSubs()
         end
     end
     return result
-end
-
-local function getEligibleHideSubs()
-    return getEligibleSecretSubs()
-end
-
-local function getEligibleAttackDefendSubs()
-    return getEligibleSecretSubs()
 end
 
 local function buildMissionTypeUnion(baseList, extraList)
@@ -446,7 +426,7 @@ end
 
 local function applyHideSelection(playerCount)
     local cfg = getVoteConfig()
-    local submarine = chooseBestSubmarine(getEligibleHideSubs(), playerCount)
+    local submarine = chooseBestSubmarine(getEligibleSecretSubs(), playerCount)
     if submarine == nil then
         return false, getVoteText("GameVoteNoHideMap")
     end
@@ -481,7 +461,7 @@ local function applyAttackDefendSelection(playerCount)
         return false, getVoteText("GameVoteApplyFailed")
     end
 
-    local submarine = chooseBestSubmarine(getEligibleAttackDefendSubs(), playerCount)
+    local submarine = chooseBestSubmarine(getEligibleSecretSubs(), playerCount)
     if submarine == nil then
         return false, getVoteText("GameVoteNoAttackDefendSub")
     end
