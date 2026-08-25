@@ -15,6 +15,7 @@
   <Talents file="%ModDir%/the void traitor pack/Talents/Fighters/Fighters.xml" />
   <TalentTrees file="%ModDir%/the void traitor pack/Talents/TalentTrees.xml" />
   <Item file="%ModDir%/the void traitor pack/items/item.xml" />
+  <Item file="%ModDir%/the void traitor pack/items/hideandseek_idcard.xml" />
   <Submarine file="%ModDir%/void traitor pack submarine/fun boat/Я-HMS Elizabeth.sub" />
   <Submarine file="%ModDir%/void traitor pack submarine/fun boat/Я-↓The Coliseum Of Death.sub" />
   <Submarine file="%ModDir%/void traitor pack submarine/fun boat/Я-Racing.sub" />
