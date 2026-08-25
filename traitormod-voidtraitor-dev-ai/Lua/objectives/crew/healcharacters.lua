@@ -9,6 +9,7 @@ objective.MinimumReportedHeal = 0.5
 
 objective.PendingReductionCalls = {}
 objective.CharacterStates = {}
+objective.ActiveObjectives = setmetatable({}, { __mode = "k" })
 
 local function now()
     if Timer ~= nil and Timer.GetTime ~= nil then
@@ -40,28 +41,47 @@ local function updateObjectiveText(obj)
     obj.Text = string.format(Traitormod.Language.ObjectiveHealCharacters, math.floor(obj.Progress), obj.Amount)
 end
 
-local function iterActiveHealObjectives(healer)
-    local found = {}
-    for roleCharacter, role in pairs(Traitormod.RoleManager.RoundRoles or {}) do
-        if roleCharacter ~= nil and not roleCharacter.IsDead and role ~= nil and role.Objectives ~= nil then
-            for _, activeObjective in pairs(role.Objectives) do
-                if activeObjective ~= nil and not activeObjective.Awarded and activeObjective.Name == objective.Name and activeObjective.Character == healer then
-                    table.insert(found, activeObjective)
-                end
-            end
+local function isActiveHealObjective(activeObjective)
+    return activeObjective ~= nil
+        and not activeObjective.Awarded
+        and not activeObjective.Failed
+        and activeObjective.Character ~= nil
+        and not activeObjective.Character.IsDead
+end
+
+local function getActiveHealObjective(healer)
+    if healer == nil then return nil end
+
+    for activeObjective in pairs(objective.ActiveObjectives) do
+        if not isActiveHealObjective(activeObjective) then
+            objective.ActiveObjectives[activeObjective] = nil
+        elseif activeObjective.Character == healer then
+            return activeObjective
         end
     end
-    return found
+
+    return nil
+end
+
+local function hasActiveHealObjectives()
+    for activeObjective in pairs(objective.ActiveObjectives) do
+        if isActiveHealObjective(activeObjective) then
+            return true
+        end
+        objective.ActiveObjectives[activeObjective] = nil
+    end
+    return false
 end
 
 local function awardHealing(targetCharacter, healer, amount)
-    if healer == nil or amount == nil or amount < objective.MinimumReportedHeal then return end
+    if amount == nil or amount < objective.MinimumReportedHeal then return end
     if targetCharacter == nil or targetCharacter.Removed then return end
 
-    for _, activeObjective in pairs(iterActiveHealObjectives(healer)) do
-        activeObjective.Progress = activeObjective.Progress + amount
-        updateObjectiveText(activeObjective)
-    end
+    local activeObjective = getActiveHealObjective(healer)
+    if activeObjective == nil then return end
+
+    activeObjective.Progress = activeObjective.Progress + amount
+    updateObjectiveText(activeObjective)
 end
 
 local function markRecentHealer(targetCharacter, healer)
@@ -102,11 +122,14 @@ end
 local function captureReductionState(instance, ptable)
     if instance == nil or instance.Character == nil then return end
 
+    local healer = ptable["attacker"]
+    if getActiveHealObjective(healer) == nil then return end
+
     table.insert(objective.PendingReductionCalls, {
         Health = instance,
         Target = instance.Character,
         PrevVitality = instance.Character.Vitality,
-        Healer = ptable["attacker"],
+        Healer = healer,
     })
 end
 
@@ -172,33 +195,14 @@ objective.Static = function()
         Hook.HookMethodType.After
     )
 
-    Hook.Patch(
-        "Traitormod.Objective.HealCharacters.TryAdjustHealerSkill.After",
-        "Barotrauma.Character",
-        "TryAdjustHealerSkill",
-        function(targetCharacter, ptable)
-            local healer = ptable["healer"]
-            local healthChange = ptable["healthChange"] or 0
-
-            if targetCharacter == nil or healer == nil then return end
-
-            markRecentHealer(targetCharacter, healer)
-
-            if healthChange >= objective.MinimumReportedHeal and not isDuplicateDirectHealing(targetCharacter, healer, healthChange) then
-                registerDirectHealing(targetCharacter, healer, healthChange)
-            end
-        end,
-        Hook.HookMethodType.After
-    )
-
     Hook.Add("think", "Traitormod.Objective.HealCharacters.TrackDelayedHealing", function()
-        if not Game.RoundStarted then return end
+        if not Game.RoundStarted or not hasActiveHealObjectives() then return end
 
-        for _, character in pairs(Character.CharacterList) do
+        local currentTime = now()
+        for character, state in pairs(objective.CharacterStates) do
             if character == nil or character.Removed then
                 objective.CharacterStates[character] = nil
             else
-                local state = getCharacterState(character)
                 local currentVitality = character.Vitality
                 local vitalityGain = currentVitality - state.LastVitality
 
@@ -209,27 +213,50 @@ objective.Static = function()
                         vitalityGain = vitalityGain - ignored
                     end
 
-                    if vitalityGain >= objective.MinimumReportedHeal and state.RecentHealer ~= nil and now() <= state.RecentHealerExpiresAt then
+                    if vitalityGain >= objective.MinimumReportedHeal and state.RecentHealer ~= nil and currentTime <= state.RecentHealerExpiresAt then
                         awardHealing(character, state.RecentHealer, vitalityGain)
                     end
                 end
 
                 state.LastVitality = currentVitality
 
-                if state.RecentHealer ~= nil and now() > state.RecentHealerExpiresAt then
+                if state.RecentHealer ~= nil and currentTime > state.RecentHealerExpiresAt then
                     state.RecentHealer = nil
                 end
             end
         end
     end)
+
+    Hook.Add("roundEnd", "Traitormod.Objective.HealCharacters.RoundEnd", function()
+        objective.PendingReductionCalls = {}
+        objective.CharacterStates = {}
+        objective.ActiveObjectives = setmetatable({}, { __mode = "k" })
+    end)
+end
+
+function objective:CharacterHealed(targetCharacter, healer, healthChange)
+    if healer ~= self.Character or self.Awarded or self.Failed then return end
+    if targetCharacter == nil or healer == nil then return end
+
+    healthChange = healthChange or 0
+    markRecentHealer(targetCharacter, healer)
+
+    if healthChange >= objective.MinimumReportedHeal and not isDuplicateDirectHealing(targetCharacter, healer, healthChange) then
+        registerDirectHealing(targetCharacter, healer, healthChange)
+    end
 end
 
 function objective:Start(target)
     self.Progress = 0
+    objective.ActiveObjectives[self] = true
 
     updateObjectiveText(self)
 
     return true
+end
+
+function objective:OnAwarded()
+    objective.ActiveObjectives[self] = nil
 end
 
 function objective:IsCompleted()

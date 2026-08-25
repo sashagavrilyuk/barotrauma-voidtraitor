@@ -24,10 +24,6 @@ function objective:IsCompleted()
 end
 
 function objective:TargetPreference(character) return true end
-function objective:CharacterDeath(character) end
-function objective:StopRepairing(item, character) end
-function objective:HullRepaired(item, character) end
-function objective:CharacterHealed(character, healer, healthChange) end
 
 function objective:IsFailed()
     return false

@@ -221,7 +221,7 @@ rm.CallObjectiveFunction = function (functionName, ...)
     for character, role in pairs(rm.RoundRoles) do
         if not character.IsDead and role.Objectives then
             for _, objective in pairs(role.Objectives) do
-                if objective[functionName] then
+                if not objective.Awarded and not objective.Failed and objective[functionName] then
                     objective[functionName](objective, ...)
                 end
             end
