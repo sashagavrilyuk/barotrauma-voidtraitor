@@ -33,18 +33,18 @@ end
 
 local function gearUpCharacter(character, team, waypoint)
     local card = character.Inventory.GetItemInLimbSlot(InvSlotType.Card)
-    if card then
-        card.NonPlayerTeamInteractable = true
-        local lock = card.SerializableProperties[Identifier("NonPlayerTeamInteractable")]
-        Networking.CreateEntityEvent(card, Item.ChangePropertyEventData(lock, card))
-    else
-        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("idcard"), character.Inventory, nil, nil, function (newCard)
-            newCard.GetComponentString("IdCard").Initialize(waypoint, character)
-            newCard.NonPlayerTeamInteractable = true
-            local lock = newCard.SerializableProperties[Identifier("NonPlayerTeamInteractable")]
-            Networking.CreateEntityEvent(newCard, Item.ChangePropertyEventData(lock, newCard))
-        end, true, false, InvSlotType.Card)
+    if card ~= nil then
+        Entity.Spawner.AddItemToRemoveQueue(card)
     end
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("idcard"), character.Inventory, nil, nil, function (newCard)
+        local idCard = newCard.GetComponentString("IdCard")
+        idCard.Initialize(waypoint, character)
+        idCard.OwnerName = ""
+        newCard.RemoveTag(Identifier("name:" .. character.Name))
+        newCard.NonPlayerTeamInteractable = true
+        local lock = newCard.SerializableProperties[Identifier("NonPlayerTeamInteractable")]
+        Networking.CreateEntityEvent(newCard, Item.ChangePropertyEventData(lock, newCard))
+    end, true, false, InvSlotType.Card)
 
     local innerClothes = character.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)
     if innerClothes then
@@ -493,7 +493,7 @@ function gm:Start()
 
     local clients = {}
     for client in Client.ClientList do
-        if not client.SpectateOnly then
+        if client.Character ~= nil then
             table.insert(clients, client)
         end
     end
