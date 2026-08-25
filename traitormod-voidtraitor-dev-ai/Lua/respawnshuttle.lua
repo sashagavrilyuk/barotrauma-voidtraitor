@@ -15,6 +15,8 @@ local respawnTimer = 0
 local transportTimer = 0
 
 local lastTimerDisplay = 0
+local lastThinkTime = nil
+local nextThinkUpdate = 0
 
 local function RespawnMessage(msg)
     for key, client in pairs(Client.ClientList) do
@@ -154,19 +156,47 @@ local function ResetSubmarine(submarine)
 end
 
 Hook.Add("think", "RespawnShuttle.Think", function ()
-    if Traitormod.DisableRespawnShuttle then return end
+    if Traitormod.DisableRespawnShuttle then
+        lastThinkTime = nil
+        nextThinkUpdate = 0
+        return
+    end
     if not Game.RoundStarted then return end
-    if not Traitormod.SubmarineBuilder.IsActive() then return end
-
-    local ratio = #GetRespawnClients() / #Client.ClientList
-
-    if #Client.ClientList == 0 then
-        ratio = 0
+    if not Traitormod.SubmarineBuilder.IsActive() then
+        lastThinkTime = nil
+        nextThinkUpdate = 0
+        return
     end
 
+    local now = Timer.GetTime()
+    if now < nextThinkUpdate then return end
+
+    local deltaTime = 0
+    if lastThinkTime ~= nil then
+        deltaTime = math.max(0, now - lastThinkTime)
+    end
+    lastThinkTime = now
+    nextThinkUpdate = now + 0.25
+
+    local clientCount = 0
+    local respawnClientCount = 0
+    for _, client in pairs(Client.ClientList) do
+        clientCount = clientCount + 1
+        if client.Character == nil or client.Character.IsDead then
+            respawnClientCount = respawnClientCount + 1
+        end
+    end
+
+    local ratio = 0
+    if clientCount > 0 then
+        ratio = respawnClientCount / clientCount
+    end
+
+    local timerStarted = false
     if ratio > Game.ServerSettings.MinRespawnRatio then
         if not timerActive and not transporting then
             timerActive = true
+            timerStarted = true
             respawnTimer = Game.ServerSettings.RespawnInterval
             lastTimerDisplay = respawnTimer
             RespawnMessage(string.format(Traitormod.Config.RespawnText, math.ceil(respawnTimer)))
@@ -175,12 +205,12 @@ Hook.Add("think", "RespawnShuttle.Think", function ()
         timerActive = false
     end
 
-    if timerActive then
-        respawnTimer = respawnTimer - (1 / 60)
+    if timerActive and not timerStarted then
+        respawnTimer = respawnTimer - deltaTime
     end
 
     if transporting then
-        transportTimer = transportTimer - (1 / 60)
+        transportTimer = transportTimer - deltaTime
     end
 
     local timerDisplayMax = 15
@@ -229,6 +259,8 @@ Hook.Add("roundEnd", "RespawnShuttle.RoundEnd", function ()
     respawnTimer = 0
     transportTimer = 0
     lastTimerDisplay = 0
+    lastThinkTime = nil
+    nextThinkUpdate = 0
     Traitormod.DisableRespawnShuttle = false
 end)
 

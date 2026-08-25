@@ -5,8 +5,9 @@ extension.Identifier = "BrokenHandcuffs"
 extension.Init = function ()
     local timer = Timer.GetTime()
     Hook.Add("think", "BrokenHandcuffs.Think", function ()
-        if timer > Timer.GetTime() then return end
-        timer = Timer.GetTime() + 1
+        local now = Timer.GetTime()
+        if timer > now then return end
+        timer = now + 1
 
         for key, value in pairs(Character.CharacterList) do
             if value.IsHuman and value.IsKeyDown(InputType.Crouch) then

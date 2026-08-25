@@ -6,6 +6,7 @@ local luaConfirmed = {}
 local clientTrackers = {}
 
 local WAIT_AFTER_DOWNLOAD = 20 
+local lastWelcomeUpdate = Timer.GetTime()
 
 local function getWelcomeText()
     if Traitormod and Traitormod.GetText then
@@ -43,6 +44,11 @@ Hook.Add("client.disconnected", "Welcome_Disconnect", function(client)
 end)
 
 Hook.Add("think", "Welcome_Logic", function()
+    local now = Timer.GetTime()
+    local elapsed = now - lastWelcomeUpdate
+    if elapsed < 0.25 then return end
+    lastWelcomeUpdate = now
+
     for client, data in pairs(clientTrackers) do
         if not data.sent then
             if luaConfirmed[client] then
@@ -50,7 +56,7 @@ Hook.Add("think", "Welcome_Logic", function()
             elseif IsDownloading(client) then
                 data.timer = 0
             else
-                data.timer = data.timer + 0.0166 
+                data.timer = data.timer + elapsed 
                 if data.timer > WAIT_AFTER_DOWNLOAD then
                     if not luaConfirmed[client] then
                         local ok, err = pcall(function()
