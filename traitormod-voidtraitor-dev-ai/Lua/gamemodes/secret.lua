@@ -42,6 +42,7 @@ function gm:Start()
         this:CharacterDeath(character)
     end)
 
+    self.NextEndCheck = 0
     self:SelectAntagonists()
 end
 
@@ -333,6 +334,12 @@ function gm:End()
 end
 
 function gm:Think()
+    if self.Ending or not Game.RoundStarted or not self.EndOnComplete then return end
+
+    local now = Timer.GetTime()
+    if now < self.NextEndCheck then return end
+    self.NextEndCheck = now + 0.25
+
     local ended = true
     local anyTraitorMission = false
 
@@ -357,7 +364,7 @@ function gm:Think()
         ended = false
     end
 
-    if not self.Ending and Game.RoundStarted and self.EndOnComplete and ended then
+    if ended then
         local delay = self.EndGameDelaySeconds or 0
 
         Traitormod.SendMessageEveryone(Traitormod.Language.TraitorsWin)

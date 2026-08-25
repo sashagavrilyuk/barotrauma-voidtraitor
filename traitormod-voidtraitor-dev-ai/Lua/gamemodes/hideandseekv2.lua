@@ -468,6 +468,8 @@ function gm:Start()
     self.ClassSelectionDeadline = Timer.GetTime() + self.ClassSelectionTimeoutMinutes * 60
     self.LastStartCountDown = self.StartCountDown
     self.LastRoundCountDown = self.RoundCountDown
+    self.LastThinkTime = Timer.GetTime()
+    self.NextThinkUpdate = 0
 
     for _, waypoint in pairs(outpost.GetWaypoints(true)) do
         for tag in waypoint.Tags do
@@ -581,6 +583,13 @@ end
 function gm:Think()
     if self.IsEnding then return end
 
+    local now = Timer.GetTime()
+    if now < self.NextThinkUpdate then return end
+
+    local deltaTime = math.max(0, now - self.LastThinkTime)
+    self.LastThinkTime = now
+    self.NextThinkUpdate = now + 0.25
+
     for _, team in pairs(self.Teams) do
         for id, entry in pairs(team.Respawns) do
             local member = team.Members[id]
@@ -619,7 +628,7 @@ function gm:Think()
     end
 
     if not self.RoundActive then
-        self.StartCountDown = self.StartCountDown - 1 / 60
+        self.StartCountDown = self.StartCountDown - deltaTime
         local interval = self.StartCountDown <= 10 and 1 or 30
         if self.StartCountDown > 0 and self.LastStartCountDown - self.StartCountDown >= interval then
             sendCountdown("HideAndSeekStartCountdown", self.StartCountDown)
@@ -639,7 +648,7 @@ function gm:Think()
         return
     end
 
-    self.RoundCountDown = self.RoundCountDown - 1 / 60
+    self.RoundCountDown = self.RoundCountDown - deltaTime
     local interval = self.RoundCountDown <= 10 and 1 or 60
     if self.RoundCountDown > 0 and self.LastRoundCountDown - self.RoundCountDown >= interval then
         sendCountdown("HideAndSeekRoundCountdown", self.RoundCountDown)

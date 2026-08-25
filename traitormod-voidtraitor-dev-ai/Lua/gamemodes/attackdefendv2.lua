@@ -407,6 +407,8 @@ end
 
 function gm:Start()
 	Traitormod.DisableRespawnShuttle = true
+	self.LastThinkTime = Timer.GetTime()
+	self.NextThinkUpdate = 0
     -- Traitormod.DisableMidRoundSpawn = true
 	
 	for _, item in pairs(Item.ItemList) do
@@ -499,7 +501,15 @@ end
 
 function gm:Think()
 	if self.IsEnding then return end
-	self.DefendCountDown = self.DefendCountDown - 1/60
+
+	local now = Timer.GetTime()
+	if now < self.NextThinkUpdate then return end
+
+	local deltaTime = math.max(0, now - self.LastThinkTime)
+	self.LastThinkTime = now
+	self.NextThinkUpdate = now + 0.25
+
+	self.DefendCountDown = self.DefendCountDown - deltaTime
 
 	local max = 30
     if self.DefendCountDown <= 10 then max = 1 end
@@ -518,7 +528,7 @@ function gm:Think()
 				if entry.Timer == nil then
 					entry.Timer = team.RespawnTime
 				end
-				entry.Timer = entry.Timer - 1/60
+				entry.Timer = entry.Timer - deltaTime
 				if entry.Timer <= 0 and entry.OnSpawn ~= nil and member.InGame then
 					SpawnCharacter(member, team, entry.OnSpawn, entry.JobId)
 					entry.Timer = nil
