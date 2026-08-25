@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Charactervariant inherit="Mudraptor_unarmoredhusk" speciesname="Mudraptormispawnhusk" speciestranslationoverride="Mudraptor">
+  <StatusEffect type="Always" target="This" comparison="and" delay="5">
+    <Affliction identifier="huskspawnrandomchance5" amount="25" />
+    <!-- "husks" only exist to turn into one of the three variants. -->
+  </StatusEffect>
+</Charactervariant>

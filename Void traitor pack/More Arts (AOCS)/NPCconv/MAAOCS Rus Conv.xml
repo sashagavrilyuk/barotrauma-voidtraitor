@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Conversations identifier="artmod_conversations" Language="Russian">
+  <!-- Начальные диалоги -->
+  <Conversation line="Интересно, найдем ли мы что-нибудь интересное в руинах в этот раз?" speaker="0" flags="Initial">
+    <Conversation line="Например свою смерть?" speaker="1">
+      <Conversation line="Сплюнь." speaker="0" />
+      <Conversation line="Ну или чужую." speaker="2" speakertags="joker" />
+    </Conversation>
+    <Conversation line="Если вообще найдем руины." speaker="1" allowedjobs="captain">
+      <Conversation line="Они могут оказаться нам не по пути." speaker="1" />
+    </Conversation>
+  </Conversation>
+  <!-- Обычные диалоги -->
+  <Conversation line="Вот я тут подумал..." speaker="0" maxintensity="0.2">
+    <Conversation line="О нет. Кто-то начал думать. Нам конец." speaker="1" speakertags="joker">
+      <Conversation line="Очень смешно." speaker="0" />
+      <Conversation line="... А что если выкинуть этого шутника за борт?" speaker="0" speakertags="rude">
+        <Conversation line="Не ценят тут моей тонкой натуры..." speaker="1" />
+      </Conversation>
+    </Conversation>
+    <Conversation line="... Почему раньше при разборке артефактов в деконструкторе мы не получали эти желе?" speaker="0">
+      <Conversation line="У деконструктора есть специальная программа по разборке вещей." speaker="1" allowedjobs="Mechanic">
+        <Conversation line="И, поскольку раньше никто не знал о существовании желе, то эти огромные, неподвижные острые лезвия просто разрезали артефакты на три инопланетных материала, не учитывая остальное." speaker="1">
+          <Conversation line="Иными словами - ты сам не знаешь, да?" speaker="0">
+            <Conversation line="Именно." speaker="1" />
+          </Conversation>
+        </Conversation>
+      </Conversation>
+      <Conversation line="Хороший вопрос." speaker="1" />
+      <Conversation line="Давай поставим вопрос иначе - кто-нибудь вообще знает, как работает деконструктор?" speaker="1">
+        <Conversation line="Ну, вообще... Понятия не имею." speaker="2" />
+      </Conversation>
+    </Conversation>
+    <Conversation line="... Почему у матриарха ползунов есть грудь?" speaker="0">
+      <Conversation line="Ему больше не наливать!" speaker="1" speakertags="joker">
+        <Conversation line="Хватит." speaker="2" speakertags="rude, professional" />
+      </Conversation>
+      <Conversation line="Чтоб отвлекать хищников, которые будут на неё смотреть, пока она отгрызает им голову." speaker="1" allowedjobs="Medic" speakertags="joker" />
+      <Conversation line="Довольно интересная анатомическая особенность, кстати. Вероятно ползуны гораздо ближе к людям, чем мы считали." speaker="1" allowedjobs="Medic" />
+      <Conversation line="Некоторые вопросы лучше оставлять без ответа." speaker="1" />
+    </Conversation>
+    <Conversation line="... Чем являются эти стражи руин?" speaker="0">
+      <Conversation line="Ну ты бы ещё спросил как работают артефакты, с подробным разъяснением. Хрен его знает." speaker="1" speakertags="rude" />
+      <Conversation line="Ответить наверняка смогут только на исследовательских станциях." speaker="1" />
+      <Conversation line="Судя по тому что я видел во время вылазок в руины - нечто вроде огромной кучи электронники в оболочке, напоминающей скафандр." speaker="1" speakertags="professional" />
+    </Conversation>
+    <Conversation line="... Почему мы не находили все эти новые артефакты раньше?" speaker="0">
+      <Conversation line="Хрен его знает." speaker="1" speakertags="rude" />
+      <Conversation line="Они просто активно прятались, а теперь, когда у нас есть технология термальных визоров, у них нет шансов." speaker="1" speakertags="joker">
+        <Conversation line="Ха-ха." speaker="2" />
+        <Conversation line="Ахаха!" speaker="1" />
+      </Conversation>
+      <Conversation line="Ответить наверняка смогут только на исследовательских станциях." speaker="1" />
+      <Conversation line="Хороший вопрос." speaker="1" />
+      <Conversation line="Мы ещё слишком мало знаем, чтоб можно было утверждать наверняка." speaker="1" />
+    </Conversation>
+  </Conversation>
+  <!-- Диалоги на станциях -->
+  <!-- Про соду-->
+  <Conversation line="Пробовал одну из этих новых сод?" speaker="0" flags="OutpostNPC">
+    <Conversation line="Да. Удивительно, как что-то настолько вкусное может быть доступно по столь низкой цене, без пальцев с ногтями и глаз внутри." speaker="1" flags="OutpostNPC">
+      <Conversation line="Пробуя 'Заботу Европы' возникает смутное ощущение, что оно целиком сделано из них..." speaker="0" flags="OutpostNPC" />
+    </Conversation>
+  </Conversation>
+  <Conversation line="Интересно, из чего всё же сделаны эти новые соды." speaker="0" flags="OutpostNPC">
+    <Conversation line="Из чего-то очень вкусного." speaker="1" flags="OutpostNPC">
+      <Conversation line="Может быть из тех желеобразных штук, которые извлекаются из артефактов?" speaker="0">
+        <Conversation line="Я говорю из чего-то ВКУСНОГО. Не ломай мои остатки фантазии." speaker="1" />
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Сода 'Печаль Красноносого' - лучшая сода на свете!" speaker="0" flags="OutpostNPC">
+    <Conversation line="Что?" speaker="1" flags="OutpostNPC">
+      <Conversation line="Простите. Эти дряные лозунги впились в мозг." speaker="0" />
+    </Conversation>
+    <Conversation line="'Сыворотка Гиппократа' всё равно лучше." speaker="1" flags="OutpostNPC" />
+  </Conversation>
+  <!-- про новое оружие -->
+  <Conversation line="Эта новая электровинтовка - настоящее чудо! Теперь проблем нет ни с ползунами, ни с боеприпасами." speaker="0" flags="OutpostNPC">
+    <Conversation line="Зато удвоенные проблемы с электроэнергией." speaker="1" flags="OutpostNPC" />
+    <Conversation line="Никогда не думал что доживу до такого удобства." speaker="1" flags="OutpostNPC" />
+  </Conversation>
+  <Conversation line="Как думаешь, эти новые пушки заменят те, что есть у нас?" speaker="0" flags="OutpostNPC">
+    <Conversation line="Вряд ли. Насколько я слышал - для производства нового оружия были открыты новые производственные станции, а дело это, как несложно догадаться, дорогостоящее." speaker="1" flags="OutpostNPC">
+      <Conversation line="Так что можно не надеяться что в ближайшее время такое снаряжение станет дешевле." speaker="1" flags="OutpostNPC" />
+    </Conversation>
+    <Conversation line="Ничто мне не заменит родной пистолет-пулемет и дробовик." speaker="1" flags="OutpostNPC">
+      <Conversation line="Даже полуавтоматический дробовик?" speaker="0" flags="OutpostNPC">
+        <Conversation line="Даже он, особенно с таким дурацким названием." speaker="1" flags="OutpostNPC" />
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Кто придумывал названия ко всему этому новому оружию? Автопистолеты, барабанный пистолет-пулемет, полуавтодробовик..." speaker="0" flags="OutpostNPC">
+    <Conversation line="Тебя серьезно беспокоит название оружия, а не его эффективность?" speaker="1" flags="OutpostNPC" />
+  </Conversation>
+  <Conversation line="Я всю ночь пытался отделить барабанный магазин от барабанного пистолета-пулемета." speaker="0" flags="OutpostNPC">
+    <Conversation line="В итоге при очередной попытке что-то хрустнуло и отвалился ствол. Какой-то хлам, а не оружие." speaker="0" flags="OutpostNPC">
+      <Conversation line="Ты не читал описание оружия, верно?" speaker="1" flags="OutpostNPC">
+        <Conversation line="Ещё я буду буковы читать. Оружие должно стрелять и убивать, а не грузить голову." speaker="0" flags="OutpostNPC" />
+      </Conversation>
+      <Conversation line="И с такими людьми мне приходится общаться каждый день..." speaker="1" flags="OutpostNPC" />
+    </Conversation>
+  </Conversation>
+  <Conversation line="Один знакомый капитан как-то говорил, что револьер и новый автопистолет имеют одинаковую эффективность." speaker="0" flags="OutpostNPC">
+    <Conversation line="Сравнил - устаревшее, но надежное оружие и это 'новое эффективное вооружение', как нам заявляют с экранов." speaker="1" flags="OutpostNPC">
+      <Conversation line="... У нас есть экраны?" speaker="0" flags="OutpostNPC" />
+      <Conversation line="Ну, он говорил что в руках оно ощущается как револьер, только скорострельней. Я ему верю." speaker="0" flags="OutpostNPC" />
+    </Conversation>
+  </Conversation>
+  <Conversation line="Ты принес?" speaker="0" flags="OutpostNPC">
+    <Conversation line="Да. Из этих непонятных материалов и штурмовой винтовки. Пушка - огонь." speaker="1" flags="OutpostNPC">
+      <Conversation line="Не так громко... Пойдем в жилой отсек, взгляну на товар и обсудим цену." speaker="0" flags="OutpostNPC" />
+    </Conversation>
+  </Conversation>
+  <!-- про новые инструменты -->
+  <Conversation line="Я положил опиум в карман этого недавно купленного пояса инструментов плюс и до сих пор не могу его отыскать." speaker="0" flags="OutpostNPC">
+    <Conversation line="Ты шутишь?" speaker="1" flags="OutpostNPC">
+      <Conversation line="Моя первая мысль была такой же, когда рука чуть ли не целиком провалилась в этот дурацкий карман." speaker="0" flags="OutpostNPC" />
+    </Conversation>
+  </Conversation>
+  <!-- про безносых -->
+  <Conversation line="Ты слышал байки про каких-то безносых клоунов, нападающих на аванпосты?" speaker="0" flags="OutpostNPC">
+    <Conversation line="Это не байки." speaker="1" flags="OutpostNPC">
+      <Conversation line="Мой друг погиб от их руки. До сих пор к тем руинам аванпоста никто подплыть не может - обстреливают инопланетной дрянью." speaker="1" flags="OutpostNPC">
+        <Conversation line="Ох... Дерьмо." speaker="0" flags="OutpostNPC" />
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Сегодня видел, как кто-то в синем клоунском костюме ходил пугал клоунов." speaker="0" flags="OutpostNPC">
+    <Conversation line="Да, и потом охрана пошутила над ним шоковыми дубинками." speaker="1" flags="OutpostNPC" />
+    <Conversation line="Вот дурак. Его могли и пристрелить." speaker="1" flags="OutpostNPC" />
+  </Conversation>
+  <Conversation line="Как думаешь, почему эти безносые пытаются всех убить?" speaker="0" flags="OutpostNPC">
+    <Conversation line="Не имею ни малейшего представления. Скорей всего они обычные бандиты." speaker="1" flags="OutpostNPC">
+      <Conversation line="Но они даже не общаются друг с другом. Никто ни слова не слышал ни от кого-либо из них." speaker="0" flags="OutpostNPC" />
+    </Conversation>
+  </Conversation>
+  <!-- про руины, лабы и аномалии -->
+  <Conversation line="Ты слышал про того парня, который ослеп?" speaker="0" flags="OutpostNPC">
+    <Conversation line="Да слышал-слышал." speaker="1" flags="OutpostNPC">
+      <Conversation line="Он просто сидел на 'пустышках' какое-то время. Всё ещё проблемы со зрением имеет, но вроде как восстановился с того случая." speaker="1" flags="OutpostNPC">
+        <Conversation line="Нда. Руины теперь не столь опасное место по сравнению с тем, в них лежит." speaker="0" flags="OutpostNPC" />
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Надо будет организовать свою экспедицию в руины. Все эти загадочные артефакты, безделушки, заброшенные лаборатории с кучей забытых ресурсов..." speaker="0" flags="OutpostNPC" />
+  <Conversation line="Слушай, ответь уже..." speaker="0" flags="OutpostNPC">
+    <Conversation line="Нет." speaker="1" flags="OutpostNPC">
+      <Conversation line="Хватит спрашивать, я не знаю и знать не хочу почему коалиция запретила штурмовую винтовку." speaker="1" flags="OutpostNPC" />
+    </Conversation>
+  </Conversation>
+  <Conversation line="Тебе не страшно?" speaker="0" flags="OutpostNPC">
+    <Conversation line="От чего?" speaker="1" flags="OutpostNPC">
+      <Conversation line="От... Всего. Все эти внезапно открытые новые артефакты, странные штуки, непонятно что происходит в руинах, загадочные обломки каких-то лабораторий, построенных людьми..." speaker="0" flags="OutpostNPC">
+        <Conversation line="Ну последнее как раз страха не внушает. Исследовали их когда-то - значит сможем исследовать вновь." speaker="1" flags="OutpostNPC" />
+        <Conversation line="Не знаю... Вряд ли я доживу до момента, когда встречусь с чем-то подобным." speaker="1" flags="OutpostNPC" />
+        <Conversation line="Нам-то какое дело, тут бы хоть работу найти, а ты про какие-то замудренные вещи." speaker="1" flags="OutpostNPC" />
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Я вот на днях прикупил инопланетную лампу. Классная штука." speaker="0" flags="OutpostNPC">
+    <Conversation line="Светит не так сильно как фонарик, но зато не нужно заморачиваться с аккумуляторами, ещё и в воде не тонет." speaker="0" flags="OutpostNPC" />
+  </Conversation>
+  <!--<Conversation line="" speaker="0" flags="OutpostNPC">
+  <Conversation line="" speaker="1" flags="OutpostNPC"/>
+</Conversation>-->
+</Conversations>

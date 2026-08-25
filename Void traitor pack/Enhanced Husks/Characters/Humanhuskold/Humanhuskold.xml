@@ -1,0 +1,575 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Character specifiertags="true" skincolors="(#fce1c6, 100); (#f3c696, 100); (#f3c696, 100); (#aa7744, 100); (#f4be98, 100); (#d69a70, 100); (#ab7046, 100); (#774929, 100); (#c8a583, 100); (#a57c53, 100); (#7a5026, 100); (#4a3219, 100); (#957966, 100); (#714d34, 100); (#532d12, 100); (#26190e, 100)" haircolors="(#ded7cc, 100); (#d2a36f, 100); (#c77d52, 100); (#ac4934, 100); (#d8ba85, 100); (#cd975a, 100); (#a15837, 100); (#6a3b37, 100); (#bba981, 100); (#8b7e6c, 100); (#594349, 100); (#473637, 100); (#7b8478, 100); (#494e55, 100); (#3a3a3c, 100); (#343030, 100)" facialhaircolors="(#ded7cc, 100); (#d2a36f, 100); (#c77d52, 100); (#ac4934, 100); (#d8ba85, 100); (#cd975a, 100); (#a15837, 100); (#6a3b37, 100); (#bba981, 100); (#8b7e6c, 100); (#594349, 100); (#473637, 100); (#7b8478, 100); (#494e55, 100); (#3a3a3c, 100); (#343030, 100)" SpeciesName="humanhuskold" UseHumanAI="False" SpeciesTranslationOverride="Husk" DisplayName="" Group="husk" Humanoid="True" HasInfo="True" CanInteract="True" Husk="False" UseHuskAppendage="True" NeedsAir="False" NeedsWater="False" CanSpeak="True" UseBossHealthBar="False" Noise="150" Visibility="150" BloodDecal="blood" bleedparticleair="blackblood" bleedparticlewater="blackwaterblood" BleedParticleMultiplier="1" CanEat="True" EatingSpeed="10" UsePathFinding="True" PathFinderPriority="1" HideInSonar="True" HideInThermalGoggles="True" SonarDisruption="0" DistantSonarRange="0" DisableDistance="25000" SoundInterval="10">
+  <names path="Content/Characters/Human/names.xml" />
+  <ragdolls folder="default" />
+  <animations folder="default" />
+  <damageemitter drawontop="True" Particle="gib" AngleMin="0" AngleMax="360" ScaleMin="0.25" ScaleMax="0.5" VelocityMin="50" VelocityMax="300" EmitInterval="0" ParticlesPerSecond="0" ParticleAmount="10" HighQualityCollisionDetection="False" CopyEntityAngle="False" />
+  <bloodemitter particle="blackblood" particleamount="5" anglemin="0" anglemax="0" scalemin="1" scalemax="1" velocitymin="0" velocitymax="0" emitinterval="0" particlespersecond="0" highqualitycollisiondetection="False" copyentityangle="False" />
+  <bloodemitter particle="blackwaterblood" particleamount="1" anglemin="0" anglemax="0" scalemin="1" scalemax="1" velocitymin="0" velocitymax="0" emitinterval="0" particlespersecond="0" highqualitycollisiondetection="False" copyentityangle="False" />
+  <gibemitter particle="blackgib" particleamount="10" velocitymin="50" velocitymax="500" anglemin="0" anglemax="360" scalemin="1" scalemax="1" emitinterval="0" particlespersecond="0" highqualitycollisiondetection="False" copyentityangle="False" />
+  <gibemitter particle="blackgib" particleamount="10" velocitymin="50" velocitymax="500" anglemin="0" anglemax="360" scalemin="1" scalemax="1" emitinterval="0" particlespersecond="0" highqualitycollisiondetection="False" copyentityangle="False" />
+  <!-- Major thanks to SydWad to allow me to use his textures to upgrade the old husk textures, and most recently their rendition of the corpse husk which I used to upgrade the style of the head-->
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/idle1.ogg" state="Idle" range="1000" volume="1" gender="Male" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/idle2.ogg" state="Idle" range="1000" volume="1" gender="Male" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/idle3.ogg" state="Idle" range="1000" volume="1" gender="Male" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/idle4.ogg" state="Idle" range="1000" volume="1" gender="Male" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/attack1.ogg" state="Attack" range="1500" volume="1" gender="Male" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/attack2.ogg" state="Attack" range="1500" volume="1" gender="Male" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/attack3.ogg" state="Attack" range="1500" volume="1" gender="Male" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/damage1.ogg" state="Damage" range="1000" volume="1" gender="Male" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/damage2.ogg" state="Damage" range="1000" volume="1" gender="Male" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/damage3.ogg" state="Damage" range="1000" volume="1" gender="Male" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/death1.ogg" state="Die" range="1000" volume="1" gender="Male" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/death2.ogg" state="Die" range="1000" volume="1" gender="Male" />
+  <!-- gender-->
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/idle1.ogg" state="Idle" range="1000" volume="1" gender="Female" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/idle2.ogg" state="Idle" range="1000" volume="1" gender="Female" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/idle3.ogg" state="Idle" range="1000" volume="1" gender="Female" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/idle4.ogg" state="Idle" range="1000" volume="1" gender="Female" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/attack1.ogg" state="Attack" range="1500" volume="1" gender="Female" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/attack2.ogg" state="Attack" range="1500" volume="1" gender="Female" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/attack3.ogg" state="Attack" range="1500" volume="1" gender="Female" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/damage1.ogg" state="Damage" range="1000" volume="1" gender="Female" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/damage2.ogg" state="Damage" range="1000" volume="1" gender="Female" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/damage3.ogg" state="Damage" range="1000" volume="1" gender="Female" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/death1.ogg" state="Die" range="1000" volume="1" gender="Female" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/death2.ogg" state="Die" range="1000" volume="1" gender="Female" />
+  <ai combatstrength="120" sight="0.5" hearing="2" aggressiveboarding="True" attackwhenprovoked="True" aggressiongreed="5" aggressionhurt="150" canopendoors="True" targetouterwalls="False" fleehealththreshold="0" avoidgunfire="True" avoidtime="3" minfleetime="20" enforceaggressivebehaviorformissions="True" randomattack="False" avoidabyss="False" stayinabyss="False" startaggression="0" maxaggression="100" aggressioncumulation="0" keepdoorsclosed="False" patrolflooded="False" patroldry="False" walltargetingmethod="Target">
+    <target tag="decoy" state="Attack" priority="500" reactdistance="0" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreifnotinsamesub="False" ignoreincapacitated="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="provocative" state="Attack" priority="100" reactdistance="0" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreifnotinsamesub="False" ignoreincapacitated="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="weapon" state="Attack" priority="100" reactdistance="0" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreifnotinsamesub="False" ignoreincapacitated="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="human" state="Attack" priority="80" reactdistance="0" ignoreincapacitated="True" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreifnotinsamesub="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="stronger" state="Attack" priority="80" reactdistance="0" ignoreincapacitated="True" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreifnotinsamesub="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="weaker" state="Attack" priority="80" reactdistance="0" ignoreincapacitated="True" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreifnotinsamesub="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="nasonov" state="Attack" priority="70" reactdistance="0" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreifnotinsamesub="False" ignoreincapacitated="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="sonar" state="Attack" priority="30" reactdistance="0" ignoreinside="True" attackdistance="0" timer="0" ignorecontained="False" ignoreoutside="False" ignoreifnotinsamesub="False" ignoreincapacitated="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="room" state="Attack" priority="10" reactdistance="0" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreifnotinsamesub="False" ignoreincapacitated="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="cultist" state="Idle" priority="0" ignoreinside="True" ignoreoutside="True" ignoreifnotinsamesub="True" ignoreincapacitated="True" threshold="1" />
+    <target tag="truepriestcultist" state="Protect" priority="1" reactdistance="1000" ignoreinside="true" />
+  </ai>
+  <health usehealthwindow="False" vitality="75" minvitality="-50" crushdepth="Infinity" doesbleed="True" bleedingreduction="35" burnreduction="0" constanthealthregeneration="3.5" healthregenerationwheneating="0" stunimmunity="False">
+    <MedUISilhouette texture="Content/UI/Health/MedUI_Silhouette.png" columns="8" rows="2" sourcerect="0,0,1008,748" />
+    <MedUIExtra texture="Content/UI/Health/MedUIExtra.png" columns="4" rows="4" sourcerect="0,0,1024,1024" />
+    <Limb name="Head">
+      <Sprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="1,0,126,374" highlightarea="41,0,45,54" />
+      <Highlightsprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="1,515,126,374" />
+      <VitalityMultiplier type="damage" multiplier="2.0" />
+    </Limb>
+    <Limb name="Torso">
+      <Sprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="631,0,126,374" highlightarea="29,56,70,134" />
+      <Highlightsprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="631,515,126,374" />
+    </Limb>
+    <Limb name="LeftArm">
+      <Sprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="379,0,126,374" highlightarea="1,69,27,140" />
+      <Highlightsprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="379,515,126,374" />
+      <VitalityMultiplier type="damage" multiplier="0.5" />
+    </Limb>
+    <Limb name="RightArm">
+      <Sprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="127,0,126,374" highlightarea="100,69,27,140" />
+      <Highlightsprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="127,515,126,374" />
+      <VitalityMultiplier type="damage" multiplier="0.5" />
+    </Limb>
+    <Limb name="LeftLeg">
+      <Sprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="505,0,126,374" highlightarea="3,180,57,194" />
+      <Highlightsprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="505,515,126,374" />
+      <VitalityMultiplier type="damage" multiplier="0.5" />
+    </Limb>
+    <Limb name="RightLeg">
+      <Sprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="253,0,126,374" highlightarea="68,180,57,194" />
+      <Highlightsprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="253,515,126,374" />
+      <VitalityMultiplier type="damage" multiplier="0.5" />
+    </Limb>
+  </health>
+  <!-- Basic nakey stuff -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag" accessiblewhenalive="True" accessiblebyowner="True" commonness="10">
+    <Item identifier="idcard" equip="true" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="huskoldfists" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="8">
+    <Item identifier="huskeggsbasic" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="idcard" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="6">
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="huskstinger" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="idcard" equip="true" />
+  </inventory>
+  <!-- Unlucky respawners -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag" accessiblewhenalive="True" accessiblebyowner="True" commonness="5">
+    <Item identifier="idcard" equip="true" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="brokendivingsuithuskrespawn" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="3">
+    <Item identifier="huskeggsbasic" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="idcard" equip="true" />
+    <Item identifier="brokendivingsuithuskrespawn" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="1">
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="huskstinger" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="idcard" equip="true" />
+    <Item identifier="brokendivingsuithuskrespawn" equip="true" />
+  </inventory>
+  <!-- Dead people clothes -->
+  <!-- Captain -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="5">
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="steroids" />
+    <Item identifier="revolverround" amount="2" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="revolver" equip="false" />
+    <Item identifier="captainsuniform3" equip="true" />
+    <Item identifier="headset" equip="true" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_captain" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="5">
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="steroids" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="revolverhuskold" equip="false" />
+    <Item identifier="captainsuniform3" equip="true" />
+    <Item identifier="headset" equip="true" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_captain" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="1">
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="huskstinger" />
+    <Item identifier="steroids" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="captainspipe" equip="false" />
+    <Item identifier="divingmask" equip="true" />
+    <Item identifier="captainsuniform1" equip="true" />
+    <Item identifier="headset" equip="true" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_captain" />
+  </inventory>
+  <!-- Officer -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="5">
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="huskstinger" />
+    <Item identifier="stungundart" />
+    <Item identifier="antibleeding1" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="securityuniform2" equip="true" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_security" />
+    <Item identifier="stungun" equip="true" />
+    <Item identifier="bodyarmor" equip="true" />
+    <Item identifier="headset" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="5">
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="huskstinger" />
+    <Item identifier="antibleeding1" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="securityuniform2" equip="true" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_security" />
+    <Item identifier="stungunhuskold" equip="true" />
+    <Item identifier="bodyarmor" equip="true" />
+    <Item identifier="headset" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="4">
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="huskstinger" />
+    <Item identifier="antibleeding1" />
+    <!-- Neq! empty -->
+    <Item identifier="securityuniform2" equip="true" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_security" />
+    <Item identifier="handcuffs" />
+    <Item identifier="bodyarmor" equip="true" />
+    <Item identifier="headset" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="4">
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="huskstinger" />
+    <Item identifier="antibleeding1" />
+    <Item identifier="handcuffs" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="securityuniform2" equip="true" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_security" />
+    <Item identifier="bodyarmor" equip="true" />
+    <Item identifier="headset" equip="true" />
+  </inventory>
+  <!-- engineer -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="5">
+    <Item identifier="fuelrod" />
+    <Item identifier="screwdriver" />
+    <Item identifier="wrench" />
+    <Item identifier="toolbelt" />
+    <Item identifier="orangejumpsuit1" equip="true" />
+    <Item identifier="headset" equip="true" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_engineer" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any, Any, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="3">
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="orangewire" />
+    <Item identifier="button" />
+    <Item identifier="fpgacircuit" />
+    <Item identifier="relaycomponent" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="screwdriver" equip="true" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_engineer" />
+    <Item identifier="toolbelt" />
+    <Item identifier="orangejumpsuit2" equip="true" />
+    <Item identifier="headset" equip="true" />
+  </inventory>
+  <!-- Mechanic -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="4">
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="weldingfueltank" />
+    <Item identifier="aluminium" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="toolbelt" />
+    <Item identifier="wrench" />
+    <Item identifier="bluejumpsuit2" equip="true" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_mechanic" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="3">
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="weldingfueltank" />
+    <Item identifier="aluminium" />
+    <Item identifier="toolbelt" />
+    <Item identifier="crowbar" />
+    <Item identifier="bluejumpsuit2" equip="true" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_mechanic" />
+  </inventory>
+  <!-- Medic -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any, Any, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="4">
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="huskstinger" />
+    <Item identifier="antibloodloss2" />
+    <Item identifier="antibleeding1" />
+    <Item identifier="antidama1" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="doctorsuniform2" equip="true" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_medic" />
+  </inventory>
+  <!-- Assistant -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="6">
+    <Item identifier="oxygentank" />
+    <Item identifier="oxygentank" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="assistantclothes" equip="true" />
+    <Item identifier="brokendivingsuit" equip="true" />
+    <Item identifier="plasmacutter" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="4">
+    <Item identifier="screwdriver" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="assistantclothes" equip="true" />
+    <Item identifier="plasmacutterhuskold" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="5">
+    <Item identifier="oxygentank" />
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="assistantclothes" equip="true" />
+    <Item identifier="crowbar" equip="true" />
+  </inventory>
+  <!-- Assistants that can punch you -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="6">
+    <Item identifier="oxygentank" />
+    <Item identifier="oxygentank" />
+    <Item identifier="plasmacutter" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="assistantclothes" equip="true" />
+    <Item identifier="brokendivingsuit" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="4">
+    <Item identifier="screwdriver" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="assistantclothes" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="5">
+    <Item identifier="oxygentank" />
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="crowbar" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="assistantclothes" equip="true" />
+  </inventory>
+  <!-- Clown -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag" accessiblewhenalive="True" accessiblebyowner="True" commonness="5">
+    <!-- Neq! empty -->
+    <Item identifier="bikehorn" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="clownmask" equip="true" />
+    <Item identifier="clowncostume" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag" accessiblewhenalive="True" accessiblebyowner="True" commonness="5">
+    <!-- Neq! empty -->
+    <Item identifier="toyhammer" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="clownmask" equip="true" />
+    <Item identifier="clowncostume" equip="true" />
+  </inventory>
+  <!-- Clown Variation 1 -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="3">
+    <Item identifier="alientrinket1" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="clownmaskunique" equip="true" />
+    <Item identifier="clowncostume" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="2">
+    <Item identifier="alientrinket2" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="clownmaskunique" equip="true" />
+    <Item identifier="clowncostume" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="1">
+    <Item identifier="alientrinket3" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="clownmaskunique" equip="true" />
+    <Item identifier="clownsuitunique" equip="true" />
+  </inventory>
+  <!-- Clown Variation 2 -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="3">
+    <Item identifier="alientrinket1" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="bikehorn" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="clownmaskunique" equip="true" />
+    <Item identifier="clowncostume" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="2">
+    <Item identifier="alientrinket2" />
+    <!-- Neq! empty -->
+    <Item identifier="bikehorn" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="clownmaskunique" equip="true" />
+    <Item identifier="clowncostume" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="1">
+    <Item identifier="alientrinket3" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="bikehorn" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="clownmaskunique" equip="true" />
+    <Item identifier="clownsuitunique" equip="true" />
+  </inventory>
+  <!-- Clown Variation 3 -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="3">
+    <Item identifier="alientrinket1" />
+    <!-- Neq! empty -->
+    <Item identifier="toyhammer" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="clownmaskunique" equip="true" />
+    <Item identifier="clowncostume" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="2">
+    <Item identifier="alientrinket2" />
+    <!-- Neq! empty -->
+    <Item identifier="toyhammer" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="clownmaskunique" equip="true" />
+    <Item identifier="clowncostume" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="1">
+    <Item identifier="alientrinket3" />
+    <!-- Neq! empty -->
+    <Item identifier="toyhammer" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="clownmaskunique" equip="true" />
+    <Item identifier="clownsuitunique" equip="true" />
+  </inventory>
+  <!-- Cultist -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag" accessiblewhenalive="True" accessiblebyowner="True" commonness="5">
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="cultistrobes" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag" accessiblewhenalive="True" accessiblebyowner="True" commonness="5">
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="zealotrobes" equip="true" />
+  </inventory>
+  <!-- Cultist With Eggs -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="3">
+    <Item identifier="huskeggsbasic" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="cultistrobes" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="3">
+    <Item identifier="huskeggsbasic" />
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="zealotrobes" equip="true" />
+  </inventory>
+  <!-- Cultist With Stabby -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag" accessiblewhenalive="True" accessiblebyowner="True" commonness="2">
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="ritualknife" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+    <Item identifier="zealotrobes" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag" accessiblewhenalive="True" accessiblebyowner="True" commonness="2">
+    <!-- Neq! empty -->
+    <Item identifier="ritualknife" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_medic" />
+    <Item identifier="disciplerobes" equip="true" />
+  </inventory>
+  <!-- Cultist Templar -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag" accessiblewhenalive="True" accessiblebyowner="True" commonness="2">
+    <!-- Neq! empty -->
+    <Item identifier="huskoldfists" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_security" />
+    <Item identifier="templararmour" equip="true" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag" accessiblewhenalive="True" accessiblebyowner="True" commonness="2">
+    <!-- Neq! empty -->
+    <Item identifier="ritualknife" />
+    <Item identifier="huskoldfists" />
+    <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_security" />
+    <Item identifier="templararmour" equip="true" />
+  </inventory>
+  <Heads>
+    <Head tags="head1,male" sheetindex="0,0" />
+    <Head tags="head2,male" sheetindex="0,0" />
+    <Head tags="head3,male" sheetindex="0,0" />
+    <Head tags="head4,male" sheetindex="0,0" />
+    <Head tags="head5,male" sheetindex="0,0" />
+    <Head tags="head6,male" sheetindex="0,0" />
+    <Head tags="head7,male" sheetindex="0,0" />
+    <Head tags="head8,male" sheetindex="0,0" />
+    <Head tags="head9,male" sheetindex="0,0" />
+    <Head tags="head10,male" sheetindex="0,0" />
+    <Head tags="head11,male" sheetindex="0,0" />
+    <Head tags="head12,male" sheetindex="0,0" />
+    <Head tags="head13,male" sheetindex="0,0" />
+    <Head tags="head14,male" sheetindex="0,0" />
+    <Head tags="head15,male" sheetindex="0,0" />
+    <Head tags="head16,male" sheetindex="0,0" />
+    <Head tags="head1,female" sheetindex="0,0" />
+    <Head tags="head2,female" sheetindex="0,0" />
+    <Head tags="head3,female" sheetindex="0,0" />
+    <Head tags="head4,female" sheetindex="0,0" />
+    <Head tags="head5,female" sheetindex="0,0" />
+    <Head tags="head6,female" sheetindex="0,0" />
+    <Head tags="head7,female" sheetindex="0,0" />
+    <Head tags="head8,female" sheetindex="0,0" />
+    <Head tags="head9,female" sheetindex="0,0" />
+    <Head tags="head10,female" sheetindex="0,0" />
+    <Head tags="head11,female" sheetindex="0,0" />
+    <Head tags="head12,female" sheetindex="0,0" />
+    <Head tags="head13,female" sheetindex="0,0" />
+    <Head tags="head14,female" sheetindex="0,0" />
+    <Head tags="head15,female" sheetindex="0,0" />
+    <Head tags="head16,female" sheetindex="0,0" />
+  </Heads>
+  <Vars>
+    <Var var="GENDER" tags="female,male" />
+  </Vars>
+  <MenuCategory var="GENDER" />
+  <Pronouns var="GENDER" />
+  <HeadAttachments>
+    <Wearable type="Husk">
+      <sprite name="Husk" texture="Content/Characters/Human/Human_husk.png" hidewearablesoftype="Beard" sheetindex="0,0" />
+    </Wearable>
+    <Wearable type="Herpes">
+      <sprite name="Herpes" texture="Content/Characters/Human/Human_karma.png" sheetindex="0,0" />
+    </Wearable>
+  </HeadAttachments>
+  <StatusEffect type="Always" target="This" comparison="and">
+    <!-- Kickstart randomchance-->
+    <Conditional isdead="False" />
+    <Conditional huskrandomchance="eq 0" />
+    <Affliction identifier="huskrandomchance" amount="50" />
+  </StatusEffect>
+  <StatusEffect type="OnDamaged" target="This" onlyplayertriggered="true" requiredafflictions="damage,blunttrauma,gunshotwound,bitewounds,lacerations,explosiondamage" comparison="and" duration="10">
+    <!-- When damaged, if random chance is at a certain strength and the husk isn't already pretending to be dead, initiate fake death procedure.-->
+    <Conditional isdead="False" />
+    <Conditional huskfakedeath="eq 0" />
+    <Conditional huskdamaged="eq 0" />
+    <Conditional huskrandomchance="gte 25" />
+    <Conditional healthpercentage="lte -35" />
+    <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/death1.ogg" range="1000" volume="1" selectionmode="Random" dontmuffle="false" />
+    <sound file="%ModDir%/Enhanced Husks/Characters/Humanhuskold/death2.ogg" range="1000" volume="1" selectionmode="Random" dontmuffle="false" />
+    <Affliction identifier="huskdamaged" amount="5000" />
+    <Affliction identifier="huskfakedeath" amount="5000" />
+  </StatusEffect>
+  <StatusEffect type="OnDamaged" target="This" onlyplayertriggered="true" requiredafflictions="damage,blunttrauma,gunshotwound,bitewounds,lacerations,explosiondamage" comparison="and">
+    <!-- When damaged while pretending to be dead, abort the mission, it's not working.-->
+    <Conditional isdead="False" />
+    <Conditional huskfakedeath="gt 50" />
+    <ReduceAffliction identifier="huskfakedeath" amount="25" />
+  </StatusEffect>
+  <StatusEffect type="OnDamaged" target="This" onlyplayertriggered="true" requiredafflictions="damage,blunttrauma,gunshotwound,bitewounds,lacerations,explosiondamage" comparison="and">
+    <!-- GET UP.-->
+    <Conditional huskfakedeathparalysis="eq 0" />
+    <Conditional huskdamaged="neq 0" />
+    <ReduceAffliction identifier="huskfakedeath" amount="1000" />
+    <ReduceAffliction identifier="paralysis" amount="1000" />
+    <ReduceAffliction identifier="stun" amount="1000" />
+  </StatusEffect>
+  <StatusEffect type="OnDamaged" target="This" onlyplayertriggered="true" requiredafflictions="damage,blunttrauma,gunshotwound,bitewounds,lacerations,explosiondamage" comparison="and">
+    <!-- GET UP THE [!£%&!] UP!!!1!.-->
+    <Conditional huskfakedeathparalysis="eq 0" />
+    <Conditional huskdamaged="neq 0" />
+    <Affliction identifier="huskfakedeathparalysis" amount="200" />
+    <Affliction identifier="humanhuskhaste" amount="15" />
+  </StatusEffect>
+  <StatusEffect type="Always" target="This" comparison="and">
+    <Conditional huskfakedeathparalysis="neq 0" />
+    <Conditional huskdamaged="neq 0" />
+    <ReduceAffliction identifier="paralysis" amount="1000" />
+  </StatusEffect>
+</Character>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<backgroundcreatures>
+  <feesh speed="200.0" wanderamount="3.0" wanderzamount="0.1" swarmmin="2" swarmmax="15" swarmradius="2300" swarmcohesion="0.0" cohesion="0.0" scale="0.05">
+    <Sprite texture="%ModDir%/Enhanced Husks/BackgroundCreatures/bgFish1.png" sourcerect="0,0,266,166" origin="0.5,0.5" />
+  </feesh>
+  <Victor speed="100.0" wanderamount="4.2" wanderzamount="0.1" swarmmin="3" swarmmax="13" swarmradius="1300" swarmcohesion="0.0" cohesion="0.0" scale="0.07">
+    <Sprite texture="%ModDir%/Enhanced Husks/BackgroundCreatures/bgFish1.png" sourcerect="266,25,248,120" origin="0.5,0.5" />
+  </Victor>
+  <Akers speed="200.0" wanderamount="3.0" wanderzamount="0.1" swarmmin="1" swarmmax="6" swarmradius="2300" swarmcohesion="0.0" cohesion="0.0" scale="0.1">
+    <Sprite texture="%ModDir%/Enhanced Husks/BackgroundCreatures/bgFish1.png" sourcerect="0,170,290,165" origin="0.5,0.5" />
+  </Akers>
+  <Behemoth1 speed="20.0" wanderamount="0.1" wanderzamount="0.1" swarmmin="1" swarmmax="1" scale="10.0" disablerotation="true" disableflipping="true" mindepth="3000" maxdepth="10000" commonness="0.2" maxcount="1">
+    <Sprite texture="%ModDir%/Enhanced Husks/BackgroundCreatures/Behemoth1.png" sourcerect="41,40,316,415" origin="0.56962025,0.32048193" />
+  </Behemoth1>
+  <Behemoth2 speed="20.0" wanderamount="0.1" wanderzamount="0.1" swarmmin="1" swarmmax="1" scale="10.0" disablerotation="true" disableflipping="true" mindepth="3000" maxdepth="10000" commonness="0.2" maxcount="1">
+    <Sprite texture="%ModDir%/Enhanced Husks/BackgroundCreatures/Behemoth2.png" sourcerect="1,1,606,315" origin="0.6089109,0.51111114" />
+    <LightSprite texture="%ModDir%/Enhanced Husks/BackgroundCreatures/Behemoth2 Emmission.png" sourcerect="1,1,606,315" origin="0.6089109,0.51111114" />
+  </Behemoth2>
+</backgroundcreatures>

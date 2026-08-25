@@ -1,0 +1,1504 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<npcsets>
+  <npcset identifier="ma_generalnpcs">
+    <!--<npc identifier="oldfriend" job="who" aimspeed="1.0" aimaccuracy="1.0">
+      <ItemSet commonness="1">
+        <Item identifier="commonerclothes1" equip="true" />
+        <Item identifier="artmod_nahdivingmask" equip="true" />
+		<Item identifier="artmod_toolbelt" equip="true" />
+        <Item identifier="idcard" equip="true" showpreview="false" />
+      </ItemSet>
+	  <ItemSet commonness="1">
+        <Item identifier="commonerclothes2" equip="true" />
+        <Item identifier="artmod_nahdivingmask" equip="true" />
+		<Item identifier="toolbelt" equip="true" />
+        <Item identifier="idcard" equip="true" showpreview="false" />
+      </ItemSet>
+	  <ItemSet commonness="1">
+        <Item identifier="commonerclothes3" equip="true" />
+        <Item identifier="clownmask" equip="true" />
+		<Item identifier="laserseller_backpackn" equip="true" />
+        <Item identifier="idcard" equip="true" showpreview="false" />
+      </ItemSet>
+	  <ItemSet commonness="1">
+        <Item identifier="commonerclothes4" equip="true" />
+        <Item identifier="clownmask" equip="true" />
+		<Item identifier="artmod_toolbelt" equip="true" />
+        <Item identifier="idcard" equip="true" showpreview="false" />
+      </ItemSet>
+	  <ItemSet commonness="1">
+        <Item identifier="commonerclothes5" equip="true" />
+        <Item identifier="hoodn" equip="true" />
+		<Item identifier="toolbelt" equip="true" />
+        <Item identifier="idcard" equip="true" showpreview="false" />
+      </ItemSet>
+	  
+	  <ItemSet commonness="1">
+        <Item identifier="orangejumpsuit1" equip="true" />
+        <Item identifier="artmod_nahdivingmask" equip="true" />
+		<Item identifier="artmod_toolbelt" equip="true" />
+        <Item identifier="idcard" equip="true" showpreview="false" />
+      </ItemSet>
+	  <ItemSet commonness="1">
+        <Item identifier="orangejumpsuit2" equip="true" />
+        <Item identifier="artmod_nahdivingmask" equip="true" />
+		<Item identifier="toolbelt" equip="true" />
+        <Item identifier="idcard" equip="true" showpreview="false" />
+      </ItemSet>
+	  <ItemSet commonness="1">
+        <Item identifier="bluejumpsuit2" equip="true" />
+        <Item identifier="clownmask" equip="true" />
+		<Item identifier="laserseller_backpackn" equip="true" />
+        <Item identifier="idcard" equip="true" showpreview="false" />
+      </ItemSet>
+	  <ItemSet commonness="1">
+        <Item identifier="bluejumpsuit1" equip="true" />
+        <Item identifier="clownmask" equip="true" />
+		<Item identifier="artmod_toolbelt" equip="true" />
+        <Item identifier="idcard" equip="true" showpreview="false" />
+      </ItemSet>
+    </npc>-->
+    <npc identifier="artmod_noselessclown" commonness="1" faction="clowns" moduleflags="clownmodule" job="assistant" behavior="Passive" preferredoutpostmoduletypes="clownmodule" spawnpointtags="clown">
+      <ItemSet commonness="1">
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="rednoselessclownmask" equip="true" />
+        <Item identifier="clowncostume" equip="true" />
+        <Item identifier="bikehorn" equip="false" />
+        <Item identifier="divingmask">
+          <Item identifier="oxygentank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="1">
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="rednoselessclownmask" equip="true" />
+        <Item identifier="commonerclothes2" equip="true" />
+        <Item identifier="bikehorn" equip="false" />
+        <Item identifier="divingmask">
+          <Item identifier="oxygentank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="1">
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="rednoselessclownmask" equip="true" />
+        <Item identifier="commonerclothes3" equip="true" />
+        <Item identifier="bikehorn" equip="false" />
+        <Item identifier="divingmask">
+          <Item identifier="oxygentank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="1">
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="rednoselessclownmask" equip="true" />
+        <Item identifier="vipclothes1" equip="true" />
+        <Item identifier="toyhammer" equip="false" />
+        <Item identifier="divingmask">
+          <Item identifier="oxygentank" />
+        </Item>
+      </ItemSet>
+    </npc>
+  </npcset>
+  <npcset identifier="clowns_abandonedoutpostnpcs">
+    <npc identifier="noseless_clown" commonness="0" moduleflags="crewmodule,engineeringmodule" job="securityofficer" behavior="Passive" healthmultiplier="0.75" healthmultiplierinmultiplayer="1.1" aimspeed="1.25" aimaccuracy="0.25" reportrange="400">
+      <!-- тринкеты -->
+      <ItemSet commonness="0.15">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="commonerclothes1" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="noseless_specialinjector" />
+        <Item identifier="BOYhammer" equip="false" />
+        <Item identifier="artmod_alientrinket16_rottube" equip="true" />
+      </ItemSet>
+      <ItemSet commonness="0.15">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="commonerclothes1" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="noseless_specialinjector" />
+        <Item identifier="BOYhammer" equip="false" />
+        <Item identifier="artmod_alientrinket11_browtube" equip="true" />
+      </ItemSet>
+      <ItemSet commonness="0.15">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="commonerclothes1" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="BOYhammer" equip="false" />
+        <Item identifier="artmod_alientrinket17_lightbluetube" equip="true" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.15">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="commonerclothes2" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_alientrinket12_greentube" equip="true" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.15">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="commonerclothes3" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="BOYhammer" equip="false" />
+        <Item identifier="artmod_alientrinket13_pinktube" equip="true" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.15">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="commonerclothes4" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_alientrinket14_bluetube" equip="true" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.15">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="commonerclothes5" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="BOYhammer" equip="false" />
+        <Item identifier="artmod_alientrinket15_redtube" equip="true" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <!-- милишка -->
+      <ItemSet commonness="0.24">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="researcherclothes" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="BOYhammer" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.24">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="commonerclothes2" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="BOYhammer" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.24">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="commonerclothes3" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scraphalfsword" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.24">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="minerclothes" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="divingknife" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.15">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="commonerclothes5" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="divingknifeunique" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.24">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="commonerclothes1" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scrapknife" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.24">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="commonerclothes2" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scrapknife" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.24">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="commonerclothes3" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scrapsteelknife" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.24">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="minerclothes" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scraperknife" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.24">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="commonerclothes4" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scrapdementoniteaxe" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.24">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="commonerclothes4" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scrapclub" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.24">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="commonerclothes5" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scrapfulgurknife" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.24">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="commonerclothes5" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scraplockpata" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.24">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="medicalofficerclothes" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scraphardbench" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <!-- дальний бой -->
+      <ItemSet commonness="0.20">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="medicalofficerclothes" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="revolver" equip="false">
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+        </Item>
+        <Item identifier="BOYhammer" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.20">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="researcherclothes" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="revolver" equip="false">
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+        </Item>
+        <Item identifier="artmod_scrapknife" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.20">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="quartermasterclothes" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_piraterevolver" equip="false">
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+        </Item>
+        <Item identifier="artmod_scrapaxe" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.20">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="administratorclothes" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scraprevolver" equip="false">
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+        </Item>
+        <Item identifier="artmod_scraplittleaxe" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+    </npc>
+    <npc identifier="noseless_clowneng" commonness="0" moduleflags="crewmodule,engineeringmodule" job="securityofficer" behavior="Patrol" healthmultiplier="1" healthmultiplierinmultiplayer="1.1" aimspeed="1.25" aimaccuracy="1" reportrange="400">
+      <ItemSet commonness="0.4">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="orangejumpsuit1" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scraprevolver" equip="false">
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+        </Item>
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="artmod_scrapaxe" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+        <Item identifier="toolbelt" equip="true">
+          <Item identifier="weldingfueltank" />
+        </Item>
+        <Item identifier="screwdriver" />
+      </ItemSet>
+      <ItemSet commonness="0.4">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="orangejumpsuit2" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="piratenucleargun" equip="true">
+          <Item identifier="fuelrod" />
+        </Item>
+        <Item identifier="artmod_piraterevolver" equip="false">
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+        </Item>
+        <Item identifier="artmod_scrapknife" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+        <Item identifier="screwdriver" />
+        <Item identifier="weldingtool">
+          <Item identifier="artmod_weldingfuelhugetank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.4">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="pirateclothesnovice" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="revolver" equip="false">
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+        </Item>
+        <Item identifier="artmod_scrapsteelknife" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+        <Item identifier="toolbelt" equip="true" />
+      </ItemSet>
+      <ItemSet commonness="0.4">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="pirateclothesnovice" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="revolver" equip="false">
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+        </Item>
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="BOYhammer" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+        <Item identifier="toolbelt" equip="true">
+          <Item identifier="oxygentank" />
+          <Item identifier="oxygentank" />
+        </Item>
+      </ItemSet>
+    </npc>
+    <npc identifier="noseless_clownmecha" commonness="0" moduleflags="crewmodule,engineeringmodule" job="securityofficer" behavior="Patrol" healthmultiplier="1" healthmultiplierinmultiplayer="1.1" aimspeed="1.25" aimaccuracy="0.5" reportrange="400">
+      <ItemSet commonness="0.4">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="bluejumpsuit1" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="shotgun" equip="false">
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+        </Item>
+        <Item identifier="clown_shotgunshell" />
+        <Item identifier="clown_shotgunshell" />
+        <Item identifier="clown_shotgunshell" />
+        <Item identifier="clown_shotgunshell" />
+        <Item identifier="clown_shotgunshell" />
+        <Item identifier="clown_shotgunshell" />
+        <Item identifier="artmod_scrapmechaknife" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+        <Item identifier="toolbelt" equip="true">
+          <Item identifier="oxygentank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.4">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="bluejumpsuit2" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scrapshotgun" equip="false">
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+        </Item>
+        <Item identifier="BOYhammer" equip="false" />
+        <Item identifier="wrench" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+        <Item identifier="toolbelt" equip="true" />
+        <Item identifier="weldingtool">
+          <Item identifier="weldingfueltank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.4">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="pirateclothesnovice" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="shotgun" equip="false">
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+        </Item>
+        <Item identifier="artmod_scrapmechaknife" equip="false" />
+        <Item identifier="wrench" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+        <Item identifier="artmod_pirateweldingtool">
+          <Item identifier="artmod_weldingfuelhugetank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.4">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="pirateclothesnovice" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_pirateshotgun" equip="false">
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+        </Item>
+        <Item identifier="artmod_scraplockpata" equip="false" />
+        <Item identifier="wrench" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+        <Item identifier="toolbelt" equip="true">
+          <Item identifier="artmod_smalloxygenitetank" />
+          <Item identifier="artmod_piratedivingmask" />
+        </Item>
+        <Item identifier="weldingtool">
+          <Item identifier="weldingfueltank" />
+        </Item>
+      </ItemSet>
+    </npc>
+    <npc identifier="noseless_clownsb" commonness="0" moduleflags="crewmodule,engineeringmodule" job="securityofficer" behavior="Patrol" healthmultiplier="1.75" healthmultiplierinmultiplayer="1.1" aimspeed="1.25" aimaccuracy="0.75" reportrange="400">
+      <ItemSet commonness="0.5">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="securitypatrolclothes" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="smg" equip="false">
+          <Item identifier="clown_smgmagazine" />
+        </Item>
+        <Item identifier="clown_smgmagazine" />
+        <Item identifier="stunbaton" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+        <Item identifier="bodyarmor" equip="true" />
+      </ItemSet>
+      <ItemSet commonness="0.35">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="securitypatrolclothes" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_piratesmg" equip="false">
+          <Item identifier="clown_smgmagazine" />
+        </Item>
+        <Item identifier="clown_smgmagazine" />
+        <Item identifier="BOYhammer" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+        <Item identifier="artmod_bodyarmor" equip="true" />
+      </ItemSet>
+      <ItemSet commonness="0.35">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="securitypatrolclothes" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scrapassaultrifle" equip="false">
+          <Item identifier="artmod_scrapassaultriflemagazine" />
+        </Item>
+        <Item identifier="artmod_scrapfulgurknife" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+        <Item identifier="artmod_bodyarmor" equip="true" />
+      </ItemSet>
+      <ItemSet commonness="0.35">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="securitypatrolclothes" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scrapheavymachinegun" equip="false">
+          <Item identifier="artmod_scrapheavymachinegunmagazine" />
+        </Item>
+        <Item identifier="artmod_scraplittlesaw" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+    </npc>
+    <npc identifier="noseless_bandit" commonness="0" moduleflags="crewmodule,engineeringmodule" job="securityofficer" behavior="Patrol" healthmultiplier="1.1" healthmultiplierinmultiplayer="1.1" aimspeed="1.4" aimaccuracy="1.15" reportrange="400">
+      <ItemSet commonness="1">
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="banditclothes1" equip="true" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="artmod_piratesmg">
+          <Item identifier="clown_smgmagazine" />
+        </Item>
+        <Item identifier="wrench" equip="true" />
+        <Item identifier="artmod_pirateboardingaxe" equip="false" />
+        <Item identifier="toolbelt" equip="true" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="1">
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="banditclothes1" equip="true" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="pirate_winchester">
+          <Item identifier="wichesterrounddepletedfuel" />
+          <Item identifier="wichesterroundhard" />
+          <Item identifier="wichesterroundhard" />
+        </Item>
+        <Item identifier="wichesterrounddepletedfuel" />
+        <Item identifier="wichesterrounddepletedfuel" />
+        <Item identifier="wichesterroundhard" />
+        <Item identifier="wichesterroundhard" />
+        <Item identifier="divingknife" equip="false" />
+        <Item identifier="revolver">
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+        </Item>
+        <Item identifier="noseless_specialinjector" />
+        <Item identifier="bodyarmor" equip="true" />
+      </ItemSet>
+      <ItemSet commonness="1">
+        <Item identifier="pirateclothesnovice" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="artmod_scrapshotgun" equip="false">
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+          <Item identifier="clown_shotgunshell" />
+        </Item>
+        <Item identifier="divingknife" />
+        <Item identifier="divingmask">
+          <Item identifier="oxygentank" />
+        </Item>
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="1">
+        <Item identifier="pirateclothesnovice" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="artmod_piraterevolver">
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+          <Item identifier="clown_revolverround" />
+        </Item>
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="clown_revolverround" />
+        <Item identifier="artmod_scrapclub" />
+        <Item identifier="toolbelt" equip="true" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="1">
+        <Item identifier="pirateclothesnovice" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="harpoongun">
+          <Item identifier="alienspear" />
+          <Item identifier="alienspear" />
+          <Item identifier="alienspear" />
+          <Item identifier="alienspear" />
+          <Item identifier="alienspear" />
+          <Item identifier="alienspear" />
+        </Item>
+        <Item identifier="artmod_scrapsword" />
+        <Item identifier="noseless_specialinjector" />
+        <Item identifier="artmod_bodyarmor" equip="true" />
+      </ItemSet>
+    </npc>
+    <npc identifier="noseless_pirate" commonness="0" moduleflags="none" job="securityofficer" behavior="Patrol" healthmultiplier="1.75" aimspeed="1" aimaccuracy="0.5" reportrange="250">
+      <ItemSet commonness="1">
+        <Item identifier="pirateclotheshard" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_clownshotgun">
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+        </Item>
+        <Item identifier="artmod_scraplittlesaw" />
+        <Item identifier="piratebodyarmor" equip="true" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="1">
+        <Item identifier="pirateclotheshard" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_clownsmg">
+          <Item identifier="smgmagazine" />
+        </Item>
+        <Item identifier="smgmagazine" />
+        <Item identifier="artmod_scraperknife" />
+        <Item identifier="piratebodyarmor" equip="true" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="1">
+        <Item identifier="pirateclotheshard" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_clownrevolver">
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+        </Item>
+        <Item identifier="artmod_scraphardbench" />
+        <Item identifier="piratebodyarmor" equip="true" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+    </npc>
+    <npc identifier="noseless_specialclown" commonness="0" moduleflags="none" job="captain" behavior="Passive" healthmultiplier="2.5" aimspeed="4.5" aimaccuracy="0.5" healthmultiplierinmultiplayer="1.1" reportrange="2000">
+      <ItemSet commonness="0.5">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="bodyarmor" equip="true" />
+        <Item identifier="noseless_clowncostume" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="clown_psipistol" equip="false"></Item>
+        <Item identifier="MANhammer" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="bodyarmor" equip="true" />
+        <Item identifier="noseless_clowncostume" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="clown_psismg" equip="false" />
+        <Item identifier="MANhammer" equip="false" />
+        <Item identifier="noseless_specialinjector" />
+      </ItemSet>
+    </npc>
+  </npcset>
+  <npcset identifier="ma_piratenpcs">
+    <npc identifier="artpiratecaptain" job="captain" moduleflags="none" behavior="Patrol" healthmultiplier="0.65" aimspeed="0.5" aimaccuracy="0.3" reportrange="650">
+      <ItemSet commonness="0.5">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="captainscap1" equip="true" />
+        <Item identifier="captainsuniform1" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_piraterevolver" equip="false">
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+        </Item>
+        <Item identifier="revolverround" amount="12" />
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="captainscap2" equip="true" />
+        <Item identifier="pirateclothes" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_piraterevolver" equip="false">
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+        </Item>
+        <Item identifier="revolverround" amount="12" />
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="piratecaptainhat" equip="true" />
+        <Item identifier="captainsuniform3" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_piraterevolver" equip="false">
+          <Item identifier="revolverrounddepletedfuel" />
+          <Item identifier="revolverrounddepletedfuel" />
+          <Item identifier="revolverrounddepletedfuel" />
+          <Item identifier="revolverrounddepletedfuel" />
+          <Item identifier="revolverrounddepletedfuel" />
+          <Item identifier="revolverrounddepletedfuel" />
+        </Item>
+        <Item identifier="revolverrounddepletedfuel" amount="12" />
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="piratecaptainhat" equip="true" />
+        <Item identifier="pirateclothes" equip="true" outfit="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_piraterevolver" equip="false">
+          <Item identifier="revolverrounddepletedfuel" />
+          <Item identifier="revolverrounddepletedfuel" />
+          <Item identifier="revolverrounddepletedfuel" />
+          <Item identifier="revolverrounddepletedfuel" />
+          <Item identifier="revolverrounddepletedfuel" />
+          <Item identifier="revolverrounddepletedfuel" />
+        </Item>
+        <Item identifier="revolverrounddepletedfuel" amount="12" />
+      </ItemSet>
+    </npc>
+    <npc identifier="artpiratecaptainlord" job="captain" moduleflags="none" behavior="Patrol" healthmultiplier="1.1" aimspeed="1.0" aimaccuracy="0.7" reportrange="5000">
+      <ItemSet commonness="0.5">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="pirateclotheshard" equip="true" outfit="true" />
+        <Item identifier="artmod_autoinjectorheadset" equip="true" showpreview="false">
+          <Item identifier="antidama2" showpreview="false" />
+        </Item>
+        <Item identifier="artmod_piratesmg">
+          <Item identifier="smgmagazine" />
+        </Item>
+        <Item identifier="smgmagazine" />
+        <Item identifier="captainspipe" equip="false">
+          <Item identifier="pipetobacco" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="captainscap2" equip="true" />
+        <Item identifier="pirateclotheshard" equip="true" outfit="true" />
+        <Item identifier="artmod_autoinjectorheadset" equip="true" showpreview="false">
+          <Item identifier="antidama2" showpreview="false" />
+        </Item>
+        <Item identifier="artmod_piratesmg">
+          <Item identifier="smgmagazine" />
+        </Item>
+        <Item identifier="smgmagazine" />
+        <Item identifier="captainspipe" equip="false">
+          <Item identifier="pipetobacco" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="captainsuniform1" equip="true" outfit="true" />
+        <Item identifier="artmod_autoinjectorheadset" equip="true" showpreview="false">
+          <Item identifier="antidama2" showpreview="false" />
+        </Item>
+        <Item identifier="artmod_clownmachinepistol">
+          <Item identifier="smgmagazine" />
+        </Item>
+        <Item identifier="smgmagazine" amount="2" />
+        <Item identifier="captainspipe" equip="false">
+          <Item identifier="pipetobacco" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <Item identifier="idcard" equip="true" showpreview="false" />
+        <Item identifier="piratecaptainhat" equip="true" />
+        <Item identifier="captainsuniform3" equip="true" outfit="true" />
+        <Item identifier="artmod_autoinjectorheadset" equip="true" showpreview="false">
+          <Item identifier="antidama2" showpreview="false" />
+        </Item>
+        <Item identifier="artmod_clownmachinepistol">
+          <Item identifier="smgmagazine" />
+        </Item>
+        <Item identifier="smgmagazine" amount="2" />
+        <Item identifier="captainspipe" equip="false">
+          <Item identifier="pipetobacco" />
+        </Item>
+      </ItemSet>
+    </npc>
+    <npc identifier="artpiratesecurityrecruit" job="securityofficer" spawnpointtags="security" behavior="Patrol" healthmultiplier="0.65" aimspeed="0.45" aimaccuracy="0.3" reportrange="250">
+      <ItemSet commonness="0.5">
+        <!-- одежда пиратановичка, шлем ганнера, гарпун с алиенспеар-->
+        <Item identifier="pirateclothesnovice" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="divingknife" />
+        <Item identifier="ballistichelmet2" equip="true" />
+        <Item identifier="divingmask">
+          <Item identifier="oxygentank" />
+        </Item>
+        <Item identifier="harpoongun">
+          <Item identifier="alienspear" />
+          <Item identifier="alienspear" />
+          <Item identifier="alienspear" />
+          <Item identifier="alienspear" />
+          <Item identifier="alienspear" />
+          <Item identifier="alienspear" />
+        </Item>
+        <Item identifier="alienspear" amount="6" />
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <!-- одежда секьюрити, шлем бандана, скрапавтопистол-->
+        <Item identifier="securityuniform2" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scrapautopistol">
+          <Item identifier="artmod_scrapautopistolmagazine" />
+        </Item>
+        <Item identifier="artmod_scraperknife" />
+        <Item identifier="piratebandana" equip="true" />
+        <Item identifier="divingmask">
+          <Item identifier="oxygentank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <!-- одежда ганнера, шлем риот, гарпун с спеарюник-->
+        <Item identifier="securityuniform3" equip="true" />
+        <Item identifier="piratebodyarmor" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="harpoongun">
+          <Item identifier="spearunique" />
+          <Item identifier="spearunique" />
+          <Item identifier="spearunique" />
+          <Item identifier="spearunique" />
+          <Item identifier="spearunique" />
+          <Item identifier="spearunique" />
+        </Item>
+        <Item identifier="spearunique" amount="6" />
+        <Item identifier="artmod_scrapknife" />
+        <Item identifier="ballistichelmet3" equip="true" />
+        <Item identifier="divingmask">
+          <Item identifier="oxygentank" />
+        </Item>
+      </ItemSet>
+    </npc>
+    <npc identifier="artpiratesecuritygunner" job="securityofficer" spawnpointtags="security" behavior="Patrol" healthmultiplier="0.85" aimspeed="0.6" aimaccuracy="0.5" reportrange="350">
+      <ItemSet commonness="0.5">
+        <!-- одежда спецназа, шлем пирата, пиратсмг-->
+        <Item identifier="securityuniform1" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_piratesmg">
+          <Item identifier="smgmagazine" />
+        </Item>
+        <Item identifier="smgmagazine" />
+        <Item identifier="smgmagazine" />
+        <Item identifier="divingknife" />
+        <Item identifier="piratehelmet" equip="true" />
+        <Item identifier="artmod_piratedivingmask">
+          <Item identifier="oxygentank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <!-- одежда ганнера, шлем ганнера, скрапавтопистол-->
+        <Item identifier="securityuniform3" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="artmod_autoinjectorheadset" equip="true" showpreview="false">
+          <Item identifier="antidama1" showpreview="false" />
+        </Item>
+        <Item identifier="artmod_scrapautopistol">
+          <Item identifier="artmod_scrapautopistolmagazine" />
+        </Item>
+        <Item identifier="artmod_scrapautopistolmagazine" />
+        <Item identifier="artmod_scrapautopistolmagazine" />
+        <Item identifier="artmod_scrapsteelknife" />
+        <Item identifier="ballistichelmet2" equip="true" />
+        <Item identifier="divingmask">
+          <Item identifier="artmod_smalloxygenitetank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <!-- одежда пирата, шлем бандана, скрапдробовик-->
+        <Item identifier="pirateclothes" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="artmod_autoinjectorheadset" equip="true" showpreview="false">
+          <Item identifier="antidama1" showpreview="false" />
+        </Item>
+        <Item identifier="artmod_scrapshotgun">
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+        </Item>
+        <Item identifier="piratebodyarmor" equip="true" />
+        <Item identifier="artmod_scraplockpata" />
+        <Item identifier="piratebandana" equip="true" />
+        <Item identifier="divingmask">
+          <Item identifier="artmod_smalloxygenitetank" />
+        </Item>
+      </ItemSet>
+    </npc>
+    <npc identifier="artpiratesecuritymateryi" job="securityofficer" spawnpointtags="security" behavior="Patrol" healthmultiplier="1.0" aimspeed="0.85" aimaccuracy="0.7" reportrange="350">
+      <ItemSet commonness="0.5">
+        <!-- одежда пирата, шлем риот, пиратдробовик-->
+        <Item identifier="pirateclothes" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_pirateshotgun">
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+        </Item>
+        <Item identifier="artmod_pirateboardingaxe" />
+        <Item identifier="bodyarmor" equip="true" />
+        <Item identifier="ballistichelmet3" equip="true" />
+        <Item identifier="divingmask">
+          <Item identifier="artmod_smalloxygenitetank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <!-- одежда секьюритиофицер, шлем бандана, скрапассаултрайфл-->
+        <Item identifier="securityuniform2" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scrapassaultrifle">
+          <Item identifier="artmod_scrapassaultriflemagazine" />
+        </Item>
+        <Item identifier="artmod_scraperknife" />
+        <Item identifier="piratebodyarmor" equip="true" />
+        <Item identifier="piratebandana" equip="true" />
+        <Item identifier="artmod_piratedivingmask">
+          <Item identifier="artmod_smalloxygenitetank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <!-- одежда пирата, шлем маскабезносых, скрапревольвер-->
+        <Item identifier="pirateclothesnovice" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scraprevolver">
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+          <Item identifier="revolverround" />
+        </Item>
+        <Item identifier="artmod_pirateboardingaxe" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="divingmask">
+          <Item identifier="oxygentank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <!-- одежда спецназа, шлем пирата, пиратсмг-->
+        <Item identifier="securityuniform1" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="artmod_autoinjectorheadset" equip="true" showpreview="false">
+          <Item identifier="antidama1" showpreview="false" />
+        </Item>
+        <Item identifier="artmod_piratesmg">
+          <Item identifier="smgmagazine" />
+        </Item>
+        <Item identifier="smgmagazine" />
+        <Item identifier="smgmagazine" />
+        <Item identifier="artmod_scrapsword" />
+        <Item identifier="piratebodyarmor" equip="true" />
+        <Item identifier="piratehelmet" equip="true" />
+        <Item identifier="artmod_piratedivingmask">
+          <Item identifier="oxygentank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <!-- одежда ганнера, шлем ганнера, скрапавтопистол-->
+        <Item identifier="securityuniform3" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="artmod_autoinjectorheadset" equip="true" showpreview="false">
+          <Item identifier="antidama1" showpreview="false" />
+        </Item>
+        <Item identifier="artmod_scrapautopistol">
+          <Item identifier="artmod_scrapautopistolmagazine" />
+        </Item>
+        <Item identifier="artmod_scrapautopistolmagazine" />
+        <Item identifier="artmod_scrapautopistolmagazine" />
+        <Item identifier="artmod_scrapsteelknife" />
+        <Item identifier="bodyarmor" equip="true" />
+        <Item identifier="ballistichelmet2" equip="true" />
+        <Item identifier="divingmask">
+          <Item identifier="artmod_smalloxygenitetank" />
+        </Item>
+      </ItemSet>
+    </npc>
+    <npc identifier="artpiratesecurityelite" job="securityofficer" spawnpointtags="security" behavior="Patrol" healthmultiplier="1.25" aimspeed="1.1" aimaccuracy="0.9" reportrange="5000">
+      <ItemSet commonness="0.5">
+        <!-- одежда пирата, шлем маска, скрапрайфл-->
+        <Item identifier="pirateclotheshard" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scrapassaultrifle">
+          <Item identifier="artmod_scrapassaultriflemagazine" />
+        </Item>
+        <Item identifier="artmod_scrapassaultriflemagazine" />
+        <Item identifier="artmod_scrapsteelknife" />
+        <Item identifier="bodyarmor" equip="true" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="divingmask">
+          <Item identifier="artmod_smalloxygenitetank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <!-- одежда ганнера, шлем баллистик, кловнвинтовка-->
+        <Item identifier="securityuniform3" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_clownsmg">
+          <Item identifier="smgmagazine" />
+        </Item>
+        <Item identifier="smgmagazine" />
+        <Item identifier="artmod_scrapsteelknife" />
+        <Item identifier="piratebodyarmor" equip="true" />
+        <Item identifier="ballistichelmet1" equip="true" />
+        <Item identifier="divingmask">
+          <Item identifier="artmod_smalloxygenitetank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <!-- одежда спецназа, шлем маска, кловншотган-->
+        <Item identifier="securityuniform1" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_clownshotgun">
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+          <Item identifier="shotgunshell" />
+        </Item>
+        <Item identifier="artmod_scrapsecira" />
+        <Item identifier="bodyarmor" equip="true" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="divingmask">
+          <Item identifier="oxygentank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <!-- одежда пирата, шлем ганнера, кловнрайфл-->
+        <Item identifier="pirateclothes" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_clownrifle">
+          <Item identifier="riflebullet" />
+          <Item identifier="riflebullet" />
+          <Item identifier="riflebullet" />
+          <Item identifier="riflebullet" />
+          <Item identifier="riflebullet" />
+          <Item identifier="riflebullet" />
+          <Item identifier="riflebullet" />
+          <Item identifier="riflebullet" />
+          <Item identifier="riflebullet" />
+          <Item identifier="riflebullet" />
+          <Item identifier="riflebullet" />
+          <Item identifier="riflebullet" />
+          <Item identifier="riflebullet" />
+          <Item identifier="riflebullet" />
+          <Item identifier="riflebullet" />
+          <Item identifier="riflebullet" />
+        </Item>
+        <Item identifier="artmod_scrapsecira" />
+        <Item identifier="piratebodyarmor" equip="true" />
+        <Item identifier="ballistichelmet2" equip="true" />
+        <Item identifier="divingmask">
+          <Item identifier="oxygentank" />
+        </Item>
+      </ItemSet>
+    </npc>
+    <npc identifier="artpiratebrute1" job="securityofficer" spawnpointtags="security" behavior="Patrol" healthmultiplier="1.0" aimspeed="1.1" aimaccuracy="0.45" reportrange="250">
+      <ItemSet commonness="0.5">
+        <!-- одежда пирата, шлем риот, скрапсекира-->
+        <Item identifier="pirateclothes" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scrapsecira" />
+        <Item identifier="bodyarmor" equip="true" />
+        <Item identifier="ballistichelmet3" equip="true" />
+        <Item identifier="divingmask">
+          <Item identifier="artmod_smalloxygenitetank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <!-- одежда спецназа, шлем бандана, гранатомет-->
+        <Item identifier="securityuniform1" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="grenadelauncher">
+          <Item identifier="40mmgrenade" />
+        </Item>
+        <Item identifier="40mmgrenade" />
+        <Item identifier="artmod_pirateboardingaxe" />
+        <Item identifier="piratebandana" equip="true" />
+        <Item identifier="artmod_piratedivingmask">
+          <Item identifier="artmod_smalloxygenitetank" />
+        </Item>
+      </ItemSet>
+    </npc>
+    <npc identifier="artpiratebrute2" job="securityofficer" spawnpointtags="security" behavior="Patrol" healthmultiplier="1.25" aimspeed="1.1" aimaccuracy="0.6" reportrange="250">
+      <ItemSet commonness="0.5">
+        <!-- одежда секьюрити, шлем баллистик, скрапмачинган-->
+        <Item identifier="securityuniform2" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="artmod_scrapheavymachinegun">
+          <Item identifier="artmod_scrapheavymachinegunmagazine" />
+        </Item>
+        <Item identifier="artmod_pirateboardingaxe" />
+        <Item identifier="bodyarmor" equip="true" />
+        <Item identifier="ballistichelmet1" equip="true" />
+        <Item identifier="divingmask">
+          <Item identifier="artmod_smalloxygenitetank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <!-- одежда пирата, шлем бандана, компактгренайдлайнчер-->
+        <Item identifier="pirateclothes" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="compactgrenadelauncher">
+          <Item identifier="40mmgrenade" />
+          <Item identifier="40mmgrenade" />
+          <Item identifier="40mmgrenade" />
+          <Item identifier="40mmgrenade" />
+        </Item>
+        <Item identifier="artmod_scrapaxe" />
+        <Item identifier="piratebandana" equip="true" />
+        <Item identifier="artmod_piratedivingmask">
+          <Item identifier="artmod_smalloxygenitetank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.15">
+        <!-- одежда спецназа, шлем маска, пиратарзи-->
+        <Item identifier="securityuniform1" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="piratealienminigun" />
+        <Item identifier="artmod_scrapdementoniteaxe" />
+        <Item identifier="piratebodyarmor" equip="true" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="divingmask">
+          <Item identifier="oxygentank" />
+        </Item>
+      </ItemSet>
+    </npc>
+    <npc identifier="artpiratebrute3" job="securityofficer" spawnpointtags="security" behavior="Patrol" healthmultiplier="1.55" aimspeed="1.1" aimaccuracy="0.85" reportrange="5000">
+      <ItemSet commonness="0.25">
+        <!-- одежда пирата, шлем маска, пиратарзи-->
+        <Item identifier="pirateclotheshard" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="piratealienminigun"></Item>
+        <Item identifier="artmod_scraplittlesaw" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="divingmask">
+          <Item identifier="oxygentank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.25">
+        <Item identifier="securityuniform2" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="artmod_autoinjectorheadset" equip="true" showpreview="false">
+          <Item identifier="antidama2" showpreview="false" />
+        </Item>
+        <Item identifier="artmod_scraphammer" />
+        <Item identifier="piratebodyarmor" equip="true" />
+        <Item identifier="noseless_clownmask" equip="true" />
+        <Item identifier="divingmask">
+          <Item identifier="oxygentank" />
+        </Item>
+      </ItemSet>
+    </npc>
+    <npc identifier="artpirateengineerrecruit" job="engineer" behavior="Patrol" healthmultiplier="0.7" aimspeed="0.3" aimaccuracy="0.3" reportrange="250">
+      <ItemSet commonness="0.5">
+        <Item identifier="pirateclothesnovice" equip="true" />
+        <Item identifier="piratebandana" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="wrenchhardened" equip="true" />
+        <Item identifier="screwdriver" equip="true" />
+        <Item identifier="pirate_winchester" equip="true" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="divingmask">
+          <Item identifier="oxygentank" />
+        </Item>
+        <Item identifier="weldingtool">
+          <Item identifier="weldingfueltank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <Item identifier="pirateclothesnovice" equip="true" />
+        <Item identifier="piratebandana" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="wrench" equip="true" />
+        <Item identifier="screwdriverhardened" equip="true" />
+        <Item identifier="pirate_winchester" equip="true" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="artmod_piratedivingmask">
+          <Item identifier="oxygentank" />
+        </Item>
+        <Item identifier="weldingtool">
+          <Item identifier="artmod_weldingfuelhugetank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.2">
+        <Item identifier="pirateclothesnovice" equip="true" />
+        <Item identifier="piratethermalgoggles" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="wrench" equip="true" />
+        <Item identifier="screwdriverhardened" equip="true" />
+        <Item identifier="crowbar" equip="true" />
+        <Item identifier="divingmask">
+          <Item identifier="artmod_smalloxygenitetank" />
+        </Item>
+        <Item identifier="weldingtool">
+          <Item identifier="weldingfueltank" />
+        </Item>
+      </ItemSet>
+    </npc>
+    <npc identifier="artpirateengineerveteran" job="engineer" behavior="Patrol" healthmultiplier="0.9" aimspeed="0.9" aimaccuracy="0.8" reportrange="5000">
+      <ItemSet commonness="0.5">
+        <Item identifier="pirateclothes" equip="true" />
+        <Item identifier="piratethermalgoggles" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="artmod_autoinjectorheadset" equip="true" showpreview="false">
+          <Item identifier="antidama1" showpreview="false" />
+        </Item>
+        <Item identifier="wrench" equip="true" />
+        <Item identifier="screwdriverdementonite" equip="true" />
+        <Item identifier="crowbar" equip="true" />
+        <Item identifier="divingknifedementonite" equip="true" />
+        <Item identifier="artmod_piratedivingmask">
+          <Item identifier="artmod_smalloxygenitetank" />
+        </Item>
+        <Item identifier="weldingtool">
+          <Item identifier="incendiumfueltank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <Item identifier="pirateclothes" equip="true" />
+        <Item identifier="piratethermalgoggles" equip="true" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="piratenucleargun">
+          <Item identifier="fuelrod" />
+        </Item>
+        <Item identifier="fuelrod" />
+        <Item identifier="wrench" equip="true" />
+        <Item identifier="screwdriverdementonite" equip="true" />
+        <Item identifier="crowbar" equip="true" />
+        <Item identifier="divingknifedementonite" equip="true" />
+        <Item identifier="artmod_piratedivingmask">
+          <Item identifier="artmod_smalloxygenitetank" />
+        </Item>
+        <Item identifier="weldingtool">
+          <Item identifier="incendiumfueltank" />
+        </Item>
+      </ItemSet>
+    </npc>
+    <npc identifier="artpiratemechanicrecruit" job="mechanic" healthmultiplier="0.7" aimspeed="0.3" aimaccuracy="0.3" reportrange="250">
+      <ItemSet commonness="0.5">
+        <Item identifier="pirateclothesnovice" equip="true" />
+        <Item identifier="piratebandana" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="artmod_scrapmechaknife" equip="true" />
+        <Item identifier="screwdriver" equip="true" />
+        <Item identifier="pirate_winchester" equip="true" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="wichesterround" />
+        <Item identifier="divingmask">
+          <Item identifier="artmod_smalloxygenitetank" />
+        </Item>
+        <Item identifier="weldingtool">
+          <Item identifier="artmod_weldingfuelhugetank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <Item identifier="pirateclothesnovice" equip="true" />
+        <Item identifier="piratebandana" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="artmod_scrapmechaknife" equip="true" />
+        <Item identifier="screwdriverhardened" equip="true" />
+        <Item identifier="artmod_pirateboardingaxe" equip="true" />
+        <Item identifier="artmod_piratedivingmask">
+          <Item identifier="oxygentank" />
+        </Item>
+        <Item identifier="artmod_pirateweldingtool">
+          <Item identifier="weldingfueltank" />
+        </Item>
+      </ItemSet>
+    </npc>
+    <npc identifier="artpiratemechanicveteran" job="mechanic" healthmultiplier="0.9" aimspeed="0.9" aimaccuracy="0.8" reportrange="5000">
+      <ItemSet commonness="0.5">
+        <Item identifier="pirateclothesnovice" equip="true" />
+        <Item identifier="piratebandana" equip="true" />
+        <Item identifier="artmod_autoinjectorheadset" equip="true" showpreview="false">
+          <Item identifier="antidama1" showpreview="false" />
+        </Item>
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="wrenchdementonite" equip="true" />
+        <Item identifier="screwdriver" equip="true" />
+        <Item identifier="pirate_winchester" equip="true" />
+        <Item identifier="wichesterroundhard" />
+        <Item identifier="wichesterroundhard" />
+        <Item identifier="wichesterroundhard" />
+        <Item identifier="wichesterroundhard" />
+        <Item identifier="wichesterroundhard" />
+        <Item identifier="wichesterroundhard" />
+        <Item identifier="wichesterroundhard" />
+        <Item identifier="wichesterroundhard" />
+        <Item identifier="artmod_pirateboardingaxe" equip="true" />
+        <Item identifier="artmod_piratedivingmask">
+          <Item identifier="artmod_smalloxygenitetank" />
+        </Item>
+        <Item identifier="artmod_pirateweldingtool">
+          <Item identifier="incendiumfueltank" />
+        </Item>
+      </ItemSet>
+      <ItemSet commonness="0.5">
+        <Item identifier="pirateclothesnovice" equip="true" />
+        <Item identifier="piratebandana" equip="true" />
+        <Item identifier="headset" equip="true" showpreview="false" />
+        <Item identifier="idcard" equip="true" />
+        <Item identifier="wrenchdementonite" equip="true" />
+        <Item identifier="screwdriver" equip="true" />
+        <Item identifier="pirate_winchester" equip="true" />
+        <Item identifier="wichesterroundhard" />
+        <Item identifier="wichesterroundhard" />
+        <Item identifier="wichesterroundhard" />
+        <Item identifier="wichesterroundhard" />
+        <Item identifier="wichesterroundhard" />
+        <Item identifier="wichesterroundhard" />
+        <Item identifier="wichesterroundhard" />
+        <Item identifier="wichesterroundhard" />
+        <Item identifier="artmod_pirateboardingaxe" equip="true" />
+        <Item identifier="artmod_piratedivingmask">
+          <Item identifier="artmod_smalloxygenitetank" />
+        </Item>
+        <Item identifier="artmod_pirateweldingtool">
+          <Item identifier="incendiumfueltank" />
+        </Item>
+      </ItemSet>
+    </npc>
+  </npcset>
+</npcsets>
+<!--commonness="1" spawnpointtags="admin" behavior="Passive" preferredoutpostmoduletypes="admin,adminmodule"-->

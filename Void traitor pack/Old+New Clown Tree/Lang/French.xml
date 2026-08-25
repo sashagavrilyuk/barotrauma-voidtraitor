@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="French" nowhitespace="false" translatedname="Français">
+  <talentname.inspiringtunesold>Mélodie motivante+</talentname.inspiringtunesold>
+  <talentdescription.inspiringtunesold>[afflictionname] vous permet de faire sonner votre klaxon pour réparer les objets électriques et mécaniques proches. Il accorde aussi aux alliés proches un gain de [skillamount] % à toutes les compétences pendant un court moment.</talentdescription.inspiringtunesold>
+  <afflictionname.inspiringtunesold>Mélodie motivante+</afflictionname.inspiringtunesold>
+  <afflictiondescription.inspiringtunesold>Les compétences du sujet sont temporairement améliorées.</afflictiondescription.inspiringtunesold>
+  <afflictionname.combatstimulantclown>Fortifiant</afflictionname.combatstimulantclown>
+  <afflictiondescription.combatstimulantclown>Gagnez des capacités qui boostent vos performances au combat.</afflictiondescription.combatstimulantclown>
+</infotexts>

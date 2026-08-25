@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <!-- triage tag (automatic) -->
+  <Item name="" identifier="triagetag" category="Material" cargocontaineridentifier="mediccrate" Tags="smallitem,medical" description="" useinhealthinterface="true" scale="0.3" impactsoundtag="impact_metal_light" maxstacksize="8">
+    <PreferredContainer primary="medcab" />
+    <Price baseprice="50" soldbydefault="false">
+      <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="8" />
+    </Price>
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="5" amount="2">
+      <RequiredSkill identifier="medical" level="5" />
+      <RequiredItem identifier="plastic" />
+    </Fabricate>
+    <Deconstruct time="5" />
+    <InventoryIcon texture="%ModDir%/NT Surgery Plus/Items/MainAtlas.png" sourcerect="256,128,64,128" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/NT Surgery Plus/Items/MainAtlas.png" sourcerect="256,128,64,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="35" height="70" density="5" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect tags="medical" type="OnUse" target="This" />
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+  </Item>
+  <!-- triage tag (manual) -->
+  <Item name="" identifier="manualtriagetag" category="Material" cargocontaineridentifier="mediccrate" Tags="smallitem,medical" description="" useinhealthinterface="true" scale="0.3" impactsoundtag="impact_metal_light" maxstacksize="8">
+    <PreferredContainer primary="medcab" />
+    <Price baseprice="50" soldbydefault="false">
+      <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="8" />
+    </Price>
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="5" amount="2">
+      <RequiredSkill identifier="medical" level="5" />
+      <RequiredItem identifier="plastic" />
+    </Fabricate>
+    <Deconstruct time="5" />
+    <InventoryIcon texture="%ModDir%/NT Surgery Plus/Items/MainAtlas.png" sourcerect="320,128,64,128" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/NT Surgery Plus/Items/MainAtlas.png" sourcerect="320,128,64,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="35" height="70" density="5" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect tags="medical" type="OnUse" target="This" />
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+  </Item>
+</Items>

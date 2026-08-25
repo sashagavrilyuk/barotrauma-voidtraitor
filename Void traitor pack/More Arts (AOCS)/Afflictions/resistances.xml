@@ -1,0 +1,501 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Afflictions>
+  <!--Для активируемого костюма-->
+  <!--<Affliction name="" 
+identifier="deployingdivingsuitbuff" 
+limbspecific="false" 
+indicatorlimb="RightArm" 
+showiconthreshold="0" 
+showicontoothersthreshold="1000" 
+showinhealthscannerthreshold="1000" 
+maxstrength="1" 
+iconcolors="94,54,95;163,73,164;200,191,231">
+<Effect minstrength="0" maxstrength="1" multiplybymaxvitality="true" strengthchange="-1">
+       <StatusEffect target="Character" delay="0.011">
+        <Conditional HasStatusTag="artmod_spawnsuit" />
+        <SpawnItem identifier="APS_deployed" spawnposition="ThisInventory" />
+      </StatusEffect>
+	  <StatusEffect target="Character" delay="0.011">
+        <Conditional HasStatusTag="artmod_deletesuit" />
+        <SpawnItem identifier="APS" spawnposition="ThisInventory" />
+      </StatusEffect>
+</Effect>
+<icon texture="Content/UI/TalentsIcons3.png" sheetindex="4,0" sheetelementsize="128,128" color="181,230,29,255" origin="0,0" />
+</Affliction>-->
+  <!--Для Гликерия-->
+  <Affliction name="" identifier="GlickBless" description="" limbspecific="false" maxstrength="1" activationthreshold="0" showiconthreshold="10" showicontoothersthreshold="1000">
+    <Description textidentifier="burnresistS.1" target="OtherCharacter" minstrength="0" maxstrength="1" />
+    <Description textidentifier="burnresistS.1.self" target="Self" minstrength="0" maxstrength="1" />
+    <Effect minstrength="0" maxstrength="1" strengthchange="-0.75" resistancefor="burn" minresistance="0.95" maxresistance="0.95" />
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/Fireresist.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--для кислородного пистолета-->
+  <Affliction name="" identifier="artmod_hyperoxia" iconcolors="25,255,25,255;25,155,25,255;25,25,255,255" description="" limbspecific="false" maxstrength="100" activationthreshold="0" showiconthreshold="0" showicontoothersthreshold="0">
+    <Description textidentifier="hyperoxia.1" target="OtherCharacter" minstrength="0" maxstrength="25" />
+    <Description textidentifier="hyperoxia.2" target="OtherCharacter" minstrength="25" maxstrength="50" />
+    <Description textidentifier="hyperoxia.3" target="OtherCharacter" minstrength="50" maxstrength="100" />
+    <Description textidentifier="hyperoxia.1.self" target="Self" minstrength="0" maxstrength="25" />
+    <Description textidentifier="hyperoxia.2.self" target="Self" minstrength="25" maxstrength="50" />
+    <Description textidentifier="hyperoxia.3.self" target="Self" minstrength="50" maxstrength="100" />
+    <Effect minstrength="0" maxstrength="25" strengthchange="-0.5" resistancefor="oxygenlow" minresistance="1" maxresistance="1" />
+    <Effect minstrength="25" maxstrength="50" strengthchange="-0.5" resistancefor="oxygenlow" minresistance="1" maxresistance="1" />
+    <Effect minstrength="50" maxstrength="100" strengthchange="-0.5" resistancefor="oxygenlow" minresistance="1" maxresistance="1" />
+    <PeriodicEffect mininterval="1" maxinterval="1">
+      <StatusEffect target="Character" disabledeltatime="true">
+        <Conditional artmod_hyperoxia="gt 0" />
+        <ReduceAffliction identifier="oxygenlow" strength="10" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="2" maxinterval="15">
+      <StatusEffect target="Character" comparison="and" disabledeltatime="true">
+        <Conditional artmod_hyperoxia="gt 25" />
+        <Conditional artmod_hyperoxia="lt 50" />
+        <Affliction identifier="organdamage" strength="10" probability="0.1" />
+        <Affliction identifier="Nausea" strength="10" probability="0.5" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="2" maxinterval="8">
+      <StatusEffect target="Character" disabledeltatime="true">
+        <Conditional artmod_hyperoxia="gte 50" />
+        <Affliction identifier="nausea" strength="10" probability="0.25" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="2" maxinterval="10">
+      <StatusEffect target="Character" comparison="and" disabledeltatime="true">
+        <Conditional artmod_hyperoxia="gte 50" />
+        <Conditional artmod_hyperoxia="lt 75" />
+        <Affliction identifier="organdamage" strength="10" probability="0.1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="2" maxinterval="5">
+      <StatusEffect target="Character" disabledeltatime="true">
+        <Conditional artmod_hyperoxia="gte 75" />
+        <Affliction identifier="organdamage" strength="10" probability="0.1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/Fireresist.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--для станлокера-->
+  <Affliction name="" identifier="onesecstunresist" type="immunity" limbspecific="false" maxstrength="1" activationthreshold="0" showiconthreshold="11110" showicontoothersthreshold="11110">
+    <Effect minstrength="0" maxstrength="1" strengthchange="-1" resistancefor="stun" minresistance="1.0" maxresistance="1.0" />
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/Stunresist.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--Для мобов из насоновых артов-->
+  <Affliction identifier="acidburnresist" type="immunity" limbspecific="false" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="0" maxstrength="10">
+    <Effect minstrength="0" maxstrength="10" strengthchange="0" resistancefor="acidburn" minresistance="1" maxresistance="1" />
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--Батончики-->
+  <Affliction name="" identifier="barbuffmech" description="" type="resistance" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="0" showiconthreshold="0" showicontoothersthreshold="0" maxstrength="600">
+    <Description textidentifier="barbuffmech.1" target="OtherCharacter" minstrength="0" maxstrength="600" />
+    <Description textidentifier="barbuffmech.1.self" target="Self" minstrength="0" maxstrength="600" />
+    <Effect minstrength="0" maxstrength="600" strengthchange="-4" resistancefor="barbuffelectro,barbuffmed,barbuffhelm,barbuffweapons" minresistance="1" maxresistance="1">
+      <StatValue stattype="MechanicalSkillBonus" minvalue="25" maxvalue="25" />
+      <StatusEffect target="Character" disabledeltatime="true" delay="0.2">
+        <ReduceAffliction identifier="barbuffelectro" strength="20" />
+        <ReduceAffliction identifier="barbuffmed" strength="20" />
+        <ReduceAffliction identifier="barbuffhelm" strength="20" />
+        <ReduceAffliction identifier="barbuffweapons" strength="20" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="barbuffelectro" description="" type="resistance" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="0" showiconthreshold="0" showicontoothersthreshold="0" maxstrength="600">
+    <Description textidentifier="barbuffelectro.1" target="OtherCharacter" minstrength="0" maxstrength="600" />
+    <Description textidentifier="barbuffelectro.1.self" target="Self" minstrength="0" maxstrength="600" />
+    <Effect minstrength="0" maxstrength="600" strengthchange="-4" resistancefor="barbuffmech,barbuffmed,barbuffhelm,barbuffweapons">
+      <StatValue stattype="ElectricalSkillBonus" minvalue="25" maxvalue="25" />
+      <StatusEffect target="Character" disabledeltatime="true" delay="0.2">
+        <ReduceAffliction identifier="barbuffmech" strength="20" />
+        <ReduceAffliction identifier="barbuffmed" strength="20" />
+        <ReduceAffliction identifier="barbuffhelm" strength="20" />
+        <ReduceAffliction identifier="barbuffweapons" strength="20" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="barbuffmed" description="" type="resistance" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="0" showiconthreshold="0" showicontoothersthreshold="0" maxstrength="600">
+    <Description textidentifier="barbuffmed.1" target="OtherCharacter" minstrength="0" maxstrength="600" />
+    <Description textidentifier="barbuffmed.1.self" target="Self" minstrength="0" maxstrength="600" />
+    <Effect minstrength="0" maxstrength="600" strengthchange="-4" resistancefor="barbuffmech,barbuffelectro,barbuffhelm,barbuffweapons">
+      <StatValue stattype="MedicalSkillBonus" minvalue="25" maxvalue="25" />
+      <StatusEffect target="Character" disabledeltatime="true" delay="0.2">
+        <ReduceAffliction identifier="barbuffmech" strength="20" />
+        <ReduceAffliction identifier="barbuffelectro" strength="20" />
+        <ReduceAffliction identifier="barbuffhelm" strength="20" />
+        <ReduceAffliction identifier="barbuffweapons" strength="20" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="barbuffhelm" description="" type="resistance" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="0" showiconthreshold="0" showicontoothersthreshold="0" maxstrength="600">
+    <Description textidentifier="barbuffhelm.1" target="OtherCharacter" minstrength="0" maxstrength="600" />
+    <Description textidentifier="barbuffhelm.1.self" target="Self" minstrength="0" maxstrength="600" />
+    <Effect minstrength="0" maxstrength="600" strengthchange="-4" resistancefor="barbuffmech,barbuffelectro,barbuffmed,barbuffweapons">
+      <StatValue stattype="HelmSkillBonus" minvalue="25" maxvalue="25" />
+      <StatusEffect target="Character" disabledeltatime="true" delay="0.2">
+        <ReduceAffliction identifier="barbuffmech" strength="20" />
+        <ReduceAffliction identifier="barbuffmed" strength="20" />
+        <ReduceAffliction identifier="barbuffelectro" strength="20" />
+        <ReduceAffliction identifier="barbuffweapons" strength="20" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="barbuffweapons" description="" type="resistance" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="0" showiconthreshold="0" showicontoothersthreshold="0" maxstrength="300">
+    <Description textidentifier="barbuffweapons.1" target="OtherCharacter" minstrength="0" maxstrength="300" />
+    <Description textidentifier="barbuffweapons.1.self" target="Self" minstrength="0" maxstrength="300" />
+    <Effect minstrength="0" maxstrength="300" strengthchange="-4" resistancefor="barbuffmech,barbuffelectro,barbuffmed,barbuffhelm">
+      <StatValue stattype="WeaponsSkillBonus" minvalue="15" maxvalue="15" />
+      <StatusEffect target="Character" disabledeltatime="true" delay="0.2">
+        <ReduceAffliction identifier="barbuffmech" strength="20" />
+        <ReduceAffliction identifier="barbuffmed" strength="20" />
+        <ReduceAffliction identifier="barbuffhelm" strength="20" />
+        <ReduceAffliction identifier="barbuffelectro" strength="20" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--От медикаментов с желе-->
+  <Affliction name="" identifier="burnresist" description="" type="resistance" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="0" showiconthreshold="0" showicontoothersthreshold="0" maxstrength="600">
+    <Description textidentifier="burnresist.1" target="OtherCharacter" minstrength="0" maxstrength="200" />
+    <Description textidentifier="burnresist.2" target="OtherCharacter" minstrength="200" maxstrength="600" />
+    <Description textidentifier="burnresist.1.self" target="Self" minstrength="0" maxstrength="200" />
+    <Description textidentifier="burnresist.2.self" target="Self" minstrength="200" maxstrength="400" />
+    <Description textidentifier="burnresist.3.self" target="Self" minstrength="400" maxstrength="600" />
+    <Effect minstrength="0" maxstrength="600" strengthchange="-1" resistancefor="burn,acidburn" minresistance="0.0" maxresistance="0.65" />
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/Fireresist.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="burnresistS" description="" type="resistance" isbuff="true" limbspecific="false" maxstrength="600" activationthreshold="0" showiconthreshold="0" showicontoothersthreshold="0">
+    <Description textidentifier="burnresistS.1" target="OtherCharacter" minstrength="0" maxstrength="600" />
+    <Description textidentifier="burnresistS.1.self" target="Self" minstrength="0" maxstrength="600" />
+    <Effect minstrength="0" maxstrength="600" strengthchange="-1.5" resistancefor="burn,acidburn" minresistance="0.0" maxresistance="0.75" />
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/Fireresist.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="bleedingresist" description="" type="resistance" isbuff="true" limbspecific="false" maxstrength="600" activationthreshold="0" showiconthreshold="0" showicontoothersthreshold="0">
+    <Description textidentifier="bleedingresist.1" target="OtherCharacter" minstrength="0" maxstrength="200" />
+    <Description textidentifier="bleedingresist.2" target="OtherCharacter" minstrength="200" maxstrength="600" />
+    <Description textidentifier="bleedingresist.1.self" target="Self" minstrength="0" maxstrength="200" />
+    <Description textidentifier="bleedingresist.2.self" target="Self" minstrength="200" maxstrength="400" />
+    <Description textidentifier="bleedingresist.3.self" target="Self" minstrength="400" maxstrength="600" />
+    <Effect minstrength="0" maxstrength="600" strengthchange="-1" resistancefor="bleeding" minresistance="0.0" maxresistance="0.65"></Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/Bleedresist.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="bleedingresistS" description="" type="resistance" isbuff="true" limbspecific="false" maxstrength="600" activationthreshold="0" showiconthreshold="0" showicontoothersthreshold="0">
+    <Description textidentifier="bleedingresistS.1" target="OtherCharacter" minstrength="0" maxstrength="600" />
+    <Description textidentifier="bleedingresistS.1.self" target="Self" minstrength="0" maxstrength="600" />
+    <Effect minstrength="0" maxstrength="600" strengthchange="-1.5" resistancefor="bleeding" minresistance="0.0" maxresistance="0.75" />
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/Bleedresist.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="chemresist" description="" type="resistance" isbuff="true" limbspecific="false" maxstrength="600" activationthreshold="0" showiconthreshold="0" showicontoothersthreshold="0">
+    <Description textidentifier="chemresist.1" target="OtherCharacter" minstrength="0" maxstrength="200" />
+    <Description textidentifier="chemresist.2" target="OtherCharacter" minstrength="200" maxstrength="600" />
+    <Description textidentifier="chemresist.1.self" target="Self" minstrength="0" maxstrength="200" />
+    <Description textidentifier="chemresist.2.self" target="Self" minstrength="200" maxstrength="400" />
+    <Description textidentifier="chemresist.3.self" target="Self" minstrength="400" maxstrength="600" />
+    <Effect minstrength="0" maxstrength="600" strengthchange="-1" resistancefor="stun" minresistance="0.0" maxresistance="1.0" />
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/Stunresist.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="chemresistS" description="" type="resistance" isbuff="true" limbspecific="false" maxstrength="600">
+    <Description textidentifier="chemresistS.1" target="OtherCharacter" minstrength="0" maxstrength="600" />
+    <Description textidentifier="chemresistS.1.self" target="Self" minstrength="0" maxstrength="600" />
+    <Effect minstrength="0" maxstrength="600" strengthchange="-1.5" resistancefor="stun" minresistance="0" maxresistance="100.0" />
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/Stunresist.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="dontusetoomuch" description="" causeofdeathdescription="Died of opiate overdose" selfcauseofdeathdescription="You have died of opiate overdose." limbspecific="false" indicatorlimb="Torso" showiconthreshold="0" maxstrength="100">
+    <Description textidentifier="dontusetoomuch.1" target="OtherCharacter" minstrength="0" maxstrength="40" />
+    <Description textidentifier="dontusetoomuch.2" target="OtherCharacter" minstrength="40" maxstrength="100" />
+    <Description textidentifier="dontusetoomuch.1.self" target="Self" minstrength="0" maxstrength="20" />
+    <Description textidentifier="dontusetoomuch.2.self" target="Self" minstrength="20" maxstrength="60" />
+    <Description textidentifier="dontusetoomuch.3.self" target="Self" minstrength="60" maxstrength="100" />
+    <Effect minstrength="0" maxstrength="100" multiplybymaxvitality="true" minvitalitydecrease="0" maxvitalitydecrease="2" strengthchange="-0.02"></Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="512,768,128,128" color="209,121,84,255" origin="0,0" />
+    <!--<icon texture="Mods/More Arts (AOCS)/Items/afflictionmaybe.png"  sourcerect="0,0,128,128" color="103,103,103,255" origin="0,0"/>-->
+  </Affliction>
+  <!--красная таблетка-->
+  <Affliction name="" identifier="redroundpill" description="" type="haste" isbuff="true" limbspecific="false" maxstrength="100">
+    <Effect minstrength="0" maxstrength="100" strengthchange="1" minspeedmultiplier="1.0" maxspeedmultiplier="1.25" minfacetint="255,0,0,0" maxfacetint="255,0,0,150">
+      <StatValue stattype="MeleeAttackSpeed" minvalue="0" maxvalue="0.25" />
+      <StatValue stattype="SwimmingSpeed" minvalue="0" maxvalue="0.2" />
+      <StatusEffect target="Character" setvalue="false" stackable="false" disabledeltatime="true">
+        <ReduceAffliction identifier="damage" strength="0.0025" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/test5.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--вторичное свойство для красной круглой таблетки-->
+  <Affliction name="" identifier="redroundpill2" description="Первое выше дает скорость, это дает резист к урону" type="resistance" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000" maxstrength="100">
+    <Effect minstrength="0" maxstrength="100" strengthchange="1" resistancefor="damage" minresistance="0" maxresistance="0.45">
+      <StatValue stattype="MeleeAttackMultiplier" minvalue="0" maxvalue="0.25" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--деградация тканей от красной таблетки-->
+  <Affliction name="" identifier="redroundpill3" description="" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="Head" maxstrength="1" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000">
+    <Effect minstrength="0" maxstrength="1" strengthchange="1">
+      <StatusEffect target="Character" setvalue="false" stackable="false" disabledeltatime="true">
+        <Affliction identifier="dontusetoomuch" strength="0.001" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="RedSyrgineSTRG" description="" type="resistance" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="0" showiconthreshold="0" showicontoothersthreshold="0" maxstrength="300">
+    <Effect minstrength="0" maxstrength="300" strengthchange="-1" resistancefor="damage" minresistance="0" maxresistance="0.75" minspeedmultiplier="1.0" maxspeedmultiplier="0.5">
+      <StatValue stattype="MaximumHealthMultiplier" minvalue="0" maxvalue="0.5" />
+      <StatusEffect type="always" target="Character" setvalue="false" stackable="false">
+        <ReduceAffliction identifier="bleeding" strength="0.4" />
+      </StatusEffect>
+      <!--<StatusEffect type="always" target="Character" SpeedMultiplier="0.5" color="195,136,60,255" setvalue="true"/>-->
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/redsyringe.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="BlueSyrgineSPEED" description="" type="resistance" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="0" showiconthreshold="0" showicontoothersthreshold="0" maxstrength="300">
+    <Effect minstrength="0" maxstrength="300" strengthchange="-1" minspeedmultiplier="1.0" maxspeedmultiplier="1.8">
+      <!--<StatusEffect type="always" target="Character" SpeedMultiplier="1.6" color="195,136,60,255" setvalue="true"/>-->
+      <StatValue stattype="SwimmingSpeed" minvalue="0" maxvalue="-0.4" />
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/bluesyringe.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--резист для синего шприца-->
+  <Affliction name="" identifier="strengthenOSD" description="" type="resistance" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000" maxstrength="600">
+    <Effect minstrength="0" maxstrength="300" strengthchange="-1" resistancefor="blunttrauma" minresistance="0" maxresistance="0.45"></Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/test5.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--для имморталити-->
+  <Affliction name="" identifier="chemresistSS" description="" type="immunity" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000" maxstrength="100">
+    <Effect minstrength="0" maxstrength="100" strengthchange="-10.0" resistancefor="stun" minresistance="0" maxresistance="1.0" />
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="640,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="fastfish" description="" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="0" showiconthreshold="0" showicontoothersthreshold="0" maxstrength="300">
+    <Effect minstrength="0" maxstrength="300" strengthchange="-1">
+      <StatValue stattype="SwimmingSpeed" minvalue="0" maxvalue="1.0" />
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/swimboost.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="fastrepair" description="" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="0" showiconthreshold="0" showicontoothersthreshold="0" maxstrength="100">
+    <Effect minstrength="0" maxstrength="100" strengthchange="-0.5">
+      <StatValue stattype="RepairToolStructureRepairMultiplier" minvalue="0" maxvalue="1.5" />
+      <StatValue stattype="RepairSpeed" minvalue="0" maxvalue="1.5" />
+      <StatValue stattype="MeleeAttackSpeed" minvalue="0" maxvalue="0.5" />
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/fastrepair.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="morevigor" description="" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="0" showiconthreshold="0" showicontoothersthreshold="0" maxstrength="600">
+    <Effect minstrength="0" maxstrength="600" minvitalitydecrease="0" maxvitalitydecrease="-20" strengthchange="-1">
+      <StatValue stattype="MaximumHealthMultiplier" minvalue="0" maxvalue="0.05" />
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/health.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="moremorevigor" description="" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="0" showiconthreshold="0" showicontoothersthreshold="0" maxstrength="600">
+    <Effect minstrength="0" maxstrength="600" minvitalitydecrease="0" maxvitalitydecrease="-60" strengthchange="-1">
+      <StatusEffect target="Character" stackable="false" delay="0.5" disabledeltatime="true">
+        <ReduceAffliction identifier="morevigor" amount="100" />
+      </StatusEffect>
+      <StatValue stattype="MaximumHealthMultiplier" minvalue="0" maxvalue="0.15" />
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/health+.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--для трех баффающих устройств-->
+  <Affliction name="" identifier="moremorevigorplus" iconcolors="55,25,25;155,25,25;255,25,25" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" showinhealthscannerthreshold="0" showiconthreshold="0" showicontoothersthreshold="1000" maxstrength="45">
+    <Effect minstrength="0" maxstrength="45" minvitalitydecrease="-35" maxvitalitydecrease="-50" strengthchange="-0.5">
+      <StatValue stattype="MaximumHealthMultiplier" minvalue="0" maxvalue="0.2" />
+      <StatusEffect target="Character" stackable="false" delay="0.5">
+        <ParticleEmitter particle="artmod_GlowDot" anglemin="0" anglemax="360" distancemin="0" distancemax="20" scalemin="1.0" scalemax="1.0" particleamount="1" particlespersecond="2" colormultiplier="255,0,0,255" drawontop="true" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/device_hp.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="invisplus" iconcolors="25,75,25,75;75,155,75,155;125,255,125,255" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" showinhealthscannerthreshold="0" showiconthreshold="0" showicontoothersthreshold="1000" maxstrength="30">
+    <Effect minstrength="0" maxstrength="45" strengthchange="-1">
+      <StatusEffect target="Character" stackable="false" delay="1">
+        <ParticleEmitter particle="artmod_clownsparklesmod" anglemin="0" anglemax="360" distancemin="10" particleamount="1" particlespersecond="1" distancemax="60" scalemin="1.0" scalemax="1.0" colormultiplier="25,255,25,255" drawontop="true" />
+        <Affliction identifier="concealed" amount="5" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/device_stealth.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="speedplus" iconcolors="60,140,195,255;60,107,195,255;60,0,195,255" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" showinhealthscannerthreshold="0" showiconthreshold="0" showicontoothersthreshold="1000" maxstrength="30">
+    <Effect minstrength="0" maxstrength="10" strengthchange="-0.5" minspeedmultiplier="1.2" maxspeedmultiplier="1.2">
+      <StatusEffect target="Character" stackable="false" delay="1">
+        <ParticleEmitter particle="artmod_GlowDot" anglemin="0" anglemax="360" distancemin="10" distancemax="60" scalemin="1.0" scalemax="1.0" particleamount="1" particlespersecond="2" colormultiplier="25,25,255,255" drawontop="true" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="10" maxstrength="20" strengthchange="-0.5" minspeedmultiplier="1.5" maxspeedmultiplier="1.5">
+      <StatusEffect target="Character" stackable="false" delay="0.6">
+        <ParticleEmitter particle="artmod_GlowDot" anglemin="0" anglemax="360" distancemin="10" distancemax="60" scalemin="1.0" scalemax="1.0" particleamount="1" particlespersecond="2" colormultiplier="25,25,255,255" drawontop="true" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="20" maxstrength="30" strengthchange="-0.5" minspeedmultiplier="1.8" maxspeedmultiplier="1.8">
+      <StatusEffect target="Character" stackable="false" delay="0.1">
+        <ParticleEmitter particle="artmod_GlowDot" anglemin="0" anglemax="360" distancemin="10" distancemax="60" scalemin="1.0" scalemax="1.0" particleamount="1" particlespersecond="2" colormultiplier="25,25,255,255" drawontop="true" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/device_speed.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--для одного из кучи эффектов гранаты-->
+  <Affliction name="" identifier="vigorminus" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" showinhealthscannerthreshold="0" showiconthreshold="0" showicontoothersthreshold="1000" maxstrength="45">
+    <Effect minstrength="0" maxstrength="45" strengthchange="-0.5" minspeedmultiplier="1.0" maxspeedmultiplier="0.75">
+      <StatValue stattype="MaximumHealthMultiplier" minvalue="0" maxvalue="-0.5" />
+      <StatusEffect target="Character" stackable="false" delay="0.5">
+        <ParticleEmitter particle="artmod_clownsparklesmod" LifeTimeMultiplier="1" velocitymin="10" velocitymax="250" anglemin="0" anglemax="360" distancemin="0" distancemax="20" scalemin="0.25" scalemax="0.75" particleamount="4" particlespersecond="4" colormultiplier="255,0,0,155" drawontop="true" />
+      </StatusEffect>
+      <AbilityFlag flagtype="MustWalk" />
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/grenade_lowhp.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--для эффекта молотка-->
+  <Affliction name="" identifier="hammerblessing" iconcolors="25,25,255,255;25,255,25,255;255,25,25,255" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" showinhealthscannerthreshold="0" showiconthreshold="0" showicontoothersthreshold="1000" maxstrength="25">
+    <Effect minstrength="0" maxstrength="25" strengthchange="-1">
+      <StatValue stattype="ElectricalSkillBonus" minvalue="0.5" maxvalue="0.5" />
+      <StatValue stattype="HelmSkillBonus" minvalue="0.5" maxvalue="0.5" />
+      <StatValue stattype="MechanicalSkillBonus" minvalue="0.5" maxvalue="0.5" />
+      <StatValue stattype="MedicalSkillBonus" minvalue="0.5" maxvalue="0.5" />
+      <StatValue stattype="WeaponsSkillBonus" minvalue="0.5" maxvalue="0.5" />
+      <StatValue stattype="MovementSpeed" minvalue="0.25" maxvalue="0.25" />
+      <StatValue stattype="WalkingSpeed" minvalue="0.1" maxvalue="0.1" />
+      <StatValue stattype="SwimmingSpeed" minvalue="0.1" maxvalue="0.1" />
+      <StatValue stattype="MedicalItemEffectivenessMultiplier" minvalue="0.25" maxvalue="0.25" />
+      <StatValue stattype="FlowResistance" minvalue="1" maxvalue="1" />
+      <StatValue stattype="AttackMultiplier" minvalue="0.15" maxvalue="0.15" />
+      <StatValue stattype="TeamAttackMultiplier" minvalue="-1" maxvalue="-1" />
+      <StatValue stattype="RepairSpeed" minvalue="0.25" maxvalue="0.25" />
+      <StatValue stattype="MechanicalRepairSpeed" minvalue="0.25" maxvalue="0.25" />
+      <StatValue stattype="DeconstructorSpeedMultiplier" minvalue="0.25" maxvalue="0.25" />
+      <StatValue stattype="RepairToolStructureRepairMultiplier" minvalue="0.25" maxvalue="0.25" />
+      <StatValue stattype="RepairToolStructureDamageMultiplier" minvalue="0.25" maxvalue="0.25" />
+      <StatValue stattype="HoldBreathMultiplier" minvalue="0.25" maxvalue="0.25" />
+      <StatValue stattype="CPRBoost" minvalue="0.25" maxvalue="0.5" />
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/clownhammerbuff.png" sourcerect="0,0,128,128" color="255,255,255,255" origin="0,0" />
+  </Affliction>
+  <!--для сыворотки дружбы-->
+  <Affliction name="" identifier="friendshipismagic" isbuff="true" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" showinhealthscannerthreshold="0" showiconthreshold="0" showicontoothersthreshold="1000" maxstrength="120">
+    <Effect minstrength="0" maxstrength="120" strengthchange="-0.5">
+      <StatValue stattype="TeamAttackMultiplier" minvalue="-1" maxvalue="-1" />
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/FriendshipIsMagic.png" sourcerect="0,0,92,92" color="255,255,255,255" origin="0,0" />
+  </Affliction>
+  <!--для бронежилета клоуна-->
+  <Affliction name="" identifier="armorvigor" description="" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="10" showiconthreshold="10" showicontoothersthreshold="10" maxstrength="2">
+    <Effect minstrength="0" maxstrength="2" minvitalitydecrease="0" maxvitalitydecrease="-100" strengthchange="-1">
+      <StatValue stattype="MaximumHealthMultiplier" minvalue="0" maxvalue="0.25" />
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/health+.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--Для арта незнакомца-->
+  <Affliction name="" identifier="superimmortality" type="resistance" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="1110" showiconthreshold="1110" showicontoothersthreshold="1110" maxstrength="100">
+    <Effect minstrength="0" maxstrength="100" strengthchange="-10" resistancefor="dontusetoomuch,stun,pressure,damage,bleeding,bloodloss,burn,oxygenlow,drunk,opiatewithdrawal,opiateoverdose,opiateaddiction,poison,paralysis,alieninfection,chemaddiction,chemwithdrawal" minresistance="100.0" maxresistance="100.0">
+      <StatValue stattype="MaximumHealthMultiplier" minvalue="0" maxvalue="1.0" />
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/test5.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="ammoboxslowdown" description="" type="resistance" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="10" showiconthreshold="10" showicontoothersthreshold="10" maxstrength="2">
+    <Effect minstrength="0" maxstrength="2" strengthchange="-1" minspeedmultiplier="0.0" maxspeedmultiplier="0.90">
+      <!--<StatusEffect type="always" target="Character" SpeedMultiplier="1.6" color="195,136,60,255" setvalue="true"/>-->
+      <StatValue stattype="SwimmingSpeed" minvalue="0" maxvalue="-0.10" />
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/bluesyringe.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="safechip" description="" type="resistance" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="110" showiconthreshold="110" showicontoothersthreshold="110" maxstrength="10">
+    <Effect minstrength="0" maxstrength="10" strengthchange="-2.5" resistancefor="Swatchersgaze,watchersgaze,silence" minresistance="0.0" maxresistance="100.0" />
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/Fireresist.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="psihelmetresist" description="" type="resistance" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="110" showiconthreshold="110" showicontoothersthreshold="110" maxstrength="10">
+    <Effect minstrength="0" maxstrength="10" strengthchange="-2.5" resistancefor="radiozombieinfectionactive,rzimusic,mwatchersgaze,watchersgaze,reversedwatchergase,silence,psychosis,hallucinating,psi_internaldamage" minchromaticaberration="0" maxchromaticaberration="10" minresistance="0.0" maxresistance="100.0">
+      <StatusEffect type="Always" target="Character" stackable="false" setvalue="true" delay="0.1">
+        <ReduceAffliction identifier="reversedwatchergase" amount="100" />
+        <ReduceAffliction identifier="watchersgaze" amount="1.25" />
+        <ReduceAffliction identifier="silence" amount="1" />
+      </StatusEffect>
+    </Effect>
+    <PeriodicEffect mininterval="45" maxinterval="90">
+      <StatusEffect target="Character" stackable="false" setvalue="true">
+        <Conditional IsLocalPlayer="True" />
+        <ParticleEmitter particle="artmod_hallutinationhuman" AngleMax="360" DistanceMin="500" DistanceMax="600" ScaleMultiplier="1,1" ParticlesPerSecond="1" ColorMultiplier="255,255,255,255" Distance="500" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/Fireresist.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="bluesoda" description="" type="resistance" isbuff="true" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="Torso" maxstrength="100" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="0" showicontoothersthreshold="1000" iconcolors="0,0,100;0,0,166;0,0,222">
+    <Effect minstrength="0" maxstrength="100" resistancefor="psychosis" minresistance="0" maxresistance="0.10" strengthchange="-0.25">
+      <StatusEffect target="Character" setvalue="false" stackable="false" disabledeltatime="true">
+        <ReduceAffliction identifier="psychosis" amount="0.005" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="redsoda" description="" type="resistance" isbuff="true" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="Torso" maxstrength="100" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="0" showicontoothersthreshold="1000" iconcolors="100,0,0;166,0,0;222,0,0">
+    <Effect minstrength="0" maxstrength="100" resistancefor="lacerations,bitewounds,burn,bleeding" minresistance="0" maxresistance="0.10" strengthchange="-0.25">
+      <StatusEffect target="Character" setvalue="false" stackable="false" disabledeltatime="true">
+        <ReduceAffliction identifier="lacerations" amount="0.005" />
+        <ReduceAffliction identifier="bitewounds" amount="0.005" />
+        <ReduceAffliction identifier="burn" amount="0.005" />
+        <ReduceAffliction identifier="bleeding" amount="0.005" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="greensoda" description="" type="resistance" isbuff="true" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="Torso" maxstrength="100" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="0" showicontoothersthreshold="1000" iconcolors="0,255,0;0,255,0;0,255,0">
+    <Effect minstrength="0" maxstrength="100" resistancefor="morbusinepoisoning,sufforinpoisoning,cyanidepoisoning,radiationsickness,deliriuminepoisoning,paralysis,artmod_anomalyfunctionalnecrosis,artmod_incurablefunctionalnecrosis,huskinfection" minresistance="0" maxresistance="0.10" strengthchange="-0.25">
+      <StatusEffect target="Character" setvalue="false" stackable="false" disabledeltatime="true">
+        <ReduceAffliction identifier="morbusinepoisoning" amount="0.005" />
+        <ReduceAffliction identifier="sufforinpoisoning" amount="0.005" />
+        <ReduceAffliction identifier="cyanidepoisoning" amount="0.005" />
+        <ReduceAffliction identifier="radiationsickness" amount="0.005" />
+        <ReduceAffliction identifier="deliriuminepoisoning" amount="0.005" />
+        <ReduceAffliction identifier="paralysis" amount="0.0005" />
+        <ReduceAffliction identifier="artmod_anomalyfunctionalnecrosis" amount="0.005" />
+        <ReduceAffliction identifier="huskinfection" amount="0.005" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--Для гудка, резист к взрывам полный+резист к инкубации-->
+  <Affliction name="" identifier="honkresist" type="resistance" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="1110" showiconthreshold="1110" showicontoothersthreshold="1110" maxstrength="10">
+    <Effect minstrength="0" maxstrength="10" strengthchange="-10" resistancefor="explosiondamage,bleeding,IncubationS,burn,oxygenlow,stun" minresistance="100.0" maxresistance="100.0"></Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/test5.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--Для инъектора безносых (неигровой предмет)-->
+  <Affliction name="" identifier="blueresist" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="110" showiconthreshold="110" showicontoothersthreshold="110" maxstrength="10">
+    <Effect minstrength="0" maxstrength="10" strengthchange="0" minresistance="10.0" maxresistance="10.0">
+      <StatusEffect target="Character" interval="1" stackable="false" speechImpediment="100.0" />
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/test5.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="blueresistandvigor" type="resistance" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="1110" showiconthreshold="1110" showicontoothersthreshold="1110" maxstrength="10">
+    <Effect minstrength="0" maxstrength="10" strengthchange="1" resistancefor="oxygenlow,pressure" minvitalitydecrease="0" maxvitalitydecrease="-100" minresistance="100.0" maxresistance="100.0">
+      <StatValue stattype="MaximumHealthMultiplier" minvalue="0" maxvalue="0.25" />
+      <StatusEffect target="Character" speechImpediment="100.0">
+        <ReduceAffliction identifier="watchersgaze" amount="100" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/test5.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--резист к взрывам полный с рандомными бабахами-->
+  <Affliction name="" identifier="explosionresistfull" type="resistance" isbuff="true" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="1110" showiconthreshold="1110" showicontoothersthreshold="1110" maxstrength="10">
+    <Effect minstrength="0" maxstrength="10" strengthchange="-5" resistancefor="explosiondamage" minresistance="0.75" maxresistance="0.75"></Effect>
+    <PeriodicEffect mininterval="20" maxinterval="45">
+      <StatusEffect target="character">
+        <Explosion range="500.0" structuredamage="0" ballastfloradamage="0" itemdamage="0" force="10" severlimbsprobability="0.5" decal="explosion" decalsize="0.5">
+          <Affliction identifier="explosiondamage" strength="45" />
+          <Affliction identifier="stun" strength="1.5" />
+        </Explosion>
+        <Sound file="%ModDir%/More Arts (AOCS)/Items/AlienTubus11.ogg" type="OnUse" volume="1" range="3000" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Items/AlienTubus12.ogg" type="OnUse" volume="1" range="3000" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Items/AlienTubus13.ogg" type="OnUse" volume="1" range="3000" />
+        <ParticleEmitter particle="artmod_shockwave" AngleMax="360" ScaleMultiplier="1,1" ParticlesPerSecond="1" particleamount="1" ColorMultiplier="255,185,155,255" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/test5.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="burnresisttube" description="" type="resistance" isbuff="true" limbspecific="false" maxstrength="1" activationthreshold="0" showinhealthscannerthreshold="1110" showiconthreshold="1110" showicontoothersthreshold="1110">
+    <Effect minstrength="0" maxstrength="1" strengthchange="-0.25" resistancefor="burn" minresistance="100" maxresistance="100"></Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/Fireresist.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="Concealed" identifier="artmod_concealed" type="concealed" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="1110" showiconthreshold="1110" showicontoothersthreshold="1110" maxstrength="1">
+    <Effect minstrength="0" maxstrength="1" strengthchange="-0.6">
+      <StatusEffect target="Character" indetectable="true" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,0,128,128" color="255,255,255,255" origin="0,0" />
+  </Affliction>
+</Afflictions>

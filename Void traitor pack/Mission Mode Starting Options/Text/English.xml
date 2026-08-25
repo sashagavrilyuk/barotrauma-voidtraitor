@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="English" nowhitespace="false" translatedname="English">
+  <entityname._LCAutofillAllInOneTrigger>MMSO - Autofill - All In One (Recommended)</entityname._LCAutofillAllInOneTrigger>
+  <entityname._LCAutofillBasicCraftingTrigger>MMSO - Autofill - Basic Crafting</entityname._LCAutofillBasicCraftingTrigger>
+  <entityname._LCAutofillAdvancedCraftingTrigger>MMSO - Autofill - Advanced Crafting</entityname._LCAutofillAdvancedCraftingTrigger>
+  <entityname._LCAutofillChemicalCraftingTrigger>MMSO - Autofill - Chemical Crafting</entityname._LCAutofillChemicalCraftingTrigger>
+  <entityname._LCAutofillAlienCraftingTrigger>MMSO - Autofill - Alien Crafting</entityname._LCAutofillAlienCraftingTrigger>
+  <entityname._LCAutofillMedicalCraftingTrigger>MMSO - Autofill - Medical Crafting</entityname._LCAutofillMedicalCraftingTrigger>
+  <entityname._LCAutofillAdvancedMedicalTrigger>MMSO - Autofill - Advanced Medical</entityname._LCAutofillAdvancedMedicalTrigger>
+  <entityname._LCAutofillReactorCabTrigger>MMSO - Autofill - Reactor Cab</entityname._LCAutofillReactorCabTrigger>
+  <entityname._LCAutofillwiresTrigger>MMSO - Autofill - Wires</entityname._LCAutofillwiresTrigger>
+  <entityname._LCAutofillenginecabTrigger>MMSO - Autofill - Engine Cab</entityname._LCAutofillenginecabTrigger>
+  <entityname._LCAutofillgeneticsTrigger>MMSO - Autofill - Genetics</entityname._LCAutofillgeneticsTrigger>
+  <entityname._LCAutofillToxCabTrigger>MMSO - Autofill - Toxin Cab</entityname._LCAutofillToxCabTrigger>
+  <entityname._LCAutofillcrewcabTrigger>MMSO - Autofill - Crew Cab</entityname._LCAutofillcrewcabTrigger>
+  <entityname._LCAutofillclownTrigger>MMSO - Autofill - Clown</entityname._LCAutofillclownTrigger>
+  <entityname._LCAutofillcultistTrigger>MMSO - Autofill - Cultist</entityname._LCAutofillcultistTrigger>
+  <entityname._LCAutofillsecarmcabTrigger>MMSO - Autofill - Secure Arm Cab</entityname._LCAutofillsecarmcabTrigger>
+  <entityname._LCAutofillspawnexosuit>MMSO - Autofill - Spawn An Exosuit</entityname._LCAutofillspawnexosuit>
+  <entityname._LCAutofilldivingsuitlockerTrigger>MMSO - Autofill - Diving Suits</entityname._LCAutofilldivingsuitlockerTrigger>
+  <entityname._LCAutofilldivingsuitlockerhighqualityTrigger>MMSO - Autofill - Diving Suits, Upgraded Only</entityname._LCAutofilldivingsuitlockerhighqualityTrigger>
+  <entityname._LCAutofillSupriseItemTrigger>MMSO - Spawn With - Surprise Item</entityname._LCAutofillSupriseItemTrigger>
+  <entityname._LCAutofillTier1ArmedTrigger>MMSO - Spawn With - Tier 1 Weapon</entityname._LCAutofillTier1ArmedTrigger>
+  <entityname._LCAutofillTier2ArmedTrigger>MMSO - Spawn With - Tier 2 Weapon</entityname._LCAutofillTier2ArmedTrigger>
+  <entityname._LCAutofillTier3ArmedTrigger>MMSO - Spawn With - Tier 3 Weapon</entityname._LCAutofillTier3ArmedTrigger>
+  <entityname._LCAutofillMineralCabTrigger>MMSO - Autofill - Ores</entityname._LCAutofillMineralCabTrigger>
+  <entityname.LCEmitterRemovalTool>MMSO - Emitter Remover (Removes all existing permanent emitters)</entityname.LCEmitterRemovalTool>
+  <entityname._LCStartAtLevel2RoundStart>MMSO - Experience - Start at 2 Levels (At Round Start)</entityname._LCStartAtLevel2RoundStart>
+  <entityname._LCStartAtLevel4RoundStart>MMSO - Experience - Start at 4 Levels (At Round Start)</entityname._LCStartAtLevel4RoundStart>
+  <entityname._LCStartAtLevel6RoundStart>MMSO - Experience - Start at 6 Levels (At Round Start)</entityname._LCStartAtLevel6RoundStart>
+  <entityname._LCStartAtLevel8RoundStart>MMSO - Experience - Start at 8 Levels (At Round Start)</entityname._LCStartAtLevel8RoundStart>
+  <entityname._LCStartAtLevel12RoundStart>MMSO - Experience - Start at 12 Levels (At Round Start)</entityname._LCStartAtLevel12RoundStart>
+  <entityname._LCStartAtLevel16RoundStart>MMSO - Experience - Start at 16 Levels (At Round Start)</entityname._LCStartAtLevel16RoundStart>
+  <entityname._LCStartAtLevel2Loop>MMSO - Experience - Start at 2 Levels (5 Minute Loop - May cause lag spikes)</entityname._LCStartAtLevel2Loop>
+  <entityname._LCStartAtLevel4Loop>MMSO - Experience - Start at 4 Levels (5 Minute Loop - May cause lag spikes)</entityname._LCStartAtLevel4Loop>
+  <entityname._LCStartAtLevel6Loop>MMSO - Experience - Start at 6 Levels (5 Minute Loop - May cause lag spikes)</entityname._LCStartAtLevel6Loop>
+  <entityname._LCStartAtLevel8Loop>MMSO - Experience - Start at 8 Levels (5 Minute Loop - May cause lag spikes)</entityname._LCStartAtLevel8Loop>
+  <entityname._LCStartAtLevel12Loop>MMSO - Experience - Start at 12 Levels (5 Minute Loop - May cause lag spikes)</entityname._LCStartAtLevel12Loop>
+  <entityname._LCStartAtLevel16Loop>MMSO - Experience - Start at 16 Levels (5 Minute Loop - May cause lag spikes)</entityname._LCStartAtLevel16Loop>
+  <entityname._LCPassiveXP1RoundStart>MMSO - Passive Experience - Extremely Low (At Round Start)</entityname._LCPassiveXP1RoundStart>
+  <entityname._LCPassiveXP2RoundStart>MMSO - Passive Experience - Very Low (At Round Start)</entityname._LCPassiveXP2RoundStart>
+  <entityname._LCPassiveXP3RoundStart>MMSO - Passive Experience - Low (At Round Start)</entityname._LCPassiveXP3RoundStart>
+  <entityname._LCPassiveXP4RoundStart>MMSO - Passive Experience - Medium (At Round Start)</entityname._LCPassiveXP4RoundStart>
+  <entityname._LCPassiveXP5RoundStart>MMSO - Passive Experience - High (At Round Start)</entityname._LCPassiveXP5RoundStart>
+  <entityname._LCPassiveXP6RoundStart>MMSO - Passive Experience - Very High (At Round Start)</entityname._LCPassiveXP6RoundStart>
+  <entityname._LCPassiveXP1Loop>MMSO - Passive Experience - Extremely Low (5 Minute Loop - May cause lag spikes)</entityname._LCPassiveXP1Loop>
+  <entityname._LCPassiveXP2Loop>MMSO - Passive Experience - Very Low (5 Minute Loop - May cause lag spikes)</entityname._LCPassiveXP2Loop>
+  <entityname._LCPassiveXP3Loop>MMSO - Passive Experience - Low (5 Minute Loop - May cause lag spikes)</entityname._LCPassiveXP3Loop>
+  <entityname._LCPassiveXP4Loop>MMSO - Passive Experience - Medium (5 Minute Loop - May cause lag spikes)</entityname._LCPassiveXP4Loop>
+  <entityname._LCPassiveXP5Loop>MMSO - Passive Experience - High (5 Minute Loop - May cause lag spikes)</entityname._LCPassiveXP5Loop>
+  <entityname._LCPassiveXP6Loop>MMSO - Passive Experience - Very High (5 Minute Loop - May cause lag spikes)</entityname._LCPassiveXP6Loop>
+  <entityname._LCXPMultiplier_0.5>MMSO - Multiplier - Experience Gain - -75%</entityname._LCXPMultiplier_0.5>
+  <entityname._LCXPMultiplier_0.75>MMSO - Multiplier - Experience Gain - -25%</entityname._LCXPMultiplier_0.75>
+  <entityname._LCXPMultiplier_1.25>MMSO - Multiplier - Experience Gain - 125%</entityname._LCXPMultiplier_1.25>
+  <entityname._LCXPMultiplier_1.5>MMSO - Multiplier - Experience Gain - 150%</entityname._LCXPMultiplier_1.5>
+  <entityname._LCXPMultiplier_1.75>MMSO - Multiplier - Experience Gain - 175%</entityname._LCXPMultiplier_1.75>
+  <entityname._LCXPMultiplier_2>MMSO - Multiplier - Experience Gain - 200%</entityname._LCXPMultiplier_2>
+  <entityname._LCXPMultiplier_5>MMSO - Multiplier - Experience Gain - 500%</entityname._LCXPMultiplier_5>
+  <entityname._LCXPMultiplier_10>MMSO - Multiplier - Experience Gain - 1000%</entityname._LCXPMultiplier_10>
+  <entityname._LCSkillMultiplier_0.5>MMSO - Multiplier - Skill Gain - 50%</entityname._LCSkillMultiplier_0.5>
+  <entityname._LCSkillMultiplier_0.75>MMSO - Multiplier - Skill Gain - 75%</entityname._LCSkillMultiplier_0.75>
+  <entityname._LCSkillMultiplier_1.25>MMSO - Multiplier - Skill Gain - 125%</entityname._LCSkillMultiplier_1.25>
+  <entityname._LCSkillMultiplier_1.5>MMSO - Multiplier - Skill Gain - 150%</entityname._LCSkillMultiplier_1.5>
+  <entityname._LCSkillMultiplier_1.75>MMSO - Multiplier - Skill Gain - 175%</entityname._LCSkillMultiplier_1.75>
+  <entityname._LCSkillMultiplier_2>MMSO - Multiplier - Skill Gain - 200%</entityname._LCSkillMultiplier_2>
+  <entityname._LCSkillMultiplier_5>MMSO - Multiplier - Skill Gain - 500%</entityname._LCSkillMultiplier_5>
+  <entityname._LCWalkSpeedMultiplier_0.25>MMSO - Multiplier - Walk Speed - -75%</entityname._LCWalkSpeedMultiplier_0.25>
+  <entityname._LCWalkSpeedMultiplier_0.5>MMSO - Multiplier - Walk Speed - -50%</entityname._LCWalkSpeedMultiplier_0.5>
+  <entityname._LCWalkSpeedMultiplier_0.75>MMSO - Multiplier - Walk Speed - -25%</entityname._LCWalkSpeedMultiplier_0.75>
+  <entityname._LCWalkSpeedMultiplier_1.25>MMSO - Multiplier - Walk Speed - 125%</entityname._LCWalkSpeedMultiplier_1.25>
+  <entityname._LCWalkSpeedMultiplier_1.5>MMSO - Multiplier - Walk Speed - 150%</entityname._LCWalkSpeedMultiplier_1.5>
+  <entityname._LCWalkSpeedMultiplier_1.75>MMSO - Multiplier - Walk Speed - 175%</entityname._LCWalkSpeedMultiplier_1.75>
+  <entityname._LCWalkSpeedMultiplier_2>MMSO - Multiplier - Walk Speed - 200%</entityname._LCWalkSpeedMultiplier_2>
+  <entityname._LCWalkSpeedMultiplier_3>MMSO - Multiplier - Walk Speed - 300%</entityname._LCWalkSpeedMultiplier_3>
+  <entityname._LCSwimSpeedMultiplier_0.25>MMSO - Multiplier - Swimming Speed - -75%</entityname._LCSwimSpeedMultiplier_0.25>
+  <entityname._LCSwimSpeedMultiplier_0.5>MMSO - Multiplier - Swimming Speed - -50%</entityname._LCSwimSpeedMultiplier_0.5>
+  <entityname._LCSwimSpeedMultiplier_0.75>MMSO - Multiplier - Swimming Speed - -25%</entityname._LCSwimSpeedMultiplier_0.75>
+  <entityname._LCSwimSpeedMultiplier_1.25>MMSO - Multiplier - Swimming Speed - 125%</entityname._LCSwimSpeedMultiplier_1.25>
+  <entityname._LCSwimSpeedMultiplier_1.5>MMSO - Multiplier - Swimming Speed - 150%</entityname._LCSwimSpeedMultiplier_1.5>
+  <entityname._LCSwimSpeedMultiplier_1.75>MMSO - Multiplier - Swimming Speed - 175%</entityname._LCSwimSpeedMultiplier_1.75>
+  <entityname._LCSwimSpeedMultiplier_2>MMSO - Multiplier - Swimming Speed - 200%</entityname._LCSwimSpeedMultiplier_2>
+  <entityname._LCSwimSpeedMultiplier_3>MMSO - Multiplier - Swimming Speed - 300%</entityname._LCSwimSpeedMultiplier_3>
+  <entityname._LCFriendlyFireMultiplier_0.1>MMSO - Multiplier - Friendly Fire - -90%</entityname._LCFriendlyFireMultiplier_0.1>
+  <entityname._LCFriendlyFireMultiplier_0.25>MMSO - Multiplier - Friendly Fire - -75%</entityname._LCFriendlyFireMultiplier_0.25>
+  <entityname._LCFriendlyFireMultiplier_0.5>MMSO - Multiplier - Friendly Fire - -50%</entityname._LCFriendlyFireMultiplier_0.5>
+  <entityname._LCFriendlyFireMultiplier_0.75>MMSO - Multiplier - Friendly Fire - -25%</entityname._LCFriendlyFireMultiplier_0.75>
+  <entityname._LCFriendlyFireMultiplier_1.25>MMSO - Multiplier - Friendly Fire - 125%</entityname._LCFriendlyFireMultiplier_1.25>
+  <entityname._LCFriendlyFireMultiplier_1.5>MMSO - Multiplier - Friendly Fire - 150%</entityname._LCFriendlyFireMultiplier_1.5>
+  <entityname._LCFriendlyFireMultiplier_2>MMSO - Multiplier - Friendly Fire - 200%</entityname._LCFriendlyFireMultiplier_2>
+  <entityname._LCRepairSpeedMultiplier_0.25>MMSO - Multiplier - Device Repair Speed - -75%</entityname._LCRepairSpeedMultiplier_0.25>
+  <entityname._LCRepairSpeedMultiplier_0.5>MMSO - Multiplier - Device Repair Speed - -50%</entityname._LCRepairSpeedMultiplier_0.5>
+  <entityname._LCRepairSpeedMultiplier_0.75>MMSO - Multiplier - Device Repair Speed - -25%</entityname._LCRepairSpeedMultiplier_0.75>
+  <entityname._LCRepairSpeedMultiplier_1.25>MMSO - Multiplier - Device Repair Speed - 125%</entityname._LCRepairSpeedMultiplier_1.25>
+  <entityname._LCRepairSpeedMultiplier_1.5>MMSO - Multiplier - Device Repair Speed - 150%</entityname._LCRepairSpeedMultiplier_1.5>
+  <entityname._LCRepairSpeedMultiplier_1.75>MMSO - Multiplier - Device Repair Speed - 175%</entityname._LCRepairSpeedMultiplier_1.75>
+  <entityname._LCRepairSpeedMultiplier_2>MMSO - Multiplier - Device Repair Speed - 200%</entityname._LCRepairSpeedMultiplier_2>
+  <entityname._LCRepairSpeedMultiplier_3>MMSO - Multiplier - Device Repair Speed - 300%</entityname._LCRepairSpeedMultiplier_3>
+  <entityname._LCRepairSpeedMultiplier_10>MMSO - Multiplier - Device Repair Speed - 1000%</entityname._LCRepairSpeedMultiplier_10>
+  <entityname._LCWeldingSpeedMultiplier_0.25>MMSO - Multiplier - Welding Speed - -75%</entityname._LCWeldingSpeedMultiplier_0.25>
+  <entityname._LCWeldingSpeedMultiplier_0.5>MMSO - Multiplier - Welding Speed - -50%</entityname._LCWeldingSpeedMultiplier_0.5>
+  <entityname._LCWeldingSpeedMultiplier_0.75>MMSO - Multiplier - Welding Speed - -25%</entityname._LCWeldingSpeedMultiplier_0.75>
+  <entityname._LCWeldingSpeedMultiplier_1.25>MMSO - Multiplier - Welding Speed - 125%</entityname._LCWeldingSpeedMultiplier_1.25>
+  <entityname._LCWeldingSpeedMultiplier_1.5>MMSO - Multiplier - Welding Speed - 150%</entityname._LCWeldingSpeedMultiplier_1.5>
+  <entityname._LCWeldingSpeedMultiplier_1.75>MMSO - Multiplier - Welding Speed - 175%</entityname._LCWeldingSpeedMultiplier_1.75>
+  <entityname._LCWeldingSpeedMultiplier_2>MMSO - Multiplier - Welding Speed - 200%</entityname._LCWeldingSpeedMultiplier_2>
+  <entityname._LCWeldingSpeedMultiplier_3>MMSO - Multiplier - Welding Speed - 300%</entityname._LCWeldingSpeedMultiplier_3>
+  <entityname._LCWeldingSpeedMultiplier_10>MMSO - Multiplier - Welding Speed - 1000%</entityname._LCWeldingSpeedMultiplier_10>
+  <entityname._LCVitalityMultiplier_0.25>MMSO - Multiplier - Maximum Health - -75%</entityname._LCVitalityMultiplier_0.25>
+  <entityname._LCVitalityMultiplier_0.5>MMSO - Multiplier - Maximum Health - -50%</entityname._LCVitalityMultiplier_0.5>
+  <entityname._LCVitalityMultiplier_0.75>MMSO - Multiplier - Maximum Health - -25%</entityname._LCVitalityMultiplier_0.75>
+  <entityname._LCVitalityMultiplier_1.25>MMSO - Multiplier - Maximum Health - 125%</entityname._LCVitalityMultiplier_1.25>
+  <entityname._LCVitalityMultiplier_1.5>MMSO - Multiplier - Maximum Health - 150%</entityname._LCVitalityMultiplier_1.5>
+  <entityname._LCVitalityMultiplier_1.75>MMSO - Multiplier - Maximum Health - 175%</entityname._LCVitalityMultiplier_1.75>
+  <entityname._LCVitalityMultiplier_2>MMSO - Multiplier - Maximum Health - 200%</entityname._LCVitalityMultiplier_2>
+  <entityname._LCVitalityMultiplier_3>MMSO - Multiplier - Maximum Health - 300%</entityname._LCVitalityMultiplier_3>
+  <entityname._LCFabricationSpeedMultiplier_0.5>MMSO - Multiplier - Fabrication Speed - -50%</entityname._LCFabricationSpeedMultiplier_0.5>
+  <entityname._LCFabricationSpeedMultiplier_1.25>MMSO - Multiplier - Fabrication Speed - 125%</entityname._LCFabricationSpeedMultiplier_1.25>
+  <entityname._LCFabricationSpeedMultiplier_1.5>MMSO - Multiplier - Fabrication Speed - 150%</entityname._LCFabricationSpeedMultiplier_1.5>
+  <entityname._LCFabricationSpeedMultiplier_2>MMSO - Multiplier - Fabrication Speed - 200%</entityname._LCFabricationSpeedMultiplier_2>
+  <entityname._LCFabricationSpeedMultiplier_3>MMSO - Multiplier - Fabrication Speed - 300%</entityname._LCFabricationSpeedMultiplier_3>
+  <entityname._LCFabricationSpeedMultiplier_10>MMSO - Multiplier - Fabrication Speed - 1000%</entityname._LCFabricationSpeedMultiplier_10>
+  <talentdescription.lcpassivexp>Gives [amount] experience per minute.</talentdescription.lcpassivexp>
+  <talentname.lcpassivexp1>Passive Experience - Extremely Low</talentname.lcpassivexp1>
+  <talentname.lcpassivexp2>Passive Experience - Very Low</talentname.lcpassivexp2>
+  <talentname.lcpassivexp3>Passive Experience - Low</talentname.lcpassivexp3>
+  <talentname.lcpassivexp4>Passive Experience - Medium</talentname.lcpassivexp4>
+  <talentname.lcpassivexp5>Passive Experience - High</talentname.lcpassivexp5>
+  <talentname.lcpassivexp6>Passive Experience - Very High</talentname.lcpassivexp6>
+  <talentdescription.lcstartatlvl>Instantly level up to level [amount].</talentdescription.lcstartatlvl>
+  <talentname.lcstartatlvl2>Start at level 2</talentname.lcstartatlvl2>
+  <talentname.lcstartatlvl4>Start at level 4</talentname.lcstartatlvl4>
+  <talentname.lcstartatlvl6>Start at level 6</talentname.lcstartatlvl6>
+  <talentname.lcstartatlvl8>Start at level 8</talentname.lcstartatlvl8>
+  <talentname.lcstartatlvl12>Start at level 12</talentname.lcstartatlvl12>
+  <talentname.lcstartatlvl16>Start at level 16</talentname.lcstartatlvl16>
+</infotexts>

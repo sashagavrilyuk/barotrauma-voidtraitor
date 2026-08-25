@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Override>
+  <Talents>
+    <Talent identifier="enrollintoclowncollege">
+      <Icon texture="Content/UI/TalentsIcons2.png" sheetindex="4,5" sheetelementsize="128,128" />
+      <Description tag="talentdescription.enrollintoclowncollege" />
+      <Description tag="talentdescription.clownpowerbenefits" />
+      <Description tag="talentdescription.additionalstattype">
+        <Replace tag="[amount]" value="10" color="gui.green" />
+        <Replace tag="[stattype]" value="stattypenames.movementspeed" color="gui.orange" />
+      </Description>
+      <Description tag="talentdescription.additionalstattype">
+        <Replace tag="[amount]" value="25" color="gui.green" />
+        <Replace tag="[stattype]" value="stattypenames.physicalresistance" color="gui.orange" />
+      </Description>
+      <Description tag="talentdescription.honkinggivesskillgain">
+        <Replace tag="[skillgainincrease]" value="30" color="gui.orange" />
+      </Description>
+      <Description tag="talentdescription.unlockrecipe">
+        <Replace tag="[itemname]" value="entityname.clowncrate" color="gui.orange" />
+      </Description>
+      <AbilityGroupInterval interval="0.9">
+        <Conditions>
+          <AbilityConditionHasItem tags="clowngear,clownmask" requireall="true" />
+        </Conditions>
+        <Abilities>
+          <CharacterAbilityApplyStatusEffects>
+            <StatusEffects>
+              <StatusEffect type="OnAbility" target="Character" disabledeltatime="true" multiplyafflictionsbymaxvitality="true">
+                <Affliction identifier="clownpower" amount="1.0" />
+              </StatusEffect>
+            </StatusEffects>
+          </CharacterAbilityApplyStatusEffects>
+        </Abilities>
+      </AbilityGroupInterval>
+      <AbilityGroupEffect abilityeffecttype="OnUseRangedWeapon">
+        <Conditions>
+          <AbilityConditionHasAffliction afflictionidentifier="clownpower" />
+          <AbilityConditionItem tags="hornitem" />
+        </Conditions>
+        <Abilities>
+          <CharacterAbilityApplyStatusEffectsToAllies maxdistance="600" allowself="false">
+            <StatusEffects>
+              <StatusEffect type="OnAbility" target="Character" multiplyafflictionsbymaxvitality="true">
+                <Affliction identifier="skillfulmelodies" strength="1.0" />
+              </StatusEffect>
+            </StatusEffects>
+          </CharacterAbilityApplyStatusEffectsToAllies>
+        </Abilities>
+      </AbilityGroupEffect>
+      <AbilityGroupInterval>
+        <Conditions>
+          <AbilityConditionHasAffliction afflictionidentifier="clownpower" />
+        </Conditions>
+        <Abilities>
+          <CharacterAbilityModifyResistance resistanceid="damage" multiplier="0.75" />
+          <CharacterAbilityModifyStat stattype="MovementSpeed" value="0.1" />
+        </Abilities>
+      </AbilityGroupInterval>
+      <AddedRecipe itemidentifier="clowncrate" />
+    </Talent>
+    <Talent identifier="waterprankster">
+      <Icon texture="%ModDir%/Old+New Clown Tree/UI/TalentsIcons.png" sheetindex="5,5" sheetelementsize="128,128" />
+      <Description tag="talentdescription.unlockrecipe">
+        <Replace tag="[itemname]" value="entityname.clowndivingmask" color="gui.orange" />
+      </Description>
+      <Description tag="talentdescription.waterprankster">
+        <Replace tag="[afflictionname]" value="afflictionname.clownpower" color="gui.orange" />
+        <Replace tag="[swimspeedvalue]" value="50" color="gui.green" />
+      </Description>
+      <AbilityGroupInterval>
+        <Conditions>
+          <AbilityConditionHasAffliction afflictionidentifier="clownpower" />
+        </Conditions>
+        <Abilities>
+          <CharacterAbilityModifyStat stattype="SwimmingSpeed" value="0.5" />
+          <CharacterAbilityModifyFlag flagtype="ImmuneToPressure" />
+        </Abilities>
+      </AbilityGroupInterval>
+      <AddedRecipe itemidentifier="clowndivingmask" />
+    </Talent>
+    <Talent identifier="psychoclown">
+      <Icon texture="%ModDir%/Old+New Clown Tree/UI/TalentsIcons.png" sheetindex="7,5" sheetelementsize="128,128" />
+      <Description tag="talentdescription.psychoclown">
+        <Replace tag="[afflictionname]" value="afflictionname.clownpower" color="gui.orange" />
+        <Replace tag="[maxattackspeed]" value="150" color="gui.green" />
+      </Description>
+      <AbilityGroupInterval>
+        <Conditions>
+          <AbilityConditionHasItem tags="clowngear,clownmask" requireall="true" />
+        </Conditions>
+        <Abilities>
+          <CharacterAbilityPsychoClown stattype="MeleeAttackSpeed" maxvalue="1.5" afflictionidentifier="psychosis" />
+        </Abilities>
+      </AbilityGroupInterval>
+    </Talent>
+    <Talent identifier="inspiringtunesold">
+      <Icon texture="%ModDir%/Old+New Clown Tree/UI/TalentsIcons.png" sheetindex="6,5" sheetelementsize="128,128" />
+      <Description tag="talentdescription.inspiringtunesold">
+        <Replace tag="[afflictionname]" value="afflictionname.clownpower" color="gui.orange" />
+        <Replace tag="[skillamount]" value="15" color="gui.green" />
+      </Description>
+      <AbilityGroupEffect abilityeffecttype="OnUseRangedWeapon">
+        <Conditions>
+          <AbilityConditionHasAffliction afflictionidentifier="clownpower" />
+          <AbilityConditionItem tags="hornitem" />
+        </Conditions>
+        <Abilities>
+          <CharacterAbilityApplyStatusEffects>
+            <StatusEffects>
+              <StatusEffect type="OnAbility" target="Character">
+                <Explosion range="500" showeffects="false" itemrepairstrength="5" />
+              </StatusEffect>
+            </StatusEffects>
+          </CharacterAbilityApplyStatusEffects>
+          <CharacterAbilityApplyStatusEffectsToAllies maxdistance="600" allowself="false">
+            <StatusEffects>
+              <StatusEffect type="OnAbility" target="Character" multiplyafflictionsbymaxvitality="true">
+                <Affliction identifier="inspiringtunesold" strength="1.0" />
+              </StatusEffect>
+            </StatusEffects>
+          </CharacterAbilityApplyStatusEffectsToAllies>
+        </Abilities>
+      </AbilityGroupEffect>
+    </Talent>
+    <Talent identifier="slapstickexpert">
+      <Icon texture="%ModDir%/Old+New Clown Tree/UI/TalentsIcons.png" sheetindex="0,6" sheetelementsize="128,128" />
+      <Description tag="talentdescription.slapstickexpert">
+        <Replace tag="[afflictionname]" value="afflictionname.clownpower" />
+        <Replace tag="[powerreduction]" value="50" color="gui.green" />
+        <Replace tag="[probability]" value="50" color="gui.green" />
+        <Replace tag="[stunseconds]" value="4" color="gui.green" />
+      </Description>
+      <Description tag="talentdescription.chonkyhonks">
+        <Replace tag="[chance]" value="50" color="gui.green" />
+        <Replace tag="[duration]" value="1" color="gui.green" />
+      </Description>
+      <AbilityGroupInterval interval="1">
+        <Conditions>
+          <AbilityConditionServerRandom randomchance="0.035" />
+          <AbilityConditionHasAffliction afflictionidentifier="clownpower" />
+          <AbilityConditionRunning />
+          <AbilityConditionInWater invert="true" />
+        </Conditions>
+        <Abilities>
+          <CharacterAbilityApplyStatusEffects>
+            <StatusEffects>
+              <StatusEffect type="OnAbility" target="Character">
+                <Affliction identifier="stun" amount="2.25" />
+              </StatusEffect>
+            </StatusEffects>
+          </CharacterAbilityApplyStatusEffects>
+        </Abilities>
+      </AbilityGroupInterval>
+      <AbilityGroupEffect abilityeffecttype="OnAttacked">
+        <Conditions>
+          <AbilityConditionRagdolled />
+        </Conditions>
+        <Abilities>
+          <CharacterAbilityModifyAttackData addeddamagemultiplier="-0.5" />
+        </Abilities>
+      </AbilityGroupEffect>
+      <AbilityGroupEffect abilityeffecttype="OnAttacked">
+        <Conditions>
+          <AbilityConditionRagdolled />
+          <AbilityConditionServerRandom randomchance="0.5" />
+        </Conditions>
+        <Abilities>
+          <CharacterAbilityApplyStatusEffectsToAttacker>
+            <StatusEffects>
+              <StatusEffect type="OnAbility" target="Character">
+                <Affliction identifier="stun" amount="4.0" />
+              </StatusEffect>
+            </StatusEffects>
+          </CharacterAbilityApplyStatusEffectsToAttacker>
+        </Abilities>
+      </AbilityGroupEffect>
+      <!-- Chonky Honks Part -->
+      <AbilityGroupEffect abilityeffecttype="OnUseRangedWeapon">
+        <Conditions>
+          <AbilityConditionItem tags="hornitem" />
+          <AbilityConditionHasAffliction afflictionidentifier="clownpower" />
+          <AbilityConditionServerRandom randomchance="0.5" />
+        </Conditions>
+        <Abilities>
+          <!-- TODO loud sound? -->
+          <CharacterAbilityApplyStatusEffectToNonHumans maxdistance="600">
+            <StatusEffects>
+              <StatusEffect type="OnAbility" target="Character" multiplyafflictionsbymaxvitality="true">
+                <Affliction identifier="stun" strength="1.0" />
+              </StatusEffect>
+            </StatusEffects>
+          </CharacterAbilityApplyStatusEffectToNonHumans>
+        </Abilities>
+      </AbilityGroupEffect>
+    </Talent>
+    <Talent identifier="truepotential">
+      <Icon texture="%ModDir%/Old+New Clown Tree/UI/TalentsIcons.png" sheetindex="1,6" sheetelementsize="128,128" />
+      <Description tag="talentdescription.unlockrecipe">
+        <Replace tag="[itemname]" value="entityname.clownexosuit" color="gui.orange" />
+      </Description>
+      <Description tag="talentdescription.honkinghealscharacters" />
+      <Description tag="talentdescription.truepotential">
+        <Replace tag="[probability]" value="0.75" color="gui.green" />
+      </Description>
+      <Description tag="talentdescription.truepotentialtemporary">
+        <Replace tag="[affliction]" value="afflictionname.combatstimulant" color="gui.orange" />
+        <Replace tag="[duration]" value="15" color="gui.green" />
+      </Description>
+      <Description tag="talentdescription.clownpowerdamagereduction">
+        <Replace tag="[afflictionname]" value="afflictionname.clownpower" color="gui.orange" />
+        <Replace tag="[physicalresistance]" value="25" color="gui.green" />
+      </Description>
+      <AbilityGroupEffect abilityeffecttype="OnAttack">
+        <Conditions>
+          <AbilityConditionCharacterUnconcious />
+          <AbilityConditionHasAffliction afflictionidentifier="clownpower" />
+          <AbilityConditionAttackData itemidentifier="toyhammer" />
+        </Conditions>
+        <Abilities>
+          <CharacterAbilityGiveAffliction affliction="combatstimulantclown" strength="15" setvalue="true" />
+          <CharacterAbilityReduceAffliction affliction="oxygenlow" amount="200" />
+        </Abilities>
+      </AbilityGroupEffect>
+      <AbilityGroupEffect abilityeffecttype="OnUseRangedWeapon">
+        <Conditions>
+          <AbilityConditionHasAffliction afflictionidentifier="clownpower" />
+          <AbilityConditionItem tags="hornitem" />
+        </Conditions>
+        <Abilities>
+          <CharacterAbilityApplyStatusEffectsToAllies maxdistance="600" allowself="false">
+            <StatusEffects>
+              <StatusEffect type="OnAbility" target="Character" multiplyafflictionsbymaxvitality="true">
+                <Affliction identifier="soothingsounds" strength="1.0" />
+              </StatusEffect>
+            </StatusEffects>
+          </CharacterAbilityApplyStatusEffectsToAllies>
+        </Abilities>
+      </AbilityGroupEffect>
+      <AbilityGroupEffect abilityeffecttype="OnAttack">
+        <Conditions>
+          <AbilityConditionHasAffliction afflictionidentifier="clownpower" />
+          <AbilityConditionAttackData itemidentifier="toyhammer" />
+          <AbilityConditionCharacter>
+            <Conditional mass="lt 1000" />
+            <Conditional combatstimulantclown="eq 0" />
+            <Conditional IsUnconscious="false" />
+          </AbilityConditionCharacter>
+          <AbilityConditionServerRandom randomchance="0.0075" />
+        </Conditions>
+        <Abilities>
+          <CharacterAbilityModifyAttackData implode="true" />
+        </Abilities>
+      </AbilityGroupEffect>
+      <AbilityGroupInterval>
+        <Conditions>
+          <AbilityConditionHasItem tags="clowngear,clownmask" requireall="true" />
+        </Conditions>
+        <Abilities>
+          <CharacterAbilityModifyResistance resistanceid="damage" multiplier="0.75" />
+        </Abilities>
+      </AbilityGroupInterval>
+      <AddedRecipe itemidentifier="clownexosuit" />
+    </Talent>
+  </Talents>
+</Override>

@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Corpses>
+  <Corpse identifier="artmod_clowncorpse1" spawnposition="wreck" job="assistant" commonness="0.25">
+    <ItemSet commonness="1">
+      <Item identifier="idcardwreck" equip="true" />
+      <Item identifier="clownmask" equip="true" />
+      <Item identifier="clowncostume" equip="true" />
+      <Item identifier="headset" equip="true">
+        <Item identifier="batterycell" />
+      </Item>
+      <Item identifier="clowngreensurgine" />
+    </ItemSet>
+    <ItemSet commonness="0.6">
+      <Item identifier="idcardwreck" equip="true" />
+      <Item identifier="clownmask" equip="true" />
+      <Item identifier="clowncostume" equip="true" />
+      <Item identifier="headset" equip="true">
+        <Item identifier="batterycell" />
+      </Item>
+      <Item identifier="artmod_clownlighter" />
+    </ItemSet>
+  </Corpse>
+  <Corpse identifier="artmod_clowncorpse2" spawnposition="wreck" job="assistant" commonness="0.25">
+    <ItemSet commonness="0.6">
+      <Item identifier="idcardwreck" equip="true" />
+      <Item identifier="clownmask" equip="true" />
+      <Item identifier="clowncostume" equip="true" />
+      <Item identifier="headset" equip="true">
+        <Item identifier="batterycell" />
+      </Item>
+      <Item identifier="artmod_alientrinket1_shock" />
+    </ItemSet>
+    <ItemSet commonness="0.6">
+      <Item identifier="idcardwreck" equip="true" />
+      <Item identifier="clownmask" equip="true" />
+      <Item identifier="clowncostume" equip="true" />
+      <Item identifier="headset" equip="true">
+        <Item identifier="batterycell" />
+      </Item>
+      <Item identifier="artmod_alientrinket2_wax" />
+    </ItemSet>
+    <ItemSet commonness="0.6">
+      <Item identifier="idcardwreck" equip="true" />
+      <Item identifier="clownmask" equip="true" />
+      <Item identifier="clowncostume" equip="true" />
+      <Item identifier="headset" equip="true">
+        <Item identifier="batterycell" />
+      </Item>
+      <Item identifier="artmod_alientrinket8_psihealsphere" />
+    </ItemSet>
+    <ItemSet commonness="0.6">
+      <Item identifier="idcardwreck" equip="true" />
+      <Item identifier="clownmask" equip="true" />
+      <Item identifier="clowncostume" equip="true" />
+      <Item identifier="headset" equip="true">
+        <Item identifier="batterycell" />
+      </Item>
+      <Item identifier="artmod_alientrinket9_slowdownsphere" />
+    </ItemSet>
+  </Corpse>
+  <Corpse identifier="artmod_blueclowncorpse1" spawnposition="wreck" job="assistant" commonness="0.25">
+    <ItemSet commonness="0.6">
+      <Item identifier="noseless_clownmask" equip="true" />
+      <Item identifier="noseless_clowncostume" equip="true" />
+      <Item identifier="headset" equip="true">
+        <Item identifier="batterycell" />
+      </Item>
+      <Item identifier="artmod_alientrinket11_browtube" />
+    </ItemSet>
+    <ItemSet commonness="0.6">
+      <Item identifier="noseless_clownmask" equip="true" />
+      <Item identifier="noseless_clowncostume" equip="true" />
+      <Item identifier="headset" equip="true">
+        <Item identifier="batterycell" />
+      </Item>
+      <Item identifier="artmod_alientrinket12_greentube" />
+    </ItemSet>
+    <ItemSet commonness="0.6">
+      <Item identifier="noseless_clownmask" equip="true" />
+      <Item identifier="noseless_clowncostume" equip="true" />
+      <Item identifier="headset" equip="true">
+        <Item identifier="batterycell" />
+      </Item>
+      <Item identifier="artmod_alientrinket13_pinktube" />
+    </ItemSet>
+    <ItemSet commonness="0.6">
+      <Item identifier="noseless_clownmask" equip="true" />
+      <Item identifier="noseless_clowncostume" equip="true" />
+      <Item identifier="headset" equip="true">
+        <Item identifier="batterycell" />
+      </Item>
+      <Item identifier="artmod_alientrinket14_bluetube" />
+    </ItemSet>
+    <ItemSet commonness="0.6">
+      <Item identifier="noseless_clownmask" equip="true" />
+      <Item identifier="noseless_clowncostume" equip="true" />
+      <Item identifier="headset" equip="true">
+        <Item identifier="batterycell" />
+      </Item>
+      <Item identifier="artmod_alientrinket15_redtube" />
+    </ItemSet>
+  </Corpse>
+</Corpses>

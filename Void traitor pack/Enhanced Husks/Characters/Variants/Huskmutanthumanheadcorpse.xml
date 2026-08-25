@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Charactervariant inherit="Huskmutanthumanhead" speciesname="Huskmutanthumanheadcorpse" speciestranslationoverride="Mutant Husk" displayname="Mutant Husk">
+  <inventory arrowslot="8" slots="Card, Headset, Head, Any, Any, Any, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="4">
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="huskeggsbasic" />
+  </inventory>
+  <inventory arrowslot="8" slots="Card, Headset, Head, Any, Any, Any, Any, Any" accessiblewhenalive="True" accessiblebyowner="True" commonness="2">
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="unstablehuskeggs" />
+  </inventory>
+  <StatusEffect type="Always" target="This" comparison="and">
+    <Affliction identifier="organdamage" amount="1000" />
+    <Affliction identifier="internaldamage" amount="1000" />
+    <!-- Immediatly kills it. -->
+  </StatusEffect>
+</Charactervariant>

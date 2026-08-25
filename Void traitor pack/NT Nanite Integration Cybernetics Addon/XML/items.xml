@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <Mechfix identifier="mechfixnanite" category="Material" cargocontaineridentifier="chemicalcrate" Tags="smallitem,chem,medical,syringe" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_metal_light" maxstacksize="8">
+    <Upgrade gameversion="0.10.0.0" scale="0.5" />
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="70">
+      <RequiredSkill identifier="electrical" level="60" />
+      <RequiredSkill identifier="electrical" level="60" />
+      <RequiredSkill identifier="medical" level="20" />
+      <RequiredItem identifier="nanitebase" />
+      <RequiredItem identifier="fpgacircuit" amount="4" />
+      <RequiredItem identifier="titaniumaluminiumalloy" amount="4" />
+    </Fabricate>
+    <Deconstruct time="15">
+      <RequiredItem identifier="nanitebase" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/NT Nanite Integration Cybernetics Addon/Images/item.png" sourcerect="0,0,64,64" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/NT Nanite Integration Cybernetics Addon/Images/item.png" sourcerect="64,0     ,64,64" depth="0.6" origin="0.5,0.5" />
+    <Body width="35" height="65" density="15" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="5,0" handle1="-5,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect tags="medical" type="OnUse" target="UseTarget" checkconditionalalways="true" duration="1">
+        <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+        <Hook name="NTNanApplyNanite" id="mechfixnanite" amount="1" />
+        <!-- <Affliction identifier="mechfixnanite" amount="1" /> -->
+        <Affliction identifier="blunttrauma" amount="10" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+  </Mechfix>
+</Items>

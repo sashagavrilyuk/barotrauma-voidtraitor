@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Character genders="true" SpeciesName="Snightmare" SpeciesTranslationOverride="" DisplayName="???" Group="ew" Humanoid="True" HasInfo="False" CanInteract="False" Husk="False" UseHuskAppendage="False" NeedsAir="True" NeedsWater="False" IsMachine="False" CanSpeak="True" ShowHealthBar="True" UseBossHealthBar="False" Noise="100" Visibility="100" BloodDecal="blackblood" BleedParticleAir="blackblooddrop" BleedParticleWater="blackwaterblood" BleedParticleMultiplier="0" CanEat="True" EatingSpeed="10" UsePathFinding="True" PathFinderPriority="1" HideInSonar="False" HideInThermalGoggles="False" SonarDisruption="0" DistantSonarRange="0" DisableDistance="2500000" SoundInterval="10" DrawLast="False" AITurretPriority="1" AISlowTurretPriority="1">
+  <ragdolls path="%ModDir%/More Arts (AOCS)/Characters/Snightmare/Ragdolls/SnightmareDefaultRagdoll.xml" />
+  <animations folder="default" />
+  <bloodemitter Particle="blackblood" AngleMin="0" AngleMax="0" ScaleMin="0.15" ScaleMax="0.35" VelocityMin="0" VelocityMax="0" EmitInterval="0" ParticlesPerSecond="0" ParticleAmount="5" HighQualityCollisionDetection="False" CopyEntityAngle="False" />
+  <bloodemitter Particle="blackwaterblood" AngleMin="0" AngleMax="0" ScaleMin="1" ScaleMax="1" VelocityMin="0" VelocityMax="0" EmitInterval="0" ParticlesPerSecond="0" ParticleAmount="1" HighQualityCollisionDetection="False" CopyEntityAngle="False" />
+  <gibemitter Particle="blackgib" AngleMin="0" AngleMax="360" ScaleMin="1" ScaleMax="1" VelocityMin="50" VelocityMax="500" EmitInterval="0" ParticlesPerSecond="0" ParticleAmount="10" HighQualityCollisionDetection="False" CopyEntityAngle="False" />
+  <gibemitter Particle="blackgib" AngleMin="0" AngleMax="360" ScaleMin="1" ScaleMax="1" VelocityMin="50" VelocityMax="500" EmitInterval="0" ParticlesPerSecond="0" ParticleAmount="10" HighQualityCollisionDetection="False" CopyEntityAngle="False" />
+  <health Vitality="1" DoesBleed="False" CrushDepth="1300" UseHealthWindow="False" BleedingReduction="100" BurnReduction="99" ConstantHealthRegeneration="0.45000002" HealthRegenerationWhenEating="0" StunImmunity="True" PoisonImmunity="False" PoisonVulnerability="1" EmpVulnerability="0" ApplyAfflictionColors="False">
+    <MedUISilhouette texture="Content/UI/Health/MedUI_Silhouette.png" columns="8" rows="2" sourcerect="0,0,1008,748" />
+    <MedUIExtra texture="Content/UI/Health/MedUIExtra.png" columns="4" rows="4" sourcerect="0,0,1024,1024" />
+    <Limb name="Head">
+      <Sprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="1,0,126,374" highlightarea="41,0,45,54" />
+      <Highlightsprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="1,515,126,374" />
+      <VitalityMultiplier type="damage" multiplier="1.0" />
+    </Limb>
+    <Limb name="Torso">
+      <Sprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="631,0,126,374" highlightarea="29,56,70,134" />
+      <Highlightsprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="631,515,126,374" />
+    </Limb>
+    <Limb name="LeftArm">
+      <Sprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="379,0,126,374" highlightarea="1,69,27,140" />
+      <Highlightsprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="379,515,126,374" />
+      <VitalityMultiplier type="damage" multiplier="1" />
+    </Limb>
+    <Limb name="RightArm">
+      <Sprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="127,0,126,374" highlightarea="100,69,27,140" />
+      <Highlightsprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="127,515,126,374" />
+      <VitalityMultiplier type="damage" multiplier="1" />
+    </Limb>
+    <Limb name="LeftLeg">
+      <Sprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="505,0,126,374" highlightarea="3,180,57,194" />
+      <Highlightsprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="505,515,126,374" />
+      <VitalityMultiplier type="damage" multiplier="1" />
+    </Limb>
+    <Limb name="RightLeg">
+      <Sprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="253,0,126,374" highlightarea="68,180,57,194" />
+      <Highlightsprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="253,515,126,374" />
+      <VitalityMultiplier type="damage" multiplier="1" />
+    </Limb>
+  </health>
+  <ai targetinnerwalls="False" CombatStrength="100" Sight="1.5" Hearing="0.5" AggressionHurt="100" AggressionGreed="10" FleeHealthThreshold="0" AttackWhenProvoked="True" AvoidGunfire="False" DamageThreshold="0" AvoidTime="3" MinFleeTime="20" AggressiveBoarding="False" EnforceAggressiveBehaviorForMissions="False" TargetOuterWalls="False" RandomAttack="False" CanOpenDoors="False" UsePathFindingToGetInside="False" KeepDoorsClosed="False" AvoidAbyss="False" StayInAbyss="False" PatrolFlooded="False" PatrolDry="False" StartAggression="0" MaxAggression="100" AggressionCumulation="0" WallTargetingMethod="Target">
+    <target damagethreshold="0" Tag="provocative" State="Attack" Priority="100" ReactDistance="0" AttackDistance="100" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+    <target damagethreshold="0" Tag="human" State="Attack" Priority="180" ReactDistance="0" AttackDistance="100" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+  </ai>
+  <sound gender="None" File="%ModDir%/More Arts (AOCS)/Characters/Snightmare/NightmareAttack1.ogg" State="Attack" Range="1000" Volume="2" Tags="" />
+  <sound gender="None" File="%ModDir%/More Arts (AOCS)/Characters/Snightmare/NightmareAttack2.ogg" State="Attack" Range="1000" Volume="2" Tags="" />
+  <sound gender="None" File="%ModDir%/More Arts (AOCS)/Characters/Snightmare/NightmareAttack3.ogg" State="Attack" Range="1000" Volume="2" Tags="" />
+  <sound gender="None" File="%ModDir%/More Arts (AOCS)/Characters/Snightmare/NightmareAttack4.ogg" State="Attack" Range="1000" Volume="2" Tags="" />
+  <sound gender="None" File="%ModDir%/More Arts (AOCS)/Characters/Snightmare/NightmareIdle.ogg" State="Idle" Range="1000" Volume="2" Tags="" />
+  <sound gender="None" File="%ModDir%/More Arts (AOCS)/Characters/Snightmare/NightmareDamage1.ogg" State="Damage" Range="1000" Volume="2" Tags="" />
+  <sound gender="None" File="%ModDir%/More Arts (AOCS)/Characters/Snightmare/NightmareDamage2.ogg" State="Damage" Range="1000" Volume="2" Tags="" />
+  <sound gender="None" File="%ModDir%/More Arts (AOCS)/Characters/Snightmare/NightmareDamage3.ogg" State="Damage" Range="1000" Volume="2" Tags="" />
+  <sound gender="None" File="%ModDir%/More Arts (AOCS)/Characters/Snightmare/NightmareDamage4.ogg" State="Damage" Range="1000" Volume="2" Tags="" />
+  <sound gender="None" File="%ModDir%/More Arts (AOCS)/Characters/Snightmare/NightmareDeath.ogg" State="Die" Range="1000" Volume="2" Tags="" />
+  <StatusEffect target="This" type="OnSpawn" stackable="false" delay="14">
+    <Affliction identifier="organdamage" strength="2500000.0" />
+  </StatusEffect>
+  <StatusEffect type="InWater" target="Character" delay="0">
+    <RemoveCharacter />
+  </StatusEffect>
+  <StatusEffect target="This" type="OnDeath" targetlimb="Torso" stackable="false">
+    <ParticleEmitter particle="artmod_psychoElectricShock" distancemin="50" distancemax="10" scalemultiplier="0.7,0.7" anglemax="360" emitinterval="1.1" particleamount="2" particlespersecond="5" />
+  </StatusEffect>
+  <StatusEffect type="OnDeath" target="Character" delay="0.01">
+    <RemoveCharacter />
+  </StatusEffect>
+</Character>

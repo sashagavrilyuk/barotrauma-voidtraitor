@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Randomevents>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!--                               Set 1                                       -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <EventSet identifier="artmod_Oh level 0" minleveldifficulty="1" maxleveldifficulty="5" chooserandom="false" allowatstart="true" campaign="false" additive="true" commonness="10000">
+    <Commonness commonness="1000"></Commonness>
+    <!-- always spawn a couple of artifacts	 -->
+    <EventSet chooserandom="true" eventcount="2" allowatstart="true" triggereventcooldown="false">
+      <ArtifactEvent itemidentifier="rust1artifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="rust2artifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="rust3artifact" triggereventcooldown="false" />
+    </EventSet>
+  </EventSet>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!--                               Set 2                                       -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <EventSet identifier="artmod_Oh level 1" minleveldifficulty="5" maxleveldifficulty="15" chooserandom="false" allowatstart="true" campaign="false" additive="true" commonness="10000">
+    <Commonness commonness="1000"></Commonness>
+    <!-- Always spawn a couple of artifacts	 -->
+    <EventSet chooserandom="true" eventcount="2" allowatstart="true" triggereventcooldown="false">
+      <ArtifactEvent itemidentifier="artmod_silentartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_pulseartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_incubatorartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_vacuumartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_brazierartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="rust1artifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="rust2artifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="rust3artifact" triggereventcooldown="false" />
+    </EventSet>
+  </EventSet>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!--                               Set 3                                       -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <EventSet identifier="artmod_Oh level 2" minleveldifficulty="10" maxleveldifficulty="20" chooserandom="false" allowatstart="true" campaign="false" additive="true" commonness="10000">
+    <Commonness commonness="1000"></Commonness>
+    <!-- Always spawn a couple of artifacts	 -->
+    <EventSet chooserandom="true" eventcount="2" allowatstart="true" triggereventcooldown="false">
+      <ArtifactEvent itemidentifier="artmod_silentartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_pulseartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_incubatorartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_vacuumartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_brazierartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_vampireartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="rust1artifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="rust2artifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="rust3artifact" triggereventcooldown="false" />
+    </EventSet>
+  </EventSet>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!--                               Set 4                                       -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- Introduces Moloch -->
+  <EventSet identifier="artmod_Oh level 3" minleveldifficulty="15" maxleveldifficulty="25" chooserandom="false" allowatstart="true" campaign="false" additive="true" commonness="10000">
+    <Commonness commonness="1000"></Commonness>
+    <!-- Always spawn a couple of artifacts	 -->
+    <EventSet chooserandom="true" eventcount="2" allowatstart="true" triggereventcooldown="false">
+      <ArtifactEvent itemidentifier="artmod_silentartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_pulseartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_incubatorartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_vacuumartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_brazierartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_vampireartifact" triggereventcooldown="false" />
+    </EventSet>
+  </EventSet>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!--                               Set 5                                       -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <EventSet identifier="artmod_Oh level 4" minleveldifficulty="25" maxleveldifficulty="35" chooserandom="false" allowatstart="true" campaign="false" additive="true" commonness="10000">
+    <Commonness commonness="1000"></Commonness>
+    <!-- Always spawn a couple of artifacts	 -->
+    <EventSet chooserandom="true" eventcount="2" allowatstart="true" triggereventcooldown="false">
+      <ArtifactEvent itemidentifier="artmod_silentartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_pulseartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_incubatorartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_vacuumartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_brazierartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_vampireartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_zombieartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_sparkartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_heartoftheswarmartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_vacuumartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_meltingartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_oasisartifact" triggereventcooldown="false" />
+    </EventSet>
+  </EventSet>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!--                               Set 6                                       -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- Introduces Watcher -->
+  <EventSet identifier="artmod_Oh level 5" minleveldifficulty="30" maxleveldifficulty="40" chooserandom="false" allowatstart="true" campaign="false" additive="true" commonness="10000">
+    <Commonness commonness="1000"></Commonness>
+    <!-- Always spawn a couple of artifacts	 -->
+    <EventSet chooserandom="true" eventcount="2" allowatstart="true" triggereventcooldown="false">
+      <ArtifactEvent itemidentifier="artmod_silentartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_pulseartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_incubatorartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_vacuumartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_brazierartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_vampireartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_zombieartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_sparkartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_heartoftheswarmartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_vacuumartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_meltingartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_oasisartifact" triggereventcooldown="false" />
+    </EventSet>
+  </EventSet>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!--                               Set 8                                       -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <EventSet identifier="artmod_Oh level 6" minleveldifficulty="40" maxleveldifficulty="50" chooserandom="false" allowatstart="true" campaign="false" additive="true" commonness="10000">
+    <Commonness commonness="1000"></Commonness>
+    <!-- Always spawn a couple of artifacts	 -->
+    <EventSet chooserandom="true" eventcount="2" allowatstart="true" triggereventcooldown="false">
+      <ArtifactEvent itemidentifier="artmod_zombieartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_sparkartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_heartoftheswarmartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_vacuumartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_meltingartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_oasisartifact" triggereventcooldown="false" />
+    </EventSet>
+  </EventSet>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!--                               Set 9                                       -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- Introduces Hammerhead Matriarch and Moloch Baby -->
+  <EventSet identifier="artmod_Oh level 7" minleveldifficulty="45" maxleveldifficulty="55" chooserandom="false" allowatstart="true" campaign="false" additive="true" commonness="10000">
+    <Commonness commonness="1000"></Commonness>
+    <!-- Always spawn a couple of artifacts	 -->
+    <EventSet chooserandom="true" eventcount="2" allowatstart="true" triggereventcooldown="false">
+      <ArtifactEvent itemidentifier="artmod_zombieartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_sparkartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_heartoftheswarmartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_vacuumartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_meltingartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_oasisartifact" triggereventcooldown="false" />
+    </EventSet>
+  </EventSet>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!--                               Set 10                                      -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <EventSet identifier="artmod_Oh level 8" minleveldifficulty="50" maxleveldifficulty="65" chooserandom="false" allowatstart="true" campaign="false" additive="true" commonness="10000">
+    <Commonness commonness="1000"></Commonness>
+    <!-- Always spawn a couple of artifacts	 -->
+    <EventSet chooserandom="true" eventcount="2" allowatstart="true" triggereventcooldown="false">
+      <ArtifactEvent itemidentifier="artmod_zombieartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_sparkartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_heartoftheswarmartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_vacuumartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_meltingartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_oasisartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_mindbentartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_electrodeathartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_heartofEuropeartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_biohazardartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_infernoartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_theheavenartifact" triggereventcooldown="false" />
+    </EventSet>
+  </EventSet>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!--                               Set 11                                      -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <EventSet identifier="artmod_Oh level 9" minleveldifficulty="60" maxleveldifficulty="99" chooserandom="false" allowatstart="true" campaign="false" additive="true" commonness="10000">
+    <Commonness commonness="1000"></Commonness>
+    <!-- Always spawn a couple of artifacts	 -->
+    <EventSet chooserandom="true" eventcount="2" allowatstart="true" triggereventcooldown="false">
+      <ArtifactEvent itemidentifier="artmod_mindbentartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_electrodeathartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_heartofEuropeartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_biohazardartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_infernoartifact" triggereventcooldown="false" />
+      <ArtifactEvent itemidentifier="artmod_theheavenartifact" triggereventcooldown="false" />
+    </EventSet>
+  </EventSet>
+</Randomevents>

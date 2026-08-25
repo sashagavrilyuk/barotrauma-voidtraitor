@@ -1,0 +1,1797 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <!--Start at X lvl emitters-->
+  <!--On Round Start-->
+  <Item name="" identifier="_LCStartAtLevel2RoundStart" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="230,225,5">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCStartAtLevel2RoundStart_Active" spawnposition="This" />
+        <RemoveItem />
+        <!--Remove self after triggering spawn of actual emitter-->
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel2RoundStart_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <!--Floats through sub as its not part of it and has no physics-->
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="3" oneshot="true">
+        <Affliction identifier="lccheckapplicablelvl2" amount="100" />
+        <!--Give a affliction as nearbycharacters cant check for conditionals of each individual-->
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel4RoundStart" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="230,225,5">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCStartAtLevel4RoundStart_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel4RoundStart_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="1" oneshot="true">
+        <Affliction identifier="lccheckapplicablelvl4" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel6RoundStart" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="230,225,5">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCStartAtLevel6RoundStart_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel6RoundStart_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" oneshot="true">
+        <Affliction identifier="lccheckapplicablelvl6" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel8RoundStart" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="230,225,5">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCStartAtLevel8RoundStart_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel8RoundStart_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" oneshot="true">
+        <Affliction identifier="lccheckapplicablelvl8" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel12RoundStart" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="230,225,5">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCStartAtLevel12RoundStart_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel12RoundStart_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" oneshot="true">
+        <Affliction identifier="lccheckapplicablelvl12" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel16RoundStart" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="230,225,5">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCStartAtLevel16RoundStart_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel16RoundStart_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" oneshot="true">
+        <Affliction identifier="lccheckapplicablelvl16" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--Mid Round-->
+  <Item name="" identifier="_LCStartAtLevel2Loop" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="145,145,25">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCStartAtLevel2Loop_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel2Loop_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <!--Floats through sub as its not part of it and has no physics-->
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="300">
+        <!--Every 5 minutes-->
+        <Affliction identifier="lccheckapplicablelvl2" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel4Loop" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="145,145,25">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCStartAtLevel4Loop_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel4Loop_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="300">
+        <Affliction identifier="lccheckapplicablelvl4" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel6Loop" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="145,145,25">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCStartAtLevel6Loop_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel6Loop_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="300">
+        <Affliction identifier="lccheckapplicablelvl6" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel8Loop" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="145,145,25">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCStartAtLevel8Loop_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel8Loop_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="300">
+        <Affliction identifier="lccheckapplicablelvl8" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel12Loop" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="145,145,25">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCStartAtLevel12Loop_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel12Loop_Active" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="300">
+        <Affliction identifier="lccheckapplicablelvl12" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel16Loop" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="145,145,25">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCStartAtLevel16Loop_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCStartAtLevel16Loop_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="300">
+        <Affliction identifier="lccheckapplicablelvl16" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--Passive experience emitters-->
+  <Item name="" identifier="_LCPassiveXP1RoundStart" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="130,255,240">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCPassiveXP1RoundStart_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP1RoundStart_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" oneshot="true">
+        <Affliction identifier="lccheckapplicablepassivexp1" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP2RoundStart" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="130,255,240">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCPassiveXP2RoundStart_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP2RoundStart_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" oneshot="true">
+        <Affliction identifier="lccheckapplicablepassivexp2" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP3RoundStart" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="130,255,240">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCPassiveXP3RoundStart_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP3RoundStart_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" oneshot="true">
+        <Affliction identifier="lccheckapplicablepassivexp3" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP4RoundStart" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="130,255,240">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCPassiveXP4RoundStart_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP4RoundStart_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" oneshot="true">
+        <Affliction identifier="lccheckapplicablepassivexp4" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP5RoundStart" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="130,255,240">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCPassiveXP5RoundStart_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP5RoundStart_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" oneshot="true">
+        <Affliction identifier="lccheckapplicablepassivexp5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP6RoundStart" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="130,255,240">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCPassiveXP6RoundStart_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP6RoundStart_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" oneshot="true">
+        <Affliction identifier="lccheckapplicablepassivexp6" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--Mid Round passive xp-->
+  <Item name="" identifier="_LCPassiveXP1Loop" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="55,125,115">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCPassiveXP1Loop_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP1Loop_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="300">
+        <Affliction identifier="lccheckapplicablepassivexp1" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP2Loop" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="55,125,115">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCPassiveXP2Loop_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP2Loop_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="300">
+        <Affliction identifier="lccheckapplicablepassivexp2" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP3Loop" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="55,125,115">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCPassiveXP3Loop_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP3Loop_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="300">
+        <Affliction identifier="lccheckapplicablepassivexp3" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP4Loop" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="55,125,115">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCPassiveXP4Loop_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP4Loop_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="300">
+        <Affliction identifier="lccheckapplicablepassivexp4" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP5Loop" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="55,125,115">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCPassiveXP5Loop_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP5Loop_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="300">
+        <Affliction identifier="lccheckapplicablepassivexp5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP6Loop" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="55,125,115">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCPassiveXP6Loop_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCPassiveXP6Loop_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="300">
+        <Affliction identifier="lccheckapplicablepassivexp6" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--Multiplier emitters-->
+  <!--XP Gain Multipliers-->
+  <Item name="" identifier="_LCXPMultiplier_0.5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="225,95,70">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCXPMultiplier_0.5_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCXPMultiplier_0.5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcxpgainmultiplier_0.5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCXPMultiplier_0.75" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="225,95,70">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCXPMultiplier_0.75_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCXPMultiplier_0.75_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="225,95,70">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcxpgainmultiplier_0.75" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCXPMultiplier_1.25" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="225,95,70">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCXPMultiplier_1.25_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCXPMultiplier_1.25_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcxpgainmultiplier_1.25" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCXPMultiplier_1.5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="225,95,70">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCXPMultiplier_1.5_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCXPMultiplier_1.5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcxpgainmultiplier_1.5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCXPMultiplier_1.75" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="225,95,70">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCXPMultiplier_1.75_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCXPMultiplier_1.75_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcxpgainmultiplier_1.75" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCXPMultiplier_2" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="225,95,70">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCXPMultiplier_2_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCXPMultiplier_2_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcxpgainmultiplier_2" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCXPMultiplier_5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="225,95,70">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCXPMultiplier_5_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCXPMultiplier_5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcxpgainmultiplier_5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCXPMultiplier_10" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="225,95,70">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCXPMultiplier_10_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCXPMultiplier_10_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcxpgainmultiplier_10" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--Skill Gain Multipliers-->
+  <Item name="" identifier="_LCSkillMultiplier_0.5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="255,213,206">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCSkillMultiplier_0.5_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSkillMultiplier_0.5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcskillgainmultiplier_0.5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSkillMultiplier_0.75" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="255,213,206">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCSkillMultiplier_0.75_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSkillMultiplier_0.75_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcskillgainmultiplier_0.75" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSkillMultiplier_1.25" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="255,213,206">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCSkillMultiplier_1.25_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSkillMultiplier_1.25_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcskillgainmultiplier_1.25" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSkillMultiplier_1.5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="255,213,206">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCSkillMultiplier_1.5_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSkillMultiplier_1.5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcskillgainmultiplier_1.5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSkillMultiplier_1.75" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="255,213,206">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCSkillMultiplier_1.75_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSkillMultiplier_1.75_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcskillgainmultiplier_1.75" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSkillMultiplier_2" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="255,213,206">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCSkillMultiplier_2_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSkillMultiplier_2_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcskillgainmultiplier_2" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSkillMultiplier_5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="255,213,206">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCSkillMultiplier_5_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSkillMultiplier_5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="640,512,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcskillgainmultiplier_5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--Walk Speed Multipliers-->
+  <Item name="" identifier="_LCWalkSpeedMultiplier_0.25" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="7,254,160">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCWalkSpeedMultiplier_0.25_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWalkSpeedMultiplier_0.25_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcwalkspeedmultiplier_0.25" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWalkSpeedMultiplier_0.5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="7,254,160">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCWalkSpeedMultiplier_0.5_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWalkSpeedMultiplier_0.5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcwalkspeedmultiplier_0.5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWalkSpeedMultiplier_0.75" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="7,254,160">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCWalkSpeedMultiplier_0.75_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWalkSpeedMultiplier_0.75_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcwalkspeedmultiplier_0.75" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWalkSpeedMultiplier_1.25" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="7,254,160">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCWalkSpeedMultiplier_1.25_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWalkSpeedMultiplier_1.25_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcwalkspeedmultiplier_1.25" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWalkSpeedMultiplier_1.5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="7,254,160">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCWalkSpeedMultiplier_1.5_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWalkSpeedMultiplier_1.5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcwalkspeedmultiplier_1.5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWalkSpeedMultiplier_1.75" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="7,254,160">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCWalkSpeedMultiplier_1.75_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWalkSpeedMultiplier_1.75_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcwalkspeedmultiplier_1.75" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWalkSpeedMultiplier_2" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="7,254,160">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCWalkSpeedMultiplier_2_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWalkSpeedMultiplier_2_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcwalkspeedmultiplier_2" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWalkSpeedMultiplier_3" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="7,254,160">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCWalkSpeedMultiplier_3_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWalkSpeedMultiplier_3_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcwalkspeedmultiplier_3" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!-- Swimming Speed Multipliers-->
+  <Item name="" identifier="_LCSwimSpeedMultiplier_0.25" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="130,230,255">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCSwimSpeedMultiplier_0.25_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSwimSpeedMultiplier_0.25_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcswimspeedmultiplier_0.25" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSwimSpeedMultiplier_0.5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="130,230,255">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCSwimSpeedMultiplier_0.5_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSwimSpeedMultiplier_0.5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcswimspeedmultiplier_0.5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSwimSpeedMultiplier_0.75" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="130,230,255">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCSwimSpeedMultiplier_0.75_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSwimSpeedMultiplier_0.75_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcswimspeedmultiplier_0.75" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSwimSpeedMultiplier_1.25" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="130,230,255">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCSwimSpeedMultiplier_1.25_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSwimSpeedMultiplier_1.25_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcswimspeedmultiplier_1.25" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSwimSpeedMultiplier_1.5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="130,230,255">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCSwimSpeedMultiplier_1.5_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSwimSpeedMultiplier_1.5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcswimspeedmultiplier_1.5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSwimSpeedMultiplier_1.75" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="130,230,255">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCSwimSpeedMultiplier_1.75_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSwimSpeedMultiplier_1.75_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcswimspeedmultiplier_1.75" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSwimSpeedMultiplier_2" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="130,230,255">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCSwimSpeedMultiplier_2_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSwimSpeedMultiplier_2_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcswimspeedmultiplier_2" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSwimSpeedMultiplier_3" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="130,230,255">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCSwimSpeedMultiplier_3_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCSwimSpeedMultiplier_3_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="128,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcswimspeedmultiplier_3" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--Friendly Fire Multipliers-->
+  <Item name="" identifier="_LCFriendlyFireMultiplier_0.1" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="85,30,20">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCFriendlyFireMultiplier_0.1_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCFriendlyFireMultiplier_0.1_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcfriendlyfiredamagemultiplier_0.1" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCFriendlyFireMultiplier_0.25" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="85,30,20">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCFriendlyFireMultiplier_0.25_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCFriendlyFireMultiplier_0.25_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcfriendlyfiredamagemultiplier_0.25" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCFriendlyFireMultiplier_0.5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="85,30,20">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCFriendlyFireMultiplier_0.5_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCFriendlyFireMultiplier_0.5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcfriendlyfiredamagemultiplier_0.5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCFriendlyFireMultiplier_0.75" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="85,30,20">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCFriendlyFireMultiplier_0.75_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCFriendlyFireMultiplier_0.75_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcfriendlyfiredamagemultiplier_0.75" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCFriendlyFireMultiplier_1.5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="85,30,20">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCFriendlyFireMultiplier_1.5_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCFriendlyFireMultiplier_1.5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcfriendlyfiredamagemultiplier_1.5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCFriendlyFireMultiplier_2" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="85,30,20">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCFriendlyFireMultiplier_2_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCFriendlyFireMultiplier_2_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcfriendlyfiredamagemultiplier_2" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--Repair Speed Multipliers-->
+  <Item name="" identifier="_LCRepairSpeedMultiplier_0.25" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="205,205,60">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCRepairSpeedMultiplier_0.25_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCRepairSpeedMultiplier_0.25_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcrepairspeedmultiplier_0.25" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCRepairSpeedMultiplier_0.5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="205,205,60">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCRepairSpeedMultiplier_0.5_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCRepairSpeedMultiplier_0.5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcrepairspeedmultiplier_0.5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCRepairSpeedMultiplier_0.75" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="205,205,60">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCRepairSpeedMultiplier_0.75_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCRepairSpeedMultiplier_0.75_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcrepairspeedmultiplier_0.75" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCRepairSpeedMultiplier_1.25" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="205,205,60">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCRepairSpeedMultiplier_1.25_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCRepairSpeedMultiplier_1.25_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcrepairspeedmultiplier_1.25" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCRepairSpeedMultiplier_1.5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="205,205,60">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCRepairSpeedMultiplier_1.5_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCRepairSpeedMultiplier_1.5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcrepairspeedmultiplier_1.5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCRepairSpeedMultiplier_1.75" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="205,205,60">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCRepairSpeedMultiplier_1.75_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCRepairSpeedMultiplier_1.75_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcrepairspeedmultiplier_1.75" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCRepairSpeedMultiplier_2" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="205,205,60">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCRepairSpeedMultiplier_2_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCRepairSpeedMultiplier_2_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcrepairspeedmultiplier_2" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCRepairSpeedMultiplier_3" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="205,205,60">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCRepairSpeedMultiplier_3_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCRepairSpeedMultiplier_3_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcrepairspeedmultiplier_3" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCRepairSpeedMultiplier_10" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="205,205,60">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCRepairSpeedMultiplier_10_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCRepairSpeedMultiplier_10_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,0,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcrepairspeedmultiplier_10" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--Welding speed-->
+  <Item name="" identifier="_LCWeldingSpeedMultiplier_0.25" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="215,215,60">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCWeldingSpeedMultiplier_0.25_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWeldingSpeedMultiplier_0.25_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcweldingspeedmultiplier_0.25" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWeldingSpeedMultiplier_0.5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="215,215,60">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCWeldingSpeedMultiplier_0.5_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWeldingSpeedMultiplier_0.5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcweldingspeedmultiplier_0.5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWeldingSpeedMultiplier_0.75" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="215,215,60">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCWeldingSpeedMultiplier_0.75_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWeldingSpeedMultiplier_0.75_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcweldingspeedmultiplier_0.75" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWeldingSpeedMultiplier_1.25" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="215,215,60">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCWeldingSpeedMultiplier_1.25_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWeldingSpeedMultiplier_1.25_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcweldingspeedmultiplier_1.25" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWeldingSpeedMultiplier_1.5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="215,215,60">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCWeldingSpeedMultiplier_1.5_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWeldingSpeedMultiplier_1.5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcweldingspeedmultiplier_1.5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWeldingSpeedMultiplier_1.75" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="215,215,60">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCWeldingSpeedMultiplier_1.75_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWeldingSpeedMultiplier_1.75_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcweldingspeedmultiplier_1.75" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWeldingSpeedMultiplier_2" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="215,215,60">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCWeldingSpeedMultiplier_2_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWeldingSpeedMultiplier_2_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcweldingspeedmultiplier_2" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWeldingSpeedMultiplier_3" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="215,215,60">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCWeldingSpeedMultiplier_3_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWeldingSpeedMultiplier_3_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcweldingspeedmultiplier_3" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWeldingSpeedMultiplier_10" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="215,215,60">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCWeldingSpeedMultiplier_10_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCWeldingSpeedMultiplier_10_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcweldingspeedmultiplier_10" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!-- Vitality-->
+  <Item name="" identifier="_LCVitalityMultiplier_0.25" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="42,165,46">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,128,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCVitalityMultiplier_0.25_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCVitalityMultiplier_0.25_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,128,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcvitalitymultiplier_0.25" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCVitalityMultiplier_0.5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="42,165,46">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,128,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCVitalityMultiplier_0.5_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCVitalityMultiplier_0.5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,128,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcvitalitymultiplier_0.5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCVitalityMultiplier_0.75" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="42,165,46">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,128,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCVitalityMultiplier_0.75_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCVitalityMultiplier_0.75_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,128,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcvitalitymultiplier_0.75" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCVitalityMultiplier_1.25" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="42,165,46">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,128,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCVitalityMultiplier_1.25_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCVitalityMultiplier_1.25_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,128,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcvitalitymultiplier_1.25" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCVitalityMultiplier_1.5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="42,165,46">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,128,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCVitalityMultiplier_1.5_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCVitalityMultiplier_1.5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,128,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcvitalitymultiplier_1.5" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCVitalityMultiplier_1.75" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="42,165,46">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,128,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCVitalityMultiplier_1.75_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCVitalityMultiplier_1.75_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,128,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcvitalitymultiplier_1.75" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCVitalityMultiplier_2" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="42,165,46">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="384,256,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true">
+        <SpawnItem identifiers="_LCVitalityMultiplier_2_Active" spawnposition="This" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCVitalityMultiplier_2_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true">
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,128,128,128" depth="0.6" origin="0.5,0.5" />
+    <Body width="50" height="10" density="10" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120">
+        <Affliction identifier="lcvitalitymultiplier_2" amount="100" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--Fabrication speed-->
+  <!--Non functional statvalue on afflictions, doesn't work on this context
+  <Item name="" identifier="_LCFabricationSpeedMultiplier_0.5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="190,190,60"> 
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="768,512,128,128" depth="0.6" origin="0.5,0.5" />
+	<Body width="50" height="10" density="10" />
+    <ItemComponent>
+	  <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true" > 
+	    <SpawnItem identifiers="_LCFabricationSpeedMultiplier_0.5_Active" spawnposition="This" />
+		<RemoveItem />
+	  </StatusEffect>
+	</ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCFabricationSpeedMultiplier_0.5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" >
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="768,512,128,128" depth="0.6" origin="0.5,0.5" />
+	<Body width="50" height="10" density="10" />
+    <ItemComponent>
+	  <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120" > 
+	    <Affliction identifier="lcfabricationspeedmultiplier_0.5" amount="100"/>
+	  </StatusEffect>
+	</ItemComponent>
+  </Item>
+  
+  <Item name="" identifier="_LCFabricationSpeedMultiplier_1.25" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="190,190,60"> 
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="768,512,128,128" depth="0.6" origin="0.5,0.5" />
+	<Body width="50" height="10" density="10" />
+    <ItemComponent>
+	  <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true" > 
+	    <SpawnItem identifiers="_LCFabricationSpeedMultiplier_1.25_Active" spawnposition="This" />
+		<RemoveItem />
+	  </StatusEffect>
+	</ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCFabricationSpeedMultiplier_1.25_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" >
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="768,512,128,128" depth="0.6" origin="0.5,0.5" />
+	<Body width="50" height="10" density="10" />
+    <ItemComponent>
+	  <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120" > 
+	    <Affliction identifier="lcfabricationspeedmultiplier_1.25" amount="100"/>
+	  </StatusEffect>
+	</ItemComponent>
+  </Item>
+  
+  <Item name="" identifier="_LCFabricationSpeedMultiplier_1.5" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="190,190,60"> 
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="768,512,128,128" depth="0.6" origin="0.5,0.5" />
+	<Body width="50" height="10" density="10" />
+    <ItemComponent>
+	  <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true" > 
+	    <SpawnItem identifiers="_LCFabricationSpeedMultiplier_1.5_Active" spawnposition="This" />
+		<RemoveItem />
+	  </StatusEffect>
+	</ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCFabricationSpeedMultiplier_1.5_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" >
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="768,512,128,128" depth="0.6" origin="0.5,0.5" />
+	<Body width="50" height="10" density="10" />
+    <ItemComponent>
+	  <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120" > 
+	    <Affliction identifier="lcfabricationspeedmultiplier_1.5" amount="100"/>
+	  </StatusEffect>
+	</ItemComponent>
+  </Item>
+  
+  <Item name="" identifier="_LCFabricationSpeedMultiplier_2" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="190,190,60"> 
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="768,512,128,128" depth="0.6" origin="0.5,0.5" />
+	<Body width="50" height="10" density="10" />
+    <ItemComponent>
+	  <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true" > 
+	    <SpawnItem identifiers="_LCFabricationSpeedMultiplier_2_Active" spawnposition="This" />
+		<RemoveItem />
+	  </StatusEffect>
+	</ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCFabricationSpeedMultiplier_2_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" >
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="768,512,128,128" depth="0.6" origin="0.5,0.5" />
+	<Body width="50" height="10" density="10" />
+    <ItemComponent>
+	  <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120" > 
+	    <Affliction identifier="lcfabricationspeedmultiplier_2" amount="100"/>
+	  </StatusEffect>
+	</ItemComponent>
+  </Item>
+  
+  <Item name="" identifier="_LCFabricationSpeedMultiplier_3" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="190,190,60"> 
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="768,512,128,128" depth="0.6" origin="0.5,0.5" />
+	<Body width="50" height="10" density="10" />
+    <ItemComponent>
+	  <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true" > 
+	    <SpawnItem identifiers="_LCFabricationSpeedMultiplier_3_Active" spawnposition="This" />
+		<RemoveItem />
+	  </StatusEffect>
+	</ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCFabricationSpeedMultiplier_3_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" >
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="768,512,128,128" depth="0.6" origin="0.5,0.5" />
+	<Body width="50" height="10" density="10" />
+    <ItemComponent>
+	  <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120" > 
+	    <Affliction identifier="lcfabricationspeedmultiplier_3" amount="100"/>
+	  </StatusEffect>
+	</ItemComponent>
+  </Item>
+
+  <Item name="" identifier="_LCFabricationSpeedMultiplier_10" hideinmenus="true" allowasextracargo="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" spritecolor="190,190,60"> 
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="768,512,128,128" depth="0.6" origin="0.5,0.5" />
+	<Body width="50" height="10" density="10" />
+    <ItemComponent>
+	  <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="10" oneshot="true" > 
+	    <SpawnItem identifiers="_LCFabricationSpeedMultiplier_10_Active" spawnposition="This" />
+		<RemoveItem />
+	  </StatusEffect>
+	</ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCFabricationSpeedMultiplier_10_Active" hideinmenus="true" description="" Tags="emittertag" maxstacksize="64" HiddenInGame="true" >
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="768,512,128,128" depth="0.6" origin="0.5,0.5" />
+	<Body width="50" height="10" density="10" />
+    <ItemComponent>
+	  <StatusEffect type="Always" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="1" interval="120" > 
+	    <Affliction identifier="lcfabricationspeedmultiplier_10" amount="100"/>
+	  </StatusEffect>
+	</ItemComponent>
+  </Item>
+  -->
+</Items>
+<!--
+talent points available/cost since last/total cost
+1 450   
+2 950	1400
+3 1450	2850
+4 1950	4800
+5 2450	7250
+6 2950	10200
+7 3450	13650
+8 3950	17600
+9 4450	22050
+10 4950	27000
+11 5450	32450
+12 5950	38400
+13 6450	44850
+14 6950	51800
+15 7450	59250
+16 7950	67200
+-->

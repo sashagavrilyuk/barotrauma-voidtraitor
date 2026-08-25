@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Charactervariant inherit="Huskmutanthunter" speciesname="Huskmutanthuntspecial" speciestranslationoverride="Huskmutanthunter">
+  <!-- This variant of the huskmutanthunter exists solely to allow the spawning of husk mutant hunters that can throw heads without having to pick them up first. -->
+  <!-- Check the normal version of this character to see the effects of this variant. -->
+  <StatusEffect type="Always" target="This" comparison="and">
+    <Affliction identifier="huskspawnrandomchance3" amount="25" />
+    <!-- "This only really exist now to turn into other armored husks" only exist to turn into one of the three variants. -->
+  </StatusEffect>
+</Charactervariant>

@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Talents>
+  <Talent identifier="lcpassivexp1" ishiddenextratalent="true">
+    <AbilityGroupInterval>
+      <Abilities>
+        <CharacterAbilityApplyStatusEffects>
+          <StatusEffects>
+            <!-- give experience every 60 seconds -->
+            <StatusEffect type="OnAbility" target="Character" interval="60" stackable="false">
+              <GiveExperience amount="5" />
+            </StatusEffect>
+          </StatusEffects>
+        </CharacterAbilityApplyStatusEffects>
+      </Abilities>
+    </AbilityGroupInterval>
+  </Talent>
+  <Talent identifier="lcpassivexp2" ishiddenextratalent="true">
+    <AbilityGroupInterval>
+      <Abilities>
+        <CharacterAbilityApplyStatusEffects>
+          <StatusEffects>
+            <StatusEffect type="OnAbility" target="Character" interval="60" stackable="false">
+              <GiveExperience amount="10" />
+            </StatusEffect>
+          </StatusEffects>
+        </CharacterAbilityApplyStatusEffects>
+      </Abilities>
+    </AbilityGroupInterval>
+  </Talent>
+  <Talent identifier="lcpassivexp3" ishiddenextratalent="true">
+    <AbilityGroupInterval>
+      <Abilities>
+        <CharacterAbilityApplyStatusEffects>
+          <StatusEffects>
+            <StatusEffect type="OnAbility" target="Character" interval="60" stackable="false">
+              <GiveExperience amount="20" />
+            </StatusEffect>
+          </StatusEffects>
+        </CharacterAbilityApplyStatusEffects>
+      </Abilities>
+    </AbilityGroupInterval>
+  </Talent>
+  <Talent identifier="lcpassivexp4" ishiddenextratalent="true">
+    <AbilityGroupInterval>
+      <Abilities>
+        <CharacterAbilityApplyStatusEffects>
+          <StatusEffects>
+            <StatusEffect type="OnAbility" target="Character" interval="60" stackable="false">
+              <GiveExperience amount="50" />
+            </StatusEffect>
+          </StatusEffects>
+        </CharacterAbilityApplyStatusEffects>
+      </Abilities>
+    </AbilityGroupInterval>
+  </Talent>
+  <Talent identifier="lcpassivexp5" ishiddenextratalent="true">
+    <AbilityGroupInterval>
+      <Abilities>
+        <CharacterAbilityApplyStatusEffects>
+          <StatusEffects>
+            <StatusEffect type="OnAbility" target="Character" interval="60" stackable="false">
+              <GiveExperience amount="100" />
+            </StatusEffect>
+          </StatusEffects>
+        </CharacterAbilityApplyStatusEffects>
+      </Abilities>
+    </AbilityGroupInterval>
+  </Talent>
+  <Talent identifier="lcpassivexp6" ishiddenextratalent="true">
+    <AbilityGroupInterval>
+      <Abilities>
+        <CharacterAbilityApplyStatusEffects>
+          <StatusEffects>
+            <StatusEffect type="OnAbility" target="Character" interval="60" stackable="false">
+              <GiveExperience amount="500" />
+            </StatusEffect>
+            <StatusEffect type="OnAbility" target="NearbyCharacters" range="1000000" disabledeltatime="true" stackable="false" delay="15" oneshot="true">
+              <GiveTalentInfo giverandom="true" talentidentifiers="lcpassivexp1" />
+              <Conditional IsOnPlayerTeam="true" />
+              <Conditional IsHuman="true" />
+            </StatusEffect>
+          </StatusEffects>
+        </CharacterAbilityApplyStatusEffects>
+      </Abilities>
+    </AbilityGroupInterval>
+  </Talent>
+  <!--Start at lvl talents-->
+  <!---->
+  <Talent identifier="lcstartatlvl2" ishiddenextratalent="true">
+    <!--Danke Ydrec for helping optimize this-->
+    <AbilityGroupEffect abilityeffecttype="None">
+      <Abilities>
+        <!--Set stat to 1 so we can reset it later to only trigger once-->
+        <CharacterAbilityGivePermanentStat statidentifier="experienceemitter2_tracker" value="1" maxvalue="1" setvalue="true" />
+      </Abilities>
+    </AbilityGroupEffect>
+    <AbilityGroupInterval interval="5" maxTriggerCount="1">
+      <Conditions>
+        <AbilityConditionHasPermanentStat statidentifier="experienceemitter2_tracker" min="1" />
+      </Conditions>
+      <Abilities>
+        <CharacterAbilityGiveExperience amount="1400" />
+        <CharacterAbilityResetPermanentStat statidentifier="experienceemitter2_tracker" />
+      </Abilities>
+      <FallbackAbilities>
+        <!--Fallback to trigger the maxTriggerCount, purely for optimization-->
+      </FallbackAbilities>
+    </AbilityGroupInterval>
+  </Talent>
+  <Talent identifier="lcstartatlvl4" ishiddenextratalent="true">
+    <AbilityGroupEffect abilityeffecttype="None">
+      <Abilities>
+        <CharacterAbilityGivePermanentStat statidentifier="experienceemitter4_tracker" value="1" maxvalue="1" setvalue="true" />
+      </Abilities>
+    </AbilityGroupEffect>
+    <AbilityGroupInterval interval="5" maxTriggerCount="1">
+      <Conditions>
+        <AbilityConditionHasPermanentStat statidentifier="experienceemitter4_tracker" min="1" />
+      </Conditions>
+      <Abilities>
+        <CharacterAbilityGiveExperience amount="4800" />
+        <CharacterAbilityResetPermanentStat statidentifier="experienceemitter4_tracker" />
+      </Abilities>
+      <FallbackAbilities>
+        <!--Fallback to trigger the maxTriggerCount, purely for optimization-->
+      </FallbackAbilities>
+    </AbilityGroupInterval>
+  </Talent>
+  <Talent identifier="lcstartatlvl6" ishiddenextratalent="true">
+    <AbilityGroupEffect abilityeffecttype="None">
+      <Abilities>
+        <CharacterAbilityGivePermanentStat statidentifier="experienceemitter6_tracker" value="1" maxvalue="1" setvalue="true" />
+      </Abilities>
+    </AbilityGroupEffect>
+    <AbilityGroupInterval interval="5" maxTriggerCount="1">
+      <Conditions>
+        <AbilityConditionHasPermanentStat statidentifier="experienceemitter6_tracker" min="1" />
+      </Conditions>
+      <Abilities>
+        <CharacterAbilityGiveExperience amount="10200" />
+        <CharacterAbilityResetPermanentStat statidentifier="experienceemitter6_tracker" />
+      </Abilities>
+      <FallbackAbilities>
+        <!--Fallback to trigger the maxTriggerCount, purely for optimization-->
+      </FallbackAbilities>
+    </AbilityGroupInterval>
+  </Talent>
+  <Talent identifier="lcstartatlvl8" ishiddenextratalent="true">
+    <AbilityGroupEffect abilityeffecttype="None">
+      <Abilities>
+        <CharacterAbilityGivePermanentStat statidentifier="experienceemitter8_tracker" value="1" maxvalue="1" setvalue="true" />
+      </Abilities>
+    </AbilityGroupEffect>
+    <AbilityGroupInterval interval="5" maxTriggerCount="1">
+      <Conditions>
+        <AbilityConditionHasPermanentStat statidentifier="experienceemitter8_tracker" min="1" />
+      </Conditions>
+      <Abilities>
+        <CharacterAbilityGiveExperience amount="17600" />
+        <CharacterAbilityResetPermanentStat statidentifier="experienceemitter8_tracker" />
+      </Abilities>
+      <FallbackAbilities>
+        <!--Fallback to trigger the maxTriggerCount, purely for optimization-->
+      </FallbackAbilities>
+    </AbilityGroupInterval>
+  </Talent>
+  <Talent identifier="lcstartatlvl12" ishiddenextratalent="true">
+    <AbilityGroupEffect abilityeffecttype="None">
+      <Abilities>
+        <CharacterAbilityGivePermanentStat statidentifier="experienceemitter12_tracker" value="1" maxvalue="1" setvalue="true" />
+      </Abilities>
+    </AbilityGroupEffect>
+    <AbilityGroupInterval interval="5" maxTriggerCount="1">
+      <Conditions>
+        <AbilityConditionHasPermanentStat statidentifier="experienceemitter12_tracker" min="1" />
+      </Conditions>
+      <Abilities>
+        <CharacterAbilityGiveExperience amount="38400" />
+        <CharacterAbilityResetPermanentStat statidentifier="experienceemitter12_tracker" />
+      </Abilities>
+      <FallbackAbilities>
+        <!--Fallback to trigger the maxTriggerCount, purely for optimization-->
+      </FallbackAbilities>
+    </AbilityGroupInterval>
+  </Talent>
+  <Talent identifier="lcstartatlvl16" ishiddenextratalent="true">
+    <AbilityGroupEffect abilityeffecttype="None">
+      <Abilities>
+        <CharacterAbilityGivePermanentStat statidentifier="experienceemitter16_tracker" value="1" maxvalue="1" setvalue="true" />
+      </Abilities>
+    </AbilityGroupEffect>
+    <AbilityGroupInterval interval="5" maxTriggerCount="1">
+      <Conditions>
+        <AbilityConditionHasPermanentStat statidentifier="experienceemitter16_tracker" min="1" />
+      </Conditions>
+      <Abilities>
+        <CharacterAbilityGiveExperience amount="67200" />
+        <CharacterAbilityResetPermanentStat statidentifier="experienceemitter16_tracker" />
+      </Abilities>
+      <FallbackAbilities>
+        <!--Fallback to trigger the maxTriggerCount, purely for optimization-->
+      </FallbackAbilities>
+    </AbilityGroupInterval>
+  </Talent>
+</Talents>

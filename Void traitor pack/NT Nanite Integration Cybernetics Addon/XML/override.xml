@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Override>
+  <Affliction identifier="ntc_cyberleg" hideiconafterdelay="true"></Affliction>
+  <Affliction identifier="ntc_cyberarm" hideiconafterdelay="true"></Affliction>
+  <Affliction identifier="ntc_waterproof" hideiconafterdelay="true"></Affliction>
+</Override>

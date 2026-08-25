@@ -1,0 +1,1709 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Afflictions>
+  <!--псевкокислородное голодание-->
+  <OxygenLow identifier="artmod_oxygenlow" type="poison" limbspecific="false" indicatorlimb="Torso" activationthreshold="1" maxstrength="100">
+    <Effect minstrength="1" maxstrength="40" minvitalitydecrease="0" maxvitalitydecrease="2" minfacetint="200,180,255,0" maxfacetint="200,180,255,100" strengthchange="-2" />
+    <Effect minstrength="40" maxstrength="100" multiplybymaxvitality="true" minvitalitydecrease="0" maxvitalitydecrease="2" minfacetint="200,180,255,100" maxfacetint="200,180,255,200" minbodytint="150,150,255,0" maxbodytint="150,150,255,100" strengthchange="-2" />
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="512,640,128,128" color="68,157,198,255" origin="0,0" />
+  </OxygenLow>
+  <Affliction identifier="undying" isbuff="true" limbspecific="false" maxstrength="100" treatmentthreshold="1000" showiconthreshold="0" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" iconcolors="33,75,78;126,211,224;126,211,224;227,247,249">
+    <Effect minstrength="0" maxstrength="10" strengthchange="-0.25">
+      <AbilityFlag flagtype="CanNotDieToAfflictions" />
+      <AbilityFlag flagtype="AlwaysStayConscious" />
+    </Effect>
+    <Icon texture="Content/UI/TalentsIcons4.png" sheetindex="6,0" sheetelementsize="128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--для фальшивого ножа-->
+  <Affliction identifier="morbusinepoisoningfake" type="poison" limbspecific="false" indicatorlimb="Torso" showiconthreshold="40" showinhealthscannerthreshold="20" treatmentthreshold="2000" karmachangeonapplied="0" maxstrength="100" affectmachines="false" healcostmultiplier="0" basehealcost="30" MedicalSkillGain="0">
+    <Description textidentifier="afflictiondescription.morbusinepoisoning.low.self" target="Self" minstrength="0" maxstrength="50" />
+    <Description textidentifier="afflictiondescription.morbusinepoisoning.high.self" target="Self" minstrength="50" maxstrength="100" />
+    <Description textidentifier="afflictiondescription.morbusinepoisoning.low" target="OtherCharacter" minstrength="0" maxstrength="50" />
+    <Description textidentifier="afflictiondescription.morbusinepoisoning" target="OtherCharacter" minstrength="50" maxstrength="100" />
+    <!-- Reduce oxygen intake for the victim, cause suffocation -->
+    <!-- Wears off slowly if the strength is less than 10 -->
+    <Effect minstrength="0" maxstrength="10" strengthchange="-0.25" minchromaticaberration="0.0" maxchromaticaberration="0.2" minspeedmultiplier="1.0" maxspeedmultiplier="0.9">
+      <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true">
+        <Affliction identifier="oxygenlow" amount="12" />
+      </StatusEffect>
+    </Effect>
+    <!-- lethal after str 10 -->
+    <Effect minstrength="10" maxstrength="20" strengthchange="1" minscreendistort="0.1" maxscreendistort="0.1" minchromaticaberration="0.2" maxchromaticaberration="0.2" minspeedmultiplier="0.9" maxspeedmultiplier="0.9" tag="poisoned">
+      <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true">
+        <!-- Don't suffocate just yet-->
+        <Affliction identifier="oxygenlow" amount="11" />
+      </StatusEffect>
+      <StatusEffect target="Character" delay="0.5" setvalue="true" disabledeltatime="true" checkconditionalalways="true">
+        <Conditional healthpercentage="lte 10" />
+        <Affliction identifier="morbusinepoisoningfake" amount="0" />
+        <Affliction identifier="organdamage" amount="0" />
+        <Affliction identifier="oxygenlow" amount="0" />
+        <Affliction identifier="stun" amount="0" />
+      </StatusEffect>
+      <StatusEffect target="Character" stackable="false" duration="0.1" checkconditionalalways="true">
+        <Conditional healthpercentage="lte 10" />
+        <ParticleEmitter particle="artmod_nasonovsparkles1" AngleMax="360" VelocityMin="0" VelocityMax="1000" ScaleMultiplier="1,1" ParticleAmount="60" particlespersecond="100" ColorMultiplier="128,64,48,255" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank1.ogg" range="3000" selectionmode="random" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank2.ogg" range="3000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank3.ogg" range="3000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank4.ogg" range="3000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank5.ogg" range="3000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank6.ogg" range="3000" volume="1" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="20" maxstrength="75" strengthchange="1" minscreendistort="0.1" maxscreendistort="1.0" minchromaticaberration="0.2" maxchromaticaberration="2.0" minspeedmultiplier="0.9" maxspeedmultiplier="0.5" tag="poisoned">
+      <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true">
+        <Affliction identifier="oxygenlow" amount="11" />
+      </StatusEffect>
+      <StatusEffect target="Character">
+        <Conditional NeedsAir="false" />
+        <Affliction identifier="organdamage" amount="4" />
+      </StatusEffect>
+      <StatusEffect target="Character" delay="0.5" setvalue="true" disabledeltatime="true" checkconditionalalways="true">
+        <Conditional healthpercentage="lte 10" />
+        <Affliction identifier="morbusinepoisoningfake" amount="0" />
+        <Affliction identifier="organdamage" amount="0" />
+        <Affliction identifier="oxygenlow" amount="0" />
+        <Affliction identifier="stun" amount="0" />
+      </StatusEffect>
+      <StatusEffect target="Character" stackable="false" duration="0.1" checkconditionalalways="true">
+        <Conditional healthpercentage="lte 10" />
+        <ParticleEmitter particle="artmod_nasonovsparkles1" AngleMax="360" VelocityMin="0" VelocityMax="1000" ScaleMultiplier="1,1" ParticleAmount="60" particlespersecond="100" ColorMultiplier="128,64,48,255" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank1.ogg" range="3000" selectionmode="random" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank2.ogg" range="3000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank3.ogg" range="3000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank4.ogg" range="3000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank5.ogg" range="3000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank6.ogg" range="3000" volume="1" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="75" maxstrength="99" strengthchange="1" minscreendistort="1.0" maxscreendistort="1.0" minchromaticaberration="2.0" maxchromaticaberration="2.0" minspeedmultiplier="0.5" maxspeedmultiplier="0.2" tag="poisoned">
+      <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true">
+        <Affliction identifier="oxygenlow" amount="12" />
+      </StatusEffect>
+      <StatusEffect target="Character">
+        <Conditional NeedsAir="false" />
+        <Affliction identifier="organdamage" amount="10" />
+      </StatusEffect>
+      <StatusEffect target="Character" setvalue="true">
+        <Conditional healthpercentage="lt 25" />
+        <Affliction identifier="stun" amount="1" />
+      </StatusEffect>
+      <StatusEffect target="Character" delay="0.5" setvalue="true" disabledeltatime="true" checkconditionalalways="true">
+        <Conditional healthpercentage="lte 10" />
+        <Affliction identifier="morbusinepoisoningfake" amount="0" />
+        <Affliction identifier="organdamage" amount="0" />
+        <Affliction identifier="oxygenlow" amount="0" />
+        <Affliction identifier="stun" amount="0" />
+      </StatusEffect>
+      <StatusEffect target="Character" stackable="false" duration="0.1" checkconditionalalways="true">
+        <Conditional healthpercentage="lte 10" />
+        <ParticleEmitter particle="artmod_nasonovsparkles1" AngleMax="360" VelocityMin="0" VelocityMax="1000" ScaleMultiplier="1,1" ParticleAmount="60" particlespersecond="100" ColorMultiplier="128,64,48,255" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank1.ogg" range="3000" selectionmode="random" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank2.ogg" range="3000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank3.ogg" range="3000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank4.ogg" range="3000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank5.ogg" range="3000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank6.ogg" range="3000" volume="1" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="99" maxstrength="100" strengthchange="1" minscreendistort="1.0" maxscreendistort="1.0" minchromaticaberration="2.0" maxchromaticaberration="2.0" minspeedmultiplier="0.5" maxspeedmultiplier="0.2" tag="poisoned">
+      <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true">
+        <Affliction identifier="oxygenlow" amount="12" />
+      </StatusEffect>
+      <StatusEffect target="Character">
+        <Conditional NeedsAir="false" />
+        <Affliction identifier="organdamage" amount="45" />
+      </StatusEffect>
+      <StatusEffect target="Character" setvalue="true">
+        <Conditional healthpercentage="lt 30" />
+        <Affliction identifier="stun" amount="1" />
+      </StatusEffect>
+      <StatusEffect target="Character" delay="0.5" setvalue="true" disabledeltatime="true" checkconditionalalways="true">
+        <Conditional healthpercentage="lte 10" />
+        <Affliction identifier="morbusinepoisoningfake" amount="0" />
+        <Affliction identifier="organdamage" amount="0" />
+        <Affliction identifier="oxygenlow" amount="0" />
+        <Affliction identifier="stun" amount="0" />
+      </StatusEffect>
+      <StatusEffect target="Character" stackable="false" duration="0.1" checkconditionalalways="true">
+        <Conditional healthpercentage="lte 10" />
+        <ParticleEmitter particle="artmod_nasonovsparkles1" AngleMax="360" VelocityMin="0" VelocityMax="1000" ScaleMultiplier="1,1" ParticleAmount="60" particlespersecond="100" ColorMultiplier="128,64,48,255" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank1.ogg" range="3000" selectionmode="random" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank2.ogg" range="3000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank3.ogg" range="3000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank4.ogg" range="3000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank5.ogg" range="3000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank6.ogg" range="3000" volume="1" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="640,640,128,128" color="106,106,106,255" origin="0,0" />
+  </Affliction>
+  <!--для ивента с незнакомцем-->
+  <Affliction name="" identifier="EntityMeeting1" description="" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="Head" causespeechimpediment="false" activationthreshold="0" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="10" iconcolors="60,10,10,255;90,2,5,255;125,0,0,255">
+    <Effect minstrength="0" maxstrength="10" multiplybymaxvitality="true" strengthchange="-0.1" mingrainstrength="0" maxgrainstrength="0.5">
+      <StatusEffect target="Character">
+        <Conditional IsLocalPlayer="True" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/EntityMeeting1.ogg" loop="true" dontmuffle="true" volume="0.2" />
+      </StatusEffect>
+    </Effect>
+  </Affliction>
+  <Affliction name="" identifier="EntityMeeting2" description="" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="Head" causespeechimpediment="false" activationthreshold="0" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="10" iconcolors="60,10,10,255;90,2,5,255;125,0,0,255">
+    <Effect minstrength="0" maxstrength="10" multiplybymaxvitality="true" strengthchange="-0.1" mingrainstrength="0" maxgrainstrength="1.5">
+      <StatusEffect target="Character">
+        <Conditional IsLocalPlayer="True" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/EntityMeeting1.ogg" loop="true" dontmuffle="true" volume="0.75" />
+      </StatusEffect>
+    </Effect>
+  </Affliction>
+  <!--Убитая скорость от фризера-->
+  <Affliction identifier="artmod_freezer" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000" maxstrength="10" iconcolors="60,140,195,255;60,107,195,255;60,0,195,255">
+    <Effect minstrength="0" maxstrength="20" strengthchange="-1">
+      <StatusEffect target="Character" SpeedMultiplier="0" setvalue="true" />
+      <StatusEffect target="Character" stackable="false" delay="0.25">
+        <ParticleEmitter particle="artmod_clownsparklesmod" LifeTimeMultiplier="1" distancemin="5" distancemax="30" anglemax="260" particleamount="1" velocitymax="0" colormultiplier="75,45,255,255" />
+      </StatusEffect>
+    </Effect>
+  </Affliction>
+  <!--Замедло от увеселителя 3001-->
+  <Affliction identifier="artmod_FUNNY" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000" maxstrength="10" iconcolors="60,140,195,255;60,107,195,255;60,0,195,255">
+    <Effect minstrength="0" maxstrength="10" strengthchange="-1" minchromaticaberration="0" maxchromaticaberration="50">
+      <StatusEffect target="Character" SpeedMultiplier="0.15" setvalue="true">
+        <Conditional ishuman="true" />
+      </StatusEffect>
+      <StatusEffect target="Character" SpeedMultiplier="0.25" setvalue="true">
+        <Conditional ishuman="false" />
+      </StatusEffect>
+      <StatusEffect target="Character">
+        <Conditional IsLocalPlayer="True" />
+        <!--<Sound file="%ModDir%/More Arts (AOCS)/Afflictions/perfectly_derailed2.ogg" volume="1" loop="true" dontmuffle="true" />-->
+      </StatusEffect>
+      <StatusEffect target="Character" stackable="false" delay="0.25">
+        <ParticleEmitter particle="artmod_clownsparklesmod" particleamount="2" distancemin="10" distancemax="100" anglemax="360" colormultiplier="25,255,25,255" />
+        <ParticleEmitter particle="artmod_clownsparklesmod" particleamount="2" distancemin="10" distancemax="100" anglemax="360" colormultiplier="25,25,255,255" />
+        <ParticleEmitter particle="artmod_clownsparklesmod" particleamount="2" distancemin="10" distancemax="100" anglemax="360" colormultiplier="255,25,25,255" />
+      </StatusEffect>
+    </Effect>
+    <PeriodicEffect mininterval="0" maxinterval="1">
+      <StatusEffect target="Character" comparison="and" stackable="false">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Affliction identifier="psychosis" amount="-5" />
+      </StatusEffect>
+    </PeriodicEffect>
+  </Affliction>
+  <!--пси-урон, используется в пси-оружии и как урон кошмаров-->
+  <Affliction name="" identifier="psi_internaldamage" description="" type="psychosis" limbspecific="false" indicatorlimb="Head" maxstrength="200" damageoverlayalpha="1" afflictionoverlayalphaislinear="true">
+    <Description textidentifier="psi_internaldamage.1" target="OtherCharacter" minstrength="0" maxstrength="40" />
+    <Description textidentifier="psi_internaldamage.2" target="OtherCharacter" minstrength="40" maxstrength="200" />
+    <Description textidentifier="psi_internaldamage.1.self" target="Self" minstrength="0" maxstrength="30" />
+    <Description textidentifier="psi_internaldamage.2.self" target="Self" minstrength="30" maxstrength="100" />
+    <Description textidentifier="psi_internaldamage.3.self" target="Self" minstrength="100" maxstrength="200" />
+    <Effect minstrength="0" maxstrength="200" multiplybymaxvitality="true" strengthchange="-0.1" minvitalitydecrease="0" maxvitalitydecrease="2" />
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="128,768,128,128" color="195,136,60,255" origin="0,0" />
+    <AfflictionOverlay texture="%ModDir%/More Arts (AOCS)/Afflictions/screenblack.png" />
+  </Affliction>
+  <!-- используется как аура Мертвого Радио.. Вроде -->
+  <!--<Affliction name="" identifier="radiozombieinfectionactive" description="" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="Head" causespeechimpediment="false" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="20">
+    <Effect minstrength="0" maxstrength="10" multiplybymaxvitality="true" strengthchange="-2" minscreendistort="0" maxscreendistort="0.8" minradialdistort="0" maxradialdistort="0.8" minchromaticaberration="0" maxchromaticaberration="10">
+      <StatusEffect target="Character" comparison="and">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Affliction identifier="radiozombieinfection" amount="0.5" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="10" maxstrength="20" multiplybymaxvitality="true" strengthchange="-2" minscreendistort="0.8" maxscreendistort="1.6" minradialdistort="0.8" maxradialdistort="1.6" minchromaticaberration="10" maxchromaticaberration="20">
+      <StatusEffect target="Character" comparison="and">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Affliction identifier="radiozombieinfection" amount="1" />
+      </StatusEffect>
+    </Effect>
+  </Affliction>-->
+  <!--саунд для верхнего аффекта-->
+  <!--<Affliction name="" identifier="rzimusic" description="" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="Head" causespeechimpediment="false" activationthreshold="0" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="1" iconcolors="60,10,10,255;90,2,5,255;125,0,0,255">
+    <Effect minstrength="0" maxstrength="1" multiplybymaxvitality="true" strengthchange="-2" setvalue="true" >
+      <StatusEffect target="Character">
+        <Conditional IsLocalPlayer="True" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Characters/artmod_DeadRadioHuman/PsiLoop.ogg" loop="true" range="1000" dontmuffle="true" volume="0.8" />
+      </StatusEffect>
+    </Effect>
+  </Affliction>-->
+  <Affliction name="" identifier="radiozombieinfection" description="" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="Head" causespeechimpediment="false" activationthreshold="0" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="50" iconcolors="60,10,10,255;90,2,5,255;125,0,0,255">
+    <Effect minstrength="0" maxstrength="50" multiplybymaxvitality="true" strengthchange="-0.5" setvalue="true" stackable="false" delay="1" graincolor="255,255,255,200" mingrainstrength="0" maxgrainstrength="5">
+      <StatusEffect target="Character" comparison="and" delay="5" checkconditionalalways="true">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional radiozombieinfection="gt 20" />
+        <Affliction identifier="artmod_anomalyfunctionalnecrosis" amount="0.01" probability="0.01" />
+      </StatusEffect>
+    </Effect>
+    <PeriodicEffect mininterval="5" maxinterval="20">
+      <StatusEffect target="Character" comparison="And">
+        <Conditional IsLocalPlayer="True" />
+        <Conditional radiozombieinfection="gt 1" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/radiointerference1.ogg" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/radiointerference2.ogg" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/radiointerference3.ogg" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/radiointerference4.ogg" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/radiointerference5.ogg" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/radiointerference6.ogg" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/radiointerference7.ogg" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/radiointerference8.ogg" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/radiointerference9.ogg" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/radiointerference10.ogg" />
+      </StatusEffect>
+    </PeriodicEffect>
+  </Affliction>
+  <!--Аффект от пси-арта третьего тира-->
+  <Affliction name="Watcher husk's broadcast" identifier="Swatcherhuskbroadcast" description="Yea, Huskmod is great." limbspecific="false" indicatorlimb="Torso" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000" maxstrength="100" iconcolors="60,140,195,255;60,107,195,255;60,0,195,255">
+    <Effect minstrength="0" maxstrength="100" strengthchange="-4" minscreendistort="0.5" maxscreendistort="1" minscreenblur="0.5" maxscreenblur="1" minradialdistort="0" maxradialdistort="2" mminchromaticaberration="1" maxchromaticaberration="50" mingrainstrength="0" maxgrainstrength="15">
+      <StatusEffect target="Character" SpeedMultiplier="0.6" setvalue="true" />
+      <StatusEffect target="Character">
+        <Conditional IsLocalPlayer="True" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/perfectly_derailed2.ogg" volume="1" loop="true" dontmuffle="true" />
+      </StatusEffect>
+    </Effect>
+    <PeriodicEffect mininterval="0" maxinterval="1">
+      <StatusEffect target="Character" comparison="and" stackable="false">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Affliction identifier="psychosis" amount="5" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="4" maxinterval="12">
+      <StatusEffect target="Character" comparison="and" stackable="false">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Affliction identifier="stun" amount="2.5" />
+      </StatusEffect>
+    </PeriodicEffect>
+  </Affliction>
+  <!--Аффект пси-арта третьего тира, накладывается вместе с верхним и активируется сразу после того как верхний аффект кончается-->
+  <Affliction name="degraded" identifier="degraded" description="" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000" maxstrength="100">
+    <Effect minstrength="0" maxstrength="100" strengthchange="-1">
+      <StatusEffect target="Character" comparison="and" setvalue="true" stackable="false" delay="5">
+        <Conditional Swatcherhuskbroadcast="lt 1" />
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Affliction identifier="artmod_anomalyfunctionalnecrosis" amount="5" probability="0.1" />
+      </StatusEffect>
+      <StatusEffect target="Character" setvalue="true">
+        <Conditional artmod_anomalyfunctionalnecrosis="gt 0" />
+        <ReduceAffliction identifier="degraded" amount="100" />
+      </StatusEffect>
+    </Effect>
+  </Affliction>
+  <!--накладывается сломанными артефактами, аффект-пустышка, создан чтоб напрягать игроков и ничего более-->
+  <Affliction name="" identifier="ha-ha" description="" limbspecific="false" indicatorlimb="Head" maxstrength="100" activationthreshold="0" showiconthreshold="0" showicontoothersthreshold="1100" showinhealthscannerthreshold="1000" treatmentthreshold="50" iconcolors="94,54,95;163,73,164;200,191,231">
+    <Effect minstrength="0" maxstrength="100" multiplybymaxvitality="true" strengthchange="-4.5" />
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="128,0,128,128" color="150,26,26,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="infernoburn" type="psychosis" description="" limbspecific="false" indicatorlimb="Head" maxstrength="100" activationthreshold="0" showiconthreshold="0" showicontoothersthreshold="1100" showinhealthscannerthreshold="1000" treatmentthreshold="50" burnoverlayalpha="1" iconcolors="94,54,95;163,73,164;200,191,231">
+    <Description textidentifier="infernoburn.1.self" target="Self" minstrength="0" maxstrength="30" />
+    <Description textidentifier="infernoburn.2.self" target="Self" minstrength="30" maxstrength="100" />
+    <Description textidentifier="infernoburn.3.self" target="Self" minstrength="100" maxstrength="200" />
+    <Effect minstrength="0" maxstrength="100" multiplybymaxvitality="true" minvitalitydecrease="0" maxvitalitydecrease="1.5" strengthchange="-0.4">
+      <StatusEffect target="Character" targetlimb="Head" stackable="false" setvalue="true" delay="1" disabledeltatime="true">
+        <Conditional isdead="false" />
+        <ParticleEmitter particle="thermalfx" anglemin="360" anglemax="360" distancemax="5" particleamount="1" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/test2.png" sourcerect="15,21,128,128" color="195,104,60,255" origin="0,0" />
+  </Affliction>
+  <!--накладывается насоновым артефактом первого тира, использует ту же иконку и почти то же описание, специально чтоб напрячь игроков ещё больше-->
+  <Affliction name="" identifier="IncubationS" description="" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" showiconthreshold="0" showicontoothersthreshold="120" showinhealthscannerthreshold="1000" treatmentthreshold="120" maxstrength="100" iconcolors="94,54,95;163,73,164;200,191,231">
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="128,768,128,128" color="139,60,42,255" origin="0,0" />
+    <Description textidentifier="IncubationS.1.self" target="Self" minstrength="0" maxstrength="50" />
+    <Description textidentifier="IncubationS.2.self" target="Self" minstrength="50" maxstrength="100" />
+    <Effect minstrength="0" maxstrength="99" strengthchange="-4.5" multiplybymaxvitality="true" />
+    <Effect minstrength="99" maxstrength="100" strengthchange="0" multiplybymaxvitality="true">
+      <StatusEffect type="Always" target="Character" stackable="false" delay="0.0" comparison="and">
+        <Conditional speciesname="eq human" />
+        <Conditional isdead="false" />
+        <Sound file="%ModDir%/More Arts (AOCS)/medItems/Bonewrecttorso.ogg" range="500" volume="1" />
+      </StatusEffect>
+      <StatusEffect target="Character" targetlimb="torso" stackable="false" delay="0.85" comparison="and">
+        <Conditional speciesname="eq human" />
+        <Conditional isdead="false" />
+        <SpawnCharacter speciesname="Crawler_hatchling" />
+        <SpawnItem identifier="artmod_torsoexplode" />
+        <Affliction identifier="stun" strength="500.0" />
+        <Affliction identifier="Bleeding" strength="50000.0" />
+        <Affliction identifier="organdamage" strength="2500.0" />
+        <ReduceAffliction identifier="IncubationS" amount="10000" />
+      </StatusEffect>
+    </Effect>
+  </Affliction>
+  <!-- визуал для тринкета дождя-->
+  <Affliction name="" identifier="trinkenrain_water" description="" limbspecific="true" maxstrength="10" activationthreshold="0" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000">
+    <Effect minstrength="0" maxstrength="10" strengthchange="-5">
+      <StatusEffect target="character" targetlimb="torso" stackable="false">
+        <ParticleEmitter particle="waterdrop" AngleMax="360" DistanceMin="0" DistanceMax="30" ScaleMultiplier="1,1" ParticlesPerSecond="1" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+      <StatusEffect target="character" targetlimb="head" stackable="false">
+        <ParticleEmitter particle="waterdrop" AngleMax="360" DistanceMin="0" DistanceMax="15" ScaleMultiplier="1,1" ParticlesPerSecond="1" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/test3.png" sourcerect="0,0,128,128" color="139,60,42,255" origin="0,0" />
+  </Affliction>
+  <!-- для тринкета, призывающего мясного ползуна-->
+  <Affliction identifier="mybestfriend" type="disguise" isbuff="true" limbspecific="true" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="1">
+    <Effect minstrength="0" maxstrength="1" strengthchange="-1" tag="bestfriend" />
+    <icon texture="Content/UI/CommandUIAtlas.png" sourcerect="896,768,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!-- для автодробовика клоунов-->
+  <Affliction identifier="realjoke" isbuff="true" limbspecific="true" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="10">
+    <Effect minstrength="0" maxstrength="1" strengthchange="-1" tag="provocative">
+      <StatusEffect target="Character" stackable="false" delay="0.25">
+        <ParticleEmitter particle="artmod_GlowDot" LifeTimeMultiplier="0.75" anglemin="0" anglemax="360" distancemin="0" distancemax="200" scalemin="0.25" scalemax="0.75" particleamount="1" particlespersecond="2" colormultiplier="155,25,25,255" drawontop="true" />
+      </StatusEffect>
+      <StatusEffect target="Character" stackable="false" delay="0.15">
+        <ParticleEmitter particle="artmod_GlowDot" LifeTimeMultiplier="0.75" anglemin="0" anglemax="360" distancemin="0" distancemax="200" scalemin="0.25" scalemax="0.75" particleamount="1" particlespersecond="2" colormultiplier="25,155,25,255" drawontop="true" />
+      </StatusEffect>
+      <StatusEffect target="Character" stackable="false" delay="0.2">
+        <ParticleEmitter particle="artmod_GlowDot" LifeTimeMultiplier="0.75" anglemin="0" anglemax="360" distancemin="0" distancemax="200" scalemin="0.25" scalemax="0.75" particleamount="1" particlespersecond="2" colormultiplier="25,25,155,255" drawontop="true" />
+      </StatusEffect>
+      <StatusEffect target="Character" stackable="false" delay="0.3">
+        <ParticleEmitter particle="artmod_GlowDot" LifeTimeMultiplier="0.75" anglemin="0" anglemax="360" distancemin="0" distancemax="200" scalemin="0.25" scalemax="0.75" particleamount="1" particlespersecond="2" colormultiplier="155,75,211,255" drawontop="true" />
+      </StatusEffect>
+      <StatusEffect target="Character" stackable="false" delay="0.1">
+        <ParticleEmitter particle="artmod_GlowDot" LifeTimeMultiplier="0.75" anglemin="0" anglemax="360" distancemin="0" distancemax="200" scalemin="0.25" scalemax="0.75" particleamount="1" particlespersecond="2" colormultiplier="75,155,211,255" drawontop="true" />
+      </StatusEffect>
+      <StatusEffect target="Character" stackable="false" delay="0.35">
+        <ParticleEmitter particle="artmod_GlowDot" LifeTimeMultiplier="0.75" anglemin="0" anglemax="360" distancemin="0" distancemax="200" scalemin="0.25" scalemax="0.75" particleamount="1" particlespersecond="2" colormultiplier="211,155,71,255" drawontop="true" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/CommandUIAtlas.png" sourcerect="896,768,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="craser_bleeding" description="" type="bleeding" limbspecific="true" maxstrength="100" damageoverlayalpha="1">
+    <Description textidentifier="craser_bleeding.1" minstrength="0" maxstrength="30" />
+    <Description textidentifier="craser_bleeding.2" minstrength="30" maxstrength="70" />
+    <Description textidentifier="craser_bleeding.3" minstrength="70" maxstrength="100" />
+    <Effect minstrength="0" maxstrength="10" minvitalitydecrease="0" maxvitalitydecrease="1" strengthchange="-0.5">
+      <StatusEffect target="Character" stackable="false" comparison="and">
+        <Conditional speciesname="neq Human" />
+        <Conditional speciesname="neq Fractalguardian" />
+        <Conditional speciesname="neq Fractalguardian2" />
+        <Affliction identifier="bloodloss" strength="1.0" />
+        <Affliction identifier="internaldamage" strength="0.25" />
+        <Affliction identifier="organdamage" strength="0.25" />
+      </StatusEffect>
+      <StatusEffect target="Limb" stackable="false">
+        <Affliction identifier="bloodloss" strength="0.15" />
+        <ParticleEmitter particle="blooddrop" AngleMax="360" ScaleMultiplier="1,1" ParticlesPerSecond="1" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="10" maxstrength="20" strengthchange="-0.5">
+      <StatusEffect target="Character" stackable="false" comparison="and">
+        <Conditional speciesname="neq Human" />
+        <Conditional speciesname="neq Fractalguardian" />
+        <Conditional speciesname="neq Fractalguardian2" />
+        <Affliction identifier="bloodloss" strength="1.5" />
+        <Affliction identifier="internaldamage" strength="0.5" />
+        <Affliction identifier="organdamage" strength="0.5" />
+      </StatusEffect>
+      <StatusEffect target="Limb" stackable="false">
+        <Affliction identifier="bloodloss" strength="0.3" />
+        <ParticleEmitter particle="blooddrop" AngleMax="360" ScaleMultiplier="1,1" ParticlesPerSecond="2" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="20" maxstrength="30" strengthchange="-0.5">
+      <StatusEffect target="Character" stackable="false" comparison="and">
+        <Conditional speciesname="neq Human" />
+        <Conditional speciesname="neq Fractalguardian" />
+        <Conditional speciesname="neq Fractalguardian2" />
+        <Affliction identifier="bloodloss" strength="2.0" />
+        <Affliction identifier="internaldamage" strength="0.75" />
+        <Affliction identifier="organdamage" strength="0.75" />
+      </StatusEffect>
+      <StatusEffect target="Limb" stackable="false">
+        <Affliction identifier="bloodloss" strength="0.45" />
+        <ParticleEmitter particle="blooddrop" AngleMax="360" ScaleMultiplier="1,1" ParticlesPerSecond="3" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="30" maxstrength="40" strengthchange="-0.5">
+      <StatusEffect target="Character" stackable="false" comparison="and">
+        <Conditional speciesname="neq Human" />
+        <Conditional speciesname="neq Fractalguardian" />
+        <Conditional speciesname="neq Fractalguardian2" />
+        <Affliction identifier="bloodloss" strength="2.0" />
+        <Affliction identifier="internaldamage" strength="0.75" />
+        <Affliction identifier="organdamage" strength="0.75" />
+      </StatusEffect>
+      <StatusEffect target="Limb" stackable="false">
+        <Affliction identifier="bloodloss" strength="0.6" />
+        <ParticleEmitter particle="blooddrop" AngleMax="360" ScaleMultiplier="1,1" ParticlesPerSecond="4" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="40" maxstrength="50" strengthchange="-0.5">
+      <StatusEffect target="Character" stackable="false" comparison="and">
+        <Conditional speciesname="neq Human" />
+        <Conditional speciesname="neq Fractalguardian" />
+        <Conditional speciesname="neq Fractalguardian2" />
+        <Affliction identifier="bloodloss" strength="2.0" />
+        <Affliction identifier="internaldamage" strength="0.75" />
+        <Affliction identifier="organdamage" strength="0.75" />
+      </StatusEffect>
+      <StatusEffect target="Limb" stackable="false">
+        <Affliction identifier="bloodloss" strength="0.75" />
+        <ParticleEmitter particle="blooddrop" AngleMax="360" ScaleMultiplier="1.25,1.25" ParticlesPerSecond="5" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="50" maxstrength="60" strengthchange="-0.5">
+      <StatusEffect target="Character" stackable="false" comparison="and">
+        <Conditional speciesname="neq Human" />
+        <Conditional speciesname="neq Fractalguardian" />
+        <Conditional speciesname="neq Fractalguardian2" />
+        <Affliction identifier="bloodloss" strength="2.0" />
+        <Affliction identifier="internaldamage" strength="0.75" />
+        <Affliction identifier="organdamage" strength="0.75" />
+      </StatusEffect>
+      <StatusEffect target="Limb" stackable="false">
+        <Affliction identifier="bloodloss" strength="0.9" />
+        <ParticleEmitter particle="blooddrop" AngleMax="360" ScaleMultiplier="1.25,1.25" ParticlesPerSecond="6" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="60" maxstrength="70" strengthchange="-0.5">
+      <StatusEffect target="Character" stackable="false" comparison="and">
+        <Conditional speciesname="neq Human" />
+        <Conditional speciesname="neq Fractalguardian" />
+        <Conditional speciesname="neq Fractalguardian2" />
+        <Affliction identifier="bloodloss" strength="2.5" />
+        <Affliction identifier="internaldamage" strength="1" />
+        <Affliction identifier="organdamage" strength="1" />
+      </StatusEffect>
+      <StatusEffect target="Limb" stackable="false">
+        <Affliction identifier="bloodloss" strength="1.05" />
+        <ParticleEmitter particle="blooddrop" AngleMax="360" ScaleMultiplier="1.3,1.3" ParticlesPerSecond="7" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="70" maxstrength="80" strengthchange="-0.5">
+      <StatusEffect target="Character" stackable="false" comparison="and">
+        <Conditional speciesname="neq Human" />
+        <Conditional speciesname="neq Fractalguardian" />
+        <Conditional speciesname="neq Fractalguardian2" />
+        <Affliction identifier="bloodloss" strength="2.5" />
+        <Affliction identifier="internaldamage" strength="1" />
+        <Affliction identifier="organdamage" strength="1" />
+      </StatusEffect>
+      <StatusEffect target="Limb" stackable="false">
+        <Affliction identifier="bloodloss" strength="1.20" />
+        <ParticleEmitter particle="blooddrop" AngleMax="360" ScaleMultiplier="1.4,1.4" ParticlesPerSecond="8" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="80" maxstrength="90" strengthchange="-0.5">
+      <StatusEffect target="Character" stackable="false" comparison="and">
+        <Conditional speciesname="neq Human" />
+        <Conditional speciesname="neq Fractalguardian" />
+        <Conditional speciesname="neq Fractalguardian2" />
+        <Affliction identifier="bloodloss" strength="5" />
+        <Affliction identifier="internaldamage" strength="2.5" />
+        <Affliction identifier="organdamage" strength="2.5" />
+      </StatusEffect>
+      <StatusEffect target="Limb" stackable="false">
+        <Affliction identifier="bloodloss" strength="1.45" />
+        <ParticleEmitter particle="blooddrop" AngleMax="360" ScaleMultiplier="1.5,1.5" ParticlesPerSecond="9" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="90" maxstrength="100" strengthchange="-0.5">
+      <StatusEffect target="Character" stackable="false" comparison="and">
+        <Conditional speciesname="neq Human" />
+        <Conditional speciesname="neq Fractalguardian" />
+        <Conditional speciesname="neq Fractalguardian2" />
+        <Affliction identifier="bloodloss" strength="5" />
+        <Affliction identifier="internaldamage" strength="2.5" />
+        <Affliction identifier="organdamage" strength="2.5" />
+      </StatusEffect>
+      <StatusEffect target="Limb" stackable="false">
+        <Affliction identifier="bloodloss" strength="1.6" />
+        <ParticleEmitter particle="blooddrop" AngleMax="360" ScaleMultiplier="1.5,1.5" ParticlesPerSecond="10" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/test3.png" sourcerect="0,0,128,128" color="139,60,42,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="crutch_bleeding" description="" limbspecific="true" maxstrength="3" activationthreshold="0" showiconthreshold="1000" showicontoothersthreshold="1000" treatmentthreshold="1000" damageoverlayalpha="1">
+    <Effect minstrength="0" maxstrength="1" minvitalitydecrease="0" maxvitalitydecrease="0" strengthchange="-0.5">
+      <StatusEffect target="Character" stackable="false" comparison="and">
+        <Conditional speciesname="eq Human" />
+        <Affliction identifier="bloodloss" strength="0.1" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="1" maxstrength="2" minvitalitydecrease="0" maxvitalitydecrease="0" strengthchange="-0.5">
+      <StatusEffect target="Character" stackable="false" comparison="and">
+        <Conditional speciesname="eq Human" />
+        <Affliction identifier="bloodloss" strength="0.15" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="2" maxstrength="3" minvitalitydecrease="0" maxvitalitydecrease="0" strengthchange="-0.5">
+      <StatusEffect target="Character" stackable="false" comparison="and">
+        <Conditional speciesname="eq Human" />
+        <Affliction identifier="bloodloss" strength="0.25" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/test3.png" sourcerect="0,0,128,128" color="139,60,42,255" origin="0,0" />
+  </Affliction>
+  <!-- для клоунского револьера-->
+  <Affliction name="" identifier="crutch_revolerburn" description="" limbspecific="true" maxstrength="4" activationthreshold="0" showiconthreshold="1000" showicontoothersthreshold="1000" treatmentthreshold="1000" damageoverlayalpha="0">
+    <Effect minstrength="0" maxstrength="1" minvitalitydecrease="0" maxvitalitydecrease="0" strengthchange="-0.5">
+      <StatusEffect target="Character" stackable="false" delay="0.1">
+        <Conditional IsDead="false" />
+        <Affliction identifier="burn" strength="1" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="1" maxstrength="2" minvitalitydecrease="0" maxvitalitydecrease="0" strengthchange="-0.5">
+      <StatusEffect target="Character" stackable="false" delay="0.1">
+        <Conditional IsDead="false" />
+        <Affliction identifier="burn" strength="2.5" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="2" maxstrength="3" minvitalitydecrease="0" maxvitalitydecrease="0" strengthchange="-0.5">
+      <StatusEffect target="Character" stackable="false" delay="0.1">
+        <Conditional IsDead="false" />
+        <Affliction identifier="burn" strength="5" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="3" maxstrength="4" minvitalitydecrease="0" maxvitalitydecrease="0" strengthchange="-0.5">
+      <StatusEffect target="Character" stackable="false" delay="0.1">
+        <Conditional IsDead="false" />
+        <Affliction identifier="burn" strength="14" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/test3.png" sourcerect="0,0,128,128" color="139,60,42,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="revolerburnresist" description="" type="resistance" isbuff="true" limbspecific="false" maxstrength="1" activationthreshold="0" showiconthreshold="10" showicontoothersthreshold="10">
+    <Effect minstrength="0" maxstrength="1" strengthchange="-0.25" resistancefor="crutch_revolerburn" minresistance="1" maxresistance="1">
+      <StatusEffect target="Character" stackable="false">
+        <Conditional IsDead="false" />
+        <Affliction identifier="crutch_revolerburn" strength="-1" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/Fireresist.png" sourcerect="0,0,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!-- аффикшены для ангельского артефакта -->
+  <Affliction name="" identifier="theheavenpsychosis" description="" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" showiconthreshold="1000" showicontoothersthreshold="0" treatmentthreshold="1000" maxstrength="10" iconcolors="94,54,95;163,73,164;200,191,231">
+    <Effect minstrength="0" maxstrength="9" multiplybymaxvitality="true" maxvitalitydecrease="0" minradialdistort="0" maxradialdistort="1" strengthchange="-1">
+      <StatusEffect type="OnActive" target="Character" SpeedMultiplier="1.0" setvalue="true" />
+    </Effect>
+    <Effect minstrength="9" maxstrength="10" minradialdistort="1" maxradialdistort="2" maxvitalitydecrease="0" strengthchange="-1">
+      <StatusEffect target="Character" stackable="false" delay="0.1" disabledeltatime="true">
+        <Affliction identifier="aoehealS" amount="0.75" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/test1.png" sourcerect="0,0,128,128" color="139,60,42,255" origin="0,0" />
+  </Affliction>
+  <Afflictio name="" identifier="theheavenpsychosis_active" limbspecific="false" indicatorlimb="Head" maxstrength="1" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000">
+    <Effect minstrength="0" maxstrength="1" multiplybymaxvitality="true" strengthchange="-1"></Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="128,768,128,128" color="195,136,60,255" origin="0,0" />
+  </Afflictio>
+  <Afflictio name="" identifier="theheavenheals_active" limbspecific="false" indicatorlimb="Head" maxstrength="1" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000">
+    <Effect minstrength="0" maxstrength="1" multiplybymaxvitality="true" strengthchange="-1">
+      <StatusEffect type="OnActive" target="Character" delay="0.1" stackable="false">
+        <ParticleEmitter particle="artmod_nasonovsparkles1" AngleMax="360" DistanceMin="15" DistanceMax="50" ScaleMultiplier="1,1" ParticleAmount="1" ParticlesPerSecond="1" ColorMultiplier="255,15,15,255" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="128,768,128,128" color="195,136,60,255" origin="0,0" />
+  </Afflictio>
+  <Affliction name="" identifier="aoehealS" description="" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" showiconthreshold="1000" showicontoothersthreshold="1000" treatmentthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="100" afflictionoverlayalphaislinear="true">
+    <Effect minstrength="0" maxstrength="25" strengthchange="-4.5">
+      <StatusEffect type="OnActive" target="Character,nearbyCharacters" delay="4.0" setvalue="true" stackable="false" range="1000.0" checkconditionalalways="true" disabledeltatime="true">
+        <Conditional theheavenpsychosis_active="gt 0" />
+        <ParticleEmitter particle="artmod_shockwave2" anglemin="0" anglemax="180" particleamount="1" velocitymin="100" velocitymax="500" scalemultiplier="0.25,0.25" colormultiplier="255,255,255,255" />
+        <Affliction identifier="theheavenheals_active" strength="2" />
+        <ReduceAffliction identifier="damage" strength="1.5" />
+        <ReduceAffliction identifier="burn" strength="1.5" />
+        <ReduceAffliction identifier="bleeding" strength="1.0" />
+        <ReduceAffliction identifier="poison" strength="2.5" />
+        <ReduceAffliction identifier="paralysis" strength="2" />
+        <ReduceAffliction identifier="oxygenlow" strength="5" />
+        <ParticleEmitter particle="cellgib" particleamount="15" scalemin="1" scalemax="2" velocitymin="100" velocitymax="150" anglemin="0" anglemax="360" colormultiplier="255,255,255,255" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/heavenheal11.ogg" selectionmode="random" volume="0.85" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/heavenheal12.ogg" selectionmode="random" volume="0.85" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/heavenheal13.ogg" selectionmode="random" volume="0.85" />
+      </StatusEffect>
+      <StatusEffect type="OnActive" target="Character" stackable="false" checkconditionalalways="true" disabledeltatime="true" delay="0.1">
+        <Conditional theheavenpsychosis_active="gt 0" />
+        <Affliction identifier="Soulless" strength="0.2" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="25" maxstrength="50" strengthchange="-4.5">
+      <StatusEffect type="OnActive" target="Character,nearbyCharacters" delay="4.0" setvalue="true" stackable="false" range="1000.0" checkconditionalalways="true">
+        <Conditional theheavenpsychosis_active="gt 0" />
+        <ParticleEmitter particle="artmod_shockwave2" anglemin="0" anglemax="180" particleamount="1" velocitymin="100" velocitymax="500" scalemultiplier="0.25,0.25" colormultiplier="255,175,175,255" />
+        <Affliction identifier="theheavenheals_active" strength="2" />
+        <ReduceAffliction identifier="damage" strength="2.5" />
+        <ReduceAffliction identifier="burn" strength="2.5" />
+        <ReduceAffliction identifier="bleeding" strength="2.0" />
+        <ReduceAffliction identifier="poison" strength="5" />
+        <ReduceAffliction identifier="paralysis" strength="4" />
+        <ReduceAffliction identifier="oxygenlow" strength="10" />
+        <ParticleEmitter particle="cellgib" particleamount="15" scalemin="1" scalemax="2" velocitymin="100" velocitymax="150" anglemin="0" anglemax="360" colormultiplier="255,175,175,255" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/heavenheal21.ogg" selectionmode="random" volume="0.85" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/heavenheal22.ogg" selectionmode="random" volume="0.85" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/heavenheal23.ogg" selectionmode="random" volume="0.85" />
+      </StatusEffect>
+      <StatusEffect type="OnActive" target="Character" stackable="false" checkconditionalalways="true" disabledeltatime="true" delay="0.1">
+        <Conditional theheavenpsychosis_active="gt 0" />
+        <Affliction identifier="Soulless" strength="0.2" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="50" maxstrength="75" strengthchange="-4.5">
+      <StatusEffect type="OnActive" target="Character,nearbyCharacters" delay="4.0" setvalue="true" stackable="false" range="1000.0" checkconditionalalways="true">
+        <Conditional theheavenpsychosis_active="gt 0" />
+        <ParticleEmitter particle="artmod_shockwave2" anglemin="0" anglemax="180" particleamount="1" velocitymin="100" velocitymax="500" scalemultiplier="0.25,0.25" colormultiplier="255,115,115,255" />
+        <Affliction identifier="theheavenheals_active" strength="2" />
+        <ReduceAffliction identifier="damage" strength="5.0" />
+        <ReduceAffliction identifier="burn" strength="5" />
+        <ReduceAffliction identifier="bleeding" strength="5.0" />
+        <ReduceAffliction identifier="poison" strength="10" />
+        <ReduceAffliction identifier="paralysis" strength="8" />
+        <ReduceAffliction identifier="oxygenlow" strength="20" />
+        <ParticleEmitter particle="cellgib" particleamount="15" scalemin="1" scalemax="2" velocitymin="100" velocitymax="150" anglemin="0" anglemax="360" colormultiplier="255,115,115,255" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/heavenheal31.ogg" selectionmode="random" volume="1" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/heavenheal32.ogg" selectionmode="random" volume="1" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/heavenheal33.ogg" selectionmode="random" volume="1" />
+      </StatusEffect>
+      <StatusEffect type="OnActive" target="Character" stackable="false" checkconditionalalways="true" disabledeltatime="true" delay="0.1">
+        <Conditional theheavenpsychosis_active="gt 0" />
+        <Affliction identifier="Soulless" strength="0.2" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="75" maxstrength="100" strengthchange="-4.5">
+      <StatusEffect type="OnActive" target="Character,nearbyCharacters" delay="4.0" setvalue="true" stackable="false" range="1000.0" checkconditionalalways="true">
+        <Conditional theheavenpsychosis_active="gt 0" />
+        <ParticleEmitter particle="artmod_shockwave2" anglemin="0" anglemax="180" particleamount="1" velocitymin="100" velocitymax="500" scalemultiplier="0.25,0.25" colormultiplier="255,15,15,255" />
+        <Affliction identifier="theheavenheals_active" strength="2" />
+        <ReduceAffliction identifier="damage" strength="15" />
+        <ReduceAffliction identifier="burn" strength="15" />
+        <ReduceAffliction identifier="bleeding" strength="10.0" />
+        <ReduceAffliction identifier="poison" strength="20" />
+        <ReduceAffliction identifier="paralysis" strength="16" />
+        <ReduceAffliction identifier="oxygenlow" strength="40" />
+        <ParticleEmitter particle="cellgib" particleamount="15" scalemin="1" scalemax="2" velocitymin="100" velocitymax="150" anglemin="0" anglemax="360" colormultiplier="255,15,15,255" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/heavenheal41.ogg" selectionmode="random" volume="1" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/heavenheal42.ogg" selectionmode="random" volume="1" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/heavenheal43.ogg" selectionmode="random" volume="1" />
+      </StatusEffect>
+      <StatusEffect type="OnActive" target="Character" stackable="false" checkconditionalalways="true" disabledeltatime="true" delay="0.1">
+        <Conditional theheavenpsychosis_active="gt 0" />
+        <Affliction identifier="Soulless" strength="0.2" />
+      </StatusEffect>
+    </Effect>
+    <!--<AfflictionOverlay texture="%ModDir%/More Arts (AOCS)/Afflictions/screenwhite.png" />-->
+  </Affliction>
+  <Affliction name="" identifier="Suka2" description="Костыль для музыки, потому что иначе качество саунда падает" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" treatmentthreshold="1000" maxstrength="10">
+    <Effect minstrength="0" maxstrength="10" strengthchange="-5.0" multiplybymaxvitality="true" minscreendistort="0" maxscreendistort="0" minradialdistort="0" maxradialdistort="0" minchromaticaberration="0" maxchromaticaberration="45">
+      <StatusEffect target="Character" type="OnActive">
+        <Conditional IsLocalPlayer="True" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Artifacts/DT-2.ogg" loop="true" volume="1.5" />
+      </StatusEffect>
+    </Effect>
+  </Affliction>
+  <Affliction name="???" identifier="soulless" description="" limbspecific="false" indicatorlimb="Head" activationthreshold="0" showiconthreshold="0" showinhealthscannerthreshold="1000" showicontoothersthreshold="0" treatmentthreshold="1000" maxstrength="100" iconcolors="94,54,95;163,73,164;200,191,231" damageoverlayalpha="0" afflictionoverlayalphaislinear="true">
+    <Description textidentifier="soulless.1" target="OtherCharacter" minstrength="0" maxstrength="30" />
+    <Description textidentifier="soulless.2" target="OtherCharacter" minstrength="30" maxstrength="75" />
+    <Description textidentifier="soulless.3" target="OtherCharacter" minstrength="75" maxstrength="100" />
+    <Description textidentifier="soulless.1.self" target="Self" minstrength="0" maxstrength="30" />
+    <Description textidentifier="soulless.2.self" target="Self" minstrength="30" maxstrength="75" />
+    <Description textidentifier="soulless.3.self" target="Self" minstrength="75" maxstrength="100" />
+    <Effect minstrength="0" maxstrength="99" strengthchange="-0.1" minskillmultiplier="1" maxskillmultiplier="-0.5" minspeedmultiplier="1.0" maxspeedmultiplier="0.25">
+      <StatValue stattype="RepairToolStructureRepairMultiplier" minvalue="0" maxvalue="-0.75" />
+      <StatValue stattype="RepairSpeed" minvalue="0" maxvalue="-0.75" />
+      <StatValue stattype="MeleeAttackSpeed" minvalue="0" maxvalue="-0.75" />
+      <StatValue stattype="MaximumHealthMultiplier" minvalue="0" maxvalue="-0.75" />
+    </Effect>
+    <Effect minstrength="99" maxstrength="100" minvitalitydecrease="500" maxvitalitydecrease="500"></Effect>
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/test4.png" sourcerect="0,0,128,128" color="139,60,42,255" origin="0,0" />
+    <AfflictionOverlay texture="%ModDir%/More Arts (AOCS)/Afflictions/soulles.png" />
+  </Affliction>
+  <!-- аффикшены для оазисартефакта -->
+  <Affliction name="" identifier="oasispsychosis" description="" limbspecific="false" indicatorlimb="Head" activationthreshold="0" showiconthreshold="1000" showicontoothersthreshold="20" treatmentthreshold="1000" maxstrength="100" afflictionoverlayalphaislinear="false" iconcolors="94,54,95;163,73,164;200,191,231">
+    <Effect minstrength="0" maxstrength="25" minafflictionoverlayalphamultiplier="0" maxafflictionoverlayalphamultiplier="0" maxvitalitydecrease="0" minscreendistort="0.0" maxscreendistort="2.5" minscreenblur="0.0" maxscreenblur="0.5" minradialdistort="0" maxradialdistort="1" minchromaticaberration="0" maxchromaticaberration="7.5" strengthchange="-4">
+      <StatusEffect type="OnActive" target="Character" SpeedMultiplier="1.0" setvalue="true" />
+    </Effect>
+    <Effect minstrength="25" maxstrength="50" SpeedMultiplier="0" minafflictionoverlayalphamultiplier="0" maxafflictionoverlayalphamultiplier="0" maxvitalitydecrease="0" minscreendistort="2.5" maxscreendistort="5.0" minscreenblur="0.5" maxscreenblur="1.0" minradialdistort="1" maxradialdistort="2" minchromaticaberration="7.5" maxchromaticaberration="15" strengthchange="-4">
+      <StatusEffect type="OnActive" target="Character" SpeedMultiplier="0.8" setvalue="true" />
+    </Effect>
+    <Effect minstrength="50" maxstrength="75" minafflictionoverlayalphamultiplier="0" maxafflictionoverlayalphamultiplier="0.25" maxvitalitydecrease="0" minscreendistort="5.0" maxscreendistort="7.5" minscreenblur="1.0" maxscreenblur="2.0" minradialdistort="2" maxradialdistort="3" minchromaticaberration="15" maxchromaticaberration="22.5" strengthchange="-4">
+      <StatusEffect type="OnActive" target="Character" SpeedMultiplier="0.5" setvalue="true" />
+    </Effect>
+    <Effect minstrength="75" maxstrength="100" minafflictionoverlayalphamultiplier="0.25" maxafflictionoverlayalphamultiplier="0.9" maxvitalitydecrease="0" minscreendistort="7.5" maxscreendistort="10.0" minscreenblur="2.0" maxscreenblur="4.0" minradialdistort="3" maxradialdistort="4" minchromaticaberration="22.5" maxchromaticaberration="30" strengthchange="-4">
+      <StatusEffect type="OnActive" target="Character" SpeedMultiplier="0.25" setvalue="true" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,640,128,128" color="150,26,26,255" origin="0,0" />
+    <PeriodicEffect mininterval="5" maxinterval="10">
+      <StatusEffect target="Character" onlyinside="true">
+        <Conditional IsLocalPlayer="True" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/oasisb1.ogg" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/oasisw1.ogg" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/oasisb2.ogg" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/oasisw2.ogg" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/oasisb3.ogg" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/oasisw3.ogg" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/oasisb4.ogg" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/oasisw4.ogg" selectionmode="Random" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <AfflictionOverlay texture="%ModDir%/More Arts (AOCS)/Afflictions/screenoasis.png" />
+  </Affliction>
+  <Affliction name="" identifier="oasisaoeheal" description="blabla" limbspecific="false" indicatorlimb="Head" activationthreshold="0" showiconthreshold="1000" showicontoothersthreshold="1000" treatmentthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="100">
+    <Effect minstrength="0" maxstrength="25" strengthchange="-5">
+      <StatusEffect type="OnActive" target="nearbyCharacters" range="300.0" comparison="and" checkconditionalalways="true" stackable="false" setvalue="true" delay="0.5">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <ReduceAffliction identifier="damage" strength="1" />
+        <ReduceAffliction identifier="burn" strength="1" />
+        <ReduceAffliction identifier="bleeding" strength="5.0" />
+        <ReduceAffliction identifier="poison" strength="2.5" />
+        <ReduceAffliction identifier="paralysis" strength="2" />
+        <ReduceAffliction identifier="oxygenlow" strength="10" />
+      </StatusEffect>
+      <StatusEffect type="OnActive" target="NearbyCharacters" range="300.0" disabledeltatime="true" stackable="false" delay="0.1">
+        <Affliction identifier="artaddiction" strength="0.25" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="25" maxstrength="50" strengthchange="-5">
+      <StatusEffect type="OnActive" target="NearbyCharacters" range="300.0" comparison="and" checkconditionalalways="true" stackable="false" setvalue="true" delay="0.5">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <ReduceAffliction identifier="damage" strength="2" />
+        <ReduceAffliction identifier="burn" strength="2" />
+        <ReduceAffliction identifier="bleeding" strength="7.5" />
+        <ReduceAffliction identifier="poison" strength="5" />
+        <ReduceAffliction identifier="paralysis" strength="4" />
+        <ReduceAffliction identifier="oxygenlow" strength="15" />
+      </StatusEffect>
+      <StatusEffect type="OnActive" target="NearbyCharacters" range="300.0" disabledeltatime="true" stackable="false" delay="0.1">
+        <Affliction identifier="artaddiction" strength="0.75" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="50" maxstrength="75" strengthchange="-5">
+      <StatusEffect type="OnActive" target="NearbyCharacters" range="300.0" comparison="and" checkconditionalalways="true" stackable="false" setvalue="true" delay="0.5">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <ReduceAffliction identifier="damage" strength="4" />
+        <ReduceAffliction identifier="burn" strength="4" />
+        <ReduceAffliction identifier="bleeding" strength="10.0" />
+        <ReduceAffliction identifier="poison" strength="10" />
+        <ReduceAffliction identifier="paralysis" strength="8" />
+        <ReduceAffliction identifier="oxygenlow" strength="20" />
+      </StatusEffect>
+      <StatusEffect type="OnActive" target="NearbyCharacters" range="300.0" disabledeltatime="true" stackable="false" delay="0.1">
+        <Affliction identifier="artaddiction" strength="1.5" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="75" maxstrength="100" strengthchange="-5">
+      <StatusEffect type="OnActive" target="NearbyCharacters" range="300.0" comparison="and" checkconditionalalways="true" stackable="false" setvalue="true" delay="0.5">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <ReduceAffliction identifier="damage" strength="8" />
+        <ReduceAffliction identifier="burn" strength="8" />
+        <ReduceAffliction identifier="bleeding" strength="15.0" />
+        <ReduceAffliction identifier="poison" strength="15" />
+        <ReduceAffliction identifier="paralysis" strength="16" />
+        <ReduceAffliction identifier="oxygenlow" strength="25" />
+      </StatusEffect>
+      <StatusEffect type="OnActive" target="NearbyCharacters" range="300.0" disabledeltatime="true" stackable="false" delay="0.1">
+        <Affliction identifier="artaddiction" strength="0.2" />
+      </StatusEffect>
+      <StatusEffect type="OnActive" target="Character"></StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,640,128,128" color="150,26,26,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="artaddiction" description="" limbspecific="false" indicatorlimb="Head" showiconthreshold="220" showicontoothersthreshold="0" showinhealthscannerthreshold="0" treatmentthreshold="1000" maxstrength="100">
+    <Description textidentifier="artaddiction.self1" target="Self" minstrength="0" maxstrength="30" />
+    <Description textidentifier="artaddiction.self2" target="Self" minstrength="30" maxstrength="75" />
+    <Description textidentifier="artaddiction.self3" target="Self" minstrength="75" maxstrength="100" />
+    <Description textidentifier="artaddiction.1" target="OtherCharacter" minstrength="0" maxstrength="30" />
+    <Description textidentifier="artaddiction.2" target="OtherCharacter" minstrength="30" maxstrength="75" />
+    <Description textidentifier="artaddiction.3" target="OtherCharacter" minstrength="75" maxstrength="100" />
+    <Effect minstrength="0" maxstrength="20" strengthchange="-0.05" multiplybymaxvitality="true" />
+    <Effect minstrength="20" maxstrength="40" strengthchange="-0.05" multiplybymaxvitality="true">
+      <StatusEffect target="Character" stackable="false">
+        <Affliction identifier="artwithdrawal" strength="0.15" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="40" maxstrength="60" strengthchange="-0.1" multiplybymaxvitality="true">
+      <StatusEffect target="Character" stackable="false">
+        <Affliction identifier="artwithdrawal" strength="0.45" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="60" maxstrength="90" strengthchange="-0.1" multiplybymaxvitality="true" minvitalitydecrease="0" maxvitalitydecrease="0">
+      <StatusEffect target="Character" stackable="false">
+        <Affliction identifier="artwithdrawal" strength="0.65" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="90" maxstrength="100" strengthchange="-0.1" multiplybymaxvitality="true" minvitalitydecrease="0" maxvitalitydecrease="0">
+      <StatusEffect target="Character" stackable="false">
+        <Affliction identifier="artwithdrawal" strength="1.0" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="384,768,128,128" color="195,180,60,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="artwithdrawal" description="" limbspecific="false" indicatorlimb="Head" showiconthreshold="20" showicontoothersthreshold="20" showinhealthscannerthreshold="20" treatmentthreshold="1000" maxstrength="100">
+    <Description textidentifier="artwithdrawal.self1" target="Self" minstrength="0" maxstrength="30" />
+    <Description textidentifier="artwithdrawal.self2" target="Self" minstrength="30" maxstrength="75" />
+    <Description textidentifier="artwithdrawal.self3" target="Self" minstrength="75" maxstrength="100" />
+    <Description textidentifier="artwithdrawal.1" target="OtherCharacter" />
+    <!-- Slow down the character and slightly decrease vitality -->
+    <Effect minstrength="0" maxstrength="20" strengthchange="-0.1" />
+    <Effect minstrength="20" maxstrength="40" minvitalitydecrease="0" maxvitalitydecrease="0" color="255,225,225,255" minskillmultiplier="1" maxskillmultiplier="0.6" strengthchange="-0.15" minchromaticaberration="0.0" maxchromaticaberration="1.0" dialogflag="OpiateWithdrawalLow">
+      <StatValue stattype="RepairToolStructureRepairMultiplier" minvalue="0" maxvalue="-0.5" />
+      <StatValue stattype="RepairSpeed" minvalue="0" maxvalue="-0.5" />
+      <StatValue stattype="MeleeAttackSpeed" minvalue="0" maxvalue="-0.5" />
+      <StatValue stattype="MaximumHealthMultiplier" minvalue="0" maxvalue="-0.15" />
+      <StatusEffect target="Character" SpeedMultiplier="0.8" setvalue="true" stackable="false" delay="0.1">
+        <Affliction identifier="nausea" strength="10" probability="0.01" />
+      </StatusEffect>
+    </Effect>
+    <!-- Decrease vitality more. The strength of the affliction drops faster, meaning that 
+    the character needs a stronger opiate addiction for the withdrawal symptoms to stay at this level -->
+    <Effect minstrength="40" maxstrength="80" minvitalitydecrease="0" maxvitalitydecrease="0" color="255,185,123,255" minskillmultiplier="0.6" maxskillmultiplier="0.2" strengthchange="-0.2" minchromaticaberration="1.0" maxchromaticaberration="5.0" dialogflag="OpiateWithdrawalMedium">
+      <StatValue stattype="RepairToolStructureRepairMultiplier" minvalue="-0.5" maxvalue="-0.75" />
+      <StatValue stattype="RepairSpeed" minvalue="-0.5" maxvalue="-0.75" />
+      <StatValue stattype="MeleeAttackSpeed" minvalue="-0.5" maxvalue="-0.75" />
+      <StatValue stattype="MaximumHealthMultiplier" minvalue="-0.15" maxvalue="-0.5" />
+      <StatusEffect target="Character" SpeedMultiplier="0.7" setvalue="true" stackable="false" delay="0.1">
+        <Affliction identifier="nausea" strength="20" probability="0.03" />
+      </StatusEffect>
+    </Effect>
+    <!-- Withdrawal symptoms start to get lethal at this level -->
+    <Effect minstrength="80" maxstrength="100" minvitalitydecrease="0" maxvitalitydecrease="0" minskillmultiplier="0.2" maxskillmultiplier="-0.5" minscreendistort="0.0" maxscreendistort="0.0" strengthchange="-0.2" minchromaticaberration="5.0" maxchromaticaberration="10.0" minradialdistort="0.0" maxradialdistort="4.0" dialogflag="OpiateWithdrawalHigh">
+      <StatValue stattype="RepairToolStructureRepairMultiplier" minvalue="-0.75" maxvalue="-1" />
+      <StatValue stattype="RepairSpeed" minvalue="-0.75" maxvalue="-1" />
+      <StatValue stattype="MeleeAttackSpeed" minvalue="-0.75" maxvalue="-1" />
+      <StatValue stattype="MaximumHealthMultiplier" minvalue="-0.5" maxvalue="-0.8" />
+      <StatusEffect target="Character" SpeedMultiplier="0.5" color="255,136,60,255" setvalue="true" stackable="false" delay="0.1">
+        <Affliction identifier="nausea" strength="30" probability="0.05" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="512,768,128,128" color="209,121,84,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="???" identifier="silence" description="" limbspecific="false" indicatorlimb="Head" activationthreshold="0" showiconthreshold="1000" showicontoothersthreshold="1110" treatmentthreshold="0" maxstrength="10">
+    <Effect minstrength="0" maxstrength="10" strengthchange="-1" multiplybymaxvitality="true">
+      <StatusEffect target="Character" speechImpediment="100.0">
+        <ReduceAffliction identifier="watchersgaze" amount="100" />
+      </StatusEffect>
+    </Effect>
+  </Affliction>
+  <!-- аффикшен для генотерапии - чтоб инвертированность не оставалась перманентной -->
+  <Affliction name="Disoriented" identifier="artmod_invertcontrols" description="" type="invertcontrols" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" showiconthreshold="100" maxstrength="100">
+    <Description textidentifier="afflictiondescription.invertcontrols" target="OtherCharacter" />
+    <Description textidentifier="afflictiondescription.invertcontrols.self" target="Self" />
+    <Effect minstrength="0" maxstrength="100" minscreendistort="0.0" maxscreendistort="0.5" minradialdistort="0.0" maxradialdistort="0.5" minspeedmultiplier="0.7" maxspeedmultiplier="0.7" strengthchange="-1.0"></Effect>
+  </Affliction>
+  <!-- аффикшены для радиоинфекции -->
+  <AfflictionHusk name="" identifier="artmod_anomalyfunctionalnecrosis" description="" type="alieninfection" targets="Human" huskedspeciesname="Mindless" limbspecific="false" indicatorlimb="Head" causespeechimpediment="false" needsair="true" canspeak="true" sendmessages="false" controlhusk="false" activationthreshold="0" showiconthreshold="5" showicontoothersthreshold="5" showinhealthscannerthreshold="76" transformthresholdondeath="5" damageoverlayalpha="0" treatmentthreshold="75" maxstrength="132" iconcolors="94,54,95;163,73,164;200,191,231" healcostmultiplier="3" basehealcost="250">
+    <Description textidentifier="artmod_anomalyfunctionalnecrosis.1" target="OtherCharacter" minstrength="5" maxstrength="76" />
+    <Description textidentifier="artmod_anomalyfunctionalnecrosis.2" target="OtherCharacter" minstrength="76" maxstrength="133" />
+    <Description textidentifier="artmod_anomalyfunctionalnecrosis.1.self" target="Self" minstrength="5" maxstrength="76" />
+    <Description textidentifier="artmod_anomalyfunctionalnecrosis.2.self" target="Self" minstrength="76" maxstrength="132" />
+    <Effect minstrength="0" maxstrength="5" multiplybymaxvitality="true" minvitalitydecrease="0" maxvitalitydecrease="0" minscreendistort="0.0" maxscreendistort="0.0" strengthchange="0.035" minchromaticaberration="0.0" maxchromaticaberration="0.0" minradialdistort="0.0" maxradialdistort="0.0">
+      <StatusEffect target="Character" comparison="and">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <ReduceAffliction identifier="radiozombieinfection" amount="8" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="5" maxstrength="76" multiplybymaxvitality="true" minvitalitydecrease="0" maxvitalitydecrease="0.1" minscreendistort="0.0" maxscreendistort="5.0" strengthchange="1" grainburst="100" minchromaticaberration="0.0" maxchromaticaberration="300.0" minradialdistort="0.0" maxradialdistort="2.0">
+      <StatusEffect target="Character" comparison="and">
+        <Conditional isdead="false" />
+        <ReduceAffliction identifier="huskinfection" strength="5" />
+      </StatusEffect>
+      <StatusEffect target="Character" setvalue="true" SpeedMultiplier="0.9" tags="FN_Infected" />
+      <StatusEffect target="Character">
+        <Conditional IsLocalPlayer="True" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/degraded.ogg" volume="0.4" loop="true" dontmuffle="false" />
+      </StatusEffect>
+      <StatusEffect target="Character" comparison="and">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <ReduceAffliction identifier="radiozombieinfection" amount="8" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="76" maxstrength="131" multiplybymaxvitality="true" minvitalitydecrease="0.1" maxvitalitydecrease="0.1" minscreendistort="5.0" maxscreendistort="3.0" strengthchange="1" minchromaticaberration="300.0" maxchromaticaberration="5000.0" minradialdistort="2.0" maxradialdistort="4.0">
+      <StatusEffect target="Character" comparison="and">
+        <ReduceAffliction identifier="nausea" amount="2000" />
+      </StatusEffect>
+      <StatusEffect target="Character" setvalue="true" SpeedMultiplier="1.2" />
+      <StatusEffect target="Character">
+        <Conditional IsLocalPlayer="True" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/degraded.ogg" volume="1" loop="true" dontmuffle="false" />
+      </StatusEffect>
+      <StatusEffect target="Character" comparison="and">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <ReduceAffliction identifier="radiozombieinfection" amount="8" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="131" maxstrength="132" minvitalitydecrease="0.1" maxvitalitydecrease="300" minscreendistort="5.0" maxscreendistort="5.0" minchromaticaberration="5000.0" maxchromaticaberration="5000.0" minradialdistort="4.0" maxradialdistort="14.0" strengthchange="2"></Effect>
+    <PeriodicEffect mininterval="4" maxinterval="8">
+      <StatusEffect target="Character" comparison="and">
+        <Conditional IsLocalPlayer="True" />
+        <Conditional artmod_anomalyfunctionalnecrosis="gt 5" />
+        <Conditional artmod_anomalyfunctionalnecrosis="lt 76" />
+        <ParticleEmitter particle="artmod_psychoElectricShock" distancemin="50" distancemax="500" scalemultiplier="0.7,0.7" anglemax="360" emitinterval="1.1" particleamount="1" particlespersecond="1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="2" maxinterval="4">
+      <StatusEffect target="Character" comparison="and">
+        <Conditional IsLocalPlayer="True" />
+        <Conditional artmod_anomalyfunctionalnecrosis="gt 76" />
+        <ParticleEmitter particle="artmod_psychoElectricShock" distancemin="50" distancemax="750" scalemultiplier="0.7,0.7" anglemax="360" emitinterval="1.1" particleamount="20" particlespersecond="15" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="0" maxinterval="1">
+      <StatusEffect target="Character" comparison="and">
+        <Conditional IsLocalPlayer="True" />
+        <Conditional artmod_anomalyfunctionalnecrosis="gt 76" />
+        <ParticleEmitter particle="artmod_psychoElectricShock" distancemin="50" distancemax="750" scalemultiplier="0.7,0.7" anglemax="360" emitinterval="1.1" particleamount="1" particlespersecond="1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="0" maxinterval="4">
+      <StatusEffect target="Character">
+        <Conditional artmod_anomalyfunctionalnecrosis="gt 76" />
+        <Affliction identifier="psychosis" amount="100" />
+        <Affliction identifier="blue_clowned" amount="100" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <!--Легкий, не слишком хорошо уловимый шёпот-->
+    <PeriodicEffect mininterval="10" maxinterval="25">
+      <StatusEffect target="Character" comparison="And">
+        <Conditional IsLocalPlayer="True" />
+        <Conditional artmod_anomalyfunctionalnecrosis="lt 5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/CW6.ogg" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/CW5.ogg" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/CW7.ogg" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/CW4.ogg" selectionmode="Random" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <!--Уже явные слуховые галлюцинации, синхронно с размытием зрения-->
+    <PeriodicEffect mininterval="10" maxinterval="15">
+      <StatusEffect target="Character" comparison="And">
+        <Conditional IsLocalPlayer="True" />
+        <Conditional artmod_anomalyfunctionalnecrosis="gt 5.0" />
+        <Conditional artmod_anomalyfunctionalnecrosis="lt 76" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/CW1.ogg" selectionmode="Random" volume="0.75" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/CW2.ogg" selectionmode="Random" volume="0.75" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/CW8.ogg" selectionmode="Random" volume="0.75" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/CW9.ogg" selectionmode="Random" volume="0.75" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/SWnew1.ogg" selectionmode="Random" volume="0.75" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/SWnew2.ogg" selectionmode="Random" volume="0.75" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/SWnew5.ogg" selectionmode="Random" volume="0.75" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <!--Долбит нормально-->
+    <PeriodicEffect mininterval="6" maxinterval="12">
+      <StatusEffect target="Character" comparison="And">
+        <Conditional IsLocalPlayer="True" />
+        <Conditional artmod_anomalyfunctionalnecrosis="gt 76" />
+        <Conditional artmod_anomalyfunctionalnecrosis="lt 131" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/CW33.ogg" selectionmode="Random" volume="1" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/CW66.ogg" selectionmode="Random" volume="1" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/CW1.ogg" selectionmode="Random" volume="0.75" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/CW2.ogg" selectionmode="Random" volume="1" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/CW8.ogg" selectionmode="Random" volume="1" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/CW9.ogg" selectionmode="Random" volume="1" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/SWnew1.ogg" selectionmode="Random" volume="1" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/SWnew2.ogg" selectionmode="Random" volume="1" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/SWnew3.ogg" selectionmode="Random" volume="1" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/InfectionHallutination/SWnew5.ogg" selectionmode="Random" volume="1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="0" maxinterval="0.01">
+      <StatusEffect target="Character" comparison="And">
+        <Conditional artmod_anomalyfunctionalnecrosis="gt 4.5" />
+        <Conditional artmod_anomalyfunctionalnecrosis="lt 50" />
+        <Conditional functionalnecrosis2resistance="gt 0" />
+        <ReduceAffliction identifier="artmod_anomalyfunctionalnecrosis" amount="4" />
+      </StatusEffect>
+      <StatusEffect target="Character" comparison="And">
+        <Conditional artmod_anomalyfunctionalnecrosis="gte 50" />
+        <Conditional functionalnecrosis2resistance="gt 0" />
+        <ReduceAffliction identifier="artmod_anomalyfunctionalnecrosis" amount="25" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <!--Play periodic zombie sounds in stage 4 infected depending on gender-->
+    <PeriodicEffect mininterval="4" maxinterval="8">
+      <StatusEffect target="Character" comparison="And">
+        <Conditional artmod_anomalyfunctionalnecrosis="gte 76" />
+        <Conditional ismale="True" />
+        <sound file="Content/Characters/Human/male_damage1.ogg" range="500" volume="1" />
+        <sound file="Content/Characters/Human/male_damage2.ogg" range="500" volume="1" />
+        <sound file="Content/Characters/Human/male_damage3.ogg" range="500" volume="1" />
+        <sound file="Content/Characters/Human/male_damage4.ogg" range="500" volume="1" />
+        <sound file="Content/Characters/Human/male_damage5.ogg" range="500" volume="1" />
+        <sound file="Content/Characters/Human/male_damage6.ogg" range="500" volume="1" />
+        <sound file="Content/Characters/Human/male_damage7.ogg" range="500" volume="1" />
+        <sound file="Content/Characters/Human/male_damage8.ogg" range="500" volume="1" />
+        <sound file="Content/Characters/Human/male_damage9.ogg" range="500" volume="1" />
+        <sound file="Content/Characters/Human/male_damage10.ogg" range="500" volume="1" />
+        <sound file="Content/Characters/Human/male_damage11.ogg" range="500" volume="1" />
+      </StatusEffect>
+      <StatusEffect target="Character" comparison="And">
+        <Conditional artmod_anomalyfunctionalnecrosis="gte 76" />
+        <Conditional isfemale="True" />
+        <sound file="Content/Characters/Human/female_damage1.ogg" range="500" volume="1" />
+        <sound file="Content/Characters/Human/female_damage2.ogg" range="500" volume="1" />
+        <sound file="Content/Characters/Human/female_damage3.ogg" range="500" volume="1" />
+        <sound file="Content/Characters/Human/female_damage4.ogg" range="500" volume="1" />
+        <sound file="Content/Characters/Human/female_damage5.ogg" range="500" volume="1" />
+        <sound file="Content/Characters/Human/female_damage6.ogg" range="500" volume="1" />
+        <sound file="Content/Characters/Human/female_damage7.ogg" range="500" volume="1" />
+        <sound file="Content/Characters/Human/female_damage8.ogg" range="500" volume="1" />
+        <sound file="Content/Characters/Human/female_damage9.ogg" range="500" volume="1" />
+        <sound file="Content/Characters/Human/female_damage10.ogg" range="500" volume="1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="25" maxinterval="40">
+      <StatusEffect target="Character" comparison="and">
+        <Conditional isdead="false" />
+        <Conditional artmod_anomalyfunctionalnecrosis="gte 25" />
+        <Affliction identifier="nausea" strength="25" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <!-- Last stage of infection before death, bleeding heavily increased, and burns increased too. -->
+    <PeriodicEffect mininterval="4" maxinterval="8">
+      <StatusEffect target="Character" targetlimb="Head" comparison="and">
+        <Conditional isdead="false" />
+        <Conditional artmod_anomalyfunctionalnecrosis="gte 76" />
+        <Affliction identifier="burn" strength="1.5" />
+        <Affliction identifier="bleeding" strength="2" probability="0.5" />
+        <Affliction identifier="blunttrauma" strength="2.5" probability="0.75" />
+        <Affliction identifier="explosiondamage" strength="2.5" probability="0.75" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <icon texture="Content/UI/CommandUIAtlas.png" sourcerect="768,896,128,128" color="125,0,0,255" origin="0,0" />
+  </AfflictionHusk>
+  <Affliction name="" identifier="artmod_fn_reanimationstasisS" description="placeholder until i can get this removed properly, но для меня главное чтоб ваще работало" type="resistance" isbuff="false" limbspecific="false" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" treatmentthreshold="1000" maxstrength="100">
+    <Effect minstrength="0" maxstrength="100" strengthchange="100" resistancefor="anything" minresistance="0" maxresistance="0.01"></Effect>
+  </Affliction>
+  <AfflictionHusk name="" identifier="transformationgift" type="alieninfection" targets="human" huskedspeciesname="STransformedMudraptor" causeofdeathdescription="Oof." selfcauseofdeathdescription="Oof." limbspecific="false" indicatorlimb="Torso" activationthreshold="0" showiconthreshold="40" showicontoothersthreshold="220" maxstrength="100" transferbuffs="true" controlhusk="true" transformthresholdondeath="75" transitionthreshold="100" sendmessages="false" iconcolors="60,140,195,255;60,107,195,255;60,0,195,255">
+    <Effect minstrength="0" maxstrength="75" maxvitalitydecrease="0" strengthchange="1" minbodytint="195,195,195,0" maxbodytint="195,195,195,150" />
+    <Effect minstrength="75" maxstrength="100" maxvitalitydecrease="0" strengthchange="2.5" minbodytint="195,195,195,150" maxbodytint="195,195,195,200">
+      <StatusEffect target="Character" comparison="and">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional transformationgift="eq 100" />
+        <Affliction identifier="tag_success" amount="0.5" />
+      </StatusEffect>
+      <StatusEffect target="Character" targetlimb="Head" comparison="and">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional transformationgift="eq 100" />
+        <SpawnItem identifier="artmod_headboom" />
+      </StatusEffect>
+      <StatusEffect target="Character" targetlimb="Head" comparison="and" delay="1" stackable="false" setvalue="true">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional transformationgift="eq 100" />
+        <SpawnItem identifier="artmod_headboom" />
+      </StatusEffect>
+      <StatusEffect target="Character" targetlimb="Torso" comparison="and" delay="1" stackable="false" setvalue="true">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional transformationgift="eq 100" />
+        <SpawnItem identifier="artmod_headboom" />
+      </StatusEffect>
+      <StatusEffect target="Character" targetlimb="Torso" comparison="and" delay="1.5" stackable="false" setvalue="true">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional transformationgift="eq 100" />
+        <SpawnItem identifier="artmod_headboom" />
+      </StatusEffect>
+      <StatusEffect target="Character" targetlimb="Torso" comparison="and" delay="2.5" stackable="false" setvalue="true">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional transformationgift="eq 100" />
+        <SpawnItem identifier="artmod_headboom" />
+      </StatusEffect>
+      <StatusEffect target="Character" targetlimb="Torso" comparison="and" delay="2.6" stackable="false" setvalue="true">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional transformationgift="eq 100" />
+        <SpawnItem identifier="artmod_headboom" />
+        <ParticleEmitter particle="bloodsplash" particlespersecond="25" scalemin="1.5" scalemax="1.5" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+        <ParticleEmitter particle="blackblood" particlespersecond="5" scalemin="1.5" scalemax="1.5" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+      </StatusEffect>
+      <StatusEffect target="Character" targetlimb="Torso" comparison="and" delay="2.2" stackable="false" setvalue="true">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional transformationgift="eq 100" />
+        <Affliction identifier="organdamage" amount="5000000" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,640,128,128" color="60,107,195,255" origin="0,0" />
+  </AfflictionHusk>
+  <InternalDamage name="" identifier="tag_success" description="для трейторского квеста" type="psychosis" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="Head" maxstrength="1" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000">
+    <Effect minstrength="0" maxstrength="1" multiplybymaxvitality="true" strengthchange="-0.25" minvitalitydecrease="0" maxvitalitydecrease="0" />
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="128,768,128,128" color="195,136,60,255" origin="0,0" />
+  </InternalDamage>
+  <Affliction name="Clowned" identifier="clowned" description="" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000" maxstrength="222" iconcolors="60,140,195,255;60,107,195,255;60,0,195,255">
+    <Effect minstrength="0" maxstrength="222" strengthchange="1" multiplybymaxvitality="false" minscreendistort="0" maxscreendistort="1" minradialdistort="0" maxradialdistort="100">
+      <StatusEffect target="Character" comparison="and">
+        <Conditional IsLocalPlayer="True" />
+        <Conditional clowned="gt 25" />
+        <ParticleEmitter particle="artmod_clownsparklesmod" anglemax="360" distancemin="10" distancemax="500" scalemultiplier="1,1" particlespersecond="2" colormultiplier="255,255,255,255" />
+        <ParticleEmitter particle="artmod_clownsparklesmod" anglemax="360" distancemin="10" distancemax="500" scalemultiplier="1,1" particlespersecond="3" colormultiplier="0,255,255,255" />
+        <ParticleEmitter particle="artmod_clownsparklesmod" anglemax="360" distancemin="10" distancemax="500" scalemultiplier="1,1" particlespersecond="2" colormultiplier="255,0,255,255" />
+        <ParticleEmitter particle="artmod_clownsparklesmod" anglemax="360" distancemin="10" distancemax="500" scalemultiplier="1,1" particlespersecond="3" colormultiplier="255,0,0,255" />
+        <ParticleEmitter particle="artmod_clownsparklesmod" anglemax="360" distancemin="10" distancemax="500" scalemultiplier="1,1" particlespersecond="4" colormultiplier="0,255,0,255" />
+      </StatusEffect>
+      <StatusEffect target="Character" delay="79.25" stackable="false" duration="8">
+        <ReduceAffliction identifier="Clowned" amount="45" />
+      </StatusEffect>
+      <StatusEffect target="Character" setvalue="true" delay="0.25">
+        <Affliction identifier="psychosis" amount="100" />
+      </StatusEffect>
+      <StatusEffect target="Character" delay="79" disabledeltatime="true" stackable="false">
+        <ReduceAffliction identifier="damage" strength="200" />
+        <ReduceAffliction identifier="burn" strength="200" />
+        <ReduceAffliction identifier="bleeding" strength="200" />
+        <ReduceAffliction identifier="bloodloss" strength="200" />
+        <ReduceAffliction identifier="invertcontrols" strength="200" />
+        <ReduceAffliction identifier="haste" strength="20" />
+        <ReduceAffliction identifier="strengthen" strength="20" />
+        <Affliction identifier="nausea" strength="100" />
+      </StatusEffect>
+      <StatusEffect target="Character" comparison="and" stackable="false" setvalue="true">
+        <Conditional IsLocalPlayer="True" />
+        <Conditional clowned="gt 65" />
+        <ParticleEmitter particle="artmod_clownblackhole" anglemax="360" distancemin="0" distancemax="0" scalemultiplier="1,1" particlespersecond="1" colormultiplier="255,255,255,255" />
+      </StatusEffect>
+      <StatusEffect target="Character">
+        <Conditional IsLocalPlayer="True" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/Painkiller-LoonyPark.ogg" selectionmode="Random" loop="true" />
+      </StatusEffect>
+    </Effect>
+    <PeriodicEffect mininterval="4" maxinterval="8">
+      <StatusEffect target="Character" comparison="and">
+        <Conditional IsLocalPlayer="True" />
+        <Conditional Clowned="gt 30" />
+        <Conditional Clowned="lt 65" />
+        <ParticleEmitter particle="artmod_clownsparklesmod2" anglemax="360" scalemultiplier="1,1" particlespersecond="1" colormultiplier="255,0,0,255" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="4" maxinterval="8">
+      <StatusEffect target="Character" comparison="and">
+        <Conditional IsLocalPlayer="True" />
+        <Conditional Clowned="gt 30" />
+        <Conditional Clowned="lt 65" />
+        <ParticleEmitter particle="artmod_clownsparklesmod1" anglemax="360" scalemultiplier="1,1" particlespersecond="1" colormultiplier="0,255,0,155" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="0" maxinterval="10">
+      <StatusEffect target="Character" stackable="false" setvalue="true" delay="0.1" comparison="and">
+        <Conditional IsLocalPlayer="True" />
+        <Conditional clowned="gt 25" />
+        <Sound file="Content/Items/Weapons/honk.ogg" selectionmode="Random" />
+        <Sound file="Content/Items/Weapons/ShotgunShot1.ogg" />
+        <Sound file="Content/Items/Weapons/ShotgunShot2.ogg" />
+        <Sound file="Content/Items/Weapons/Coilgun1.ogg" />
+        <Sound file="Content/Items/Weapons/SMGsingleShot1.ogg" />
+        <Sound file="Content/Items/Weapons/Smack2.ogg" />
+        <Sound file="Content/Items/Weapons/IncendiumGrenade.ogg" />
+        <Sound file="Content/Items/Reactor/ReactorOverheatAlarm.ogg" />
+        <Sound file="Content/Items/Door/DoorBreak1.ogg" />
+        <Sound file="Content/Items/Door/DoorBreak2.ogg" />
+        <Sound file="Content/Items/Door/DockingPort2.ogg" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/Psi_Coilgun1.ogg" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/Psi_Coilgun2.ogg" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/Psi_Revolver1.ogg" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/Psi_SMGsingleShot1.ogg" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="0" maxinterval="0">
+      <StatusEffect target="Character" comparison="and">
+        <Conditional IsLocalPlayer="True" />
+        <Conditional Clowned="gt 25" />
+        <ParticleEmitter particle="waterblood" anglemin="0" anglemax="360" particlespersecond="10" velocitymin="0" velocitymax="10" scalemin="1" scalemax="2" />
+        <ParticleEmitter particle="blooddrop" anglemin="0" anglemax="360" particlespersecond="10" velocitymin="0" velocitymax="10" scalemin="1" scalemax="2" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="2" maxinterval="6">
+      <StatusEffect target="Character" comparison="and" stackable="false" targetlimb="Torso">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional Clowned="gt 25" />
+        <Affliction identifier="organdamage" strength="5" probability="0.1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="1" maxinterval="15">
+      <StatusEffect target="Character" comparison="and" stackable="false">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional Clowned="gt 25" />
+        <Affliction identifier="bloodloss" strength="10" probability="0.1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="2" maxinterval="8">
+      <StatusEffect target="Character" comparison="and" stackable="false" targetlimb="LeftLeg">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional Clowned="gt 25" />
+        <Affliction identifier="blunttrauma" strength="5" probability="0.1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="1" maxinterval="11">
+      <StatusEffect target="Character" comparison="and" stackable="false" targetlimb="RightLeg">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional Clowned="gt 25" />
+        <Affliction identifier="blunttrauma" strength="5" probability="0.1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="5" maxinterval="6">
+      <StatusEffect target="Character" comparison="and" stackable="false" targetlimb="LeftArm">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional Clowned="gt 25" />
+        <Affliction identifier="bitewounds" strength="5" probability="0.1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="2" maxinterval="9">
+      <StatusEffect target="Character" comparison="and" stackable="false" targetlimb="RightArm">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional Clowned="gt 25" />
+        <Affliction identifier="explosiondamage" strength="5" probability="0.1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="1" maxinterval="4">
+      <StatusEffect target="Character" comparison="and" stackable="false" targetlimb="LeftArm">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional Clowned="gt 25" />
+        <Affliction identifier="lacerations" strength="5" probability="0.1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="3" maxinterval="7">
+      <StatusEffect target="Character" comparison="and" stackable="false" targetlimb="RightArm">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional Clowned="gt 25" />
+        <Affliction identifier="lacerations" strength="5" probability="0.1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="4" maxinterval="8">
+      <StatusEffect target="Character" comparison="and" stackable="false" targetlimb="LeftLeg">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional Clowned="gt 25" />
+        <Affliction identifier="lacerations" strength="5" probability="0.1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="2" maxinterval="10">
+      <StatusEffect target="Character" comparison="and" stackable="false" targetlimb="RightLeg">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional Clowned="gt 25" />
+        <Affliction identifier="lacerations" strength="5" probability="0.1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="5" maxinterval="15">
+      <StatusEffect target="Character" comparison="and" stackable="false" targetlimb="Head">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional Clowned="gt 25" />
+        <Affliction identifier="gunshotwound" strength="5" probability="0.1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="1" maxinterval="20">
+      <StatusEffect target="Character" comparison="and" stackable="false">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional Clowned="gt 25" />
+        <Affliction identifier="strengthen" strength="20" probability="0.1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="1" maxinterval="20">
+      <StatusEffect target="Character" comparison="and" stackable="false">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional Clowned="gt 25" />
+        <Affliction identifier="haste" strength="20" probability="0.1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="1" maxinterval="20">
+      <StatusEffect target="Character" comparison="and" stackable="false">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional Clowned="gt 25" />
+        <Affliction identifier="invertcontrols" strength="1" probability="0.1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="1" maxinterval="20">
+      <StatusEffect target="Character" comparison="and" stackable="false">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional Clowned="gt 25" />
+        <Affliction identifier="nausea" strength="20" probability="0.1" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <PeriodicEffect mininterval="10" maxinterval="30">
+      <StatusEffect target="Character" comparison="and" stackable="false">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional Clowned="gt 25" />
+        <ReduceAffliction identifier="stun" strength="0.5" probability="0.1" />
+        <ReduceAffliction identifier="organdamage" strength="2.5" probability="0.15" />
+        <ReduceAffliction identifier="bloodloss" strength="2.5" probability="0.15" />
+        <ReduceAffliction identifier="internaldamage" strength="2.5" probability="0.15" />
+        <ReduceAffliction identifier="blunttrauma" strength="2.5" probability="0.15" />
+        <ReduceAffliction identifier="explosiondamage" strength="2.5" probability="0.15" />
+        <ReduceAffliction identifier="bitewounds" strength="2.5" probability="0.15" />
+        <ReduceAffliction identifier="lacerations" strength="2.5" probability="0.15" />
+        <ReduceAffliction identifier="gunshotwound" strength="2.5" probability="0.15" />
+        <ReduceAffliction identifier="bleeding" strength="2.5" probability="0.15" />
+        <ReduceAffliction identifier="burn" strength="2.5" probability="0.15" />
+        <ReduceAffliction identifier="invertcontrols" strength="2.5" probability="0.25" />
+        <ReduceAffliction identifier="haste" strength="20" probability="0.15" />
+        <ReduceAffliction identifier="strengthen" strength="20" probability="0.15" />
+        <ReduceAffliction identifier="nausea" strength="20" probability="0.15" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <!--<PeriodicEffect mininterval="30" maxinterval="30">
+      <StatusEffect target="Character" comparison="and" stackable="false" duration="2">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Conditional Clowned="gt 25" />
+        <ReduceAffliction identifier="stun" amount="0.5" probability="0.1"/>
+        <ReduceAffliction identifier="organdamage" amount="4" probability="0.25"/>
+        <ReduceAffliction identifier="bloodloss" amount="4" probability="0.25"/>
+        <ReduceAffliction identifier="internaldamage" amount="4" probability="0.25"/>
+        <ReduceAffliction identifier="blunttrauma" amount="4" probability="0.25"/>
+        <ReduceAffliction identifier="explosiondamage" amount="4" probability="0.25"/>
+        <ReduceAffliction identifier="bitewounds" amount="4" probability="0.25"/>
+        <ReduceAffliction identifier="lacerations" amount="4" probability="0.25"/>
+       <ReduceAffliction identifier="gunshotwound" amount="4" probability="0.25"/>
+       <ReduceAffliction identifier="bleeding" amount="4" probability="0.25"/>
+       <ReduceAffliction identifier="burn" amount="4" probability="0.25"/>
+       <ReduceAffliction identifier="invertcontrols" amount="2" probability="0.25"/>
+      </StatusEffect>
+    </PeriodicEffect>-->
+    <icon texture="%ModDir%/More Arts (AOCS)/Afflictions/test4.png" sourcerect="0,0,128,128" color="255,255,255,255" origin="0,0" />
+  </Affliction>
+  <!--для трейторского психоза-->
+  <Affliction name="" identifier="blue_clowned" description="" limbspecific="false" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000" maxstrength="1" iconcolors="60,140,195,255;60,107,195,255;60,0,195,255">
+    <Effect minstrength="0" maxstrength="1" strengthchange="0" multiplybymaxvitality="false">
+      <StatusEffect target="Character" comparison="and" stackable="false" setvalue="true" checkconditionalalways="true">
+        <Conditional IsLocalPlayer="True" />
+        <Conditional psychosis="lt 0.1" />
+        <ReduceAffliction identifier="blue_clowned" amount="5" />
+      </StatusEffect>
+    </Effect>
+    <PeriodicEffect mininterval="0" maxinterval="10">
+      <StatusEffect target="Character" stackable="false" setvalue="true" delay="0.1" comparison="and" checkconditionalalways="true">
+        <Conditional IsLocalPlayer="True" />
+        <Conditional psychosis="gt 40" />
+        <Sound file="Content/Items/Weapons/honk.ogg" selectionmode="Random" />
+        <Sound file="Content/Items/Weapons/Revolver1.ogg" />
+        <Sound file="Content/Items/Weapons/ShotgunShot1.ogg" />
+        <Sound file="Content/Items/Weapons/ShotgunShot2.ogg" />
+        <Sound file="Content/Items/Weapons/Coilgun1.ogg" />
+        <Sound file="Content/Items/Weapons/SMGsingleShot1.ogg" />
+        <Sound file="Content/Items/Weapons/Smack2.ogg" />
+        <Sound file="Content/Items/Weapons/IncendiumGrenade.ogg" />
+        <Sound file="Content/Items/Reactor/ReactorOverheatAlarm.ogg" />
+        <Sound file="Content/Items/Door/DoorBreak1.ogg" />
+        <Sound file="Content/Items/Door/DoorBreak2.ogg" />
+        <Sound file="Content/Items/Door/DockingPort2.ogg" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/Psi_Coilgun1.ogg" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/Psi_Coilgun2.ogg" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/Psi_Revolver1.ogg" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/Psi_SMGsingleShot1.ogg" />
+      </StatusEffect>
+    </PeriodicEffect>
+  </Affliction>
+  <Affliction name="" identifier="greentubeef" limbspecific="false" indicatorlimb="Torso" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000" maxstrength="1" iconcolors="94,54,95;163,73,164;200,191,231">
+    <Effect minstrength="0" maxstrength="10" strengthchange="-2" blocktransformation="huskinfection">
+      <StatusEffect target="Character" checkconditionalalways="true" comparison="and">
+        <Conditional huskinfection="gt 50" />
+        <ReduceAffliction identifier="huskinfection" amount="1" />
+      </StatusEffect>
+    </Effect>
+    <PeriodicEffect mininterval="2" maxinterval="6">
+      <StatusEffect target="character" checkconditionalalways="true">
+        <Conditional artmod_drunk="gt 0.1" />
+        <Affliction identifier="stun" amount="0.01" />
+        <Sound file="Content/Sounds/Damage/HitClown1.ogg" selectionmode="Random" />
+        <Sound file="Content/Sounds/Damage/HitClown2.ogg" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <icon texture="Content/UI/TalentsIcons3.png" sheetindex="4,0" sheetelementsize="128,128" color="181,230,29,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="artmod_drunk" description="" type="poison" causeofdeathdescription="Alcohol poisoning" selfcauseofdeathdescription="You have died of alcohol poisoning." limbspecific="false" indicatorlimb="Head" activationthreshold="0" maxstrength="100">
+    <Description textidentifier="artmod_drunk.self1" target="Self" minstrength="0" maxstrength="30" />
+    <Description textidentifier="artmod_drunk.self2" target="Self" minstrength="30" maxstrength="80" />
+    <Description textidentifier="artmod_drunk.self3" target="Self" minstrength="80" maxstrength="100" />
+    <Description textidentifier="artmod_drunk.1" target="OtherCharacter" />
+    <Effect minstrength="0" maxstrength="80" minvitalitydecrease="0" maxvitalitydecrease="0" minscreendistort="0.1" maxscreendistort="1.0" minscreenblur="0.1" maxscreenblur="1.0" strengthchange="-2.5" minradialdistort="0.0" maxradialdistort="2.0" dialogflag="DrunkMedium" minfacetint="255,0,0,50" maxfacetint="255,0,0,100">
+      <StatusEffect target="Character" SpeedMultiplier="0.75" setvalue="true">
+        <Affliction identifier="nausea" strength="10" probability="0.02" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="80" maxstrength="100" minvitalitydecrease="0" maxvitalitydecrease="0" minscreendistort="1.0" maxscreendistort="3.0" minscreenblur="1.0" maxscreenblur="2.0" strengthchange="-2.5" minradialdistort="2.0" maxradialdistort="4.0" dialogflag="DrunkHigh" minfacetint="255,0,0,150" maxfacetint="255,0,0,150">
+      <StatusEffect target="Character" SpeedMultiplier="0.5" setvalue="true">
+        <Affliction identifier="nausea" strength="20" probability="0.075" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="384,640,128,128" color="170,194,147,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="artmod_paralysis" description="" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="Head" maxstrength="1" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000">
+    <Effect minstrength="0" maxstrength="1" strengthchange="-1">
+      <StatusEffect target="Character" setvalue="true" delay="10" checkconditionalalways="true">
+        <Conditional artmod_paralysis="gt 0" />
+        <Affliction identifier="paralysis" strength="200" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="384,640,128,128" color="170,194,147,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="artmod_SWparalysis" description="" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="Head" maxstrength="1" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000">
+    <Effect minstrength="0" maxstrength="1" strengthchange="0">
+      <StatusEffect target="Character" setvalue="true">
+        <Affliction identifier="paralysis" strength="100000" />
+      </StatusEffect>
+      <StatusEffect target="Character" setvalue="true" delay="10">
+        <Affliction identifier="paralysis" strength="0" />
+        <Affliction identifier="artmod_SWparalysis" strength="0" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="384,640,128,128" color="170,194,147,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="artmod_SWhumanstun" description="" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="Head" maxstrength="1" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000">
+    <Effect minstrength="0" maxstrength="1" strengthchange="0">
+      <StatusEffect target="Character" setvalue="true" disabledeltatime="true" stackable="false">
+        <Affliction identifier="stun" strength="100" />
+      </StatusEffect>
+      <StatusEffect target="Character" stackable="false">
+        <Affliction identifier="artmod_SWblind" strength="2" disabledeltatime="true" stackable="false" />
+      </StatusEffect>
+      <StatusEffect target="Character" setvalue="true" delay="10">
+        <Affliction identifier="stun" strength="0" />
+        <Affliction identifier="artmod_SWhumanstun" strength="0" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="384,640,128,128" color="170,194,147,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="artmod_SWblind" limbspecific="false" indicatorlimb="Head" maxstrength="60" damageoverlayalpha="1" afflictionoverlayalphaislinear="false" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000">
+    <Effect minstrength="0" maxstrength="45" multiplybymaxvitality="true" strengthchange="-0.25" minafflictionoverlayalphamultiplier="0" maxafflictionoverlayalphamultiplier="1" />
+    <Effect minstrength="45" maxstrength="60" multiplybymaxvitality="true" strengthchange="-0.1" minafflictionoverlayalphamultiplier="1" maxafflictionoverlayalphamultiplier="1" />
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="128,768,128,128" color="195,136,60,255" origin="0,0" />
+    <AfflictionOverlay texture="%ModDir%/More Arts (AOCS)/Afflictions/screenblack.png" />
+  </Affliction>
+  <Affliction name="Watcher's Gaze sound" identifier="mwatchersgaze" description="" type="gaze" limbspecific="false" indicatorlimb="Head" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000" maxstrength="1">
+    <Effect minstrength="0" maxstrength="1" strengthchange="-2">
+      <StatusEffect target="Character" type="OnActive">
+        <Conditional IsLocalPlayer="True" />
+        <Sound file="Content/Characters/Watcher/WATCHER_idleLoop.ogg" loop="true" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/CommandUIAtlas.png" sourcerect="768,896,128,128" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="reversedwatchergase" description="" type="gaze" limbspecific="false" indicatorlimb="Head" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000" maxstrength="100">
+    <Effect minstrength="0" maxstrength="10" minradialdistort="0" maxradialdistort="0" minchromaticaberration="0" maxchromaticaberration="0" strengthchange="-4"></Effect>
+    <Effect minstrength="10" maxstrength="40" minradialdistort="0" maxradialdistort="0.5" minchromaticaberration="0" maxchromaticaberration="15" strengthchange="-4">
+      <StatusEffect target="Character" targetlimb="Head" SpeedMultiplier="1.1" HealthMultiplier="1.1" setvalue="true">
+        <Conditional ishuman="true" />
+        <ParticleEmitter particle="gazerage" particlespersecond="1" scalemin="0.3" scalemax="0.4" velocitymin="0" velocitymax="0" anglemin="0" anglemax="360" copyentityangle="false" />
+      </StatusEffect>
+      <StatusEffect target="Character">
+        <Conditional ishuman="true" />
+        <Affliction identifier="psychosis" strength="0.25" />
+      </StatusEffect>
+      <StatusEffect target="Character" targetlimb="Head" SpeedMultiplier="0.8" HealthMultiplier="0.95" setvalue="true" conditional="or">
+        <Conditional speciesname="crawler" />
+        <Conditional speciesname="swarmcrawler" />
+        <Conditional speciesname="mudraptor" />
+        <Conditional speciesname="mudraptor_unarmored" />
+        <Conditional speciesname="tigerthresher" />
+        <Conditional speciesname="bonethresher" />
+        <ParticleEmitter particle="gazerage" particlespersecond="1" scalemin="0.3" scalemax="0.4" velocitymin="0" velocitymax="0" anglemin="0" anglemax="360" copyentityangle="false" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="40" maxstrength="90" minradialdistort="0.5" maxradialdistort="1" minchromaticaberration="15" maxchromaticaberration="30" strengthchange="-7">
+      <StatusEffect target="Character" targetlimb="Head" SpeedMultiplier="1.15" HealthMultiplier="1.25" setvalue="true">
+        <Conditional ishuman="true" />
+        <ParticleEmitter particle="gazerage" particlespersecond="5" scalemin="0.3" scalemax="0.4" velocitymin="0" velocitymax="0" anglemin="0" anglemax="360" copyentityangle="false" />
+      </StatusEffect>
+      <StatusEffect target="Character">
+        <Conditional ishuman="true" />
+        <Affliction identifier="psychosis" strength="0.5" />
+      </StatusEffect>
+      <StatusEffect target="Character" targetlimb="Head" SpeedMultiplier="0.6" HealthMultiplier="0.9" setvalue="true" conditional="or">
+        <Conditional speciesname="crawler" />
+        <Conditional speciesname="swarmcrawler" />
+        <Conditional speciesname="mudraptor" />
+        <Conditional speciesname="mudraptor_unarmored" />
+        <Conditional speciesname="tigerthresher" />
+        <Conditional speciesname="bonethresher" />
+        <ParticleEmitter particle="gazerage" particlespersecond="5" scalemin="0.4" scalemax="0.6" velocitymin="0" velocitymax="0" anglemin="0" anglemax="360" copyentityangle="false" />
+      </StatusEffect>
+    </Effect>
+    <Effect minstrength="90" maxstrength="100" minradialdistort="1" maxradialdistort="2" minchromaticaberration="30" maxchromaticaberration="50" strengthchange="-7">
+      <StatusEffect target="Character" targetlimb="Head" SpeedMultiplier="1.25" HealthMultiplier="1.5" setvalue="true">
+        <Conditional ishuman="true" />
+        <ParticleEmitter particle="gazerage" particlespersecond="10" scalemin="0.3" scalemax="0.4" velocitymin="0" velocitymax="0" anglemin="0" anglemax="360" copyentityangle="false" />
+      </StatusEffect>
+      <StatusEffect target="Character">
+        <Conditional ishuman="true" />
+        <Affliction identifier="psychosis" strength="0.75" />
+      </StatusEffect>
+      <StatusEffect target="Character" targetlimb="Head" SpeedMultiplier="0.4" HealthMultiplier="0.8" setvalue="true" conditional="or">
+        <Conditional speciesname="crawler" />
+        <Conditional speciesname="swarmcrawler" />
+        <Conditional speciesname="mudraptor" />
+        <Conditional speciesname="mudraptor_unarmored" />
+        <Conditional speciesname="tigerthresher" />
+        <Conditional speciesname="bonethresher" />
+        <ParticleEmitter particle="gazerage" particlespersecond="10" scalemin="0.6" scalemax="1" velocitymin="0" velocitymax="0" anglemin="0" anglemax="360" copyentityangle="false" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/CommandUIAtlas.png" sourcerect="768,896,128,128" origin="0,0" />
+  </Affliction>
+  <!--убирает эффекты маяка Смотрителя когда настоящий смотритель рядом-->
+  <Affliction name="" identifier="watcher_watchergase" description="" type="gaze" limbspecific="false" indicatorlimb="Head" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000" maxstrength="5">
+    <Effect minstrength="0" maxstrength="5" strengthchange="-5">
+      <StatusEffect target="Character" setvalue="true" comparsion="and">
+        <Conditional watchersgaze="gt 0" />
+        <ReduceAffliction identifier="reversedwatchergase" amount="1" />
+        <ReduceAffliction identifier="mwatchersgaze" amount="100" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/CommandUIAtlas.png" sourcerect="768,896,128,128" origin="0,0" />
+  </Affliction>
+  <!--От невидимого тринкета, дает невидимость и галлюцинации-->
+  <Affliction name="" identifier="invis" description="" limbspecific="false" indicatorlimb="Head" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000" maxstrength="10">
+    <Effect minstrength="0" maxstrength="10" strengthchange="-0.5"></Effect>
+    <PeriodicEffect mininterval="60" maxinterval="120">
+      <StatusEffect target="Character" duration="5" stackable="false">
+        <ParticleEmitter particle="artmod_clownsparklesmod" AngleMax="360" DistanceMax="50" ScaleMultiplier="1,1" ParticlesPerSecond="1" ColorMultiplier="100,255,255,255" />
+        <Affliction identifier="concealed" amount="1" />
+        <Affliction identifier="hallucinating" amount="5" />
+      </StatusEffect>
+    </PeriodicEffect>
+    <icon texture="Content/UI/CommandUIAtlas.png" sourcerect="768,896,128,128" origin="0,0" />
+  </Affliction>
+  <!--для трейторской черной дыры, костыль на музыку, чтоб было слышно одинакого качественно даже сквозь стены-->
+  <Affliction name="Before end" identifier="Smusic" description="" limbspecific="false" indicatorlimb="Head" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000" maxstrength="5">
+    <Effect minstrength="0" maxstrength="5" strengthchange="-5">
+      <StatusEffect target="Character" type="OnActive">
+        <Conditional IsLocalPlayer="True" />
+        <Sound file="%ModDir%/More Arts (AOCS)/TraitorItems/EndTimes.ogg" loop="true" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/CommandUIAtlas.png" sourcerect="768,896,128,128" origin="0,0" />
+  </Affliction>
+  <!--аффект из талласофобии, который по идее должен показывать причину смерти в черной дыре. Не работает, оставил потому что лень полностью удалять из оригинального кода (потратить две секунды)-->
+  <Affliction name="Spaghettified" identifier="Sthal_blackholedeath" description="The patient has been exposed to tear gas." type="resistance" causeofdeathdescription="Spaghettified in Black Hole" selfcauseofdeathdescription="You have been spaghettified by a black hole." limbspecific="false" indicatorlimb="Head" activationthreshold="0" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000" maxstrength="20">
+    <Effect minstrength="0" maxstrength="30" strengthchange="-2.0" minvitalitydecrease="500" maxvitalitydecrease="501">
+      <StatusEffect target="Character">
+        <RemoveCharacter />
+      </StatusEffect>
+    </Effect>
+  </Affliction>
+  <!--Для биооружия-->
+  <!--<Affliction name="123" identifier="bioinfection" description="" limbspecific="false" type="poison" indicatorlimb="Torso" maxstrength="100" activationthreshold="0" showiconthreshold="0" showicontoothersthreshold="0" showinhealthscannerthreshold="0" treatmentthreshold="200" iconcolors="94,54,95;163,73,164;200,191,231" damageoverlayalpha="1" afflictionoverlayalphaislinear="false">
+ <Effect minstrength="0" maxstrength="25" multiplybymaxvitality="true" minvitalitydecrease="0" maxvitalitydecrease="0" strengthchange="-0" minafflictionoverlayalphamultiplier="0" maxafflictionoverlayalphamultiplier="1" minspeedmultiplier="1.0" maxspeedmultiplier="0.6">
+ <StatusEffect target="Character" type="OnActive" stackable="false">
+   <Affliction identifier="nausea" strength="1" />
+   <Affliction identifier="organdamage" strength="0.25" />
+ </StatusEffect>
+ <StatusEffect target="Character" type="OnActive" stackable="false">
+   <Conditional speciesname="neq human" />
+   <Affliction identifier="organdamage" strength="10" />
+ </StatusEffect>
+ <StatusEffect  target="Character" delay="10" stackable="false" >
+  <ParticleEmitter particle="artmod_bio" AngleMax="360" ScaleMultiplier="1,1" ParticleAmount="10" ParticlesPerSecond="1" ColorMultiplier="155,155,155,255" />
+ </StatusEffect>
+ <StatusEffect type="OnActive" target="nearbyCharacters" range="400.0" delay="10" stackable="false" disabledeltatime="true">
+   <Affliction identifier="bioinfection" amount="2.5" />
+ </StatusEffect>
+ </Effect>
+ <Effect minstrength="25" maxstrength="50" multiplybymaxvitality="true" minvitalitydecrease="0" maxvitalitydecrease="0" strengthchange="-0" minafflictionoverlayalphamultiplier="1" maxafflictionoverlayalphamultiplier="1" minspeedmultiplier="0.6" maxspeedmultiplier="0.45">
+ <StatusEffect target="Character" type="OnActive" stackable="false">
+   <Affliction identifier="nausea" strength="1.25" />
+  <Affliction identifier="organdamage" strength="0.75" />
+ </StatusEffect>
+ <StatusEffect target="Character" type="OnActive" stackable="false">
+   <Conditional speciesname="neq human" />
+   <Affliction identifier="organdamage" strength="15" />
+ </StatusEffect>
+ <StatusEffect  target="Character" delay="10" stackable="false" >
+   <ParticleEmitter particle="artmod_bio" AngleMax="360" ScaleMultiplier="1,1" ParticleAmount="10" ParticlesPerSecond="1" ColorMultiplier="155,155,155,255" />
+ </StatusEffect>
+ <StatusEffect type="OnActive" target="nearbyCharacters" range="400.0" delay="10" stackable="false" disabledeltatime="true">
+   <Affliction identifier="bioinfection" amount="2.5" />
+ </StatusEffect>
+ </Effect>
+ <Effect minstrength="50" maxstrength="75" multiplybymaxvitality="true" minvitalitydecrease="0" maxvitalitydecrease="0" strengthchange="-0" minafflictionoverlayalphamultiplier="1" maxafflictionoverlayalphamultiplier="1" minspeedmultiplier="0.45" maxspeedmultiplier="0.3">
+ <StatusEffect target="Character" type="OnActive" stackable="false">
+   <Affliction identifier="nausea" strength="1.5" />
+   <Affliction identifier="organdamage" strength="1.5" />
+ </StatusEffect>
+ <StatusEffect target="Character" type="OnActive" stackable="false">
+   <Conditional speciesname="neq human" />
+   <Affliction identifier="organdamage" strength="25" />
+ </StatusEffect>
+ <StatusEffect  target="Character" delay="10" stackable="false" >
+   <ParticleEmitter particle="artmod_bio" AngleMax="360" ScaleMultiplier="1,1" ParticleAmount="10" ParticlesPerSecond="1" ColorMultiplier="155,155,155,255" />
+ </StatusEffect>
+ <StatusEffect type="OnActive" target="nearbyCharacters" range="400.0" delay="10" stackable="false" disabledeltatime="true">
+   <Affliction identifier="bioinfection" amount="2.5" />
+ </StatusEffect>
+ </Effect>
+ <Effect minstrength="75" maxstrength="100" multiplybymaxvitality="true" minvitalitydecrease="0" maxvitalitydecrease="0" strengthchange="-0" minafflictionoverlayalphamultiplier="1" maxafflictionoverlayalphamultiplier="1" minspeedmultiplier="0.3" maxspeedmultiplier="0.1">
+ <StatusEffect target="Character" type="OnActive" stackable="false">
+   <Affliction identifier="nausea" strength="2" />
+   <Affliction identifier="organdamage" strength="3" />
+ </StatusEffect>
+ <StatusEffect target="Character" type="OnActive" stackable="false">
+   <Conditional speciesname="neq human" />
+   <Affliction identifier="organdamage" strength="50" />
+ </StatusEffect>
+ <StatusEffect target="Character" delay="10" stackable="false" >
+   <ParticleEmitter particle="artmod_bio" AngleMax="360" ScaleMultiplier="1,1" ParticleAmount="10" ParticlesPerSecond="1" ColorMultiplier="155,155,155,255" />
+ </StatusEffect>
+ <StatusEffect type="OnActive" target="nearbyCharacters" range="400.0" delay="10" stackable="false" disabledeltatime="true">
+   <Affliction identifier="bioinfection" amount="10" />
+ </StatusEffect>
+ </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,384,128,128" color="15,155,15,255" origin="0,0"/>
+	<AfflictionOverlay texture="%ModDir%/More Arts (AOCS)/Afflictions/ill.png" />
+  </Affliction>-->
+  <!--эффект розовой трубки-->
+  <Affliction name="" identifier="pinktubebuffdebuff" description="" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="Head" causespeechimpediment="false" showiconthreshold="10" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="1" iconcolors="94,54,95;163,73,164;200,191,231">
+    <Effect minstrength="0" maxstrength="1" strengthchange="-0.5">
+      <StatusEffect target="Character" delay="0.25" disabledeltatime="true" stackable="false">
+        <Affliction identifier="haste" amount="0.5" />
+        <ReduceAffliction identifier="pinktubedebuff" amount="5" />
+      </StatusEffect>
+      <StatusEffect type="OnActive" target="nearbyCharacters" range="1500.0" checkconditionalalways="true" comparison="and" delay="0.5">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Affliction identifier="pinktubedebuff" amount="2" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/TalentsIcons3.png" sheetindex="4,0" sheetelementsize="128,128" color="181,230,29,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="pinktubedebuff" description="" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="Head" causespeechimpediment="false" showiconthreshold="10" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="4" iconcolors="94,54,95;163,73,164;200,191,231">
+    <Effect minstrength="0" maxstrength="2" strengthchange="-0.25"></Effect>
+    <Effect minstrength="3" maxstrength="4" strengthchange="-0.25">
+      <StatusEffect type="OnActive" target="Character" checkconditionalalways="true" comparison="and" disabledeltatime="true" stackable="false" delay="0.25">
+        <Conditional isdead="false" />
+        <Conditional speciesname="eq human" />
+        <Affliction identifier="hallucinating" amount="1.75" />
+      </StatusEffect>
+      <StatusEffect type="OnActive" target="Character" checkconditionalalways="true" comparison="and" disabledeltatime="true" stackable="false" delay="0.1">
+        <Conditional speciesname="eq human" />
+        <Conditional hallucinating="gt 75" />
+        <Affliction identifier="psychosis" amount="0.2" />
+        <Affliction identifier="blue_clowned" amount="5" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/TalentsIcons3.png" sheetindex="4,0" sheetelementsize="128,128" color="181,230,29,255" origin="0,0" />
+  </Affliction>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  <Affliction name="" identifier="bracletbuffstatic" type="geneticmaterialbuff" limbspecific="false" indicatorlimb="Torso" showinhealthscannerthreshold="1000" showiconthreshold="1000" showicontoothersthreshold="1000" maxstrength="100" iconcolors="94,54,95;163,73,164;200,191,231"><Effect minstrength="0" maxstrength="1"><StatusEffect target="Character" comparison="and" stackable="false" interval="0.25"><Conditional isdead="false" /><Conditional speciesname="eq human" /><Affliction identifier="bracletbuff" amount="0.1" /></StatusEffect></Effect><icon texture="Content/UI/TalentsIcons3.png" sheetindex="4,0" sheetelementsize="128,128" color="181,230,29,255" origin="0,0" /></Affliction><Affliction name="" identifier="bracletbuff" description="" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="RightArm" causespeechimpediment="false" showiconthreshold="1000" showicontoothersthreshold="0" showinhealthscannerthreshold="1000" maxstrength="100" iconcolors="94,54,95;163,73,164;200,191,231"><Effect minstrength="0" maxstrength="25" multiplybymaxvitality="true" strengthchange="0"></Effect><Effect minstrength="25" maxstrength="50" multiplybymaxvitality="true" strengthchange="0"><StatusEffect target="Character" comparison="and" interval="0.25"><StatValue stattype="SwimmingSpeed" minvalue="0" maxvalue="0.05" /><Conditional isdead="false" /><Conditional speciesname="eq human" /><ReduceAffliction identifier="damage" amount="0.05" /><ReduceAffliction identifier="bleeding" amount="0.15" /><ReduceAffliction identifier="bloodloss" amount="0.05" /><ReduceAffliction identifier="burn" amount="0.05" /><Affliction identifier="bracletbuff_hostvisual1" amount="20" /></StatusEffect></Effect><Effect minstrength="50" maxstrength="75" multiplybymaxvitality="true" strengthchange="0" minskillmultiplier="1" maxskillmultiplier="1.15" resistancefor="poison,alieninfection" minresistance="0" maxresistance="0.25" minspeedmultiplier="1.0" maxspeedmultiplier="1.05"><StatValue stattype="SwimmingSpeed" minvalue="0.05" maxvalue="0.1" /><StatusEffect target="Character" comparison="and" interval="0.25"><Conditional isdead="false" /><Conditional speciesname="eq human" /><ReduceAffliction identifier="damage" amount="0.1" /><ReduceAffliction identifier="bleeding" amount="0.35" /><ReduceAffliction identifier="bloodloss" amount="0.15" /><ReduceAffliction identifier="burn" amount="0.15" /></StatusEffect></Effect><Effect minstrength="75" maxstrength="100" multiplybymaxvitality="true" strengthchange="0" minskillmultiplier="1.1" maxskillmultiplier="1.50" resistancefor="poison,alieninfection" minresistance="0.15" maxresistance="0.75" minspeedmultiplier="1.05" maxspeedmultiplier="1.20"><StatValue stattype="SwimmingSpeed" minvalue="0.1" maxvalue="0.25" /><StatusEffect target="Character" comparison="and" interval="0.25"><Conditional isdead="false" /><Conditional speciesname="eq human" /><ReduceAffliction identifier="damage" amount="0.25" /><ReduceAffliction identifier="bleeding" amount="0.6" /><ReduceAffliction identifier="bloodloss" amount="0.3" /><ReduceAffliction identifier="burn" amount="0.3" /><ReduceAffliction identifier="bracletbuff_hostvisual1" amount="20" /><Affliction identifier="bracletbuff_hostvisual2" amount="20" /></StatusEffect><StatusEffect target="Character" comparison="and"><Conditional isdead="false" /><Conditional speciesname="eq human" /><Affliction identifier="braclethurt" amount="0.35" /></StatusEffect></Effect><icon texture="Content/UI/TalentsIcons3.png" sheetindex="4,0" sheetelementsize="128,128" color="181,230,29,255" origin="0,0" /></Affliction><Affliction name="" identifier="bracletbuff_hostvisual1" description="" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="RightArm" causespeechimpediment="false" showiconthreshold="0" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="1" iconcolors="94,54,95;163,73,164;200,191,231"><Effect minstrength="0" maxstrength="1" multiplybymaxvitality="true" strengthchange="0"></Effect><icon texture="Content/UI/TalentsIcons3.png" sheetindex="4,0" sheetelementsize="128,128" color="181,230,29,255" origin="0,0" /></Affliction><Affliction name="" identifier="bracletbuff_hostvisual2" description="" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="RightArm" causespeechimpediment="false" showiconthreshold="0" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="1" iconcolors="94,54,95;163,73,164;200,191,231"><Effect minstrength="0" maxstrength="1" multiplybymaxvitality="true" strengthchange="0"></Effect><icon texture="Content/UI/TalentsIcons3.png" sheetindex="4,0" sheetelementsize="128,128" color="181,230,29,255" origin="0,0" /></Affliction>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<Affliction name="" identifier="eyepsicho" description="" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="Head" causespeechimpediment="false" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="50" iconcolors="94,54,95;163,73,164;200,191,231"><Effect minstrength="0" maxstrength="25" multiplybymaxvitality="true" strengthchange="-0.1"><StatusEffect target="Character" comparison="and"><Conditional eyepsicho="gt 25" /><Conditional isdead="false" /><Conditional speciesname="eq human" /><Affliction identifier="psychosis" amount="0.25" /></StatusEffect></Effect><Effect minstrength="25" maxstrength="50" multiplybymaxvitality="true" strengthchange="-0.1"><StatusEffect target="Character" comparison="and"><Conditional eyepsicho="gt 25" /><Conditional isdead="false" /><Conditional speciesname="eq human" /><Affliction identifier="psychosis" amount="0.5" /><Affliction identifier="blue_clowned" amount="10.0" /></StatusEffect></Effect><PeriodicEffect mininterval="10" maxinterval="15"><StatusEffect target="Character" comparison="And" checkconditionalalways="true"><Conditional IsLocalPlayer="True" /><Conditional eyepsicho="gt 5" /><Conditional eyepsicho="lt 15" /><ParticleEmitter particle="artmod_psychosiseyes" AngleMax="360" DistanceMin="200" DistanceMax="500" ScaleMin="0.2" ScaleMax="0.5" ScaleMultiplier="1,1" ParticlesPerSecond="1" ColorMultiplier="255,255,255,255" /></StatusEffect></PeriodicEffect><PeriodicEffect mininterval="10" maxinterval="10"><StatusEffect target="Character" comparison="And" checkconditionalalways="true"><Conditional IsLocalPlayer="True" /><Conditional eyepsicho="gt 15" /><Conditional eyepsicho="lt 25" /><ParticleEmitter particle="artmod_psychosiseyes" AngleMax="360" DistanceMin="200" DistanceMax="500" ScaleMin="0.2" ScaleMax="0.5" ScaleMultiplier="1,1" ParticlesPerSecond="1" ColorMultiplier="255,255,255,255" /></StatusEffect></PeriodicEffect><PeriodicEffect mininterval="10" maxinterval="10"><StatusEffect target="Character" comparison="And" checkconditionalalways="true"><Conditional IsLocalPlayer="True" /><Conditional eyepsicho="gt 15" /><Conditional eyepsicho="lt 25" /><ParticleEmitter particle="artmod_psychosiseyes" AngleMax="360" DistanceMin="200" DistanceMax="500" ScaleMin="0.2" ScaleMax="0.5" ScaleMultiplier="1,1" ParticlesPerSecond="1" ColorMultiplier="255,255,255,255" /></StatusEffect></PeriodicEffect><PeriodicEffect mininterval="10" maxinterval="10"><StatusEffect target="Character" comparison="And" checkconditionalalways="true"><Conditional IsLocalPlayer="True" /><Conditional eyepsicho="gt 15" /><Conditional eyepsicho="lt 25" /><ParticleEmitter particle="artmod_psychosiseyes" AngleMax="360" DistanceMin="200" DistanceMax="500" ScaleMin="0.2" ScaleMax="0.5" ScaleMultiplier="1,1" ParticlesPerSecond="1" ColorMultiplier="255,255,255,255" /></StatusEffect></PeriodicEffect><PeriodicEffect mininterval="0" maxinterval="10"><StatusEffect target="Character" comparison="And" checkconditionalalways="true"><Conditional IsLocalPlayer="True" /><Conditional eyepsicho="gt 25" /><ParticleEmitter particle="artmod_psychosiseyes" AngleMax="360" DistanceMin="200" DistanceMax="500" ScaleMin="0.2" ScaleMax="0.5" ScaleMultiplier="1,1" ParticlesPerSecond="1" ColorMultiplier="255,255,255,255" /></StatusEffect></PeriodicEffect><PeriodicEffect mininterval="0" maxinterval="10"><StatusEffect target="Character" comparison="And" checkconditionalalways="true"><Conditional IsLocalPlayer="True" /><Conditional eyepsicho="gt 25" /><ParticleEmitter particle="artmod_psychosiseyes" AngleMax="360" DistanceMin="200" DistanceMax="500" ScaleMin="0.2" ScaleMax="0.5" ScaleMultiplier="1,1" ParticlesPerSecond="1" ColorMultiplier="255,255,255,255" /></StatusEffect></PeriodicEffect><PeriodicEffect mininterval="0" maxinterval="10"><StatusEffect target="Character" comparison="And" checkconditionalalways="true"><Conditional IsLocalPlayer="True" /><Conditional eyepsicho="gt 25" /><ParticleEmitter particle="artmod_psychosiseyes" AngleMax="360" DistanceMin="200" DistanceMax="500" ScaleMin="0.2" ScaleMax="0.5" ScaleMultiplier="1,1" ParticlesPerSecond="1" ColorMultiplier="255,255,255,255" /></StatusEffect></PeriodicEffect><PeriodicEffect mininterval="0" maxinterval="10"><StatusEffect target="Character" comparison="And" checkconditionalalways="true"><Conditional IsLocalPlayer="True" /><Conditional eyepsicho="gt 25" /><ParticleEmitter particle="artmod_psychosiseyes" AngleMax="360" DistanceMin="200" DistanceMax="500" ScaleMin="0.2" ScaleMax="0.5" ScaleMultiplier="1,1" ParticlesPerSecond="1" ColorMultiplier="255,255,255,255" /></StatusEffect></PeriodicEffect><PeriodicEffect mininterval="0" maxinterval="10"><StatusEffect target="Character" comparison="And" checkconditionalalways="true"><Conditional IsLocalPlayer="True" /><Conditional eyepsicho="gt 25" /><ParticleEmitter particle="artmod_psychosiseyes" AngleMax="360" DistanceMin="200" DistanceMax="500" ScaleMin="0.2" ScaleMax="0.5" ScaleMultiplier="1,1" ParticlesPerSecond="1" ColorMultiplier="255,255,255,255" /></StatusEffect></PeriodicEffect><PeriodicEffect mininterval="10" maxinterval="10"><StatusEffect target="Character" comparison="And" checkconditionalalways="true"><Conditional IsLocalPlayer="True" /><Conditional eyepsicho="gt 25" /><ParticleEmitter particle="artmod_psychosiseyes" AngleMax="360" DistanceMin="200" DistanceMax="500" ScaleMin="0.2" ScaleMax="0.5" ScaleMultiplier="1,1" ParticlesPerSecond="1" ColorMultiplier="255,255,255,255" /></StatusEffect></PeriodicEffect></Affliction><Affliction name="" identifier="braclethurt" description="" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="Head" causespeechimpediment="false" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="50" iconcolors="94,54,95;163,73,164;200,191,231"><Effect minstrength="0" maxstrength="50" multiplybymaxvitality="true" strengthchange="-0.1" minvitalitydecrease="0" maxvitalitydecrease="0.6" damageoverlayalpha="0"></Effect></Affliction><Affliction name="" identifier="ew" description="" causeofdeathdescription="" selfcauseofdeathdescription="" limbspecific="false" indicatorlimb="Head" causespeechimpediment="false" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" maxstrength="50" iconcolors="94,54,95;163,73,164;200,191,231"><Effect minstrength="0" maxstrength="50" multiplybymaxvitality="true" strengthchange="-8" minscreendistort="0" maxscreendistort="20" minscreenblur="0" maxscreenblur="10" minradialdistort="0" maxradialdistort="0" minchromaticaberration="0" maxchromaticaberration="10"></Effect></Affliction><!-- для аномалии боли в лабиринте --><Affliction name="???" identifier="painvisual" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" treatmentthreshold="1000" maxstrength="1"><Effect minstrength="0" maxstrength="1" strengthchange="-0.5" multiplybymaxvitality="true" minscreendistort="0" maxscreendistort="20" minradialdistort="0" maxradialdistort="10" minchromaticaberration="0" maxchromaticaberration="45"><StatusEffect target="Character" type="OnActive"><Conditional IsLocalPlayer="True" /><Sound file="%ModDir%/More Arts (AOCS)/Afflictions/painanomaly.ogg" loop="true" /></StatusEffect></Effect></Affliction></Afflictions>

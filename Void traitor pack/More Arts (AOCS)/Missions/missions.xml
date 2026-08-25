@@ -1,0 +1,455 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Missions>
+  <!--others-->
+  <CargoMission identifier="cargosoda" textidentifier="cargosoda" tags="cargo" type="Cargo" difficulty="1" commonness="60" reward="500" achievementidentifier="cargomission" requireddeliveryamount="0.98">
+    <Items>
+      <Item identifier="sodacrate" reward="250" maxcount="8">
+        <Item identifier="bluesoda" amount="10" />
+        <Item identifier="redsoda" amount="10" />
+        <Item identifier="greensoda" amount="10" />
+      </Item>
+    </Items>
+    <Reputation identifier="location" amount="1" amountforopposingfaction="-1" />
+    <Icon texture="Content/UI/MissionIcons2.png" sourcerect="0,514,256,256" color="243,146,55" />
+    <LocationType from="AnyOutpost" to="AnyOutpost" />
+  </CargoMission>
+  <PirateMission identifier="artmodpirate1" textidentifier="artpirate1" tags="combatcoalitionvsseparatists,combatseparatistsvscoalition" type="Pirate" difficulty="5" commonness="65" reward="4500" addedmissiondifficultyperplayer="8">
+    <message header="missionheader0.artpirate1" text="missionmessage0.artpirate1" />
+    <message header="missionheader1.artpirate1" text="missionmessage1.artpirate1" />
+    <Reputation identifier="location" amount="10" />
+    <SubmarineTypes>
+      <Submarine path="%ModDir%/More Arts (AOCS)/Submarines/PirateBarsuk.sub" preferreddifficulty="10" alternatereward="3750" />
+      <Submarine path="%ModDir%/More Arts (AOCS)/Submarines/PirateKastrull.sub" preferreddifficulty="40" alternatereward="5200" />
+      <Submarine path="%ModDir%/More Arts (AOCS)/Submarines/PirateBerilia.sub" preferreddifficulty="70" alternatereward="8425" />
+    </SubmarineTypes>
+    <Characters>
+      <Character typeidentifier="artpiratecaptain" minamount="1" maxamount="1" />
+      <Character typeidentifier="artpiratesecurity" minamount="1" maxamount="4" />
+      <Character typeidentifier="artpiratebrute" minamount="1" maxamount="2" />
+      <Character typeidentifier="artpiratemechanic" minamount="1" maxamount="1" />
+      <Character typeidentifier="artpirateengineer" minamount="1" maxamount="1" />
+    </Characters>
+    <CharacterTypes>
+      <CharacterType typeidentifier="artpiratecaptain">
+        <Character identifier="artpiratecaptain" from="ma_piratenpcs" preferreddifficulty="50" iscommander="true" />
+        <Character identifier="artpiratecaptainlord" from="ma_piratenpcs" preferreddifficulty="90" iscommander="true" />
+      </CharacterType>
+      <CharacterType typeidentifier="artpiratebrute">
+        <Character identifier="artpiratebrute1" from="ma_piratenpcs" preferreddifficulty="25" iscommander="true" />
+        <Character identifier="artpiratebrute2" from="ma_piratenpcs" preferreddifficulty="60" iscommander="true" />
+        <Character identifier="artpiratebrute3" from="ma_piratenpcs" preferreddifficulty="90" iscommander="true" />
+      </CharacterType>
+      <CharacterType typeidentifier="artpiratesecurity">
+        <Character identifier="artpiratesecurityrecruit" from="ma_piratenpcs" preferreddifficulty="10" />
+        <Character identifier="artpiratesecuritygunner" from="ma_piratenpcs" preferreddifficulty="30" />
+        <Character identifier="artpiratesecuritymateryi" from="ma_piratenpcs" preferreddifficulty="50" />
+        <Character identifier="artpiratesecurityelite" from="ma_piratenpcs" preferreddifficulty="70" />
+      </CharacterType>
+      <CharacterType typeidentifier="artpiratemechanic">
+        <Character identifier="artpiratemechanicrecruit" from="ma_piratenpcs" preferreddifficulty="20" />
+        <Character identifier="artpiratemechanicveteran" from="ma_piratenpcs" preferreddifficulty="50" />
+      </CharacterType>
+      <CharacterType typeidentifier="artpirateengineer">
+        <Character identifier="artpirateengineerrecruit" from="ma_piratenpcs" preferreddifficulty="20" />
+        <Character identifier="artpirateengineerveteran" from="ma_piratenpcs" preferreddifficulty="50" />
+      </CharacterType>
+    </CharacterTypes>
+    <Icon texture="Content/UI/MissionIcons.png" sourcerect="0,768,256,256" color="243,146,55" />
+    <LocationType from="AnyOutpost" to="AnyOutpost" />
+  </PirateMission>
+  <PirateMission identifier="artmodpirateAttack1" textidentifier="artmodpirateAttack1" tags="coalitionattack1,separatistattack1" showstartmessage="false" issideobjective="true" type="Pirate" difficulty="5" commonness="0" reward="0" addedmissiondifficultyperplayer="8">
+    <Reputation identifier="location" amount="10" />
+    <SubmarineTypes>
+      <Submarine path="%ModDir%/More Arts (AOCS)/Submarines/PirateBarsuk.sub" preferreddifficulty="10" alternatereward="3750" />
+      <Submarine path="%ModDir%/More Arts (AOCS)/Submarines/PirateKastrull.sub" preferreddifficulty="40" alternatereward="5200" />
+      <Submarine path="%ModDir%/More Arts (AOCS)/Submarines/PirateBerilia.sub" preferreddifficulty="70" alternatereward="8425" />
+    </SubmarineTypes>
+    <Characters>
+      <Character typeidentifier="artpiratecaptain" minamount="1" maxamount="1" />
+      <Character typeidentifier="artpiratesecurity" minamount="1" maxamount="4" />
+      <Character typeidentifier="artpiratebrute" minamount="1" maxamount="2" />
+      <Character typeidentifier="artpiratemechanic" minamount="1" maxamount="1" />
+      <Character typeidentifier="artpirateengineer" minamount="1" maxamount="1" />
+    </Characters>
+    <CharacterTypes>
+      <CharacterType typeidentifier="artpiratecaptain">
+        <Character identifier="artpiratecaptain" from="ma_piratenpcs" preferreddifficulty="50" iscommander="true" />
+        <Character identifier="artpiratecaptainlord" from="ma_piratenpcs" preferreddifficulty="90" iscommander="true" />
+      </CharacterType>
+      <CharacterType typeidentifier="artpiratebrute">
+        <Character identifier="artpiratebrute1" from="ma_piratenpcs" preferreddifficulty="25" iscommander="true" />
+        <Character identifier="artpiratebrute2" from="ma_piratenpcs" preferreddifficulty="60" iscommander="true" />
+        <Character identifier="artpiratebrute3" from="ma_piratenpcs" preferreddifficulty="90" iscommander="true" />
+      </CharacterType>
+      <CharacterType typeidentifier="artpiratesecurity">
+        <Character identifier="artpiratesecurityrecruit" from="ma_piratenpcs" preferreddifficulty="10" />
+        <Character identifier="artpiratesecuritygunner" from="ma_piratenpcs" preferreddifficulty="30" />
+        <Character identifier="artpiratesecuritymateryi" from="ma_piratenpcs" preferreddifficulty="50" />
+        <Character identifier="artpiratesecurityelite" from="ma_piratenpcs" preferreddifficulty="70" />
+      </CharacterType>
+      <CharacterType typeidentifier="artpiratemechanic">
+        <Character identifier="artpiratemechanicrecruit" from="ma_piratenpcs" preferreddifficulty="20" />
+        <Character identifier="artpiratemechanicveteran" from="ma_piratenpcs" preferreddifficulty="50" />
+      </CharacterType>
+      <CharacterType typeidentifier="artpirateengineer">
+        <Character identifier="artpirateengineerrecruit" from="ma_piratenpcs" preferreddifficulty="20" />
+        <Character identifier="artpirateengineerveteran" from="ma_piratenpcs" preferreddifficulty="50" />
+      </CharacterType>
+    </CharacterTypes>
+    <message header="missionheader0.artmodpirateAttack1" text="missionmessage0.artmodpirateAttack1" />
+    <Icon texture="Content/UI/MissionIcons.png" sourcerect="0,768,256,256" color="243,146,55" />
+    <LocationType from="AnyOutpost" to="AnyOutpost" />
+  </PirateMission>
+  <OutpostDestroyMission identifier="artmod_abandonedoutpostassassinate" tags="abandonedoutpost" type="OutpostDestroy" reward="4500" difficulty="5" commonness="20" allowretry="true" sonarlabel="target" unhideentitysubcategories="abandonedhuman">
+    <Reputation identifier="location" amount="3" />
+    <Icon texture="Content/UI/MissionIcons.png" sourcerect="0,512,256,256" color="214,50,48" />
+    <LocationType identifier="Abandoned" />
+    <LocationTypeChange from="Abandoned" to="Outpost" requireddurationrange="2,3" cooldownafterchange="5" />
+    <Characters>
+      <Character identifier="noseless_clown" from="clowns_abandonedoutpostnpcs" moduleflags="crewmodule" />
+      <Character identifier="noseless_clown" from="clowns_abandonedoutpostnpcs" moduleflags="researchmodule" />
+      <Character identifier="noseless_clown" from="clowns_abandonedoutpostnpcs" moduleflags="engineeringmodule" />
+      <Character identifier="noseless_clown" from="clowns_abandonedoutpostnpcs" moduleflags="securitymodule" />
+      <Character identifier="noseless_pirate" from="clowns_abandonedoutpostnpcs" />
+      <Character identifier="noseless_bandit" from="clowns_abandonedoutpostnpcs" />
+      <Character identifier="noseless_bandit" from="clowns_abandonedoutpostnpcs" multiplayeronly="true" />
+      <Character identifier="noseless_clowneng" from="clowns_abandonedoutpostnpcs" moduleflags="engineeringmodule" />
+      <Character identifier="noseless_clownsb" from="clowns_abandonedoutpostnpcs" moduleflags="securitymodule" />
+      <Character identifier="noseless_clownmecha" from="clowns_abandonedoutpostnpcs" moduleflags="crewmodule" />
+      <Character identifier="noseless_specialclown" from="clowns_abandonedoutpostnpcs" asfaraspossible="true" requirekill="true" />
+    </Characters>
+    <TriggerEvent state="0" delay="5" eventidentifier="heartofgold" campaignonly="true" />
+  </OutpostDestroyMission>
+  <OutpostDestroyMission identifier="artmod_abandonedoutposthumans" tags="abandonedoutpost" type="OutpostDestroy" reward="2000" difficulty="4" commonness="20" allowretry="true" targetitem="reactor" unhideentitysubcategories="abandonedhuman">
+    <Reputation identifier="location" amount="6" />
+    <Icon texture="Content/UI/MissionIcons.png" sourcerect="512,256,256,256" color="214,50,48" />
+    <LocationType identifier="Abandoned" />
+    <LocationTypeChange from="Abandoned" to="Outpost" requireddurationrange="2,3" cooldownafterchange="5" />
+    <Characters>
+      <Character identifier="noseless_clown" from="clowns_abandonedoutpostnpcs" moduleflags="crewmodule" />
+      <Character identifier="noseless_clown" from="clowns_abandonedoutpostnpcs" moduleflags="researchmodule" />
+      <Character identifier="noseless_clown" from="clowns_abandonedoutpostnpcs" moduleflags="engineeringmodule" />
+      <Character identifier="noseless_clown" from="clowns_abandonedoutpostnpcs" moduleflags="seccrewmodule" />
+      <Character identifier="noseless_pirate" from="clowns_abandonedoutpostnpcs" />
+      <Character identifier="noseless_bandit" from="clowns_abandonedoutpostnpcs" />
+      <Character identifier="noseless_bandit" from="clowns_abandonedoutpostnpcs" />
+      <Character identifier="noseless_clowneng" from="clowns_abandonedoutpostnpcs" moduleflags="engineeringmodule" />
+      <Character identifier="noseless_clownsb" from="clowns_abandonedoutpostnpcs" moduleflags="securitymodule" />
+      <Character identifier="noseless_clownmecha" from="clowns_abandonedoutpostnpcs" moduleflags="seccrewmodule" multiplayeronly="true" />
+      <Character identifier="noseless_specialclown" from="clowns_abandonedoutpostnpcs" spawnpointtags="banditleader" />
+    </Characters>
+    <TriggerEvent state="0" delay="5" eventidentifier="heartofgold" campaignonly="true" />
+  </OutpostDestroyMission>
+  <!--Healing arts-->
+  <SalvageMission textidentifier="SRmod1" identifier="SRvampireartifact" tags="salvage,salvageartifact" type="Salvage" difficulty="3" commonness="20" reward="3500" achievementidentifier="artifactmission" sonaricon="artifact" spawntype="ruin" itemidentifier="artmod_vampireartifact" containertag="artifactholder" requireruin="true" existingItemTag="alienartifact" itemtag="alienartifact">
+    <Reputation identifier="location" amount="3" />
+    <Icon texture="Content/UI/MissionIcons2.png" sourcerect="512,0,256,256" color="49,93,233" />
+    <LocationType from="City" to="Research" />
+    <LocationType from="City" to="None" />
+    <LocationType from="City" to="Lair" />
+    <LocationType from="Outpost" to="Research" />
+    <LocationType from="Outpost" to="None" />
+    <LocationType from="Outpost" to="Lair" />
+    <LocationType from="Research" to="None" />
+    <LocationType from="Research" to="City" />
+    <LocationType from="Research" to="Outpost" />
+    <LocationType from="Research" to="Military" />
+    <LocationType from="Research" to="Research" />
+    <LocationType from="Research" to="Mine" />
+    <LocationType from="Research" to="Lair" />
+    <message header="missionheader0.SRmod1" text="missionmessage0.SRmod1" />
+  </SalvageMission>
+  <SalvageMission textidentifier="SRmod2" identifier="SRoasisartifact" tags="salvage,salvageartifact" type="Salvage" difficulty="4" commonness="15" reward="4500" achievementidentifier="artifactmission" sonaricon="artifact" spawntype="ruin" itemidentifier="artmod_theheavenartifact" containertag="artifactholder" requireruin="true" existingItemTag="alienartifact" itemtag="alienartifact">
+    <Reputation identifier="location" amount="7" />
+    <Icon texture="Content/UI/MissionIcons2.png" sourcerect="512,0,256,256" color="49,93,233" />
+    <LocationType from="City" to="Research" />
+    <LocationType from="City" to="None" />
+    <LocationType from="City" to="Lair" />
+    <LocationType from="Outpost" to="Research" />
+    <LocationType from="Outpost" to="None" />
+    <LocationType from="Outpost" to="Lair" />
+    <LocationType from="Research" to="None" />
+    <LocationType from="Research" to="City" />
+    <LocationType from="Research" to="Outpost" />
+    <LocationType from="Research" to="Military" />
+    <LocationType from="Research" to="Research" />
+    <LocationType from="Research" to="Mine" />
+    <LocationType from="Research" to="Lair" />
+    <message header="missionheader0.SRmod2" text="missionmessage0.SRmod2" />
+  </SalvageMission>
+  <SalvageMission textidentifier="SRmod3" identifier="SRtheheavenartifact" tags="salvage,salvageartifact" type="Salvage" difficulty="5" commonness="10" reward="9250" achievementidentifier="artifactmission" sonaricon="artifact" spawntype="ruin" itemidentifier="artmod_oasisartifact" containertag="artifactholder" requireruin="true" existingItemTag="alienartifact" itemtag="alienartifact">
+    <Reputation identifier="location" amount="10" />
+    <Icon texture="Content/UI/MissionIcons2.png" sourcerect="512,0,256,256" color="49,93,233" />
+    <LocationType from="City" to="Research" />
+    <LocationType from="City" to="None" />
+    <LocationType from="City" to="Lair" />
+    <LocationType from="Outpost" to="Research" />
+    <LocationType from="Outpost" to="None" />
+    <LocationType from="Outpost" to="Lair" />
+    <LocationType from="Research" to="None" />
+    <LocationType from="Research" to="City" />
+    <LocationType from="Research" to="Outpost" />
+    <LocationType from="Research" to="Military" />
+    <LocationType from="Research" to="Research" />
+    <LocationType from="Research" to="Mine" />
+    <LocationType from="Research" to="Lair" />
+    <message header="missionheader0.SRmod3" text="missionmessage0.SRmod3" />
+  </SalvageMission>
+  <!--psycho arts-->
+  <SalvageMission textidentifier="SRmod1" identifier="SRsilentartifact" tags="salvage,salvageartifact" type="Salvage" difficulty="3" commonness="20" reward="3500" achievementidentifier="artifactmission" sonaricon="artifact" spawntype="ruin" itemidentifier="artmod_silentartifact" containertag="artifactholder" requireruin="true" existingItemTag="alienartifact" itemtag="alienartifact">
+    <Reputation identifier="location" amount="3" />
+    <Icon texture="Content/UI/MissionIcons2.png" sourcerect="512,0,256,256" color="49,93,233" />
+    <LocationType from="City" to="Research" />
+    <LocationType from="City" to="None" />
+    <LocationType from="City" to="Lair" />
+    <LocationType from="Outpost" to="Research" />
+    <LocationType from="Outpost" to="None" />
+    <LocationType from="Outpost" to="Lair" />
+    <LocationType from="Research" to="None" />
+    <LocationType from="Research" to="City" />
+    <LocationType from="Research" to="Outpost" />
+    <LocationType from="Research" to="Military" />
+    <LocationType from="Research" to="Research" />
+    <LocationType from="Research" to="Mine" />
+    <LocationType from="Research" to="Lair" />
+    <message header="missionheader0.SRmod1" text="missionmessage0.SRmod1" />
+  </SalvageMission>
+  <SalvageMission textidentifier="SRmod2" identifier="SRzombieartifact" tags="salvage,salvageartifact" type="Salvage" difficulty="4" commonness="15" reward="4500" achievementidentifier="artifactmission" sonaricon="artifact" spawntype="ruin" itemidentifier="artmod_zombieartifact" containertag="artifactholder" requireruin="true" existingItemTag="alienartifact" itemtag="alienartifact">
+    <Reputation identifier="location" amount="7" />
+    <Icon texture="Content/UI/MissionIcons2.png" sourcerect="512,0,256,256" color="49,93,233" />
+    <LocationType from="City" to="Research" />
+    <LocationType from="City" to="None" />
+    <LocationType from="City" to="Lair" />
+    <LocationType from="Outpost" to="Research" />
+    <LocationType from="Outpost" to="None" />
+    <LocationType from="Outpost" to="Lair" />
+    <LocationType from="Research" to="None" />
+    <LocationType from="Research" to="City" />
+    <LocationType from="Research" to="Outpost" />
+    <LocationType from="Research" to="Military" />
+    <LocationType from="Research" to="Research" />
+    <LocationType from="Research" to="Mine" />
+    <LocationType from="Research" to="Lair" />
+    <message header="missionheader0.SRmod2" text="missionmessage0.SRmod2" />
+  </SalvageMission>
+  <SalvageMission textidentifier="SRmod3" identifier="SRmindbentartifact" tags="salvage,salvageartifact" type="Salvage" difficulty="5" commonness="10" reward="9250" achievementidentifier="artifactmission" sonaricon="artifact" spawntype="ruin" itemidentifier="artmod_mindbentartifact" containertag="artifactholder" requireruin="true" existingItemTag="alienartifact" itemtag="alienartifact">
+    <Reputation identifier="location" amount="10" />
+    <Icon texture="Content/UI/MissionIcons2.png" sourcerect="512,0,256,256" color="49,93,233" />
+    <LocationType from="City" to="Research" />
+    <LocationType from="City" to="None" />
+    <LocationType from="City" to="Lair" />
+    <LocationType from="Outpost" to="Research" />
+    <LocationType from="Outpost" to="None" />
+    <LocationType from="Outpost" to="Lair" />
+    <LocationType from="Research" to="None" />
+    <LocationType from="Research" to="City" />
+    <LocationType from="Research" to="Outpost" />
+    <LocationType from="Research" to="Military" />
+    <LocationType from="Research" to="Research" />
+    <LocationType from="Research" to="Mine" />
+    <LocationType from="Research" to="Lair" />
+    <message header="missionheader0.SRmod3" text="missionmessage0.SRmod3" />
+  </SalvageMission>
+  <!--nanosov arts-->
+  <SalvageMission textidentifier="SRmod1" identifier="SRincubatorartifact" tags="salvage,salvageartifact" type="Salvage" difficulty="3" commonness="20" reward="3500" achievementidentifier="artifactmission" sonaricon="artifact" spawntype="ruin" itemidentifier="artmod_incubatorartifact" containertag="artifactholder" requireruin="true" existingItemTag="alienartifact" itemtag="alienartifact">
+    <Reputation identifier="location" amount="3" />
+    <Icon texture="Content/UI/MissionIcons2.png" sourcerect="512,0,256,256" color="49,93,233" />
+    <LocationType from="City" to="Research" />
+    <LocationType from="City" to="None" />
+    <LocationType from="City" to="Lair" />
+    <LocationType from="Outpost" to="Research" />
+    <LocationType from="Outpost" to="None" />
+    <LocationType from="Outpost" to="Lair" />
+    <LocationType from="Research" to="None" />
+    <LocationType from="Research" to="City" />
+    <LocationType from="Research" to="Outpost" />
+    <LocationType from="Research" to="Military" />
+    <LocationType from="Research" to="Research" />
+    <LocationType from="Research" to="Mine" />
+    <LocationType from="Research" to="Lair" />
+    <message header="missionheader0.SRmod1" text="missionmessage0.SRmod1" />
+  </SalvageMission>
+  <SalvageMission textidentifier="SRmod2" identifier="SRheartoftheswarmartifact" tags="salvage,salvageartifact" type="Salvage" difficulty="4" commonness="15" reward="4500" achievementidentifier="artifactmission" sonaricon="artifact" spawntype="ruin" itemidentifier="artmod_heartoftheswarmartifact" containertag="artifactholder" requireruin="true" existingItemTag="alienartifact" itemtag="alienartifact">
+    <Reputation identifier="location" amount="7" />
+    <Icon texture="Content/UI/MissionIcons2.png" sourcerect="512,0,256,256" color="49,93,233" />
+    <LocationType from="City" to="Research" />
+    <LocationType from="City" to="None" />
+    <LocationType from="City" to="Lair" />
+    <LocationType from="Outpost" to="Research" />
+    <LocationType from="Outpost" to="None" />
+    <LocationType from="Outpost" to="Lair" />
+    <LocationType from="Research" to="None" />
+    <LocationType from="Research" to="City" />
+    <LocationType from="Research" to="Outpost" />
+    <LocationType from="Research" to="Military" />
+    <LocationType from="Research" to="Research" />
+    <LocationType from="Research" to="Mine" />
+    <LocationType from="Research" to="Lair" />
+    <message header="missionheader0.SRmod2" text="missionmessage0.SRmod2" />
+  </SalvageMission>
+  <SalvageMission textidentifier="SRmod3" identifier="SRheartofEuropeartifact" tags="salvage,salvageartifact" type="Salvage" difficulty="5" commonness="10" reward="9250" achievementidentifier="artifactmission" sonaricon="artifact" spawntype="ruin" itemidentifier="artmod_heartofEuropeartifact" containertag="artifactholder" requireruin="true" existingItemTag="alienartifact" itemtag="alienartifact">
+    <Reputation identifier="location" amount="10" />
+    <Icon texture="Content/UI/MissionIcons2.png" sourcerect="512,0,256,256" color="49,93,233" />
+    <LocationType from="City" to="Research" />
+    <LocationType from="City" to="None" />
+    <LocationType from="City" to="Lair" />
+    <LocationType from="Outpost" to="Research" />
+    <LocationType from="Outpost" to="None" />
+    <LocationType from="Outpost" to="Lair" />
+    <LocationType from="Research" to="None" />
+    <LocationType from="Research" to="City" />
+    <LocationType from="Research" to="Outpost" />
+    <LocationType from="Research" to="Military" />
+    <LocationType from="Research" to="Research" />
+    <LocationType from="Research" to="Mine" />
+    <LocationType from="Research" to="Lair" />
+    <message header="missionheader0.SRmod3" text="missionmessage0.SRmod3" />
+  </SalvageMission>
+  <!--electro arts-->
+  <SalvageMission textidentifier="SRmod1" identifier="SRpulseartifact" tags="salvage,salvageartifact" type="Salvage" difficulty="3" commonness="20" reward="3500" achievementidentifier="artifactmission" sonaricon="artifact" spawntype="ruin" itemidentifier="artmod_pulseartifact" containertag="artifactholder" requireruin="true" existingItemTag="alienartifact" itemtag="alienartifact">
+    <Reputation identifier="location" amount="3" />
+    <Icon texture="Content/UI/MissionIcons2.png" sourcerect="512,0,256,256" color="49,93,233" />
+    <LocationType from="City" to="Research" />
+    <LocationType from="City" to="None" />
+    <LocationType from="City" to="Lair" />
+    <LocationType from="Outpost" to="Research" />
+    <LocationType from="Outpost" to="None" />
+    <LocationType from="Outpost" to="Lair" />
+    <LocationType from="Research" to="None" />
+    <LocationType from="Research" to="City" />
+    <LocationType from="Research" to="Outpost" />
+    <LocationType from="Research" to="Military" />
+    <LocationType from="Research" to="Research" />
+    <LocationType from="Research" to="Mine" />
+    <LocationType from="Research" to="Lair" />
+    <message header="missionheader0.SRmod1" text="missionmessage0.SRmod1" />
+  </SalvageMission>
+  <SalvageMission textidentifier="SRmod2" identifier="SRsparkartifact" tags="salvage,salvageartifact" type="Salvage" difficulty="4" commonness="15" reward="4500" achievementidentifier="artifactmission" sonaricon="artifact" spawntype="ruin" itemidentifier="artmod_sparkartifact" containertag="artifactholder" requireruin="true" existingItemTag="alienartifact" itemtag="alienartifact">
+    <Reputation identifier="location" amount="7" />
+    <Icon texture="Content/UI/MissionIcons2.png" sourcerect="512,0,256,256" color="49,93,233" />
+    <LocationType from="City" to="Research" />
+    <LocationType from="City" to="None" />
+    <LocationType from="City" to="Lair" />
+    <LocationType from="Outpost" to="Research" />
+    <LocationType from="Outpost" to="None" />
+    <LocationType from="Outpost" to="Lair" />
+    <LocationType from="Research" to="None" />
+    <LocationType from="Research" to="City" />
+    <LocationType from="Research" to="Outpost" />
+    <LocationType from="Research" to="Military" />
+    <LocationType from="Research" to="Research" />
+    <LocationType from="Research" to="Mine" />
+    <LocationType from="Research" to="Lair" />
+    <message header="missionheader0.SRmod2" text="missionmessage0.SRmod2" />
+  </SalvageMission>
+  <SalvageMission textidentifier="SRmod3" identifier="SRelectrodeathartifact" tags="salvage,salvageartifact" type="Salvage" difficulty="5" commonness="10" reward="9250" achievementidentifier="artifactmission" sonaricon="artifact" spawntype="ruin" itemidentifier="artmod_electrodeathartifact" containertag="artifactholder" requireruin="true" existingItemTag="alienartifact" itemtag="alienartifact">
+    <Reputation identifier="location" amount="15" />
+    <Icon texture="Content/UI/MissionIcons2.png" sourcerect="512,0,256,256" color="49,93,233" />
+    <LocationType from="City" to="Research" />
+    <LocationType from="City" to="None" />
+    <LocationType from="City" to="Lair" />
+    <LocationType from="Outpost" to="Research" />
+    <LocationType from="Outpost" to="None" />
+    <LocationType from="Outpost" to="Lair" />
+    <LocationType from="Research" to="None" />
+    <LocationType from="Research" to="City" />
+    <LocationType from="Research" to="Outpost" />
+    <LocationType from="Research" to="Military" />
+    <LocationType from="Research" to="Research" />
+    <LocationType from="Research" to="Mine" />
+    <LocationType from="Research" to="Lair" />
+    <message header="missionheader0.SRmod3" text="missionmessage0.SRmod3" />
+  </SalvageMission>
+  <!--skyholding arts-->
+  <SalvageMission textidentifier="SRmod2" identifier="SRvacuumartifact" tags="salvage,salvageartifact" type="Salvage" difficulty="4" commonness="17" reward="4500" achievementidentifier="artifactmission" sonaricon="artifact" spawntype="ruin" itemidentifier="artmod_vacuumartifact" containertag="artifactholder" requireruin="true" existingItemTag="alienartifact" itemtag="alienartifact">
+    <Reputation identifier="location" amount="6" />
+    <Icon texture="Content/UI/MissionIcons2.png" sourcerect="512,0,256,256" color="49,93,233" />
+    <LocationType from="City" to="Research" />
+    <LocationType from="City" to="None" />
+    <LocationType from="City" to="Lair" />
+    <LocationType from="Outpost" to="Research" />
+    <LocationType from="Outpost" to="None" />
+    <LocationType from="Outpost" to="Lair" />
+    <LocationType from="Research" to="None" />
+    <LocationType from="Research" to="City" />
+    <LocationType from="Research" to="Outpost" />
+    <LocationType from="Research" to="Military" />
+    <LocationType from="Research" to="Research" />
+    <LocationType from="Research" to="Mine" />
+    <LocationType from="Research" to="Lair" />
+    <message header="missionheader0.SRmod2" text="missionmessage0.SRmod2" />
+  </SalvageMission>
+  <SalvageMission textidentifier="SRmod3" identifier="SRbiohazardartifact" tags="salvage,salvageartifact" type="Salvage" difficulty="5" commonness="10" reward="9250" achievementidentifier="artifactmission" sonaricon="artifact" spawntype="ruin" itemidentifier="artmod_biohazardartifact" containertag="artifactholder" requireruin="true" existingItemTag="alienartifact" itemtag="alienartifact">
+    <Reputation identifier="location" amount="10" />
+    <Icon texture="Content/UI/MissionIcons2.png" sourcerect="512,0,256,256" color="49,93,233" />
+    <LocationType from="City" to="Research" />
+    <LocationType from="City" to="None" />
+    <LocationType from="City" to="Lair" />
+    <LocationType from="Outpost" to="Research" />
+    <LocationType from="Outpost" to="None" />
+    <LocationType from="Outpost" to="Lair" />
+    <LocationType from="Research" to="None" />
+    <LocationType from="Research" to="City" />
+    <LocationType from="Research" to="Outpost" />
+    <LocationType from="Research" to="Military" />
+    <LocationType from="Research" to="Research" />
+    <LocationType from="Research" to="Mine" />
+    <LocationType from="Research" to="Lair" />
+    <message header="missionheader0.SRmod3" text="missionmessage0.SRmod3" />
+  </SalvageMission>
+  <!--termo arts-->
+  <SalvageMission textidentifier="SRmod1" identifier="SRbrazierartifact" tags="salvage,salvageartifact" type="Salvage" difficulty="3" commonness="20" reward="3500" achievementidentifier="artifactmission" sonaricon="artifact" spawntype="ruin" itemidentifier="artmod_brazierartifact" containertag="artifactholder" requireruin="true" existingItemTag="alienartifact" itemtag="alienartifact">
+    <Reputation identifier="location" amount="3" />
+    <Icon texture="Content/UI/MissionIcons2.png" sourcerect="512,0,256,256" color="49,93,233" />
+    <LocationType from="City" to="Research" />
+    <LocationType from="City" to="None" />
+    <LocationType from="City" to="Lair" />
+    <LocationType from="Outpost" to="Research" />
+    <LocationType from="Outpost" to="None" />
+    <LocationType from="Outpost" to="Lair" />
+    <LocationType from="Research" to="None" />
+    <LocationType from="Research" to="City" />
+    <LocationType from="Research" to="Outpost" />
+    <LocationType from="Research" to="Military" />
+    <LocationType from="Research" to="Research" />
+    <LocationType from="Research" to="Mine" />
+    <LocationType from="Research" to="Lair" />
+    <message header="missionheader0.SRmod1" text="missionmessage0.SRmod1" />
+  </SalvageMission>
+  <SalvageMission textidentifier="SRmod2" identifier="SRmeltingartifact" tags="salvage,salvageartifact" type="Salvage" difficulty="4" commonness="20" reward="4500" achievementidentifier="artifactmission" sonaricon="artifact" spawntype="ruin" itemidentifier="artmod_meltingartifact" containertag="artifactholder" requireruin="true" existingItemTag="alienartifact" itemtag="alienartifact">
+    <Reputation identifier="location" amount="7" />
+    <Icon texture="Content/UI/MissionIcons2.png" sourcerect="512,0,256,256" color="49,93,233" />
+    <LocationType from="City" to="Research" />
+    <LocationType from="City" to="None" />
+    <LocationType from="City" to="Lair" />
+    <LocationType from="Outpost" to="Research" />
+    <LocationType from="Outpost" to="None" />
+    <LocationType from="Outpost" to="Lair" />
+    <LocationType from="Research" to="None" />
+    <LocationType from="Research" to="City" />
+    <LocationType from="Research" to="Outpost" />
+    <LocationType from="Research" to="Military" />
+    <LocationType from="Research" to="Research" />
+    <LocationType from="Research" to="Mine" />
+    <LocationType from="Research" to="Lair" />
+    <message header="missionheader0.SRmod2" text="missionmessage0.SRmod2" />
+  </SalvageMission>
+  <SalvageMission textidentifier="SRmod3" identifier="SRinfernoartifact" tags="salvage,salvageartifact" type="Salvage" difficulty="5" commonness="10" reward="9250" achievementidentifier="artifactmission" sonaricon="artifact" spawntype="ruin" itemidentifier="artmod_infernoartifact" containertag="artifactholder" requireruin="true" existingItemTag="alienartifact" itemtag="alienartifact">
+    <Reputation identifier="location" amount="10" />
+    <Icon texture="Content/UI/MissionIcons2.png" sourcerect="512,0,256,256" color="49,93,233" />
+    <LocationType from="City" to="Research" />
+    <LocationType from="City" to="None" />
+    <LocationType from="City" to="Lair" />
+    <LocationType from="Outpost" to="Research" />
+    <LocationType from="Outpost" to="None" />
+    <LocationType from="Outpost" to="Lair" />
+    <LocationType from="Research" to="None" />
+    <LocationType from="Research" to="City" />
+    <LocationType from="Research" to="Outpost" />
+    <LocationType from="Research" to="Military" />
+    <LocationType from="Research" to="Research" />
+    <LocationType from="Research" to="Mine" />
+    <LocationType from="Research" to="Lair" />
+    <message header="missionheader0.SRmod3" text="missionmessage0.SRmod3" />
+  </SalvageMission>
+</Missions>

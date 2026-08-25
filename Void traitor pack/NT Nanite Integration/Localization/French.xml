@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="French" nowhitespace="false">
+  <entityname.nanitebase>Base nanite</entityname.nanitebase>
+  <entitydescription.nanitebase>Matière de base, utilisée pour créer des souches spécifiques de nanites à injecter.</entitydescription.nanitebase>
+  <entityname.naniteremover>Désactivateur de nanites</entityname.naniteremover>
+  <entitydescription.naniteremover>Injection de nanites désactivateurs, qui désactivent toutes les nanites fonctionnels présentes dans l'organisme, ne laissant que les nanites précurseurs dans le corps.</entitydescription.naniteremover>
+  <entityname.naniteprecursor>Injection de précurseur de nanite</entityname.naniteprecursor>
+  <entitydescription.naniteprecursor>Nanites de base, qui préparent l'organisme à une intégration ultérieure de nanites, ils se répliquent jusqu'au seuil de niveau et maintiennent les autres nanites. À injecter avant d'intégrer des nanites fonctionnelles.</entitydescription.naniteprecursor>
+  <afflictionname.precursor>Nanites precurseurs</afflictionname.precursor>
+  <afflictiondescription.precursor>Nanites de base, ils se répliquent avec le temps et maintiennent les autres nanites. Le précurseur peut soutenir 1 nanite par intégration sans dégradation.</afflictiondescription.precursor>
+  <entityname.reconstructornanite>Injection «Ichor»</entityname.reconstructornanite>
+  <entitydescription.reconstructornanite>Nanites medicaux qui ferment les plaies et traitent les brûlures, principalement en réparant la peau et les tissus externes. Trois doses peuvent être intégrées.</entitydescription.reconstructornanite>
+  <afflictionname.reconstructornanite>Nanites «Ichor»</afflictionname.reconstructornanite>
+  <afflictiondescription.reconstructornanite>Les nanites de cette souche se concentrent sur le traitement des couches superficielles de la chair. Intégration 1: brûlures, lacérations. Intégration 2: morsures, hémorragies. Intégration 3: blessures par balle.</afflictiondescription.reconstructornanite>
+  <entityname.bonefixnanite>Injection «Osmium»</entityname.bonefixnanite>
+  <entitydescription.bonefixnanite>Nanites medicaux qui réparent les os cassés. Trois doses peuvent être intégrées.</entitydescription.bonefixnanite>
+  <afflictionname.bonefixnanite>Nanites «Osmium»</afflictionname.bonefixnanite>
+  <afflictiondescription.bonefixnanite>Les nanites de cette souche traitent les os. Intégration 1: réparation des fractures et des degats contondants.</afflictiondescription.bonefixnanite>
+  <entityname.deepfixnanite>Injection «Kaltsit»</entityname.deepfixnanite>
+  <entitydescription.deepfixnanite>Nanites médicaux qui guérissent les lésions internes des organes, protégeant l’organisme à un niveau fondamental. Deux doses peuvent être intégrées.</entitydescription.deepfixnanite>
+  <afflictionname.deepfixnanite>Nanites «Kaltsit»</afflictionname.deepfixnanite>
+  <afflictiondescription.deepfixnanite>Les nanites de cette souche traitent les couches internes de la chair et des os. Intégration 1: traumatismes contondants et les degats de vibrations(Real Sonar Requis). Intégration 2: dommages aux organes.</afflictiondescription.deepfixnanite>
+  <entityname.antitoxnanite>Injection «Mithridates»</entityname.antitoxnanite>
+  <entitydescription.antitoxnanite>Nanites medicaux qui dissolvent poisons, toxines et infections bacteriennes, servant de barrière contre les medecins incompétents ou la trahison. Deux doses peut être intégrée.</entitydescription.antitoxnanite>
+  <afflictionname.antitoxnanite>Nanites «Mithridates»</afflictionname.antitoxnanite>
+  <afflictiondescription.antitoxnanite>Les nanites de cette souche dissolvent poisons et toxines. Intégration 1: alcool, surdosage d’opioïdes, empoisonnement au deliriumine, empoisonnement a la morbusine, empoisonnement a la sufforine, empoisonnement au cyanure. Intégration 2: Sepsis.</afflictiondescription.antitoxnanite>
+  <entityname.oxybloodnanite>Injection «Halesium»</entityname.oxybloodnanite>
+  <entitydescription.oxybloodnanite>Nanites medicaux qui aident l’organisme à produire du sang, à circuler et à diminuer les niveaux de radiation, réduisant généralement le temps nécessaire pour retrouver conscience et l'oxygène. À un niveau d’intégration plus élevé, ils peuvent même redémarrer le cœur. LE COUT EN ENTRETIENT EST DOUBLÉ. Deux doses peuvent être intégrées.</entitydescription.oxybloodnanite>
+  <afflictionname.oxybloodnanite>Nanites «Halesium»</afflictionname.oxybloodnanite>
+  <afflictiondescription.oxybloodnanite>Les nanites de cette souche produisent des cellules sanguines supplémentaires. Intégration 1: perte de sang, diminue la vitesse à laquelle la privation d’oxygène progresse et l'effet des radiations. Intégration 2: fibrillation, tamponnade cardiaque, hypoxie cérébrale et redémarrage du cœur si il s’arrête.</afflictiondescription.oxybloodnanite>
+  <entityname.neuralnanite>Injection «Cerebrate»</entityname.neuralnanite>
+  <entitydescription.neuralnanite>Nanites medicaux qui reconnectent les neurones endommagés et dissolvent les éléments hallucinogènes. Une dose peut être intégrée.</entitydescription.neuralnanite>
+  <afflictionname.neuralnanite>Nanites «Cerebrate»</afflictionname.neuralnanite>
+  <afflictiondescription.neuralnanite>Les nanites de cette souche reconnectent les neurones et dissolvent les hallucinogènes. Intégration 1: psychose, hallucinations, dépendance aux opiacés, étourdissement et les hemorragies cerebrales (Real Sonar Requis).</afflictiondescription.neuralnanite>
+  <entityname.husknanite>Injection «Asclepius»</entityname.husknanite>
+  <entitydescription.husknanite>Nanites medicaux qui combattent les parasites envahissants. Deux doses peuvent être intégrées.</entitydescription.husknanite>
+  <afflictionname.husknanite>Nanites «Asclepius»</afflictionname.husknanite>
+  <afflictiondescription.husknanite>Les nanites de cette souche résistent aux parasites et traitent les muscles paralysés. Intégration 1: paralysie, ralentissement de la progression de l’infection husk. Intégration 2: infection husk.</afflictiondescription.husknanite>
+  <entityname.vigorbuffnanite>Injection «Armstrong»</entityname.vigorbuffnanite>
+  <entitydescription.vigorbuffnanite>Nanites d’amplification qui augmentent la masse musculaire de l’organisme, entraînant une force accrue et une densité corporelle supérieure. Une dose peut être intégrée.</entitydescription.vigorbuffnanite>
+  <afflictionname.vigorbuffnanite>Nanites «Armstrong»</afflictionname.vigorbuffnanite>
+  <afflictiondescription.vigorbuffnanite>Les nanites de cette souche augmentent la masse musculaire et protègent l’hôte. Intégration 1: légère augmentation des dégâts au corps à corps, durcissement de l’intégration et résistance significative aux flux.</afflictiondescription.vigorbuffnanite>
+  <entityname.hyperbuffnanite>Injection «Driver»</entityname.hyperbuffnanite>
+  <entitydescription.hyperbuffnanite>Nanites d’amplification qui influencent la vitesse de réaction et les fonctions motrices de l’organisme. Une dose peut être intégrée.</entitydescription.hyperbuffnanite>
+  <afflictionname.hyperbuffnanite>Nanites «Driver»</afflictionname.hyperbuffnanite>
+  <afflictiondescription.hyperbuffnanite>Les nanites de cette souche augmentent la vitesse de réaction et les fonctions motrices. Intégration 1: légère amélioration des attaques, vitesse de réparation, déplacement et nage.</afflictiondescription.hyperbuffnanite>
+  <entityname.visionbuffnanite>Injection «Beholder»</entityname.visionbuffnanite>
+  <entitydescription.visionbuffnanite>Nanites d’amplification qui augmentent les tissus oculaires pour permettre une vision surnaturelle, à plus haut niveau ils réparents les tissues occulaires endommagés. La vision devient assez nette pour disperser la lumière comme un prisme. Une dose peut être intégrée.</entitydescription.visionbuffnanite>
+  <afflictionname.visionbuffnanite>Nanites «Beholder»</afflictionname.visionbuffnanite>
+  <afflictiondescription.visionbuffnanite>Les nanites de cette souche améliorent la vision. Intégration 1: précision accrue avec les armes et efficacité de réparation augmentée. Intégration 2: Soigne les dégâts aux yeux (NT Eyes requis) et Welder's Eye (Immersive Repairs requis).</afflictiondescription.visionbuffnanite>
+  <entityname.laniusxenonanite>Xeno injection «Lanius»</entityname.laniusxenonanite>
+  <entitydescription.laniusxenonanite>Nanites xenotech à peine étudiées, mais qui semblent couvrir le corps d’une fine couche de composé métallique résistant à la pression, bien que cela limite la liberté de mouvement. Remarque: résistant, pas immunisé.  et le coût d’entretien des nanites est triplé en raison de leur nature extraterrestre. Deux doses peuvent être intégrées.</entitydescription.laniusxenonanite>
+  <afflictionname.laniusxenonanite>Nanites xéno «Lanius»</afflictionname.laniusxenonanite>
+  <afflictiondescription.laniusxenonanite>Nanites extraterrestres qui semblent augmenter la résistance à la chaleur, à la pression et réduire la consommation d’oxygène. Intégration 1: légère résistance aux brûlures et à la privation d’oxygène. Intégration 2: résistance partielle à la pression et atténuation du besoin d’oxygène.</afflictiondescription.laniusxenonanite>
+  <entityname.mechfixnanite>Injection «Makinis»</entityname.mechfixnanite>
+  <entitydescription.mechfixnanite>Nanites méchaniques qui réparent lentement les membres artificiels. Deux doses peuvent être intégrées..</entitydescription.mechfixnanite>
+  <afflictionname.mechfixnanite>Nanites «Makinis»</afflictionname.mechfixnanite>
+  <afflictiondescription.mechfixnanite>Les Nanites réparent les membres artificiels. Intégration 1: Fixe les vis déserrées et le métal plié. Int2gration 2: Répare le métal manquant et l'électronique endommagé.</afflictiondescription.mechfixnanite>
+  <afflictionname.nanitedecay>Nanites en décomposition</afflictionname.nanitedecay>
+  <afflictiondescription.nanitedecay>Pas assez de précurseurs, les nanites se désintègrent ! Trouvez une injection de précurseur le plus vite possible !</afflictiondescription.nanitedecay>
+</infotexts>

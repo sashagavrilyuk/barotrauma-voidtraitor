@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Charactervariant inherit="Huskmutantcocooncrawler" speciesname="Huskmutantcocoonhuman" speciestranslationoverride="Huskmutantcocooncrawler" texture="%ModDir%/Enhanced Husks/Characters/Variants/Huskcocoons/huskmutantcocoonhuman.png">
+  <inventory arrowslot="9" slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any, Any, Any, Any, Any, Any, Any, Any, Any" accessiblewhenalive="True" accessiblebyowner="False" Commonness="4">
+    <Item Identifier="huskeggsbasic" />
+    <Item Identifier="huskeggsbasic" />
+  </inventory>
+  <inventory arrowslot="9" slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, Any, Any, Any, Any, Any, Any, Any, Any, Any" accessiblewhenalive="True" accessiblebyowner="False" Commonness="2">
+    <Item Identifier="huskeggsbasic" />
+    <Item Identifier="huskmutantembryo" />
+  </inventory>
+</Charactervariant>

@@ -1,0 +1,2 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HuskmutantarmoredelderSwimFast footrotatestrength="15" type="Huskmutantarmoredelder" LegMoveAmount="2" LegCycleLength="7.0958433" FootAngle="65" HandMoveAmount="0.12839335,-0.2650047" HandCycleSpeed="0.5135734" HandMoveOffset="0,0" ArmMoveStrength="0.40000004" HandMoveStrength="0" FixedHeadAngle="True" SteerTorque="1" LegTorque="12" AnimationType="SwimFast" MovementSpeed="4.7946134" CycleSpeed="4.7946134" HeadAngle="91" TorsoAngle="0" HeadTorque="40" TorsoTorque="30" FootTorque="5" ArmIKStrength="3" HandIKStrength="2.5" />

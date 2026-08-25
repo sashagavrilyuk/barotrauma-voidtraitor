@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <Item name="" identifier="rednoselessclownmask" category="Equipment" subcategory="artmod" cargocontaineridentifier="metalcrate" tags="smallitem,clothing,clownmask,clowns" description="" scale="0.5">
+    <Price baseprice="40" canbespecial="false">
+      <Price storeidentifier="merchantoutpost" minavailable="1" />
+      <Price storeidentifier="merchantcity" minavailable="1" />
+      <Price storeidentifier="merchantresearch" sold="false" />
+      <Price storeidentifier="merchantmilitary" sold="false" />
+      <Price storeidentifier="merchantmine" sold="false" />
+      <Price storeidentifier="merchantclown" minavailable="3" maxavailable="5">
+        <Reputation faction="clowns" min="30" />
+      </Price>
+    </Price>
+    <PreferredContainer primary="outpostcrewcabinet" amount="1" spawnprobability="0.01" />
+    <Sprite name="Clown Mask" texture="headgears.png" depth="0.6" sourcerect="0,0,89,71" origin="0.5,0.5" scale="0.5" />
+    <Body width="40" radius="30" density="15" />
+    <Deconstruct time="10" />
+    <Wearable limbtype="Head" slots="Any,Head" msg="ItemMsgPickUpSelect">
+      <sprite name="Clown Mask Wearable" texture="headgears.png" limb="Head" inheritlimbdepth="true" inheritscale="true" ignorelimbscale="true" scale="0.75" sourcerect="0,0,89,71" origin="0.5,0.6" />
+      <StatusEffect tags="clown" type="OnWearing" target="Character" HideFace="true" duration="0.1" stackable="false" />
+    </Wearable>
+  </Item>
+  <Item name="" identifier="noseless_clownmask" subcategory="artmod" category="Equipment" cargocontaineridentifier="metalcrate" tags="smallitem,clothing,blue_clownmask,clownmask,clowns" description="" scale="0.6">
+    <Price baseprice="1" soldeverywhere="false" canbespecial="false">
+      <Price locationtype="outpost" multiplier="1" sold="false" />
+      <Price locationtype="city" multiplier="1" sold="false" />
+      <Price locationtype="research" multiplier="1" sold="false" />
+      <Price locationtype="military" multiplier="1" sold="false" />
+      <Price locationtype="mine" multiplier="1" sold="false" />
+    </Price>
+    <PreferredContainer primary="outpostcrewcabinet" minamount="0" maxamount="1" spawnprobability="0.05" />
+    <Sprite name="Clown Mask" texture="blue_clownmask.png" depth="0.6" sourcerect="0,0,89,71" origin="0.5,0.5" scale="0.5" />
+    <Body width="40" radius="30" density="15" />
+    <Deconstruct time="10">
+      <Item identifier="bikehorn" />
+      <Item identifier="dementonite" />
+    </Deconstruct>
+    <Wearable limbtype="Head" slots="Any,Head" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnWearing" target="character" tags="bluefathers_blessing_head" delay="0.1" duration="1" stackable="false" />
+      <sprite name="Clown Mask Wearable" texture="blue_clownmask.png" limb="Head" inheritlimbdepth="true" inheritscale="true" ignorelimbscale="true" scale="0.85" sourcerect="0,0,89,71" origin="0.5,0.6" hidewearablesoftype="moustache,beard,hair" />
+      <StatusEffect tags="clown" type="OnWearing" target="Character" HideFace="true" duration="0.1" stackable="false" />
+    </Wearable>
+  </Item>
+  <Item name="" identifier="noseless_clowncostume" subcategory="artmod" category="Equipment" cargocontaineridentifier="metalcrate" tags="smallitem,clothing,blue_clowngear,clowngear,clowns" description="" impactsoundtag="impact_soft" scale="0.5">
+    <Price baseprice="1" soldeverywhere="false" canbespecial="false">
+      <Price locationtype="outpost" multiplier="1" sold="false" />
+      <Price locationtype="city" multiplier="1" sold="false" />
+      <Price locationtype="research" multiplier="1" sold="false" />
+      <Price locationtype="military" multiplier="1" sold="false" />
+      <Price locationtype="mine" multiplier="1" sold="false" />
+    </Price>
+    <PreferredContainer primary="outpostcrewcabinet" minamount="0" maxamount="1" spawnprobability="0.05" />
+    <InventoryIcon texture="blue_clown_inv.png" sourcerect="0,0,64,64" origin="0.5,0.5" />
+    <Sprite texture="blue_clown_sprite.png" sourcerect="0,0,117,55" depth="0.6" origin="0.5,0.5" />
+    <Body width="180" height="50" density="30" friction="0.8" restitution="0.01" />
+    <Deconstruct time="40">
+      <Item identifier="bikehorn" />
+      <Item identifier="bikehorn" />
+      <Item identifier="bikehorn" />
+      <Item identifier="bikehorn" />
+      <Item identifier="bikehorn" />
+      <Item identifier="bikehorn" />
+      <Item identifier="bikehorn" />
+      <Item identifier="bikehorn" />
+      <Item identifier="bikehorn" />
+      <Item identifier="bikehorn" />
+      <Item identifier="dementonite" />
+    </Deconstruct>
+    <Wearable slots="Any,InnerClothes" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnWearing" targettype="this" target="character" tags="bluefathers_blessing" delay="0.1" duration="1" stackable="false" checkconditionalalways="true">
+        <Conditional HasStatusTag="eq bluefathers_blessing_head" />
+      </StatusEffect>
+      <sprite name="Clown's Costume Torso" texture="blue_clown.png" limb="Torso" hidelimb="false" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Right Hand" texture="blue_clown.png" limb="RightHand" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Left Hand" texture="blue_clown.png" limb="LeftHand" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Right Lower Arm" texture="blue_clown.png" limb="RightArm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Left Lower Arm" texture="blue_clown.png" limb="LeftArm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Right Upper Arm" texture="blue_clown.png" limb="RightForearm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Left Upper Arm" texture="blue_clown.png" limb="LeftForearm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Waist" texture="blue_clown.png" limb="Waist" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Right Thigh" texture="blue_clown.png" limb="RightThigh" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Left Thigh" texture="blue_clown.png" limb="LeftThigh" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Right Leg" texture="blue_clown.png" limb="RightLeg" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Left Leg" texture="blue_clown.png" limb="LeftLeg" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Left Shoe" texture="blue_clown.png" limb="LeftFoot" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" sound="footstep_clown" />
+      <sprite name="Clown's Costume Right Shoe" texture="blue_clown.png" limb="RightFoot" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" sound="footstep_clown" />
+      <damagemodifier armorsector="0.0,360.0" afflictionidentifiers="blunttrauma,gunshotwound,bitewounds,lacerations,bleeding" damagemultiplier="0.9" damagesound="BlueClown" deflectprojectiles="true" />
+      <damagemodifier armorsector="0.0,360.0" afflictiontypes="burn" damagemultiplier="0.9" damagesound="BlueClown" deflectprojectiles="true" />
+    </Wearable>
+  </Item>
+  <Item name="" identifier="noseless_specialinjector" noninteractable="true" category="hidden" hideinmenus="true" cargocontaineridentifier="metalcrate" tags="smallitem" description="" scale="0.6">
+    <Sprite name="Clown Mask" texture="blue_clownmask.png" depth="0.6" sourcerect="0,0,89,71" origin="0.5,0.5" scale="0.5" />
+    <Body width="40" radius="30" density="15" />
+    <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="Always" target="Character" checkconditionalalways="true" setvalue="true" stackable="false" delay="0.15">
+        <Conditional isdead="false" />
+        <Affliction identifier="blueresist" strength="10" />
+      </StatusEffect>
+      <StatusEffect disabledeltatime="true" Condition="-100" target="This" type="Always" delay="0.2" />
+      <StatusEffect target="This" type="OnBroken">
+        <Remove />
+      </StatusEffect>
+    </Holdable>
+  </Item>
+</Items>

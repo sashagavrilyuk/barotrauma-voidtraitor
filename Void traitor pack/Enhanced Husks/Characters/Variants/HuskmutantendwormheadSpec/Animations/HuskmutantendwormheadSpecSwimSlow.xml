@@ -1,0 +1,2 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HuskmutantendwormheadSpecSwimSlow UseSineMovement="False" Flip="False" FlipCooldown="1" FlipDelay="0.5" Mirror="True" MirrorLerp="True" WaveAmplitude="84.77371" WaveLength="192.94879" RotateTowardsMovement="True" TailTorque="2000" TailTorqueMultiplier="1" FootAngles="" UpdateAnimationWhenNotMoving="False" TailAngle="NaN" SteerTorque="100" LegTorque="25" MovementSpeed="9.121038" CycleSpeed="1" HeadAngle="90" TorsoAngle="79" HeadTorque="750" TorsoTorque="0" FootTorque="0" AnimationType="SwimSlow" ArmIKStrength="1" HandIKStrength="1" />

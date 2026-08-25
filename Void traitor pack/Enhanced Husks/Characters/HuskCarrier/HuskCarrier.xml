@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<override>
+  <Character SpeciesName="HuskCarrier" SpeciesTranslationOverride="Surfeited Shuttle" DisplayName="" Group="husk" Humanoid="False" HasInfo="False" CanInteract="False" Husk="False" UseHuskAppendage="False" NeedsAir="False" NeedsWater="False" UseHumanAI="False" IsMachine="False" CanSpeak="False" ShowHealthBar="True" UseBossHealthBar="False" Noise="100" Visibility="100" BloodDecal="blood" BleedParticleAir="blooddrop" BleedParticleWater="waterblood" BleedParticleMultiplier="1" CanEat="True" EatingSpeed="10" UsePathFinding="True" PathFinderPriority="1" HideInSonar="False" HideInThermalGoggles="False" SonarDisruption="1" DistantSonarRange="0" DisableDistance="25000" SoundInterval="10" DrawLast="False" AITurretPriority="1" AISlowTurretPriority="1" DespawnContainer="">
+    <ragdolls folder="default" />
+    <animations folder="default" />
+    <gibemitter Particle="shrapnel" AngleMin="0" AngleMax="360" ScaleMin="1" ScaleMax="1" VelocityMin="50" VelocityMax="1000" EmitInterval="0" ParticlesPerSecond="0" ParticleAmount="40" HighQualityCollisionDetection="False" CopyEntityAngle="False" />
+    <health Vitality="850" DoesBleed="True" CrushDepth="Infinity" UseHealthWindow="False" BleedingReduction="0" BurnReduction="0" ConstantHealthRegeneration="0" HealthRegenerationWhenEating="0" StunImmunity="True" PoisonImmunity="False" PoisonVulnerability="1" EmpVulnerability="0" ApplyAfflictionColors="False" Immunities="" />
+    <sound gender="None" File="%ModDir%/Enhanced Husks/Characters/HuskCarrier/attack1.ogg" State="Attack" Range="10000" Volume="1" Tags="" />
+    <sound gender="None" File="%ModDir%/Enhanced Husks/Characters/HuskCarrier/attack2.ogg" State="Attack" Range="10000" Volume="1" Tags="" />
+    <sound gender="None" File="%ModDir%/Enhanced Husks/Characters/HuskCarrier/idle1.ogg" State="Idle" Range="20000" Volume="1" Tags="" />
+    <sound gender="None" File="%ModDir%/Enhanced Husks/Characters/HuskCarrier/idle2.ogg" State="Idle" Range="20000" Volume="1" Tags="" />
+    <sound gender="None" File="%ModDir%/Enhanced Husks/Characters/HuskCarrier/damage1.ogg" State="Damage" Range="10000" Volume="1" Tags="" />
+    <sound gender="None" File="%ModDir%/Enhanced Husks/Characters/HuskCarrier/damage2.ogg" State="Damage" Range="10000" Volume="1" Tags="" />
+    <sound gender="None" File="%ModDir%/Enhanced Husks/Characters/HuskCarrier/death1.ogg" State="Die" Range="10000" Volume="1" Tags="" />
+    <sound gender="None" File="%ModDir%/Enhanced Husks/Characters/HuskCarrier/death2.ogg" State="Die" Range="10000" Volume="1" Tags="" />
+    <Inventory Slots="Bag, Any, Any, Any, Any, Any, Any" AccessibleWhenAlive="False" Commonness="5">
+      <!-- Diving gear -->
+      <Item Identifier="divingmask" />
+      <Item Identifier="oxygentank" />
+      <Item Identifier="huskeggsbasic" />
+      <Item Identifier="oxygentank" />
+      <Item Identifier="underwaterscooter" />
+    </Inventory>
+    <Inventory Slots="Bag, Any, Any, Any, Any, Any, Any" AccessibleWhenAlive="False" Commonness="2">
+      <!-- Chemicals 1 -->
+      <Item Identifier="antiparalysis" />
+      <Item Identifier="unstablehuskeggs" />
+      <Item Identifier="antipsychosis" />
+      <Item Identifier="huskeggsbasic" />
+      <Item Identifier="antibiotics" />
+    </Inventory>
+    <Inventory Slots="Bag, Any, Any, Any, Any, Any, Any" AccessibleWhenAlive="False" Commonness="5">
+      <!-- Chemicals 2 -->
+      <Item Identifier="hyperzine" />
+      <Item Identifier="opium" />
+      <Item Identifier="antibleeding3" />
+      <Item Identifier="huskeggsbasic" />
+      <Item Identifier="antidama2" />
+    </Inventory>
+    <Inventory Slots="Bag, Any, Any, Any, Any, Any, Any" AccessibleWhenAlive="False" Commonness="5">
+      <!-- Medical items -->
+      <Item Identifier="antibloodloss2" />
+      <Item Identifier="huskeggsbasic" />
+      <Item Identifier="antibleeding2" />
+      <Item Identifier="antibleeding2" />
+      <Item Identifier="tonicliquid" />
+    </Inventory>
+    <Inventory Slots="Bag, Any, Any, Any, Any, Any, Any" AccessibleWhenAlive="False" Commonness="5">
+      <!-- Weapons 1 -->
+      <Item Identifier="shotgun" />
+      <Item Identifier="shotgunshell" />
+      <Item Identifier="shotgunshell" />
+      <Item Identifier="huskeggsbasic" />
+      <Item Identifier="divingknife" />
+    </Inventory>
+    <Inventory Slots="Bag, Any, Any, Any, Any, Any, Any" AccessibleWhenAlive="False" Commonness="5">
+      <!-- Weapons 2 -->
+      <Item Identifier="flamer" />
+      <Item Identifier="weldingfueltank" />
+      <Item Identifier="weldingfueltank" />
+      <Item Identifier="divingknife" />
+      <Item Identifier="huskeggsbasic" />
+    </Inventory>
+    <Inventory Slots="Bag, Any, Any, Any, Any, Any, Any" AccessibleWhenAlive="False" Commonness="5">
+      <!-- Weapons 3 -->
+      <Item Identifier="grenadelauncher" />
+      <Item Identifier="40mmgrenade" />
+      <Item Identifier="fraggrenade" />
+      <Item Identifier="divingknife" />
+      <Item Identifier="huskeggsbasic" />
+    </Inventory>
+    <Inventory Slots="Bag, Any, Any, Any, Any, Any, Any" AccessibleWhenAlive="False" Commonness="5">
+      <!-- Mechanic items -->
+      <Item Identifier="screwdriver" />
+      <Item Identifier="crowbar" />
+      <Item Identifier="plasmacutter" />
+      <Item Identifier="oxygentank" />
+      <Item Identifier="huskeggsbasic" />
+    </Inventory>
+    <Inventory Slots="Bag, Any, Any, Any, Any, Any, Any" AccessibleWhenAlive="False" Commonness="5">
+      <!-- Engineer items -->
+      <Item Identifier="wrench" />
+      <Item Identifier="screwdriver" />
+      <Item Identifier="fuelrod" />
+      <Item Identifier="wire" />
+      <Item Identifier="huskeggsbasic" />
+    </Inventory>
+    <ai CombatStrength="1000" Sight="1" Hearing="2" MaxPerceptionDistance="-1" AggressionHurt="100" AggressionGreed="15" FleeHealthThreshold="0" AttackWhenProvoked="True" AvoidGunfire="False" DamageThreshold="0" AvoidTime="3" MinFleeTime="20" AggressiveBoarding="True" EnforceAggressiveBehaviorForMissions="True" TargetOuterWalls="True" RandomAttack="True" CanOpenDoors="False" UsePathFindingToGetInside="False" KeepDoorsClosed="False" AvoidAbyss="True" StayInAbyss="False" PatrolFlooded="False" PatrolDry="False" StartAggression="0" MaxAggression="100" AggressionCumulation="0" WallTargetingMethod="Target">
+      <target Tag="decoy" State="Follow" Priority="300" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreTargetInside="False" IgnoreTargetOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" PerceptionDistanceMultiplier="1" MaxPerceptionDistance="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+      <target Tag="weapon" State="Attack" Priority="200" ReactDistance="3000" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreTargetInside="False" IgnoreTargetOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" PerceptionDistanceMultiplier="1" MaxPerceptionDistance="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+      <target Tag="sonar" State="Attack" Priority="200" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreTargetInside="False" IgnoreTargetOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" PerceptionDistanceMultiplier="1" MaxPerceptionDistance="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+      <target Tag="provocative" State="Attack" Priority="100" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreTargetInside="False" IgnoreTargetOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" PerceptionDistanceMultiplier="1" MaxPerceptionDistance="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+      <target Tag="human" State="Attack" Priority="200" ReactDistance="1000" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreTargetInside="False" IgnoreTargetOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" PerceptionDistanceMultiplier="1" MaxPerceptionDistance="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+      <target Tag="weaker" State="Attack" Priority="200" ReactDistance="1000" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreTargetInside="False" IgnoreTargetOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" PerceptionDistanceMultiplier="1" MaxPerceptionDistance="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+      <target Tag="stronger" State="Avoid" Priority="200" ReactDistance="1000" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreTargetInside="False" IgnoreTargetOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" PerceptionDistanceMultiplier="1" MaxPerceptionDistance="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+      <target Tag="wall" State="Attack" Priority="200" ReactDistance="4000" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreTargetInside="False" IgnoreTargetOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" PerceptionDistanceMultiplier="1" MaxPerceptionDistance="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+    </ai>
+    <StatusEffect type="OnDeath" target="This" targetlimb="Head">
+      <ParticleEmitter particle="cellgib" particleamount="15" scalemin="5" scalemax="6" velocitymin="100" velocitymax="150" anglemin="0" anglemax="360" />
+      <ParticleEmitter particle="leucogib" particleamount="1" scalemin="5" scalemax="6" velocitymin="20" velocitymax="20" />
+      <ParticleEmitter particle="shrapnel" particleamount="1" scalemin="5" scalemax="6" velocitymin="20" velocitymax="20" />
+      <SpawnCharacter speciesname="humanhuskdiver" count="1" spread="5" />
+      <SpawnCharacter speciesname="Huskbomber" count="1" spread="10" />
+      <SpawnCharacter speciesname="Huskpucsold" count="2" spread="7" />
+    </StatusEffect>
+  </Character>
+</override>

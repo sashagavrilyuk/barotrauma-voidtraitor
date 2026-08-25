@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Conversations identifier="artmod_conversations" Language="English">
+  <!-- Начальные диалоги -->
+  <Conversation line="I wonder if we'll find anything interesting in the ruins this time?" speaker="0" flags="Initial">
+    <Conversation line="Like your own death?" speaker="1">
+      <Conversation line="Spit." speaker="0" />
+      <Conversation line="Well, or someone else's." speaker="2" speakertags="joker" />
+    </Conversation>
+    <Conversation line="If we find any ruins at all." speaker="1" allowedjobs="captain">
+      <Conversation line="They may not be on our way." speaker="1" />
+    </Conversation>
+  </Conversation>
+  <!-- Обычные диалоги -->
+  <Conversation line="Here's what I thought..." speaker="0" maxintensity="0.2">
+    <Conversation line="Oh no. Someone started to think. We're done." speaker="1" speakertags="joker">
+      <Conversation line="Very funny." speaker="0" />
+      <Conversation line="... And what if we throw this joker overboard?" speaker="0" speakertags="rude">
+        <Conversation line="They don't appreciate my subtle nature here..." speaker="1" />
+      </Conversation>
+    </Conversation>
+    <Conversation line="... Why didn't we get these jellies earlier when disassembling artifacts in the deconstructor?" speaker="0">
+      <Conversation line="The deconstructor has a special program for disassembling things." speaker="1" allowedjobs="Mechanic">
+        <Conversation line="And, since no one knew about the existence of the jelly before, these huge, motionless sharp blades simply cut the artifacts into three alien materials, without considering the rest." speaker="1">
+          <Conversation line="In other words, you don't know, do you?" speaker="0">
+            <Conversation line="Exactly." speaker="1" />
+          </Conversation>
+        </Conversation>
+      </Conversation>
+      <Conversation line="Good question." speaker="1" />
+      <Conversation line="Let's put the question differently - does anyone even know how a deconstructor works?" speaker="1">
+        <Conversation line="Well, actually... I have no idea." speaker="2" />
+      </Conversation>
+    </Conversation>
+    <Conversation line="... Why does the crawler matriarch have breasts?" speaker="0">
+      <Conversation line="No more pouring for him!" speaker="1" speakertags="joker">
+        <Conversation line="Enough." speaker="2" speakertags="rude, professional" />
+      </Conversation>
+      <Conversation line="To distract predators who will look at it while she bites off their heads." speaker="1" allowedjobs="Medic" speakertags="joker" />
+      <Conversation line="Quite an interesting anatomical feature, by the way. Crawler are probably much closer to humans than we thought." speaker="1" allowedjobs="Medic" />
+      <Conversation line="Some questions are best left unanswered." speaker="1" />
+    </Conversation>
+    <Conversation line="... What are these guardians of the ruins?" speaker="0">
+      <Conversation line="Well, you would also ask how artifacts work, with a detailed explanation. Hell knows." speaker="1" speakertags="rude" />
+      <Conversation line="Only at research stations will be able to answer for sure." speaker="1" />
+      <Conversation line="Judging by what I saw during the forays into the ruins - something like a huge pile of electronics in a shell resembling a spacesuit." speaker="1" speakertags="professional" />
+    </Conversation>
+    <Conversation line="... Why haven't we found all these new artifacts before?" speaker="0">
+      <Conversation line="Hell knows." speaker="1" speakertags="rude" />
+      <Conversation line="They were just actively hiding, and now that we have thermal visor technology, they don't stand a chance." speaker="1" speakertags="joker">
+        <Conversation line="Haha." speaker="2" />
+        <Conversation line="Ahaha!" speaker="1" />
+      </Conversation>
+      <Conversation line="Only research stations will be able to answer for sure." speaker="1" />
+      <Conversation line="Good question." speaker="1" />
+      <Conversation line="We still know too little to be sure." speaker="1" />
+    </Conversation>
+  </Conversation>
+</Conversations>

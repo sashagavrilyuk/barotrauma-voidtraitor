@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <Item identifier="megahonk" name="Megahonk horn" description="Honk at all costs, honk in spite of all terror, honk however long and hard the sail may be; for without honk, there is no fun." health="100" category="Misc" tags="clowns,mediumitem,hornitem" scale="0.5" cargocontaineridentifier="metalcrate">
+    <InventoryIcon texture="%ModDir%/Megahonk horn/megahonk/megahonk.png" sourcerect="8,184,70,70" depth="0.55" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/Megahonk horn/megahonk/megahonk.png" sourcerect="4,68,250,100" depth="0.55" />
+    <Body width="170" height="60" density="20" />
+    <Price baseprice="1000" canbespecial="false" minleveldifficulty="50">
+      <Price storeidentifier="merchantclown" minavailable="0" maxavailable="1">
+        <Reputation faction="clowns" min="50" />
+      </Price>
+    </Price>
+    <Fabricate suitablefabricators="fabricator" requiredtime="30">
+      <RequiredItem identifier="bikehorn" amount="1" />
+      <RequiredItem identifier="rubber" amount="8" />
+      <RequiredItem identifier="titaniumaluminiumalloy" amount="4" />
+    </Fabricate>
+    <Deconstruct time="10">
+      <Item identifier="bikehorn" />
+      <Item identifier="rubber" amount="4" />
+      <Item identifier="titaniumaluminiumalloy" amount="2" />
+    </Deconstruct>
+    <Holdable slots="RightHand+LeftHand" msg="ItemMsgPickUpSelect" holdpos="-10,-25" aimpos="120,-10" handle1="-60,-35" handle2="-45,45" holdangle="130">
+      <StatusEffect type="OnActive" target="Character" SpeedMultiplier="0.7" setvalue="true" />
+    </Holdable>
+    <Wearable slots="Bag" msg="ItemMsgEquipSelect" canbeselected="false" canbepicked="true" pickkey="Select">
+      <sprite name="Megahonk worn" texture="%ModDir%/Megahonk horn/megahonk/megahonk.png" sourcerect="4,68,250,100" canbehiddenbyotherwearables="false" rotation="90" depth="0.6" limb="Torso" depthlimb="LeftArm" ignorelimbscale="true" scale="0.45" origin="0.4,0.9" />
+    </Wearable>
+    <RangedWeapon reload="2" barrelpos="100,0">
+      <StatusEffect type="OnUse" target="This" Condition="-10000" duration="1">
+        <Conditional Condition="e 100" />
+        <Explosion range="500.0" force="30.0" ignorecover="true" shockwave="true" smoke="false" flames="false" flash="false" sparks="false">
+          <Affliction identifier="slow" strength="100" />
+          <Affliction identifier="stun" strength="2" />
+          <Affliction identifier="hallucinatingshortduration" strength="80" />
+        </Explosion>
+        <Explosion range="3000" force="0.0" shockwave="false" smoke="false" flames="false" flash="true" sparks="false" underwaterbubble="false" camerashake="200" camerashakerange="3000" screencolor="255,0,0,50" screencolorrange="3000" screencolorduration="5.0" penetration="1"></Explosion>
+        <ParticleEmitter particle="bubbles" particleamount="10" scalemin="1" scalemax="1.5" velocitymin="150" velocitymax="300" anglemin="0" anglemax="360" />
+        <Sound file="%ModDir%/Megahonk horn/megahonk/megahonk_1.ogg" type="OnUse" range="3000" selectionmode="Random" />
+        <Sound file="%ModDir%/Megahonk horn/megahonk/megahonk_2.ogg" type="OnUse" range="3000" />
+        <Sound file="%ModDir%/Megahonk horn/megahonk/megahonk_3.ogg" type="OnUse" range="3000" />
+      </StatusEffect>
+      <StatusEffect type="OnContained" interval="1" target="This" targetitemcomponent="ItemContainer">
+        <SpawnItem identifier="megahonkammo" spawnposition="ThisInventory" />
+        <Conditional Condition="e 100" />
+      </StatusEffect>
+      <StatusEffect type="OnContained" interval="1" target="This" Condition="+100"></StatusEffect>
+    </RangedWeapon>
+    <ItemContainer capacity="1" maxstacksize="1" hideitems="true" canbeselected="false" SpawnWithId="megahonkammo" removecontaineditemsondeconstruct="true" drawinventory="false" containedstateindicatorslot="0" containedspritedepth="0.56">
+      <Containable items="megahonkammo" hide="true" />
+    </ItemContainer>
+    <aitarget sightrange="3000" soundrange="5000" fadeouttime="5" />
+  </Item>
+  <Item identifier="megahonkammo" category="hidden" maxstacksize="1" interactthroughwalls="true" hideinmenus="true" nonplayerteaminteractable="True" tags="" Scale="0.5" impactsoundtag="impact_metal_light">
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="189,269,22,10" depth="0.55" origin="0.5,0.5" />
+    <Body width="23" height="10" density="30" />
+    <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
+    <Projectile characterusable="false" hitscan="true" maxtargetstohit="15" hitscancount="24" removeonhit="true" spread="30">
+      <Attack structuredamage="0" targetforce="60" penetration="0.5" itemdamage="0" severlimbsprobability="0">
+        <Affliction identifier="stun" strength="0.3" />
+      </Attack>
+    </Projectile>
+  </Item>
+</Items>

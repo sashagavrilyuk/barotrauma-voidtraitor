@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<huskappendage>
+  <limb id="15" name="Shambler Head" type="None" height="0" width="0" notes="" scale="0.65" flip="True" mirrorvertically="False" mirrorhorizontally="False" hide="False" spriteorientation="0" steerforce="0" radius="45" density="10" ignorecollisions="False" angulardamping="7" attackpriority="1" pullpos="0,0" stepoffset="0,0" refjoint="-1" mouthpos="0,0" constanttorque="0" constantangle="0" attackforcemultiplier="1" minseverancedamage="1" severedfadeouttime="10" applytailangle="False" sinefrequencymultiplier="1" sineamplitudemultiplier="1" blinkfrequency="0" blinkdurationin="0.2" blinkdurationout="0.5" blinkholdtime="0" blinkrotationin="0" blinkrotationout="45" blinkforce="50" blinktransitionin="Linear" blinktransitionout="Linear" healthindex="0" friction="0.3" restitution="0.05" inheritlimbdepth="None" onlyblinkinwater="False">
+    <sprite SourceRect="143,76,89,87" Origin="0.08988764,0.47126436" Depth="0.05" Texture="%ModDir%/Enhanced Husks/Characters/Huskinfector/Huskinfector.png" IgnoreTint="True" Color="255,255,255,255" DeadColor="255,255,255,255" DeadColorTime="0" />
+    <StatusEffect type="OnDamaged" target="This" disabledeltatime="true" duration="1">
+      <requiredaffliction identifier="gunshotwound" minstrength="2" />
+      <Affliction identifier="huskinfesting1" strength="-60" />
+      <ReduceAffliction identifier="gunshotwound" strength="5" />
+      <ReduceAffliction identifier="bleeding" strength="5" />
+      <ReduceAffliction identifier="bloodloss" strength="5" />
+      <ReduceAffliction identifier="stun" strength="2" />
+      <SpawnItem identifier="huskinfestinghijackdie" spawnposition="This" count="1" spread="0" />
+    </StatusEffect>
+  </limb>
+  <!-- spike/tentacle thingy -->
+  <limb id="16" name="Tentacle1a" type="None" Scale="0.65" Flip="True" MirrorVertically="False" MirrorHorizontally="False" Hide="False" SpriteOrientation="270" InheritLimbDepth="None" SteerForce="0" Radius="0" Height="20" Width="50" Density="10" IgnoreCollisions="True" AngularDamping="25" AttackPriority="1" PullPos="0,0" StepOffset="0,0" RefJoint="-1" MouthPos="0,0" ConstantTorque="0" ConstantAngle="-90" AttackForceMultiplier="1" MinSeveranceDamage="1" CanBeSeveredAlive="True" SeveredFadeOutTime="10" ApplyTailAngle="False" SineFrequencyMultiplier="1" SineAmplitudeMultiplier="1" BlinkFrequency="0" BlinkDurationIn="0.2" BlinkDurationOut="0.5" BlinkHoldTime="0" BlinkRotationIn="0" BlinkRotationOut="45" BlinkForce="50" OnlyBlinkInWater="False" UseTextureOffsetForBlinking="False" BlinkTextureOffsetIn="0.5,0.5" BlinkTextureOffsetOut="0.5,0.5" BlinkTransitionIn="Linear" BlinkTransitionOut="Linear" HealthIndex="0" Friction="0.3" Restitution="0.05">
+    <sprite SourceRect="137,45,44,17" Origin="0.5,0.5" Depth="0.1" Texture="%ModDir%/Enhanced Husks/Characters/Huskinfector/Huskinfector.png" IgnoreTint="True" Color="255,255,255,255" DeadColor="255,255,255,255" DeadColorTime="0" />
+  </limb>
+  <limb id="17" name="Tentacle1b" type="None" Scale="0.65" Flip="True" MirrorVertically="False" MirrorHorizontally="False" Hide="False" SpriteOrientation="270" InheritLimbDepth="None" SteerForce="0" Radius="0" Height="20" Width="50" Density="10" IgnoreCollisions="True" AngularDamping="25" AttackPriority="1" PullPos="0,0" StepOffset="0,0" RefJoint="-1" MouthPos="0,0" ConstantTorque="0" ConstantAngle="0" AttackForceMultiplier="1" MinSeveranceDamage="1" CanBeSeveredAlive="True" SeveredFadeOutTime="10" ApplyTailAngle="False" SineFrequencyMultiplier="1" SineAmplitudeMultiplier="1" BlinkFrequency="0" BlinkDurationIn="0.2" BlinkDurationOut="0.5" BlinkHoldTime="0" BlinkRotationIn="0" BlinkRotationOut="45" BlinkForce="50" OnlyBlinkInWater="False" UseTextureOffsetForBlinking="False" BlinkTextureOffsetIn="0.5,0.5" BlinkTextureOffsetOut="0.5,0.5" BlinkTransitionIn="Linear" BlinkTransitionOut="Linear" HealthIndex="0" Friction="0.3" Restitution="0.05">
+    <sprite subdivisions="5,5" SourceRect="180,43,43,21" Origin="0.4888889,0.5" Depth="0.1" Texture="%ModDir%/Enhanced Husks/Characters/Huskinfector/Huskinfector.png" IgnoreTint="True" Color="255,255,255,255" DeadColor="255,255,255,255" DeadColorTime="0" />
+  </limb>
+  <joint name="Head to Main collider" limb1="1" limb2="15" limb1anchor="5,-5" limb2anchor="0,0" upperlimit="0" lowerlimit="-10" canbesevered="False" limitenabled="True" />
+  <!-- body to husk appendage -->
+  <joint limb1="15" limb2="16" name="Tentacle1a" Limb1Anchor="15.222202,2.3815126" Limb2Anchor="-14.459227,-1.9949145" CanBeSevered="True" SeveranceProbabilityModifier="0" BreakSound="gore" LimitEnabled="True" UpperLimit="-10" LowerLimit="-15" Stiffness="0.55" Scale="1.05" WeldJoint="False" ClockWiseRotation="False" />
+  <joint limb1="16" limb2="17" name="Tentacle1b" Limb1Anchor="34.12864,0.7738372" Limb2Anchor="-27.00414,2.7658956" CanBeSevered="True" SeveranceProbabilityModifier="0" BreakSound="gore" LimitEnabled="True" UpperLimit="-13.000009" LowerLimit="-54.000023" Stiffness="1.05" Scale="0.38" WeldJoint="False" ClockWiseRotation="False" />
+</huskappendage>

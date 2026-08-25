@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="English" nowhitespace="false" translatedname="English">
+  <talentname.inspiringtunesold>Inspiring Tunes+</talentname.inspiringtunesold>
+  <talentdescription.inspiringtunesold>[afflictionname] allows you to honk your horn to repair nearby electrical and mechanical items, and nearby allies to gain a bonus of [skillamount] to all Skills for a short while.</talentdescription.inspiringtunesold>
+  <afflictionname.inspiringtunesold>Inspiring Tunes+</afflictionname.inspiringtunesold>
+  <afflictiondescription.inspiringtunesold>The subject's skills are truly momentarily increased.</afflictiondescription.inspiringtunesold>
+  <afflictionname.combatstimulantclown>Combat Stimulant</afflictionname.combatstimulantclown>
+  <afflictiondescription.combatstimulantclown>Gaining combat-based performance-boosting abilities.</afflictiondescription.combatstimulantclown>
+  <talentdescription.truepotential>Clown Power allows you to hit ‖color:gui.orange‖conscious‖end‖ characters with a Toy Hammer for a [probability]% chance to implode them.</talentdescription.truepotential>
+</infotexts>

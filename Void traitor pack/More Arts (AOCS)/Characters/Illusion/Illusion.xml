@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Character speciesname="Illusion" group="Illusion" humanoid="True" caninteract="True" needsair="False" blooddecal="blackblood" visibility="300" noise="300" speciestranslationoverride="" displayname="" hasinfo="False" husk="false" usehuskappendage="False" needswater="False" canspeak="False" bleedparticleair="blackblooddrop" bleedparticlewater="blackwaterblood" bleedparticlemultiplier="1" eatingspeed="10" pathfinderpriority="1" hideinsonar="False" hideinthermalgoggles="True" sonardisruption="0" disabledistance="25000">
+  <ragdolls folder="default" />
+  <animations folder="default" />
+  <health vitality="10" doesbleed="True" bleedingreduction="10" crushdepth="Infinity" usehealthwindow="False" burnreduction="0" constanthealthregeneration="0.5" healthregenerationwheneating="0" poisonvulnerability="0.5">
+    <Limb name="Head">
+      <VitalityMultiplier type="damage" multiplier="2.0" />
+    </Limb>
+    <Limb name="Torso" />
+    <Limb name="LeftArm">
+      <VitalityMultiplier type="damage" multiplier="0.5" />
+    </Limb>
+    <Limb name="RightArm">
+      <VitalityMultiplier type="damage" multiplier="0.5" />
+    </Limb>
+    <Limb name="LeftLeg">
+      <VitalityMultiplier type="damage" multiplier="0.5" />
+    </Limb>
+    <Limb name="RightLeg">
+      <VitalityMultiplier type="damage" multiplier="0.5" />
+    </Limb>
+  </health>
+  <ai combatstrength="0" sight="0.5" hearing="1" aggressiveboarding="false" attackwhenprovoked="false" aggressiongreed="5" aggressionhurt="150" canopendoors="True" usepathfindingtogetinside="True" targetouterwalls="False" fleehealththreshold="0" avoidgunfire="False" avoidtime="3" minfleetime="20" enforceaggressivebehaviorformissions="True" randomattack="False" avoidabyss="True" stayinabyss="True" startaggression="0" maxaggression="100" aggressioncumulation="0">
+    <target tag="human" state="Idle" priority="80" reactdistance="0" ignoreincapacitated="True" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreifnotinsamesub="False" threshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" />
+  </ai>
+</Character>

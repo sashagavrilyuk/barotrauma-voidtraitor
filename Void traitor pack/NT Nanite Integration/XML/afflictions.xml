@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Afflictions>
+  <Affliction identifier="naniteremover" type="nanite" isbuff="true" limbspecific="false" indicatorlimb="Torso" maxstrength="1" activationthreshold="1" showiconthreshold="1" showicontoothersthreshold="1" iconcolors="178,182,182,255;178,120,182,255;178,78,182,255">
+    <icon texture="%ModDir%/NT Nanite Integration/Images/buffAtlas.png" sourcerect="0,128,128,128" color="178,120,182,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="precursor" type="nanite" isbuff="true" limbspecific="false" indicatorlimb="Torso" maxstrength="23" hideiconafterdelay="true" activationthreshold="1" showiconthreshold="1" showicontoothersthreshold="1" ShowInHealthScannerThreshold="4" iconcolors="186,205,232,255;116,205,232,255;116,170,232,255">
+    <icon texture="%ModDir%/NT Nanite Integration/Images/buffAtlas.png" sourcerect="0,0,128,128" color="116,170,232,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="nanitedecay" type="nanite" isbuff="false" limbspecific="false" indicatorlimb="Torso" maxstrength="100" activationthreshold="1" showiconthreshold="1" showicontoothersthreshold="1" iconcolors="150,30,30,255; 150,20,20,255; 150,0,0,255">
+    <icon texture="%ModDir%/NT Nanite Integration/Images/buffAtlas.png" sourcerect="0,128,128,128" color="180,20,20,255" origin="0,0" />
+  </Affliction>
+  <!-- Resist/Regen strains -->
+  <Affliction identifier="reconstructornanite" type="nanite" isbuff="true" limbspecific="false" indicatorlimb="Torso" maxstrength="3" hideiconafterdelay="true" activationthreshold="1" showiconthreshold="1" showicontoothersthreshold="1" ShowInHealthScannerThreshold="4" iconcolors="186,205,232,255;116,205,232,255;116,170,232,255">
+    <icon texture="%ModDir%/NT Nanite Integration/Images/buffAtlas.png" sourcerect="128,0,128,128" color="116,170,232,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="bonefixnanite" type="nanite" isbuff="true" limbspecific="false" indicatorlimb="Torso" maxstrength="3" hideiconafterdelay="true" activationthreshold="1" showiconthreshold="1" showicontoothersthreshold="1" ShowInHealthScannerThreshold="4" iconcolors="186,205,232,255;116,205,232,255;116,170,232,255">
+    <icon texture="%ModDir%/NT Nanite Integration/Images/buffAtlas.png" sourcerect="0,384,128,128" color="116,170,232,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="deepfixnanite" type="nanite" isbuff="true" limbspecific="false" indicatorlimb="Torso" maxstrength="2" hideiconafterdelay="true" activationthreshold="1" showiconthreshold="1" showicontoothersthreshold="1" ShowInHealthScannerThreshold="4" iconcolors="186,205,232,255;116,205,232,255;116,170,232,255">
+    <icon texture="%ModDir%/NT Nanite Integration/Images/buffAtlas.png" sourcerect="256,0,128,128" color="116,170,232,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="oxybloodnanite" type="nanite" isbuff="true" limbspecific="false" indicatorlimb="Torso" maxstrength="2" hideiconafterdelay="true" activationthreshold="1" showiconthreshold="1" showicontoothersthreshold="1" ShowInHealthScannerThreshold="4" iconcolors="186,205,232,255;116,205,232,255;116,170,232,255">
+    <icon texture="%ModDir%/NT Nanite Integration/Images/buffAtlas.png" sourcerect="128,128,128,128" color="116,170,232,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="husknanite" type="nanite" isbuff="true" limbspecific="false" indicatorlimb="Torso" maxstrength="2" hideiconafterdelay="true" activationthreshold="1" showiconthreshold="1" showicontoothersthreshold="1" ShowInHealthScannerThreshold="4" iconcolors="186,205,232,255;116,205,232,255;116,170,232,255">
+    <icon texture="%ModDir%/NT Nanite Integration/Images/buffAtlas.png" sourcerect="384,128,128,128" color="116,170,232,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="neuralnanite" type="nanite" isbuff="true" limbspecific="false" indicatorlimb="Head" maxstrength="1" hideiconafterdelay="true" activationthreshold="1" showiconthreshold="1" showicontoothersthreshold="1" ShowInHealthScannerThreshold="4" iconcolors="186,205,232,255;116,205,232,255;116,170,232,255">
+    <icon texture="%ModDir%/NT Nanite Integration/Images/buffAtlas.png" sourcerect="256,128,128,128" color="116,170,232,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="antitoxnanite" type="nanite" isbuff="true" limbspecific="false" indicatorlimb="Torso" maxstrength="2" hideiconafterdelay="true" activationthreshold="1" showiconthreshold="1" showicontoothersthreshold="1" ShowInHealthScannerThreshold="4" iconcolors="186,205,232,255;116,205,232,255;116,170,232,255">
+    <icon texture="%ModDir%/NT Nanite Integration/Images/buffAtlas.png" sourcerect="384,0,128,128" color="116,170,232,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="mechfixnanite" type="nanite" isbuff="true" limbspecific="false" indicatorlimb="Torso" maxstrength="2" hideiconafterdelay="true" activationthreshold="1" showiconthreshold="1" showicontoothersthreshold="1" ShowInHealthScannerThreshold="4" iconcolors="186,205,232,255;116,205,232,255;116,170,232,255">
+    <icon texture="%ModDir%/NT Nanite Integration/Images/buffAtlas.png" sourcerect="128,384,128,128" color="116,170,232,255" origin="0,0" />
+  </Affliction>
+  <!-- Buff strains -->
+  <Affliction identifier="vigorbuffnanite" type="nanite" isbuff="true" limbspecific="false" indicatorlimb="RightArm" maxstrength="1" hideiconafterdelay="true" activationthreshold="1" showiconthreshold="1" showicontoothersthreshold="1" ShowInHealthScannerThreshold="4" iconcolors="116,147,190,255;116,182,190,255;116,205,170,255">
+    <Effect minstrength="0" maxstrength="1" strengthchange="0" resistancefor="damage" minresistance="0.3" maxresistance="0.3">
+      <StatValue stattype="MeleeAttackMultiplier" minvalue="0.15" maxvalue="0.3" />
+      <StatValue stattype="FlowResistance" minvalue="0" maxvalue="0.7" />
+    </Effect>
+    <icon texture="%ModDir%/NT Nanite Integration/Images/buffAtlas.png" sourcerect="128,256,128,128" color="116,205,170,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="hyperbuffnanite" type="nanite" isbuff="true" limbspecific="false" indicatorlimb="RightLeg" maxstrength="1" hideiconafterdelay="true" activationthreshold="1" showiconthreshold="1" showicontoothersthreshold="1" ShowInHealthScannerThreshold="4" iconcolors="116,147,190,255;116,182,190,255;116,205,170,255">
+    <Effect minstrength="0" maxstrength="1" strengthchange="0" minspeedmultiplier="1.45" maxspeedmultiplier="1.45">
+      <StatValue stattype="MeleeAttackSpeed" minvalue="0.4" maxvalue="0.4" />
+      <StatValue stattype="SwimmingSpeed" minvalue="0.3" maxvalue="0.3" />
+      <StatValue stattype="RepairSpeed" minvalue="0.2" maxvalue="0.2" />
+    </Effect>
+    <icon texture="%ModDir%/NT Nanite Integration/Images/buffAtlas.png" sourcerect="0,256,128,128" color="116,205,170,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="visionbuffnanite" type="nanite" isbuff="true" limbspecific="false" indicatorlimb="Head" maxstrength="2" hideiconafterdelay="true" activationthreshold="1" showiconthreshold="1" showicontoothersthreshold="1" ShowInHealthScannerThreshold="4" iconcolors="116,147,190,255;116,182,190,255;116,205,170,255">
+    <Effect minstrength="0" maxstrength="2" strengthchange="0" minchromaticaberration="1" maxchromaticaberration="1">
+      <StatValue stattype="RangedSpreadReduction" minvalue="0.3" maxvalue="0.7" />
+      <StatValue stattype="MaxRepairConditionMultiplierElectrical" value="0.2" />
+      <StatValue stattype="MaxRepairConditionMultiplierMechanical" value="0.2" />
+    </Effect>
+    <icon texture="%ModDir%/NT Nanite Integration/Images/buffAtlas.png" sourcerect="256,256,128,128" color="116,205,170,255" origin="0,0" />
+  </Affliction>
+  <!--<Affliction identifier="laniusxenonanite" type="nanite" isbuff="true" limbspecific="false" indicatorlimb="LeftArm" maxstrength="60" hideiconafterdelay="true" activationthreshold="1" showiconthreshold="1" showicontoothersthreshold="1" ShowInHealthScannerThreshold="4" iconcolors="116,160,170,255;116,200,170,255;116,255,170,255">
+        <Effect minstrength="0" maxstrength="29" strengthchange="0.1" minspeedmultiplier="1" maxspeedmultiplier="0.9" resistancefor="oxygenlow" minresistance="0.0" maxresistance="0.6">
+            <StatusEffect target="Character">
+                <Affliction identifier="nanitedecay" amount="3" />
+                <Affliction identifier="laniusburnresist1" amount="10" />
+            </StatusEffect>
+        </Effect>
+        <Effect minstrength="30" maxstrength="31" strengthchange="0" speedmultiplier="0.9" resistancefor="oxygenlow" resistance="0.6">
+            <StatusEffect target="Character">
+                <Affliction identifier="nanitedecay" amount="3" />
+                <Affliction identifier="laniusburnresist1" amount="10" />
+            </StatusEffect>
+        </Effect>
+        <Effect minstrength="31" maxstrength="60" strengthchange="0.1" minspeedmultiplier="0.9" maxspeedmultiplier="0.85" resistancefor="oxygenlow" minresistance="0.6" maxresistance="1.0">
+            <StatusEffect target="Character">
+                <Affliction identifier="nanitedecay" amount="6" />
+                <Affliction identifier="laniusburnresist2" amount="10" />
+                <Affliction identifier="laniuspressureresist" amount="10" />
+            </StatusEffect>
+        </Effect>
+
+        <icon texture="%ModDir%/NT Nanite Integration/Images/buffAtlas.png" sourcerect="384,256,128,128" color="116,205,170,255" origin="0,0" />
+    <Affliction identifier="laniusburnresist1" name="Lanius Skin" type="resistance" isbuff="true" limbspecific="false" indicatorlimb="Torso" maxstrength="6" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000">
+        <Effect minstrength="0" maxstrength="6" strengthchange="-5" resistancefor="burn" resistance="0.2" />
+        <icon texture="%ModDir%/NT Nanite Integration/Images/buffAtlas.png" sourcerect="256,256,128,128" color="116,205,170,255" origin="0,0" />
+    </Affliction>
+
+    <Affliction identifier="laniusburnresist2" name="Lanius Skin" type="resistance" isbuff="true" limbspecific="false" indicatorlimb="Torso" maxstrength="11" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000">
+        <Effect minstrength="0" maxstrength="11" strengthchange="-5" resistancefor="burn" resistance="0.4" />
+        <icon texture="%ModDir%/NT Nanite Integration/Images/buffAtlas.png" sourcerect="256,256,128,128" color="116,205,170,255" origin="0,0" />
+    </Affliction>
+
+    <Affliction identifier="laniuspressureresist" name="Lanius Density" type="resistance" isbuff="true" limbspecific="false" indicatorlimb="Torso" maxstrength="11" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000">
+        <Effect minstrength="0" maxstrength="11" strengthchange="-5" resistancefor="pressure" resistance="0.9" />
+        <icon texture="%ModDir%/NT Nanite Integration/Images/buffAtlas.png" sourcerect="256,256,128,128" color="116,205,170,255" origin="0,0" />
+    </Affliction>-->
+</Afflictions>

@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!--     Textures taken and modified from「カシー I」Husk Accoutrements mod     -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <override>
+    <Item name="" identifier="cultistrobes" category="Equipment" tags="smallitem,clothing,huskcult" fireproof="false" cargocontaineridentifier="metalcrate" description="" scale="0.5" impactsoundtag="impact_soft">
+      <PreferredContainer primary="crewcab" />
+      <Price baseprice="150" canbespecial="false" sold="false">
+        <Price storeidentifier="merchanthusk" minavailable="1" maxavailable="4" sold="true">
+          <Reputation faction="huskcult" min="35" />
+        </Price>
+      </Price>
+      <Deconstruct time="10">
+        <Item identifier="organicfiber" />
+      </Deconstruct>
+      <InventoryIcon texture="Content/Map/Outposts/Art/FactionItems.png" sourcerect="340,54,62,48" />
+      <Sprite texture="Content/Items/Jobgear/MiscJobGear.png" sourcerect="254,359,117,65" depth="0.6" origin="0.5,0.5" />
+      <Body width="100" height="50" density="30" friction="0.8" restitution="0.01" />
+      <Wearable slots="Any,InnerClothes" variants="1" msg="ItemMsgPickUpSelect">
+        <sprite name="Cultist Torso" texture="cultist.png" limb="Torso" hidelimb="false" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Right Hand" texture="cultist.png" limb="RightHand" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Left Hand" texture="cultist.png" limb="LeftHand" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Right Lower Arm" texture="cultist.png" limb="RightArm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Left Lower Arm" texture="cultist.png" limb="LeftArm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Right Upper Arm" texture="cultist.png" limb="RightForearm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Left Upper Arm" texture="cultist.png" limb="LeftForearm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Waist" texture="cultist.png" limb="Waist" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Right Thigh" texture="cultist.png" limb="RightThigh" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Left Thigh" texture="cultist.png" limb="LeftThigh" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Right Leg" texture="cultist.png" limb="RightLeg" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Left Leg" texture="cultist.png" limb="LeftLeg" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Left Shoe" texture="cultist.png" limb="LeftFoot" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Right Shoe" texture="cultist.png" limb="RightFoot" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Head" texture="%ModDir%/Enhanced Husks/Items/cultisthood.png" limb="Head" hidelimb="true" inheritlimbdepth="true" inherittexturescale="true" sourcerect="0,0,133,160" origin="0.5,0.5" />
+        <damagemodifier armorsector="0.0,360.0" afflictionidentifiers="huskinfection" damagemultiplier="0.5" />
+        <damagemodifier afflictionidentifiers="blunttrauma,lacerations,gunshotwound,bitewounds" armorsector="0.0,360.0" damagemultiplier="0.90" />
+        <damagemodifier afflictionidentifiers="psychosis" armorsector="0.0,360.0" damagemultiplier="1.1" />
+        <damagemodifier afflictionidentifiers="burn" armorsector="0.0,360.0" damagemultiplier="1.1" />
+        <StatusEffect type="OnWearing" target="Character" HideFace="true" />
+        <StatusEffect type="OnWearing" target="Character" interval="0.5" disabledeltatime="true">
+          <Affliction identifier="disguisedashusk" amount="1.0" />
+        </StatusEffect>
+      </Wearable>
+    </Item>
+    <Item name="" identifier="zealotrobes" category="Equipment" tags="smallitem,clothing,huskcult" fireproof="false" cargocontaineridentifier="metalcrate" description="" scale="0.5" impactsoundtag="impact_soft">
+      <PreferredContainer primary="crewcab" />
+      <Price baseprice="650" canbespecial="false" sold="false">
+        <Price storeidentifier="merchanthusk" minavailable="1" maxavailable="4" sold="true">
+          <Reputation faction="huskcult" min="70" />
+        </Price>
+      </Price>
+      <Deconstruct time="10">
+        <Item identifier="organicfiber" />
+      </Deconstruct>
+      <InventoryIcon texture="Content/Map/Outposts/Art/FactionItems.png" sourcerect="409,2,63,45" origin="0.5,0.5" />
+      <Sprite texture="Content/Items/Jobgear/MiscJobGear.png" sourcerect="383,359,117,65" depth="0.6" origin="0.5,0.5" />
+      <Body width="100" height="50" density="30" friction="0.8" restitution="0.01" />
+      <Wearable slots="Any,InnerClothes" variants="1" msg="ItemMsgPickUpSelect">
+        <sprite name="Cultist Torso" texture="cultist2.png" limb="Torso" hidelimb="false" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Right Hand" texture="cultist2.png" limb="RightHand" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Left Hand" texture="cultist2.png" limb="LeftHand" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Right Lower Arm" texture="cultist2.png" limb="RightArm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Left Lower Arm" texture="cultist2.png" limb="LeftArm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Right Upper Arm" texture="cultist2.png" limb="RightForearm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Left Upper Arm" texture="cultist2.png" limb="LeftForearm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Waist" texture="cultist2.png" limb="Waist" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Right Thigh" texture="cultist2.png" limb="RightThigh" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Left Thigh" texture="cultist2.png" limb="LeftThigh" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Right Leg" texture="cultist2.png" limb="RightLeg" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Left Leg" texture="cultist2.png" limb="LeftLeg" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Left Shoe" texture="cultist2.png" limb="LeftFoot" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Right Shoe" texture="cultist2.png" limb="RightFoot" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite name="Cultist Head" texture="%ModDir%/Enhanced Husks/Items/cultisthood.png" limb="Head" hidelimb="true" inheritlimbdepth="true" inherittexturescale="true" sourcerect="0,0,0,0" origin="0.5,0.5" />
+        <damagemodifier armorsector="0.0,360.0" afflictionidentifiers="huskinfection" damagemultiplier="0.45" />
+        <damagemodifier afflictionidentifiers="blunttrauma,lacerations,gunshotwound,bitewounds" armorsector="0.0,360.0" damagemultiplier="0.80" />
+        <damagemodifier afflictionidentifiers="psychosis" armorsector="0.0,360.0" damagemultiplier="1.1" />
+        <damagemodifier afflictionidentifiers="burn" armorsector="0.0,360.0" damagemultiplier="0.90" />
+        <StatusEffect type="OnWearing" target="Character" interval="0.5" disabledeltatime="true">
+          <Affliction identifier="disguisedashusk" amount="1.0" />
+        </StatusEffect>
+        <StatusEffect target="Character" type="OnWearing" HideFace="true" setvalue="true">
+          <Affliction identifier="husktransformimmunitytemporary" amount="30" />
+        </StatusEffect>
+        <StatusEffect target="Character" type="OnWearing">
+          <Conditional huskinfection="gt 25" />
+          <ReduceAffliction type="damage" amount="0.30" />
+          <ReduceAffliction type="bleeding" amount="0.2" />
+          <ReduceAffliction type="husknausea" amount="25" />
+          <Affliction identifier="opiateaddiction" amount="0.05" />
+          <Affliction identifier="opiateoverdose" amount="0.5" />
+        </StatusEffect>
+      </Wearable>
+    </Item>
+  </override>
+  <Item name="" identifier="disciplerobes" category="Equipment" tags="smallitem,clothing,huskcult" fireproof="false" cargocontaineridentifier="metalcrate" description="" scale="0.5" impactsoundtag="impact_soft">
+    <PreferredContainer primary="crewcab" />
+    <Price baseprice="150" canbespecial="false" sold="false">
+      <Price storeidentifier="merchanthusk" minavailable="1" maxavailable="4" sold="true">
+        <Reputation faction="huskcult" min="35" />
+      </Price>
+    </Price>
+    <Deconstruct time="10">
+      <Item identifier="organicfiber" />
+    </Deconstruct>
+    <InventoryIcon texture="Content/Map/Outposts/Art/FactionItems.png" sourcerect="340,54,62,48" />
+    <Sprite texture="Content/Items/Jobgear/MiscJobGear.png" sourcerect="254,359,117,65" depth="0.6" origin="0.5,0.5" />
+    <Body width="100" height="50" density="40" friction="0.8" restitution="0.01" />
+    <Wearable slots="Any,InnerClothes" variants="1" msg="ItemMsgPickUpSelect">
+      <sprite name="Cultist Torso" texture="cultistrobe.png" limb="Torso" hidelimb="false" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" sourcerect="175,13,83,185" origin="0.49360198,0.39650467" />
+      <sprite name="Cultist Right Hand" texture="cultist.png" limb="RightHand" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Cultist Left Hand" texture="cultist.png" limb="LeftHand" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Cultist Right Lower Arm" texture="cultistrobe.png" limb="RightArm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" sourcerect="283,92,41,70" origin="0.5,0.5" />
+      <sprite name="Cultist Left Lower Arm" texture="cultistrobe.png" limb="LeftArm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" sourcerect="347,91,41,72" origin="0.5,0.5" />
+      <sprite name="Cultist Right Upper Arm" texture="cultistrobe.png" limb="RightForearm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" sourcerect="283,11,41,82" origin="0.5,0.5" />
+      <sprite name="Cultist Left Upper Arm" texture="cultistrobe.png" limb="LeftForearm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" sourcerect="347,11,41,82" origin="0.5,0.5" />
+      <sprite name="Cultist Waist" texture="cultistrobe.png" limb="Waist" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" sourcerect="180,197,72,60" origin="0.5,0.5" />
+      <sprite name="Cultist Right Thigh" texture="cultistrobe.png" limb="RightThigh" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" sourcerect="0,0,78,134" origin="0.5,0.5" />
+      <sprite name="Cultist Left Thigh" texture="cultistrobe.png" limb="LeftThigh" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" sourcerect="81,1,79,134" origin="0.5,0.5" />
+      <sprite name="Cultist Right Leg" texture="cultistrobe.png" limb="RightLeg" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" sourcerect="21,135,39,114" origin="0.5,0.5" />
+      <sprite name="Cultist Left Leg" texture="cultistrobe.png" limb="LeftLeg" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" sourcerect="101,134,41,114" origin="0.5,0.5" />
+      <sprite name="Cultist Left Shoe" texture="cultistrobe.png" limb="LeftFoot" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" sourcerect="276,214,57,40" origin="0.5,0.5" />
+      <sprite name="Cultist Right Shoe" texture="cultistrobe.png" limb="RightFoot" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" sourcerect="341,213,57,41" origin="0.5,0.5" />
+      <sprite name="Cultist Head" texture="%ModDir%/Enhanced Husks/Items/cultistrobe.png" limb="Head" hidelimb="true" inheritlimbdepth="true" inherittexturescale="true" sourcerect="394,0,113,118" origin="0.5,0.5" scale="1.25" />
+      <damagemodifier armorsector="0.0,360.0" afflictionidentifiers="huskinfection" damagemultiplier="0.45" />
+      <damagemodifier afflictionidentifiers="blunttrauma,lacerations,gunshotwound,bitewounds" armorsector="0.0,360.0" damagemultiplier="0.85" />
+      <damagemodifier afflictionidentifiers="psychosis" armorsector="0.0,360.0" damagemultiplier="1.1" />
+      <damagemodifier afflictionidentifiers="burn" armorsector="0.0,360.0" damagemultiplier="0.90" />
+      <StatusEffect type="OnWearing" target="Character" interval="0.5" disabledeltatime="true">
+        <Affliction identifier="disguisedashusk" amount="1.0" />
+      </StatusEffect>
+      <StatusEffect target="Character" type="OnWearing" HideFace="true" setvalue="true">
+        <Affliction identifier="husktransformimmunitytemporary" amount="20" />
+      </StatusEffect>
+      <StatusEffect target="Character" type="OnWearing">
+        <Conditional huskinfection="gt 25" />
+        <ReduceAffliction type="damage" amount="0.2" />
+        <ReduceAffliction type="bleeding" amount="0.1" />
+        <ReduceAffliction type="husknausea" amount="25" />
+        <Affliction identifier="opiateaddiction" amount="0.05" />
+        <Affliction identifier="opiateoverdose" amount="0.5" />
+      </StatusEffect>
+    </Wearable>
+  </Item>
+  <Item name="" identifier="templararmour" category="Equipment" tags="smallitem,clothing,huskcult" fireproof="false" cargocontaineridentifier="metalcrate" description="" scale="0.5" impactsoundtag="impact_soft">
+    <PreferredContainer primary="crewcab" />
+    <Price baseprice="150" canbespecial="false" sold="false">
+      <Price storeidentifier="merchanthusk" minavailable="1" maxavailable="4" sold="true">
+        <Reputation faction="huskcult" min="80" />
+      </Price>
+    </Price>
+    <Deconstruct time="40">
+      <Item identifier="ballisticfiber" />
+      <Item identifier="steel" amount="2" />
+      <Item identifier="huskeggsbasic" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/Enhanced Husks/Items/templearmoricon.png" sourcerect="0,0,64,65" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/Enhanced Husks/Items/templar_armor.png" sourcerect="433,192,119,60" depth="0.6" origin="0.5,0.5" />
+    <Body width="100" height="50" density="30" friction="0.8" restitution="0.01" />
+    <Wearable slots="Any,OuterClothes+InnerClothes" variants="1" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnWearing" target="Character" PropulsionSpeedMultiplier="0.9" setvalue="true" disabledeltatime="true" />
+      <damagemodifier afflictionidentifiers="bitewounds, lacerations" armorsector="0.0,360.0" damagemultiplier="0.45" damagesound="LimbArmor" deflectprojectiles="true" />
+      <damagemodifier afflictiontypes="bleeding" armorsector="0.0,360.0" damagemultiplier="0.1" damagesound="LimbArmor" deflectprojectiles="true" />
+      <damagemodifier afflictiontypes="stun" armorsector="0.0,360.0" damagemultiplier="0.4" damagesound="LimbArmor" deflectprojectiles="true" />
+      <damagemodifier afflictiontypes="blunttrauma" armorsector="0.0,360.0" damagemultiplier="0.80" damagesound="LimbArmor" deflectprojectiles="true" />
+      <damagemodifier afflictiontypes="gunshotwound" armorsector="0.0,360.0" damagemultiplier="0.35" damagesound="LimbArmor" deflectprojectiles="true" />
+      <sprite name="Templar Armor Torso" texture="%ModDir%/Enhanced Husks/Items/templar_armor.png" limb="Torso" hidelimb="true" scale="0.46" hideotherwearables="true" origin="0.51380074,0.5196482" sourcerect="197,17,82,148" />
+      <sprite name="Templar Armor Right Hand" texture="%ModDir%/Enhanced Husks/Items/templar_armor.png" limb="RightHand" hidelimb="true" inherittexturescale="true" hideotherwearables="true" origin="0.5,0.5" sourcerect="310,194,26,42" />
+      <sprite name="Templar Armor Left Hand" texture="%ModDir%/Enhanced Husks/Items/templar_armor.png" limb="LeftHand" hidelimb="true" inherittexturescale="true" hideotherwearables="true" origin="0.5,0.5" sourcerect="377,195,29,36" />
+      <sprite name="Templar Armor Right Upper Arm" texture="%ModDir%/Enhanced Husks/Items/templar_armor.png" limb="RightArm" hidelimb="true" inherittexturescale="true" hideotherwearables="true" origin="0.5,0.5" sourcerect="304,2,46,100" />
+      <sprite name="Templar Armor Left Upper Arm" texture="%ModDir%/Enhanced Husks/Items/templar_armor.png" limb="LeftArm" hidelimb="true" inherittexturescale="true" hideotherwearables="true" origin="0.5,0.5" sourcerect="368,7,46,92" />
+      <sprite name="Templar Armor Right Forearm" texture="%ModDir%/Enhanced Husks/Items/templar_armor.png" limb="RightForearm" hidelimb="true" inherittexturescale="true" hideotherwearables="true" origin="0.5,0.5" sourcerect="300,122,57,69" />
+      <sprite name="Templar Armor Left Forearm" texture="%ModDir%/Enhanced Husks/Items/templar_armor.png" limb="LeftForearm" hidelimb="true" inherittexturescale="true" hideotherwearables="true" origin="0.5,0.5" sourcerect="364,120,57,69" />
+      <sprite name="Templar Armor Waist" texture="%ModDir%/Enhanced Husks/Items/templar_armor.png" limb="Waist" hidelimb="true" inherittexturescale="true" hideotherwearables="true" origin="0.44,0.5" sourcerect="210,199,61,53" />
+      <sprite name="Templar Armor Right Thigh" texture="%ModDir%/Enhanced Husks/Items/templar_armor.png" limb="RightThigh" hidelimb="true" inherittexturescale="true" hideotherwearables="true" origin="0.5,0.5" sourcerect="8,10,69,116" />
+      <sprite name="Templar Armor Left Thigh" texture="%ModDir%/Enhanced Husks/Items/templar_armor.png" limb="LeftThigh" hidelimb="true" inherittexturescale="true" hideotherwearables="true" origin="0.5,0.5" sourcerect="107,8,69,118" />
+      <sprite name="Templar Armor Right Leg" texture="%ModDir%/Enhanced Husks/Items/templar_armor.png" limb="RightLeg" hidelimb="true" scale="0.5" hideotherwearables="true" origin="0.5,0.5" sourcerect="4,137,79,145" />
+      <sprite name="Templar Armor Left Leg" texture="%ModDir%/Enhanced Husks/Items/templar_armor.png" limb="LeftLeg" hidelimb="true" scale="0.5" hideotherwearables="true" origin="0.5,0.5" sourcerect="96,139,90,144" />
+      <sprite name="Templar Armor Left Shoe" texture="%ModDir%/Enhanced Husks/Items/templar_armor.png" limb="LeftFoot" sound="footstep_armor_heavy" hidelimb="true" inherittexturescale="true" hideotherwearables="true" inheritorigin="true" sourcerect="303,241,58,43" origin="0.5,0.5" />
+      <sprite name="Templar Armor Right Shoe" texture="%ModDir%/Enhanced Husks/Items/templar_armor.png" limb="RightFoot" sound="footstep_armor_heavy" hidelimb="true" inherittexturescale="true" hideotherwearables="true" inheritorigin="true" sourcerect="368,242,56,42" origin="0.5,0.5" />
+      <sprite name="Templar Helmet" texture="%ModDir%/Enhanced Husks/Items/templar_armor.png" limb="Head" inheritlimbdepth="true" inheritscale="true" ignorelimbscale="true" scale="0.65" hidewearablesoftype="Hair" sourcerect="425,3,105,116" origin="0.5,0.44">
+        <StatusEffect type="OnWearing" target="Character" HideFace="true" ObstructVision="true" SpeedMultiplier="0.9" setvalue="true" disabledeltatime="true" />
+        <damagemodifier afflictionidentifiers="lacerations, bitewounds" armorsector="0.0,360.0" damagemultiplier="0.15" damagesound="LimbArmor" deflectprojectiles="true" />
+        <damagemodifier afflictiontypes="bleeding" armorsector="0.0,360.0" damagemultiplier="0.2" damagesound="LimbArmor" deflectprojectiles="true" />
+      </sprite>
+      <StatValue stattype="SwimmingSpeed" value="0.1" />
+      <StatValue stattype="WalkingSpeed" value="0.1" />
+      <damagemodifier armorsector="0.0,360.0" afflictionidentifiers="huskinfection" damagemultiplier="0.5" />
+      <StatusEffect type="OnWearing" target="Character" HideFace="true" />
+      <StatusEffect type="OnWearing" target="Character" interval="0.5" disabledeltatime="true">
+        <Affliction identifier="disguisedashusk" amount="1.0" />
+      </StatusEffect>
+      <StatusEffect target="Character" type="OnWearing" HideFace="true" setvalue="true">
+        <Affliction identifier="husktransformimmunitytemporary" amount="50" />
+      </StatusEffect>
+    </Wearable>
+  </Item>
+  <Item name="" identifier="priestrobes" category="Equipment" tags="smallitem,clothing,huskcult" fireproof="false" cargocontaineridentifier="metalcrate" description="" scale="0.5" impactsoundtag="impact_soft">
+    <PreferredContainer primary="crewcab" />
+    <Price baseprice="150" canbespecial="false" sold="false">
+      <Price storeidentifier="merchanthusk" minavailable="1" maxavailable="4" sold="true">
+        <Reputation faction="huskcult" min="100" />
+      </Price>
+    </Price>
+    <Deconstruct time="10">
+      <Item identifier="organicfiber" />
+    </Deconstruct>
+    <InventoryIcon texture="Content/Map/Outposts/Art/FactionItems.png" sourcerect="340,54,62,48" />
+    <Sprite texture="%ModDir%/Enhanced Husks/Items/priest_robe.png" sourcerect="434,189,126,76" depth="0.6" origin="0.5,0.5" />
+    <Body width="100" height="50" density="30" friction="0.8" restitution="0.01" />
+    <Wearable slots="Any,InnerClothes" variants="1" msg="ItemMsgPickUpSelect">
+      <sprite name="Priest robe Torso" texture="%ModDir%/Enhanced Husks/Items/priest_robe.png" limb="Torso" hidelimb="false" inherittexturescale="true" sourcerect="203,38,75,113" origin="0.5,0.5" />
+      <sprite name="Priest robe Left Lower Arm" texture="%ModDir%/Enhanced Husks/Items/priest_robe.png" limb="LeftForearm" hidelimb="true" inherittexturescale="true" sourcerect="367,118,58,71" origin="0.5,0.5" />
+      <sprite name="Priest robe Right Lower Arm" texture="%ModDir%/Enhanced Husks/Items/priest_robe.png" limb="RightForearm" hidelimb="true" inherittexturescale="true" sourcerect="303,120,58,72" origin="0.5,0.5" />
+      <sprite name="Priest robe Left Upper Arm" texture="%ModDir%/Enhanced Husks/Items/priest_robe.png" limb="LeftArm" hidelimb="true" inherittexturescale="true" sourcerect="371,6,48,94" origin="0.5,0.5" />
+      <sprite name="Priest robe Right Upper Arm" texture="%ModDir%/Enhanced Husks/Items/priest_robe.png" limb="RightArm" hidelimb="true" inherittexturescale="true" sourcerect="308,9,47,94" origin="0.5,0.5" />
+      <sprite name="Priest robe Waist" texture="%ModDir%/Enhanced Husks/Items/priest_robe.png" limb="Waist" hidelimb="true" hideotherwearables="true" inherittexturescale="true" sourcerect="214,199,62,53" origin="0.5,0.5" />
+      <sprite name="Priest robe Right Thigh" texture="%ModDir%/Enhanced Husks/Items/priest_robe.png" limb="RightThigh" hidelimb="true" inherittexturescale="true" sourcerect="11,9,71,118" origin="0.5,0.5" />
+      <sprite name="Priest robe Left Thigh" texture="%ModDir%/Enhanced Husks/Items/priest_robe.png" limb="LeftThigh" hidelimb="true" inherittexturescale="true" sourcerect="110,8,71,120" origin="0.5,0.5" />
+      <sprite name="Priest robe Right Leg" texture="%ModDir%/Enhanced Husks/Items/priest_robe.png" limb="RightLeg" hidelimb="true" inherittexturescale="true" sourcerect="8,137,81,146" origin="0.5,0.5" />
+      <sprite name="Priest robe Left Leg" texture="%ModDir%/Enhanced Husks/Items/priest_robe.png" limb="LeftLeg" hidelimb="true" inherittexturescale="true" sourcerect="99,137,92,144" origin="0.5,0.5" />
+      <sprite name="Priest robe Right Shoe" texture="%ModDir%/Enhanced Husks/Items/priest_robe.png" limb="RightFoot" hidelimb="true" inherittexturescale="true" sourcerect="311,251,55,34" origin="0.5,0.5" />
+      <sprite name="Priest robe Left Shoe" texture="%ModDir%/Enhanced Husks/Items/priest_robe.png" limb="LeftFoot" hidelimb="true" inherittexturescale="true" sourcerect="372,251,55,34" origin="0.5,0.5" />
+      <sprite name="Priest robe head" texture="%ModDir%/Enhanced Husks/Items/priest_robe.png" limb="Head" hidelimb="true" inheritlimbdepth="true" sourcerect="433,9,90,109" inherittexturescale="false" scale="0.35" origin="0.5,0.4" />
+      <damagemodifier armorsector="0.0,360.0" afflictionidentifiers="huskinfection" damagemultiplier="0.25" />
+      <damagemodifier afflictionidentifiers="blunttrauma,lacerations,gunshotwound,bitewounds" armorsector="0.0,360.0" damagemultiplier="0.70" />
+      <damagemodifier afflictionidentifiers="psychosis" armorsector="0.0,360.0" damagemultiplier="1.5" />
+      <damagemodifier afflictionidentifiers="burn" armorsector="0.0,360.0" damagemultiplier="0.85" />
+      <StatusEffect type="OnWearing" target="Character" interval="0.5" disabledeltatime="true">
+        <Affliction identifier="disguisedashusk" amount="1.0" />
+      </StatusEffect>
+      <StatusEffect target="Character" type="OnWearing" HideFace="false" setvalue="true">
+        <Affliction identifier="husktransformimmunitytemporary" amount="100" />
+      </StatusEffect>
+      <StatusEffect target="Character" type="OnWearing">
+        <Conditional huskinfection="gt 25" />
+        <ReduceAffliction type="damage" amount="0.25" />
+        <ReduceAffliction type="bleeding" amount="0.1" />
+        <ReduceAffliction type="husknausea" amount="25" />
+      </StatusEffect>
+    </Wearable>
+  </Item>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!--  Fancy little stuff made by Tfaltys, which based on their account they probably got hacked. -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <fin name="Fancy fin 1" identifier="Fancy fin 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="34,38,427,415" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Fancy fin 2" identifier="Fancy fin 2" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="486,37,200,354" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Fancy fin 4" identifier="Fancy fin 4" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="720,11,302,150" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Fancy fin 3" identifier="Fancy fin 3" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="718,170,300,182" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Window 1" identifier="Window 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="1068,38,204,319" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Window 2" identifier="Window 2" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="1288,59,84,300" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Buttress 2" identifier="Buttress 2" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="1402,38,139,155" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Buttress 1" identifier="Buttress 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="1402,207,145,187" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Arches 1" identifier="Arches 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="1568,25,417,400" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Arches 2" identifier="Arches 2" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="2118,-2,332,441" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Fancy ornament 1" identifier="Fancy ornament 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="34,478,400,106" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Fancy ornament 2" identifier="Fancy ornament 2" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="34,596,300,110" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Fancy ornament 3" identifier="Fancy ornament 3" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="34,719,328,150" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Fancy ornament 4" identifier="Fancy ornament 4" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="34,896,341,250" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Fancy ornament 5" identifier="Fancy ornament 5" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="34,1166,285,120" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Church collumn 1" identifier="Church collumn 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="393,596,103,411" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Church collumn 2" identifier="Church collumn 2" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="488,670,107,340" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Church collumn 3" identifier="Church collumn 3" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="2457,13,130,670" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Tentacle decor 1" identifier="Tentacle decor 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="400,1021,160,137" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Altar 1" identifier="Altar 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="335,1176,252,100" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Separator 1" identifier="Separator 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="334,1284,252,32" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Church tower 1" identifier="Church tower 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="608,451,250,649" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Tentacle decor 2" identifier="Tentacle decor 2" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="617,1126,82,150" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Tentacle decor 3" identifier="Tentacle decor 3" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="718,1126,196,150" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Church tower 2" identifier="Church tower 2" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="894,371,160,450" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Church tower 3" identifier="Church tower 3" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="1070,385,100,435" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Mini tower 1" identifier="Mini tower 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="1188,568,60,253" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Mini tower 2" identifier="Mini tower 2" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="1266,423,136,397" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Husk statue 3" identifier="Husk statue 3" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="1402,395,128,409" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Husk altar" identifier="Husk altar" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="878,847,300,253" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Husk statue 1" identifier="Husk statue 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="2284,985,145,346" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Husk statue 2" identifier="Husk statue 2" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="1223,854,76,93" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Stick skull 1" identifier="Stick skull 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="1222,944,80,91" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Wall light 1" identifier="Wall light 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="2383,790,124,130" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Husk railing 1" identifier="Husk railing 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="1218,1068,172,233" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Husk railing 2" identifier="Husk railing 2" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="1396,1035,165,290" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Husk altar element" identifier="Husk altar element" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="1586,787,171,119" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Arches 3" identifier="Arches 3" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="2584,305,188,323" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Spike wall 1" identifier="Spike wall 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="1575,1185,456,131" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Spikes 1" identifier="Spikes 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="2044,1162,200,153" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Seaweed 1" identifier="Seaweed 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="1541,448,150,235" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Seaweed 2" identifier="Seaweed 2" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="1706,444,400,280" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Seaweed 3" identifier="Seaweed 3" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="2144,441,298,310" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Roof tile 1" identifier="Roof tile 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="1554,956,300,223" depth="0.600" origin="0.5,0.5" />
+  </fin>
+  <fin name="Husk chair 1" identifier="Husk chair 1" scale="1" body="false" resizevertical="false">
+    <sprite texture="Husk Church Cathedral Visual Pack Items.png" sourcerect="1996,882,266,278" depth="0.600" origin="0.5,0.5" />
+  </fin>
+</Items>

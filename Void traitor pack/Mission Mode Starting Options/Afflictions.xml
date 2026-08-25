@@ -1,0 +1,601 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Afflictions>
+  <Affliction name="" identifier="lccheckapplicablelvl2" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" maxstrength="100" healableinmedicalclinic="false">
+    <Effect minstrength="0" maxstrength="100" strengthchange="-30">
+      <StatusEffect type="Always" target="Character" interval="1000000" disabledeltatime="true" comparison="And">
+        <!--Check that the character in question is alive and part of player team-->
+        <Conditional IsDead="False" />
+        <Conditional IsOnPlayerTeam="True" />
+        <GiveTalentInfo talentidentifiers="lcstartatlvl2" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="lccheckapplicablelvl4" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" maxstrength="100" healableinmedicalclinic="false">
+    <Effect minstrength="0" maxstrength="100" strengthchange="-30">
+      <StatusEffect type="Always" target="Character" interval="1000000" disabledeltatime="true" comparison="And">
+        <Conditional IsDead="False" />
+        <Conditional IsOnPlayerTeam="True" />
+        <GiveTalentInfo talentidentifiers="lcstartatlvl4" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="lccheckapplicablelvl6" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" maxstrength="100" healableinmedicalclinic="false">
+    <Effect minstrength="0" maxstrength="100" strengthchange="-30">
+      <StatusEffect type="Always" target="Character" interval="1000000" disabledeltatime="true" comparison="And">
+        <Conditional IsDead="False" />
+        <Conditional IsOnPlayerTeam="True" />
+        <GiveTalentInfo talentidentifiers="lcstartatlvl6" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="lccheckapplicablelvl8" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" maxstrength="100" healableinmedicalclinic="false">
+    <Effect minstrength="0" maxstrength="100" strengthchange="-30">
+      <StatusEffect type="Always" target="Character" interval="1000000" disabledeltatime="true" comparison="And">
+        <Conditional IsDead="False" />
+        <Conditional IsOnPlayerTeam="True" />
+        <GiveTalentInfo talentidentifiers="lcstartatlvl8" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="lccheckapplicablelvl12" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" maxstrength="100" healableinmedicalclinic="false">
+    <Effect minstrength="0" maxstrength="100" strengthchange="-30">
+      <StatusEffect type="Always" target="Character" interval="1000000" disabledeltatime="true" comparison="And">
+        <Conditional IsDead="False" />
+        <Conditional IsOnPlayerTeam="True" />
+        <GiveTalentInfo talentidentifiers="lcstartatlvl12" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="lccheckapplicablelvl16" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" maxstrength="100" healableinmedicalclinic="false">
+    <Effect minstrength="0" maxstrength="100" strengthchange="-30">
+      <StatusEffect type="Always" target="Character" interval="1000000" disabledeltatime="true" comparison="And">
+        <Conditional IsDead="False" />
+        <Conditional IsOnPlayerTeam="True" />
+        <GiveTalentInfo talentidentifiers="lcstartatlvl16" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="lccheckapplicablepassivexp1" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" maxstrength="100" healableinmedicalclinic="false">
+    <Effect minstrength="0" maxstrength="100" strengthchange="-30">
+      <StatusEffect type="Always" target="Character" interval="1000000" disabledeltatime="true" comparison="And">
+        <Conditional IsDead="False" />
+        <Conditional IsOnPlayerTeam="True" />
+        <GiveTalentInfo talentidentifiers="lcpassivexp1" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="lccheckapplicablepassivexp2" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" maxstrength="100" healableinmedicalclinic="false">
+    <Effect minstrength="0" maxstrength="100" strengthchange="-30">
+      <StatusEffect type="Always" target="Character" interval="1000000" disabledeltatime="true" comparison="And">
+        <Conditional IsDead="False" />
+        <Conditional IsOnPlayerTeam="True" />
+        <GiveTalentInfo talentidentifiers="lcpassivexp2" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="lccheckapplicablepassivexp3" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" maxstrength="100" healableinmedicalclinic="false">
+    <Effect minstrength="0" maxstrength="100" strengthchange="-30">
+      <StatusEffect type="Always" target="Character" interval="1000000" disabledeltatime="true" comparison="And">
+        <Conditional IsDead="False" />
+        <Conditional IsOnPlayerTeam="True" />
+        <GiveTalentInfo talentidentifiers="lcpassivexp3" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="lccheckapplicablepassivexp4" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" maxstrength="100" healableinmedicalclinic="false">
+    <Effect minstrength="0" maxstrength="100" strengthchange="-30">
+      <StatusEffect type="Always" target="Character" interval="1000000" disabledeltatime="true" comparison="And">
+        <Conditional IsDead="False" />
+        <Conditional IsOnPlayerTeam="True" />
+        <GiveTalentInfo talentidentifiers="lcpassivexp4" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="lccheckapplicablepassivexp5" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" maxstrength="100" healableinmedicalclinic="false">
+    <Effect minstrength="0" maxstrength="100" strengthchange="-30">
+      <StatusEffect type="Always" target="Character" interval="1000000" disabledeltatime="true" comparison="And">
+        <Conditional IsDead="False" />
+        <Conditional IsOnPlayerTeam="True" />
+        <GiveTalentInfo talentidentifiers="lcpassivexp5" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction name="" identifier="lccheckapplicablepassivexp6" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" maxstrength="100" healableinmedicalclinic="false">
+    <Effect minstrength="0" maxstrength="100" strengthchange="-30">
+      <StatusEffect type="Always" target="Character" interval="1000000" disabledeltatime="true" comparison="And">
+        <Conditional IsDead="False" />
+        <Conditional IsOnPlayerTeam="True" />
+        <GiveTalentInfo talentidentifiers="lcpassivexp6" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--XP multipliers-->
+  <Affliction identifier="lcxpgainmultiplier_0.5" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="ExperienceGainMultiplier" value="-0.5" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcxpgainmultiplier_0.75" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="ExperienceGainMultiplier" value="-0.25" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcxpgainmultiplier_1.25" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="ExperienceGainMultiplier" value="0.25" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcxpgainmultiplier_1.5" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="ExperienceGainMultiplier" value="0.5" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcxpgainmultiplier_1.75" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="ExperienceGainMultiplier" value="0.75" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcxpgainmultiplier_2" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="ExperienceGainMultiplier" value="1" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcxpgainmultiplier_5" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="ExperienceGainMultiplier" value="4" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcxpgainmultiplier_10" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="ExperienceGainMultiplier" value="9" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--Skill Gain multipliers-->
+  <Affliction identifier="lcskillgainmultiplier_0.5" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="SkillGainSpeed" value="-0.5" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcskillgainmultiplier_0.75" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="SkillGainSpeed" value="-0.25" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcskillgainmultiplier_1.25" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="SkillGainSpeed" value="0.25" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcskillgainmultiplier_1.5" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="SkillGainSpeed" value="0.5" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcskillgainmultiplier_1.75" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="SkillGainSpeed" value="0.75" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcskillgainmultiplier_2" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="SkillGainSpeed" value="1" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcskillgainmultiplier_5" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="SkillGainSpeed" value="4" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--Walk Speed-->
+  <Affliction identifier="lcwalkspeedmultiplier_0.25" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="WalkingSpeed" value="-0.75" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcwalkspeedmultiplier_0.5" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="WalkingSpeed" value="-0.5" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcwalkspeedmultiplier_0.75" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="WalkingSpeed" value="-0.25" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcwalkspeedmultiplier_1.25" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="WalkingSpeed" value="0.25" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcwalkspeedmultiplier_1.5" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="WalkingSpeed" value="0.5" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcwalkspeedmultiplier_1.75" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="WalkingSpeed" value="0.75" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcwalkspeedmultiplier_2" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="WalkingSpeed" value="1" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcwalkspeedmultiplier_3" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="WalkingSpeed" value="2" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--Swimming Speed-->
+  <Affliction identifier="lcswimspeedmultiplier_0.25" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="SwimmingSpeed" value="-0.75" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcswimspeedmultiplier_0.5" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="SwimmingSpeed" value="-0.5" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcswimspeedmultiplier_0.75" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="SwimmingSpeed" value="-0.25" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcswimspeedmultiplier_1.25" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="SwimmingSpeed" value="0.25" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcswimspeedmultiplier_1.5" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="SwimmingSpeed" value="0.5" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcswimspeedmultiplier_1.75" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="SwimmingSpeed" value="0.75" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcswimspeedmultiplier_2" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="SwimmingSpeed" value="1" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcswimspeedmultiplier_3" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="SwimmingSpeed" value="2" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--Friendly Fire-->
+  <Affliction identifier="lcfriendlyfiredamagemultiplier_0.1" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="TeamAttackMultiplier" value="-0.9" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcfriendlyfiredamagemultiplier_0.25" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="TeamAttackMultiplier" value="-0.75" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcfriendlyfiredamagemultiplier_0.5" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="TeamAttackMultiplier" value="-0.5" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcfriendlyfiredamagemultiplier_0.75" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="TeamAttackMultiplier" value="-0.25" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcfriendlyfiredamagemultiplier_1.5" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="TeamAttackMultiplier" value="0.5" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcfriendlyfiredamagemultiplier_2" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="TeamAttackMultiplier" value="1" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--Repair speed-->
+  <Affliction identifier="lcrepairspeedmultiplier_0.25" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="RepairSpeed" value="-0.75" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcrepairspeedmultiplier_0.5" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="RepairSpeed" value="-0.5" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcrepairspeedmultiplier_0.75" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="RepairSpeed" value="-0.25" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcrepairspeedmultiplier_1.25" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="RepairSpeed" value="0.25" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcrepairspeedmultiplier_1.5" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="RepairSpeed" value="0.5" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcrepairspeedmultiplier_1.75" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="RepairSpeed" value="0.75" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcrepairspeedmultiplier_2" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="RepairSpeed" value="1" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcrepairspeedmultiplier_3" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="RepairSpeed" value="2" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcrepairspeedmultiplier_10" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="RepairSpeed" value="9" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--Welding speed-->
+  <Affliction identifier="lcweldingspeedmultiplier_0.25" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="RepairToolStructureRepairMultiplier" value="-0.75" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcweldingspeedmultiplier_0.5" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="RepairToolStructureRepairMultiplier" value="-0.5" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcweldingspeedmultiplier_0.75" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="RepairToolStructureRepairMultiplier" value="-0.25" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcweldingspeedmultiplier_1.25" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="RepairToolStructureRepairMultiplier" value="0.25" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcweldingspeedmultiplier_1.5" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="RepairToolStructureRepairMultiplier" value="0.5" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcweldingspeedmultiplier_1.75" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="RepairToolStructureRepairMultiplier" value="0.75" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcweldingspeedmultiplier_2" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="RepairToolStructureRepairMultiplier" value="1" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcweldingspeedmultiplier_3" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="RepairToolStructureRepairMultiplier" value="2" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcweldingspeedmultiplier_10" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="RepairToolStructureRepairMultiplier" value="9" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--Vitality-->
+  <Affliction identifier="lcvitalitymultiplier_0.25" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="MaximumHealthMultiplier" value="-0.75" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcvitalitymultiplier_0.5" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="MaximumHealthMultiplier" value="-0.5" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcvitalitymultiplier_0.75" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="MaximumHealthMultiplier" value="-0.25" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcvitalitymultiplier_1.25" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="MaximumHealthMultiplier" value="0.25" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcvitalitymultiplier_1.5" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="MaximumHealthMultiplier" value="0.5" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcvitalitymultiplier_1.75" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="MaximumHealthMultiplier" value="0.75" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcvitalitymultiplier_2" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="MaximumHealthMultiplier" value="1" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <Affliction identifier="lcvitalitymultiplier_3" type="lcemitteraffliction" showiconthreshold="200" showinhealthscannerthreshold="200" limbspecific="false" maxstrength="100" treatmentthreshold="1000" duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="MaximumHealthMultiplier" value="2" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0" />
+  </Affliction>
+  <!--Fabrication speed-->
+  <!-- non functional statvalue, doesn't work in this context
+  <Affliction
+    identifier="lcfabricationspeedmultiplier_0.5"
+    type="lcemitteraffliction"
+	showiconthreshold="200"
+	showinhealthscannerthreshold="200"
+    limbspecific="false"
+    maxstrength="100"
+    treatmentthreshold="1000"
+	duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="FabricationSpeed" value="-0.5" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0"/>
+  </Affliction>
+  
+  <Affliction
+    identifier="lcfabricationspeedmultiplier_1.25"
+    type="lcemitteraffliction"
+	showiconthreshold="200"
+	showinhealthscannerthreshold="200"
+    limbspecific="false"
+    maxstrength="100"
+    treatmentthreshold="1000"
+	duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="FabricationSpeed" value="0.25" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0"/>
+  </Affliction>
+  
+  <Affliction
+    identifier="lcfabricationspeedmultiplier_1.5"
+    type="lcemitteraffliction"
+	showiconthreshold="200"
+	showinhealthscannerthreshold="200"
+    limbspecific="false"
+    maxstrength="100"
+    treatmentthreshold="1000"
+	duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="FabricationSpeed" value="0.5" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0"/>
+  </Affliction>
+  
+  <Affliction
+    identifier="lcfabricationspeedmultiplier_2"
+    type="lcemitteraffliction"
+	showiconthreshold="200"
+	showinhealthscannerthreshold="200"
+    limbspecific="false"
+    maxstrength="100"
+    treatmentthreshold="1000"
+	duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="FabricationSpeed" value="1" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0"/>
+  </Affliction>
+  
+  <Affliction
+    identifier="lcfabricationspeedmultiplier_3"
+    type="lcemitteraffliction"
+	showiconthreshold="200"
+	showinhealthscannerthreshold="200"
+    limbspecific="false"
+    maxstrength="100"
+    treatmentthreshold="1000"
+	duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="FabricationSpeed" value="2" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0"/>
+  </Affliction>
+  
+  <Affliction
+    identifier="lcfabricationspeedmultiplier_10"
+    type="lcemitteraffliction"
+	showiconthreshold="200"
+	showinhealthscannerthreshold="200"
+    limbspecific="false"
+    maxstrength="100"
+    treatmentthreshold="1000"
+	duration="125">
+    <Effect minstrength="0" maxstrength="100">
+      <StatValue stattype="FabricationSpeed" value="9" />
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,896,128,128" color="10,193,114,255" origin="0,0"/>
+  </Affliction> -->
+</Afflictions>

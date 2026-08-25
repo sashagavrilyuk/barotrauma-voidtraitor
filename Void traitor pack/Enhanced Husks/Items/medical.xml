@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<override>
+  <Items>
+    <!-- Name: Calyxanide -->
+    <!-- An antiparasitic drug used in the treatment of husk parasite infections. Will cure the infection regardless of its progress, unless it is at 100 strength. -->
+    <!-- *************************************************************************************************************************************************************************** -->
+    <Calyxanide name="" identifier="calyxanide" category="Medical" maxstacksize="32" maxstacksizecharacterinventory="8" cargocontaineridentifier="mediccrate" Tags="smallitem,chem,medical,syringe" description="" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_metal_light">
+      <Upgrade gameversion="0.10.0.0" scale="0.5" />
+      <PreferredContainer primary="medcab" minamount="0" maxamount="2" spawnprobability="1" />
+      <PreferredContainer primary="wreckmedcab" minamount="0" maxamount="2" spawnprobability="0.5" />
+      <PreferredContainer primary="outpostmedcompartment" minamount="0" maxamount="1" spawnprobability="0.25" />
+      <Price baseprice="400">
+        <Price storeidentifier="merchantoutpost" minavailable="5" />
+        <Price storeidentifier="merchantcity" minavailable="5" />
+        <Price storeidentifier="merchantresearch" minavailable="7" />
+        <Price storeidentifier="merchantmilitary" multiplier="1.1" minavailable="5" />
+        <Price storeidentifier="merchantmine" multiplier="1.1" minavailable="5" />
+        <Price storeidentifier="merchantmedical" multiplier="0.9" minavailable="7" />
+      </Price>
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="60">
+        <RequiredSkill identifier="medical" level="22" />
+        <RequiredItem identifier="huskeggs" mincondition="0.5" usecondition="true" />
+        <RequiredItem identifier="antibiotics" />
+        <RequiredItem identifier="stabilozine" />
+      </Fabricate>
+      <Deconstruct time="20">
+        <Item identifier="antibiotics" />
+        <Item identifier="stabilozine" />
+      </Deconstruct>
+      <SuitableTreatment identifier="huskinfection" suitability="100" />
+      <SuitableTreatment identifier="huskinfectionhuman" suitability="100" />
+      <SuitableTreatment identifier="huskmutation" suitability="100" />
+      <SuitableTreatment identifier="blacktoxin" suitability="100" />
+      <SuitableTreatment identifier="huskinfectioncontagion" suitability="100" />
+      <SuitableTreatment identifier="dormanthuskinfection" suitability="100" />
+      <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="897,449,63,63" origin="0.5,0.5" />
+      <Sprite texture="Content/Items/Medical/Medicines.png" sourcerect="223,69,38,70" depth="0.6" origin="0.5,0.5" />
+      <Body width="35" height="70" density="20" />
+      <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect" HitOnlyCharacters="true">
+        <StatusEffect type="OnFailure" target="This" Condition="-100.0" disabledeltatime="true">
+          <!-- No difference between failure and success when using this.-->
+          <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+        </StatusEffect>
+        <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true">
+          <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+        </StatusEffect>
+        <StatusEffect tags="medical" type="OnUse" target="UseTarget">
+          <Conditional entitytype="eq Character" />
+          <Affliction identifier="calyxanideinjection" amount="5" />
+        </StatusEffect>
+        <!-- Remove the item when fully used -->
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+        <!-- Injecting a still-conscious Husk will only piss it off and kill the "conscious" faster -->
+        <StatusEffect tags="medical,calyxanide" type="OnSuccess" target="UseTarget" duration="10.0" comparison="and">
+          <Conditional huskinfection="eq 100.0" />
+          <Conditional isunconscious="true" />
+          <Affliction identifier="organdamage" amount="3" />
+        </StatusEffect>
+        <StatusEffect tags="medical,calyxanide" type="OnSuccess" target="UseTarget" duration="10.0">
+          <Conditional IsHusk="true" />
+          <Affliction identifier="organdamage" amount="4" />
+        </StatusEffect>
+      </MeleeWeapon>
+      <Projectile characterusable="false" launchimpulse="20.0" sticktocharacters="true" launchrotation="-90">
+        <StatusEffect type="OnImpact" target="This" Condition="-100.0" disabledeltatime="true">
+          <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+        </StatusEffect>
+        <StatusEffect tags="medical,calyxanide" type="OnImpact" target="UseTarget">
+          <Affliction identifier="calyxanideinjection" amount="5" />
+        </StatusEffect>
+      </Projectile>
+    </Calyxanide>
+    <Item name="" identifier="huskeggsbasic" category="Medical,Material" maxstacksize="16" cargocontaineridentifier="chemicalcrate" Tags="smallitem,chem,medical" description="" useinhealthinterface="true" scale="0.3" RequireAimToUse="True">
+      <PreferredContainer primary="wrecktoxcontainer" spawnprobability="0.2" />
+      <Price baseprice="300">
+        <Price storeidentifier="merchantoutpost" sold="false" multiplier="1.2" />
+        <Price storeidentifier="merchantcity" multiplier="1.2" />
+        <Price storeidentifier="merchantresearch" minavailable="1.3" />
+        <Price storeidentifier="merchantmilitary" sold="false" multiplier="1.1" />
+        <Price storeidentifier="merchantmine" sold="false" multiplier="1.1" />
+      </Price>
+      <Holdable canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" holdpos="0,-80" aimpos="40,5" handle1="-30,14" handle2="30,14" aimable="false" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnSecondaryUse" target="This" Condition="-25.0" />
+        <StatusEffect type="OnSecondaryUse" target="This,Character" disabledeltatime="true">
+          <Conditional Condition="lte 1" />
+          <Use />
+        </StatusEffect>
+        <StatusEffect type="OnUse" target="This" Condition="-100.0" setvalue="true" />
+        <StatusEffect type="OnUse" target="UseTarget" duration="60.0">
+          <!-- HuskInfectionState must be less than 0.01 so you can't speed up the infection -->
+          <Conditional huskinfection="lt 0.01" />
+          <Affliction identifier="huskinfection" amount="0.01" />
+        </StatusEffect>
+        <StatusEffect type="OnUse" target="UseTarget">
+          <Conditional entitytype="eq Character" />
+          <Sound file="Content/Sounds/Damage/Gore6.ogg" range="500" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <Sprite texture="Content/Items/CreatureLoot/CreatureLoot.png" sourcerect="523,86,160,50" depth="0.6" origin="0.5,0.5" />
+      <Body width="140" height="45" density="10.5" />
+    </Item>
+  </Items>
+</override>

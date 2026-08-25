@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<prefabs>
+  <structure name="1-1" identifier="artmod_ekdockyard_biomeaphotic_wall" hideinmenus="true" width="2048" height="256" bodyheight="128" resizehorizontal="true" body="true" castshadow="true" minhealth="200" health="350" tags="inner" Scale="0.5" indestructibleinoutposts="false" spritecolor="200, 200, 200">
+    <sprite texture="Content/Map/Biomes/AphoticPlateau/LevelWallEdge.png" depth="0.06" sourcerect="0,0,4096,512" origin="1,1" />
+    <backgroundsprite texture="Content/Map/Biomes/AphoticPlateau/LevelWallEdge.png" sourcerect="0,0,4096,512" color="60,60,60,255" depth="0.9" origin="1,1" />
+  </structure>
+  <Wall name="1.1" identifier="artmod_Wall1" descriptionidentifier="backgroundwall" hideinmenus="true" allowattachitems="true" width="16" height="16" resizehorizontal="true" resizevertical="true" texturescale="0.5,0.5" category="Decorative" tags="backgroundwall" subcategory="backgroundwall">
+    <sprite texture="Content/Map/Biomes/AphoticPlateau/LevelWall.png" sourcerect="0,0,1024,1024" depth="0.98" premultiplyalpha="false" />
+  </Wall>
+</prefabs>

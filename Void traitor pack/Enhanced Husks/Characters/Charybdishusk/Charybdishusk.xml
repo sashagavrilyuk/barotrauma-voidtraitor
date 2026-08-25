@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Character SpeciesName="Charybdishusk" SpeciesTranslationOverride="charybdis" DisplayName="" group="husk" Humanoid="False" HasInfo="False" CanInteract="False" Husk="False" UseHuskAppendage="False" NeedsAir="False" NeedsWater="False" UseHumanAI="False" IsMachine="False" CanSpeak="True" ShowHealthBar="True" UseBossHealthBar="True" Noise="100" Visibility="100" BloodDecal="blackblood" BleedParticleAir="blackblood" BleedParticleWater="blackwaterblood" BleedParticleMultiplier="1" CanEat="False" EatingSpeed="200" UsePathFinding="True" PathFinderPriority="1" HideInSonar="False" HideInThermalGoggles="False" SonarDisruption="0" DistantSonarRange="0" DisableDistance="100000" SoundInterval="10" DrawLast="False" AITurretPriority="1" AISlowTurretPriority="1" DespawnContainer="">
+  <ragdolls folder="default" />
+  <animations folder="default" />
+  <damageemitter drawontop="True" Particle="blackgib" AngleMin="0" AngleMax="360" ScaleMin="0.5" ScaleMax="1" VelocityMin="200" VelocityMax="300" EmitInterval="0" ParticlesPerSecond="0" ParticleAmount="2" HighQualityCollisionDetection="False" CopyEntityAngle="False" />
+  <bloodemitter Particle="blackwaterblood" AngleMin="0" AngleMax="360" ScaleMin="7" ScaleMax="15" VelocityMin="0" VelocityMax="100" EmitInterval="0" ParticlesPerSecond="0" ParticleAmount="10" HighQualityCollisionDetection="False" CopyEntityAngle="False" />
+  <gibemitter Particle="blackwaterblood" AngleMin="0" AngleMax="360" ScaleMin="7" ScaleMax="15" VelocityMin="0" VelocityMax="100" EmitInterval="0" ParticlesPerSecond="0" ParticleAmount="2" HighQualityCollisionDetection="False" CopyEntityAngle="False" />
+  <gibemitter drawontop="True" Particle="blackgib" AngleMin="0" AngleMax="360" ScaleMin="0.5" ScaleMax="1" VelocityMin="200" VelocityMax="700" EmitInterval="0" ParticlesPerSecond="0" ParticleAmount="20" HighQualityCollisionDetection="False" CopyEntityAngle="False" />
+  <gibemitter Particle="blackgib" AngleMin="0" AngleMax="360" ScaleMin="2" ScaleMax="4" VelocityMin="50" VelocityMax="1000" EmitInterval="0" ParticlesPerSecond="0" ParticleAmount="20" HighQualityCollisionDetection="False" CopyEntityAngle="False" />
+  <health Vitality="8500" DoesBleed="True" CrushDepth="Infinity" UseHealthWindow="False" BleedingReduction="0" BurnReduction="0" ConstantHealthRegeneration="0" HealthRegenerationWhenEating="0" StunImmunity="False" PoisonImmunity="False" PoisonVulnerability="1" EmpVulnerability="0" ApplyAfflictionColors="False">
+    <Limb />
+    <Limb />
+    <Limb />
+    <Limb />
+    <Limb />
+    <Limb />
+    <Limb />
+    <Limb />
+    <Limb />
+    <Limb />
+    <Limb />
+    <Limb />
+    <Limb />
+  </health>
+  <sound gender="None" dontmuffle="true" File="%ModDir%/Enhanced Husks/Characters/Charybdishusk/idle1.ogg" State="Idle" Range="20000" Volume="1" Tags="" />
+  <sound gender="None" dontmuffle="true" File="%ModDir%/Enhanced Husks/Characters/Charybdishusk/idle2.ogg" State="Idle" Range="20000" Volume="1" Tags="" />
+  <sound gender="None" dontmuffle="true" File="%ModDir%/Enhanced Husks/Characters/Charybdishusk/idle3.ogg" State="Attack" Range="20000" Volume="1" Tags="" />
+  <sound gender="None" dontmuffle="true" File="%ModDir%/Enhanced Husks/Characters/Charybdishusk/attack1.ogg" State="Attack" Range="20000" Volume="1" Tags="" />
+  <sound gender="None" dontmuffle="true" File="%ModDir%/Enhanced Husks/Characters/Charybdishusk/attack2.ogg" State="Attack" Range="20000" Volume="1" Tags="" />
+  <sound gender="None" dontmuffle="true" File="%ModDir%/Enhanced Husks/Characters/Charybdishusk/attack3.ogg" State="Attack" Range="20000" Volume="1" Tags="" />
+  <sound gender="None" dontmuffle="true" File="%ModDir%/Enhanced Husks/Characters/Charybdishusk/damage1.ogg" State="Damage" Range="20000" Volume="1" Tags="" />
+  <sound gender="None" dontmuffle="true" File="%ModDir%/Enhanced Husks/Characters/Charybdishusk/damage2.ogg" State="Damage" Range="20000" Volume="1" Tags="" />
+  <sound gender="None" dontmuffle="true" File="%ModDir%/Enhanced Husks/Characters/Charybdishusk/damage3.ogg" State="Damage" Range="20000" Volume="1" Tags="" />
+  <sound gender="None" dontmuffle="true" File="%ModDir%/Enhanced Husks/Characters/Charybdishusk/death1.ogg" State="Die" Range="30000" Volume="1" Tags="" />
+  <sound gender="None" dontmuffle="true" File="%ModDir%/Enhanced Husks/Characters/Charybdishusk/death2.ogg" State="Die" Range="30000" Volume="1" Tags="" />
+  <ai CombatStrength="10000" Sight="10" Hearing="10" AggressionHurt="100" AggressionGreed="10" FleeHealthThreshold="0" AttackWhenProvoked="False" AvoidGunfire="False" DamageThreshold="0" AvoidTime="3" MinFleeTime="20" AggressiveBoarding="False" EnforceAggressiveBehaviorForMissions="True" TargetOuterWalls="True" RandomAttack="True" CanOpenDoors="False" UsePathFindingToGetInside="False" KeepDoorsClosed="False" AvoidAbyss="False" StayInAbyss="True" PatrolFlooded="False" PatrolDry="False" StartAggression="0" MaxAggression="100" AggressionCumulation="25" WallTargetingMethod="Target">
+    <target Tag="charybdis" State="Attack" Priority="1000" ReactDistance="2000" AttackDistance="1000" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="2500" IgnoreTargetSize="False" CircleRotationSpeed="0.4" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="3" CircleMaxRandomOffset="0" />
+    <target damagethreshold="0" Tag="decoy" State="Attack" Priority="600" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreIfNotInSameSub="True" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+    <target Tag="stronger" State="Attack" Priority="100" ReactDistance="2000" AttackDistance="1000" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="2500" IgnoreTargetSize="False" CircleRotationSpeed="0.4" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="3" CircleMaxRandomOffset="0" />
+    <target damagethreshold="0" Tag="provocative" State="Attack" Priority="200" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreIfNotInSameSub="True" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+    <target damagethreshold="0" Tag="weaker" State="Attack" Priority="100" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreIfNotInSameSub="True" IgnoreIncapacitated="True" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+    <target tag="human" state="Attack" priority="500" PerceptionDistanceMultiplier="5.0" reactdistance="0" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreifnotinsamesub="False" ignoreincapacitated="True" sweepdistance="0" sweepstrength="10" sweepspeed="1" threshold="0" attackpattern="Straight">
+      <Conditional TargetSelf="True" HealthPercentage="lt 75" />
+    </target>
+    <target damagethreshold="0" Tag="room" State="Attack" Priority="80" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="10000" IgnoreTargetSize="False" CircleRotationSpeed="2" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="2" CircleMaxRandomOffset="10" />
+    <target damagethreshold="0" Tag="sonar" State="Attack" Priority="10" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="10000" IgnoreTargetSize="False" CircleRotationSpeed="2" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="2" CircleMaxRandomOffset="10" />
+    <target damagethreshold="0" Tag="terminalcell" State="Idle" Priority="1" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+    <target damagethreshold="0" Tag="leucocyte" State="Idle" Priority="1" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+    <latchonto attachtocharacters="false" attachtosub="true" attachtowalls="true" mindeattachspeed="4.0" maxdeattachspeed="7.0" damageondetach="5" detachstun="5.0" attachlimb="Head" localattachpos="0,0" offset="0" attachlimbrotation="0" weld="true" maxattachduration="10" cooldown="20" />
+    <target tag="cultist" state="Idle" priority="0" ignoreinside="True" ignoreoutside="True" ignoreifnotinsamesub="True" ignoreincapacitated="True" threshold="1" />
+    <target tag="truepriestcultist" state="Protect" priority="1" reactdistance="1000" ignoreinside="true" />
+  </ai>
+  <Inventory slots="Any, Any, Any, Any, Any, Any, Any, Any, Any" accessiblewhenalive="False" commonness="3">
+    <Item identifier="diversremains" />
+    <Item identifier="titanite" amount="2" />
+    <Item identifier="scrap" amount="2" />
+    <Item Identifier="huskeggsbasic" />
+  </Inventory>
+  <Inventory slots="Any, Any, Any, Any, Any, Any, Any, Any, Any" accessiblewhenalive="False" commonness="1">
+    <Item identifier="diversremains" />
+    <Item identifier="titanite" amount="1" />
+    <Item identifier="scrap" amount="4" />
+    <Item Identifier="huskeggsbasic" />
+    <Item Identifier="huskeggsbasic" />
+  </Inventory>
+  <Inventory slots="Any, Any, Any, Any, Any, Any, Any, Any, Any" accessiblewhenalive="False" commonness="1">
+    <Item identifier="diversremains" />
+    <Item identifier="titanite" amount="2" />
+    <Item identifier="scrap" amount="3" />
+    <Item Identifier="unstablehuskeggs" />
+  </Inventory>
+  <StatusEffect type="OnActive" target="this">
+    <Sound file="%ModDir%/Enhanced Husks/Characters/Endwormhusk/husk_ambience.ogg" loop="true" range="20000" dontmuffle="true" />
+  </StatusEffect>
+  <StatusEffect type="OnActive" target="this" targetlimb="Head" delay="4" comparison="and" stackable="false" checkconditionalalways="true">
+    <Conditional islatched="True" />
+    <Affliction identifier="genericaffliction" amount="5000" />
+    <SpawnItem identifier="charybdismonsterspawn" spawnposition="This" count="1" spread="0" />
+    <SpawnCharacter speciesname="snatcher" count="1" spread="0" />
+    <SpawnCharacter speciesname="nibbler" count="2" spread="0" />
+    <SpawnCharacter speciesname="Huskdefect" count="3" spread="0" />
+  </StatusEffect>
+  <StatusEffect type="OnActive" target="this" delay="1" comparison="and" stackable="false">
+    <Conditional islatched="False" />
+    <ReduceAffliction identifier="genericaffliction" amount="5000" />
+  </StatusEffect>
+  <StatusEffect type="OnDamaged" target="This" onlyplayertriggered="true" requiredafflictions="damage,burn">
+    <Conditional isdead="False" />
+    <!-- Large amounts of damage briefly "confuse" the monster, however this only makes it aggressive -->
+    <AITrigger state="Aggressive" duration="5" probability="1" mindamage="700" allowtobeoverridden="false" allowtooverride="true" />
+    <sound file="%ModDir%/Enhanced Husks/Characters/Charybdishusk/death1.ogg" range="25000" volume="1" dontmuffle="true" selectionmode="random" />
+    <sound file="%ModDir%/Enhanced Husks/Characters/Charybdishusk/death2.ogg" range="25000" volume="1" dontmuffle="true" />
+  </StatusEffect>
+</Character>

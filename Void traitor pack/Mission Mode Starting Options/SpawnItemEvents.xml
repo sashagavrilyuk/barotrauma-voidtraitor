@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RandomEvents>
+  <EventPrefabs>
+    <!--Storage Cab-->
+    <ScriptedEvent identifier="LCAutofillBasicCrafting">
+      <TagAction criteria="itemtag:storagecab" tag="storagecab" Submarinetype="Player" />
+      <SpawnAction itemidentifier="_LCAutofillBasicCrafting" targetinventory="storagecab" amount="10" />
+    </ScriptedEvent>
+    <ScriptedEvent identifier="LCAutofillAdvancedCrafting">
+      <TagAction criteria="itemtag:storagecab" tag="storagecab" Submarinetype="Player" />
+      <SpawnAction itemidentifier="_LCAutofillAdvancedCrafting" targetinventory="storagecab" amount="5" />
+    </ScriptedEvent>
+    <ScriptedEvent identifier="LCAutofillChemicalCrafting">
+      <TagAction criteria="itemtag:storagecab" tag="storagecab" Submarinetype="Player" />
+      <SpawnAction itemidentifier="_LCAutofillChemicalCrafting" targetinventory="storagecab" amount="5" />
+    </ScriptedEvent>
+    <ScriptedEvent identifier="LCAutofillAlienCrafting">
+      <TagAction criteria="itemtag:storagecab" tag="storagecab" Submarinetype="Player" />
+      <SpawnAction itemidentifier="_LCAutofillAlienCrafting" targetinventory="storagecab" amount="2" />
+    </ScriptedEvent>
+    <ScriptedEvent identifier="LCAutofillMineralCab">
+      <TagAction criteria="itemtag:mineralcab" tag="mineralcab" Submarinetype="Player" />
+      <SpawnAction itemidentifier="_LCAutofillMineralCab" targetinventory="mineralcab" amount="2" />
+    </ScriptedEvent>
+    <!--medfabcab-->
+    <ScriptedEvent identifier="LCAutofillMedicalCrafting">
+      <TagAction criteria="itemtag:medfabcab" tag="medfabcab" Submarinetype="Player" />
+      <SpawnAction itemidentifier="_LCAutofillMedicalCrafting" targetinventory="medfabcab" amount="5" />
+    </ScriptedEvent>
+    <!--medcab-->
+    <ScriptedEvent identifier="LCAutofillAdvancedMedical">
+      <TagAction criteria="itemtag:medcontainer" tag="medcontainer" Submarinetype="Player" />
+      <SpawnAction itemidentifier="_LCAutofillAdvancedMedical" targetinventory="medcontainer" amount="2" />
+    </ScriptedEvent>
+    <!--toxcab-->
+    <ScriptedEvent identifier="LCAutofillgenetics">
+      <TagAction criteria="itemtag:toxcab" tag="toxcab" Submarinetype="Player" />
+      <SpawnAction itemidentifier="_LCAutofillgenetics" targetinventory="toxcab" />
+    </ScriptedEvent>
+    <ScriptedEvent identifier="LCAutofillToxCab">
+      <TagAction criteria="itemtag:toxcab" tag="toxcab" Submarinetype="Player" />
+      <SpawnAction itemidentifier="_LCAutofillToxCab" targetinventory="toxcab" amount="2" />
+    </ScriptedEvent>
+    <!--reactorcab-->
+    <ScriptedEvent identifier="LCAutofillReactorCab">
+      <TagAction criteria="itemtag:reactorcab" tag="reactorcab" Submarinetype="Player" />
+      <SpawnAction itemidentifier="_LCAutofillReactorCab" targetinventory="reactorcab" amount="2" />
+    </ScriptedEvent>
+    <!--engcab-->
+    <ScriptedEvent identifier="LCAutofillenginecab">
+      <TagAction criteria="itemtag:engcab" tag="engcab" Submarinetype="Player" />
+      <SpawnAction itemidentifier="_LCAutofillenginecab" targetinventory="engcab" amount="3" />
+    </ScriptedEvent>
+    <ScriptedEvent identifier="LCAutofillwires">
+      <TagAction criteria="itemtag:reactorcab" tag="reactorcab" Submarinetype="Player" />
+      <SpawnAction itemidentifier="_LCAutofillwires" targetinventory="reactorcab" amount="5" />
+    </ScriptedEvent>
+    <!--crewcab-->
+    <ScriptedEvent identifier="LCAutofillcrewcab">
+      <TagAction criteria="itemtag:crewcab" tag="crewcab" Submarinetype="Player" />
+      <SpawnAction itemidentifier="_LCAutofillcrewcab" targetinventory="crewcab" amount="5" />
+    </ScriptedEvent>
+    <!--secarmcab-->
+    <ScriptedEvent identifier="LCAutofillsecarmcab">
+      <TagAction criteria="itemtag:secarmcab" tag="secarmcab" Submarinetype="Player" />
+      <SpawnAction itemidentifier="_LCAutofillsecarmcab" targetinventory="secarmcab" />
+    </ScriptedEvent>
+    <!--Factions-->
+    <ScriptedEvent identifier="LCAutofillclown">
+      <SpawnAction itemidentifier="clowncrate" targettag="clowncrate" spawnlocation="MainSub" ignorebyai="true" />
+      <SpawnAction itemidentifier="_LCAutofillclown" targetinventory="clowncrate" />
+    </ScriptedEvent>
+    <ScriptedEvent identifier="LCAutofillcultist">
+      <SpawnAction itemidentifier="lchuskcrate" targettag="huskcrate" spawnlocation="MainSub" ignorebyai="true" />
+      <!--Spawn unique variant of crate as game refuses to trigger a coloring status effect when starting a round, yet works when I manually trigger the very same event, we love events-->
+      <SpawnAction itemidentifier="_LCAutofillcultist" targetinventory="huskcrate" />
+    </ScriptedEvent>
+    <!--Exosuit-->
+    <ScriptedEvent identifier="LCAutofillexosuit">
+      <SpawnAction itemidentifier="exosuit" targettag="spawnedexosuit" spawnlocation="MainSub" />
+      <!--Spawn unique variant of crate as game refuses to trigger a coloring status effect when starting a round, yet works when I manually trigger the very same event, we love events-->
+      <SpawnAction itemidentifier="fuelrod" targetinventory="spawnedexosuit" />
+      <SpawnAction itemidentifier="oxygentank" targetinventory="spawnedexosuit" />
+    </ScriptedEvent>
+    <!--This one is a bit more complicated due to needing to remove existing suits to allow other suits to spawn-->
+    <ScriptedEvent identifier="LCAutofilldivingsuit">
+      <TagAction criteria="itemidentifier:divingsuit" tag="divingsuit" Submarinetype="Player" />
+      <TagAction criteria="itemtag:divingsuitcontainer" tag="divingsuitcontainer" Submarinetype="Player" />
+      <StatusEffectAction targettag="divingsuit">
+        <StatusEffect target="This">
+          <Conditonal hastag="divingsuitcontainer" targetcontainer="true" />
+          <RemoveItem />
+        </StatusEffect>
+      </StatusEffectAction>
+      <StatusEffectAction targettag="divingsuitcontainer">
+        <StatusEffect target="This" disabledeltatime="true" stackable="false" spawnitemrandomly="true">
+          <!--Baro probability jank, count="x" value does not work with spawnitemrandomly, can probably be done better, but it's only once per round (in theory not causing any issues of lag) and I know this method works-->
+          <SpawnItem identifiers="PUCS" spawnposition="ThisInventory" />
+          <!--1/24 chance-->
+          <SpawnItem identifiers="slipsuit" spawnposition="ThisInventory" />
+          <!--2/24 chance-->
+          <SpawnItem identifiers="slipsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="abyssdivingsuit" spawnposition="ThisInventory" />
+          <!--4/24 chance-->
+          <SpawnItem identifiers="abyssdivingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="abyssdivingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="abyssdivingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="combatdivingsuit" spawnposition="ThisInventory" />
+          <!--4/24 chance-->
+          <SpawnItem identifiers="combatdivingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="combatdivingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="combatdivingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="divingsuit" spawnposition="ThisInventory" />
+          <!--10/24 chance-->
+          <SpawnItem identifiers="divingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="divingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="divingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="divingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="divingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="divingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="divingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="divingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="divingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="divingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="divingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="divingsuit" spawnposition="ThisInventory" />
+        </StatusEffect>
+      </StatusEffectAction>
+      <TagAction criteria="itemtag:diving" tag="spawneddivingsuit" Submarinetype="Player" />
+      <!--Spawn oxygen inside suits afterwards-->
+      <StatusEffectAction targettag="spawneddivingsuit">
+        <StatusEffect target="This" disabledeltatime="true" stackable="false">
+          <SpawnItem identifiers="oxygentank" spawnposition="ThisInventory" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="LCAutofilldivingsuithightier">
+      <!--Almost identical dupe, just removes regular diving suits from spawn pool-->
+      <TagAction criteria="itemidentifier:divingsuit" tag="divingsuit" Submarinetype="Player" />
+      <TagAction criteria="itemtag:divingsuitcontainer" tag="divingsuitcontainer" Submarinetype="Player" />
+      <StatusEffectAction targettag="divingsuit">
+        <StatusEffect target="This">
+          <Conditonal hastag="divingsuitcontainer" targetcontainer="true" />
+          <RemoveItem />
+        </StatusEffect>
+      </StatusEffectAction>
+      <StatusEffectAction targettag="divingsuitcontainer">
+        <StatusEffect target="This" disabledeltatime="true" stackable="false" spawnitemrandomly="true">
+          <SpawnItem identifiers="PUCS" spawnposition="ThisInventory" />
+          <!--1/11 chance-->
+          <SpawnItem identifiers="slipsuit" spawnposition="ThisInventory" />
+          <!--2/11 chance-->
+          <SpawnItem identifiers="slipsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="abyssdivingsuit" spawnposition="ThisInventory" />
+          <!--4/11 chance-->
+          <SpawnItem identifiers="abyssdivingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="abyssdivingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="abyssdivingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="combatdivingsuit" spawnposition="ThisInventory" />
+          <!--4/11 chance-->
+          <SpawnItem identifiers="combatdivingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="combatdivingsuit" spawnposition="ThisInventory" />
+          <SpawnItem identifiers="combatdivingsuit" spawnposition="ThisInventory" />
+        </StatusEffect>
+      </StatusEffectAction>
+      <TagAction criteria="itemtag:diving" tag="spawneddivingsuit" Submarinetype="Player" />
+      <StatusEffectAction targettag="spawneddivingsuit">
+        <StatusEffect target="This" disabledeltatime="true" stackable="false">
+          <SpawnItem identifiers="oxygentank" spawnposition="ThisInventory" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="LCAutofillSurpriseItem">
+      <TagAction criteria="player" tag="player" />
+      <StatusEffectAction targettag="player">
+        <StatusEffect target="This" spawnitemrandomly="true">
+          <SpawnItem identifiers="divingknife" spawnposition="SameInventory" />
+          <SpawnItem identifiers="divingknife" spawnposition="SameInventory" />
+          <SpawnItem identifiers="crowbar" spawnposition="SameInventory" />
+          <SpawnItem identifiers="crowbar" spawnposition="SameInventory" />
+          <SpawnItem identifiers="fixfoamgrenade" spawnposition="SameInventory" />
+          <SpawnItem identifiers="handcuffs" spawnposition="SameInventory" />
+          <SpawnItem identifiers="crowbarhardened" spawnposition="SameInventory" />
+          <SpawnItem identifiers="screwdriverhardened" spawnposition="SameInventory" />
+          <SpawnItem identifiers="wrenchhardened" spawnposition="SameInventory" />
+          <SpawnItem identifiers="divingknifehardened" spawnposition="SameInventory" />
+          <SpawnItem identifiers="chemgrenade" spawnposition="SameInventory" />
+          <SpawnItem identifiers="empgrenade" spawnposition="SameInventory" />
+          <SpawnItem identifiers="heavywrench" spawnposition="SameInventory" />
+          <SpawnItem identifiers="batterycell" spawnposition="SameInventory" />
+          <SpawnItem identifiers="batterycell" spawnposition="SameInventory" />
+          <SpawnItem identifiers="fulguriumbatterycell" spawnposition="SameInventory" />
+          <SpawnItem identifiers="oxygenitetank" spawnposition="SameInventory" />
+          <SpawnItem identifiers="incendiumfueltank" spawnposition="SameInventory" />
+          <SpawnItem identifiers="glowstick" spawnposition="SameInventory" />
+          <SpawnItem identifiers="flare" spawnposition="SameInventory" />
+          <SpawnItem identifiers="cigar" spawnposition="SameInventory" />
+          <SpawnItem identifiers="spinelingspikeloot" spawnposition="SameInventory" />
+          <SpawnItem identifiers="smallmudraptoregg" spawnposition="SameInventory" />
+          <SpawnItem identifiers="antidama1" spawnposition="SameInventory" />
+          <SpawnItem identifiers="antidama1" spawnposition="SameInventory" />
+          <SpawnItem identifiers="ethanol" spawnposition="SameInventory" />
+          <SpawnItem identifiers="rum" spawnposition="SameInventory" />
+          <SpawnItem identifiers="banana" spawnposition="SameInventory" />
+          <SpawnItem identifiers="antibleeding1" spawnposition="SameInventory" />
+          <SpawnItem identifiers="antibleeding1" spawnposition="SameInventory" />
+          <SpawnItem identifiers="antibloodloss1" spawnposition="SameInventory" />
+          <SpawnItem identifiers="opium" spawnposition="SameInventory" />
+          <SpawnItem identifiers="alienblood" spawnposition="SameInventory" />
+          <SpawnItem identifiers="adrenaline" spawnposition="SameInventory" />
+          <SpawnItem identifiers="proteinbar" spawnposition="SameInventory" />
+          <SpawnItem identifiers="pomegrenadeextract" spawnposition="SameInventory" />
+          <SpawnItem identifiers="energydrink" spawnposition="SameInventory" />
+          <SpawnItem identifiers="steroids" spawnposition="SameInventory" />
+          <SpawnItem identifiers="combatstimulantsyringe" spawnposition="SameInventory" />
+          <SpawnItem identifiers="meth" spawnposition="SameInventory" />
+          <SpawnItem identifiers="flashpowder" spawnposition="SameInventory" />
+          <SpawnItem identifiers="ballistichelmet1" spawnposition="SameInventory" />
+          <SpawnItem identifiers="thermalgoggles" spawnposition="SameInventory" />
+          <SpawnItem identifiers="oxygeniteshard" spawnposition="SameInventory" />
+          <SpawnItem identifiers="skillbooksubmarinewarfare" spawnposition="SameInventory" />
+          <SpawnItem identifiers="skillbookeuropanmedicine" spawnposition="SameInventory" />
+          <SpawnItem identifiers="skillbookhandyseaman" spawnposition="SameInventory" />
+          <SpawnItem identifiers="skillbooksailorsguide" spawnposition="SameInventory" />
+          <SpawnItem identifiers="accordion" spawnposition="SameInventory" />
+          <SpawnItem identifiers="guitar" spawnposition="SameInventory" />
+          <SpawnItem identifiers="harmonica" spawnposition="SameInventory" />
+          <SpawnItem identifiers="handheldterminal" spawnposition="SameInventory" />
+          <SpawnItem identifiers="crawlermask" spawnposition="SameInventory" />
+          <SpawnItem identifiers="bikehorn" spawnposition="SameInventory" />
+          <SpawnItem identifiers="extinguisher" spawnposition="SameInventory" />
+          <SpawnItem identifiers="detonator" spawnposition="SameInventory" />
+          <SpawnItem identifiers="lcrevolverspawn" spawnposition="SameInventory" />
+          <SpawnItem identifiers="lcharpoongunspawn" spawnposition="SameInventory" />
+          <SpawnItem identifiers="lcmachinepistolspawn" spawnposition="SameInventory" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="LCAutofillTier1ArmedTrigger">
+      <TagAction criteria="player" tag="player" />
+      <StatusEffectAction targettag="player">
+        <StatusEffect target="This" spawnitemrandomly="true">
+          <SpawnItem identifiers="lcrevolverspawn" spawnposition="SameInventory" />
+          <SpawnItem identifiers="lcharpoongunspawn" spawnposition="SameInventory" />
+          <SpawnItem identifiers="lcmachinepistolspawn" spawnposition="SameInventory" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="LCAutofillTier2ArmedTrigger">
+      <TagAction criteria="player" tag="player" />
+      <StatusEffectAction targettag="player">
+        <StatusEffect target="This" spawnitemrandomly="true">
+          <SpawnItem identifiers="lcsmgspawn" spawnposition="SameInventory" />
+          <SpawnItem identifiers="lcshotgunspawn" spawnposition="SameInventory" />
+          <SpawnItem identifiers="lcriflespawn" spawnposition="SameInventory" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="LCAutofillTier3ArmedTrigger">
+      <TagAction criteria="player" tag="player" />
+      <StatusEffectAction targettag="player">
+        <StatusEffect target="This" spawnitemrandomly="true">
+          <SpawnItem identifiers="lchandcannonspawn" spawnposition="SameInventory" />
+          <SpawnItem identifiers="lcassaultriflespawn" spawnposition="SameInventory" />
+          <SpawnItem identifiers="lcautoshotgunspawn" spawnposition="SameInventory" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="LCEmitterRemove">
+      <!--Event to remove remaining emitters-->
+      <!--Doesn't work-->
+      <TagAction criteria="itemtag:emittertag" tag="emittertagforremoval" Submarinetype="Player" />
+      <TagAction criteria="itemtag:emittertag" tag="emittertag" Submarinetype="Player" />
+      <StatusEffectAction targettag="emittertagforremoval">
+        <StatusEffect target="This">
+          <RemoveItem />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+  </EventPrefabs>
+</RandomEvents>

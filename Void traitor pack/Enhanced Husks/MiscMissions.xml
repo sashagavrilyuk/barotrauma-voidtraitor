@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<override>
+  <Missions>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!--                      IMPROVED HUSKS MISSIONS BY HYPES                     -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!--                   I changed it so it has more flavour (text)              -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <MonsterMission name="Husked Thresher Swarm" identifier="hypeskillhuskthresherswarm" tags="killmonster,killmonster_set3" type="Monster" description="A swarm of husked threshers has been terrorizing vessels traveling between [location1] and [location2]. A reward of [reward] credits has been promised to anyone who can neutralise this threat." difficulty="3" commonness="30" reward="6000" sonarlabel="Husk Thresher Swarm" maxsonarmarkerdistance="10000" successmessage="The swarm has been terminated.">
+      <monster character="tigerthresherhusk" min="4" max="7" />
+      <monster character="huskmutantbonethresher" min="1" max="2" />
+      <monster character="bonethresherhusk" min="1" max="4" />
+      <monster character="HuskmutantendwormheadSpec" min="0" max="1" />
+      <Reputation identifier="location" amount="10" />
+      <Icon texture="Content/UI/MissionIcons.png" sourcerect="768,256,256,256" color="214,50,48" />
+      <message header="Target terminated" text="Divers rejoice, the sea is ever so slightly safer! Navigate the submarine out of the cavern to claim the reward." />
+    </MonsterMission>
+    <MonsterMission name="Put a Husked Moloch out of its misery" identifier="hypeskillhuskmoloch" tags="killmonster,killmonster_set3" type="Monster" description="We've been getting reports of an infected Moloch between [location1] and [location2]. [reward] credits has been offered to put it out of its misery." difficulty="4" commonness="25" reward="4500" sonarlabel="Husk Moloch" maxsonarmarkerdistance="10000" successmessage="The Husk Moloch has been killed." monsterfile="Molochhusk">
+      <Reputation identifier="location" amount="10" />
+      <Icon texture="Content/UI/MissionIcons2.png" sourcerect="768,512,256,256" color="214,50,48" />
+      <message header="Target terminated" text="Let it return to nature once more. Navigate the submarine out of the cavern to claim the reward." />
+    </MonsterMission>
+    <MonsterMission name="Take out a Husked Hammerhead" identifier="hypeskillhuskhammerhead" tags="killmonster,killmonster_set2" type="Monster" description="There has been reports of an infected hammerhead between [location1] and [location2]. [reward] credits has been issued to kill this threat before it harms anymore people." difficulty="2" commonness="35" reward="4000" sonarlabel="Husk Hammerhead" maxsonarmarkerdistance="10000" successmessage="The Husk Hammerhead has been killed." monsterfile="Hammerheadhusk">
+      <Reputation identifier="location" amount="10" />
+      <Icon texture="Content/UI/MissionIcons2.png" sourcerect="512,768,256,256" color="214,50,48" />
+      <message header="Target terminated" text="It's dead now, our hulls thank you for that. Navigate the submarine out of the cavern to claim the reward." />
+    </MonsterMission>
+    <MonsterMission name="Exterminate the Husked Hammerhead" identifier="hypeskillhuskgoldhammerhead" tags="killmonster,killmonster_set2" type="Monster" description="There has been reports of a special infected hammerhead between [location1] and [location2]. We will give you [reward] credits, take it out immediatly." difficulty="2" commonness="35" reward="5000" sonarlabel="Hammerhead" maxsonarmarkerdistance="10000" successmessage="The Husk Hammerhead has been killed." monsterfile="Hammerheadgoldhusk">
+      <Reputation identifier="location" amount="10" />
+      <Icon texture="Content/UI/MissionIcons2.png" sourcerect="512,768,256,256" color="214,50,48" />
+      <message header="Target terminated" text="It's dead now, our hulls, more so our crew, thank you for that. Navigate the submarine out of the cavern to claim the reward." />
+    </MonsterMission>
+    <MonsterMission name="Seperate its head, kill the Husked Matriarch" identifier="hypeskillhuskmatriarch1" tags="killmonster,killmonster_set3" type="Monster" description="Kill the Matriarch and burst its head, [reward] credits!" difficulty="4" commonness="20" reward="6500" sonarlabel="Husk Matriarch" maxsonarmarkerdistance="10000" successmessage="The Husk Matriarch has been eliminated.">
+      <monster character="hammerheadmatriarchhusk" count="1" />
+      <monster character="hammerheadhusk" min="3" max="4" />
+      <monster character="hammerheadgoldhusk" min="0" max="1" />
+      <monster character="HuskmutantendwormheadSpec" min="0" max="1" />
+      <message header="Target terminated" text="The matriarch is dead, let its perverted 'dynasty' fall. Navigate the submarine out of the cavern to claim the reward." />
+      <Reputation identifier="location" amount="10" />
+      <Icon texture="Content/UI/MissionIcons2.png" sourcerect="256,768,256,256" color="214,50,48" />
+    </MonsterMission>
+    <MonsterMission name="Husked Crawler Swarm" identifier="hypeskillcrawlerhuskswarm1" tags="killmonster,killmonster_set3" type="Monster" description="A Swarm of crawlers got infected, take them out before they spread. Reported sighting have been between [location1] and [location2]. A reward of [reward] credits to anyone who eliminates this threat." difficulty="3" commonness="30" reward="3500" sonarlabel="Husk Crawler Swarm" maxsonarmarkerdistance="10000" successmessage="The swarm has been terminated.">
+      <monster character="crawlerhusk" min="4" max="7" />
+      <monster character="huskmutantcrawler" min="1" max="4" />
+      <monster character="HuskmutantendwormheadSpec" min="0" max="1" />
+      <Reputation identifier="location" amount="10" />
+      <Icon texture="Content/UI/MissionIcons.png" sourcerect="768,256,256,256" color="214,50,48" />
+      <message header="Target terminated" text="They are at peace, even if they can't even understand it. Navigate the submarine out of the cavern to claim the reward." />
+    </MonsterMission>
+    <MonsterMission name="Husked Spinling Swarm" identifier="hypeskillSpinelinghuskswarm1" tags="killmonster,killmonster_set3" type="Monster" description="A Swarm of Spinelings have been infested by the parasites, take them out before they spread. Reported sighting have been between [location1] and [location2]. A reward of [reward] credits to anyone who eliminates this threat." difficulty="3" commonness="30" reward="3500" sonarlabel="Husk Spineling Swarm" maxsonarmarkerdistance="10000" successmessage="The swarm has been terminated.">
+      <monster character="Spinelinghusk" min="4" max="7" />
+      <monster character="Spineling_morbusinehusk" min="0" max="4" />
+      <monster character="Spinelingmispawnhusk" min="0" max="2" />
+      <monster character="Spineling_gianthusk" min="1" max="4" />
+      <monster character="HuskmutantendwormheadSpec" min="0" max="1" />
+      <Reputation identifier="location" amount="10" />
+      <Icon texture="Content/UI/MissionIcons.png" sourcerect="768,256,256,256" color="214,50,48" />
+      <message header="Target terminated" text="Atleast no one else will be subject to their attack. Navigate the submarine out of the cavern to claim the reward." />
+    </MonsterMission>
+    <MonsterMission name="Infected Fleet" identifier="hypeskillHuskCarrierswarm1" tags="killmonster,killmonster_set3" type="Monster" description="A fleet of old overtaken vessels have been spotted between [location1] and [location2]. A reward of [reward] credits to anyone who sends those vessels back to the ocean floor." difficulty="3" commonness="30" reward="5500" sonarlabel="Husk Crawler Swarm" maxsonarmarkerdistance="10000" successmessage="The swarm has been terminated.">
+      <monster character="HuskCarrier" min="2" max="4" />
+      <monster character="Husk" min="1" max="3" />
+      <monster character="HuskmutantendwormheadSpec" min="0" max="1" />
+      <Reputation identifier="location" amount="10" />
+      <Icon texture="Content/UI/MissionIcons.png" sourcerect="768,256,256,256" color="214,50,48" />
+      <message header="Target terminated" text="The fleet has been sunk, at least they cannot hurt anyone anymore. Navigate the submarine out of the cavern to claim the reward." />
+    </MonsterMission>
+    <MonsterMission name="Husked Mudraptor Swarm" identifier="hypeskillmudraptorhuskswarm1" tags="killmonster,killmonster_set3" type="Monster" description="Wayward Mudraptors have been infected, they were last seen between [location1] and [location2]. A reward of [reward] credits and prevent them from going any further." difficulty="3" commonness="30" reward="5000" sonarlabel="Husk Mudraptor Swarm" maxsonarmarkerdistance="10000" successmessage="The swarm has been terminated.">
+      <monster character="mudraptorhusk" min="4" max="7" />
+      <monster character="huskmutantmudraptor" min="1" max="4" />
+      <monster character="HuskmutantendwormheadSpec" min="0" max="1" />
+      <Reputation identifier="location" amount="10" />
+      <Icon texture="Content/UI/MissionIcons.png" sourcerect="768,256,256,256" color="214,50,48" />
+      <message header="Target terminated" text="You have given them home among the sea floor. Navigate the submarine out of the cavern to claim the reward." />
+    </MonsterMission>
+    <MonsterMission name="Husked Mantis Swarm" identifier="hypeskillmantishuskswarm1" tags="killmonster,killmonster_set3" type="Monster" description="A hive of mantis have been infected and have been attacking vessels roughly between [location1] and [location2]. A reward of [reward] credits and prevent them from harming more people." difficulty="3" commonness="30" reward="5000" sonarlabel="Husked Mantis Swarm" maxsonarmarkerdistance="10000" successmessage="The swarm has been terminated.">
+      <monster character="Mantishusk" min="4" max="15" />
+      <monster character="HuskmutantendwormheadSpec" min="0" max="1" />
+      <Reputation identifier="location" amount="10" />
+      <Icon texture="Content/UI/MissionIcons.png" sourcerect="768,256,256,256" color="214,50,48" />
+      <message header="Target terminated" text="May they return to the caves they once called home. Navigate the submarine out of the cavern to claim the reward." />
+    </MonsterMission>
+    <MonsterMission name="Disposing of the Dead" identifier="hypeskillhumanhuskswarm1" tags="killmonster,killmonster_set3" type="Monster" description="The dead have mutated, send them back to their watery graves. You should find them between [location1] and [location2]. [reward] credits to put them out of commission for good." difficulty="3" commonness="30" reward="6000" sonarlabel="Husk Swarm" maxsonarmarkerdistance="10000" successmessage="The swarm has been terminated.">
+      <monster character="husk" min="3" max="6" />
+      <monster character="huskmutanthunter" min="2" max="4" />
+      <monster character="huskmutanthuman" min="3" max="4" />
+      <monster character="huskmutantarmored" min="1" max="3" />
+      <monster character="HuskmutantendwormheadSpec" min="0" max="1" />
+      <Reputation identifier="location" amount="10" />
+      <Icon texture="Content/UI/MissionIcons.png" sourcerect="768,256,256,256" color="214,50,48" />
+      <message header="Target terminated" text="They can finally rest now. Navigate the submarine out of the cavern to claim the reward." />
+    </MonsterMission>
+    <MonsterMission name="Silencing the Husked Watcher" identifier="hypeskillhuskwatcher" tags="killmonster,killmonster_set3" type="Monster" description="Screams have been reported traveling between [location1] and [location2]. A reward of [reward] credits to silence whatever is making them." difficulty="4" commonness="25" reward="7000" sonarlabel="Husk Watcher" maxsonarmarkerdistance="10000" successmessage="The Husk Watcher has been killed." monsterfile="watcherhusk">
+      <Reputation identifier="location" amount="10" />
+      <Icon texture="Content/UI/MissionIcons2.png" sourcerect="768,512,256,256" color="214,50,48" />
+      <message header="Target terminated" text="It's dead, it screams no longer. Navigate the submarine out of the cavern to claim the reward." />
+    </MonsterMission>
+    <MonsterMission name="Something Lurks in the depths" identifier="hypeskillhuskcharybdis" tags="killmonster,killmonster_set4,huntinggrounds,hard" type="Monster" description="Something has been reported in the depths between [location1] and [location2] and many transport subs have gone missing, it's something big. A reward of [reward] credits has been promised to those who kill the creature." difficulty="4" commonness="10" reward="12500" sonarlabel="Abyss Creature" maxsonarmarkerdistance="10000" successmessage="The Husk Charybdis has been killed." monsterfile="charybdishusk">
+      <Reputation identifier="location" amount="20" />
+      <Icon texture="Content/UI/MissionIcons2.png" sourcerect="256,768,256,256" color="214,50,48" />
+      <message header="Target terminated" text="The Husk Charybdis is dead, the path is safe once again. Navigate the submarine out of the cavern to claim the reward." />
+    </MonsterMission>
+    <MonsterMission name="Something Lurks in the depths" identifier="hypeskillhuskendworm" tags="killmonster,killmonster_set4,huntinggrounds,hard" type="Monster" description="Roaring has been heard while traveling between [location1] and [location2] and many transport subs have gone missing, it's something big. A reward of [reward] credits has been promised to those who kill the creature." difficulty="4" commonness="10" reward="15000" sonarlabel="Abyss Creature" maxsonarmarkerdistance="10000" successmessage="The Husk Endworm has been killed." monsterfile="endwormhusk">
+      <Reputation identifier="location" amount="20" />
+      <Icon texture="Content/UI/MissionIcons2.png" sourcerect="256,768,256,256" color="214,50,48" />
+      <message header="Target terminated" text="The Husk Endworm is dead, the path is safe once again. Navigate the submarine out of the cavern to claim the reward." />
+    </MonsterMission>
+    <MonsterMission name="Something Lurks in the depths" identifier="hypeskillHuskmutantendworm" tags="killmonster,killmonster_set4,huntinggrounds,huntinggrounds,hard" type="Monster" description="Roaring has been heard while traveling between [location1] and [location2] and many transport subs have gone missing, it's something big. A reward of [reward] credits has been promised to those who kill the creature." difficulty="4" commonness="10" reward="15000" sonarlabel="Abyss Creature" maxsonarmarkerdistance="10000" successmessage="The Husk Endworm has been killed." monsterfile="Huskmutantendworm">
+      <Reputation identifier="location" amount="20" />
+      <Icon texture="Content/UI/MissionIcons2.png" sourcerect="256,768,256,256" color="214,50,48" />
+      <message header="Target terminated" text="The Husk Endworm is dead, the path is safe once again. Navigate the submarine out of the cavern to claim the reward." />
+    </MonsterMission>
+    <MonsterMission name="Something Lurks in the depths" identifier="hypeskillHuskmutantarmoredendworm" tags="killmonster,killmonster_set4,huntinggrounds,hard" type="Monster" description="Roaring has been heard while traveling between [location1] and [location2] and many transport subs have gone missing, it's something big. A reward of [reward] credits has been promised to those who kill the creature." difficulty="4" commonness="10" reward="15000" sonarlabel="Abyss Creature" maxsonarmarkerdistance="10000" successmessage="The Husk Endworm has been killed." monsterfile="Huskmutantarmoredendworm">
+      <Reputation identifier="location" amount="20" />
+      <Icon texture="Content/UI/MissionIcons2.png" sourcerect="256,768,256,256" color="214,50,48" />
+      <message header="Target terminated" text="The Husk Endworm is dead, the path is safe once again. Navigate the submarine out of the cavern to claim the reward." />
+    </MonsterMission>
+    <MonsterMission name="Something Lurks in the depths" identifier="hypeskillhusklatcher" tags="killmonster,killmonster_set4,huntinggrounds" type="Monster" description="Something has been picking off our transport subs around [location1] and [location2], it's something big. A reward of [reward] credits has been promised to those who kill the creature." difficulty="4" commonness="10" reward="12000" sonarlabel="Abyss Creature" maxsonarmarkerdistance="10000" successmessage="The Husk Latcher has been killed." monsterfile="latcherhusk">
+      <Reputation identifier="location" amount="20" />
+      <Icon texture="Content/UI/MissionIcons2.png" sourcerect="256,768,256,256" color="214,50,48" />
+      <message header="Target terminated" text="The Husk Latcher is dead, the path is safe once again. Navigate the submarine out of the cavern to claim the reward." />
+    </MonsterMission>
+    <!--      UberPendragon u legend       -->
+    <EscortMission identifier="escorthuskterrorist1" tags="escortterrorists,escortterroristshusk,escort" type="Escort" difficulty="2" commonness="50" reward="1000" achievementidentifier="escortmission" baseescortedcharacters="1" scalingescortedcharacters="0.35" terroristchance="0.35" terroristannouncedialogtag="huskterroristannounce">
+      <Characters>
+        <Character from="escortnpcs1" identifier="commoner">
+          <StatusEffect target="Character" delay="1">
+            <Affliction identifier="disguisedashusk" strength="1000" />
+          </StatusEffect>
+          <StatusEffect target="Character" delay="60">
+            <Affliction identifier="dormanthuskinfection" strength="100" />
+          </StatusEffect>
+        </Character>
+      </Characters>
+      <TerroristItems>
+        <Item identifier="cultistrobes" equip="true" mindifficulty="0" />
+        <Item identifier="divingknife" mindifficulty="0" />
+        <Item identifier="syringegun" equip="true" mindifficulty="20">
+          <Item identifier="sulphuricacidsyringe" />
+          <Item identifier="sulphuricacidsyringe" />
+          <Item identifier="sulphuricacidsyringe" />
+          <Item identifier="sulphuricacidsyringe" />
+        </Item>
+        <Item identifier="volatilecompoundn" mindifficulty="40" />
+        <Item identifier="divingknifeunique" mindifficulty="60" />
+      </TerroristItems>
+      <Reputation identifier="location" amount="7" />
+      <Icon texture="Content/UI/MissionIcons.png" sourcerect="768,512,256,256" color="243,146,55" />
+      <LocationType from="AnyOutpost" to="AnyOutpost" />
+      <message header="missionheader0.escortterroristshusk" text="missionmessage0.escortterroristshusk" />
+      <message header="missionheader1.escortterroristshusk" text="missionmessage1.escortterroristshusk" />
+    </EscortMission>
+    <EscortMission identifier="escorthuskterrorist2" tags="escortterrorists,escortterroristshusk,escort" type="Escort" difficulty="2" commonness="85" reward="1500" achievementidentifier="escortmission" baseescortedcharacters="4" scalingescortedcharacters="0.35" terroristchance="0.35" terroristannouncedialogtag="huskterroristannounce">
+      <Characters>
+        <Character from="escortnpcs1" identifier="commoner">
+          <StatusEffect target="Character" delay="1">
+            <Affliction identifier="disguisedashusk" strength="1000" />
+          </StatusEffect>
+          <StatusEffect target="Character" delay="60">
+            <Affliction identifier="dormanthuskinfection" strength="100" />
+          </StatusEffect>
+        </Character>
+      </Characters>
+      <TerroristItems>
+        <Item identifier="cultistrobes" equip="true" mindifficulty="0" />
+        <Item identifier="stunbaton" mindifficulty="0">
+          <Item identifier="battery" />
+        </Item>
+        <Item identifier="syringegun" equip="true" mindifficulty="20">
+          <Item identifier="huskeggs" />
+          <Item identifier="huskeggs" />
+          <Item identifier="huskeggs" />
+          <Item identifier="huskeggs" />
+        </Item>
+        <Item identifier="volatilecompoundn" mindifficulty="40" />
+        <Item identifier="divingknifeunique" mindifficulty="60" />
+      </TerroristItems>
+      <Reputation identifier="location" amount="7" />
+      <Icon texture="Content/UI/MissionIcons.png" sourcerect="768,512,256,256" color="243,146,55" />
+      <LocationType from="AnyOutpost" to="AnyOutpost" />
+      <message header="missionheader0.escortterroristshusk" text="missionmessage0.escortterroristshusk" />
+      <message header="missionheader1.escortterroristshusk" text="missionmessage1.escortterroristshusk" />
+    </EscortMission>
+    <EscortMission identifier="escorthuskterrorist3" tags="escortterrorists,escortterroristshusk,escort" type="Escort" difficulty="2" commonness="25" reward="2500" achievementidentifier="escortmission" baseescortedcharacters="3" scalingescortedcharacters="0.35" terroristchance="0.35" terroristannouncedialogtag="huskterroristannounce">
+      <Characters>
+        <Character from="escortnpcs1" identifier="commoner">
+          <StatusEffect target="Character" delay="1">
+            <Affliction identifier="disguisedashusk" strength="1000" />
+          </StatusEffect>
+          <StatusEffect target="Character" delay="60">
+            <Affliction identifier="dormanthuskinfection" strength="100" />
+          </StatusEffect>
+        </Character>
+      </Characters>
+      <TerroristItems>
+        <Item identifier="cultistrobes" equip="true" mindifficulty="0" />
+        <Item identifier="divingknife" mindifficulty="0" />
+        <Item identifier="stunbaton" mindifficulty="0">
+          <Item identifier="battery" />
+        </Item>
+        <Item identifier="syringegun" equip="true" mindifficulty="20">
+          <Item identifier="unstablehuskeggs" />
+          <Item identifier="unstablehuskeggs" />
+          <Item identifier="unstablehuskeggs" />
+          <Item identifier="unstablehuskeggs" />
+        </Item>
+        <Item identifier="volatilecompoundn" mindifficulty="40" />
+        <Item identifier="divingknifeunique" mindifficulty="60" />
+      </TerroristItems>
+      <Reputation identifier="location" amount="7" />
+      <Icon texture="Content/UI/MissionIcons.png" sourcerect="768,512,256,256" color="243,146,55" />
+      <LocationType from="AnyOutpost" to="AnyOutpost" />
+      <message header="missionheader0.escortterroristshusk" text="missionmessage0.escortterroristshusk" />
+      <message header="missionheader1.escortterroristshusk" text="missionmessage1.escortterroristshusk" />
+    </EscortMission>
+    <!--      SPECIAL       -->
+    <SalvageMission identifier="Husk research collection" textidentifier="waytoascensionintermission" tags="waytoascensionintermission" type="Salvage" difficulty="5" commonness="100" reward="5500" achievementidentifier="nestmission" sonaricon="Research" spawntype="cave" itemspawnradius="800" approachitemsradius="800" monsterspawnradius="4000" nestobjectradius="1500" nestobjectamount="20" itemtag="huskmissiontarget" existingitemtag="huskmissiontarget">
+      <Items>
+        <Item identifier="huskcrawleregg">
+          <StatusEffectOnApproach target="This" Scale="1.0" setvalue="true" />
+        </Item>
+        <Item identifier="huskcrawleregg">
+          <StatusEffectOnApproach target="This" Scale="1.0" setvalue="true" delay="5" />
+        </Item>
+        <Item identifier="huskcrawleregg">
+          <StatusEffectOnApproach target="This" Scale="1.0" setvalue="true" delay="11" />
+        </Item>
+        <Item identifier="huskcrawleregg">
+          <StatusEffectOnApproach target="This" Scale="1.0" setvalue="true" delay="17" />
+        </Item>
+        <Item identifier="huskcrawleregg" />
+        <Item identifier="huskcrawleregg" />
+        <Item identifier="huskcrawleregg" />
+      </Items>
+      <Monster character="Crawlerhusk" min="2" max="3" />
+      <Monster character="Huskmutantcrawler" min="1" max="2" />
+      <Monster character="Crawlerhusk" min="1" max="2" multiplayeronly="true" />
+      <Monster character="Huskmutantcrawler" min="1" max="1" multiplayeronly="true" />
+      <Reputation identifier="location" amount="4" amountforopposingfaction="-2" />
+      <Reputation identifier="huskcult" amount="10" amountforopposingfaction="-1" />
+      <Icon texture="Content/UI/MissionIcons2.png" sourcerect="768,0,256,256" color="49,93,233" />
+      <LocationType from="AnyOutpost" to="AnyOutpost" />
+      <message header="missionheader0.waytoascensionintermission" text="missionmessage0.waytoascensionintermission" />
+      <Metadata identifier="waytoascension" value="4" />
+    </SalvageMission>
+    <!--      SPECIAL       -->
+    <EscortMission identifier="escorthuskterrorist" tags="escortterrorists,escortterroristshusk,escort" type="Escort" difficulty="2" commonness="50" reward="2500" achievementidentifier="escortmission" baseescortedcharacters="4" scalingescortedcharacters="0.35" terroristchance="0.35" terroristannouncedialogtag="huskterroristannounce">
+      <Characters>
+        <Character from="escortnpcs1" identifier="commoner">
+          <StatusEffect target="Character" delay="1">
+            <Affliction identifier="disguisedashusk" strength="1000" />
+          </StatusEffect>
+          <StatusEffect target="Character" delay="60">
+            <Affliction identifier="rapidhuskinfection" strength="100" />
+          </StatusEffect>
+        </Character>
+      </Characters>
+      <TerroristItems>
+        <Item identifier="cultistrobes" equip="true" mindifficulty="0" />
+        <Item identifier="unstablehuskeggs" equip="true" mindifficulty="0" />
+      </TerroristItems>
+      <Reputation identifier="location" amount="7" />
+      <Icon texture="Content/UI/MissionIcons.png" sourcerect="768,512,256,256" color="243,146,55" />
+      <LocationType from="AnyOutpost" to="AnyOutpost" />
+      <message header="missionheader0.escortterroristshusk" text="missionmessage0.escortterroristshusk" />
+      <message header="missionheader1.escortterroristshusk" text="missionmessage1.escortterroristshusk" />
+    </EscortMission>
+    <EscortMission identifier="drunkenparty" tags="escortcommoners,escortcommonerscoalition,escort" type="Escort" difficulty="1" commonness="50" reward="3000" achievementidentifier="escortmission" baseescortedcharacters="1" scalingescortedcharacters="0">
+      <Characters>
+        <Character from="escortnpcs1" identifier="commoner">
+          <Item identifier="rum" mindifficulty="0" />
+          <StatusEffect target="Character" delay="60">
+            <Affliction identifier="nausea" probability="0.85" strength="1" />
+            <Affliction identifier="husknausea" probability="0.25" strength="75" />
+          </StatusEffect>
+          <StatusEffect target="Character" delay="10">
+            <Affliction identifier="drunk" amount="50" />
+          </StatusEffect>
+        </Character>
+        <Character from="escortnpcs1" identifier="commonerseparatist">
+          <Item identifier="rum" mindifficulty="0" />
+          <StatusEffect target="Character" delay="60">
+            <Affliction identifier="nausea" probability="0.85" strength="1" />
+            <Affliction identifier="husknausea" probability="0.25" strength="1" />
+          </StatusEffect>
+          <StatusEffect target="Character" delay="10">
+            <Affliction identifier="drunk" amount="50" />
+          </StatusEffect>
+        </Character>
+        <Character from="outpostnpcs1" identifier="huskcultist">
+          <Item identifier="cultistrobes" equip="true" mindifficulty="0" />
+          <Item identifier="rum" mindifficulty="0" />
+          <StatusEffect target="Character" delay="60">
+            <Affliction identifier="nausea" probability="0.85" strength="1" />
+            <Affliction identifier="husknausea" probability="0.05" strength="1" />
+          </StatusEffect>
+          <StatusEffect target="Character" delay="10">
+            <Affliction identifier="drunk" amount="50" />
+          </StatusEffect>
+        </Character>
+        <Character from="outpostnpcs1" identifier="commoner">
+          <Item identifier="rum" mindifficulty="0" />
+          <StatusEffect target="Character" delay="60">
+            <Affliction identifier="nausea" probability="0.85" strength="1" />
+            <Affliction identifier="husknausea" probability="0.25" strength="1" />
+          </StatusEffect>
+          <StatusEffect target="Character" delay="10">
+            <Affliction identifier="drunk" amount="50" />
+          </StatusEffect>
+        </Character>
+      </Characters>
+      <Reputation identifier="coalition" amount="2" />
+      <Reputation identifier="separatists" amount="2" />
+      <Reputation identifier="location" amount="5" />
+      <Icon texture="Content/UI/MissionIcons.png" sourcerect="768,512,256,256" color="243,146,55" />
+      <LocationType from="AnyOutpost" to="AnyOutpost" />
+      <message header="missionname.party1" text="missiondescription.party1" />
+    </EscortMission>
+  </Missions>
+</override>

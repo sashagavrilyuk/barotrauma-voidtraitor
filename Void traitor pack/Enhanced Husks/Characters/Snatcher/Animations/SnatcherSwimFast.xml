@@ -1,0 +1,2 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SnatcherSwimFast UseSineMovement="True" Flip="True" FlipCooldown="1" FlipDelay="0.5" Mirror="True" MirrorLerp="True" WaveAmplitude="14.301188" WaveLength="20.827168" RotateTowardsMovement="True" TailTorque="0" TailTorqueMultiplier="1" FootAngles="2: 0,4: 0,6: 0,8: 0" UpdateAnimationWhenNotMoving="False" TailAngle="NaN" SteerTorque="75" LegTorque="25" MovementSpeed="2.0290322" CycleSpeed="1" HeadAngle="NaN" TorsoAngle="66" HeadTorque="25" TorsoTorque="25" FootTorque="0" AnimationType="SwimFast" ArmIKStrength="1" HandIKStrength="1" />

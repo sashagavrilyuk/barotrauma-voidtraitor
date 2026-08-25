@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="English" nowhitespace="false" translatedname="English">
+  <!-- Characters -->
+  <character.huskmutantcrawler>Mutant Crawler</character.huskmutantcrawler>
+  <character.huskmutantmudraptor>Mutant Mudraptor</character.huskmutantmudraptor>
+  <character.huskmutantarmored>Armored Mutant Husk</character.huskmutantarmored>
+  <character.huskmutanthunter>Hunter Mutant Husk</character.huskmutanthunter>
+  <character.huskmutanthuman>Mutant Husk</character.huskmutanthuman>
+  <character.huskmutantcocooncrawler>Husk Cocoon</character.huskmutantcocooncrawler>
+  <character.huskmutanttigerthresher>Mutant Thresher</character.huskmutanttigerthresher>
+  <character.huskmutantbonethresher>Mutant Thresher</character.huskmutantbonethresher>
+  <character.snatcher>Snatcher</character.snatcher>
+  <character.nibbler>Nibbler</character.nibbler>
+  <character.micoteron>Micoteron</character.micoteron>
+  <!-- Items -->
+  <entityname.unstablehuskeggs>Unstable Velonaceps Calyx Eggs</entityname.unstablehuskeggs>
+  <entitydescription.unstablehuskeggs>Eggs of the Europan lifeform colloquially referred to as 'husk parasite'. These ones are teeming with activity!</entitydescription.unstablehuskeggs>
+  <entityname.unstablehuskstinger>Unstable Husk Stinger</entityname.unstablehuskstinger>
+  <entitydescription.unstablehuskstinger>A hardened Black Stinger. It seems to pulse every so often.</entitydescription.unstablehuskstinger>
+  <entityname.endwormhuskprojectile>Wriggling Mass</entityname.endwormhuskprojectile>
+  <entityname.huskmutantembryo>Mutant Embryo</entityname.huskmutantembryo>
+  <entitydescription.huskmutantembryo>A strange underdeveloped creature. It is currently inactive.</entitydescription.huskmutantembryo>
+  <entityname.calyxinjector>Calyx Injector</entityname.calyxinjector>
+  <entitydescription.calyxinjector>An ominous injector-like contraption. Used for crafting.</entitydescription.calyxinjector>
+  <entityname.calyxinjectorsymbiotic>Symbiotic Calyx Injector</entityname.calyxinjectorsymbiotic>
+  <entitydescription.calyxinjectorsymbiotic>An ominous injector-like contraption. Injects a modified version of the husk infection that will bring the benefits (and drawbacks) of being a husk to its host.</entitydescription.calyxinjectorsymbiotic>
+  <entityname.calyxinjectorbooster>Booster Calyx Injector</entityname.calyxinjectorbooster>
+  <entitydescription.calyxinjectorbooster>An ominous injector-like contraption. Injects a concotion that temporarily boost the some of the patient's internal processes' speed, such as healing and growth. May have unintended side effects.</entitydescription.calyxinjectorbooster>
+  <entityname.disciplerobes>Disciple Robes</entityname.disciplerobes>
+  <entityname.templararmour>Templar Armour</entityname.templararmour>
+  <entityname.priestrobes>Priest Robes</entityname.priestrobes>
+  <entityname.unstablehuskeggextract>Unstable Calyx Extract</entityname.unstablehuskeggextract>
+  <entitydescription.unstablehuskeggextract>This particular strain of Velonaceps calyx also tends to bind itself to calcium, though it's highly advised against to consume as it's highly volatile when exposed to the human body.</entitydescription.unstablehuskeggextract>
+  <!-- Afflictions -->
+  <afflictionname.huskmutation>Husk Mutation</afflictionname.huskmutation>
+  <afflictiondescription.huskmutation>The skin contorts and the bones crack... something foul is happening.</afflictiondescription.huskmutation>
+  <afflictionname.symbiotichusk>Symbiotic Husk Infection</afflictionname.symbiotichusk>
+  <afflictiondescription.symbiotichusk>Something alien but benevolent thrives within...</afflictiondescription.symbiotichusk>
+  <afflictionname.huskinfectionhealing>Husk Infection Healing</afflictionname.huskinfectionhealing>
+  <afflictiondescription.huskinfectionhealing>The symbiotic husk keeps your body oxygenated and produces other beneficial substances that can make you recover from a critical state.</afflictiondescription.huskinfectionhealing>
+  <afflictionname.huskinfectionaffinity>Husk Infection Affinity</afflictionname.huskinfectionaffinity>
+  <afflictiondescription.huskinfectionaffinity>The symbiotic husk has fully established itself within your body, providing pressure resistance and control over the common husk infection, preventing it from taking over you entirely.</afflictiondescription.huskinfectionaffinity>
+  <afflictionname.huskheadhijacking1>Head Hijacking</afflictionname.huskheadhijacking1>
+  <afflictiondescription.huskheadhijacking1>A severed head is attempting to dislocate your skull! Attempting to push it away by yourself seems to be futile... You need to ask someone else to shoot it off!</afflictiondescription.huskheadhijacking1>
+  <afflictionname.blacktoxin>Black Toxin</afflictionname.blacktoxin>
+  <afflictiondescription.blacktoxin>Throbbing black veins are spreading around the patient's skin, spreading some sort of black liquid at an alarming rate.</afflictiondescription.blacktoxin>
+  <afflictionname.boosterhusk>Booster Husk Infection</afflictionname.boosterhusk>
+  <afflictiondescription.boosterhusk>A powerful but volatile mixture of stem-like cells quickly integrate themselves in your body, allowing for extremely quick healing.</afflictiondescription.boosterhusk>
+  <afflictionname.growth>Growth</afflictionname.growth>
+  <afflictiondescription.husknausea.low>You could swear that the vomit had a slight blue tinge.</afflictiondescription.husknausea.low>
+  <afflictiondescription.husknausea.high>You are really sick. You can feel them. Squirming.</afflictiondescription.husknausea.high>
+  <missionheader0.party1>Party time...</missionheader0.party1>
+  <missionname.party1>Drunken Escort</missionname.party1>
+  <missiondescription.party1>Transport a gaggle of drunks to the next station, but keep an eye on them, you never know what their inebriated bodies picked up when they stumbled aboard.</missiondescription.party1>
+  <!-- if the above doesn't work -->
+  <missionname.drunkenparty>Drunken Escort</missionname.drunkenparty>
+  <missiondescription.drunkenparty>Transport a gaggle of drunks to the next station, but keep an eye on them, you never know what their inebriated bodies picked up when they stumbled aboard.</missiondescription.drunkenparty>
+  <!-- Outpost -->
+  <eventtext.ADDICT.c1>You see two cloaked figures next to a... is that a hunter wearing a tophat?</eventtext.ADDICT.c1>
+  <eventtext.ADDICT.o1>“Hey, fellas. What’s—uh... I have many questions, but mainly why is that Husk here?”</eventtext.ADDICT.o1>
+  <eventtext.ADDICT.o1.c1>They quit squabbling and look at you with the most pale-faced stare on Europa.</eventtext.ADDICT.o1.c1>
+  <eventtext.ADDICT.o2>“Easy, dear brothers. I'm not dangerous... well not as much as that.”</eventtext.ADDICT.o2>
+  <eventtext.ADDICT.o2.c1>They stare blank faced at you, after a few minutes of silence they apologize for the confusion, and they decide it's best 'he' goes with you.</eventtext.ADDICT.o2.c1>
+  <eventtext.ADDICT.o2.c2>Offended by your comment, the two figures draw out sharp knives and lunge at you.</eventtext.ADDICT.o2.c2>
+  <!-- Clown -->
+  <eventtext.culstistsandtheclowns.c1>Two people are arguing loudly. The clown not taking it too seriously, only matching the cultist is volume. What once might have been a 'civil discussion' about what religion is better has devolved into a shouting match—it isn’t readily apparent how a woman's genitals factors into it.</eventtext.culstistsandtheclowns.c1>
+  <eventtext.culstistsandtheclowns.o1>Try to calm the situation down, and possibly prevent hearing loss?</eventtext.culstistsandtheclowns.o1>
+  <eventtext.culstistsandtheclowns.o1.c1>You move a bit closer, not that you were close already, but close enough that for a moment, the two loudmouthed fucks stop arguing and look at you.</eventtext.culstistsandtheclowns.o1.c1>
+  <eventtext.culstistsandtheclowns.o1.o1>“Hey fellas. Not my place to interrupt, I mean I came from all the way back near the surface, but they can hear your conversation back in Versas.”</eventtext.culstistsandtheclowns.o1.o1>
+  <eventtext.culstistsandtheclowns.o1.o1.c1>The cultist is humbled, the clown is bemused, but interested. They quiet down and get back to whatever they do when not indulging in the 'chaos' of their factions.</eventtext.culstistsandtheclowns.o1.o1.c1>
+  <eventtext.culstistsandtheclowns.o1.o1.c2>The cultist looks at you, almost offended, and the clown feels... off.</eventtext.culstistsandtheclowns.o1.o1.c2>
+  <eventtext.culstistsandtheclowns.o1.o1.c3>They stare at you blankely</eventtext.culstistsandtheclowns.o1.o1.c3>
+  <eventtext.culstistsandtheclowns.o1.o1.c2.c1>"Anyway... the clowns are far better, they never doomed us by preventing the creation a husk vaccine."</eventtext.culstistsandtheclowns.o1.o1.c2.c1>
+  <eventtext.culstistsandtheclowns.o1.o1.c2.c2>"Anyway... the church of the husk are far better, they are atleast organised, the clowns are just a bunch of loonies."</eventtext.culstistsandtheclowns.o1.o1.c2.c2>
+  <eventtext.culstistsandtheclowns.o1.o1.c2.c3>One looks to the other and smiles smugly, the other is somehow angry.</eventtext.culstistsandtheclowns.o1.o1.c2.c3>
+  <eventtext.culstistsandtheclowns.o1.o2>“I suggest you two shut your mouths before I shut them for you.”</eventtext.culstistsandtheclowns.o1.o2>
+  <eventtext.culstistsandtheclowns.o1.o2.c1>They get the feeling you have the means to back up your words. The two workers go quiet in a record time.</eventtext.culstistsandtheclowns.o1.o2.c1>
+  <eventtext.culstistsandtheclowns.o1.o2.c2>They look at you bemusedly, though it was pretty hard to tell due to their.... atire?</eventtext.culstistsandtheclowns.o1.o2.c2>
+  <eventtext.culstistsandtheclowns.o1.o2.o1>Two...</eventtext.culstistsandtheclowns.o1.o2.o1>
+  <eventtext.culstistsandtheclowns.o1.o2.o1.c1>They look at each other. Clearly, they’re shaking in their boots, the clown is moreso just excited, the cultist has the fear of god.</eventtext.culstistsandtheclowns.o1.o2.o1.c1>
+  <eventtext.culstistsandtheclowns.o1.o2.o1.o1>Three.</eventtext.culstistsandtheclowns.o1.o2.o1.o1>
+  <eventtext.culstistsandtheclowns.o1.o2.o1.o1.c1>A smile appears on the other’s face and you smile at him in turn. You feel powerful. Your smile quickly turns into a frown when they decide the charge at you with ill intent.</eventtext.culstistsandtheclowns.o1.o2.o1.o1.c1>
+  <eventtext.culstistsandtheclowns.o2>Why not make the crazies crazier?</eventtext.culstistsandtheclowns.o2>
+  <eventtext.culstistsandtheclowns.o2.c1>“Aye, didn't he call you a cunt?” “I think he's looking for a fight!” The satisfaction wriggles up your spine as the shouting crescendos into violence, the cultist reaches for something in his cloak while the clown reaches impossibly far into a regular pocket. It might be a good time to vanish from the area.</eventtext.culstistsandtheclowns.o2.c1>
+  <eventtext.culstistsandtheclowns.o3>You decide it's not worth your time.</eventtext.culstistsandtheclowns.o3>
+  <!-- Church of the Husk missions -->
+  <EventText.missionevent_escort1huskcult.c1.2>“A local Cultist group is looking for transport, and they have made the request to be transferred to the neighboring outpost.”</EventText.missionevent_escort1huskcult.c1.2>
+  <EventText.missionevent_escort1huskcult.c2.2>“I'll advise you to keep watch over them as they may attempt to ingest or release the calyx parasite on your vessel, and as we don't want to deal with the resulting distain from an organised group, be careful.”</EventText.missionevent_escort1huskcult.c2.2>
+  <eventtext.missionevent_cargohuskcult.2>“The nearby cohort of Husk Cultists at the neighboring outpost has made a request for the transport of their remaining supplies.”</eventtext.missionevent_cargohuskcult.2>
+  <eventtext.missionevent_cargohuskcult2.2>“And as your crew is available, we ask that you undertake this task.”</eventtext.missionevent_cargohuskcult2.2>
+  <eventtext.missionevent_waytoascension1.2>“And I assume the crew that just boarded are who you are interested in?”</eventtext.missionevent_waytoascension1.2>
+  <eventtext.missionevent_waytoascension1.2.1>You decide to speak to the Cultist</eventtext.missionevent_waytoascension1.2.1>
+  <eventtext.missionevent_waytoascension1.2.2>"No thank you, I think I've seen enough of you cultists"</eventtext.missionevent_waytoascension1.2.2>
+  <eventtext.missionevent_waytoascension1.2.3>"But it is important that we must do this."</eventtext.missionevent_waytoascension1.2.3>
+  <eventtext.missionevent_waytoascension1.2.4>"Fine"</eventtext.missionevent_waytoascension1.2.4>
+  <eventtext.huskcultist.o1.o2.c2>"I simply must give you something, please. You have done so much for our group that I simply must give you atleast something"</eventtext.huskcultist.o1.o2.c2>
+  <eventtext.huskcultist.o1.o2.c2.op1>Accept the prior payment</eventtext.huskcultist.o1.o2.c2.op1>
+  <eventtext.huskcultist.o1.o2.c2.op2>Choose to take a weapon</eventtext.huskcultist.o1.o2.c2.op2>
+  <eventtext.huskcultist.o1.o2.c2.op3>Accept a cargo mission</eventtext.huskcultist.o1.o2.c2.op3>
+  <eventtext.huskcultist.o1.o2.c2.op4>Accept a transport mission</eventtext.huskcultist.o1.o2.c2.op4>
+  <eventtext.huskcultist.o1.o2.c3>"Here, I know it must be hard for you to accept it, but I know it will help you."</eventtext.huskcultist.o1.o2.c3>
+  <eventtext.huskcultist.o1.o2.c4>"If it a weapon of the husk you seek, please take one of ours."</eventtext.huskcultist.o1.o2.c4>
+  <eventtext.huskcultist.o1.o2.c5>"Ah, you seek a mission! I do have contact with a local group who need some assistance with cargo."</eventtext.huskcultist.o1.o2.c5>
+  <eventtext.huskcultist.o1.o2.c6>"Ah, you seek a mission! I do have contact with a local group who need some assistance with transport."</eventtext.huskcultist.o1.o2.c6>
+  <eventtext.huskcultist.o1.o2.c4.1>Right as you turn to leave, you notice that in giving you the knife, he has slipped some of his own money in your pocket too</eventtext.huskcultist.o1.o2.c4.1>
+  <eventtext.huskcultist.o1.o2.c4.2>While giving you the assignment, you notice that he has slipped some of his own money in your pocket too in gratitude</eventtext.huskcultist.o1.o2.c4.2>
+  <eventtext.huskcultist.o1.o2.c4.3>In gratitude for all that you have done to help the church, he has slipped you extra money</eventtext.huskcultist.o1.o2.c4.3>
+  <EventText.waytoascension5.c1.o1.o1.o1.o1V2>Gulp down the eggs. Do note that this will also affect all crewmembers in an 800 metre radius</EventText.waytoascension5.c1.o1.o1.o1.o1V2>
+  <missionname.escortterroristshusk>Terrorist stakeout</missionname.escortterroristshusk>
+  <missiondescription.escortterroristshusk>A splinter of Church cultists have been hijacking ships in this sector. We believe some of them have snuck onto your ship alongside innocent passengers. Make sure the innocent civilians make it to [location2] alive, and deal with any terrorists that reveal themselves, and you'll be paid a reward of [reward] marks.</missiondescription.escortterroristshusk>
+  <missionsuccess.escortterroristshusk>Personnel transport successful, and the Cultists have been dealt with.</missionsuccess.escortterroristshusk>
+  <missionfailure.escortterroristshusk>Escorted personnel did not reach their destination, or the Cultists were not uncovered and neutralized.</missionfailure.escortterroristshusk>
+  <missionheader0.escortterroristshusk>Personnel died</missionheader0.escortterroristshusk>
+  <missionmessage0.escortterroristshusk>Too many of the escorted personnel have perished at sea. The mission is a failure.</missionmessage0.escortterroristshusk>
+  <missionheader1.escortterroristshusk>Cultists defeated</missionheader1.escortterroristshusk>
+  <missionname.waytoascensionintermission>Salvaging an lost research</missionname.waytoascensionintermission>
+  <missiondescription.waytoascensionintermission>The church believes that they have located lost research relating to the recent growth of the calyx parasite in [location1]. Investigate the location, terminate the surrounding subjects and return to the Church.</missiondescription.waytoascensionintermission>
+  <missionsonarlabel.waytoascensionintermission>Believed location</missionsonarlabel.waytoascensionintermission>
+  <missionsuccess.waytoascensionintermission>The research has been successfully retrieved.</missionsuccess.waytoascensionintermission>
+  <missionfailure.waytoascensionintermission>Retrieving the research failed.</missionfailure.waytoascensionintermission>
+  <missionheader0.waytoascensionintermission>Research collected</missionheader0.waytoascensionintermission>
+  <missionmessage0.waytoascensionintermission>The Research is now on board. Navigate the submarine out of the cavern to claim the reward.</missionmessage0.waytoascensionintermission>
+  <!-- Test -->
+  <headhijackingprompt>GET THIS SHIT OFF ME!!!</headhijackingprompt>
+  <headhijackingprompt>GET THIS HEADCRAB RIPOFF OFF OF ME!!!</headhijackingprompt>
+  <headhijackingprompt>AHHHHHHHHH!</headhijackingprompt>
+  <headhijackingprompt>Seriously, guys. A little hand?</headhijackingprompt>
+  <headhijackingprompt>ANYONE? HELP?</headhijackingprompt>
+  <headhijackingprompt>GOD THIS IS DISGUSTING!</headhijackingprompt>
+  <headhijackingprompt>GET IT OFF, GET IT OFF!</headhijackingprompt>
+  <headhijackingprompt>GET OFF OF ME!</headhijackingprompt>
+  <headhijackingprompt>AUGH.</headhijackingprompt>
+  <headhijackingprompt>IT'S ON MY FACE, GET IT OFF!</headhijackingprompt>
+  <headhijackingprompt>IS THIS ENTERTAINING??</headhijackingprompt>
+</infotexts>

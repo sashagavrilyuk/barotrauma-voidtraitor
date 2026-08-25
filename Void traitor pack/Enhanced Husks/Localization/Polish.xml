@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="Polish" nowhitespace="false" translatedname="Polski">
+  <!-- Characters -->
+  <character.huskmutantcrawler>Zainfekowany Pełzacz</character.huskmutantcrawler>
+  <character.huskmutantmudraptor>Zainfekowany Błotozaur</character.huskmutantmudraptor>
+  <character.huskmutantarmored>Opancerzony Skorupnik Mutant</character.huskmutantarmored>
+  <character.huskmutanthunter>Zainfekowana Krewoliszka łowca</character.huskmutanthunter>
+  <character.huskmutanthuman>Skorupnik Mutant</character.huskmutanthuman>
+  <character.huskmutantcocooncrawler>Kokon Skoupnika</character.huskmutantcocooncrawler>
+  <character.huskmutanttigerthresher>Zainfekowany Mutant młocarz tygrysi</character.huskmutanttigerthresher>
+  <character.huskmutantbonethresher>Młocarz Tygrysi Mutant</character.huskmutantbonethresher>
+  <character.snatcher>łazik</character.snatcher>
+  <character.nibbler>Dziobacz</character.nibbler>
+  <character.micoteron>Mikoteron</character.micoteron>
+  <!-- Items -->
+  <entityname.unstablehuskeggs>Niestabilne jajka skorupnika</entityname.unstablehuskeggs>
+  <entitydescription.unstablehuskeggs>Jajka Europejskiego skorupnika nazywanego "pasożytem", Jajka charekteryzują sie wysoką aktywnością!</entitydescription.unstablehuskeggs>
+  <entityname.unstablehuskstinger>Niestabilny kolec skorupnika</entityname.unstablehuskstinger>
+  <entitydescription.unstablehuskstinger>Wzmocniony kolec skorupnika. Widać jak bardzo pulsuje</entitydescription.unstablehuskstinger>
+  <entityname.endwormhuskprojectile>Masa do wirówki</entityname.endwormhuskprojectile>
+  <entityname.huskmutantembryo>Zmutowany enbriom skorupnika</entityname.huskmutantembryo>
+  <entitydescription.huskmutantembryo>Dziwne, niezindetifikowane ciało. Aktualnie nie daje oznak życia.</entitydescription.huskmutantembryo>
+  <entityname.calyxinjector>Strzykawka obcych</entityname.calyxinjector>
+  <entitydescription.calyxinjector>Strzykawka wykorzystywana w wytwórstwie.</entitydescription.calyxinjector>
+  <entityname.calyxinjectorsymbiotic>Strzykawka symbiozy skorupnika</entityname.calyxinjectorsymbiotic>
+  <entitydescription.calyxinjectorsymbiotic>Strzykawka skorupnika, wytwarza symbioze z hostem dając odpornosci nie przejmując kontroli.</entitydescription.calyxinjectorsymbiotic>
+  <entityname.calyxinjectorbooster>Strzykawka wzmocnienia skorupnika</entityname.calyxinjectorbooster>
+  <entitydescription.calyxinjectorbooster>Strzykawka symbiozy ze skorpunikiem dające pozytywne efekty.</entitydescription.calyxinjectorbooster>
+  <entityname.disciplerobes>Szaty Ucznia</entityname.disciplerobes>
+  <entityname.templararmour>Zbroja templariuszy</entityname.templararmour>
+  <entityname.priestrobes>Szaty kapłana</entityname.priestrobes>
+  <!-- Afflictions -->
+  <afflictionname.huskmutation>Mutacja skorupnika</afflictionname.huskmutation>
+  <afflictiondescription.huskmutation>Skóra jest ciemna i lekpa... coś dziwnego sie dzieje.</afflictiondescription.huskmutation>
+  <afflictionname.symbiotichusk>Symbioza skorupnika</afflictionname.symbiotichusk>
+  <afflictiondescription.symbiotichusk>Obca forma życia działająca pozytywnie i podtrzymuje na życiu.</afflictiondescription.symbiotichusk>
+  <afflictionname.huskinfectionhealing>Regeneracja skorupnika</afflictionname.huskinfectionhealing>
+  <afflictiondescription.huskinfectionhealing>Symbioza skorupnika utrzymuje cie natlenionego i odpornego na cisinienie, regeneruje ciało z krytycznego stanu.</afflictiondescription.huskinfectionhealing>
+  <afflictionname.huskinfectionaffinity>Odpornosc skorupnika</afflictionname.huskinfectionaffinity>
+  <afflictiondescription.huskinfectionaffinity>Symbioza w pełni z skorupnikiem, odpornosc na cisnienie i zarazenie skorupnikiem do stanu utraty kontroli.</afflictiondescription.huskinfectionaffinity>
+  <afflictionname.huskheadhijacking1>Wyrostek głowy</afflictionname.huskheadhijacking1>
+  <afflictiondescription.huskheadhijacking1>Widac kawałek wyrastającej głwy z czaszki, co powoduje problemy, musisz poprosic kogos by ją odstrzelić!</afflictiondescription.huskheadhijacking1>
+  <afflictionname.blacktoxin>Czarna toksyna</afflictionname.blacktoxin>
+  <afflictiondescription.blacktoxin>Powoduje Czarną lepką skóre i żyły, pacjent nie przeżuje długo.</afflictiondescription.blacktoxin>
+  <afflictionname.boosterhusk>wzmocnienie skorupnika</afflictionname.boosterhusk>
+  <afflictiondescription.boosterhusk>Regeneracja skorupnika, daje ekstremalną regeneracje, moze zainfekowac ciało.</afflictiondescription.boosterhusk>
+  <afflictionname.growth>Przyrost</afflictionname.growth>
+  <afflictiondescription.husknausea.low>Można by przysiąc, że wymiociny miały lekko niebieski odcień.</afflictiondescription.husknausea.low>
+  <afflictiondescription.husknausea.high>Jesteś naprawdę chory. Można je poczuć. Wijące.</afflictiondescription.husknausea.high>
+  <missionheader0.party1>Czas na imprezę...</missionheader0.party1>
+  <missionname.party1>Pijana eskorta</missionname.party1>
+  <missiondescription.party1>Przewieź grupę pijaków na następną stację, ale miej na nich oko, nigdy nie wiesz, co podniosły ich nietrzeźwe ciała, gdy potknęli się na pokładzie.</missiondescription.party1>
+  <!-- if the above doesn't work -->
+  <missionname.drunkenparty>Pijana eskorta</missionname.drunkenparty>
+  <missiondescription.drunkenparty>Przewieź grupę pijaków na następną stację, ale miej na nich oko, nigdy nie wiesz, co podniosły ich nietrzeźwe ciała, gdy potknęli się na pokładzie.</missiondescription.drunkenparty>
+  <!-- Outpost -->
+  <eventtext.ADDICT.c1>Widzisz dwie zamaskowane postacie obok... Czy to myśliwy w cylindrze?</eventtext.ADDICT.c1>
+  <eventtext.ADDICT.o1>"Hej, chłopaki. Co to jest... Mam wiele pytań, ale przede wszystkim dlaczego ta pustaka tu jest?</eventtext.ADDICT.o1>
+  <eventtext.ADDICT.o1.c1>Przestają się kłócić i patrzą na ciebie najbardziej bladym spojrzeniem na Europę.</eventtext.ADDICT.o1.c1>
+  <eventtext.ADDICT.o2>"Spokojnie, drodzy bracia. Nie jestem niebezpieczny... cóż, nie aż tak bardzo.</eventtext.ADDICT.o2>
+  <eventtext.ADDICT.o2.c1>Wpatrują się w ciebie pustym wzrokiem, po kilku minutach ciszy przepraszają za zamieszanie i decydują, że najlepiej będzie, jeśli "on" pójdzie z tobą.</eventtext.ADDICT.o2.c1>
+  <eventtext.ADDICT.o2.c2>Urażone twoim komentarzem dwie postacie wyciągają ostre noże i rzucają się na ciebie.</eventtext.ADDICT.o2.c2>
+  <!-- Clown -->
+  <!-- Church of the Husk missions -->
+</infotexts>

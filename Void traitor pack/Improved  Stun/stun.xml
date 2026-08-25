@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Override>
+  <Afflictions>
+    <!-- Глушилка -->
+    <Stun name="Stun" identifier="stun" description="The patient is dazed and unresponsive." type="stun" limbspecific="false" indicatorlimb="Head" activationthreshold="1.0" showiconthreshold="1000" maxstrength="30">
+      <Description textidentifier="afflictiondescription.stun" target="OtherCharacter" />
+      <Description textidentifier="afflictiondescription.stun.self" target="Self" />
+      <Effect minstrength="0" maxstrength="1" minvitalitydecrease="0" maxvitalitydecrease="0" strengthchange="-1.0"></Effect>
+      <Effect minstrength="1" maxstrength="100" minvitalitydecrease="0" maxvitalitydecrease="0" strengthchange="-1.0" tag="hasstun">
+        <StatusEffect type="OnActive" target="Character">
+          <Affliction identifier="stuneff" amount="20" />
+        </StatusEffect>
+      </Effect>
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" color="195,177,60,255" origin="0,0" />
+    </Stun>
+    <!-- Глушилка -->
+    <!-- Глушилки другие -->
+    <Affliction name="IncrementalStun" identifier="incrementalstun" type="stun" limbspecific="false" indicatorlimb="Torso" showiconthreshold="1000" showinhealthscannerthreshold="1000" karmachangeonapplied="-10" maxstrength="100" WeaponsSkillGain="1.0">
+      <Effect minstrength="0" maxstrength="90" minscreenblur="0" maxscreenblur="1.0" minscreendistort="0.0" maxscreendistort="0.6" minradialdistort="0" maxradialdistort="0.2" strengthchange="-5" minspeedmultiplier="1.0" maxspeedmultiplier="0.3"></Effect>
+      <Effect minstrength="90" maxstrength="100" minscreendistort="0.6" maxscreendistort="1" minscreenblur="1" maxscreenblur="1" minradialdistort="0.2" maxradialdistort="1" strengthchange="-1">
+        <StatusEffect target="Character" setvalue="true">
+          <Affliction identifier="stun" amount="1" />
+        </StatusEffect>
+        <StatusEffect target="Character">
+          <Affliction identifier="stuneff" strength="10" />
+        </StatusEffect>
+        <StatusEffect target="Character" interval="1" disabledeltatime="true">
+          <Affliction identifier="nausea" amount="3" />
+        </StatusEffect>
+      </Effect>
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="640,640,128,128" color="0,255,0,255" origin="0,0" />
+    </Affliction>
+    <Affliction name="ProgressiveStun" identifier="progressivestun" type="stun" limbspecific="false" indicatorlimb="Torso" showiconthreshold="1000" showinhealthscannerthreshold="1000" karmachangeonapplied="-10" maxstrength="100" WeaponsSkillGain="1.0">
+      <Effect minstrength="0" maxstrength="9" minscreendistort="0.0" maxscreendistort="0.05" minscreenblur="0" maxscreenblur="0.1" strengthchange="2" minradialdistort="0" maxradialdistort="0.1" minspeedmultiplier="1.0" maxspeedmultiplier="0.9"></Effect>
+      <Effect minstrength="9" maxstrength="99" minscreendistort="0.05" maxscreendistort="0.6" minscreenblur="0.1" maxscreenblur="1.0" strengthchange="18" minradialdistort="0.1" maxradialdistort="1" minspeedmultiplier="0.9" maxspeedmultiplier="0.3"></Effect>
+      <Effect minstrength="99" maxstrength="100" minscreendistort="0.6" maxscreendistort="1" minscreenblur="1" maxscreenblur="1" minradialdistort="1" maxradialdistort="1" strengthchange="10" minspeedmultiplier="0.3" maxspeedmultiplier="0.3">
+        <StatusEffect target="Character" delay="0.1" setvalue="true">
+          <ReduceAffliction identifier="progressivestun" strength="100" />
+          <Affliction identifier="incrementalstun" amount="100" />
+        </StatusEffect>
+        <StatusEffect target="Character">
+          <Affliction identifier="stuneff" strength="80" />
+        </StatusEffect>
+      </Effect>
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="640,640,128,128" color="0,255,0,255" origin="0,0" />
+    </Affliction>
+    <!-- Глушилки другие -->
+    <!-- Эффектик -->
+    <stuneff name="stuneff" identifier="stuneff" type="stun" maxstrength="100" limbspecific="false" showiconthreshold="500" showicontoothersthreshold="500" showinhealthscannerthreshold="500">
+      <Effect minstrength="0" maxstrength="35" minafflictionoverlayalphamultiplier="0" maxafflictionoverlayalphamultiplier="0.3" minvitalitydecrease="0" maxvitalitydecrease="0" strengthchange="0" graincolor="0,0,0,255" minspeedmultiplier="1.0" maxspeedmultiplier="0.9" mingrainstrength="0.0" maxgrainstrength="200.0" minscreenblur="0" maxscreenblur="2">
+        <StatusEffect type="OnActive" target="Character">
+          <Conditional stun="eq 0" />
+          <ReduceAffliction identifier="stuneff" strength="40" />
+        </StatusEffect>
+      </Effect>
+      <Effect minstrength="35" maxstrength="55" minafflictionoverlayalphamultiplier="0.3" maxafflictionoverlayalphamultiplier="0.8" minvitalitydecrease="0" maxvitalitydecrease="0" strengthchange="0" minspeedmultiplier="0.9" maxspeedmultiplier="0.5" graincolor="0,0,0,255" mingrainstrength="200.0" maxgrainstrength="2000.0" minscreenblur="2" maxscreenblur="4">
+        <StatusEffect type="OnActive" target="Character">
+          <Conditional stun="eq 0" />
+          <ReduceAffliction identifier="stuneff" strength="60" />
+        </StatusEffect>
+      </Effect>
+      <Effect minstrength="55" maxstrength="100" minafflictionoverlayalphamultiplier="0.8" maxafflictionoverlayalphamultiplier="1" minvitalitydecrease="0" maxvitalitydecrease="0" strengthchange="0" graincolor="0,0,0,255" minspeedmultiplier="0.5" maxspeedmultiplier="0.3" mingrainstrength="2000.0" maxgrainstrength="20000.0" minscreenblur="4" maxscreenblur="15">
+        <StatusEffect type="OnActive" target="Character" LowPassMultiplier="0.0" HighPassMultiplier="0.0" setvalue="true">
+          <Conditional IsLocalPlayer="True" />
+        </StatusEffect>
+        <StatusEffect type="OnActive" target="Character">
+          <Conditional stun="eq 0" />
+          <ReduceAffliction identifier="stuneff" strength="80" />
+        </StatusEffect>
+      </Effect>
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" color="195,177,60,255" origin="0,0" />
+      <AfflictionOverlay texture="%ModDir%/Improved  Stun/truestun.png" />
+    </stuneff>
+    <!-- Эффектик -->
+  </Afflictions>
+</Override>

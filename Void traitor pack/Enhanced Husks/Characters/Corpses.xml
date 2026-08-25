@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Corpses>
+  <Corpse identifier="mediccorpseEH" spawnposition="wreck" job="medicaldoctor" commonness="0.5" minmoney="10" maxmoney="75">
+    <ItemSet commonness="1">
+      <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_medic" />
+      <Item identifier="doctorsuniform1" equip="true" forcetoslot="true">
+        <Item identifier="calyxanide" />
+      </Item>
+      <Item identifier="antibiotics" />
+      <Item identifier="antidama1" />
+    </ItemSet>
+    <ItemSet commonness="0.8">
+      <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_medic" />
+      <Item identifier="doctorsuniform1" equip="true" forcetoslot="true">
+        <Item identifier="calyxanide" />
+        <Item identifier="calyxanide" />
+      </Item>
+      <Item identifier="antibiotics" />
+      <Item identifier="antidama1" />
+    </ItemSet>
+    <ItemSet commonness="0.7">
+      <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_medic" />
+      <Item identifier="doctorsuniform1" equip="true" forcetoslot="true">
+        <Item identifier="calyxanide" />
+        <Item identifier="calyxanide" />
+      </Item>
+      <Item identifier="antibiotics" />
+      <Item identifier="antidama1" />
+      <Item identifier="calyxanide" />
+    </ItemSet>
+    <ItemSet commonness="0.5">
+      <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_medic" />
+      <Item identifier="doctorsuniform1" equip="true" forcetoslot="true">
+        <Item identifier="unstablehuskeggs" />
+        <Item identifier="calyxanide" />
+      </Item>
+      <Item identifier="antibiotics" />
+      <Item identifier="antidama1" />
+      <Item identifier="calyxanide" />
+    </ItemSet>
+    <ItemSet commonness="0.3">
+      <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_medic" />
+      <Item identifier="doctorsuniform1" equip="true" forcetoslot="true">
+        <Item identifier="unstablehuskeggs" />
+        <Item identifier="huskmutantembryo" />
+      </Item>
+      <Item identifier="antibiotics" />
+      <Item identifier="antidama1" />
+      <Item identifier="calyxanide" />
+    </ItemSet>
+    <ItemSet commonness="0.1">
+      <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_medic" />
+      <Item identifier="doctorsuniform1" equip="true" forcetoslot="true">
+        <Item identifier="unstablehuskeggs" />
+        <Item identifier="huskmutantembryo" />
+      </Item>
+      <Item identifier="calyxinjectorbooster" />
+      <Item identifier="antidama1" />
+      <Item identifier="calyxanide" />
+    </ItemSet>
+    <ItemSet commonness="0.1">
+      <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_medic" />
+      <Item identifier="doctorsuniform1" equip="true" forcetoslot="true">
+        <Item identifier="unstablehuskeggs" />
+      </Item>
+      <Item identifier="calyxinjectorbooster" />
+      <Item identifier="antidama1" />
+      <Item identifier="calyxanide" />
+    </ItemSet>
+    <ItemSet commonness="0.1">
+      <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_medic" />
+      <Item identifier="doctorsuniform1" equip="true" forcetoslot="true">
+        <Item identifier="huskmutantembryo" />
+      </Item>
+      <Item identifier="calyxinjectorbooster" />
+      <Item identifier="antidama1" />
+      <Item identifier="calyxanide" />
+    </ItemSet>
+  </Corpse>
+  <Corpse identifier="mechaniccorpseEH" spawnposition="wreck" job="mechanic" commonness="1" minmoney="10" maxmoney="50">
+    <ItemSet commonness="0.7">
+      <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_mechanic" />
+      <Item identifier="bluejumpsuit1" equip="true" forcetoslot="true" />
+      <Item identifier="weldingtool" equip="true" forcetoslot="true" />
+      <Item identifier="toolbelt">
+        <Item identifier="wrench" />
+      </Item>
+      <Item identifier="brokenexosuit" equip="true" forcetoslot="true">
+        <Item identifier="oxygentank" />
+        <Item identifier="fuelrod" />
+      </Item>
+    </ItemSet>
+    <ItemSet commonness="0.6">
+      <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_mechanic" />
+      <Item identifier="toolbelt">
+        <Item identifier="weldingfueltank" />
+        <Item identifier="Infec_emergencysiren" />
+      </Item>
+      <Item identifier="brokenexosuit" equip="true" forcetoslot="true">
+        <Item identifier="oxygentank" />
+        <Item identifier="fuelrod" />
+      </Item>
+      <Item identifier="crowbar" />
+      <Item identifier="bluejumpsuit2" equip="true" forcetoslot="true" />
+    </ItemSet>
+    <ItemSet commonness="0.5">
+      <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_mechanic" />
+      <Item identifier="toolbelt" />
+      <Item identifier="bluejumpsuit2" equip="true" forcetoslot="true" />
+      <Item identifier="brokenexosuit" equip="true" forcetoslot="true">
+        <Item identifier="oxygentank" />
+        <Item identifier="fuelrod" />
+      </Item>
+      <Item identifier="flamerunique" equip="true" forcetoslot="true" />
+      <Item identifier="weldingtool" equip="true" forcetoslot="true">
+        <Item identifier="weldingfueltank" />
+      </Item>
+    </ItemSet>
+  </Corpse>
+  <Corpse identifier="assistantcorpseEH" spawnposition="wreck" job="assistant" commonness="2" minmoney="0" maxmoney="25">
+    <!--Clowns (but as an insult)-->
+    <ItemSet commonness="0.2">
+      <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+      <Item identifier="zealotrobes" equip="true" forcetoslot="true" />
+      <Item identifier="huskeggs" />
+      <Item identifier="ritualknife" equip="true" forcetoslot="true" />
+    </ItemSet>
+    <ItemSet commonness="0.2">
+      <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+      <Item identifier="zealotrobes" equip="true" forcetoslot="true" />
+      <Item identifier="huskeggs" />
+    </ItemSet>
+    <ItemSet commonness="0.2">
+      <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+      <Item identifier="disciplerobes" equip="true" forcetoslot="true" />
+      <Item identifier="smallmudraptoregg" />
+      <Item identifier="antibloodloss1" />
+      <Item identifier="huskeggs" />
+    </ItemSet>
+    <ItemSet commonness="0.2">
+      <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+      <Item identifier="zealotrobes" equip="true" forcetoslot="true" />
+      <Item identifier="detonator" />
+      <Item identifier="c4block" />
+      <Item identifier="huskeggs" />
+    </ItemSet>
+    <ItemSet commonness="0.2">
+      <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+      <Item identifier="zealotrobes" equip="true" forcetoslot="true" />
+      <Item identifier="alientrinket1" />
+      <Item identifier="huskeggs" />
+    </ItemSet>
+    <ItemSet commonness="0.1">
+      <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+      <Item identifier="zealotrobes" equip="true" forcetoslot="true" />
+      <Item identifier="alientrinket2" />
+      <Item identifier="huskeggs" />
+    </ItemSet>
+    <ItemSet commonness="0.1">
+      <Item identifier="idcardwreck" equip="true" forcetoslot="true" tags="wreck_assistant" />
+      <Item identifier="disciplerobes" equip="true" forcetoslot="true" />
+      <Item identifier="alientrinket3" />
+      <Item identifier="huskeggs" />
+      <Item identifier="ritualknife" equip="true" forcetoslot="true" />
+      <Item identifier="flamerunique" equip="true" forcetoslot="true" />
+    </ItemSet>
+  </Corpse>
+</Corpses>

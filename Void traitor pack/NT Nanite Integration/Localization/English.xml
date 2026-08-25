@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="English" nowhitespace="false">
+  <entityname.nanitebase>Nanite basis</entityname.nanitebase>
+  <entitydescription.nanitebase>Base material, used for creating specific nanite strains to inject.</entitydescription.nanitebase>
+  <entityname.naniteremover>Nanites deactivator</entityname.naniteremover>
+  <entitydescription.naniteremover>Injection of deactivator nanites, that disable all functionnals nanites within organism, leaving only precursors nanites in body.</entitydescription.naniteremover>
+  <entityname.naniteprecursor>Nanite precursor injection</entityname.naniteprecursor>
+  <entitydescription.naniteprecursor>Baseline nanites, that prepare the organism for further nanite integration, they replicate themselves towards the level threshold and maintain other nanites. Inject before integrating functional nanites.</entitydescription.naniteprecursor>
+  <afflictionname.precursor>Nanite Precursor</afflictionname.precursor>
+  <afflictiondescription.precursor>Baseline nanites, they replicate themselves over time and maintain other nanites. Precursor may sustain 1 nanite per integration without decay.</afflictiondescription.precursor>
+  <entityname.reconstructornanite>'Ichor' injection</entityname.reconstructornanite>
+  <entitydescription.reconstructornanite>Medical nanites, which keep wounds closed and burns treated, mainly fixing skin and outer flesh. Three doses may be integrated.</entitydescription.reconstructornanite>
+  <afflictionname.reconstructornanite>'Ichor' Nanites</afflictionname.reconstructornanite>
+  <afflictiondescription.reconstructornanite>Nanites from this strain focus on treating outer layers of flesh. Integration 1: Burns, lacerations. Integration 2: Bite wounds, bleeding. Integration 3: Gunshot wounds.</afflictiondescription.reconstructornanite>
+  <entityname.bonefixnanite>'Osmium' injection</entityname.bonefixnanite>
+  <entitydescription.bonefixnanite>Medical nanites, which mend broken bones. Three dose may be integrated.</entitydescription.bonefixnanite>
+  <afflictionname.bonefixnanite>'Osmium' Nanites</afflictionname.bonefixnanite>
+  <afflictiondescription.bonefixnanite>Nanites from this strain treat bones. Integration 1: Blunt and Bone damage repair including dislocations. Integration 2: Limbs and Torso fractures repair. Integration 3: Neck, Head and Spine repairs.</afflictiondescription.bonefixnanite>
+  <entityname.deepfixnanite>'Kaltsit' injection</entityname.deepfixnanite>
+  <entitydescription.deepfixnanite>Medical nanites, which heal internal organ injures, keeping organism safe on a fundamental level. Two doses may be integrated.</entitydescription.deepfixnanite>
+  <afflictionname.deepfixnanite>'Kaltsit' Nanites</afflictionname.deepfixnanite>
+  <afflictiondescription.deepfixnanite>Nanites from this strain treat inner layers of flesh. Integration 1: Internal bleeding, foreign bodies and vibrations damages (Real Sonar Required). Integration 2: All organs damage.</afflictiondescription.deepfixnanite>
+  <entityname.antitoxnanite>'Mithridates' injection</entityname.antitoxnanite>
+  <entitydescription.antitoxnanite>Medical nanites, which dissolve poisons, toxins and bacterial infection, functioning as barrier against incompetent medic or traitorship. Two doses may be integrated.</entitydescription.antitoxnanite>
+  <afflictionname.antitoxnanite>'Mithridates' Nanites</afflictionname.antitoxnanite>
+  <afflictiondescription.antitoxnanite>Nanites from this strain dissolve poisons and toxins. Integration 1: Alcohol, opiate overdose, Deliriumine poisoning, Morbusine poisoning, Sufforin poisoning, Cyanide poisoning and Paralysis. Integration 2: Sepsis.</afflictiondescription.antitoxnanite>
+  <entityname.oxybloodnanite>'Halesium' injection</entityname.oxybloodnanite>
+  <entitydescription.oxybloodnanite>Medical nanites, that assist organism with blood production, circulation and decreases radiation levels, generally decreasing time it takes to regain counciousness and oxygen. At higher integration it can even restart the heart. NANITE MAINTENANCE COST IS DOUBLED. Two doses may be integrated.</entitydescription.oxybloodnanite>
+  <afflictionname.oxybloodnanite>'Halesium' Nanites</afflictionname.oxybloodnanite>
+  <afflictiondescription.oxybloodnanite>Nanites from this strain produce additional blood cells. Integration 1: Bloodloss, decreases speed at which oxygen deprivation grows and Radiation sickness. Integration 2: Fibrilation, cardiac tamponnade, cerebral hypoxia and restart the heart if it stops.</afflictiondescription.oxybloodnanite>
+  <entityname.neuralnanite>'Cerebrate' injection</entityname.neuralnanite>
+  <entitydescription.neuralnanite>Medical nanites, which reconnect damaged neurons and dissolve hallucinogenic elements. One doses may be integrated.</entitydescription.neuralnanite>
+  <afflictionname.neuralnanite>'Cerebrate' Nanites</afflictionname.neuralnanite>
+  <afflictiondescription.neuralnanite>Nanites from this strain reconnect neurons and dissolve hallucinogens. Integration 1: Psychosis, hallucinating, Opiate addiction, stun and brain hemorrhage (Real Sonar Required).</afflictiondescription.neuralnanite>
+  <entityname.husknanite>'Asclepius' injection</entityname.husknanite>
+  <entitydescription.husknanite>Medical nanites, which fight invading parasites and treat muscle paralysis. Two doses may be integrated.</entitydescription.husknanite>
+  <afflictionname.husknanite>'Asclepius' Nanites</afflictionname.husknanite>
+  <afflictiondescription.husknanite>Nanites from this strain resist parasites. Integration 1: Husk infection stops at 80%. Integration 2: Husk infection immunity.</afflictiondescription.husknanite>
+  <entityname.vigorbuffnanite>'Armstrong' injection</entityname.vigorbuffnanite>
+  <entitydescription.vigorbuffnanite>Amplification nanites, which enlarge muscular mass of the organism, leading to increased strenght and organism density. One dose may be integrated.</entitydescription.vigorbuffnanite>
+  <afflictionname.vigorbuffnanite>'Armstrong' Nanites</afflictionname.vigorbuffnanite>
+  <afflictiondescription.vigorbuffnanite>Nanites from this strain increase muscular mass and protect the host. Integration 1: Minor melee damage increase, hardening Integration and significant flow resistance.</afflictiondescription.vigorbuffnanite>
+  <entityname.hyperbuffnanite>'Driver' injection</entityname.hyperbuffnanite>
+  <entitydescription.hyperbuffnanite>Amplification nanites, which influence reaction speed and motoric functions of the organism. One dose may be integrated.</entitydescription.hyperbuffnanite>
+  <afflictionname.hyperbuffnanite>'Driver' Nanites</afflictionname.hyperbuffnanite>
+  <afflictiondescription.hyperbuffnanite>Nanites from this strain increase reaction and motorics speed. Integration 1: Minor attack, minor repair speed, movement and swimming speed increase.</afflictiondescription.hyperbuffnanite>
+  <entityname.visionbuffnanite>'Beholder' injection</entityname.visionbuffnanite>
+  <entitydescription.visionbuffnanite>Amplification nanites, which augment ocular tissues to allow for supernatural vision, at higher level it slowly repairs damaged tissues in the eyes. As a side effect, vision is sharp enough to disperse light akin to a prism.  Two doses may be integrated.</entitydescription.visionbuffnanite>
+  <afflictionname.visionbuffnanite>'Beholder' Nanites</afflictionname.visionbuffnanite>
+  <afflictiondescription.visionbuffnanite>Nanites from this strain augment vision. Integration 1: Amplified accuracy with weapon and increased repair efficiency. Integration 2: Heals eye damage (NT Eyes Required) and Welder's eye (Immersive Repairs Required)</afflictiondescription.visionbuffnanite>
+  <entityname.laniusxenonanite>'Lanius' xeno-injection</entityname.laniusxenonanite>
+  <entitydescription.laniusxenonanite>Xenotech nanites, barely researched, but seem to cover one's body in thin layer of metal-like compound which seems to be resistant to pressure, but limit freedom of movement. Note: Resistant, not immune. Two doses may be integrated.</entitydescription.laniusxenonanite>
+  <afflictionname.laniusxenonanite>'Lanius' Xeno-nanites</afflictionname.laniusxenonanite>
+  <afflictiondescription.laniusxenonanite>Alien nanites, which seem to increase resistance to heat, pressure and decrease oxygen consumption. Integration 1: Minor burn and oxygen deprivation resistance. Integration 2: Partial pressure resistance and mitigates the need of oxygen.</afflictiondescription.laniusxenonanite>
+  <entityname.mechfixnanite>'Makinis' injection</entityname.mechfixnanite>
+  <entitydescription.mechfixnanite>Mechanical nanites, slowly repairing cyberlimbs. Two doses may be integrated.</entitydescription.mechfixnanite>
+  <afflictionname.mechfixnanite>'Makinis' Nanites</afflictionname.mechfixnanite>
+  <afflictiondescription.mechfixnanite>Nanites repairs mechanical limbs Integration 1: Fix loose screws and bent metal. Integration 2: Repairs missing metal pieces and damaged electronics.</afflictiondescription.mechfixnanite>
+  <afflictionname.nanitedecay>Decaying Nanites</afflictionname.nanitedecay>
+  <afflictiondescription.nanitedecay>Not enough precursors to support all nanites, they are slowly disintegrating ! Try to find a precursor injection as soon as possible !</afflictiondescription.nanitedecay>
+</infotexts>

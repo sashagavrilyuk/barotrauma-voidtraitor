@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sounds>
+  <damagesound file="%ModDir%/More Arts (AOCS)/Items/clown_costume1.ogg" damagerange="0.0,75.0" damagesoundtype="BlueClown" />
+  <damagesound file="%ModDir%/More Arts (AOCS)/Items/clown_costume2.ogg" damagerange="0.0,75.0" damagesoundtype="BlueClown" />
+  <damagesound file="%ModDir%/More Arts (AOCS)/Items/clown_costume3.ogg" damagerange="0.0,75.0" damagesoundtype="BlueClown" />
+  <damagesound file="%ModDir%/More Arts (AOCS)/Items/clown_costume4.ogg" damagerange="25.0,100.0" damagesoundtype="BlueClown" />
+  <damagesound file="%ModDir%/More Arts (AOCS)/Items/clown_costume5.ogg" damagerange="25.0,100.0" damagesoundtype="BlueClown" />
+  <damagesound file="%ModDir%/More Arts (AOCS)/Items/clown_costume6.ogg" damagerange="25.0,100.0" damagesoundtype="BlueClown" />
+  <antigravitytrinket file="%ModDir%/More Arts (AOCS)/Items/antigravitytrinket.ogg" range="500" />
+  <HeavyExoSuit file="%ModDir%/More Arts (AOCS)/Items/extraheavyfootstep1.ogg" range="600" />
+  <HeavyExoSuit file="%ModDir%/More Arts (AOCS)/Items/extraheavyfootstep2.ogg" range="600" />
+  <HeavyExoSuit file="%ModDir%/More Arts (AOCS)/Items/extraheavyfootstep3.ogg" range="600" />
+  <electrostuck file="%ModDir%/More Arts (AOCS)/Items/electrovsplox.ogg" range="1000" />
+</sounds>

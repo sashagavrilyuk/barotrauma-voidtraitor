@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <Item name="Clear Conscience" description="The Relic of psycho who loved massive knives?" identifier="clearknife" category="Equipment" Tags="mediumitem,weapon" cargocontaineridentifier="metalcrate" scale="0.5" impactsoundtag="impact_metal_light" RequireAimToUse="True">
+    <PreferredContainer primary="armcab" minamount="0" maxamount="1" spawnprobability="0.01" />
+    <PreferredContainer secondary="wreckarmcab" minamount="0" maxamount="1" spawnprobability="0.03" />
+    <PreferredContainer secondary="abandonedarmcab,abandonedstoragecab" minamount="0" maxamount="1" spawnprobability="0.01" />
+    <Price baseprice="390" soldeverywhere="false">
+      <Price locationtype="outpost" multiplier="1.5" sold="false" />
+      <Price locationtype="city" multiplier="1.25" sold="false" />
+      <Price locationtype="research" multiplier="1.25" sold="false" />
+      <Price locationtype="military" multiplier="0.9" sold="false" />
+      <Price locationtype="mine" multiplier="1.25" sold="false" />
+    </Price>
+    <Deconstruct time="15">
+      <Item identifier="carbon" />
+      <Item identifier="iron" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/Guns Enhanced Unofficial Addon/ClearKnife/ClearKnife_Icon.png" sourcerect="0,0,64,64" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/Guns Enhanced Unofficial Addon/ClearKnife/ClearKnife.png" sourcerect="50,25,196,26" depth="0.65" origin="0.5,0.5" />
+    <Body width="170" height="30" density="30" />
+    <MeleeWeapon slots="Any,RightHand,LeftHand" aimpos="55,32" handle1="-48,5" holdangle="40" reload="1.00" AllowHitMultiple="true" range="110" combatPriority="35" msg="ItemMsgPickUpSelect">
+      <Attack targetimpulse="4" severlimbsprobability="0.3" itemdamage="10" penetration="0.15" structuredamage="0.1">
+        <Affliction identifier="lacerations" strength="31" />
+        <Affliction identifier="bleeding" strength="9" />
+        <Affliction identifier="stun" strength="0.4" />
+        <StatusEffect type="OnUse" target="Character">
+          <Sound file="%ModDir%/Guns Enhanced Unofficial Addon/ClearKnife/Mele_Slash_1.ogg" selectionmode="random" range="500" />
+          <Sound file="%ModDir%/Guns Enhanced Unofficial Addon/ClearKnife/Mele_Slash_2.ogg" range="500" />
+          <Sound file="%ModDir%/Guns Enhanced Unofficial Addon/ClearKnife/Mele_Slash_3.ogg" range="500" />
+        </StatusEffect>
+      </Attack>
+    </MeleeWeapon>
+    <Quality>
+      <QualityStat stattype="StrikingPowerMultiplier" value="0.1" />
+    </Quality>
+    <aitarget sightrange="500" soundrange="250" fadeouttime="1" />
+  </Item>
+</Items>

@@ -1,0 +1,2 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SnightmareSwimSlow footrotatestrength="25" type="Snightmare" LegMoveAmount="-0.23223272" LegCycleLength="10.38915" HandMoveAmount="0.5700003,0.034000006" HandCycleSpeed="2.2800012" HandMoveOffset="0,0" FootAngle="-50" ArmMoveStrength="1" HandMoveStrength="0.5" FixedHeadAngle="True" SteerTorque="25" LegTorque="25" MovementSpeed="0.640798" CycleSpeed="0.640798" HeadAngle="114" TorsoAngle="0" HeadTorque="50" TorsoTorque="50" FootTorque="25" AnimationType="SwimSlow" ArmIKStrength="1" HandIKStrength="1" />

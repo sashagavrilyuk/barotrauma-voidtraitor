@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Orders>
+  <Override>
+    <Order name="Report Fire" identifier="reportfire" color="255,120,0,200" targetallcharacters="true" appropriatejobs="captain,securityofficer,medicaldoctor,engineer,mechanic,assistant, executive_officer,navigator,chief,quartermaster,head_of_security,chiefmedicaldoctor,passenger,janitor,inmate, he-chef, acolyte, diver, surgeon, PlayerHuskJob, lc_mercenary, PlayerMudraptorJob, guardsman,magos,engineseer,cultist,skitari,botastartes,loyalastartes,chaosastartes,sororitas" fadeouttime="20">
+      <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="256,512,128,128" />
+    </Order>
+    <Order name="Report Breach" identifier="reportbreach" color="136,169,195,200" targetallcharacters="true" appropriatejobs="captain,securityofficer,medicaldoctor,engineer,mechanic,assistant, executive_officer,navigator,chief,quartermaster,head_of_security,chiefmedicaldoctor,passenger,janitor,inmate, he-chef, acolyte, diver, surgeon, PlayerHuskJob, lc_mercenary, PlayerMudraptorJob, guardsman,magos,engineseer,cultist,skitari,botastartes,loyalastartes,chaosastartes,sororitas" fadeouttime="20">
+      <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="384,512,128,128" />
+    </Order>
+    <Order name="Report Intruders" identifier="reportintruders" color="151,169,130,200" targetallcharacters="true" appropriatejobs="captain,securityofficer,medicaldoctor,engineer,mechanic,assistant, executive_officer,navigator,chief,quartermaster,head_of_security,chiefmedicaldoctor,passenger,janitor,inmate, he-chef, acolyte, diver, surgeon, PlayerHuskJob, lc_mercenary, PlayerMudraptorJob, guardsman,magos,engineseer,cultist,skitari,botastartes,loyalastartes,chaosastartes,sororitas" fadeouttime="20">
+      <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="640,512,128,128" />
+    </Order>
+    <Order name="Report Broken Devices" identifier="reportbrokendevices" color="245,211,7,200" targetallcharacters="true" appropriatejobs="captain,securityofficer,medicaldoctor,engineer,mechanic,assistant, executive_officer,navigator,chief,quartermaster,head_of_security,chiefmedicaldoctor,passenger,janitor,inmate, he-chef, acolyte, diver, surgeon, PlayerHuskJob, lc_mercenary, PlayerMudraptorJob, guardsman,magos,engineseer,cultist,skitari,botastartes,loyalastartes,chaosastartes,sororitas" fadeouttime="20">
+      <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="512,512,128,128" />
+    </Order>
+    <Order name="Request First Aid" identifier="requestfirstaid" color="252,110,110,200" targetallcharacters="true" appropriatejobs="captain,securityofficer,medicaldoctor,engineer,mechanic,assistant, executive_officer,navigator,chief,quartermaster,head_of_security,chiefmedicaldoctor,passenger,janitor,inmate, he-chef, acolyte, diver, surgeon, PlayerHuskJob, lc_mercenary, PlayerMudraptorJob, guardsman,magos,engineseer,cultist,skitari,botastartes,loyalastartes,chaosastartes,sororitas" fadeouttime="20">
+      <Sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="128,512,128,128" />
+    </Order>
+  </Override>
+</Orders>

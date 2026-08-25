@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<style>
+  <death color="255,255,255,242" textcolor="0,0,0,255">
+    <Sprite name="death" texture="%ModDir%/Enhanced Husks/Items/death.png" sourcerect="0,0,752,1024" maintainaspectratio="true" tile="false" origin="0.5,0.5" scale="2" compress="true" />
+  </death>
+  <buh color="255,255,255,242" textcolor="0,0,0,255">
+    <Sprite name="buh" texture="%ModDir%/Enhanced Husks/Items/buh.png" sourcerect="0,0,752,1024" maintainaspectratio="true" tile="false" origin="0.5,0.5" scale="2" compress="true" />
+  </buh>
+</style>

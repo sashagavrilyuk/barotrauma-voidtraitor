@@ -1,0 +1,1946 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <Item name="headboom" identifier="artmod_headboom" nonplayerteaminteractable="True" Scale="1" tags="" sonarsize="0" hideinmenus="true" health="0.1">
+    <Body radius="100" density="10" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="always" target="This" Condition="-10" disabledeltatime="true" delay="0" />
+      <!-- Play multiple sounds, randomly chosen each time apart from the final skull crunching sound. -->
+      <StatusEffect type="OnBroken" target="This">
+        <ParticleEmitter particle="bloodsplash" particlespersecond="25" scalemin="0.5" scalemax="1.0" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+        <ParticleEmitter particle="blackblood" particlespersecond="5" scalemin="0.5" scalemax="1.0" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/bone_break_neck_snap_crack_01.ogg" range="500" volume="0.5" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/bone_break_neck_snap_crack_02.ogg" range="500" volume="0.5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/bone_break_neck_snap_crack_03.ogg" range="500" volume="0.5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/bone_break_neck_snap_crack_04.ogg" range="500" volume="0.5" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <ParticleEmitter particle="bloodsplash" particlespersecond="25" scalemin="0.5" scalemax="1.0" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+        <ParticleEmitter particle="blackblood" particlespersecond="5" scalemin="0.5" scalemax="1.0" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-1.ogg" range="500" volume="0.5" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-2.ogg" range="500" volume="0.5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-3.ogg" range="500" volume="0.5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-4.ogg" range="500" volume="0.5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-5.ogg" range="500" volume="0.5" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <ParticleEmitter particle="bloodsplash" particlespersecond="25" scalemin="1.0" scalemax="2.0" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+        <ParticleEmitter particle="blackblood" particlespersecond="5" scalemin="1.0" scalemax="2.0" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/BodyHit-4.ogg" range="500" volume="0.5" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/BodyHit-5.ogg" range="500" volume="0.5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/BodyHit-6.ogg" range="500" volume="0.5" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.05">
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/HammerSkullPenetrate.ogg" range="10000" volume="2" />
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="torsoexplodeS" identifier="artmod_torsoexplode" nonplayerteaminteractable="True" Scale="1" tags="" sonarsize="0" hideinmenus="true" health="0.1">
+    <Body radius="100" density="10" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="always" target="This" Condition="-10" disabledeltatime="true" delay="0" />
+      <!-- Play multiple sounds, randomly chosen each time apart from the final skull crunching sound. -->
+      <StatusEffect type="OnBroken" target="This">
+        <Explosion range="5.0" camerashake="0.0" structuredamage="0" itemdamage="0" stun="5" force="5.0" flames="false" smoke="false" severlimbsprobability="0.0" flash="false" shockwave="false" underwaterbubble="false" playTinnitus="false" />
+        <ParticleEmitter particle="bloodsplash" particlespersecond="25" scalemin="0.5" scalemax="1.0" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+        <ParticleEmitter particle="blackblood" particlespersecond="5" scalemin="0.5" scalemax="1.0" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/bone_break_neck_snap_crack_01.ogg" range="500" volume="0.5" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/bone_break_neck_snap_crack_02.ogg" range="500" volume="0.5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/bone_break_neck_snap_crack_03.ogg" range="500" volume="0.5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/bone_break_neck_snap_crack_04.ogg" range="500" volume="0.5" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <ParticleEmitter particle="bloodsplash" particlespersecond="25" scalemin="0.5" scalemax="1.0" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+        <ParticleEmitter particle="blackblood" particlespersecond="5" scalemin="0.5" scalemax="1.0" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-1.ogg" range="500" volume="0.5" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-2.ogg" range="500" volume="0.5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-3.ogg" range="500" volume="0.5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-4.ogg" range="500" volume="0.5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-5.ogg" range="500" volume="0.5" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <ParticleEmitter particle="bloodsplash" particlespersecond="25" scalemin="0.5" scalemax="2.0" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+        <ParticleEmitter particle="blackblood" particlespersecond="5" scalemin="0.5" scalemax="2.0" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/BodyHit-4.ogg" range="500" volume="0.5" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/BodyHit-5.ogg" range="500" volume="0.5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/BodyHit-6.ogg" range="500" volume="0.5" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.05">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="RotBoom" identifier="RotBoom" nonplayerteaminteractable="True" Scale="1" tags="" sonarsize="0" hideinmenus="true" health="1">
+    <Body width="10" radius="10" density="15" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="-10" disabledeltatime="true" delay="0" />
+      <StatusEffect type="OnBroken" target="This">
+        <Explosion range="250.0" camerashake="0.0" structuredamage="0" itemdamage="0" stun="0.5" force="5.0" flames="false" smoke="false" severlimbsprobability="0.0" flash="false" shockwave="false" underwaterbubble="false" playTinnitus="false">
+          <Affliction identifier="acidburn" strength="35" />
+        </Explosion>
+        <ParticleEmitter particle="blackwaterblood" particleamount="25" scalemin="1" scalemax="2.0" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+        <ParticleEmitter particle="blackblood" particleamount="15" scalemin="1" scalemax="2.0" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/bone_break_neck_snap_crack_01.ogg" range="1000" volume="0.75" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/bone_break_neck_snap_crack_02.ogg" range="1000" volume="0.75" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/bone_break_neck_snap_crack_03.ogg" range="1000" volume="0.75" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/bone_break_neck_snap_crack_04.ogg" range="1000" volume="0.75" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-1.ogg" range="1000" volume="0.75" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-2.ogg" range="1000" volume="0.75" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-3.ogg" range="1000" volume="0.75" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-4.ogg" range="1000" volume="0.75" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-5.ogg" range="1000" volume="0.75" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/BodyHit-4.ogg" range="1000" volume="0.75" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/BodyHit-5.ogg" range="1000" volume="0.75" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/BodyHit-6.ogg" range="1000" volume="0.75" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="LilRotBoom" identifier="LilRotBoom" nonplayerteaminteractable="True" Scale="1" tags="" sonarsize="0" hideinmenus="true" impacttolerance="0.001" health="0.1">
+    <Body radius="100" density="10" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="always" target="This" Condition="-10" disabledeltatime="true" delay="0" />
+      <StatusEffect type="OnBroken" target="This,nearbyCharacters" range="50">
+        <Explosion range="50.0" camerashake="0.0" structuredamage="0" itemdamage="0" stun="0.25" force="1" flames="false" smoke="false" severlimbsprobability="0.0" flash="false" shockwave="false" underwaterbubble="false" playTinnitus="false">
+          <Affliction identifier="acidburn" strength="15" />
+        </Explosion>
+        <ParticleEmitter particle="blackwaterblood" particleamount="10" scalemin="0.75" scalemax="0.75" velocitymin="0" velocitymax="15" anglemin="0" anglemax="360" />
+        <ParticleEmitter particle="blackblood" particleamount="15" scalemin="0.75" scalemax="0.75" velocitymin="0" velocitymax="40" anglemin="0" anglemax="360" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/bone_break_neck_snap_crack_01.ogg" range="500" volume="0.5" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/bone_break_neck_snap_crack_02.ogg" range="500" volume="0.5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/bone_break_neck_snap_crack_03.ogg" range="500" volume="0.5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/bone_break_neck_snap_crack_04.ogg" range="500" volume="0.5" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-1.ogg" range="500" volume="0.5" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-2.ogg" range="500" volume="0.5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-3.ogg" range="500" volume="0.5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-4.ogg" range="500" volume="0.5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/WoodBat-5.ogg" range="500" volume="0.5" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/BodyHit-4.ogg" range="500" volume="0.5" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/BodyHit-5.ogg" range="500" volume="0.5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/Gore/BodyHit-6.ogg" range="500" volume="0.5" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.05">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="artmod_alienlight1" nameidentifier="ruinlight" width="100" height="50" texturescale="1.0,1.0" scale="0.5" category="Alien" spritecolor="255,255,255,255" noninteractable="true" hideinmenus="true">
+    <Body width="1" radius="1" density="1" bodytype="Kinematic" />
+    <sprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1,1,1,1" depth="0.94" premultiplyalpha="false" origin="0.5,0.5" />
+    <LightComponent range="1500.0" lightcolor="246,165,255,111" IsOn="true" castshadows="false" allowingameediting="false" powerconsumption="10"></LightComponent>
+    <ItemComponent>
+      <StatusEffect disabledeltatime="true" Condition="-100" target="This" type="Always" delay="45" />
+      <StatusEffect type="OnBroken" target="This" delay="0.1">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="Always" target="this" stackable="false">
+        <ParticleEmitter particle="nasonovsparkles" AngleMax="360" ScaleMultiplier="1,1" ParticlesPerSecond="1" ColorMultiplier="246,165,255,255" LifeTimeMultiplier="15" DrawOnTop="True" />
+      </StatusEffect>
+      <StatusEffect type="OnSpawn" target="this" tags="online" duration="44" />
+      <StatusEffect type="always" target="this" setvalue="true" Voltage="1.0" checkconditionalalways="true">
+        <Conditional HasStatusTag="online" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="AlienPulse" identifier="AlienPulse" category="Alien" Scale="1" tags="" sonarsize="0" hideinmenus="true" impacttolerance="0.001" health="0.1">
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="OnActive" target="This,nearbyCharacters" range="1500">
+        <Explosion range="250.0" camerashake="0.0" structuredamage="0" itemdamage="0" stun="0.5" force="25.0" flames="false" smoke="false" severlimbsprobability="0.0" flash="false" shockwave="false" underwaterbubble="false" />
+      </StatusEffect>
+    </ItemComponent>
+    <ConnectionPanel canbeselected="true" hudpriority="10">
+      <RequiredItem items="screwdriver" type="Equipped" />
+      <GuiFrame relativesize="0.2,0.32" minsize="400,350" maxsize="480,420" anchor="Center" style="ConnectionPanel" />
+      <!-- break the item when a shutdown signal is received -->
+      <!--TODO: particle effect?-->
+      <input name="activate" displayname="connection.turrettriggerin" />
+      <input name="shutdown" displayname="connection.shutdown">
+        <StatusEffect type="OnUse" target="This" condition="-100" setvalue="true" />
+      </input>
+      <input name="power_in" displayname="connection.powerin" />
+    </ConnectionPanel>
+  </Item>
+  <Item name="AlienPump" identifier="artmod_pump" category="Alien" nonplayerteaminteractable="True" hideinmenus="true" scale="0.2" damagedbyexplosions="false" explosiondamagemultiplier="0.2" allowrotatingineditor="true">
+    <UpgradePreviewSprite scale="2.0" texture="Content/UI/WeaponUI.png" sourcerect="448,960,64,64" origin="0.5,0.45" />
+    <Upgrade gameversion="0.10.0.0" scale="*0.5" />
+    <Sprite texture="Content/Items/Pump/Pumps.png" depth="0.8" sourcerect="0,0,400,192" origin="0.5,0.5" />
+    <Pump canbeselected="true" maxflow="600" PowerConsumption="0.0" MinVoltage="0" IsOn="true" msg="ItemMsgInteractSelect">
+      <!-- TODO: define max size-->
+      <GuiFrame relativesize="0.25,0.2" minsize="420,220" anchor="Center" style="ItemUI" />
+    </Pump>
+  </Item>
+  <Item name="?" identifier="shock_electro" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect disabledeltatime="true" Condition="-100" target="This" type="Always" delay="0.01" />
+      <StatusEffect type="OnBroken" target="nearbyitems" targettags="mobilebattery,electrogunmagazine" range="2000" stackable="false" condition="-1" duration="5"></StatusEffect>
+      <StatusEffect type="OnBroken" target="this" stackable="false" duration="5">
+        <ParticleEmitter particle="faradayfx" ScaleMin="0.25" ScaleMax="0.5" VelocityMin="-50" VelocityMax="-75" anglemax="360" distancemin="200" distancemax="2000" scalemultiplier="1,1" particleamount="4" colormultiplier="255,255,255,255" />
+      </StatusEffect>
+      <StatusEffect target="This" type="OnBroken" delay="5.1">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="chief_electro" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect disabledeltatime="true" Condition="-100" target="This" type="Always" delay="0.1" />
+      <StatusEffect type="OnBroken" target="nearbyitems" targettags="mobilebattery" condition="-2" range="1000" stackable="false" duration="4"></StatusEffect>
+      <StatusEffect type="OnBroken" target="NearbyItems" targettags="junctionbox" range="1000.0" stackable="false" delay="1.0" extraload="100" duration="4.0"></StatusEffect>
+      <StatusEffect target="This" type="OnBroken" delay="5.5">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="eyepsicho" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect disabledeltatime="true" Condition="-100" target="This" type="Always" delay="0.1" />
+      <StatusEffect type="OnBroken" target="nearbyCharacters" range="750" stackable="false" duration="1.0">
+        <Affliction identifier="eyepsicho" strength="350" />
+      </StatusEffect>
+      <StatusEffect target="This" type="OnBroken" delay="1.5">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="darkeyes" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect disabledeltatime="true" Condition="-100" target="This" type="Always" delay="0.1" />
+      <StatusEffect type="OnBroken" target="nearbyCharacters" range="750" stackable="false" duration="4">
+        <Affliction identifier="artmod_SWblind" strength="3.05" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="this" stackable="false" duration="4.0">
+        <ParticleEmitter particle="anomaly" AngleMax="360" ScaleMin="0.1" ScaleMax="0.1" ScaleMultiplier="0.5,0.5" EmitInterval="0.25" ParticleAmount="1" ParticlesPerSecond="1" ColorMultiplier="25,25,25,255" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="4.5">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--для комнаты руин-->
+  <Item name="?" identifier="wateron" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="false">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" disabledeltatime="true" Condition="-10" target="This" stackable="false" delay="10" />
+      <StatusEffect type="Always" target="this" stackable="false">
+        <Sound file="Content/Sounds/Water/SplashLoop.ogg" range="600" dontmuffle="true" volume="1" loop="true" />
+        <ParticleEmitter particle="watersplash" particlespersecond="80" position="0,0" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.1">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="InWater" target="this" flowpercentage="0" setvalue="true">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="always" target="this" flowpercentage="100" setvalue="true" />
+    </ItemComponent>
+    <Pump canbeselected="false" maxflow="250" PowerConsumption="0.0" MinVoltage="0.0" IsOn="true" VulnerableToEMP="false" IsActive="True" />
+  </Item>
+  <Item name="?" identifier="wateroff" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="false">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" disabledeltatime="true" Condition="-10" target="This" stackable="false" delay="10" />
+      <StatusEffect type="InWater" target="this" stackable="false">
+        <Sound file="%ModDir%/More Arts (AOCS)/medItems/SplashLoopReverse.ogg" range="600" dontmuffle="true" volume="1" loop="true" />
+      </StatusEffect>
+      <StatusEffect type="InWater" target="this" stackable="false" interval="1">
+        <ParticleEmitter particle="artmod_GlowDot" AngleMax="360" ScaleMultiplier="1,1" ParticleAmount="1" ColorMultiplier="255,255,255,125" LifeTimeMultiplier="3" />
+      </StatusEffect>
+      <StatusEffect type="InWater" target="this" stackable="false" interval="0.1">
+        <ParticleEmitter particle="artmod_psychosisfx" AngleMax="360" ScaleMultiplier="1,1" ParticleAmount="1" ColorMultiplier="255,255,255,125" />
+      </StatusEffect>
+      <StatusEffect type="InWater" target="this" stackable="false" interval="0.25">
+        <ParticleEmitter particle="FlareBubbles" AngleMax="360" DistanceMin="200" DistanceMax="200" VelocityMin="-200" VelocityMax="-200" ScaleMultiplier="1,1" ParticleAmount="10" ParticlesPerSecond="10" ColorMultiplier="255,255,255,255" Distance="200" Velocity="-100" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.1">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="InWater" target="this" flowpercentage="-100" setvalue="true" />
+      <StatusEffect type="NotInWater " target="this" flowpercentage="0" setvalue="true">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+    <Pump canbeselected="false" maxflow="250" PowerConsumption="0.0" MinVoltage="0.0" IsOn="true" VulnerableToEMP="false" IsActive="True" />
+  </Item>
+  <Item name="?" identifier="radiationon" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="this" stackable="false">
+        <Sound file="%ModDir%/More Arts (AOCS)/medItems/radiation.ogg" range="1000" dontmuffle="true" volume="1" loop="true" />
+        <ParticleEmitter particle="artifactholderfx" AngleMax="360" DistanceMax="600" ScaleMultiplier="1,1" ParticlesPerSecond="80" ColorMultiplier="10,255,111,255" />
+      </StatusEffect>
+      <StatusEffect type="always" target="This" delay="11">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="OnSpawn" target="this" tags="online" duration="10" />
+      <StatusEffect type="always" target="this" setvalue="true" Voltage="1.0" checkconditionalalways="true">
+        <Conditional HasStatusTag="online" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="nearbyCharacters" disabledeltatime="true" range="600" stackable="false" delay="0.25" comparison="and" checkconditionalalways="true">
+        <Affliction identifier="radiationsickness" strength="1.5" />
+      </StatusEffect>
+    </ItemComponent>
+    <LightComponent LightColor="10,255,111,255" Flicker="0.02" range="600" IsOn="true" castshadows="false" powerconsumption="10" />
+  </Item>
+  <!--для комнаты руин-->
+  <Item name="AlienElectro" identifier="ElectroAnomaly" category="Alien" nonplayerteaminteractable="True" hideinmenus="true" Scale="1" tags="" sonarsize="0" impacttolerance="0.001" health="100">
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,150,150" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="OnBroken" target="This" disabledeltatime="true" Condition="100" delay="0.1" />
+      <StatusEffect type="Always" target="This" stackable="false" disabledeltatime="true" Condition="-40" delay="10" checkconditionalalways="true">
+        <Conditional condition="gt 75" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="this" checkconditionalalways="true" stackable="false" delay="6">
+        <Conditional condition="gt 75" />
+        <SpawnItem identifier="ElectroOn" spawnposition="This" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="This" stackable="false" disabledeltatime="true" Condition="40" delay="10" checkconditionalalways="true">
+        <Conditional condition="lt 75" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="this" checkconditionalalways="true" stackable="false" delay="6">
+        <Conditional condition="lt 75" />
+        <SpawnItem identifier="ElectroOff" spawnposition="This" />
+      </StatusEffect>
+      <!--<StatusEffect type="OnBroken" target="This" disabledeltatime="true" Condition="100" delay="0.1" />
+	<StatusEffect type="Always" target="This" disabledeltatime="true" Condition="-100" delay="10" tag="electroon" />
+    <StatusEffect type="OnBroken" target="This,nearbyitems" range="1000" Voltage="10.0" powerconsumption="0" stackable="false" targettags="junctionbox,light,fabricator,deconstructor,pump" ison="true" checkconditionalalways="true">
+	  <Conditional HasStatusTag="electroon" />
+	</StatusEffect>
+	<StatusEffect type="Always" target="This" disabledeltatime="true" Condition="-100" delay="5" tag="electrooff" >
+	<Conditional HasStatusTag="electroon" />
+	</StatusEffect>
+	<StatusEffect type="OnBroken" target="This,nearbyitems" range="1000" Voltage="0.0" powerconsumption="100000" stackable="false" targettags="junctionbox,light,fabricator,deconstructor,pump" ison="true" checkconditionalalways="true">
+	  <Conditional HasStatusTag="electrooff" />
+	</StatusEffect>-->
+    </ItemComponent>
+  </Item>
+  <!--для комнаты руин-->
+  <Item name="AlienElectroOn" identifier="ElectroOn" nonplayerteaminteractable="True" Scale="1" tags="" sonarsize="0" hideinmenus="true" impacttolerance="0.001" health="0.1">
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" Condition="-100" delay="1" />
+      <StatusEffect type="OnBroken" target="nearbyitems" range="1000" Voltage="10.0" powerconsumption="0" stackable="false" setvalue="true" targettags="junctionbox,light,fabricator,deconstructor,pump" ison="true"></StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--для комнаты руин-->
+  <Item name="AlienElectroOff" identifier="ElectroOff" nonplayerteaminteractable="True" Scale="1" tags="" sonarsize="0" hideinmenus="true" impacttolerance="0.001" health="0.1">
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,150,150" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" Condition="-100" delay="1" />
+      <StatusEffect type="OnBroken" target="nearbyitems" range="1000" Voltage="-10.0" powerconsumption="1000" stackable="false" setvalue="true" targettags="junctionbox,light,fabricator,deconstructor,pump" ison="true"></StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--<Item name="?" identifier="mindpain" nonplayerteaminteractable="True" Scale="1" tags="" sonarsize="0" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect disabledeltatime="true" Condition="-100" target="This" type="Always" delay="15" />
+      <StatusEffect type="Always" target="This">
+	    <sound file="Content/Items/Alien/alienweapon.ogg" type="OnUse" range="1200.0" loop="true" />
+        <ParticleEmitter particle="anomaly" AngleMax="360" ScaleMin="0.1" ScaleMax="0.1" ScaleMultiplier="1,1" EmitInterval="0.25" ParticleAmount="1" ParticlesPerSecond="1" ColorMultiplier="155,55,55,255" />
+      </StatusEffect>
+       <StatusEffect type="Always" target="NearbyCharacters" range="400" disabledeltatime="false">
+        <Affliction identifier="psi_internaldamage" strength="1.0" />
+		<Affliction identifier="painvisual" strength="1" />
+      </StatusEffect>
+	  <StatusEffect type="Always" target="NearbyCharacters" range="300" disabledeltatime="false">
+        <Affliction identifier="psi_internaldamage" strength="1.0" />
+      </StatusEffect>
+	  <StatusEffect type="Always" target="NearbyCharacters" range="200" disabledeltatime="false">
+        <Affliction identifier="psi_internaldamage" strength="1.0" />
+      </StatusEffect>
+	  <StatusEffect type="Always" target="NearbyCharacters" range="100" disabledeltatime="false">
+        <Affliction identifier="psi_internaldamage" strength="1.0" />
+		<Affliction identifier="stun" strength="1.0" />
+      </StatusEffect>
+	  <StatusEffect type="Always" target="NearbyCharacters" range="400" SpeedMultiplier="0.85" disabledeltatime="false" stackable="false" setvalue="true"/>
+	  <StatusEffect type="Always" target="NearbyCharacters" range="300" SpeedMultiplier="0.65" disabledeltatime="false" stackable="false" setvalue="true"/>
+	  <StatusEffect type="Always" target="NearbyCharacters" range="200" SpeedMultiplier="0.25" disabledeltatime="false" stackable="false" setvalue="true"/>
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>-->
+  <!--для комнат руин-->
+  <Item name="?" identifier="mindpain" nonplayerteaminteractable="True" Scale="1" tags="" sonarsize="0" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect disabledeltatime="true" Condition="-100" target="This" type="Always" delay="13.6" />
+      <StatusEffect type="Always" target="This">
+        <sound file="%ModDir%/More Arts (AOCS)/Items/AnomalyBlackHole.ogg" range="1200.0" volume="2" loop="true" />
+        <ParticleEmitter particle="anomaly" AngleMax="360" ScaleMin="0.1" ScaleMax="0.1" ScaleMultiplier="1,1" EmitInterval="0.25" ParticleAmount="1" ParticlesPerSecond="1" ColorMultiplier="155,55,55,255" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="This" interval="1">
+        <ParticleEmitter particle="artmod_clownblackhole" AngleMax="360" ScaleMin="0.25" ScaleMax="0.25" ScaleMultiplier="1,1" ParticleAmount="1" ParticlesPerSecond="1" ColorMultiplier="155,55,55,255" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="NearbyCharacters" range="400" disabledeltatime="false">
+        <Affliction identifier="psi_internaldamage" strength="1.0" />
+        <Affliction identifier="painvisual" strength="1" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="NearbyCharacters" range="300" disabledeltatime="false">
+        <Affliction identifier="psi_internaldamage" strength="1.0" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="NearbyCharacters" range="200" disabledeltatime="false">
+        <Affliction identifier="psi_internaldamage" strength="1.0" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="NearbyCharacters" range="100" disabledeltatime="false">
+        <Affliction identifier="psi_internaldamage" strength="2.0" />
+        <Affliction identifier="stun" strength="1.0" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="NearbyCharacters" range="400" SpeedMultiplier="0.85" disabledeltatime="false" stackable="false" setvalue="true" />
+      <StatusEffect type="Always" target="NearbyCharacters" range="380" SpeedMultiplier="0.80" disabledeltatime="false" stackable="false" setvalue="true" />
+      <StatusEffect type="Always" target="NearbyCharacters" range="360" SpeedMultiplier="0.75" disabledeltatime="false" stackable="false" setvalue="true" />
+      <StatusEffect type="Always" target="NearbyCharacters" range="340" SpeedMultiplier="0.70" disabledeltatime="false" stackable="false" setvalue="true" />
+      <StatusEffect type="Always" target="NearbyCharacters" range="320" SpeedMultiplier="0.65" disabledeltatime="false" stackable="false" setvalue="true" />
+      <StatusEffect type="Always" target="NearbyCharacters" range="300" SpeedMultiplier="0.60" disabledeltatime="false" stackable="false" setvalue="true" />
+      <StatusEffect type="Always" target="NearbyCharacters" range="280" SpeedMultiplier="0.55" disabledeltatime="false" stackable="false" setvalue="true" />
+      <StatusEffect type="Always" target="NearbyCharacters" range="260" SpeedMultiplier="0.50" disabledeltatime="false" stackable="false" setvalue="true" />
+      <StatusEffect type="Always" target="NearbyCharacters" range="240" SpeedMultiplier="0.45" disabledeltatime="false" stackable="false" setvalue="true" />
+      <StatusEffect type="Always" target="NearbyCharacters" range="220" SpeedMultiplier="0.40" disabledeltatime="false" stackable="false" setvalue="true" />
+      <StatusEffect type="Always" target="NearbyCharacters" range="200" SpeedMultiplier="0.35" disabledeltatime="false" stackable="false" setvalue="true" />
+      <StatusEffect type="Always" target="NearbyCharacters" range="180" SpeedMultiplier="0.30" disabledeltatime="false" stackable="false" setvalue="true" />
+      <StatusEffect type="Always" target="NearbyCharacters" range="160" SpeedMultiplier="0.25" disabledeltatime="false" stackable="false" setvalue="true" />
+      <StatusEffect type="Always" target="NearbyCharacters" range="140" SpeedMultiplier="0.20" disabledeltatime="false" stackable="false" setvalue="true" />
+      <StatusEffect type="Always" target="NearbyCharacters" range="120" SpeedMultiplier="0.15" disabledeltatime="false" stackable="false" setvalue="true" />
+      <StatusEffect type="Always" target="NearbyCharacters" range="100" SpeedMultiplier="0.10" disabledeltatime="false" stackable="false" setvalue="true" />
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--для аффекта инкубации-->
+  <Item name="?" identifier="rotspawn" nonplayerteaminteractable="True" Scale="1" tags="" sonarsize="0" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect disabledeltatime="true" target="This" type="Always" delay="10" checkconditionalalways="true">
+        <Conditional condition="eq 100" />
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="Always" target="This">
+        <ParticleEmitter particle="artmod_skyholderfx2" anglemax="360" distancemin="50" distancemax="250" velocitymin="-200" velocitymax="-700" particlespersecond="50" ColorMultiplier="155,55,55,255" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="1">
+        <SpawnCharacter speciesname="Scrawler" count="1" spread="0" offset="0,0" spawnposition="This" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="1.05">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+    <MotionSensor range="125" canbeselected="false" IgnoreDead="True" minimumvelocity="0" updateinterval="0.025" target="Human" DetectOwnMotion="false">
+      <StatusEffect type="Always" target="This" condition="-100" disabledeltatime="true" stackable="false" checkconditionalalways="true">
+        <Conditional targetitemcomponent="MotionSensor" MotionDetected="eq true" />
+      </StatusEffect>
+    </MotionSensor>
+  </Item>
+  <!--для треугольника-->
+  <Item name="?" identifier="bloodboom" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" />
+      <StatusEffect type="OnBroken" target="This" stackable="false">
+        <ParticleEmitter particle="blood" AngleMax="360" ScaleMultiplier="2.5,2.5" ParticleAmount="5" ParticlesPerSecond="1" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" stackable="false" duration="0.25">
+        <ParticleEmitter particle="artmod_artbloodexplode" distancemax="0" anglemin="0" anglemax="360" particlespersecond="1" particleamount="1" velocitymin="1" velocitymax="10" scalemin="3.25" scalemax="3.25" />
+        <ParticleEmitter particle="artmod_blooddrop" AngleMax="360" DistanceMin="10" DistanceMax="20" ScaleMultiplier="3,3" CopyEntityDir="False" ParticleAmount="9" ParticlesPerSecond="1" ColorMultiplier="255,0,0,255" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <sound file="%ModDir%/More Arts (AOCS)/Items/bloodsplosh1.ogg" type="OnBroken" range="1000" selectionmode="random" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/bloodsplosh2.ogg" type="OnBroken" range="1000" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/bloodsplosh3.ogg" type="OnBroken" range="1000" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/bloodsplosh4.ogg" type="OnBroken" range="1000" />
+        <Explosion range="250.0" empstrength="0" camerashake="0.5" stun="0" force="1" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false">
+          <Affliction identifier="craser_bleeding" strength="50" />
+          <Affliction identifier="stun" strength="1" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.1">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--для копья-->
+  <Item name="?" identifier="bloodboom2" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" />
+      <StatusEffect type="OnBroken" target="This" stackable="false">
+        <ParticleEmitter particle="blood" AngleMax="360" ScaleMultiplier="2.5,2.5" ParticleAmount="5" ParticlesPerSecond="1" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" stackable="false" duration="0.25">
+        <ParticleEmitter particle="artmod_artbloodexplode" distancemax="0" anglemin="0" anglemax="360" particlespersecond="1" particleamount="1" velocitymin="1" velocitymax="10" scalemin="3.25" scalemax="3.25" />
+        <ParticleEmitter particle="artmod_blooddrop" AngleMax="360" DistanceMin="10" DistanceMax="20" ScaleMultiplier="3,3" CopyEntityDir="False" ParticleAmount="9" ParticlesPerSecond="1" ColorMultiplier="255,0,0,255" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <sound file="%ModDir%/More Arts (AOCS)/Items/bloodsplosh1.ogg" type="OnBroken" range="1000" selectionmode="random" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/bloodsplosh2.ogg" type="OnBroken" range="1000" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/bloodsplosh3.ogg" type="OnBroken" range="1000" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/bloodsplosh4.ogg" type="OnBroken" range="1000" />
+        <Explosion range="250.0" empstrength="0" camerashake="0.5" stun="0" force="1" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false">
+          <Affliction identifier="craser_bleeding" strength="100" />
+          <Affliction identifier="stun" strength="1" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.1">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="blackholespawn" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="false">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" />
+      <StatusEffect type="OnBroken" targettype="nearbyCharacters" disabledeltatime="true" range="7000" duration="68">
+        <Affliction identifier="Smusic" strength="5" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" stackable="false" duration="10">
+        <ParticleEmitter particle="artmod_skyholderfx2" anglemax="360" distancemin="70" distancemax="70" velocitymin="-100" velocitymax="-200" particlespersecond="10" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" stackable="false" duration="20" delay="10">
+        <ParticleEmitter particle="artmod_skyholderfx2" anglemax="360" distancemin="100" distancemax="100" velocitymin="-200" velocitymax="-400" particlespersecond="15" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" stackable="false" duration="20" delay="30">
+        <ParticleEmitter particle="artmod_skyholderfx2" anglemax="360" distancemin="125" distancemax="125" velocitymin="-400" velocitymax="-700" particlespersecond="20" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" stackable="false" duration="19" delay="50">
+        <ParticleEmitter particle="artmod_skyholderfx2" anglemax="360" distancemin="125" distancemax="125" velocitymin="-700" velocitymax="-1000" particlespersecond="30" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" stackable="false" duration="9" delay="60">
+        <ParticleEmitter particle="artmod_skyholderfx2" anglemax="360" distancemin="150" distancemax="150" velocitymin="-1000" velocitymax="-1200" particlespersecond="50" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" stackable="false" duration="20" delay="30">
+        <ParticleEmitter particle="artmod_skyholderfx2" anglemax="360" distancemin="125" distancemax="1000" velocitymin="-1000" velocitymax="-1200" particlespersecond="20" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" stackable="false" duration="19" delay="50">
+        <ParticleEmitter particle="artmod_skyholderfx2" anglemax="360" distancemin="125" distancemax="1500" velocitymin="-1200" velocitymax="-1600" particlespersecond="30" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" stackable="false" duration="9" delay="60">
+        <ParticleEmitter particle="artmod_skyholderfx2" anglemax="360" distancemin="150" distancemax="2000" velocitymin="-1600" velocitymax="-2200" particlespersecond="50" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" targettype="This" disabledeltatime="true" delay="69">
+        <SpawnItem identifier="Sthal_singularity" spawnposition="This" />
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="Always" target="This" stackable="false" delay="70" checkconditionalalways="true">
+        <Conditional condition="eq 0" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--для электровинтовки-->
+  <Item name="?" identifier="electrogunboom" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="this" stackable="false" delay="0.1" Condition="-100" disabledeltatime="true">
+        <ParticleEmitter particle="faradayfx" anglemax="360" distancemax="250" scalemultiplier="0.4,0.4" particleamount="20" colormultiplier="255,255,255,255" />
+      </StatusEffect>
+      <StatusEffect type="NotInWater" target="This" disabledeltatime="true">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="this" stackable="false">
+        <Explosion range="250.0" structuredamage="0" itemdamage="0" force="0.25" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false" flashcolor="255,0,0,255">
+          <Affliction identifier="burn" strength="75" />
+          <Affliction identifier="stun" strength="1.5" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect target="This" type="OnBroken" delay="0.1">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--для электроБФГ-->
+  <Item name="?" identifier="electroBFGboom" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="this" stackable="false" delay="0.1" Condition="-100" disabledeltatime="true" />
+      <StatusEffect type="NotInWater" target="This" disabledeltatime="true">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="NearbyCharacters" range="200" stackable="false" delay="0.1">
+        <Explosion range="200.0" structuredamage="0" EmpStrength="1" cameraShakeRange="200" cameraShake="1" itemdamage="0" force="0.25" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false" flashcolor="125,125,255,255" />
+        <Affliction identifier="burn" strength="100" />
+        <Affliction identifier="stun" strength="0.5" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="this" stackable="false" delay="0.1">
+        <ParticleEmitter particle="faradayfx" anglemax="360" distancemin="0" distancemax="200" scalemultiplier="0.3,0.3" particleamount="60" colormultiplier="255,255,255,255" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="NearbyCharacters" range="400" stackable="false" delay="0.2">
+        <Explosion range="400.0" structuredamage="0" cameraShakeRange="400" cameraShake="1" itemdamage="0" force="0.25" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false" flashcolor="125,125,255,255" />
+        <Affliction identifier="burn" strength="80" />
+        <Affliction identifier="stun" strength="0.5" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="this" stackable="false" delay="0.2">
+        <ParticleEmitter particle="faradayfx" anglemax="360" distancemin="200" distancemax="400" scalemultiplier="0.45,0.45" particleamount="120" colormultiplier="255,255,255,255" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="NearbyCharacters" range="600" stackable="false" delay="0.3">
+        <Explosion range="600.0" structuredamage="0" cameraShakeRange="600" cameraShake="1" itemdamage="0" force="0.25" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false" flashcolor="125,125,255,255" />
+        <Affliction identifier="burn" strength="60" />
+        <Affliction identifier="stun" strength="0.5" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="this" stackable="false" delay="0.3">
+        <ParticleEmitter particle="faradayfx" anglemax="360" distancemin="400" distancemax="600" scalemultiplier="0.8,0.8" particleamount="200" colormultiplier="255,255,255,255" />
+      </StatusEffect>
+      <StatusEffect target="This" type="OnBroken" delay="0.31">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--для кислотной пушки-->
+  <Item name="?" identifier="acidbubblegunboom1" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="10" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="OnSpawn" target="this" stackable="false" delay="1" Condition="0" setvalue="true"></StatusEffect>
+      <StatusEffect type="Always" target="this" delay="0.1" stackable="false" disabledeltatime="true">
+        <ParticleEmitter particle="acidmistgrenade" particleamount="2" anglemax="360" velocitymin="0" velocitymax="0" distancemin="0" distancemax="0" colormultiplier="255,255,255,255" scalemultiplier="0.75,0.75" />
+        <Explosion range="200.0" ballastfloradamage="0" structuredamage="0" levelwalldamage="0" itemdamage="0" force="0" camerashake="0" severlimbsprobability="0" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false" playTinnitus="false">
+          <Affliction identifier="acidburn" strength="15" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect target="This" type="OnBroken" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="acidbubblegunboom2" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="10" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="OnSpawn" target="this" stackable="false" delay="1" Condition="0" setvalue="true"></StatusEffect>
+      <StatusEffect type="Always" target="this" delay="0.1" stackable="false" disabledeltatime="true">
+        <ParticleEmitter particle="acidmistgrenade" particleamount="2" anglemax="360" velocitymin="0" velocitymax="0" distancemin="0" distancemax="0" colormultiplier="255,255,255,255" scalemultiplier="0.35,0.35" />
+        <Explosion range="100.0" ballastfloradamage="0" structuredamage="0" levelwalldamage="0" itemdamage="0" force="0" severlimbsprobability="0" camerashake="0" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false" playTinnitus="false">
+          <Affliction identifier="acidburn" strength="7.5" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect target="This" type="OnBroken" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--костыль для перезарядки кислотной пушки-->
+  <Item name="?" identifier="acidbubblegunreload" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="false">
+    <Body width="10" radius="10" density="10" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="OnSpawn" target="this" stackable="false" delay="0" Condition="0" setvalue="true"></StatusEffect>
+      <StatusEffect type="OnBroken" target="Parent" condition="0" stackable="false" setvalue="true"></StatusEffect>
+      <StatusEffect type="OnBroken" target="Parent" condition="50" stackable="false" setvalue="true" delay="0.9"></StatusEffect>
+      <StatusEffect target="This" type="OnBroken" delay="1">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--костыль для перезарядки тяжелого пулемета сепаратистов-->
+  <Item name="?" identifier="heavyriflereload" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="false">
+    <Body width="10" radius="10" density="10" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="OnSpawn" target="this" stackable="false" delay="0" Condition="0" setvalue="true"></StatusEffect>
+      <StatusEffect type="OnBroken" target="Parent">
+        <Conditional condition="eq 1" />
+        <dropcontaineditems />
+      </StatusEffect>
+      <StatusEffect target="This" type="OnBroken" delay="0.1">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--костыль для перезарядки Арзи-->
+  <Item name="?" identifier="Arzireload" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="false">
+    <Body width="10" radius="10" density="10" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="OnSpawn" target="this" stackable="false" delay="0.01" Condition="0" setvalue="true"></StatusEffect>
+      <StatusEffect type="OnBroken" target="parent" stackable="false" TargetItemComponent="ItemContainer">
+        <remove />
+      </StatusEffect>
+      <StatusEffect target="This" type="OnBroken" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="electroartboom" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="this" stackable="false" delay="0.1" Condition="-100" disabledeltatime="true">
+        <ParticleEmitter particle="faradayfx" anglemax="360" distancemax="250" scalemultiplier="0.2,0.2" particleamount="20" colormultiplier="255,255,255,255" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="this" stackable="false">
+        <Explosion range="250.0" structuredamage="0" itemdamage="0" force="0.25" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false" flashcolor="255,0,0,255">
+          <Affliction identifier="burn" strength="25" />
+          <Affliction identifier="stun" strength="1.5" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect target="This" type="OnBroken" delay="0.1">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="electrogunboom123" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="this" stackable="false" delay="0.1" Condition="-100" disabledeltatime="true"></StatusEffect>
+      <StatusEffect type="OnBroken" target="This" disabledeltatime="true" checkconditionalalways="true">
+        <SpawnItem identifier="artmod_flaklaser2" spawnposition="This" count="12" aimspread="120" rotationtype="Collider" rotation="0" />
+      </StatusEffect>
+      <StatusEffect target="This" type="OnBroken" delay="0.1">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="radgunemitter" Scale="0.5" nonplayerteaminteractable="True" health="100" sonarsize="20" hideinmenus="true" isdangerous="true">
+    <AiTarget sightrange="1000.0" soundrange="1000" sonardisruption="10" static="True" />
+    <Sprite texture="Content/Items/JobGear/TalentGear.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" condition="-25" stackable="false" disabledeltatime="true" delay="1" />
+      <StatusEffect type="Always" target="NearbyCharacters" range="600" stackable="false" delay="1" disabledeltatime="true">
+        <Affliction identifier="radiationsickness" strength="6" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="NearbyCharacters" range="300" stackable="false" delay="1" disabledeltatime="true">
+        <Affliction identifier="radiationsickness" strength="16" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="NearbyCharacters" range="100" stackable="false" delay="1" disabledeltatime="true">
+        <Affliction identifier="radiationsickness" strength="32" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="Always" target="this" stackable="false">
+        <Sound file="%ModDir%/More Arts (AOCS)/medItems/radiation.ogg" range="1000" dontmuffle="true" volume="0.5" loop="true" />
+        <ParticleEmitter particle="artifactholderfx" AngleMax="360" DistanceMax="600" ScaleMultiplier="1,1" ParticlesPerSecond="40" ColorMultiplier="10,255,111,255" />
+      </StatusEffect>
+      <StatusEffect type="OnSpawn" target="this" tags="online" duration="4" />
+      <StatusEffect type="always" target="this" setvalue="true" Voltage="1.0" checkconditionalalways="true">
+        <Conditional HasStatusTag="online" />
+      </StatusEffect>
+    </ItemComponent>
+    <LightComponent LightColor="10,255,111,155" Flicker="0.02" range="600" IsOn="true" castshadows="false" powerconsumption="10" />
+  </Item>
+  <Item name="?" identifier="quickbatteryrechargerpuff" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" />
+      <StatusEffect type="OnBroken" target="This" stackable="false"></StatusEffect>
+      <StatusEffect type="OnBroken" target="nearbyitems" targettags="mobilebattery,mobilebattery,fulguriumbatterycell" condition="+50" range="200" stackable="false">
+        <ParticleEmitter particle="artmod_ElectricShock" anglemax="360" distancemin="10" distancemax="200" scalemin="0.2" scalemax="0.2" particleamount="10" particlespersecond="10" colormultiplier="255,255,255,255" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="nearbyitems" targettags="junctionbox" condition="10" range="200" stackable="false">
+        <ParticleEmitter particle="artmod_ElectricShock" anglemax="360" distancemin="0" distancemax="10" scalemin="0.2" scalemax="0.2" particleamount="5" particlespersecond="5" colormultiplier="255,255,255,255" />
+        <ParticleEmitter particle="artmod_ElectricShock" anglemax="360" distancemin="0" distancemax="10" scalemin="0.3" scalemax="0.3" particleamount="5" particlespersecond="5" colormultiplier="255,255,255,255" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.025">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="notinfernoboom" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="5" depth="0.1" isdangerous="true">
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="-1" disabledeltatime="true" delay="0.2">
+        <ParticleEmitter particle="GlowDot" scalemin="1.0" scalemax="1.0" particleamount="10" anglemin="0" anglemax="360" velocitymin="0" velocitymax="0" colormultiplier="255,25,25,255" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0">
+        <sound file="Content/Items/Weapons/ExplosionMedium1.ogg" type="OnBroken" range="500" selectionmode="All" />
+        <sound file="Content/Items/Weapons/ExplosionDebris1.ogg" type="OnBroken" range="500" />
+        <Explosion range="250.0" structuredamage="20" ballastfloradamage="60" itemdamage="25" force="5" severlimbsprobability="0.05" flash="false">
+          <Affliction identifier="burn" strength="40" />
+          <Affliction identifier="stun" strength="1.5" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.1">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="firewerks_spawner" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="1" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="-1" disabledeltatime="true" delay="1.5" />
+      <StatusEffect type="always" target="This" stackable="false" delay="0.25">
+        <SpawnItem identifier="firewerks" spawnposition="This" count="1" spread="100" />
+      </StatusEffect>
+      <StatusEffect type="always" target="This" stackable="false" delay="0.5">
+        <SpawnItem identifier="firewerks" spawnposition="This" count="2" spread="150" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="firewerks" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="-100000000" disabledeltatime="true" delay="0" />
+      <StatusEffect type="OnBroken" target="This" delay="0">
+        <ParticleEmitter particle="artmod_confettifall" colormultiplier="255,255,255,255" anglemin="0" anglemax="360" particleamount="1" velocitymin="0" scalemin="0.75" scalemax="1.25" scalemultiplier="1,1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/giftfirewerks11.ogg" range="750" selectionmode="random" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/giftfirewerks12.ogg" range="750" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/giftfirewerks13.ogg" range="750" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/giftfirewerks14.ogg" range="750" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/giftfirewerks15.ogg" range="750" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/giftfirewerks16.ogg" range="750" />
+        <Explosion range="150.0" structuredamage="0" ballastfloradamage="0" itemdamage="0" force="1" camerashake="0" flash="false" flames="false" smoke="false" shockwave="true" sparks="false" underwaterbubble="false">
+          <Affliction identifier="stun" strength="5" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.1">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="artmod_clownstanding" health="100" scale="0.75" hideinmenus="true" Tags="smallitem" damagedbyprojectiles="true" noninteractable="true">
+    <Sprite texture="%ModDir%/More Arts (AOCS)/Items/standinghere.png" sourcerect="0,0,62,226" depth="0.51" origin="0.5,0.5" />
+    <Body width="65" height="226" density="10" />
+    <AiTarget maxsoundrange="500" maxsightrange="3000" />
+    <GreaterComponent TimeFrame="0" AllowInGameEditing="false">
+      <StatusEffect type="Always" targettype="This" setvalue="true" TimeFrame="100" delay="1" disabledeltatime="true" checkconditionalalways="true">
+        <Conditional TimeFrame="0" />
+      </StatusEffect>
+      <StatusEffect type="Always" targettype="This" setvalue="true" TimeFrame="0" delay="1" disabledeltatime="true" checkconditionalalways="true">
+        <Conditional TimeFrame="50" />
+      </StatusEffect>
+      <StatusEffect type="Always" targettype="This" setvalue="true" TimeFrame="50" delay="1" disabledeltatime="true" checkconditionalalways="true">
+        <Conditional TimeFrame="100" />
+      </StatusEffect>
+    </GreaterComponent>
+    <ItemComponent>
+      <StatusEffect type="OnSpawn" target="This" Indestructible="false" />
+      <StatusEffect type="always" target="This" delay="60" setvalue="true" condition="0" />
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" setvalue="true" stackable="false">
+        <ParticleEmitter particle="artmod_spark2" anglemin="0" anglemax="360" particleamount="25" distancemin="10" distancemax="100" velocitymin="100" velocitymax="500" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Items/The Big Laugh end.ogg" volume="1.25" range="1250" loop="false" />
+      </StatusEffect>
+      <StatusEffect type="OnDamaged" target="This" disabledeltatime="true" setvalue="true">
+        <particleemitter particle="artmod_spark2" drawontop="true" particleamount="5" velocitymin="100" velocitymax="500" anglemin="0" anglemax="360" distancemin="0" distancemax="20" scalemin="0.75" scalemax="1.5" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Items/holoclowndamage1.ogg" range="600" selectionmode="Random" volume="1.25" type="OnDamaged" dontmuffle="false" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Items/holoclowndamage2.ogg" range="600" volume="1.25" type="OnDamaged" dontmuffle="false" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Items/holoclowndamage3.ogg" range="600" volume="1.25" type="OnDamaged" dontmuffle="false" />
+      </StatusEffect>
+      <StatusEffect type="OnDamaged" target="This" IsOn="true" />
+    </ItemComponent>
+    <LightComponent LightColor="255,25,25,200" PulseFrequency="1.0" PulseAmount="1" Flicker="0.5" FlickerSpeed="3.0" range="600" PowerConsumption="0" IsOn="false">
+      <LightTexture texture="Content/Lights/pointlight_falloff.png" />
+      <Sound file="%ModDir%/More Arts (AOCS)/Items/The Big Laugh.ogg" type="OnActive" range="1250" loop="true" dontmuffle="true" volume="1.75" />
+      <StatusEffect type="OnSpawn" target="This" setvalue="true" soundrange="500" sightrange="3000" delay="0.1" />
+      <StatusEffect type="always" target="This" setvalue="true" LightColor="255,25,25,200" stackable="false" checkconditionalalways="true" interval="0.1">
+        <Conditional TimeFrame="eq 100" />
+      </StatusEffect>
+      <StatusEffect type="always" target="This" setvalue="true" LightColor="25,255,25,200" stackable="false" checkconditionalalways="true" interval="0.1">
+        <Conditional TimeFrame="eq 50" />
+      </StatusEffect>
+      <StatusEffect type="always" target="This" setvalue="true" LightColor="25,25,255,200" stackable="false" checkconditionalalways="true" interval="0.1">
+        <Conditional TimeFrame="eq 0" />
+      </StatusEffect>
+    </LightComponent>
+  </Item>
+  <!--для Гликерия-->
+  <Item name="?" identifier="bigflamerwave" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1">
+    <Body width="10" radius="10" density="10" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="OnUse" target="this" delay="0.2" stackable="false" disabledeltatime="true">
+        <Explosion range="750.0" ballastfloradamage="20" structuredamage="10" levelwalldamage="0" itemdamage="5" force="0" camerashake="0" severlimbsprobability="0" playTinnitus="false" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false">
+          <Affliction identifier="burn" strength="50" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="this" delay="0.01" stackable="false" disabledeltatime="true">
+        <Sound file="%ModDir%/More Arts (AOCS)/Weapons/Glick_extrachill1.ogg" type="OnUse" selectionmode="Random" volume="3" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Weapons/Glick_extrachill2.ogg" type="OnUse" selectionmode="Random" volume="3" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Weapons/Glick_extrachill3.ogg" type="OnUse" selectionmode="Random" volume="3" />
+        <ParticleEmitter particle="artmod_shockwave" AngleMax="360" ScaleMin="2" ScaleMax="2" ScaleMultiplier="1,1" ParticlesPerSecond="1" particleamount="1" ColorMultiplier="125,15,15,255" />
+        <ParticleEmitter particle="flamethrowersmoke" AngleMax="360" ScaleMultiplier="1,1" ParticlesPerSecond="1" particleamount="1" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="MistSmoke" particleamount="1" anglemin="0" anglemax="45" velocitymin="150" velocitymax="150" distancemin="0" distancemax="0" colormultiplier="255,255,255,255" scalemultiplier="1,1" />
+        <ParticleEmitter particle="MistSmoke" particleamount="1" anglemin="45" anglemax="90" velocitymin="150" velocitymax="150" distancemin="0" distancemax="0" colormultiplier="255,255,255,255" scalemultiplier="1,1" />
+        <ParticleEmitter particle="MistSmoke" particleamount="1" anglemin="90" anglemax="135" velocitymin="150" velocitymax="150" distancemin="0" distancemax="0" colormultiplier="255,255,255,255" scalemultiplier="1,1" />
+        <ParticleEmitter particle="MistSmoke" particleamount="1" anglemin="135" anglemax="180" velocitymin="150" velocitymax="150" distancemin="0" distancemax="0" colormultiplier="255,255,255,255" scalemultiplier="1,1" />
+        <ParticleEmitter particle="MistSmoke" particleamount="1" anglemin="180" anglemax="225" velocitymin="150" velocitymax="150" distancemin="0" distancemax="0" colormultiplier="255,255,255,255" scalemultiplier="1,1" />
+        <ParticleEmitter particle="MistSmoke" particleamount="1" anglemin="225" anglemax="270" velocitymin="150" velocitymax="150" distancemin="0" distancemax="0" colormultiplier="255,255,255,255" scalemultiplier="1,1" />
+        <ParticleEmitter particle="MistSmoke" particleamount="1" anglemin="270" anglemax="315" velocitymin="150" velocitymax="150" distancemin="0" distancemax="0" colormultiplier="255,255,255,255" scalemultiplier="1,1" />
+        <ParticleEmitter particle="MistSmoke" particleamount="1" anglemin="315" anglemax="360" velocitymin="150" velocitymax="150" distancemin="0" distancemax="0" colormultiplier="255,255,255,255" scalemultiplier="1,1" />
+      </StatusEffect>
+      <StatusEffect type="OnNotContained" target="this" delay="0.1" stackable="false" disabledeltatime="true">
+        <remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="artmod_placeholder" tags="" nonplayerteaminteractable="false" sonarsize="0" scale="1" hideinmenus="true" health="0" depth="0.1">
+    <Body width="10" radius="10" density="10" />
+    <Sprite texture="Content/Items/Weapons/Crosshairs.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="OnNotContained" target="this" delay="0.01" stackable="false" disabledeltatime="true">
+        <remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--для Гликерия-->
+  <Item name="?" identifier="oxygensuccdevice" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1">
+    <Body width="10" radius="10" density="10" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="OnNotContained" target="this" delay="0.1" stackable="false" disabledeltatime="true">
+        <remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="oxygengivedevice" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1">
+    <Body width="10" radius="10" density="10" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="OnNotContained" target="this" delay="0.1" stackable="false" disabledeltatime="true">
+        <remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="anomaly_fire" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="1" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="-1" disabledeltatime="true" delay="10.41" />
+      <StatusEffect type="NotInWater" target="This" stackable="false" delay="0.25">
+        <ParticleEmitter particle="flamethrowersmoke" AngleMax="360" ScaleMultiplier="0.6,0.6" particleamount="3" ParticlesPerSecond="3" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="flame" AngleMax="360" ScaleMultiplier="0.75,0.75" particleamount="3" ParticlesPerSecond="4" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="whitespark" AngleMax="360" VelocityMin="50" VelocityMax="200" particleamount="3" ScaleMultiplier="1,1" ParticlesPerSecond="4" ColorMultiplier="255,255,255,255" Velocity="50" />
+      </StatusEffect>
+      <StatusEffect type="InWater" target="This" stackable="false" delay="0.25">
+        <ParticleEmitter particle="artmodflame" AngleMax="360" DistanceMax="57" ScaleMultiplier="1,1" particleamount="5" ParticlesPerSecond="1" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="bubbles" AngleMax="360" DistanceMax="57" ScaleMultiplier="1,1" particleamount="4" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+      <!--<StatusEffect type="NotInWater" target="This" stackable="false" delay="2.5" > 
+	    <ParticleEmitter particle="flamethrowersmoke" AngleMax="360" ScaleMultiplier="0.6,0.6" VelocityMin="100" VelocityMax="350" particleamount="25" ColorMultiplier="255,255,255,255" />
+		<ParticleEmitter particle="heavysmoke" AngleMin="0" AngleMax="180" ScaleMultiplier="0.75,0.75" VelocityMin="100" VelocityMax="350" particleamount="10" ColorMultiplier="255,255,255,255" />
+		<ParticleEmitter particle="heavysmoke" AngleMin="180" AngleMax="360" ScaleMultiplier="0.75,0.75" VelocityMin="100" VelocityMax="350" particleamount="10" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="flame" AngleMax="360" ScaleMultiplier="0.75,0.75" VelocityMin="100" VelocityMax="350" particleamount="25" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+	  <StatusEffect type="InWater" target="This" stackable="false" delay="2.5" > 
+        <ParticleEmitter particle="artmodflame" AngleMax="360" DistanceMax="57" VelocityMin="100" VelocityMax="350" ScaleMultiplier="1,1" particleamount="25" ColorMultiplier="255,255,255,255" />
+		<ParticleEmitter particle="bubbles" AngleMax="360" DistanceMax="57" VelocityMin="100" VelocityMax="350" ScaleMultiplier="1,1" particleamount="25" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>-->
+      <StatusEffect type="always" target="This" stackable="false" delay="2.5">
+        <use />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="This" delay="0.1" stackable="false" disabledeltatime="true">
+        <ParticleEmitter particle="heavysmoke" AngleMin="0" AngleMax="180" ScaleMultiplier="0.75,0.75" distancemin="25" distancemax="100" particleamount="4" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="heavysmoke" AngleMin="180" AngleMax="360" ScaleMultiplier="0.75,0.75" distancemin="25" distancemax="100" particleamount="4" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="bubbles" AngleMin="0" AngleMax="180" distancemin="25" distancemax="100" ScaleMultiplier="1,1" particleamount="4" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="bubbles" AngleMin="0" AngleMax="180" distancemin="25" distancemax="100" ScaleMultiplier="1,1" particleamount="4" ColorMultiplier="255,255,255,255" />
+        <Explosion range="75.0" structuredamage="1" itemdamage="1" force="0.1" showEffects="false" flash="true" flashDuration="0.2" flashcolor="175,121,0,255">
+          <Affliction identifier="burn" strength="20" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="This" delay="0.2" stackable="false" disabledeltatime="true">
+        <ParticleEmitter particle="heavysmoke" AngleMin="0" AngleMax="180" ScaleMultiplier="0.75,0.75" distancemin="100" distancemax="200" particleamount="6" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="heavysmoke" AngleMin="180" AngleMax="360" ScaleMultiplier="0.75,0.75" distancemin="100" distancemax="200" particleamount="6" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="bubbles" AngleMin="0" AngleMax="180" distancemin="100" distancemax="200" ScaleMultiplier="1,1" particleamount="6" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="bubbles" AngleMin="180" AngleMax="360" distancemin="100" distancemax="200" ScaleMultiplier="1,1" particleamount="6" ColorMultiplier="255,255,255,255" />
+        <Explosion range="150.0" structuredamage="1" itemdamage="1" force="0.1" showEffects="false" flash="true" flashDuration="0.2" flashcolor="175,121,0,255">
+          <Affliction identifier="burn" strength="30" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="This" delay="0.3" stackable="false" disabledeltatime="true">
+        <ParticleEmitter particle="heavysmoke" AngleMin="0" AngleMax="180" ScaleMultiplier="0.75,0.75" distancemin="200" distancemax="300" particleamount="8" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="heavysmoke" AngleMin="180" AngleMax="360" ScaleMultiplier="0.75,0.75" distancemin="200" distancemax="300" particleamount="8" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="bubbles" AngleMin="0" AngleMax="180" distancemin="200" distancemax="300" ScaleMultiplier="1,1" particleamount="8" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="bubbles" AngleMin="180" AngleMax="360" distancemin="200" distancemax="300" ScaleMultiplier="1,1" particleamount="8" ColorMultiplier="255,255,255,255" />
+        <Explosion range="250.0" structuredamage="1" itemdamage="1" force="0.1" showEffects="false" flash="true" flashDuration="0.3" flashcolor="175,121,0,255">
+          <Affliction identifier="burn" strength="40" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="This" delay="0.4" stackable="false" disabledeltatime="true">
+        <ParticleEmitter particle="heavysmoke" AngleMin="0" AngleMax="180" ScaleMultiplier="0.75,0.75" distancemin="300" distancemax="400" particleamount="10" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="heavysmoke" AngleMin="180" AngleMax="360" ScaleMultiplier="0.75,0.75" distancemin="300" distancemax="400" particleamount="10" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="bubbles" AngleMin="0" AngleMax="180" distancemin="300" distancemax="400" ScaleMultiplier="1,1" particleamount="10" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="bubbles" AngleMin="180" AngleMax="360" distancemin="300" distancemax="400" ScaleMultiplier="1,1" particleamount="10" ColorMultiplier="255,255,255,255" />
+        <Explosion range="350.0" structuredamage="1" itemdamage="1" force="0.1" showEffects="false" flash="true" flashDuration="0.4" flashcolor="175,121,0,255">
+          <Affliction identifier="burn" strength="60" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="anomaly_electro" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="1" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="-1" disabledeltatime="true" delay="5" />
+      <StatusEffect type="always" target="This" stackable="false" delay="0.05">
+        <ParticleEmitter particle="ElectricShock" AngleMax="360" DistanceMax="5" ScaleMin="0.1" ScaleMax="0.1" ScaleMultiplier="1,1" ParticleAmount="2" ParticlesPerSecond="5" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+      <StatusEffect type="always" target="This" stackable="false" delay="0.25">
+        <ParticleEmitter particle="ElectricShock" AngleMax="360" DistanceMax="5" ScaleMin="0.1" ScaleMax="0.1" ScaleMultiplier="1,1" ParticleAmount="4" ParticlesPerSecond="5" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="ElectricShock" AngleMax="360" DistanceMax="75" ScaleMin="0.25" ScaleMax="0.25" ScaleMultiplier="1,1" ParticleAmount="4" ParticlesPerSecond="5" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="whitespark" AngleMax="360" VelocityMin="100" VelocityMax="500" particleamount="3" ScaleMultiplier="1,1" ParticlesPerSecond="4" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+      <StatusEffect type="always" target="This" delay="0.5" stackable="false" disabledeltatime="true" checkconditionalalways="true">
+        <Conditional condition="gt 0" />
+        <SpawnItem identifier="anomalyelectrobolt" spawnposition="This" count="4" aimspread="360" rotationtype="Collider" rotation="0" />
+        <Explosion range="50.0" structuredamage="1" itemdamage="1" force="0.1" showEffects="false" flashcolor="255,0,0,255">
+          <Affliction identifier="burn" strength="10" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="anomalyelectrobolt" hideinmenus="true" category="Weapon" interactthroughwalls="true" cargocontaineridentifier="metalcrate" tags="smallitem" impactsoundtag="impact_metal_light" scale="0.5">
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="143,414,113,9" depth="0.55" />
+    <Body width="170" height="10" density="20" />
+    <Holdable slots="RightHand+LeftHand" holdpos="0,-50" handle1="-10,0" handle2="10,0" aimable="false" />
+    <Projectile characterusable="false" hitscan="true" removeonhit="true">
+      <ParticleEmitter particle="tracerelectroanomaly" particleamount="1" velocitymin="0" velocitymax="0" scalemultiplier="0.004,1.0" />
+      <Attack structuredamage="0" targetforce="5" itemdamage="0" severlimbsprobability="0" penetration="1">
+        <Affliction identifier="burn" strength="30" />
+        <Affliction identifier="EMP" strength="5" />
+        <Affliction identifier="stun" strength="0.25" />
+      </Attack>
+      <StatusEffect type="OnImpact" target="UseTarget">
+        <ParticleEmitter particle="muzzleflashnucleargun" anglemin="0" anglemax="360" particleamount="2" velocitymin="0" scalemin="0.5" scalemax="0.8" scalemultiplier="0.75,0.75" />
+      </StatusEffect>
+      <StatusEffect type="OnImpact" target="UseTarget">
+        <Conditional entitytype="eq Structure" />
+        <Conditional hastag="eq door" />
+        <ParticleEmitter particle="spark" copyentityangle="true" anglemin="-10" anglemax="10" particleamount="5" velocitymin="-10" velocitymax="-200" scalemin="0.5" scalemax="1" />
+      </StatusEffect>
+      <StatusEffect type="OnImpact" target="UseTarget" disabledeltatime="true" checkconditionalalways="true">
+        <SpawnItem identifier="electrogunboom" spawnposition="This" />
+        <Explosion range="30.0" structuredamage="0" itemdamage="1" force="1.0" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false" flashcolor="255,0,0,255">
+          <Affliction identifier="burn" strength="10" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnNotContained" target="This">
+        <Remove />
+      </StatusEffect>
+    </Projectile>
+  </Item>
+  <Item name="?" identifier="anomaly_toxin" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="2" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="-1" disabledeltatime="true" delay="2" checkconditionalalways="true">
+        <Conditional condition="eq 2" />
+      </StatusEffect>
+      <StatusEffect type="always" target="This" Condition="-1" disabledeltatime="true" delay="10.1" checkconditionalalways="true">
+        <Conditional condition="eq 1" />
+      </StatusEffect>
+      <StatusEffect type="always" target="This" stackable="false" interval="0.05">
+        <ParticleEmitter particle="MistSmoke" AngleMax="360" DistanceMax="75" ScaleMin="2.25" ScaleMax="2.25" ScaleMultiplier="1,1" ParticleAmount="2" ColorMultiplier="25,255,25,255" />
+      </StatusEffect>
+      <StatusEffect type="notinwater" target="This" stackable="false" interval="0.25">
+        <ParticleEmitter particle="acidmistsmall" AngleMax="360" DistanceMax="25" ScaleMin="0.8" ScaleMax="0.8" ScaleMultiplier="1,1" ParticleAmount="2" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+      <StatusEffect type="always" target="This" stackable="false" interval="0.25">
+        <ParticleEmitter particle="artmod_toxinmist" AngleMax="360" DistanceMax="15" ScaleMin="1" ScaleMax="1" ScaleMultiplier="1,1" ParticleAmount="2" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="acidmistsmall" AngleMax="360" DistanceMax="25" ScaleMin="0.8" ScaleMax="0.8" ScaleMultiplier="1,1" ParticleAmount="2" ColorMultiplier="255,255,255,255" />
+      </StatusEffect>
+      <StatusEffect type="always" target="This" delay="2" stackable="false" disabledeltatime="true" checkconditionalalways="true">
+        <Conditional condition="gt 0" />
+        <SpawnItem identifier="artmod_acidbubbleanomaly" spawnposition="This" count="1" aimspread="360" rotationtype="Collider" rotation="0" />
+        <Explosion range="100.0" structuredamage="1" itemdamage="1" force="0.1" showEffects="false" flashcolor="0,165,0,255">
+          <Affliction identifier="acidburn" strength="10" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="always" target="This" interval="1" stackable="false" disabledeltatime="true" checkconditionalalways="true">
+        <Conditional condition="eq 1" />
+        <SpawnItem identifier="artmod_acidbubbleanomalylittle" spawnposition="This" count="1" aimspread="360" rotationtype="Collider" rotation="0" />
+        <Explosion range="100.0" structuredamage="1" itemdamage="1" force="0.1" showEffects="false" flashcolor="0,165,0,255">
+          <Affliction identifier="acidburn" strength="10" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="artmod_acidbubbleanomaly" health="3" impacttolerance="0" nonplayerteaminteractable="True" hideinmenus="true" Scale="0.25">
+    <Sprite texture="%ModDir%/More Arts (AOCS)/Weapons/6_4.png" sourcerect="0,0,100,100" depth="0.55" origin="0.5,0.5" />
+    <Body width="38" height="15" density="-10" />
+    <Projectile characterusable="false" launchimpulse="25.0" sticktocharacters="false">
+      <Attack structuredamage="0" penetration="1" severlimbsprobability="0">
+        <Affliction identifier="stun" strength="0.1" />
+      </Attack>
+      <StatusEffect type="OnActive" target="This" stackable="false" delay="0.1">
+        <ParticleEmitter particle="acidmistgrenade" AngleMax="360" ScaleMultiplier="0.5,0.5" particleamount="2" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="FlareBubbles" particleamount="5" />
+      </StatusEffect>
+      <StatusEffect type="OnActive" target="This" Condition="-3" disabledeltatime="true" delay="0.21" />
+      <StatusEffect type="OnBroken" target="This">
+        <SpawnItem identifier="acidbubbleanomalyboom" spawnposition="This" />
+        <ParticleEmitter particle="acidmistgrenade" particleamount="10" anglemax="360" velocitymin="0" velocitymax="0" distancemin="0" distancemax="0" colormultiplier="255,255,255,255" scalemultiplier="0.75,0.75" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <sound file="%ModDir%/More Arts (AOCS)/weapons/acidimpact1.ogg" range="1000" volume="0.75" selectionmode="Random" />
+        <sound file="%ModDir%/More Arts (AOCS)/weapons/acidimpact2.ogg" range="1000" volume="0.75" />
+        <sound file="%ModDir%/More Arts (AOCS)/weapons/acidimpact3.ogg" range="1000" volume="0.75" />
+        <sound file="%ModDir%/More Arts (AOCS)/weapons/acidimpact4.ogg" range="1000" volume="0.75" />
+        <Explosion range="200.0" ballastfloradamage="0" structuredamage="0" levelwalldamage="0" itemdamage="0" force="1.0" severlimbsprobability="0" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false" decal="acidexplosion" decalsize="0.5">
+          <Affliction identifier="acidburn" strength="20" />
+          <Affliction identifier="stun" strength="1" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </Projectile>
+    <Upgrade gameversion="0.10.0.0" scale="0.5" />
+  </Item>
+  <Item name="" identifier="acidbubbleanomalyboom" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="10" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="OnSpawn" target="this" stackable="false" delay="0.5" Condition="0" setvalue="true"></StatusEffect>
+      <StatusEffect type="Always" target="this" delay="0.1" stackable="false" disabledeltatime="true">
+        <ParticleEmitter particle="acidmistgrenade" particleamount="2" anglemax="360" velocitymin="0" velocitymax="0" distancemin="0" distancemax="0" colormultiplier="255,255,255,255" scalemultiplier="1.25,1.25" />
+        <Explosion range="500.0" ballastfloradamage="0" structuredamage="0" levelwalldamage="0" itemdamage="0" force="0" severlimbsprobability="0" camerashake="0" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false" playTinnitus="false">
+          <Affliction identifier="acidburn" strength="5" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect target="This" type="OnBroken" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="artmod_acidbubbleanomalylittle" health="3" impacttolerance="0" nonplayerteaminteractable="True" hideinmenus="true" Scale="0.15">
+    <Sprite texture="%ModDir%/More Arts (AOCS)/Weapons/6_4.png" sourcerect="0,0,100,100" depth="0.55" origin="0.5,0.5" />
+    <Body width="38" height="15" density="20" />
+    <Projectile characterusable="false" launchimpulse="7.5" sticktocharacters="false">
+      <Attack structuredamage="0" penetration="1" severlimbsprobability="0">
+        <Affliction identifier="stun" strength="0.1" />
+      </Attack>
+      <StatusEffect type="OnActive" target="This" stackable="false" delay="0.1">
+        <ParticleEmitter particle="acidmistgrenade" AngleMax="360" ScaleMultiplier="0.5,0.5" particleamount="2" ColorMultiplier="255,255,255,255" />
+        <ParticleEmitter particle="FlareBubbles" particleamount="5" />
+      </StatusEffect>
+      <StatusEffect type="OnActive" target="This" Condition="-3" disabledeltatime="true" delay="0.21" />
+      <StatusEffect type="OnBroken" target="This">
+        <SpawnItem identifier="acidbubbleanomalyboomlittle" spawnposition="This" />
+        <ParticleEmitter particle="acidmistgrenade" particleamount="10" anglemax="360" velocitymin="0" velocitymax="0" distancemin="0" distancemax="0" colormultiplier="255,255,255,255" scalemultiplier="0.75,0.75" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <sound file="%ModDir%/More Arts (AOCS)/weapons/acidimpact1.ogg" range="1000" volume="0.75" selectionmode="Random" />
+        <sound file="%ModDir%/More Arts (AOCS)/weapons/acidimpact2.ogg" range="1000" volume="0.75" />
+        <sound file="%ModDir%/More Arts (AOCS)/weapons/acidimpact3.ogg" range="1000" volume="0.75" />
+        <sound file="%ModDir%/More Arts (AOCS)/weapons/acidimpact4.ogg" range="1000" volume="0.75" />
+        <Explosion range="100.0" ballastfloradamage="0" structuredamage="0" levelwalldamage="0" itemdamage="0" force="1.0" severlimbsprobability="0" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false" decal="acidexplosion" decalsize="0.5">
+          <Affliction identifier="acidburn" strength="10" />
+          <Affliction identifier="stun" strength="1" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </Projectile>
+    <Upgrade gameversion="0.10.0.0" scale="0.5" />
+  </Item>
+  <Item name="" identifier="acidbubbleanomalyboomlittle" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="10" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="OnSpawn" target="this" stackable="false" delay="0.21" Condition="0" setvalue="true"></StatusEffect>
+      <StatusEffect type="Always" target="this" delay="0.1" stackable="false" disabledeltatime="true">
+        <ParticleEmitter particle="acidmistgrenade" particleamount="2" anglemax="360" velocitymin="0" velocitymax="0" distancemin="0" distancemax="0" colormultiplier="255,255,255,255" scalemultiplier="1.25,1.25" />
+        <Explosion range="200.0" ballastfloradamage="0" structuredamage="0" levelwalldamage="0" itemdamage="0" force="0" severlimbsprobability="0" camerashake="0" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false" playTinnitus="false">
+          <Affliction identifier="acidburn" strength="10" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect target="This" type="OnBroken" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="anomaly_psycho" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="1" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="-1" disabledeltatime="true" delay="10.01" />
+      <StatusEffect type="always" target="This" stackable="false" delay="1">
+        <ParticleEmitter particle="artmod_psyanomalysparkles" AngleMax="360" DistanceMax="0" ScaleMultiplier="4,4" ParticleAmount="1" ColorMultiplier="125,12,255,255" />
+      </StatusEffect>
+      <StatusEffect type="always" target="This" stackable="false" delay="0.25">
+        <ParticleEmitter particle="artmod_psyanomalysparkles" AngleMax="360" DistanceMax="50" ScaleMultiplier="0.5,0.5" ParticleAmount="1" ColorMultiplier="125,12,255,255" />
+      </StatusEffect>
+      <StatusEffect type="always" target="This" stackable="false" delay="0.04">
+        <ParticleEmitter particle="plasmaspark" AngleMax="360" DistanceMax="500" ScaleMin="1.1" ScaleMax="1.1" ScaleMultiplier="1,1" ParticleAmount="6" ColorMultiplier="125,12,255,255" />
+      </StatusEffect>
+      <StatusEffect type="always" target="This" stackable="false" delay="0.25">
+        <ParticleEmitter particle="anomaly" AngleMax="360" DistanceMax="500" ScaleMultiplier="0.1,0.1" ParticleAmount="4" ColorMultiplier="125,12,255,255" />
+      </StatusEffect>
+      <StatusEffect type="always" targettype="nearbyCharacters" stackable="false" disabledeltatime="true" range="500" delay="0.05">
+        <Affliction identifier="hallucinating" strength="0.5" />
+      </StatusEffect>
+      <StatusEffect type="always" targettype="nearbyCharacters" stackable="false" disabledeltatime="true" range="500" delay="0.25" checkconditionalalways="true">
+        <Conditional psychosis="gt 75" />
+        <Affliction identifier="psychosis" strength="2.5" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--для гудка-->
+  <Item name="?" identifier="oxygensucc" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="OnBroken" target="Hull" oxygen="-75000.0" stackable="false" duration="5">
+        <Sound file="Content/Items/Tools/Sprayer.ogg" range="400" dontmuffle="true" volume="0.5" loop="true" />
+        <ParticleEmitter particle="skyholderfx" anglemax="360" particlespersecond="2" />
+      </StatusEffect>
+      <StatusEffect disabledeltatime="true" Condition="-100" target="This" type="Always" delay="0.1" />
+      <!--<StatusEffect type="Always" targets="weldingfueltank" Condition="-5.0" range="500"/>-->
+      <!--По идее должен высасывать кислород из баллонов в костюме как газовые ловушки в зеленых пещерах, но не работает-->
+      <!--Поменял condition, просто убрав онный, по идее может теперь помочь чтоб работало-->
+      <StatusEffect type="OnBroken" target="nearbyitems,Contained" targettags="oxygentank,oxygenitetank" condition="-2" range="200" stackable="false" duration="5">
+        <Sound file="Content/Items/Tools/Sprayer.ogg" range="200" dontmuffle="true" volume="0.5" loop="true" />
+        <ParticleEmitter particle="bubbles" particlespersecond="35" position="0,0" anglemin="0" anglemax="360" velocitymin="50" velocitymax="200" scalemin="0.6" scalemax="0.8" />
+      </StatusEffect>
+      <StatusEffect target="This" type="OnBroken" delay="5.5">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="InWater" target="this">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="artifacttoxins" nonplayerteaminteractable="True" Scale="1" tags="" sonarsize="0" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect disabledeltatime="true" Condition="-100" target="This" type="Always" delay="5" />
+      <StatusEffect type="Always" target="This">
+        <ParticleEmitter particle="artmod_toxins" particlespersecond="3" scalemin="0.8" scalemax="1" velocitymin="50" velocitymax="80" anglemin="0" anglemax="360" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="NearbyCharacters" range="150" delay="0.1" disabledeltatime="false">
+        <Affliction identifier="acidburn" strength="1.25" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="infernoboom" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="-100000000" disabledeltatime="true" delay="0" />
+      <StatusEffect type="OnBroken" target="This" delay="0">
+        <sound file="Content/Items/Weapons/ExplosionMedium1.ogg" type="OnBroken" range="500" selectionmode="All" />
+        <sound file="Content/Items/Weapons/ExplosionDebris1.ogg" type="OnBroken" range="500" />
+        <Explosion range="250.0" structuredamage="0" ballastfloradamage="60" itemdamage="25" force="5" severlimbsprobability="0.5" flash="false">
+          <Affliction identifier="burn" strength="15" />
+          <Affliction identifier="stun" strength="2" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.1">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="fastinfernoboom" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="-100000000" disabledeltatime="true" />
+      <StatusEffect type="always" target="This" stackable="false">
+        <ParticleEmitter particle="artmod_artexplosion" particlespersecond="3" scalemin="1.25" scalemax="1.25" anglemin="0" anglemax="360" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <sound file="Content/Items/Weapons/ExplosionMedium1.ogg" type="OnBroken" range="1000" selectionmode="All" />
+        <sound file="Content/Items/Weapons/ExplosionDebris1.ogg" type="OnBroken" range="1000" />
+        <Explosion range="250.0" structuredamage="0" ballastfloradamage="20" itemdamage="25" force="5" severlimbsprobability="0.5" flash="false">
+          <Affliction identifier="burn" strength="25" />
+          <Affliction identifier="explosiondamage" strength="25" />
+          <Affliction identifier="stun" strength="1" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.1">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="infernoboom_spawner" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="100" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="-1" disabledeltatime="true" />
+      <StatusEffect type="always" target="This" stackable="false" delay="0.5">
+        <SpawnItem identifier="infernoboom" spawnposition="This" count="4" spread="900" />
+      </StatusEffect>
+      <StatusEffect type="always" target="This" stackable="false" delay="0.5">
+        <SpawnItem identifier="infernoboom" spawnposition="This" count="3" spread="700" />
+      </StatusEffect>
+      <StatusEffect type="always" target="This" stackable="false" delay="0.25">
+        <SpawnItem identifier="infernoboom" spawnposition="This" count="2" spread="500" />
+      </StatusEffect>
+      <StatusEffect type="always" target="This" stackable="false" delay="0.15">
+        <SpawnItem identifier="infernoboom" spawnposition="This" count="2" spread="500" />
+        <SpawnItem identifier="infernoboom" spawnposition="This" count="1" spread="300" />
+      </StatusEffect>
+      <StatusEffect type="always" target="This" stackable="false" delay="0.1">
+        <SpawnItem identifier="infernoboom" spawnposition="This" count="1" spread="150" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="snightmare_spawn" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" stackable="false" delay="0.01" />
+      <StatusEffect type="OnBroken" target="This" stackable="false">
+        <Conditional InWater="false" />
+        <ParticleEmitter particle="artmod_psychoElectricShock" distancemin="50" distancemax="10" scalemultiplier="0.7,0.7" anglemax="360" emitinterval="1.1" particleamount="2" particlespersecond="1" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Conditional InWater="false" />
+        <SpawnCharacter speciesname="Snightmare" count="1" spread="10" offset="0,0" spawnposition="This" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.5">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="InWater" target="This">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="fire_spawner" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="1" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="-1" disabledeltatime="true" />
+      <StatusEffect type="OnBroken" target="This" stackable="false">
+        <Fire size="2" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.1">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="horn_incubation" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="100" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="-100" disabledeltatime="true" delay="0.1" />
+      <StatusEffect type="Always" target="NearbyCharacters" range="500">
+        <Affliction identifier="IncubationS" amount="1500" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="horn_junkdeath" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="NearbyItems" targettags="junctionbox" range="2000.0" condition="-10" stackable="false">
+        <ParticleEmitter particle="artmod_ElectricShock" anglemax="360" distancemin="0" distancemax="1000" scalemin="0.05" scalemax="0.1" particleamount="10" particlespersecond="10" colormultiplier="255,255,255,255" />
+      </StatusEffect>
+      <StatusEffect type="always" target="This" delay="2">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="horn_oxygensucc" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body radius="10" density="10" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="Hull" oxygen="-500000.0">
+        <Sound file="Content/Items/Tools/Sprayer.ogg" range="400" dontmuffle="true" volume="0.5" loop="true" />
+        <ParticleEmitter particle="skyholderfx" anglemax="360" particlespersecond="2" />
+      </StatusEffect>
+      <StatusEffect disabledeltatime="true" Condition="-100" target="This" type="Always" delay="5" />
+      <StatusEffect type="Always" target="nearbyitems,Contained" targettags="oxygentank,oxygenitetank" condition="-10" range="200">
+        <Sound file="Content/Items/Tools/Sprayer.ogg" range="200" dontmuffle="true" volume="0.5" loop="true" />
+        <ParticleEmitter particle="bubbles" particlespersecond="35" position="0,0" anglemin="0" anglemax="360" velocitymin="50" velocitymax="200" scalemin="0.6" scalemax="0.8" />
+      </StatusEffect>
+      <StatusEffect target="This" type="OnBroken">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="InWater" target="this">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!-- эффекты от гранаты рандомной -->
+  <Item name="?" identifier="grenade_oxygensuccspawner" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" stackable="false" delay="0.01" />
+      <StatusEffect type="OnBroken" target="this" stackable="false">
+        <SpawnItem identifier="grenade_oxygensucc" spawnposition="This" count="4" spread="150" />
+        <SpawnItem identifier="grenade_oxygensucc" spawnposition="This" count="4" spread="300" />
+        <SpawnItem identifier="grenade_oxygensucc" spawnposition="This" count="6" spread="450" />
+        <SpawnItem identifier="grenade_oxygensucc" spawnposition="This" count="6" spread="600" />
+        <SpawnItem identifier="grenade_oxygensucc" spawnposition="This" count="10" spread="1000" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="grenade_oxygensucc" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body radius="10" density="10" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="nearbyCharacters" oxygen="-2.5" range="400" interval="0.01">
+        <Sound file="Content/Items/Tools/Sprayer.ogg" range="400" dontmuffle="true" volume="0.5" loop="true" />
+        <ParticleEmitter particle="skyholderfx" anglemax="360" particlespersecond="2" />
+      </StatusEffect>
+      <StatusEffect disabledeltatime="true" Condition="-100" target="This" type="Always" delay="5" />
+      <StatusEffect target="This" type="OnBroken">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="grenade_pupspawner" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" stackable="false" delay="0.01" />
+      <StatusEffect type="OnBroken" target="this" stackable="false" spawnItemRandomly="true">
+        <SpawnItem identifier="Orangeboy_spawn" spawnposition="This" count="1" />
+        <SpawnItem identifier="Peanut_spawn" spawnposition="This" count="1" />
+        <SpawnItem identifier="Psilotoad_spawn" spawnposition="This" count="1" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="Orangeboy_spawn" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" stackable="false" delay="0.01" />
+      <StatusEffect type="OnBroken" target="This" stackable="false">
+        <ParticleEmitter particle="artmod_psychoElectricShock" distancemin="50" distancemax="10" scalemultiplier="0.7,0.7" anglemax="360" emitinterval="1.1" particleamount="2" particlespersecond="1" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <SpawnCharacter speciesname="Clown_Orangeboy" count="1" spread="10" offset="0,0" spawnposition="This" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.5">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="Peanut_spawn" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" stackable="false" delay="0.01" />
+      <StatusEffect type="OnBroken" target="This" stackable="false">
+        <ParticleEmitter particle="artmod_psychoElectricShock" distancemin="50" distancemax="10" scalemultiplier="0.7,0.7" anglemax="360" emitinterval="1.1" particleamount="2" particlespersecond="1" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <SpawnCharacter speciesname="Clown_Peanut" count="1" spread="10" offset="0,0" spawnposition="This" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.5">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="Psilotoad_spawn" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" stackable="false" delay="0.01" />
+      <StatusEffect type="OnBroken" target="This" stackable="false">
+        <ParticleEmitter particle="artmod_psychoElectricShock" distancemin="50" distancemax="10" scalemultiplier="0.7,0.7" anglemax="360" emitinterval="1.1" particleamount="2" particlespersecond="1" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <SpawnCharacter speciesname="Clown_Psilotoad" count="1" spread="10" offset="0,0" spawnposition="This" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.5">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="slow_spawn" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" stackable="false" delay="0.01" />
+      <StatusEffect type="OnBroken" target="this" stackable="false">
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_slow1.ogg" range="1000.0" loop="false" volume="1.5" selectionmode="random" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_slow2.ogg" range="1000.0" loop="false" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_slow3.ogg" range="1000.0" loop="false" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_slow4.ogg" range="1000.0" loop="false" volume="1.5" />
+        <ParticleEmitter particle="artmod_clownsparklesmod" anglemax="360" particleamount="75" velocitymin="115" velocitymax="775" colormultiplier="25,255,25,255" />
+        <ParticleEmitter particle="artmod_clownsparklesmod" anglemax="360" particleamount="75" velocitymin="115" velocitymax="775" colormultiplier="25,25,255,255" />
+        <ParticleEmitter particle="artmod_clownsparklesmod" anglemax="360" particleamount="75" velocitymin="115" velocitymax="775" colormultiplier="255,25,25,255" />
+        <Explosion range="800.0" structuredamage="0" itemdamage="0" force="0" flames="false" smoke="false" sparks="false" underwaterbubble="false" flashcolor="0,255,0,255">
+          <Affliction identifier="artmod_FUNNY" strength="40" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="grenade_aoepulse" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="Always" target="nearbyCharacters" setvalue="true" stackable="false" range="750.0" delay="0.1">
+        <sound file="%ModDir%/More Arts (AOCS)/Artifacts/pulse.ogg" range="1000.0" loop="false" volume="2" />
+        <ParticleEmitter particle="artmod_shockwave2" anglemin="0" anglemax="180" particleamount="1" velocitymin="100" velocitymax="500" />
+        <Explosion range="1000.0" structuredamage="0" empstrength="0" camerashake="0" stun="5" force="50" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false"></Explosion>
+      </StatusEffect>
+      <StatusEffect type="always" target="This" delay="0.2">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="grenade_wateron" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" stackable="false" delay="0.01" />
+      <StatusEffect type="OnBroken" target="this" stackable="false">
+        <SpawnItem identifier="wateron" spawnposition="This" count="6" spread="700" />
+        <SpawnItem identifier="wateron" spawnposition="This" count="4" spread="400" />
+        <SpawnItem identifier="wateron" spawnposition="This" count="3" spread="250" />
+        <SpawnItem identifier="wateron" spawnposition="This" count="2" spread="100" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="grenade_firewerks" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" stackable="false" delay="0.01" />
+      <StatusEffect type="OnBroken" target="this" stackable="false">
+        <SpawnItem identifier="firewerks_spawner" spawnposition="This" count="1" spread="0" />
+        <SpawnItem identifier="firewerks_spawner" spawnposition="This" count="5" spread="450" />
+        <SpawnItem identifier="firewerks_spawner" spawnposition="This" count="10" spread="825" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="grenade_buffspawner" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" stackable="false" delay="0.01" />
+      <StatusEffect type="OnBroken" target="this" stackable="false" spawnItemRandomly="true">
+        <SpawnItem identifier="grenade_haste" spawnposition="This" count="1" />
+        <SpawnItem identifier="grenade_vitality" spawnposition="This" count="1" />
+        <SpawnItem identifier="grenade_stealth" spawnposition="This" count="1" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="grenade_haste" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" stackable="false" delay="0.01" />
+      <StatusEffect type="OnBroken" target="this" stackable="false">
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff1.ogg" range="750" selectionmode="random" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff2.ogg" range="750" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff3.ogg" range="750" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff4.ogg" range="750" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff5.ogg" range="750" volume="1.5" />
+        <ParticleEmitter particle="artmod_clownsparklesmod" anglemax="360" particleamount="75" velocitymin="115" velocitymax="775" colormultiplier="25,25,255,255" />
+        <Explosion range="750.0" structuredamage="0" empstrength="0.0" camerashake="0" stun="0.0" force="0" flash="false" flames="false" smoke="false" shockwave="true" sparks="false" underwaterbubble="false">
+          <Affliction identifier="speedplus" strength="15" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="grenade_vitality" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" stackable="false" delay="0.01" />
+      <StatusEffect type="OnBroken" target="this" stackable="false">
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff1.ogg" range="750" selectionmode="random" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff2.ogg" range="750" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff3.ogg" range="750" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff4.ogg" range="750" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff5.ogg" range="750" volume="1.5" />
+        <ParticleEmitter particle="artmod_clownsparklesmod" anglemax="360" particleamount="75" velocitymin="115" velocitymax="775" colormultiplier="255,25,25,255" />
+        <Explosion range="750.0" structuredamage="0" empstrength="0.0" camerashake="0" stun="0.0" force="0" flash="false" flames="false" smoke="false" shockwave="true" sparks="false" underwaterbubble="false">
+          <Affliction identifier="moremorevigorplus" strength="45" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="grenade_stealth" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" stackable="false" delay="0.01" />
+      <StatusEffect type="OnBroken" target="this" stackable="false">
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff1.ogg" range="750" selectionmode="random" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff2.ogg" range="750" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff3.ogg" range="750" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff4.ogg" range="750" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff5.ogg" range="750" volume="1.5" />
+        <ParticleEmitter particle="artmod_clownsparklesmod" anglemax="360" particleamount="75" velocitymin="115" velocitymax="775" colormultiplier="25,255,25,255" />
+        <Explosion range="750.0" structuredamage="0" empstrength="0.0" camerashake="0" stun="0.0" force="0" flash="false" flames="false" smoke="false" shockwave="true" sparks="false" underwaterbubble="false">
+          <Affliction identifier="invisplus" strength="25" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="grenade_hpdebuff" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" stackable="false" delay="0.01" />
+      <StatusEffect type="OnBroken" target="this" stackable="false">
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff1.ogg" range="750" selectionmode="random" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff2.ogg" range="750" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff3.ogg" range="750" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff4.ogg" range="750" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/grenade_buffdebuff5.ogg" range="750" volume="1.5" />
+        <ParticleEmitter particle="artmod_clownsparklesmod" anglemax="360" particleamount="25" velocitymin="115" velocitymax="775" colormultiplier="255,25,25,255" />
+        <ParticleEmitter particle="artmod_clownsparklesmod" anglemax="360" particleamount="25" velocitymin="115" velocitymax="775" colormultiplier="155,15,15,255" />
+        <ParticleEmitter particle="artmod_clownsparklesmod" anglemax="360" particleamount="25" velocitymin="115" velocitymax="775" colormultiplier="55,0,0,255" />
+        <Explosion range="750.0" structuredamage="0" empstrength="0.0" camerashake="0" stun="0.0" force="0" flash="false" flames="false" smoke="false" shockwave="true" sparks="false" underwaterbubble="false">
+          <Affliction identifier="vigorminus" strength="55" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="grenade_explosion" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" stackable="false" delay="0.01" />
+      <StatusEffect type="OnBroken" target="this" stackable="false">
+        <sound file="Content/Items/Weapons/ExplosionMedium1.ogg" range="5000" volume="1.5" />
+        <sound file="Content/Items/Weapons/ExplosionMedium2.ogg" range="5000" volume="1.5" />
+        <sound file="Content/Items/Weapons/ExplosionMedium3.ogg" range="5000" volume="1.5" />
+        <Explosion range="800.0" structuredamage="10000" ballastfloradamage="60" itemdamage="25" force="5" severlimbsprobability="0.5" decal="explosion" decalsize="1.5">
+          <Affliction identifier="explosiondamage" strength="25" />
+          <Affliction identifier="stun" strength="2.5" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="grenade_explosion2" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" stackable="false" delay="0.01" />
+      <StatusEffect type="OnBroken" target="this" stackable="false">
+        <sound file="Content/Items/Weapons/ExplosionMedium1.ogg" range="5000" volume="1.5" />
+        <sound file="Content/Items/Weapons/ExplosionMedium2.ogg" range="5000" volume="1.5" />
+        <sound file="Content/Items/Weapons/ExplosionMedium3.ogg" range="5000" volume="1.5" />
+        <Explosion range="1500.0" structuredamage="0" ballastfloradamage="0" stun="4" itemdamage="0" force="5" severlimbsprobability="0" decal="explosion" decalsize="1.5"></Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" targettype="NearbyItems" range="1000" targets="door,ductblock" setvalue="true" Condition="0" />
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="grenade_shit" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" stackable="false" delay="0.01" />
+      <StatusEffect type="OnBroken" target="this" stackable="false">
+        <Explosion range="0.0" structuredamage="0" itemdamage="0" force="0.0" severlimbsprobability="0.0" shockwave="false" decal="fruitsplatter_brown" decalsize="2.5" />
+        <ParticleEmitter particle="artmod_nasonovsparkles1" AngleMax="360" VelocityMin="0" VelocityMax="1000" ScaleMultiplier="1,1" ParticleAmount="250" ColorMultiplier="128,64,48,255" />
+        <ParticleEmitter particle="whitegoosplash" anglemin="0" anglemax="360" particleamount="10" velocitymin="0" velocitymax="0" scalemin="2.5" scalemax="3" colormultiplier="185,122,87,255" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/clownprank3.ogg" range="6000" volume="5" />
+        <SpawnItem identifier="poop" spawnposition="This" count="5" spread="25" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="grenade_bubbleround" category="hidden" hideinmenus="true" interactthroughwalls="true" Scale="0.5" tags="smallitem" impactsoundtag="impact_metal_light">
+    <Sprite texture="%ModDir%/More Arts (AOCS)/Items/bubble1.png" sourcerect="0,0,100,100" depth="0.55" origin="0.5,0.5" />
+    <Body width="38" height="15" density="8" />
+    <Projectile characterusable="false" launchimpulse="1.5" sticktocharacters="false">
+      <Attack structuredamage="0" penetration="1" severlimbsprobability="0">
+        <Affliction identifier="stun" strength="0.1" />
+      </Attack>
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" delay="1" />
+      <StatusEffect type="OnImpact" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnBroken" target="This">
+        <sound file="%ModDir%/More Arts (AOCS)/Items/Pop.ogg" range="2000" volume="1.25" />
+        <Explosion range="175.0" ballastfloradamage="0" structuredamage="0" levelwalldamage="0" itemdamage="0" force="1.0" severlimbsprobability="0" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false">
+          <Affliction identifier="stun" strength="1" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <SpawnItem identifier="grenade_bubbleshrapnel1" spawnposition="This" count="25" aimspread="360" rotationtype="Collider" rotation="0" />
+        <SpawnItem identifier="grenade_bubbleshrapnel2" spawnposition="This" count="12" aimspread="360" rotationtype="Collider" rotation="0" />
+        <SpawnItem identifier="grenade_bubbleshrapnel3" spawnposition="This" count="8" aimspread="360" rotationtype="Collider" rotation="0" />
+        <ParticleEmitter particle="artmod_bubbles" particleamount="1" anglemax="360" velocitymin="0" velocitymax="0" distancemin="0" distancemax="0" colormultiplier="255,255,255,255" scalemultiplier="0.75,0.75" />
+        <ParticleEmitter particle="artmod_bubbleexplode" particleamount="1" colormultiplier="255,255,255,255" scalemultiplier="0.4,0.4" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </Projectile>
+    <Upgrade gameversion="0.10.0.0" scale="0.5" />
+  </Item>
+  <Item name="?" identifier="grenade_bubbleshrapnel1" scale="0.3" hideinmenus="true">
+    <Sprite texture="%ModDir%/More Arts (AOCS)/Items/bubble1.png" sourcerect="0,0,100,100" depth="0.55" origin="0.5,0.5" />
+    <Body width="28" height="9" density="6" />
+    <Projectile characterusable="false" launchimpulse="20" sticktocharacters="false">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" delay="1" />
+      <StatusEffect type="OnImpact" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnBroken" target="This">
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop1.ogg" range="2000" volume="1" selectionmode="Random" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop2.ogg" range="2000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop3.ogg" range="2000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop4.ogg" range="2000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop5.ogg" range="2000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop6.ogg" range="2000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop7.ogg" range="2000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop8.ogg" range="2000" volume="1" />
+        <Explosion range="175.0" ballastfloradamage="0" structuredamage="0" levelwalldamage="0" itemdamage="0" force="1.0" severlimbsprobability="0" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false">
+          <Affliction identifier="stun" strength="0.2" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <ParticleEmitter particle="artmod_bubbles" particleamount="1" anglemax="360" velocitymin="0" velocitymax="0" distancemin="0" distancemax="0" colormultiplier="255,255,255,255" scalemultiplier="0.75,0.75" />
+        <ParticleEmitter particle="artmod_bubbleexplode" particleamount="1" colormultiplier="255,255,255,255" scalemultiplier="0.4,0.4" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </Projectile>
+  </Item>
+  <Item name="?" identifier="grenade_bubbleshrapnel2" scale="0.3" hideinmenus="true">
+    <Sprite texture="%ModDir%/More Arts (AOCS)/Items/bubble1.png" sourcerect="0,0,100,100" depth="0.55" origin="0.5,0.5" />
+    <Body width="28" height="9" density="6" />
+    <Projectile characterusable="false" launchimpulse="10" sticktocharacters="false">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" delay="1" />
+      <StatusEffect type="OnImpact" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnBroken" target="This">
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop1.ogg" range="2000" volume="1" selectionmode="Random" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop2.ogg" range="2000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop3.ogg" range="2000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop4.ogg" range="2000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop5.ogg" range="2000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop6.ogg" range="2000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop7.ogg" range="2000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop8.ogg" range="2000" volume="1" />
+        <Explosion range="175.0" ballastfloradamage="0" structuredamage="0" levelwalldamage="0" itemdamage="0" force="1.0" severlimbsprobability="0" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false">
+          <Affliction identifier="stun" strength="0.2" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <ParticleEmitter particle="artmod_bubbles" particleamount="1" anglemax="360" velocitymin="0" velocitymax="0" distancemin="0" distancemax="0" colormultiplier="255,255,255,255" scalemultiplier="0.75,0.75" />
+        <ParticleEmitter particle="artmod_bubbleexplode" particleamount="1" colormultiplier="255,255,255,255" scalemultiplier="0.4,0.4" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </Projectile>
+  </Item>
+  <Item name="?" identifier="grenade_bubbleshrapnel3" scale="0.3" hideinmenus="true">
+    <Sprite texture="%ModDir%/More Arts (AOCS)/Items/bubble1.png" sourcerect="0,0,100,100" depth="0.55" origin="0.5,0.5" />
+    <Body width="28" height="9" density="6" />
+    <Projectile characterusable="false" launchimpulse="4.5" sticktocharacters="false">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" delay="1" />
+      <StatusEffect type="OnImpact" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnBroken" target="This">
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop1.ogg" range="2000" volume="1" selectionmode="Random" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop2.ogg" range="2000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop3.ogg" range="2000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop4.ogg" range="2000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop5.ogg" range="2000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop6.ogg" range="2000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop7.ogg" range="2000" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/lilpop8.ogg" range="2000" volume="1" />
+        <Explosion range="175.0" ballastfloradamage="0" structuredamage="0" levelwalldamage="0" itemdamage="0" force="1.0" severlimbsprobability="0" flash="false" flames="false" smoke="false" shockwave="false" sparks="false" underwaterbubble="false">
+          <Affliction identifier="stun" strength="0.2" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <ParticleEmitter particle="artmod_bubbles" particleamount="1" anglemax="360" velocitymin="0" velocitymax="0" distancemin="0" distancemax="0" colormultiplier="255,255,255,255" scalemultiplier="0.75,0.75" />
+        <ParticleEmitter particle="artmod_bubbleexplode" particleamount="1" colormultiplier="255,255,255,255" scalemultiplier="0.4,0.4" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </Projectile>
+  </Item>
+  <Item name="?" identifier="grenade_fakeexplosion" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" stackable="false" delay="0.01" />
+      <StatusEffect type="OnBroken" target="this" stackable="false">
+        <sound file="Content/Items/Weapons/ExplosionLarge1.ogg" range="50000" volume="1.5" />
+        <sound file="Content/Items/Weapons/ExplosionLarge2.ogg" range="50000" volume="1.5" />
+        <Explosion range="1500.0" structuredamage="0" itemdamage="0" ballastfloradamage="0" force="0.0" severlimbsprobability="0" decal="explosion" decalsize="0" camerashake="1000" camerashakerange="50000" flashrange="10000" flashduration="10.0" screencolor="255,255,255,255" screencolorrange="5000" screencolorduration="5.0" penetration="0.5">
+          <Affliction identifier="stun" strength="5" />
+        </Explosion>
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="grenade_waterheal" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="false">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" setvalue="true" Condition="0" target="This" delay="15" />
+      <StatusEffect type="Always" target="this" stackable="false">
+        <Sound file="Content/Sounds/Water/SplashLoop.ogg" range="600" dontmuffle="true" volume="1" loop="true" />
+        <ParticleEmitter particle="watersplash" particlespersecond="80" position="0,0" colormultiplier="155,25,25,255" />
+        <ParticleEmitter particle="bubbles" particlespersecond="10" anglemax="360" scalemin="0.5" scalemax="0.6" colormultiplier="155,25,25,255" />
+        <ParticleEmitter particle="waterblood" particlespersecond="1" anglemax="360" distancemin="0" distancemax="0" scalemin="1" scalemax="1" colormultiplier="155,25,25,255" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="this" stackable="false" delay="2.5">
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/aoeheal2.ogg" range="600" dontmuffle="true" volume="1" loop="false" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/aoeheal21.ogg" range="600" dontmuffle="true" volume="1" loop="false" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/aoeheal1.ogg" range="600" dontmuffle="true" volume="1" loop="false" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/aoeheal2.ogg" range="600" dontmuffle="true" volume="1" loop="false" />
+        <ParticleEmitter particle="artmod_clownsparklesmod2" anglemax="360" scalemultiplier="0.5,0.5" particleamount="1" colormultiplier="255,25,25,155" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="nearbyCharacters" range="400" stackable="false" delay="2.5" disabledeltatime="true">
+        <ReduceAffliction identifier="damage" strength="5" />
+        <ReduceAffliction identifier="bleeding" strength="15" />
+        <ReduceAffliction identifier="poison" strength="25" />
+        <ReduceAffliction identifier="oxygenlow" strength="20" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.1">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="always" target="this" flowpercentage="100" setvalue="true" />
+    </ItemComponent>
+    <Pump canbeselected="false" maxflow="125" PowerConsumption="0.0" MinVoltage="0.0" IsOn="true" VulnerableToEMP="false" IsActive="True" />
+  </Item>
+  <Item name="?" identifier="grenade_earinversion" nonplayerteaminteractable="True" tags="" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent characterusable="false">
+      <StatusEffect type="always" target="This" Condition="0" setvalue="true" stackable="false" delay="0.01" />
+      <StatusEffect type="OnBroken" duration="5" target="NearbyCharacters" range="1000" camerashake="5" setvalue="true" stackable="false">
+        <Affliction identifier="hallucinatingshortduration" strength="30" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" duration="5" target="this" range="1000" stackable="false">
+        <sound file="Content/Items/JobGear/Clown/ClownExosuitHorn.ogg" range="1500.0" loop="true" volume="3" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" duration="5" target="this" stackable="false">
+        <ParticleEmitter particle="steamspray" distancemin="0" distancemax="25" particlespersecond="120" velocitymin="10" velocitymax="1250" anglemin="0" anglemax="360" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="5.01">
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="?" identifier="grenade_LETSGOOOOOOOO" tags="" nonplayerteaminteractable="True" sonarsize="0" scale="1" hideinmenus="true" health="10" depth="0.1" isdangerous="true">
+    <Body width="10" radius="10" density="15" bodytype="Kinematic" />
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect disabledeltatime="true" Condition="-100" target="This" type="Always" delay="0.1" />
+      <StatusEffect type="OnBroken" target="nearbyCharacters" range="600" stackable="false" duration="4">
+        <Affliction identifier="artmod_SWblind" strength="12.5" />
+        <Affliction identifier="silence" strength="25" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="nearbyCharacters" range="600" stackable="false" duration="1.0">
+        <Affliction identifier="psychosis" strength="350" />
+        <Affliction identifier="blue_clowned" strength="350" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="this" stackable="false" duration="4.0">
+        <ParticleEmitter particle="anomaly" AngleMax="360" ScaleMin="0.5" ScaleMax="0.5" ScaleMultiplier="0.2,0.2" EmitInterval="0.25" ParticleAmount="1" ParticlesPerSecond="1" ColorMultiplier="25,25,25,255" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="4.5">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="1">
+        <sound file="Content/Items/Weapons/ExplosionSmall1.ogg" range="600" selectionmode="All" />
+        <sound file="Content/Items/Weapons/ExplosionDebris2.ogg" range="600" />
+        <sound file="Content/Items/Weapons/ExplosionMedium1.ogg" range="600" />
+        <sound file="Content/Items/Weapons/ExplosionMedium2.ogg" range="600" />
+        <sound file="Content/Items/Weapons/ExplosionMedium3.ogg" range="600" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="2">
+        <sound file="Content/Items/Weapons/ExplosionSmall1.ogg" range="600" selectionmode="All" />
+        <sound file="Content/Items/Weapons/ExplosionDebris2.ogg" range="600" />
+        <sound file="Content/Items/Weapons/ExplosionMedium1.ogg" range="600" />
+        <sound file="Content/Items/Weapons/ExplosionMedium2.ogg" range="600" />
+        <sound file="Content/Items/Weapons/ExplosionMedium3.ogg" range="600" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="3">
+        <sound file="Content/Items/Weapons/ExplosionSmall1.ogg" range="600" selectionmode="All" />
+        <sound file="Content/Items/Weapons/ExplosionDebris2.ogg" range="600" />
+        <sound file="Content/Items/Weapons/ExplosionMedium1.ogg" range="600" />
+        <sound file="Content/Items/Weapons/ExplosionMedium2.ogg" range="600" />
+        <sound file="Content/Items/Weapons/ExplosionMedium3.ogg" range="600" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="4">
+        <sound file="Content/Items/Weapons/ExplosionSmall1.ogg" range="600" selectionmode="All" />
+        <sound file="Content/Items/Weapons/ExplosionDebris2.ogg" range="600" />
+        <sound file="Content/Items/Weapons/ExplosionMedium1.ogg" range="600" />
+        <sound file="Content/Items/Weapons/ExplosionMedium2.ogg" range="600" />
+        <sound file="Content/Items/Weapons/ExplosionMedium3.ogg" range="600" />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+</Items>

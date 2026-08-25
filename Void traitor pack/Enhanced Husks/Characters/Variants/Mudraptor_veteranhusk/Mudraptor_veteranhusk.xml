@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Charactervariant inherit="Mudraptorhusk" speciesname="Mudraptor_veteranhusk" speciestranslationoverride="Mudraptor" texture="%ModDir%/Enhanced Husks/Characters/Variants/Mudraptor_veteranhusk/Mudraptor_veteranhusk.png" eatingspeed="15">
+  <health vitality="340" usehealthwindow="False" poisonvulnerability="0.7" />
+  <ragdoll scalemultiplier="1.375" impacttolerance="60" />
+  <attack damagemultiplier="2.25" rangemultiplier="1.375" impactmultiplier="2.15" />
+  <animations folder="%ModDir%/Enhanced Husks/Characters/Variants/Mudraptor_veteranhusk/Animations/" />
+  <ai combatstrength="490" sight="1.5" hearing="1.5">
+    <target tag="tigerthresher" state="Aggressive" priority="100" reactdistance="2000" />
+  </ai>
+</Charactervariant>

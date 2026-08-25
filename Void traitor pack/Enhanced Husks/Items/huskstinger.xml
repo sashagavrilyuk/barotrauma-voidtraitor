@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <override>
+    <Item name="" identifier="huskstinger" category="Equipment" Tags="smallitem" cargocontaineridentifier="metalcrate" impactsoundtag="impact_metal_light" scale="0.4">
+      <PreferredContainer primary="locker,weaponcontainer" />
+      <InventoryIcon texture="%ModDir%/Enhanced Husks/Items/stingerinventory.png" sourcerect="0,0,64,64" origin="0.49928394,0.5012731" />
+      <Sprite texture="%ModDir%/Enhanced Husks/Items/stinger.png" sourcerect="0,0,128,28" depth="0.55" origin="0.44,0.6" />
+      <Body height="10" width="90" density="50" />
+      <MeleeWeapon slots="Any,RightHand,LeftHand" aimpos="30,5" handle1="-20,0" holdangle="25" reload="1.0" range="50" combatpriority="10" msg="ItemMsgPickUpSelect">
+        <Attack structuredamage="5" stun="0.2" targetimpulse="15">
+          <Affliction identifier="lacerations" strength="5" />
+          <Affliction identifier="bleeding" strength="10" />
+          <!-- <Affliction identifier="huskinfection" strength="1" probability="0.1"/> -->
+          <Sound file="Content/Items/Weapons/Smack1.ogg" range="800" />
+        </Attack>
+      </MeleeWeapon>
+      <ItemComponent>
+        <StatusEffect tags="huskrandomchance" type="Always" target="Character" duration="0.1" stackable="false" />
+        <!-- This item is the rarest item that husks will spawn with, so it makes the perfect item to use to make random-chance based things happen to husks.-->
+      </ItemComponent>
+    </Item>
+  </override>
+  <!-- funny little knife by kubasos;).-->
+  <Item name="Cultist Husk Knife" identifier="ritualknife" description="Ominous looking knife with a Husk's stinger merged into its blade. Used by the Husk Cultists during their twisted rituals." category="Weapon" Tags="smallitem,weapon,gunsmith,mountableweapon,sharptool" cargocontaineridentifier="metalcrate" scale="0.7" impactsoundtag="impact_metal_light" RequireAimToUse="True">
+    <PreferredContainer secondary="abandonedstoragecab" amount="1" spawnprobability="0.005" />
+    <PreferredContainer secondary="wreckarmcab,abandonedarmcab" amount="1" spawnprobability="0.005" />
+    <PreferredContainer primary="secarmcab" secondary="armcab" spawnprobability="0" />
+    <Price baseprice="470">
+      <Price storeidentifier="merchantcity" multiplier="2.0" minavailable="0" maxavailable="1">
+        <Reputation faction="huskcult" min="50" />
+      </Price>
+      <Price storeidentifier="merchantresearch" sold="false" minavailable="0" maxavailable="2">
+        <Reputation faction="huskcult" min="50" />
+      </Price>
+      <Price storeidentifier="merchantmilitary" multiplier="2.0" minavailable="0" maxavailable="1">
+        <Reputation faction="huskcult" min="50" />
+      </Price>
+      <Price storeidentifier="merchanthusk" minavailable="4" maxavailable="10" sold="true">
+        <Reputation faction="huskcult" min="25" />
+      </Price>
+    </Price>
+    <Deconstruct time="30">
+      <Item identifier="iron" />
+      <Item identifier="huskeggsbasic" />
+      <Item identifier="huskstinger" />
+    </Deconstruct>
+    <Fabricate suitablefabricators="fabricator" requiredtime="30" requiresrecipe="false">
+      <RequiredSkill identifier="medical" level="25" />
+      <RequiredSkill identifier="weapons" level="35" />
+      <RequiredItem identifier="plastic" amount="2" />
+      <RequiredItem identifier="unstablehuskstinger" amount="1" />
+      <RequiredItem identifier="ritualknife" amount="1" />
+    </Fabricate>
+    <InventoryIcon texture="%ModDir%/Enhanced Husks/Items/needleknifeinv.png" sourcerect="7,9,59,61" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/Enhanced Husks/Items/needleknife.png" sourcerect="9,8,87,20" depth="0.55" origin="0.5,0.5" />
+    <Body width="65" height="15" density="25" />
+    <MeleeWeapon slots="Any,RightHand,LeftHand" aimpos="50,0" handle1="-10,0" holdangle="250" reload="0.75" range="50" combatPriority="25" msg="ItemMsgPickUpSelect">
+      <Attack targetimpulse="2" severlimbsprobability="1" itemdamage="5" structuredamage="4" structuresoundtype="StructureSlash">
+        <Affliction identifier="huskinfection" strength="10" />
+        <Affliction identifier="husknausea" strength="25" />
+        <Affliction identifier="hallucinatingshortduration" strength="100" />
+        <Affliction identifier="lacerations" strength="20" />
+        <Affliction identifier="bleeding" strength="15" />
+        <Affliction identifier="stun" strength="0.2" />
+        <StatusEffect type="OnUse" target="UseTarget">
+          <Conditional entitytype="eq Character" />
+          <Sound file="Content/Sounds/Damage/LimbSlash1.ogg" selectionmode="random" range="500" />
+          <Sound file="Content/Sounds/Damage/LimbSlash2.ogg" range="500" />
+          <Sound file="Content/Sounds/Damage/LimbSlash3.ogg" range="500" />
+          <Sound file="Content/Sounds/Damage/LimbSlash4.ogg" range="500" />
+          <Sound file="Content/Sounds/Damage/LimbSlash5.ogg" range="500" />
+          <Sound file="Content/Sounds/Damage/LimbSlash6.ogg" range="500" />
+          <ParticleEmitter particle="vomitsplash" copyentityangle="true" anglemin="-10" anglemax="10" particlespersecond="50" velocitymin="50" velocitymax="200" scalemin="0.1" scalemax="0.2" />
+        </StatusEffect>
+      </Attack>
+    </MeleeWeapon>
+    <aitarget sightrange="500" soundrange="250" fadeouttime="1" />
+    <Quality>
+      <QualityStat stattype="StrikingPowerMultiplier" value="0.1" />
+    </Quality>
+    <Upgrade gameversion="0.10.0.0" scale="0.5" />
+  </Item>
+  <Item name="" identifier="huskstingerB" nameidentifier="huskstinger" variantof="huskstinger" category="Equipment" Tags="smallitem" cargocontaineridentifier="metalcrate" impactsoundtag="impact_metal_light" scale="0.4">
+    <InventoryIcon texture="%ModDir%/Enhanced Husks/Items/stingerinventory.png" sourcerect="0,0,64,64" origin="0.49928394,0.5012731" />
+    <Sprite texture="%ModDir%/Enhanced Husks/Items/stinger.png" sourcerect="0,0,128,28" depth="0.55" origin="0.44,0.6" />
+    <Body height="10" width="90" density="50" />
+    <MeleeWeapon slots="Any,RightHand,LeftHand" aimpos="30,5" handle1="-20,0" holdangle="25" reload="1.0" range="50" combatpriority="10" msg="ItemMsgPickUpSelect">
+      <Attack structuredamage="5" stun="0.2" targetimpulse="15">
+        <Affliction identifier="lacerations" strength="6.5" />
+        <Affliction identifier="bleeding" strength="11.5" />
+        <!-- <Affliction identifier="huskinfection" strength="1" probability="0.1"/> -->
+        <Sound file="Content/Items/Weapons/Smack1.ogg" range="830" />
+      </Attack>
+    </MeleeWeapon>
+    <ItemComponent>
+      <StatusEffect tags="huskrandomchance2" type="Always" target="Character" duration="0.1" stackable="false" />
+      <!-- Basically the same as the vanilla stinger, but it decides the exploding husks and can serve to be a second time of randomness for the others-->
+    </ItemComponent>
+  </Item>
+</Items>

@@ -1,0 +1,2 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CorpseSwimSlow footrotatestrength="15" LegMoveAmount="0.8690054" LegCycleLength="8.197446" FootAngle="65" HandMoveAmount="0.30191886,0.30347028" HandCycleSpeed="1.2076755" HandMoveOffset="0,0" ArmMoveStrength="2" HandMoveStrength="0.5" FixedHeadAngle="False" SteerTorque="2" LegTorque="12" AnimationType="SwimSlow" MovementSpeed="1.5" CycleSpeed="3.640148" HeadAngle="20" TorsoAngle="0" HeadTorque="10" TorsoTorque="20" FootTorque="1" ArmIKStrength="3" HandIKStrength="10" />

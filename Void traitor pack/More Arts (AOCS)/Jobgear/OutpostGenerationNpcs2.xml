@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Override>
+  <npcsets>
+    <npcset identifier="outpostnpcs1">
+      <npc identifier="clown" commonness="1" faction="clowns" moduleflags="clownmodule" job="assistant" behavior="Passive" preferredoutpostmoduletypes="clownmodule" spawnpointtags="clown">
+        <ItemSet commonness="10">
+          <Item identifier="idcard" equip="true" />
+          <Item identifier="artmod_nahdivingmask" equip="true" />
+          <Item identifier="clowncostume" equip="true" />
+          <Item identifier="revolver" equip="false">
+            <Item identifier="revolverround" />
+          </Item>
+          <Item identifier="huskeggs" />
+        </ItemSet>
+      </npc>
+    </npcset>
+  </npcsets>
+</Override>

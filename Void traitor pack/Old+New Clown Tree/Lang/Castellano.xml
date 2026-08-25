@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="Castilian Spanish" nowhitespace="false" translatedname="Castellano">
+  <talentname.inspiringtunesold>Melodías inspiradoras+</talentname.inspiringtunesold>
+  <talentdescription.inspiringtunesold>[afflictionname] te permite tocar la bocina para reparar objetos mecánicos y eléctricos cercanos. Los aliados cercanos obtienen una bonificación de [skillamount] a todas las habilidades durante un corto periodo de tiempo.</talentdescription.inspiringtunesold>
+  <afflictionname.inspiringtunesold>Melodías inspiradoras+</afflictionname.inspiringtunesold>
+  <afflictiondescription.inspiringtunesold>Las habilidades del sujeto aumentan durante un periodo de tiempo.</afflictiondescription.inspiringtunesold>
+  <afflictionname.combatstimulantclown>Estimulante de combate</afflictionname.combatstimulantclown>
+  <afflictiondescription.combatstimulantclown>Obtienes habilidades de combate con potenciación del rendimiento.</afflictiondescription.combatstimulantclown>
+</infotexts>

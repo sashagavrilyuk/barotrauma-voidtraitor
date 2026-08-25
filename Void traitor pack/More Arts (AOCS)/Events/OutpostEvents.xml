@@ -1,0 +1,1169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Randomevents>
+  <EventSprites>
+    <Sprite identifier="ph" texture="Content/Map/Outposts/Art/Event_pic2.png" sourcerect="0,0,1,1" origin="0.5,0.5" />
+  </EventSprites>
+  <EventPrefabs>
+    <ScriptedEvent identifier="artmod_spawnnoselessclowns">
+      <SpawnAction npcsetidentifier="ma_generalnpcs" npcidentifier="artmod_noselessclown" targettag="clown1" spawnlocation="Outpost" targetmoduletags="Path" _npos="4800,0" />
+      <SpawnAction npcsetidentifier="ma_generalnpcs" npcidentifier="artmod_noselessclown" targettag="clown1" spawnlocation="Outpost" targetmoduletags="Path" _npos="5400,0" />
+    </ScriptedEvent>
+    <!--<ScriptedEvent identifier="lasercratetrade">
+      <TagAction criteria="player" tag="player" _npos="-1970.1316,-1727.512" />
+      <SpawnAction npcsetidentifier="ma_generalnpcs" npcidentifier="laserbuyer" targettag="laserseller" spawnlocation="Outpost" spawnpointtype="Path" _npos="-1484.9426,-1748.9878" />
+      <TriggerAction target1tag="laserseller" target2tag="player" applytotarget2="triggerer_player" radius="150000" waitforinteraction="true" _npos="-1073.6672,-1748.9937" />
+      <CheckDataAction identifier="whomeet" condition="eq 1" _npos="-1044.7059,-2504.9102">
+        <Success>
+          <RNGAction chance="0.5" _npos="-646.31995,-2606.9824">
+            <Success>
+              <ConversationAction text="lt.ma2" dialogtype="Small" _npos="-91.26343,-2986.7458" />
+              <GoTo name="oh" _npos="295.86902,-2914.3418" />
+            </Success>
+            <Failure>
+              <ConversationAction text="lt.ma1" targettag="triggerer_player" dialogtype="Small" _npos="-91.50421,-2558.5776" />
+              <Label name="oh" _npos="288.6886,-2421.1372" />
+              <CheckItemAction targettag="triggerer_player" itemidentifiers="laserlootcrate" _npos="397.8322,-2270.705">
+                <Success>
+                  <Label name="sd2" _npos="1378.1382,-2238.4727" />
+                  <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="1929.2195,-2294.4485" />
+                  <ConversationAction text="lt.dd" targettag="triggerer_player" eventsprite="Stowaway1A" dialogtype="Regular" continueconversation="true" _npos="2510.8496,-2195.2007">
+                    <Option text="lt.dd2">
+                      <Label name="ltraded" _npos="2686.8542,-2445.1575" />
+                      <CheckMoneyAction amount="15000" _npos="3087.4392,-2412.791">
+                        <Success>
+                          <MoneyAction amount="-15000" _npos="3093.2195,-2232.3645" />
+                          <RemoveItemAction targettag="triggerer_player" itemidentifier="laserlootcrate" _npos="3197.8645,-2022.9557" />
+                          <ConversationAction text="lt.dd2o" targettag="triggerer_player" eventsprite="Stowaway1B" dialogtype="Regular" _npos="3712.222,-1926.3102" />
+                          <NPCFollowAction targettag="triggerer_player" follow="false" _npos="4088.8306,-1764.5302" />
+                          <RNGAction chance="0.33" _npos="5270.271,-2654.3767">
+                            <Success>
+                              <SpawnAction itemidentifier="lpistol" targetinventory="triggerer_player" _npos="5859.2944,-2981.6365" />
+                            </Success>
+                            <Failure>
+                              <RNGAction chance="0.44" _npos="4637.09,-2849.8804">
+                                <Success>
+                                  <RNGAction chance="0.5" _npos="4452.842,-3065.6143">
+                                    <Success>
+                                      <SpawnAction itemidentifier="lsmg" targetinventory="triggerer_player" _npos="4454.116,-3527.5703" />
+                                    </Success>
+                                    <Failure>
+                                      <SpawnAction itemidentifier="lrifle" targetinventory="triggerer_player" _npos="4828.3467,-3406.5757" />
+                                    </Failure>
+                                  </RNGAction>
+                                </Success>
+                                <Failure>
+                                  <RNGAction chance="0.5" _npos="5128.624,-2952.8018">
+                                    <Success>
+                                      <SpawnAction itemidentifier="lgrenadelauncher" targetinventory="triggerer_player" _npos="5843.66,-3509.5562" />
+                                    </Success>
+                                    <Failure>
+                                      <SpawnAction itemidentifier="lmachinegun" targetinventory="triggerer_player" _npos="5245.794,-3445.2026" />
+                                    </Failure>
+                                  </RNGAction>
+                                </Failure>
+                              </RNGAction>
+                            </Failure>
+                          </RNGAction>
+                        </Success>
+                        <Failure>
+                          <ConversationAction text="lt.dd3o2" targettag="triggerer_player" eventsprite="Stowaway1A" dialogtype="Regular" continueconversation="true" _npos="2831.691,-2969.747">
+                            <Option text="lt.dd3">
+                              <GoTo name="lsold" _npos="3403.9688,-2936.0574" />
+                            </Option>
+                            <Option text="lt.dd4">
+                              <GoTo name="lno" _npos="3217.0444,-2790.1409" />
+                            </Option>
+                          </ConversationAction>
+                        </Failure>
+                      </CheckMoneyAction>
+                    </Option>
+                    <Option text="lt.dd3">
+                      <Label name="lsold" _npos="3278.8965,-1614.8684" />
+                      <RemoveItemAction targettag="triggerer_player" itemidentifier="laserlootcrate" _npos="3549.6357,-1450.437" />
+                      <ConversationAction text="lt.dd3o1" targettag="triggerer_player" dialogtype="Regular" _npos="3940.3682,-1427.5693" />
+                      <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="false" _npos="4364.784,-1424.0721" />
+                      <MoneyAction amount="5000" _npos="4752.479,-1361.2811" />
+                    </Option>
+                    <Option text="lt.dd1">
+                      <ConversationAction text="lt.dd1o" targettag="triggerer_player" eventsprite="Stowaway1A" dialogtype="Regular" continueconversation="true" _npos="2778.4163,-1244.8822">
+                        <Option text="lt.dd2">
+                          <GoTo name="ltraded" _npos="3360.404,-1230.2177" />
+                        </Option>
+                        <Option text="lt.dd3">
+                          <GoTo name="lsold" _npos="3382.4985,-1126.3889" />
+                        </Option>
+                        <Option text="lt.dd4">
+                          <GoTo name="lno" _npos="3364.6821,-1015.82916" />
+                        </Option>
+                      </ConversationAction>
+                    </Option>
+                    <Option text="lt.dd4">
+                      <Label name="lno" _npos="2150.0852,-1545.1448" />
+                      <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="false" _npos="2236.6301,-1430.456" />
+                      <ConversationAction text="lt.dd4o" dialogtype="Regular" continueconversation="false" _npos="2086.615,-1157.2268" />
+                      <GoTo name="sd111" _npos="2453.8186,-1035.6506" />
+                    </Option>
+                  </ConversationAction>
+                </Success>
+                <Failure>
+                  <GoTo name="sd111" _npos="833.4549,-2172.7993" />
+                </Failure>
+              </CheckItemAction>
+            </Failure>
+          </RNGAction>
+        </Success>
+        <Failure>
+          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-635.518,-2346.4841" />
+          <SetDataAction operation="Add" value="1" identifier="whomeet" _npos="-644.71454,-2060.4548" />
+          <ConversationAction text="lt.d" targettag="triggerer_player" waitforinteraction="true" eventsprite="cultist" dialogtype="Regular" continueconversation="false" _npos="-650.4105,-1807.6143">
+            <Option text="lt.d1">
+              <ConversationAction text="lt.d1o" targettag="triggerer_player" waitforinteraction="true" eventsprite="cultist" dialogtype="Regular" continueconversation="false" _npos="1072.3087,-1978.5245">
+                <Option text="lt.d2" endconversation="true">
+                  <ConversationAction text="lt.d2o" targettag="triggerer_player" eventsprite="cultist" dialogtype="Regular" continueconversation="false" _npos="1656.5096,-2081.977" />
+                  <GoTo name="sd111" _npos="2041.8623,-1969.7513" />
+                </Option>
+                <Option text="lt.d3" endconversation="true">
+                  <GoTo name="nothanks" _npos="1476.2881,-1641.8508" />
+                </Option>
+              </ConversationAction>
+            </Option>
+            <Option text="lt.d2" endconversation="true">
+              <ConversationAction text="lt.d2o" targettag="triggerer_player" waitforinteraction="true" fadetoblack="false" eventsprite="cultist" dialogtype="Regular" continueconversation="false" _npos="1107.4762,-1516.3461" />
+              <GoTo name="sd111" _npos="1623.3186,-1515.1487" />
+            </Option>
+            <Option text="lt.d3" endconversation="true">
+              <Label name="nothanks" _npos="-150.59192,-1663.8765" />
+              <ConversationAction text="lt.d3o" targettag="triggerer_player" eventsprite="cultist" dialogtype="Regular" continueconversation="false" _npos="-173.73462,-1513.3763" />
+              <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="false" _npos="259.41016,-1442.8466" />
+              <GoTo name="sd111" _npos="634.85156,-1244.5581" />
+              <Label name="sd111" _npos="-745.7564,-1360.0497" />
+              <ConversationAction text="lt.r" speakertag="laserseller" targettag="triggerer_player" waitforinteraction="true" eventsprite="cultist" dialogtype="Regular" continueconversation="false" _npos="-697.85364,-1164.5111">
+                <Option text="lt.r1" endconversation="true">
+                  <CheckItemAction targettag="triggerer_player" itemidentifiers="laserlootcrate" _npos="364.11243,-1106.4729">
+                    <Success>
+                      <GoTo name="sd2" _npos="1098.9293,-1084.0378" />
+                    </Success>
+                    <Failure>
+                      <ConversationAction text="lt.r1o" targettag="triggerer_player" waitforinteraction="false" eventsprite="cultist" dialogtype="Regular" continueconversation="false" _npos="1274.7764,-948.2624" />
+                      <GoTo name="sd111" _npos="1653.0326,-849.85614" />
+                    </Failure>
+                  </CheckItemAction>
+                </Option>
+                <Option text="lt.r3">
+                  <CheckDataAction identifier="fabbuyed" condition="eq 1" _npos="-247.03235,-866.9454">
+                    <Success>
+                      <NPCFollowAction npctag="laserbuyer" targettag="triggerer_player" follow="true" _npos="-968.16223,-678.12256" />
+                      <ConversationAction text="lt.r3o2" targettag="triggerer_player" eventsprite="cultist" dialogtype="Regular" continueconversation="false" _npos="-1582.2985,-383.0113">
+                        <Option text="lt.r3o1r2">
+                          <GoTo name="fabbuy" _npos="-987.1308,-475.49036" />
+                        </Option>
+                        <Option text="lt.r3o2r2" endconversation="true">
+                          <NPCFollowAction npctag="laserbuyer" targettag="triggerer_player" follow="false" _npos="-962.42053,-342.80066" />
+                          <GoTo name="sd111" />
+                        </Option>
+                      </ConversationAction>
+                    </Success>
+                    <Failure>
+                      <ConversationAction text="lt.r3o1" targettag="triggerer_player" eventsprite="cultist" dialogtype="Regular" continueconversation="true" _npos="-509.92712,-506.8101">
+                        <Option text="lt.r3o1r1">
+                          <ConversationAction text="lt.r3o1r1o" targettag="triggerer_player" eventsprite="cultist" dialogtype="Regular" continueconversation="true" _npos="309.4552,-605.41876">
+                            <Option text="lt.r3o1r2">
+                              <SetDataAction operation="Add" value="1" identifier="fabbuyed" _npos="731.86584,-415.6253" />
+                              <GoTo name="fabbuy" _npos="1383.957,-357.98154" />
+                            </Option>
+                            <Option text="lt.r3o1r1or2" endconversation="true">
+                              <NPCFollowAction npctag="laserbuyer" targettag="triggerer_player" follow="false" _npos="799.43463,-596.8814" />
+                              <GoTo name="sd111" _npos="1244.2211,-494.09583" />
+                            </Option>
+                          </ConversationAction>
+                        </Option>
+                        <Option text="lt.r3o1r2" endconversation="true">
+                          <SetDataAction operation="Add" value="1" identifier="fabbuyed" _npos="-123.09332,-361.5056" />
+                          <Label name="fabbuy" _npos="-59.835144,-117.98334" />
+                          <CheckMoneyAction amount="5000" _npos="-4.7946167,36.293762">
+                            <Success>
+                              <MoneyAction amount="-5000" _npos="25.740967,399.51123" />
+                              <ConversationAction text="lt.r3o1r2o1" targettag="triggerer_player" eventsprite="cultist" dialogtype="Regular" continueconversation="false" _npos="534.0457,180.3067" />
+                              <SpawnAction itemidentifier="ek_placeablefabricator_fhw" targetinventory="triggerer_player" _npos="955.4556,191.94797" />
+                              <NPCFollowAction npctag="laserbuyer" targettag="triggerer_player" follow="false" _npos="1371.0663,216.25421" />
+                              <GoTo name="sd111" _npos="1747.6774,226.59363" />
+                            </Success>
+                            <Failure>
+                              <ConversationAction text="lt.r3o1r2o2" targettag="triggerer_player" dialogtype="Regular" continueconversation="false" _npos="907.5492,-252.10022" />
+                              <NPCFollowAction npctag="laserbuyer" targettag="triggerer_player" follow="false" _npos="1298.9033,-242.31696" />
+                              <GoTo name="sd111" _npos="1732.7146,-80.67334" />
+                            </Failure>
+                          </CheckMoneyAction>
+                        </Option>
+                      </ConversationAction>
+                    </Failure>
+                  </CheckDataAction>
+                </Option>
+                <Option text="lt.r2" endconversation="true">
+                  <GoTo name="sd111" _npos="595.16943,-728.6124" />
+                </Option>
+              </ConversationAction>
+            </Option>
+          </ConversationAction>
+        </Failure>
+      </CheckDataAction>
+    </ScriptedEvent>-->
+    <!--<ScriptedEvent identifier="unnamed">
+  <CheckItemAction itemidentifiers="ventwrecked" _npos="1074.5316,199.94473">
+    <Success>
+      <SpawnAction itemidentifier="laserlootcrate" targettag="dropoffcrate" spawnlocation="Wreck" spawnpointtype="Corpse" ignorebyai="true" _npos="1592.2534,-126.5488" />
+      <Label name="nah" _npos="1972.754,-98.954834" />
+      <WaitAction time="1" _npos="2277.137,-23.543762" />
+      <ConversationAction text="label.lasercrate1" targettag="player" endeventifinterrupted="true" dialogtype="Mission" _npos="2609.497,48.05655" />
+    </Success>
+    <Failure>
+      <SpawnAction itemidentifier="laserlootcrate" targettag="dropoffcrate" spawnlocation="MainPath" ignorebyai="true" _npos="1588.7913,342.9769" />
+      <GoTo name="nah" _npos="1971.0651,362.42502" />
+    </Failure>
+  </CheckItemAction>
+</ScriptedEvent>-->
+    <!--<ScriptedEvent identifier="aeguardian">
+  <TagAction criteria="player" tag="player" _npos="-1716.0619,-2510.8223" />
+  <SpawnAction speciesname="Fractalguardian" targettag="abroken" spawnlocation="Ruin" spawnpointtype="Enemy" ignorebyai="false" _npos="-1298.1481,-2514.6194" />
+  <AfflictionAction affliction="paralysis" strength="1000" targettag="abroken" _npos="-847.4085,-2459.1538" />
+  <TriggerAction target1tag="abroken" target2tag="player" applytotarget2="triggerer_player" radius="150" disableincombat="true" disableiftargetincapacitated="false" waitforinteraction="false" _npos="-271.76837,-2588.257" />
+  <ConversationAction text="bg.d" targettag="triggerer_player" waitforinteraction="false" dialogtype="Regular" _npos="192.60815,-2581.186">
+    <Option text="bg.d1">
+      <Label name="aweapon" _npos="-83.9657,-3079.9382" />
+      <SkillCheckAction requiredskill="weapons" requiredlevel="1" targettag="triggerer_player" _npos="-46.982666,-3413.4536">
+        <Success>
+          <RNGAction chance="50" _npos="182.6825,-3667.2173">
+            <Success>
+              <ConversationAction text="bg.d1o11" targettag="triggerer_player" dialogtype="Regular" _npos="-115.92859,-4123.6074" />
+              <AfflictionAction affliction="gunshotwound" strength="1000" limbtype="Head" targettag="abroken" _npos="291.27765,-4125.4863" />
+              <SpawnAction _npos="629.6254,-4483.878" />
+            </Success>
+            <Failure>
+              <ConversationAction text="bg.d1o12" targettag="triggerer_player" dialogtype="Regular" _npos="703.0368,-4025.4893" />
+              <AfflictionAction affliction="gunshotwound" strength="1000" limbtype="Head" targettag="abroken" _npos="1100.1688,-3990.6226" />
+              <SpawnAction _npos="1453.6718,-4400.0796" />
+            </Failure>
+          </RNGAction>
+        </Success>
+        <Failure>
+          <AfflictionAction affliction="lacerations" strength="10" limbtype="LeftHand" targettag="triggerer_player" _npos="453.35754,-3260.4272" />
+          <AfflictionAction affliction="lacerations" strength="10" limbtype="RightHand" targettag="triggerer_player" _npos="856.9042,-3221.1292" />
+          <AfflictionAction affliction="gunshotwound" strength="1000" targettag="abroken" _npos="929.3804,-3527.864" />
+          <ConversationAction text="bg.d1o2" targettag="triggerer_player" dialogtype="Regular" _npos="1441.147,-3787.2244" />
+        </Failure>
+      </SkillCheckAction>
+    </Option>
+    <Option text="bg.d2">
+      <Label name="amecha" _npos="713.7815,-2588.3904" />
+      <SkillCheckAction requiredskill="mechanical" requiredlevel="1" targettag="triggerer_player" _npos="1079.4102,-2862.188">
+        <Success>
+          <ConversationAction text="bg.d2o1" targettag="triggerer_player" _npos="1956.373,-3390.1746" />
+          <SpawnAction itemidentifier="scrap" targetinventory="triggerer_player" _npos="2534.0889,-3416.2292" />
+          <SpawnAction itemidentifier="scrap" targetinventory="triggerer_player" _npos="2534.0889,-3416.2292" />
+          <SpawnAction itemidentifier="scrap" targetinventory="triggerer_player" _npos="2534.0889,-3416.2292" />
+          <SpawnAction itemidentifier="scrap" targetinventory="triggerer_player" _npos="2534.0889,-3416.2292" />
+          <SpawnAction itemidentifier="scrap" targetinventory="triggerer_player" _npos="2534.0889,-3416.2292" />
+          <SpawnAction itemidentifier="scrap" targetinventory="triggerer_player" _npos="2534.0889,-3416.2292" />
+          <SpawnAction itemidentifier="scrap" targetinventory="triggerer_player" _npos="2534.0889,-3416.2292" />
+          <SpawnAction itemidentifier="scrap" targetinventory="triggerer_player" _npos="2534.0889,-3416.2292" />
+        </Success>
+        <Failure>
+          <ConversationAction text="bg.d2o2" targettag="triggerer_player" _npos="1762.8212,-2914.171">
+            <Option text="bg.d2o21" endconversation="true" />
+          </ConversationAction>
+          <SpawnAction itemidentifier="infernoboom" targettag="" spawnpointtag="abroken" _npos="2224.8184,-2959.27" />
+          <AfflictionAction affliction="gunshotwound" strength="-1000" targettag="abroken" _npos="2631.3972,-2841.2585" />
+        </Failure>
+      </SkillCheckAction>
+    </Option>
+    <Option text="bg.d3">
+      <Label name="aelectro" _npos="725.20105,-2485.915" />
+      <SkillCheckAction requiredskill="electrical" requiredlevel="1" targettag="triggerer_player" _npos="1184.7172,-2599.7603">
+        <Success>
+          <AfflictionAction affliction="paralysis" strength="-1000" targettag="abroken" _npos="1682.4445,-2425.379" />
+          <NPCChangeTeamAction npctag="abroken" teamtag="FriendlyNPC" addtocrew="false" _npos="2072.6565,-2438.2322" />
+          <ConversationAction text="bg.d3o1" targettag="triggerer_player" _npos="2375.94,-2337.1836" />
+        </Success>
+        <Failure>
+          <ConversationAction text="bg.d3o2" targettag="triggerer_player" _npos="1558.5896,-2016.0267" />
+          <AfflictionAction affliction="paralysis" strength="-1000" targettag="abroken" _npos="1957.0482,-2016.9352" />
+        </Failure>
+      </SkillCheckAction>
+    </Option>
+    <Option text="bg.d4">
+      <ConversationAction text="bg.d4o" targettag="triggerer_player" dialogtype="Regular" _npos="638.87476,-2257.723">
+        <Option text="bg.d1">
+          <GoTo name="aweapon" _npos="1080.7246,-2330.7478" />
+        </Option>
+        <Option text="bg.d2">
+          <GoTo name="amecha" _npos="1163.1693,-2229.265" />
+        </Option>
+        <Option text="bg.d3">
+          <GoTo name="aelectro" _npos="1156.3552,-2132.865" />
+        </Option>
+        <Option text="bg.d5" endconversation="true" />
+      </ConversationAction>
+    </Option>
+    <Option text="bg.d5" endconversation="true" />
+  </ConversationAction>
+</ScriptedEvent>-->
+    <!--<ScriptedEvent identifier="unnamed">
+  <TagAction criteria="player" tag="player" _npos="-15680.213,-5227.1665" />
+  <SpawnAction npcsetidentifier="ma_generalnpcs" npcidentifier="laserbuyer" targettag="laserseller" spawnlocation="Outpost" spawnpointtype="Path" _npos="-15210.403,-5227.7393" />
+  <Label name="first" _npos="-14722.421,-5192.0596" />
+  <TriggerAction target1tag="laserseller" target2tag="player" applytotarget2="triggerer_player" type="Inside" radius="15000" disableincombat="true" disableiftargetincapacitated="true" waitforinteraction="true" _npos="-14166.695,-5086.542" />
+  <CheckDataAction identifier="whomeet" condition="eq 1" _npos="-13649.005,-4940.6206">
+    <Success>
+      <CheckDataAction identifier="whomeet2" condition="eq 1" _npos="-13044.241,-4909.5366">
+        <Success>
+          <RNGAction chance="0.4" _npos="-4450.294,-2404.4924">
+            <Success>
+              <RNGAction chance="0.4" _npos="-3897.419,-2372.5247">
+                <Success>
+                  <RNGAction chance="0.5" _npos="-3357.9214,-2595.6863">
+                    <Success>
+                      <CheckDataAction identifier="whoquestdone" condition="1" _npos="-5596.7134,-2960.6104">
+                        <Success>
+                          <ConversationAction dialogtype="Regular" continueconversation="true" _npos="-5304.8755,-10361.35" />
+                          <Label name="PWelCome" _npos="-4905.5273,-10361.302" />
+                          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-4536.6094,-10356.059" />
+                          <RNGAction chance="0.75" _npos="-4165.348,-10361.553">
+                            <Success>
+                              <RNGAction chance="0.75" _npos="-3495.467,-10330.635">
+                                <Success>
+                                  <RNGAction chance="0.75" _npos="-2738.261,-10298.941">
+                                    <Success>
+                                      <RNGAction chance="0.5" _npos="-2035.8408,-10266.666">
+                                        <Success>
+                                          <RNGAction chance="0.5" _npos="-1274.6904,-10234.363">
+                                            <Success>
+                                              <RNGAction chance="0.5" _npos="-597.5145,-10202.47">
+                                                <Success>
+                                                  <RNGAction chance="0.5" _npos="118.02869,-10170.787">
+                                                    <Success>
+                                                      <ConversationAction dialogtype="Regular" continueconversation="false" _npos="853.275,-10162.286" />
+                                                      <Label name="Ptimeforbusniess" _npos="1234.0077,-10162.471" />
+                                                      <CheckDataAction identifier="pbreefingover" condition="1" _npos="1792.0563,-10162.286">
+                                                        <Success>
+                                                          <Label name="yay" _npos="2188.3533,-10688.875" />
+                                                          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="2324,-11210.5" />
+                                                          <ConversationAction text="Итак, чем могу помочь?" _npos="2826.098,-11547.643">
+                                                            <Option text="просто поболтать если можно">
+                                                              <Label name="Pnotyet" _npos="3457.812,-11574.721" />
+                                                              <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="4030.3147,-12156.203" />
+                                                              <ConversationAction text="Пока нет, сорян" dialogtype="Regular" continueconversation="true" _npos="4531.8486,-12156.097" />
+                                                              <GoTo name="Pagain" _npos="5001.7266,-12157.493" />
+                                                              <Label name="Pagain" _npos="2111.1458,-12661.135" />
+                                                              <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="2740.4922,-12959.783" />
+                                                              <ConversationAction text="Что-то ещё?" dialogtype="Regular" continueconversation="true" _npos="3275.146,-12959.584">
+                                                                <Option text="просто поболтать если можно">
+                                                                  <GoTo name="Pnotyet" _npos="3873.4353,-12978.068" />
+                                                                </Option>
+                                                                <Option text="Хотел бы приобрести спецснарягу">
+                                                                  <GoTo name="снаряга" _npos="4073.5442,-12837.191" />
+                                                                </Option>
+                                                                <Option text="Хотел бы сдать ящик">
+                                                                  <GoTo name="lasercrate" _npos="4027.1692,-12657.963" />
+                                                                </Option>
+                                                                <Option text="Пока ничего" endconversation="true">
+                                                                  <GoTo name="yay" _npos="3737.139,-12523.193" />
+                                                                </Option>
+                                                              </ConversationAction>
+                                                            </Option>
+                                                            <Option text="Хотел бы приобрести спецснарягу">
+                                                              <Label name="снаряга" _npos="4315.9976,-11537.568" />
+                                                              <ConversationAction text="тестик" dialogtype="Regular" continueconversation="false" _npos="4823.3228,-11502.036">
+                                                                <Option text="Дай взглянуть на взломанный терминал" />
+                                                                <Option text="Дай взглянуть на большую бабахалку" />
+                                                                <Option text="Дай взглянуть на трипэлтейк" />
+                                                                <Option text="Дай взглянуть на что-нибудь полезное" />
+                                                                <Option text="Дай взглянуть на соду" />
+                                                                <Option text="Дай взглянуть на смысл моих действий" />
+                                                                <Option text="Дай хоть что-нибудь" />
+                                                                <Option text="Просто дай" />
+                                                              </ConversationAction>
+                                                            </Option>
+                                                            <Option text="Хотел бы сдать ящик">
+                                                              <Label name="lasercrate" _npos="4257.471,-11328.405" />
+                                                            </Option>
+                                                            <Option text="Пока ничего" endconversation="true">
+                                                              <GoTo name="yay" _npos="3611.3518,-11372.399" />
+                                                            </Option>
+                                                          </ConversationAction>
+                                                        </Success>
+                                                        <Failure>
+                                                          <SetDataAction operation="Set" value="1" identifier="pbreefingover" _npos="2034.6753,-9828.579" />
+                                                          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="2442.2385,-10062.398" />
+                                                          <ConversationAction text="Итак, единственное - мою деятельность обсуждать не стоит, как и спрашивать откуда я беру те или иные вещи" dialogtype="Regular" continueconversation="true" _npos="2773.797,-9756.725">
+                                                            <Option text="Противозаконное?">
+                                                              <ConversationAction text="Я же сказал - не спрашивай" dialogtype="Regular" continueconversation="true" _npos="2764.6626,-10555.62" />
+                                                              <GoTo name="Pinteview" _npos="3165.7476,-10519.82" />
+                                                            </Option>
+                                                            <Option text="У меня не будет проблем с коалицией?">
+                                                              <ConversationAction text="Нет" dialogtype="Regular" continueconversation="true" _npos="3394.8237,-10231.378" />
+                                                              <GoTo name="Pinteview" _npos="4047.5303,-10214.514" />
+                                                            </Option>
+                                                            <Option text="Окей">
+                                                              <Label name="Pinteview" _npos="3430.4604,-9660.988" />
+                                                              <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="3924.8826,-10012.463" />
+                                                              <ConversationAction text="Я могу помочь тебе с разными вещами." dialogtype="Regular" continueconversation="true" _npos="4143.1406,-9660.885" />
+                                                              <ConversationAction text="И последнее - инфа про ящики с лазерами" dialogtype="Regular" continueconversation="true" _npos="4687.8926,-9659.979" />
+                                                              <GoTo name="yay" _npos="5090.3086,-9659.22" />
+                                                            </Option>
+                                                            <Option text="Хм.">
+                                                              <GoTo name="Pinteview" _npos="3391.0083,-9511.245" />
+                                                            </Option>
+                                                          </ConversationAction>
+                                                        </Failure>
+                                                      </CheckDataAction>
+                                                    </Success>
+                                                    <Failure>
+                                                      <ConversationAction dialogtype="Regular" continueconversation="false" _npos="118.95691,-9982.293" />
+                                                      <GoTo name="Ptimeforbusniess" _npos="512.9894,-9941.732" />
+                                                    </Failure>
+                                                  </RNGAction>
+                                                </Success>
+                                                <Failure>
+                                                  <ConversationAction dialogtype="Regular" continueconversation="false" _npos="-585.1543,-10001.312" />
+                                                  <GoTo name="Ptimeforbusniess" _npos="-205.21252,-9857.664" />
+                                                </Failure>
+                                              </RNGAction>
+                                            </Success>
+                                            <Failure>
+                                              <ConversationAction dialogtype="Regular" continueconversation="false" _npos="-1284.4692,-10028.752" />
+                                              <GoTo name="Ptimeforbusniess" _npos="-906.8337,-9844.782" />
+                                            </Failure>
+                                          </RNGAction>
+                                        </Success>
+                                        <Failure>
+                                          <ConversationAction dialogtype="Regular" continueconversation="false" _npos="-2039.448,-10073.493" />
+                                          <GoTo name="Ptimeforbusniess" _npos="-1625.9752,-9948.908" />
+                                        </Failure>
+                                      </RNGAction>
+                                    </Success>
+                                    <Failure>
+                                      <ConversationAction text="Ты всё ещё жив. " dialogtype="Regular" continueconversation="false" _npos="-2770.1226,-10087.966" />
+                                      <GoTo name="Ptimeforbusniess" _npos="-2360.331,-9967.155" />
+                                    </Failure>
+                                  </RNGAction>
+                                </Success>
+                                <Failure>
+                                  <ConversationAction text="Доброе утро! Или день... Вечер... В общем." dialogtype="Regular" continueconversation="false" _npos="-3476.8591,-10092.728" />
+                                  <GoTo name="Ptimeforbusniess" _npos="-3072.3525,-9935.779" />
+                                </Failure>
+                              </RNGAction>
+                            </Success>
+                            <Failure>
+                              <ConversationAction text="Я... Рад видеть вас вновь." dialogtype="Regular" continueconversation="false" _npos="-4200.226,-10027.364" />
+                              <GoTo name="Ptimeforbusniess" _npos="-3822.5618,-9966.908" />
+                            </Failure>
+                          </RNGAction>
+                        </Success>
+                        <Failure>
+                          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-4325.286,-3963.5435" />
+                          <ConversationAction text="О привет" dialogtype="Regular" continueconversation="true" _npos="-3812.0352,-3964.7607" />
+                          <CheckDataAction identifier="whoquestdone" condition="eq 1" _npos="-3355.4958,-3970.086">
+                            <Failure>
+                              <Label name="Pawake1" _npos="-2978.6177,-3716.9465" />
+                              <NPCFollowAction targettag="triggerer_player" follow="true" _npos="-2491.477,-4085.7073" />
+                              <CheckDataAction identifier="tradeno" condition="1" _npos="-2307.8484,-3710.7583">
+                                <Success>
+                                  <ConversationAction text="Ты передумал?" dialogtype="Regular" continueconversation="true" _npos="-1804.8478,-4101.639">
+                                    <Option text="Да">
+                                      <SetDataAction operation="Set" value="0" identifier="tradeno" _npos="-1196.8093,-4147.206" />
+                                      <ConversationAction text="Замечательно! А артефакт ты принес?" dialogtype="Regular" continueconversation="true" _npos="-749.6339,-4147.32">
+                                        <Option text="Да">
+                                          <GoTo name="Pyes1" _npos="-154.9289,-4115.6006" />
+                                        </Option>
+                                        <Option text="Нет">
+                                          <GoTo name="Pno1" _npos="-192.00244,-3939.0852" />
+                                        </Option>
+                                      </ConversationAction>
+                                    </Option>
+                                    <Option text="Неа">
+                                      <ConversationAction text="Печаль" dialogtype="Regular" continueconversation="false" _npos="-1416.4576,-3927.344" />
+                                      <GoTo name="Pawake1" _npos="-1033.8608,-3661.3193" />
+                                    </Option>
+                                  </ConversationAction>
+                                </Success>
+                                <Failure>
+                                  <ConversationAction text=" Ты принес?" _npos="-1845.7378,-3489.5518">
+                                    <Option text="Да">
+                                      <Label name="Pyes1" _npos="-1272.4921,-3457.5278" />
+                                      <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-956.0456,-3372.6128" />
+                                      <CheckItemAction targettag="triggerer_player" itemidentifiers="smallalienartifact" _npos="-572.59326,-3496.198">
+                                        <Success>
+                                          <RemoveItemAction targettag="triggerer_player" itemidentifiers="smallalienartifact" _npos="-155.56775,-3716.6125" />
+                                          <ConversationAction text="Отлично!" dialogtype="Regular" continueconversation="true" _npos="241.15564,-3715.574" />
+                                          <SetDataAction operation="Set" value="1" identifier="whoquestdone" _npos="692.5576,-3715.5667" />
+                                          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="false" _npos="1099.2349,-3715.8115" />
+                                          <MoneyAction amount="2000" targettag="triggerer_player" _npos="1473.0623,-3715.721" />
+                                          <ConversationAction text="Деньги переведены. Мне нужно некоторое время чтоб разобраться с делами, до встречи" dialogtype="Regular" continueconversation="false" _npos="1559.2615,-3442.5164" />
+                                        </Success>
+                                        <Failure>
+                                          <ConversationAction text="... И где он?" dialogtype="Regular" continueconversation="true" _npos="-220.2417,-3195.799">
+                                            <Option text="Оставил на корабле" endconversation="true">
+                                              <Label name="Pno2" _npos="395.2138,-3163.22" />
+                                              <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="false" _npos="824.269,-3465.2966" />
+                                              <ConversationAction text="Ну, я буду ждать тут" dialogtype="Regular" continueconversation="false" _npos="804.3668,-3052.8538" />
+                                              <GoTo name="Pawake1" _npos="1166.7083,-3050.7551" />
+                                            </Option>
+                                            <Option text="Обознался" endconversation="true">
+                                              <GoTo name="Pno2" _npos="325.15466,-3018.3904" />
+                                            </Option>
+                                          </ConversationAction>
+                                        </Failure>
+                                      </CheckItemAction>
+                                    </Option>
+                                    <Option text="Нет" endconversation="true">
+                                      <Label name="Pno1" _npos="-1381.3031,-3274.907" />
+                                      <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="false" _npos="-1103.3884,-3086.2131" />
+                                      <ConversationAction text="Ну, если найдешь - ты знаешь где меня найти!" dialogtype="Regular" continueconversation="false" _npos="-724.90906,-2984.4644" />
+                                    </Option>
+                                  </ConversationAction>
+                                </Failure>
+                              </CheckDataAction>
+                            </Failure>
+                          </CheckDataAction>
+                        </Failure>
+                      </CheckDataAction>
+                    </Success>
+                    <Failure>
+                      <CheckItemAction targettag="triggerer_player" itemidentifiers="remembrance" _npos="-2918.7817,-2531.0261">
+                        <Success>
+                          <ConversationAction text="плейсхолдерсущности" dialogtype="Regular" continueconversation="true" _npos="-2041.2361,-2503.6555">
+                            <Option text="Показать предмет">
+                              <CheckItemAction targettag="triggerer_player" itemidentifiers="remembrance" _npos="-1554.8843,-2471.0222">
+                                <Success>
+                                  <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-1035.3333,-2439.7014" />
+                                  <CheckDataAction identifier="whoquestdone" condition="1" _npos="-636.45184,-2442.726">
+                                    <Success>
+                                      <ConversationAction text="человек вернулся" dialogtype="Regular" continueconversation="true" _npos="-96.15637,-2572.9304" />
+                                      <Label name="PWelCome" _npos="444.83908,-2537.151" />
+                                    </Success>
+                                    <Failure>
+                                      <ConversationAction _npos="-154.83594,-2100.211" />
+                                      <GoTo name="Pawake1" _npos="302.80725,-2087.0845" />
+                                    </Failure>
+                                  </CheckDataAction>
+                                </Success>
+                                <Failure>
+                                  <ConversationAction text="Кажется, ты уронил эту вещь. Какая незадача." _npos="-1107.1775,-2074.3398" />
+                                </Failure>
+                              </CheckItemAction>
+                            </Option>
+                            <Option text="Уйти" endconversation="true" />
+                          </ConversationAction>
+                        </Success>
+                        <Failure>
+                          <ConversationAction text="плейсхолдерсущности" dialogtype="Regular" continueconversation="false" _npos="-2279.1848,-1864.3274">
+                            <Option text="Уйти" endconversation="true" />
+                          </ConversationAction>
+                        </Failure>
+                      </CheckItemAction>
+                    </Failure>
+                  </RNGAction>
+                </Success>
+                <Failure>
+                  <CheckItemAction targettag="triggerer_player" itemidentifiers="remembrance" _npos="-3823.2163,-624.6614">
+                    <Success>
+                      <ConversationAction text="плейсхолдер психа" dialogtype="Regular" _npos="-3077.1318,-894.1731">
+                        <Option text="Показать предмет">
+                          <CheckItemAction targettag="triggerer_player" itemidentifiers="remembrance" _npos="-2484.0474,-872.1972">
+                            <Success>
+                              <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-2003.1326,-840.8306" />
+                              <CheckDataAction identifier="whoquestdone" condition="1" _npos="-1478.035,-762.37036">
+                                <Success>
+                                  <ConversationAction text="Человек вернулся" dialogtype="Regular" continueconversation="true" _npos="-963.01605,-1091.9989" />
+                                  <Label name="PWelCome" _npos="-445.25818,-1018.1522" />
+                                </Success>
+                                <Failure>
+                                  <ConversationAction _npos="-983.8546,-599.2711" />
+                                  <GoTo name="Pawake1" _npos="-560.7605,-599.4888" />
+                                </Failure>
+                              </CheckDataAction>
+                            </Success>
+                            <Failure>
+                              <ConversationAction text="У тебя её нету" dialogtype="Regular" continueconversation="false" _npos="-2107.14,-581.2502" />
+                            </Failure>
+                          </CheckItemAction>
+                        </Option>
+                        <Option text="Говорить">
+                          <GoTo name="Ppsycho" _npos="-2627.33,-492.33112" />
+                        </Option>
+                      </ConversationAction>
+                    </Success>
+                    <Failure>
+                      <ConversationAction dialogtype="Regular" continueconversation="true" _npos="-3200.579,-256.92078">
+                        <Option text="Говорить">
+                          <Label name="Ppsycho" _npos="-2655.3042,-89.25571" />
+                          <ConversationAction _npos="-1962.0659,49.259094" />
+                        </Option>
+                      </ConversationAction>
+                    </Failure>
+                  </CheckItemAction>
+                </Failure>
+              </RNGAction>
+            </Success>
+            <Failure>
+              <CheckItemAction targettag="triggerer_player" itemidentifiers="remembrance" _npos="-5655.905,702.7051">
+                <Success>
+                  <ConversationAction text="Плейсхолдер алкаша" dialogtype="Regular" continueconversation="true" _npos="-4728.0938,904.0519">
+                    <Option text="Показать предмет">
+                      <CheckItemAction targettag="triggerer_player" itemidentifiers="remembrance" _npos="-4090.3303,905.7521">
+                        <Success>
+                          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-3571.3965,937.63416" />
+                          <CheckDataAction identifier="whoquestdone" condition="1" _npos="-3112.4243,937.1561">
+                            <Success>
+                              <ConversationAction text="Человек вернулся" dialogtype="Regular" continueconversation="true" _npos="-2485.9246,762.19727" />
+                              <Label name="PWelCome" _npos="-2052.9983,762.4987" />
+                            </Success>
+                            <Failure>
+                              <ConversationAction text="Ох... Спасибо" dialogtype="Regular" continueconversation="true" _npos="-2573.4763,1283.7968" />
+                              <GoTo name="Pawake1" _npos="-2022.5798,1283.7946" />
+                            </Failure>
+                          </CheckDataAction>
+                        </Success>
+                        <Failure>
+                          <ConversationAction text="У тебя её нету" dialogtype="Regular" continueconversation="false" _npos="-3655.3923,1255.9158" />
+                        </Failure>
+                      </CheckItemAction>
+                    </Option>
+                    <Option text="Говорить">
+                      <GoTo name="Palco1" _npos="-4205.9204,1424.768" />
+                    </Option>
+                  </ConversationAction>
+                </Success>
+                <Failure>
+                  <ConversationAction text="плейсхолдер алкаша" dialogtype="Regular" continueconversation="true" _npos="-5058.201,1759.7631">
+                    <Option text="говорить">
+                      <Label name="Palco1" _npos="-4465.345,1829.1526" />
+                      <ConversationAction text="Игнор" dialogtype="Regular" continueconversation="false" _npos="-3980.486,1829.4042" />
+                    </Option>
+                  </ConversationAction>
+                </Failure>
+              </CheckItemAction>
+            </Failure>
+          </RNGAction>
+        </Success>
+        <Failure>
+          <SetDataAction operation="Set" value="1" identifier="whomeet2" _npos="-12554.666,-7171.3374" />
+          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-12052.984,-7606.4766" />
+          <ConversationAction text="хей помнишь меня?" dialogtype="Regular" continueconversation="true" ignoreinterruptdistance="true" _npos="-11926.211,-7159.367">
+            <Option text="Не уверен">
+              <Label name="F0" _npos="-11315.569,-7168.512" />
+              <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-10812.86,-7569.3" />
+              <CheckDataAction identifier="Alco" condition="eq 1" _npos="-10683.733,-7174.9326">
+                <Success>
+                  <ConversationAction text="Я был тем алкашом" dialogtype="Regular" continueconversation="true" ignoreinterruptdistance="true" _npos="-10191.518,-7142.947" />
+                  <Label name="ft1" _npos="-9799.626,-7142.407" />
+                  <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-9355.133,-7540.375" />
+                  <ConversationAction text="В любом случае, я хотел бы предложить тебе услуги, но сначала принеси мне артефакт" dialogtype="Regular" continueconversation="true" _npos="-9239.78,-7145.635">
+                    <Option text="Хм... Ладно">
+                      <Label name="F1" _npos="-8758.156,-7217.639" />
+                      <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="false" _npos="-8394.065,-7453.97" />
+                      <SpawnAction itemidentifier="remembrance" targetinventory="triggerer_player" _npos="-7892.128,-7740.091" />
+                      <ConversationAction text="Спасибо! И держи это, поможет найти меня" dialogtype="Regular" continueconversation="false" _npos="-7465.9976,-7741.4204" />
+                    </Option>
+                    <Option text="Какого рода услуги?">
+                      <Label name="FV1" _npos="-8089.5327,-7067.419" />
+                      <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-7745.2124,-7022.2163" />
+                      <ConversationAction dialogtype="Regular" continueconversation="true" _npos="-7395.852,-6940.7705">
+                        <Option text="Хм... Ладно">
+                          <GoTo name="F1" _npos="-6682.259,-6975.835" />
+                        </Option>
+                        <Option text="С чего мне тебе доверять?">
+                          <ConversationAction dialogtype="Regular" continueconversation="true" _npos="-6376.3833,-6876.586">
+                            <Option text="Хм... Ладно">
+                              <GoTo name="F1" _npos="-5790.38,-6941.4014" />
+                            </Option>
+                            <Option text="Меня это не интересует">
+                              <GoTo name="F2" _npos="-5797.4775,-6812.6387" />
+                            </Option>
+                          </ConversationAction>
+                        </Option>
+                        <Option text="Меня это не интересует">
+                          <GoTo name="F2" _npos="-6766.588,-6809.01" />
+                        </Option>
+                      </ConversationAction>
+                    </Option>
+                    <Option text="С чего мне тебе доверять?">
+                      <Label name="FV2" _npos="-8424.609,-6809.1235" />
+                      <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-8255.278,-6592.3555" />
+                      <ConversationAction dialogtype="Regular" continueconversation="true" _npos="-7863.205,-6446.938">
+                        <Option text="Хм... Ладно">
+                          <GoTo name="F1" _npos="-6943.484,-6459.828" />
+                        </Option>
+                        <Option text="Какого рода услуги?">
+                          <ConversationAction dialogtype="Regular" continueconversation="true" _npos="-6945.4517,-6304.156">
+                            <Option text="Хм... Ладно">
+                              <GoTo name="F1" _npos="-6175.599,-6322.2495" />
+                            </Option>
+                            <Option text="Меня это не интересует">
+                              <GoTo name="F2" _npos="-6358.156,-6000.8115" />
+                            </Option>
+                          </ConversationAction>
+                        </Option>
+                        <Option text="Меня это не интересует">
+                          <GoTo name="F2" _npos="-7353.7207,-6166.265" />
+                        </Option>
+                      </ConversationAction>
+                    </Option>
+                    <Option text="Меня это не интересует">
+                      <Label name="F2" _npos="-9001.188,-5222.504" />
+                      <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-8632.604,-5223.138" />
+                      <ConversationAction text="Ты уверен? Я заплачу 2000 кредитов!" dialogtype="Regular" continueconversation="true" _npos="-8200.643,-5165.1675">
+                        <Option text="Да.">
+                          <Label name="FV3" _npos="-7628.006,-5148.8467" />
+                          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="false" _npos="-7172.812,-5160.6973" />
+                          <SetDataAction operation="Set" value="1" identifier="tradeno" _npos="-6713.049,-5160.6094" />
+                          <ConversationAction text="Ну, как знаешь. Удачи, может ещё встретимся" dialogtype="Regular" continueconversation="false" _npos="-6176.0234,-5159.8047" />
+                        </Option>
+                        <Option text="С другой стороны...">
+                          <GoTo name="F1" _npos="-7641.8696,-4871.5464" />
+                        </Option>
+                      </ConversationAction>
+                    </Option>
+                  </ConversationAction>
+                </Success>
+                <Failure>
+                  <CheckDataAction identifier="artmodPsycho" condition="eq 1" _npos="-10974.259,-6776.332">
+                    <Success>
+                      <ConversationAction text="Я... Был рядом с тем психом" dialogtype="Regular" continueconversation="true" ignoreinterruptdistance="true" _npos="-10175.917,-6649.187" />
+                      <GoTo name="ft1" _npos="-9513.389,-6515.86" />
+                    </Success>
+                    <Failure>
+                      <CheckDataAction identifier="DNoseless" condition="eq 1" _npos="-10960.5625,-6428.9756">
+                        <Success>
+                          <ConversationAction text="Ты тоже видел того человека?" dialogtype="Regular" continueconversation="true" ignoreinterruptdistance="true" _npos="-10181.789,-6164.643" />
+                          <GoTo name="ft1" _npos="-9495.882,-6189.288" />
+                        </Success>
+                      </CheckDataAction>
+                    </Failure>
+                  </CheckDataAction>
+                </Failure>
+              </CheckDataAction>
+            </Option>
+            <Option text="В первый раз вижу">
+              <GoTo name="F0" _npos="-11286.734,-7062.5796" />
+            </Option>
+            <Option text="Отвянь">
+              <ConversationAction text="Довольно некультурно" dialogtype="Regular" continueconversation="true" _npos="-11439.768,-6598.0103" />
+              <GoTo name="ft1" _npos="-11030.902,-6122.805" />
+            </Option>
+            <Option text="Проигнорировать и пройти мимо">
+              <ConversationAction text="Тебя даже не заинтересует 2к кредитов и специальные услуги за небольшое задание по доставке артефакта?" dialogtype="Regular" continueconversation="true" _npos="-12430.494,-6353.229">
+                <Option text="Ну, ради этого...">
+                  <GoTo name="F1" _npos="-12070.661,-6610.148" />
+                </Option>
+                <Option text="Какого рода услуги?">
+                  <GoTo name="FV1" _npos="-11819.082,-6450.98" />
+                </Option>
+                <Option text="С чего мне тебе доверять?">
+                  <GoTo name="FV2" _npos="-11482.83,-6096.0747" />
+                </Option>
+                <Option text="Нет">
+                  <GoTo name="FV3" _npos="-11700.433,-5945.2065" />
+                </Option>
+              </ConversationAction>
+            </Option>
+          </ConversationAction>
+        </Failure>
+      </CheckDataAction>
+    </Success>
+    <Failure>
+      <SetDataAction operation="Set" value="1" identifier="whomeet" _npos="-13176.514,-4576.2803" />
+      <RNGAction chance="0.6" _npos="-12754.691,-4584.9077">
+        <Success>
+          <RNGAction chance="0.5" _npos="-12295.402,-4552.4136">
+            <Success>
+              <SetDataAction operation="Set" value="1" identifier="artmodPsycho" _npos="-17136.934,-232.6983" />
+              <RNGAction chance="0.4" _npos="-16768.84,-232.88028">
+                <Success>
+                  <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-16709.018,-797.0859" />
+                  <ConversationAction text="Как ты думаешь, можно ли обратить время спять?" dialogtype="Regular" continueconversation="true" ignoreinterruptdistance="true" _npos="-16301.265,-797.79865">
+                    <Option text="Эм?..">
+                      <GoTo name="pwhat" _npos="-16646.42,-1030.5825" />
+                    </Option>
+                    <Option text="Ты часто задаешь такие вопросы первому попавшемуся человеку?">
+                      <GoTo name="pwhat" _npos="-15883.103,-1128.4967" />
+                    </Option>
+                    <Option text="Никогда не задумывался над этим.">
+                      <ConversationAction text="3" dialogtype="Regular" continueconversation="true" _npos="-14990.324,-1515.8419" />
+                      <GoTo name="pwhat" _npos="-14579.518,-1501.6958" />
+                    </Option>
+                    <Option text="Иногда и сам думал над этим, не находя ответа.">
+                      <ConversationAction text="2" dialogtype="Regular" continueconversation="true" _npos="-14847.431,-964.594" />
+                      <GoTo name="pwhat" _npos="-14380.808,-946.2633" />
+                    </Option>
+                    <Option text="Главное - это настоящее">
+                      <ConversationAction text="1" dialogtype="Regular" continueconversation="true" _npos="-14838.1875,-502.22516" />
+                      <Label name="pwhat" _npos="-14445.548,-774.29285" />
+                      <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-14383.256,-655.27435" />
+                      <SpawnAction itemidentifier="remembrance" targetinventory="triggerer_player" _npos="-13757.196,-558.0378" />
+                      <ConversationAction text="держи" dialogtype="Regular" continueconversation="true" _npos="-13376.595,-555.934">
+                        <Option text="Э, ну, спасибо...">
+                          <GoTo _npos="-12841.374,-626.5881" />
+                        </Option>
+                        <Option text="&lt;type here&gt;">
+                          <Label _npos="-12822.954,-496.6026" />
+                          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-12427.059,-498.6474" />
+                          <SpawnAction itemidentifier="artmod_suiciderevolver" targetinventory="laserseller" _npos="-12031.8125,-498.81454" />
+                          <ConversationAction text="Проигнорировал, улыбнулся и застрелился" dialogtype="Regular" continueconversation="false" _npos="-11489.051,-496.9452" />
+                          <CombatAction combatmode="Offensive" isinstigator="true" guardreaction="None" witnessreaction="None" npctag="laserseller" enemytag="triggerer_player" _npos="-11108.981,-496.0964" />
+                        </Option>
+                        <Option text="Спасибо, но зачем">
+                          <GoTo _npos="-12745.642,-246.8299" />
+                        </Option>
+                        <Option text="Мне не нужно, забирай обратно">
+                          <GoTo _npos="-12909.176,-99.91489" />
+                        </Option>
+                      </ConversationAction>
+                    </Option>
+                    <Option text="Отмахнуться и пройти мимо">
+                      <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="false" _npos="-15713.727,-403.6471" />
+                      <ConversationAction text="Человек даже не обратил внимания" dialogtype="Regular" continueconversation="false" ignoreinterruptdistance="true" _npos="-15330.107,-403.47113" />
+                    </Option>
+                  </ConversationAction>
+                </Success>
+                <Failure>
+                  <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-16493.434,565.54175" />
+                  <ConversationAction text="Ого, новая выскочка, сидящее в железной могиле и считающая себя лучше остальных." waitforinteraction="true" dialogtype="Regular" continueconversation="false" ignoreinterruptdistance="true" _npos="-16014.95,424.4464">
+                    <Option text="Эм...">
+                      <GoTo name="PsychoV1" _npos="-15233.249,566.6267" />
+                    </Option>
+                    <Option text="Ты кто вообще?">
+                      <GoTo name="PsychoV1" _npos="-15280.754,700.80225" />
+                    </Option>
+                    <Option text="Что вы себе позволяете?">
+                      <Label name="PsychoV1" _npos="-17975.33,1213.8505" />
+                      <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-17813.504,1459.9395" />
+                      <ConversationAction text="Полный игнор. Ты просто ничтожество, кусок дерьма, который умрет снова и снова и снова." dialogtype="Regular" continueconversation="true" ignoreinterruptdistance="true" _npos="-17293.352,1395.924">
+                        <Option text="Заткнись!">
+                          <Label name="PsychoV2" _npos="-16533.582,1265.553" />
+                          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-15954.497,1057.1793" />
+                          <ConversationAction text="А знаешь, я пожалуй ускорю твою кончину." dialogtype="Regular" continueconversation="true" ignoreinterruptdistance="true" _npos="-16019.378,1452.9772" />
+                          <Label name="PsychoV4" _npos="-15597.087,1451.2384" />
+                          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-15644.758,1661.5577" />
+                          <SpawnAction itemidentifier="artmod_revolver" targettag="laserseller" targetinventory="laserseller" _npos="-15497.798,2035.2751" />
+                          <ConversationAction text="достает пистолет" dialogtype="Regular" continueconversation="false" ignoreinterruptdistance="true" _npos="-14945.211,1617.9899">
+                            <Option text="Ой-ей." />
+                          </ConversationAction>
+                          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="false" _npos="-14460.809,1617.9957" />
+                          <CombatAction combatmode="Offensive" isinstigator="true" guardreaction="Offensive" witnessreaction="Retreat" npctag="laserseller" enemytag="triggerer_player" _npos="-14060.95,1617.9192" />
+                          <ConversationAction text="СДОХНИ! СДОХНИ! СДОХНИ!!" dialogtype="Regular" continueconversation="false" ignoreinterruptdistance="true" _npos="-13635.517,1617.7966" />
+                        </Option>
+                        <Option text="Да о чем ты вообще говоришь?">
+                          <GoTo name="PsychoV2" _npos="-16484.309,1382.7828" />
+                        </Option>
+                        <Option text="... У вас всё в порядке?">
+                          <GoTo name="PsychoV2" _npos="-16600.81,1491.739" />
+                        </Option>
+                        <Option text="Ударить ему.">
+                          <Label name="PsychoV3" _npos="-16573.201,1606.2816" />
+                          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-16628.086,1747.6864" />
+                          <ConversationAction text="А знаешь, я пожалуй ускорю твою кончину." dialogtype="Regular" continueconversation="true" ignoreinterruptdistance="true" _npos="-16585.605,2145.268" />
+                          <GoTo name="PsychoV4" _npos="-16105.652,2139.0513" />
+                        </Option>
+                        <Option text="Уйти. Нечего тратить время на психов.">
+                          <ConversationAction text="А знаешь, я пожалуй ускорю твою кончину." dialogtype="Regular" continueconversation="true" ignoreinterruptdistance="true" _npos="-17342.613,2104.274" />
+                          <GoTo name="PsychoV4" _npos="-16947.799,2104.8855" />
+                        </Option>
+                      </ConversationAction>
+                    </Option>
+                    <Option text="Пожать плечами и уйти">
+                      <ConversationAction text="Однако уйти вам не дали. Ты просто ничтожество, кусок дерьма, который умрет снова и снова и снова." dialogtype="Regular" continueconversation="true" ignoreinterruptdistance="true" _npos="-15364.615,826.996">
+                        <Option text="Заткнись!">
+                          <GoTo name="PsychoV2" _npos="-14687.005,725.8085" />
+                        </Option>
+                        <Option text="Да о чем ты вообще говоришь?">
+                          <GoTo name="PsychoV2" _npos="-14638.57,841.6349" />
+                        </Option>
+                        <Option text="... У вас всё в порядке?">
+                          <GoTo name="PsychoV2" _npos="-14539.845,950.1402" />
+                        </Option>
+                        <Option text="Ударить ему.">
+                          <GoTo name="PsychoV3" _npos="-14622.498,1059.6102" />
+                        </Option>
+                      </ConversationAction>
+                    </Option>
+                  </ConversationAction>
+                </Failure>
+              </RNGAction>
+            </Success>
+            <Failure>
+              <SetDataAction operation="Set" value="1" identifier="DNoseless" _npos="-11763.011,-4520.0327" />
+              <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-11249.029,-4503.0024" />
+              <ConversationAction text="Начало знакомства 3 человек стоит в маске, не двигается" waitforinteraction="true" dialogtype="Regular" continueconversation="true" ignoreinterruptdistance="true" _npos="-10769.63,-4503.417">
+                <Option text="Попробовать привлечь его внимание">
+                  <ConversationAction text="Отсутствие реакции. " _npos="-10077.803,-4669.1924" />
+                  <GoTo name="EntityCall" _npos="-9602.037,-4564.079" />
+                </Option>
+                <Option text="Дотронуться до плеча">
+                  <ConversationAction text="Никакой реакции" _npos="-10154.065,-3855.1018" />
+                  <Label name="EntityCall" _npos="-9711.825,-3857.0554" />
+                  <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-9782.767,-3651.6929" />
+                  <ConversationAction text="внезапно осознание что он пристально изучает вас" _npos="-10438.663,-2953.7144">
+                    <Option text="перестань">
+                      <Label name="EntityCall2" _npos="-9792.61,-3110.943" />
+                      <ConversationAction text="Никакой реакции." _npos="-9388.325,-3109.3428" />
+                      <GoTo name="EntityCall3" _npos="-8988.117,-3110.6" />
+                    </Option>
+                    <Option text="пихнуть в плечо">
+                      <ConversationAction text="никакой реакции" _npos="-9774.6455,-2464.5518" />
+                      <Label name="EntityCall3" _npos="-9359.022,-2508.9531" />
+                      <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-8967.093,-2508.4028" />
+                      <AfflictionAction affliction="EntityMeeting1" strength="10" targettag="triggerer_player" _npos="-9394.251,-2320.846" />
+                      <ConversationAction text="голова начинает болеть, шипение, обрывки слов" _npos="-9420.025,-2005.9966">
+                        <Option text="Кто ты?..">
+                          <Label name="EntityCall4" _npos="-8944.122,-2210.8916" />
+                          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-8548.502,-2270.5718" />
+                          <AfflictionAction affliction="EntityMeeting1" strength="-10" targettag="triggerer_player" _npos="-8686.622,-1793.6001" />
+                          <AfflictionAction affliction="EntityMeeting2" strength="10" targettag="triggerer_player" _npos="-8240.147,-2004.5043" />
+                          <ConversationAction text="Вы ничего не сделали. Тело словно перестало вас слушаться, а в голове шум нарастает" _npos="-7762.813,-2209.4905">
+                            <Option text="Схватиться за голову">
+                              <Label name="EntityCall5" _npos="-7163.9004,-2173.902" />
+                              <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="false" _npos="-6750.364,-2173.531" />
+                              <AfflictionAction affliction="EntityMeeting2" strength="-10" targettag="triggerer_player" _npos="-6347.5327,-2140.1882" />
+                              <ConversationAction text="внезапно отпускает, незнакомец деревянной походкой куда-то уходит" dialogtype="Regular" continueconversation="false" ignoreinterruptdistance="true" _npos="-5912.7817,-2140.4695" />
+                            </Option>
+                            <Option text="Схватиться за голову">
+                              <GoTo name="EntityCall5" _npos="-7158.1763,-2045.1449" />
+                            </Option>
+                            <Option text="Схватиться за голову">
+                              <GoTo name="EntityCall5" _npos="-7255.299,-1928.5264" />
+                            </Option>
+                          </ConversationAction>
+                        </Option>
+                        <Option text="Он точно монстр. Врезать ему и схватиться за оружие">
+                          <GoTo name="EntityCall4" _npos="-8736.792,-1542.6948" />
+                        </Option>
+                        <Option text="С ужасом отшатнутся ">
+                          <GoTo name="EntityCall4" _npos="-8992.6875,-1365.0028" />
+                        </Option>
+                      </ConversationAction>
+                    </Option>
+                    <Option text="Вам нужна какая-нибудь помощь?">
+                      <GoTo name="EntityCall2" _npos="-9672.557,-2645.143" />
+                    </Option>
+                    <Option text="Поежится и уйти">
+                      <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="false" _npos="-11130.3955,-2197.6328" />
+                      <ConversationAction text="вам легче. незнакомец деревянной походкой уходит" continueconversation="false" _npos="-10677.794,-2197.686" />
+                    </Option>
+                  </ConversationAction>
+                </Option>
+                <Option text="Проигнорировать и пойти дальше">
+                  <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="false" _npos="-11322.124,-3730.387" />
+                  <ConversationAction text="Человек продолжает стоять не шевелясь, вызывая неудобное ощущение что он за вами смотрит вслед" _npos="-10847.703,-3730.5977" />
+                </Option>
+              </ConversationAction>
+            </Failure>
+          </RNGAction>
+        </Success>
+        <Failure>
+          <SetDataAction operation="Set" value="1" identifier="Alco" _npos="-22927.098,-3777.2168" />
+          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-22501.84,-3654.5083" />
+          <ConversationAction text="начало диалога1 алкаш пристает с просьбой" waitforinteraction="true" dialogtype="Regular" continueconversation="true" ignoreinterruptdistance="false" _npos="-22166.19,-3425.433">
+            <Option text="что нужно">
+              <GoTo name="Alco1" _npos="-22005.645,-3955.6272" />
+            </Option>
+            <Option text="че надо">
+              <Label name="Alco1" _npos="-21604.334,-3740.192" />
+              <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-21464.049,-3585.6753" />
+              <CheckItemAction targettag="triggerer_player" itemidentifiers="ethanol" amount="1" _npos="-21399.018,-3181.078">
+                <Success>
+                  <ConversationAction text="мне бы опохмел... Хоть немного" waitforinteraction="true" dialogtype="Regular" continueconversation="false" ignoreinterruptdistance="true" _npos="-20811.969,-3867.3972">
+                    <Option text="нету">
+                      <GoTo name="Alco2" _npos="-20164.92,-4044.797" />
+                    </Option>
+                    <Option text="Сам не купишь?">
+                      <GoTo name="Alco3" _npos="-20057.018,-3905.0203" />
+                    </Option>
+                    <Option text="Держи">
+                      <GoTo name="Alco4" _npos="-20006.45,-3785.8188" />
+                    </Option>
+                  </ConversationAction>
+                </Success>
+                <Failure>
+                  <ConversationAction text="мне бы опохмел... Хоть немного" dialogtype="Regular" continueconversation="true" _npos="-20756.428,-3247.9067">
+                    <Option text="нету">
+                      <GoTo name="Alco2" _npos="-20183.951,-3157.892" />
+                    </Option>
+                    <Option text="Сам не купишь?">
+                      <GoTo name="Alco3" _npos="-20218.041,-3049.557" />
+                    </Option>
+                  </ConversationAction>
+                </Failure>
+              </CheckItemAction>
+            </Option>
+            <Option text="Я не занимаюсь благотворительностью">
+              <CheckItemAction targettag="triggerer_player" itemidentifiers="ethanol" amount="1" _npos="-21447.06,-2775.2952">
+                <Success>
+                  <ConversationAction text="Нахрен мне твоя благотворительность, мне на опохмел надо" waitforinteraction="true" dialogtype="Regular" continueconversation="true" ignoreinterruptdistance="true" _npos="-20659.273,-2691.0354">
+                    <Option text="Нету">
+                      <Label name="Alco2" _npos="-20137.092,-2828.4924" />
+                      <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="false" _npos="-19628.748,-3217.9304" />
+                      <ConversationAction text="Ну так свали и притащи" dialogtype="Regular" continueconversation="false" ignoreinterruptdistance="true" _npos="-19509.238,-3822.517" />
+                      <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="false" _npos="-18963.965,-3800.1672" />
+                      <Label name="Alco5" _npos="-18495.436,-3787.1877" />
+                      <CheckItemAction targettag="triggerer_player" itemidentifiers="ethanol" amount="1" _npos="-17916.357,-3788.3242">
+                        <Success>
+                          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-17431.275,-3971.7705" />
+                          <ConversationAction text="Ну?" speakertag="laserseller" targettag="triggerer_player" waitforinteraction="true" eventsprite="ph" dialogtype="Regular" continueconversation="false" ignoreinterruptdistance="true" _npos="-16853.557,-3823.6436">
+                            <Option text="Нету">
+                              <GoTo name="Alco2" _npos="-16231,-3871.5" />
+                            </Option>
+                            <Option text="Сам не купишь?">
+                              <GoTo name="Alco3" _npos="-16232.153,-3759.936" />
+                            </Option>
+                            <Option text="Держи">
+                              <GoTo name="Alco4" _npos="-16233.212,-3647.802" />
+                            </Option>
+                          </ConversationAction>
+                        </Success>
+                        <Failure>
+                          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="true" _npos="-17461.186,-3613.018" />
+                          <ConversationAction text="Не?" speakertag="laserseller" targettag="triggerer_player" waitforinteraction="true" eventsprite="ph" dialogtype="Regular" continueconversation="false" ignoreinterruptdistance="true" _npos="-17136.803,-3335.4285">
+                            <Option text="Нету">
+                              <GoTo name="Alco2" _npos="-16569.809,-3303.1326" />
+                            </Option>
+                            <Option text="Сам не купишь?">
+                              <GoTo name="Alco3" _npos="-16598.143,-3192.7312" />
+                            </Option>
+                          </ConversationAction>
+                        </Failure>
+                      </CheckItemAction>
+                    </Option>
+                    <Option text="Сам не купишь?">
+                      <Label name="Alco3" _npos="-20071.82,-2680.1199" />
+                      <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="false" _npos="-19567.61,-2782.8853" />
+                      <ConversationAction text="Я и покупаю, тащи бухло или отвали" dialogtype="Regular" continueconversation="false" ignoreinterruptdistance="true" _npos="-19010.322,-2966.6985" />
+                      <GoTo name="Alco5" _npos="-18555.584,-2932.7393" />
+                    </Option>
+                    <Option text="Держи">
+                      <Label name="Alco4" _npos="-19318.695,-2472.1213" />
+                      <CheckItemAction targettag="triggerer_player" itemidentifiers="ethanol" amount="1" _npos="-18589.596,-2473.0068">
+                        <Success>
+                          <RemoveItemAction targettag="triggerer_player" itemidentifiers="ethanol" amount="1" _npos="-18075.223,-2722.3035" />
+                          <ConversationAction text="спасибо" dialogtype="Regular" continueconversation="true" ignoreinterruptdistance="true" _npos="-17690.115,-2721.1235" />
+                          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="false" _npos="-17242.553,-2694.398" />
+                          <ConversationAction text="Да" dialogtype="Regular" continueconversation="false" ignoreinterruptdistance="true" _npos="-16599.297,-2857.1638" />
+                        </Success>
+                        <Failure>
+                          <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="false" _npos="-18120.42,-2170.7578" />
+                          <ConversationAction text="Что держать? Бухло тащи или вали" dialogtype="Regular" continueconversation="false" ignoreinterruptdistance="true" _npos="-17694.709,-2139.3225" />
+                          <GoTo name="Alco5" _npos="-17652.145,-1239.7871" />
+                        </Failure>
+                      </CheckItemAction>
+                    </Option>
+                  </ConversationAction>
+                </Success>
+                <Failure>
+                  <ConversationAction text="Нахрен мне твоя благотворительность, мне на опохмел надо" dialogtype="Regular" continueconversation="true" ignoreinterruptdistance="true" _npos="-20685.17,-2182.2773">
+                    <Option text="нету">
+                      <GoTo name="Alco2" _npos="-20003.205,-2287.9604" />
+                    </Option>
+                    <Option text="сам не купишь?">
+                      <GoTo name="Alco3" _npos="-19974.82,-2033.5354" />
+                    </Option>
+                  </ConversationAction>
+                </Failure>
+              </CheckItemAction>
+            </Option>
+            <Option text="Отвали">
+              <ConversationAction text="нет ты мне помоги" waitforinteraction="true" dialogtype="Regular" continueconversation="true" ignoreinterruptdistance="true" _npos="-21538.045,-1718.9799">
+                <Option text="Че надо">
+                  <GoTo name="Alco1" _npos="-20719.3,-1686.4788" />
+                </Option>
+                <Option text="Нет">
+                  <NPCFollowAction npctag="laserseller" targettag="triggerer_player" follow="false" _npos="-20995.674,-1520.1871" />
+                  <ConversationAction text="Ну и вали" waitforinteraction="true" dialogtype="Regular" continueconversation="false" ignoreinterruptdistance="false" _npos="-20510.887,-1518.2756" />
+                </Option>
+              </ConversationAction>
+            </Option>
+          </ConversationAction>
+        </Failure>
+      </RNGAction>
+    </Failure>
+  </CheckDataAction>
+</ScriptedEvent>-->
+    <ScriptedEvent identifier="первая_встреча">
+      <WaitAction time="2.5" _npos="0,0" />
+      <ConversationAction text="B.d1" _npos="561.3213,-67.30408">
+        <Option text="B.d1o1">
+          <Label name="П1" _npos="1126.3365,-35.291016" />
+          <ConversationAction text="B.d2" _npos="1659.3706,48.766785">
+            <Option text="B.d2o1">
+              <Label name="П2" _npos="2306.103,-73.29364" />
+              <ConversationAction text="B.d3" _npos="2757.5676,16.126526">
+                <Option text="B.d3o1" />
+                <Option text="B.d3o2" />
+              </ConversationAction>
+            </Option>
+            <Option text="B.d2o2">
+              <GoTo name="П2" _npos="2273.2615,104.395996" />
+            </Option>
+            <Option text="B.d2o3">
+              <GoTo name="П2" _npos="2195.5635,379.72473" />
+            </Option>
+          </ConversationAction>
+        </Option>
+        <Option text="B.d1o2">
+          <GoTo name="П1" _npos="1024.6166,258.34467" />
+        </Option>
+      </ConversationAction>
+    </ScriptedEvent>
+  </EventPrefabs>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  <!--<EventSet identifier="transitevents" allowatstart="true" chooserandom="false" additive="true" ignorecooldown="true" campaign="true">
+    <ScriptedEvent identifier="unnamed" commonness="10000" />
+  </EventSet>--><!--CITY BASIC EVENTS--><EventSet identifier="outpostevents_artmod" leveltype="outpost" locationtype="outpost,city,research,military,mine" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="80" chooserandom="false" ignorecooldown="true" additive="true"><EventSet identifier="outpostevents_artmod.fixedevents" allowatstart="true" chooserandom="false" additive="true" locationtype="outpost,city"><ScriptedEvent identifier="unnamed" commonness="1" /></EventSet><EventSet identifier="addictivespawnclown1" allowatstart="true" chooserandom="false" additive="true" locationtype="outpost,city,research,military,mine"><ScriptedEvent identifier="artmod_spawnnoselessclowns" commonness="1" probability="0.25" /><ScriptedEvent identifier="artmod_spawnnoselessclowns" commonness="1" faction="clowns" /></EventSet></EventSet><!--<EventSet identifier="outpostevents_artmods" chooserandom="false" allowatstart="true" campaign="true" ignoreintensity="true">
+    <ScriptedEvent identifier="первая_встреча" />
+  </EventSet>--><!--faction="clowns"--><!--
+    <EventSet identifier="outpostevents.clowns.missionevents" minleveldifficulty="0" maxleveldifficulty="100" allowatstart="true" chooserandom="true" exhaustible="true" additive="true">
+      <ScriptedEvent identifier="missionevent_escort1clowns" commonness="50" faction="clowns" probability="0.8" />
+      <ScriptedEvent identifier="missionevent_clownoutbreak" commonness="50" faction="clowns" probability="0.8" />
+    </EventSet>
+    <EventSet identifier="outpostevents.huskcult.missionevents" minleveldifficulty="0" maxleveldifficulty="100" allowatstart="true" chooserandom="true" exhaustible="true">
+      <ScriptedEvent identifier="missionevent_escort1huskcult" commonness="50" faction="huskcult" probability="0.8" />
+      <ScriptedEvent identifier="missionevent_cargohuskcult" commonness="50" faction="huskcult" probability="0.8" />
+    </EventSet>
+	
+    <EventSet identifier="outpostevent.military.randomevents" minleveldifficulty="0" maxleveldifficulty="80" locationtype="military" allowatstart="true" chooserandom="true" onceperoutpost="true">
+       50% chance of getting a military-specific event (TODO: increase if/when we have more of these available?) 
+      <ScriptedEvent identifier="bigbrother" commonness="150" probability="0.5" faction="coalition"/>
+      <ScriptedEvent identifier="explosivemishap" commonness="50" probability="0.5" />
+    </EventSet>
+    
+    <EventSet identifier="outpostevent.research.randomevents" minleveldifficulty="0" maxleveldifficulty="80" locationtype="research" allowatstart="true" chooserandom="true" onceperoutpost="true">
+       50% chance of getting a research-specific event (TODO: increase if/when we have more of these available?) 
+      <ScriptedEvent identifier="tastetest" commonness="150" probability="0.5" />
+      <ScriptedEvent identifier="crawleroutbreak" commonness="150" probability="0.5" />
+      <ScriptedEvent identifier="impromptuengineering" commonness="150" probability="0.5" />
+      <ScriptedEvent identifier="captivesouls" commonness="50" probability="0.5" />
+      <ScriptedEvent identifier="researcherescort" commonness="50" />
+    </EventSet>
+    
+    <EventSet identifier="outpostevent.mine.randomevents" minleveldifficulty="0" maxleveldifficulty="80" locationtype="mine" allowatstart="true" chooserandom="true" onceperoutpost="true">
+       50% chance of getting a mine-specific event (TODO: increase if/when we have more of these available?) 
+      <ScriptedEvent identifier="consultant" commonness="150" probability="0.5" />
+      <ScriptedEvent identifier="occupationalhazards" commonness="150" probability="0.5" />
+    </EventSet>
+
+
+    <EventSet identifier="outpostevent.city.randomevents" minleveldifficulty="0" maxleveldifficulty="80" locationtype="city" allowatstart="true" chooserandom="true" onceperoutpost="true">
+       50% chance of getting a city-specific event (TODO: increase if/when we have more of these available?) 
+      <ScriptedEvent identifier="captivesouls" commonness="50" probability="0.5" />
+      <ScriptedEvent identifier="explosivemishap" commonness="50" probability="0.5" />
+      <ScriptedEvent identifier="hognose" commonness="50" probability="0.5" />
+      <ScriptedEvent identifier="radiationescapee" commonness="50" />
+    </EventSet>
+
+    <EventSet identifier="outpostevents.coldcaverns.start.missionevents" minleveldifficulty="0" maxleveldifficulty="1" allowatstart="true" chooserandom="true" eventcount="3" exhaustible="true">
+      <ScriptedEvent identifier="missionevent_cargoany" commonness="100" />
+      <ScriptedEvent identifier="missionevent_killmonster_set1" commonness="100" />
+      <ScriptedEvent identifier="missionevent_escort1coalition" commonness="100" faction="coalition" />
+      <ScriptedEvent identifier="missionevent_escort1separatists" commonness="100" faction="separatists" />
+    </EventSet>
+	--></Randomevents>

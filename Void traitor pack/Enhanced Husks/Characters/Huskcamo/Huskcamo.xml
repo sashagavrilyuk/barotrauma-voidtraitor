@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Character speciesname="Huskcamo" group="husk" humanoid="True" needsair="False" blooddecal="blackblood" visibility="300" noise="300" speciestranslationoverride="husk" displayname="" hasinfo="False" husk="False" usehuskappendage="False" needswater="False" canspeak="True" bleedparticleair="blackblood" bleedparticlewater="blackwaterblood" eatingspeed="10" pathfinderpriority="1" hideinsonar="False" sonardisruption="0" bleedparticlemultiplier="1" disabledistance="25000" distantsonarrange="0" caninteract="True" usebosshealthbar="False" caneat="False" usepathfinding="True" hideinthermalgoggles="False" soundinterval="10">
+  <ragdolls folder="default" />
+  <animations folder="default" />
+  <bloodemitter particle="blackblood" particleamount="5" anglemin="0" anglemax="0" scalemin="1" scalemax="1" velocitymin="0" velocitymax="0" emitinterval="0" particlespersecond="0" highqualitycollisiondetection="False" copyentityangle="False" />
+  <bloodemitter particle="blackwaterblood" particleamount="1" anglemin="0" anglemax="0" scalemin="1" scalemax="1" velocitymin="0" velocitymax="0" emitinterval="0" particlespersecond="0" highqualitycollisiondetection="False" copyentityangle="False" />
+  <gibemitter particle="blackgib" particleamount="10" velocitymin="50" velocitymax="500" anglemin="0" anglemax="360" scalemin="1" scalemax="1" emitinterval="0" particlespersecond="0" highqualitycollisiondetection="False" copyentityangle="False" />
+  <gibemitter particle="blackgib" particleamount="10" velocitymin="50" velocitymax="500" anglemin="0" anglemax="360" scalemin="1" scalemax="1" emitinterval="0" particlespersecond="0" highqualitycollisiondetection="False" copyentityangle="False" />
+  <health vitality="160" minvitality="-50" doesbleed="True" crushdepth="Infinity" usehealthwindow="False" bleedingreduction="20" burnreduction="0" constanthealthregeneration="1" healthregenerationwheneating="0" stunimmunity="False">
+    <Limb name="Head">
+      <VitalityMultiplier type="damage" multiplier="1.5" />
+    </Limb>
+    <Limb name="Torso" />
+    <Limb name="LeftArm">
+      <VitalityMultiplier type="damage" multiplier="1" />
+    </Limb>
+    <Limb name="RightArm">
+      <VitalityMultiplier type="damage" multiplier="1" />
+    </Limb>
+    <Limb name="LeftLeg">
+      <VitalityMultiplier type="damage" multiplier="1" />
+    </Limb>
+    <Limb name="RightLeg">
+      <VitalityMultiplier type="damage" multiplier="1" />
+    </Limb>
+  </health>
+  <sound file="Content/Characters/Husk/HUSK_attack1.ogg" state="Attack" range="1000" volume="1" gender="None" />
+  <sound file="Content/Characters/Husk/HUSK_attack2.ogg" state="Attack" range="1000" volume="1" gender="None" />
+  <sound file="Content/Characters/Husk/HUSK_attack3.ogg" state="Attack" range="1000" volume="1" gender="None" />
+  <sound file="Content/Characters/Husk/HUSK_attack4.ogg" state="Attack" range="1000" volume="1" gender="None" />
+  <sound file="Content/Characters/Husk/HUSK_idle1.ogg" state="Idle" range="1000" volume="1" gender="None" />
+  <sound file="Content/Characters/Husk/HUSK_idle2.ogg" state="Idle" range="1000" volume="1" gender="None" />
+  <sound file="Content/Characters/Husk/HUSK_idle3.ogg" state="Idle" range="1000" volume="1" gender="None" />
+  <sound file="Content/Characters/Husk/HUSK_idle4.ogg" state="Idle" range="1000" volume="1" gender="None" />
+  <sound file="Content/Characters/Husk/HUSK_damage1.ogg" state="Damage" range="1000" volume="1" gender="None" />
+  <sound file="Content/Characters/Husk/HUSK_damage2.ogg" state="Damage" range="1000" volume="1" gender="None" />
+  <sound file="Content/Characters/Husk/HUSK_damage3.ogg" state="Damage" range="1000" volume="1" gender="None" />
+  <sound file="Content/Characters/Husk/HUSK_death1.ogg" state="Die" range="1000" volume="1" gender="None" />
+  <sound file="Content/Characters/Husk/HUSK_death2.ogg" state="Die" range="1000" volume="1" gender="None" />
+  <ai combatstrength="75" sight="1" hearing="2" aggressiveboarding="True" attackwhenprovoked="True" aggressiongreed="5" aggressionhurt="150" canopendoors="True" targetouterwalls="False" fleehealththreshold="0" avoidgunfire="True" avoidtime="3" minfleetime="20" enforceaggressivebehaviorformissions="True" randomattack="False" avoidabyss="False" stayinabyss="False" startaggression="10" maxaggression="100" aggressioncumulation="0" keepdoorsclosed="False" patrolflooded="False" patroldry="False" walltargetingmethod="Target">
+    <latchonto AttachToWalls="true" AttachLimbRotation="180" LocalAttachPos="0,-20" CoolDown="30" FreezeWhenLatched="true" />
+    <target Tag="cultist" State="Idle" Priority="0" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="True" IgnoreOutside="True" IgnoreTargetInside="False" IgnoreTargetOutside="False" IgnoreIfNotInSameSub="True" IgnoreIncapacitated="True" Threshold="1" ThresholdMin="-1" ThresholdMax="-1" PerceptionDistanceMultiplier="1" MaxPerceptionDistance="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+    <target Tag="truepriestcultist" State="Protect" Priority="1" ReactDistance="1000" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="True" IgnoreOutside="False" IgnoreTargetInside="False" IgnoreTargetOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" PerceptionDistanceMultiplier="1" MaxPerceptionDistance="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+    <target Tag="wall" State="Attack" Priority="50" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreTargetInside="False" IgnoreTargetOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" PerceptionDistanceMultiplier="1" MaxPerceptionDistance="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+    <!-- basically this is the same as a mantis, if it ain't broke don't fix it. -->
+    <targetpriority Tag="decoy" State="Attack" Priority="600" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreTargetInside="False" IgnoreTargetOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" PerceptionDistanceMultiplier="1" MaxPerceptionDistance="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+    <targetpriority Tag="stronger" State="Aggressive" Priority="100" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreTargetInside="False" IgnoreTargetOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" PerceptionDistanceMultiplier="1" MaxPerceptionDistance="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0">
+      <target tag="weapon" state="Attack" priority="100" reactdistance="0" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreincapacitated="False" sweepdistance="0" sweepstrength="10" sweepspeed="1" threshold="0" ignoreifnotinsamesub="False" thresholdmin="-1" thresholdmax="-1" offset="0,0" attackpattern="Straight" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" />
+      <target tag="stronger" state="Attack" priority="500" reactdistance="0" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreincapacitated="False" sweepdistance="0" sweepstrength="10" sweepspeed="1" threshold="0" ignoreifnotinsamesub="False" thresholdmin="-1" thresholdmax="-1" offset="0,0" attackpattern="Straight" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" />
+      <target tag="weaker" state="Attack" priority="100" reactdistance="0" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreincapacitated="False" sweepdistance="0" sweepstrength="10" sweepspeed="1" threshold="0" ignoreifnotinsamesub="False" thresholdmin="-1" thresholdmax="-1" offset="0,0" attackpattern="Straight" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" />
+      <Conditional IsLatched="false" />
+    </targetpriority>
+    <target Tag="provocative" State="Attack" Priority="100" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreTargetInside="False" IgnoreTargetOutside="False" IgnoreIfNotInSameSub="True" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" PerceptionDistanceMultiplier="1" MaxPerceptionDistance="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0">
+      <Conditional IsLatched="false" />
+    </target>
+    <targetpriority Tag="human" State="Attack" Priority="80" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreTargetInside="False" IgnoreTargetOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" PerceptionDistanceMultiplier="1" MaxPerceptionDistance="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0"></targetpriority>
+    <targetpriority Tag="door" State="Attack" Priority="65" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreTargetInside="False" IgnoreTargetOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" PerceptionDistanceMultiplier="1" MaxPerceptionDistance="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+    <targetpriority Tag="sonar" State="Attack" Priority="50" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreTargetInside="False" IgnoreTargetOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" PerceptionDistanceMultiplier="1" MaxPerceptionDistance="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0">
+      <Conditional IsLatched="false" />
+    </targetpriority>
+    <targetpriority Tag="room" State="Attack" Priority="50" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreTargetInside="False" IgnoreTargetOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" PerceptionDistanceMultiplier="1" MaxPerceptionDistance="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0">
+      <Conditional IsLatched="false" />
+    </targetpriority>
+    <targetpriority Tag="nasonov" State="Attack" Priority="50" ReactDistance="0" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreTargetInside="False" IgnoreTargetOutside="False" IgnoreIfNotInSameSub="False" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" PerceptionDistanceMultiplier="1" MaxPerceptionDistance="-1" Offset="0,0" AttackPattern="Straight" PrioritizeSubCenter="False" SweepDistance="0" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0">
+      <Conditional IsLatched="false" />
+    </targetpriority>
+  </ai>
+  <inventory slots="RightHand, LeftHand, Head, OuterClothes, Card, Any, Any, Any, Any, Any" accessiblewhenalive="False" accessiblebyowner="True" commonness="3">
+    <Item identifier="idcard" equip="true" />
+    <Item equip="true" Identifier="brokendivingsuithuskabyss" />
+  </inventory>
+  <inventory slots="RightHand, LeftHand, Head, OuterClothes, Card, Any, Any, Any, Any, Any" accessiblewhenalive="False" accessiblebyowner="True" commonness="3">
+    <Item identifier="idcard" equip="true" />
+    <Item equip="true" Identifier="brokendivingsuithuskabyss" />
+    <Item Identifier="huskstinger" />
+  </inventory>
+  <inventory slots="RightHand, LeftHand, Head, OuterClothes, Card, Any, Any, Any, Any, Any" accessiblewhenalive="False" accessiblebyowner="True" commonness="3">
+    <Item identifier="idcard" equip="true" />
+    <Item equip="true" Identifier="brokendivingsuithuskabyss" />
+    <Item Identifier="oxygentankwreck" />
+  </inventory>
+  <inventory slots="RightHand, LeftHand, Head, OuterClothes, Card, Any, Any, Any, Any, Any" accessiblewhenalive="False" accessiblebyowner="True" commonness="2">
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="idcard" equip="true" />
+    <Item equip="true" Identifier="brokendivingsuithuskabyss" />
+  </inventory>
+  <inventory slots="RightHand, LeftHand, Head, OuterClothes, Card, Any, Any, Any, Any, Any" accessiblewhenalive="False" accessiblebyowner="True" commonness="2">
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="idcard" equip="true" />
+    <Item equip="true" Identifier="brokendivingsuithuskabyss" />
+    <Item Identifier="huskstinger" />
+  </inventory>
+  <inventory slots="RightHand, LeftHand, Head, OuterClothes, Card, Any, Any, Any, Any, Any" accessiblewhenalive="False" accessiblebyowner="True" commonness="1">
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="huskstinger" />
+    <Item identifier="idcard" equip="true" />
+    <Item equip="true" Identifier="brokendivingsuithuskabyss" />
+  </inventory>
+  <inventory slots="RightHand, LeftHand, Head, OuterClothes, Card, Any, Any, Any, Any, Any" accessiblewhenalive="False" accessiblebyowner="True" commonness="2">
+    <Item identifier="huskeggsbasic" />
+    <Item identifier="idcard" equip="true" />
+    <Item equip="true" Identifier="brokendivingsuithuskabyss" />
+    <Item Identifier="oxygentankwreck" />
+  </inventory>
+  <inventory slots="RightHand, LeftHand, Head, OuterClothes, Card, Any, Any, Any, Any, Any" accessiblewhenalive="False" accessiblebyowner="True" commonness="1">
+    <Item identifier="huskeggsbasic" />
+    <Item Identifier="oxygentankwreck" />
+    <Item identifier="idcard" equip="true" />
+    <Item equip="true" Identifier="brokendivingsuithuskabyss" />
+  </inventory>
+  <StatusEffect type="OnSpawn" target="this" duration="30">
+    <!-- temporary concealment during spawn to give the mantis time to hide from monsters spawning nearby -->
+    <Affliction identifier="concealed" strength="10" />
+  </StatusEffect>
+  <!-- Can only perceive targets from 500 units away when concealed (= only attacks when something gets very close) -->
+  <StatusEffect type="OnActive" target="this" MaxPerceptionDistance="500" setvalue="true">
+    <Conditional IsLatched="true" />
+    <!-- makes the character change color and activates the "camouflage parts" -->
+    <Affliction identifier="camouflagehusk" strength="10" />
+    <!-- makes other monsters not notice the character -->
+    <Affliction identifier="concealed" strength="10" />
+    <ReduceAffliction type="damage" strength="0.05" />
+  </StatusEffect>
+  <!-- Disable MaxPerceptionDistance when not latched (can see/hear and react to things normally) -->
+  <StatusEffect type="OnActive" target="this" MaxPerceptionDistance="-1" interval="1" setvalue="true" ConditionalComparison="And" SoundSelectionMode="All">
+    <Conditional IsLatched="false" />
+    <Conditional MaxPerceptionDistance="gt 0" />
+    <particleemitter particle="mantiscamouflagechunks" particleamount="15" velocitymin="100" velocitymax="1000" anglemin="0" anglemax="360" distancemin="0" distancemax="100" />
+    <Sound file="Content/Sounds/Damage/Gore6.ogg" volume="2" range="1000" />
+    <Sound file="Content/Sounds/Damage/ArmorBreak2.ogg" volume="2" range="1000" ignoremuffling="true" />
+    <Sound file="%ModDir%/Enhanced Husks/Characters/Mantishusk/MANTIS_attack3.ogg" volume="2" range="2000" ignoremuffling="true" />
+  </StatusEffect>
+  <StatusEffect type="OnActive" target="this" comparison="and">
+    <Conditional airtankhusk="gte 1" />
+    <Conditional isdead="false" />
+    <sound file="%ModDir%/Enhanced Husks/Items/Breathinghusk.ogg" range="350" dontmuffle="false" />
+  </StatusEffect>
+</Character>

@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Character specifiertags="true" skincolors="(#fce1c6, 100); (#f3c696, 100); (#f3c696, 100); (#aa7744, 100); (#f4be98, 100); (#d69a70, 100); (#ab7046, 100); (#774929, 100); (#c8a583, 100); (#a57c53, 100); (#7a5026, 100); (#4a3219, 100); (#957966, 100); (#714d34, 100); (#532d12, 100); (#26190e, 100)" haircolors="(#ded7cc, 100); (#d2a36f, 100); (#c77d52, 100); (#ac4934, 100); (#d8ba85, 100); (#cd975a, 100); (#a15837, 100); (#6a3b37, 100); (#bba981, 100); (#8b7e6c, 100); (#594349, 100); (#473637, 100); (#7b8478, 100); (#494e55, 100); (#3a3a3c, 100); (#343030, 100)" facialhaircolors="(#ded7cc, 100); (#d2a36f, 100); (#c77d52, 100); (#ac4934, 100); (#d8ba85, 100); (#cd975a, 100); (#a15837, 100); (#6a3b37, 100); (#bba981, 100); (#8b7e6c, 100); (#594349, 100); (#473637, 100); (#7b8478, 100); (#494e55, 100); (#3a3a3c, 100); (#343030, 100)" SpeciesName="Corpse" UseHumanAI="False" SpeciesTranslationOverride="Husk" DisplayName="" Group="husk" Humanoid="True" HasInfo="True" CanInteract="True" Husk="False" UseHuskAppendage="True" NeedsAir="False" NeedsWater="False" CanSpeak="True" UseBossHealthBar="False" Noise="150" Visibility="150" BloodDecal="blood" BleedParticleAir="blooddrop" BleedParticleWater="waterblood" BleedParticleMultiplier="1" CanEat="True" EatingSpeed="10" UsePathFinding="True" PathFinderPriority="1" HideInSonar="True" HideInThermalGoggles="True" SonarDisruption="0" DistantSonarRange="0" DisableDistance="25000" SoundInterval="10">
+  <names path="Content/Characters/Human/names.xml" />
+  <ragdolls folder="default" />
+  <animations folder="default" />
+  <damageemitter drawontop="True" Particle="gib" AngleMin="0" AngleMax="360" ScaleMin="0.25" ScaleMax="0.5" VelocityMin="50" VelocityMax="300" EmitInterval="0" ParticlesPerSecond="0" ParticleAmount="10" HighQualityCollisionDetection="False" CopyEntityAngle="False" />
+  <bloodemitter particle="blackblood" particleamount="5" anglemin="0" anglemax="0" scalemin="1" scalemax="1" velocitymin="0" velocitymax="0" emitinterval="0" particlespersecond="0" highqualitycollisiondetection="False" copyentityangle="False" />
+  <bloodemitter particle="blackwaterblood" particleamount="1" anglemin="0" anglemax="0" scalemin="1" scalemax="1" velocitymin="0" velocitymax="0" emitinterval="0" particlespersecond="0" highqualitycollisiondetection="False" copyentityangle="False" />
+  <gibemitter particle="blackgib" particleamount="10" velocitymin="50" velocitymax="500" anglemin="0" anglemax="360" scalemin="1" scalemax="1" emitinterval="0" particlespersecond="0" highqualitycollisiondetection="False" copyentityangle="False" />
+  <gibemitter particle="blackgib" particleamount="10" velocitymin="50" velocitymax="500" anglemin="0" anglemax="360" scalemin="1" scalemax="1" emitinterval="0" particlespersecond="0" highqualitycollisiondetection="False" copyentityangle="False" />
+  <gibemitter Particle="heavygib" AngleMin="0" AngleMax="360" ScaleMin="1" ScaleMax="1" VelocityMin="50" VelocityMax="500" EmitInterval="0" ParticlesPerSecond="0" ParticleAmount="10" HighQualityCollisionDetection="False" CopyEntityAngle="False" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhusk/idle1.ogg" state="Idle" range="1000" volume="1" gender="None" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhusk/idle2.ogg" state="Idle" range="1000" volume="1" gender="None" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhusk/idle3.ogg" state="Idle" range="1000" volume="1" gender="None" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhusk/attack1.ogg" state="Attack" range="1500" volume="1" gender="None" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhusk/attack2.ogg" state="Attack" range="1500" volume="1" gender="None" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhusk/pain.ogg" state="Damage" range="1000" volume="1" gender="None" />
+  <sound file="%ModDir%/Enhanced Husks/Characters/Humanhusk/death.ogg" state="Die" range="1000" volume="2.5000002" gender="None" />
+  <ai combatstrength="60" sight="0.85" hearing="2" aggressiveboarding="True" attackwhenprovoked="True" aggressiongreed="5" aggressionhurt="150" canopendoors="True" targetouterwalls="False" fleehealththreshold="0" avoidgunfire="True" avoidtime="3" minfleetime="20" enforceaggressivebehaviorformissions="True" randomattack="False" avoidabyss="False" stayinabyss="False" startaggression="0" maxaggression="100" aggressioncumulation="0" keepdoorsclosed="False" patrolflooded="False" patroldry="False" walltargetingmethod="Target">
+    <target tag="decoy" state="Attack" priority="500" reactdistance="0" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreifnotinsamesub="False" ignoreincapacitated="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="provocative" state="Attack" priority="100" reactdistance="0" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreifnotinsamesub="False" ignoreincapacitated="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="weapon" state="Attack" priority="100" reactdistance="0" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreifnotinsamesub="False" ignoreincapacitated="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="crawler" state="Attack" priority="100" reactdistance="0" ignoreincapacitated="True" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreifnotinsamesub="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="human" state="Attack" priority="80" reactdistance="0" ignoreincapacitated="True" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreifnotinsamesub="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="weaker" state="Attack" priority="80" reactdistance="0" ignoreincapacitated="True" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreifnotinsamesub="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="stronger" state="Escape" priority="80" reactdistance="0" ignoreincapacitated="True" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreifnotinsamesub="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="nasonov" state="Attack" priority="70" reactdistance="0" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreifnotinsamesub="False" ignoreincapacitated="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="sonar" state="Attack" priority="30" reactdistance="0" ignoreinside="True" attackdistance="0" timer="0" ignorecontained="False" ignoreoutside="False" ignoreifnotinsamesub="False" ignoreincapacitated="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="room" state="Attack" priority="10" reactdistance="0" attackdistance="0" timer="0" ignorecontained="False" ignoreinside="False" ignoreoutside="False" ignoreifnotinsamesub="False" ignoreincapacitated="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="turret" state="Attack" priority="1" ignoreinside="True" reactdistance="0" attackdistance="0" timer="0" ignorecontained="False" ignoreoutside="False" ignoreifnotinsamesub="False" ignoreincapacitated="False" damagethreshold="0" attackpattern="Straight" sweepdistance="0" sweepstrength="10" sweepspeed="1" circlestartdistance="5000" circlerotationspeed="1" circlestrikedistancemultiplier="5" circlemaxrandomoffset="0" threshold="0" thresholdmin="-1" thresholdmax="-1" offset="0,0" />
+    <target tag="cultist" state="Idle" priority="0" ignoreinside="True" ignoreoutside="True" ignoreifnotinsamesub="True" ignoreincapacitated="True" threshold="1" />
+    <target tag="truepriestcultist" state="Protect" priority="1" reactdistance="1000" ignoreinside="true" />
+  </ai>
+  <health Vitality="75" minvitality="-50" DoesBleed="True" CrushDepth="0" UseHealthWindow="True" BleedingReduction="0" BurnReduction="0.075" ConstantHealthRegeneration="0" HealthRegenerationWhenEating="0" StunImmunity="False" PoisonImmunity="False" ApplyAfflictionColors="True">
+    <MedUISilhouette texture="Content/UI/Health/MedUI_Silhouette.png" columns="8" rows="2" sourcerect="0,0,1008,748" />
+    <MedUIExtra texture="Content/UI/Health/MedUIExtra.png" columns="4" rows="4" sourcerect="0,0,1024,1024" />
+    <Limb name="Head">
+      <Sprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="1,0,126,374" highlightarea="41,0,45,54" />
+      <Highlightsprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="1,515,126,374" />
+      <VitalityMultiplier type="damage" multiplier="2.0" />
+    </Limb>
+    <Limb name="Torso">
+      <Sprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="631,0,126,374" highlightarea="29,56,70,134" />
+      <Highlightsprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="631,515,126,374" />
+      <VitalityMultiplier type="bleeding" multiplier="2.0" />
+    </Limb>
+    <Limb name="LeftArm">
+      <Sprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="379,0,126,374" highlightarea="1,69,27,140" />
+      <Highlightsprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="379,515,126,374" />
+      <VitalityMultiplier type="damage" multiplier="0.5" />
+    </Limb>
+    <Limb name="RightArm">
+      <Sprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="127,0,126,374" highlightarea="100,69,27,140" />
+      <Highlightsprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="127,515,126,374" />
+      <VitalityMultiplier type="damage" multiplier="0.5" />
+    </Limb>
+    <Limb name="LeftLeg">
+      <Sprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="505,0,126,374" highlightarea="3,180,57,194" />
+      <Highlightsprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="505,515,126,374" />
+      <VitalityMultiplier type="damage" multiplier="0.5" />
+    </Limb>
+    <Limb name="RightLeg">
+      <Sprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="253,0,126,374" highlightarea="68,180,57,194" />
+      <Highlightsprite texture="Content/UI/Health/MedUIAtlas.png" sourcerect="253,515,126,374" />
+      <VitalityMultiplier type="damage" multiplier="0.5" />
+    </Limb>
+  </health>
+  <!-- Captain -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, HealthInterface" accessiblewhenalive="False" accessiblebyowner="True" commonness="3">
+    <Item identifier="revolverround" amount="4" />
+    <Item identifier="revolver" equip="true" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_captain" />
+    <Item identifier="captainsuniform1" equip="true" />
+    <Item equip="true" Identifier="CorpseHeadset" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, HealthInterface" accessiblewhenalive="False" accessiblebyowner="True" commonness="2">
+    <Item identifier="revolverround" amount="6" />
+    <Item identifier="revolver" equip="true" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_captain" />
+    <Item identifier="captainsuniform2" equip="true" />
+    <Item equip="true" Identifier="CorpseHeadset" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, HealthInterface" accessiblewhenalive="False" accessiblebyowner="True" commonness="1">
+    <Item identifier="revolverround" amount="3" />
+    <Item identifier="revolver" equip="true" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_captain" />
+    <Item identifier="captainsuniform2" equip="true" />
+    <Item equip="true" Identifier="CorpseHeadset" />
+  </inventory>
+  <!-- engineer -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, HealthInterface" accessiblewhenalive="False" accessiblebyowner="True" commonness="3">
+    <Item identifier="fuelrod" />
+    <Item identifier="screwdriver" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_engineer" />
+    <Item identifier="orangejumpsuit1" equip="true" />
+    <Item equip="true" Identifier="CorpseHeadset" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, HealthInterface" accessiblewhenalive="False" accessiblebyowner="True" commonness="2">
+    <Item identifier="fuelrod" />
+    <Item identifier="wrench" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_engineer" />
+    <Item identifier="orangejumpsuit1" equip="true" />
+    <Item equip="true" Identifier="CorpseHeadset" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, HealthInterface" accessiblewhenalive="False" accessiblebyowner="True" commonness="1">
+    <Item identifier="toolbelt">
+      <Item identifier="orangewire" />
+      <Item identifier="button" />
+      <Item identifier="fpgacircuit" />
+      <Item identifier="relaycomponent" />
+    </Item>
+    <Item identifier="idcardwreck" equip="true" tags="wreck_engineer" />
+    <Item identifier="orangejumpsuit2" equip="true" />
+    <Item equip="true" Identifier="CorpseHeadset" />
+  </inventory>
+  <!-- officer -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, HealthInterface" accessiblewhenalive="False" accessiblebyowner="True" commonness="3">
+    <Item identifier="divingknife" equip="true" />
+    <Item identifier="stungun" equip="true" />
+    <Item identifier="securityuniform1" equip="true" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_security" />
+    <Item equip="true" Identifier="CorpseHeadset" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, HealthInterface" accessiblewhenalive="False" accessiblebyowner="True" commonness="2">
+    <Item identifier="divingknife" equip="true" />
+    <Item identifier="bodyarmor" equip="true" />
+    <Item identifier="securityuniform2" equip="true" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_security" />
+    <Item equip="true" Identifier="CorpseHeadset" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, HealthInterface" accessiblewhenalive="False" accessiblebyowner="True" commonness="1">
+    <Item identifier="smg" equip="true" />
+    <Item identifier="securityuniform3" equip="true" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_security" />
+    <Item equip="true" Identifier="CorpseHeadset" />
+  </inventory>
+  <!-- medic -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, HealthInterface" accessiblewhenalive="False" accessiblebyowner="True" commonness="3">
+    <Item identifier="antibiotics" />
+    <Item identifier="antidama1" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_medic" />
+    <Item identifier="doctorsuniform1" equip="true" />
+    <Item equip="true" Identifier="CorpseHeadset" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, HealthInterface" accessiblewhenalive="False" accessiblebyowner="True" commonness="2">
+    <Item identifier="antibleeding1" />
+    <Item identifier="healthscanner" equip="true" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_medic" />
+    <Item identifier="doctorsuniform2" equip="true" />
+    <Item equip="true" Identifier="CorpseHeadset" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, HealthInterface" accessiblewhenalive="False" accessiblebyowner="True" commonness="1">
+    <Item identifier="antibloodloss1" />
+    <Item identifier="antibloodloss2" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_medic" />
+    <Item identifier="doctorsuniform2" equip="true" />
+    <Item equip="true" Identifier="CorpseHeadset" />
+  </inventory>
+  <!-- mechanic -->
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, HealthInterface" accessiblewhenalive="False" accessiblebyowner="True" commonness="3">
+    <Item identifier="weldingfueltank" />
+    <Item identifier="aluminium" />
+    <Item identifier="toolbelt" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_mechanic" />
+    <Item identifier="bluejumpsuit1" equip="true" />
+    <Item equip="true" Identifier="CorpseHeadset" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, HealthInterface" accessiblewhenalive="False" accessiblebyowner="True" commonness="2">
+    <Item identifier="weldingtool" equip="true" />
+    <Item identifier="crowbar" />
+    <Item identifier="toolbelt" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_mechanic" />
+    <Item identifier="bluejumpsuit2" equip="true" />
+    <Item equip="true" Identifier="CorpseHeadset" />
+  </inventory>
+  <inventory slots="Card, Headset, Head, InnerClothes, OuterClothes, LeftHand, RightHand, Bag, Any, HealthInterface" accessiblewhenalive="False" accessiblebyowner="True" commonness="1">
+    <Item identifier="crowbar" />
+    <Item identifier="weldingtool" equip="true" />
+    <Item identifier="toolbelt" />
+    <Item identifier="idcardwreck" equip="true" tags="wreck_mechanic" />
+    <Item identifier="bluejumpsuit2" equip="true" />
+    <Item equip="true" Identifier="CorpseHeadset" />
+  </inventory>
+  <StatusEffect target="Character">
+    <Affliction identifier="Corpsedetection" amount="100" probability="1" />
+  </StatusEffect>
+  <StatusEffect target="Character">
+    <Conditional Corpserawakening="lte 25" />
+    <Affliction identifier="paralysis" amount="100" />
+    <Affliction identifier="stun" amount="100" />
+  </StatusEffect>
+  <StatusEffect target="Character">
+    <Conditional Corpserawakening="gte 5" />
+    <ReduceAffliction identifier="paralysis" amount="1000" />
+    <ReduceAffliction identifier="stun" amount="1000" />
+  </StatusEffect>
+  <StatusEffect type="OnDamaged" target="Character">
+    <Affliction identifier="Corpserawakening" strength="10" probability="0.93" />
+  </StatusEffect>
+  <Heads>
+    <Head tags="head1,male" sheetindex="0,0" />
+    <Head tags="head2,male" sheetindex="1,0" />
+    <Head tags="head3,male" sheetindex="2,0" />
+    <Head tags="head4,male" sheetindex="3,0" />
+    <Head tags="head5,male" sheetindex="0,1" />
+    <Head tags="head6,male" sheetindex="1,1" />
+    <Head tags="head7,male" sheetindex="2,1" />
+    <Head tags="head8,male" sheetindex="3,1" />
+    <Head tags="head9,male" sheetindex="0,2" />
+    <Head tags="head10,male" sheetindex="1,2" />
+    <Head tags="head11,male" sheetindex="2,2" />
+    <Head tags="head12,male" sheetindex="3,2" />
+    <Head tags="head13,male" sheetindex="0,3" />
+    <Head tags="head14,male" sheetindex="1,3" />
+    <Head tags="head15,male" sheetindex="2,3" />
+    <Head tags="head16,male" sheetindex="3,3" />
+    <Head tags="head1,female" sheetindex="0,0" />
+    <Head tags="head2,female" sheetindex="1,0" />
+    <Head tags="head3,female" sheetindex="2,0" />
+    <Head tags="head4,female" sheetindex="3,0" />
+    <Head tags="head5,female" sheetindex="0,1" />
+    <Head tags="head6,female" sheetindex="1,1" />
+    <Head tags="head7,female" sheetindex="2,1" />
+    <Head tags="head8,female" sheetindex="3,1" />
+    <Head tags="head9,female" sheetindex="0,2" />
+    <Head tags="head10,female" sheetindex="1,2" />
+    <Head tags="head11,female" sheetindex="2,2" />
+    <Head tags="head12,female" sheetindex="3,2" />
+    <Head tags="head13,female" sheetindex="0,3" />
+    <Head tags="head14,female" sheetindex="1,3" />
+    <Head tags="head15,female" sheetindex="2,3" />
+    <Head tags="head16,female" sheetindex="3,3" />
+  </Heads>
+  <Vars>
+    <Var var="GENDER" tags="female,male" />
+  </Vars>
+  <MenuCategory var="GENDER" />
+  <Pronouns var="GENDER" />
+  <HeadAttachments>
+    <Wearable type="Husk">
+      <sprite name="Husk" texture="Content/Characters/Human/Human_husk.png" hidewearablesoftype="Beard" sheetindex="0,0" />
+    </Wearable>
+    <Wearable type="Herpes">
+      <sprite name="Herpes" texture="Content/Characters/Human/Human_karma.png" sheetindex="0,0" />
+    </Wearable>
+  </HeadAttachments>
+  <StatusEffect type="Always" target="This" comparison="and">
+    <Conditional isdead="false" />
+    <Affliction identifier="huskinfesting1" strength="4" probability="1" />
+    <Affliction identifier="Burrowing" strength="75" />
+  </StatusEffect>
+</Character>

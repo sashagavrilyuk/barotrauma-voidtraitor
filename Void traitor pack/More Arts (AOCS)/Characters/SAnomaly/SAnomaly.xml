@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Character SpeciesName="SAnomaly" SpeciesTranslationOverride="" DisplayName="" Group="no" Humanoid="False" HasInfo="False" CanInteract="False" Husk="False" UseHuskAppendage="False" NeedsAir="False" NeedsWater="False" UseHumanAI="False" IsMachine="False" CanSpeak="False" ShowHealthBar="True" UseBossHealthBar="False" Noise="100" Visibility="100" BloodDecal="blackblood" BleedParticleAir="blackblooddrop" BleedParticleWater="blackwaterblood" BleedParticleMultiplier="1" CanEat="False" EatingSpeed="20" UsePathFinding="True" PathFinderPriority="1" HideInSonar="True" HideInThermalGoggles="True" SonarDisruption="0" DistantSonarRange="0" DisableDistance="25000" SoundInterval="10" DrawLast="False" AITurretPriority="1" AISlowTurretPriority="1" DespawnContainer="">
+  <ragdolls folder="default" />
+  <animations folder="default" />
+  <health Vitality="25" DoesBleed="False" CrushDepth="Infinity" UseHealthWindow="False" BleedingReduction="100" BurnReduction="100" ConstantHealthRegeneration="10" HealthRegenerationWhenEating="0" StunImmunity="True" PoisonImmunity="True" PoisonVulnerability="1" EmpVulnerability="0" ApplyAfflictionColors="False" />
+  <ai CombatStrength="120" Sight="2" Hearing="2" AggressionHurt="200" AggressionGreed="0" FleeHealthThreshold="0" AttackWhenProvoked="True" AvoidGunfire="False" DamageThreshold="0" AvoidTime="0" MinFleeTime="2" AggressiveBoarding="False" EnforceAggressiveBehaviorForMissions="True" TargetOuterWalls="True" RandomAttack="False" CanOpenDoors="False" UsePathFindingToGetInside="False" KeepDoorsClosed="False" AvoidAbyss="True" StayInAbyss="False" PatrolFlooded="False" PatrolDry="False" StartAggression="0" MaxAggression="100" AggressionCumulation="0" WallTargetingMethod="Target">
+    <target Tag="stronger" State="Attack" Priority="100" ReactDistance="2000" AttackDistance="1000" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreIfNotInSameSub="True" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" Offset="0,0" AttackPattern="Sweep" PrioritizeSubCenter="False" SweepDistance="1000" SweepStrength="10" SweepSpeed="1" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+    <target Tag="human" State="Attack" Priority="1000" ReactDistance="1500" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreIfNotInSameSub="True" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" Offset="0,0" AttackPattern="Sweep" PrioritizeSubCenter="False" SweepDistance="1000" SweepStrength="10" SweepSpeed="0.5" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+    <target Tag="weaker" State="Aggressive" Priority="20" ReactDistance="1500" AttackDistance="0" Timer="0" IgnoreContained="False" IgnoreInside="False" IgnoreOutside="False" IgnoreIfNotInSameSub="True" IgnoreIncapacitated="False" Threshold="0" ThresholdMin="-1" ThresholdMax="-1" Offset="0,0" AttackPattern="Sweep" PrioritizeSubCenter="False" SweepDistance="1000" SweepStrength="10" SweepSpeed="0.5" CircleStartDistance="5000" IgnoreTargetSize="False" CircleRotationSpeed="1" DynamicCircleRotationSpeed="False" CircleRandomRotationFactor="0" CircleStrikeDistanceMultiplier="5" CircleMaxRandomOffset="0" />
+  </ai>
+  <StatusEffect type="Always" target="This" stackable="false">
+    <ParticleEmitter particle="faradayfx" anglemax="360" distancemax="100" scalemultiplier="0.2,0.2" particleamount="1" colormultiplier="255,255,255,255" />
+  </StatusEffect>
+  <sound File="Content/Characters/Spineling/SPINELING_idle1.ogg" State="Idle" Range="3000" Volume="1" Tags="" />
+  <sound File="Content/Characters/Spineling/SPINELING_idle2.ogg" State="Idle" Range="3000" Volume="1" Tags="" />
+  <sound File="Content/Characters/Spineling/SPINELING_idle3.ogg" State="Idle" Range="3000" Volume="1" Tags="" />
+  <sound File="Content/Characters/Spineling/SPINELING_idle4.ogg" State="Idle" Range="3000" Volume="1" Tags="" />
+  <sound File="Content/Characters/Spineling/SPINELING_damage1.ogg" State="Damage" Range="3000" Volume="1" Tags="" />
+  <sound File="Content/Characters/Spineling/SPINELING_damage2.ogg" State="Damage" Range="3000" Volume="1" Tags="" />
+  <sound File="Content/Characters/Spineling/SPINELING_damage3.ogg" State="Damage" Range="3000" Volume="1" Tags="" />
+  <sound File="Content/Characters/Spineling/SPINELING_damage4.ogg" State="Damage" Range="3000" Volume="1" Tags="" />
+  <sound File="Content/Characters/Spineling/SPINELING_damage5.ogg" State="Damage" Range="3000" Volume="1" Tags="" />
+  <sound File="Content/Characters/Spineling/SPINELING_damage6.ogg" State="Damage" Range="3000" Volume="1" Tags="" />
+  <sound File="Content/Characters/Spineling/SPINELING_dead1.ogg" State="Die" Range="3000" Volume="1" Tags="" />
+  <sound File="Content/Characters/Spineling/SPINELING_dead2.ogg" State="Die" Range="3000" Volume="1" Tags="" />
+  <sound File="Content/Characters/Spineling/SPINELING_dead3.ogg" State="Die" Range="3000" Volume="1" Tags="" />
+  <sound File="Content/Characters/Spineling/SPINELING_dead4.ogg" State="Die" Range="3000" Volume="1" Tags="" />
+  <StatusEffect type="OnDeath" target="Character" delay="0">
+    <RemoveCharacter />
+  </StatusEffect>
+</Character>

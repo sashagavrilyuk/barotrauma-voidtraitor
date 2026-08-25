@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<prefabs>
+  <acidexplosion color="255,255,255,255" lifetime="30" fadeouttime="60">
+    <sprite texture="%ModDir%/More Arts (AOCS)/Particles/6_12.png" sourcerect="0,0,353,335" />
+  </acidexplosion>
+</prefabs>

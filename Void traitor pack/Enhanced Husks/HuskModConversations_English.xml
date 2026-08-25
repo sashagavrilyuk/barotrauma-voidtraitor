@@ -1,0 +1,765 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Conversations identifier="huskmodconversations" Language="English">
+  <Conversation line="One time, I had to... 'put down' one of my own crewmates." speaker="0" maxintensity="0.2" allowedjobs="securityofficer">
+    <Conversation line="What?!" speaker="1">
+      <Conversation line="Wait, I'm not done with the story!" speaker="0">
+        <Conversation line="Go ahead, then..." speaker="1">
+          <Conversation line="The poor fucker was injured in a crawler swarm attack, his fucking leg got ripped off." speaker="0">
+            <Conversation line="The crew's doc didn't make it in time, but the instant I turned to go to the armoury he became a FUCKING HUSK!" speaker="0">
+              <Conversation line="I panic fired an entire clip into it, and when it went down  we just sort of chucked it in a ballast room." speaker="0">
+                <Conversation line="The thing is, uh, that while I was minding my own business, one of the assistants just started screaming. Hold on *Ahem*" speaker="0">
+                  <Conversation line="“ARGGHHGH! IT'S BACK!? WHAT THE FUCK! SECURITY! IT GOT BACK UP! IT GOT BACK UP!”" speaker="0">
+                    <Conversation line="So I had to go back there and shoot it again, because, well, it had climbed out on its own. And it was alive!" speaker="0">
+                      <Conversation line="However! This time I made sure to shoot it in the head as well. To REALLY make sure it was dead." speaker="0">
+                        <Conversation line="Also, don't ever chuck husks inside of ballasts. Just flush them out the airlock... or just burn them." speaker="0" />
+                      </Conversation>
+                    </Conversation>
+                  </Conversation>
+                </Conversation>
+              </Conversation>
+            </Conversation>
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Anyone ever wonder what husks look like underneath the rusted diving suit?" speaker="0" maxintensity="0.2">
+    <Conversation line="Uh..." speaker="1">
+      <Conversation line="You don't know?" speaker="2" allowedjobs="securityofficer">
+        <Conversation line="I mean, how would you even know? You can't take the suit off of them, they say it's like it's glued to them." speaker="1">
+          <Conversation line="I did see a recent husk once, though, one without a diving suit. They look human for the most part, 'cept for the stinger jaw. 'Y know?" speaker="1">
+            <Conversation line="I've seen some of those as well, but not- uh, “recent”." speaker="2">
+              <Conversation line="What? I thought the only husks that survived in the long run were those with diving suits." speaker="0">
+                <Conversation line="That's true, but you can still see some fairly old ones inside certain wrecks that don't even have suits." speaker="2">
+                  <Conversation line="Watch out though, they may look weak, but they are tough to put down." speaker="2">
+                    <Conversation line="Ooohh!" speaker="1">
+                      <Conversation line="So what do they look like?" speaker="0">
+                        <Conversation line="Honestly?" speaker="2">
+                          <Conversation line="You are better off without knowing." speaker="2" />
+                          <Conversation line="From what I've seen, they are the closest thing to a living skeleton I'll tell you that much." speaker="2" />
+                          <Conversation line="They are best described as 'Iron deficiency Man with a hint of starvation'." speaker="2" speakertags="joker">
+                            <Conversation line="What's an 'Iron defeciency man'?" speaker="0">
+                              <Conversation line="Someone clearly didn't read up on their Earth comic history" speaker="1">
+                                <Conversation line="..." speaker="0">
+                                  <Conversation line="Yeah you'll probably need to get that done." speaker="2">
+                                    <Conversation line="It doesn't take too long too." speaker="1">
+                                      <Conversation line="..." speaker="0">
+                                        <Conversation line="Hehe." speaker="1" />
+                                      </Conversation>
+                                    </Conversation>
+                                  </Conversation>
+                                </Conversation>
+                              </Conversation>
+                            </Conversation>
+                          </Conversation>
+                        </Conversation>
+                      </Conversation>
+                    </Conversation>
+                  </Conversation>
+                </Conversation>
+              </Conversation>
+            </Conversation>
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="One time, I saw a spider with human arms." speaker="0" maxintensity="0.5">
+    <Conversation line="Uh..." speaker="1">
+      <Conversation line="Did I stutter?" speaker="0">
+        <Conversation line="No, but..." speaker="1">
+          <Conversation line="It's true! End of the story." speaker="0">
+            <Conversation line="..." speaker="0">
+              <Conversation line="..." speaker="1">
+                <Conversation line="Just kidding. I made it up." speaker="0">
+                  <Conversation line="Hahahaha! Thank goodness it was a joke." speaker="1">
+                    <Conversation line="Or was it?" speaker="0" />
+                  </Conversation>
+                </Conversation>
+              </Conversation>
+            </Conversation>
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="You know..." speaker="0" minintensity="0.5">
+    <Conversation line="Ok, listen, how the fuck am I supposed to know? Do you seriously think I could know what you're about to say?" speaker="1" flags="Psychosis">
+      <Conversation line="It's just an idiom!" speaker="0">
+        <Conversation line="NO it isn't!" speaker="1">
+          <Conversation line="Ok! Ok! It's just a filler word!" speaker="0">
+            <Conversation line="WHY DID YOU START A SENTENCE WITH A FILLER WORD?!" speaker="1">
+              <Conversation line="Argh! It's just, like, a word, ok? I was about to fucken' say something very interesting, but now I don't want to anymore!" speaker="0">
+                <Conversation line="Next time just SAY the thing you want to say! You're all like “I- I- You- Wow I- Like-”" speaker="1">
+                  <Conversation line="WHAT?! WHAT IS IT? No, I DO NOT KNOW. I DON'T KNOW WHAT YOU'RE GONNA SAY." speaker="1">
+                    <Conversation line="BECAUSE YOU HAVEN'T SAID IT YET!" speaker="1">
+                      <Conversation line="JUST SPIT IT THE FUCK OUT! ARGHH!" speaker="1">
+                        <Conversation line="It's that time of the month, eh?" speaker="2" />
+                      </Conversation>
+                    </Conversation>
+                  </Conversation>
+                  <Conversation line="Ha ha ha!" speaker="2">
+                    <Conversation line="What's funny?" speaker="1">
+                      <Conversation line="..." speaker="2">
+                        <Conversation line="YOU FUCKING BITCH!" speaker="1">
+                          <Conversation line="FUUUUCKING FUCKEAHH" speaker="1">
+                            <Conversation line="FUCKIN" speaker="1">
+                              <Conversation line="COCKASS!" speaker="1" />
+                            </Conversation>
+                          </Conversation>
+                        </Conversation>
+                      </Conversation>
+                    </Conversation>
+                  </Conversation>
+                </Conversation>
+              </Conversation>
+            </Conversation>
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Damn, man..." speaker="0" maxintensity="0.2">
+    <Conversation line="What's wrong?" speaker="1">
+      <Conversation line="I was in an outpost sometime ago, you know, just doing business as usual..." speaker="0">
+        <Conversation line="But then, the guy I was talking to just DROPPED to the ground and started having a seizure! And then a bunch of tentacles came out of his face!" speaker="0">
+          <Conversation line="I don't know what that was all about, all I know is that a bunch of security guys came in and dealt with... that." speaker="0">
+            <Conversation line="Sounds like a husk infection to me... That's... Terrifyingly common these days." speaker="1" allowedjobs="medicaldoctor" />
+            <Conversation line="Well, at least it didn't happen to you!" speaker="1" />
+            <Conversation line="Wait, was it stingers coming from the mouth or actual fucking tentacles... wait don't answer that." speaker="1" />
+            <Conversation line="That sounds fantastic! I bet the ladies love that guy!" speaker="1" speakertags="joker" />
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Did anyone ever figure out what the deal is with husk infection?" speaker="0" maxintensity="0.2">
+    <Conversation line="I don't think anyone would ever touch that shit with a ten feet pole, honestly." speaker="1">
+      <Conversation line="Someone has to, you know? Someone HAS to be trying to find a way to get rid of it-" speaker="0">
+        <Conversation line="I mean, they tried but the fucking cultist bitches screwed us over, and have you seen the... THINGS..." speaker="0">
+          <Conversation line="For example, I've been hearing about a, like... imagine a Husk, but it's alteast 7ft tall, blackened-rotten but still seemingly alive muscle, no skin, and like... HAS FUCKING ARMBLADES!" speaker="0">
+            <Conversation line="Which one, man?" speaker="1">
+              <Conversation line="Uhh... What? WHAT DO YOU MEAN WHICH ONE?!" speaker="0">
+                <Conversation line="I've heard of two kinds, one with the regular old diving suit get up... The other, well..." speaker="1">
+                  <Conversation line="WELL I DIDN'T KNOW THERE WAS FUCKING TWO!? Wait... what makes the second so special... DON'T TELL ME IT CAN SPIT ACID?!" speaker="0">
+                    <Conversation line="Does that even matter? You have to shoot 'em either way. It's you or them." speaker="2">
+                      <Conversation line="I... this will H A U N T me until the day the Europan seas claim me." speaker="0" />
+                    </Conversation>
+                  </Conversation>
+                </Conversation>
+                <Conversation line="I've heard that there are atleast seven different kinds, one with the regular old diving suit get up... The others, well..." speaker="1">
+                  <Conversation line="SEVEN!? THERE ARE 7 OF THOSE FREAK?! Wait... DON'T TELL ME ONE OF THEM CAN SPIT ACID?!" speaker="0">
+                    <Conversation line="Oh so you know of the one in the Abyss diving suit?" speaker="1">
+                      <Conversation line="Ah, you know of the kind that wears the Abyss diving suit? All you need to do is avoid shooting their head, for obvious reasons." speaker="1" speakertags="professional, rude, tough">
+                        <Conversation line="I... this will H A U N T me until the day the Europan seas claim me." speaker="0" />
+                      </Conversation>
+                    </Conversation>
+                    <Conversation line="And if you think that's bad?" speaker="0">
+                      <Conversation line="There's a varient that still wears an old rusted exosuit." speaker="0">
+                        <Conversation line="OH GOD NO!?" speaker="1">
+                          <Conversation line="Don't worry, while it is pretty tanky, it's held back by the lack of space it had for its mutation, so if it gets inside the ship so it can only get stuck in a room." speaker="0">
+                            <Conversation line="Thank... god...?" speaker="1">
+                              <Conversation line="You can almost feel bad for them..." speaker="2">
+                                <Conversation line="Almost." speaker="0" />
+                              </Conversation>
+                            </Conversation>
+                          </Conversation>
+                        </Conversation>
+                      </Conversation>
+                    </Conversation>
+                  </Conversation>
+                </Conversation>
+              </Conversation>
+            </Conversation>
+          </Conversation>
+          <Conversation line="For example, people have been talking about a 'husked watcher', but that's just the half of it." speaker="0">
+            <Conversation line="Now, that THING will literally SCREAM when provoked! Completely unlike a husked crawler or human." speaker="0">
+              <Conversation line="And you want to know what has been reported COUNTLESS TIMES after it does that?!" speaker="0">
+                <Conversation line="The little troop of husked monsters that it usually has around itself? It starts falling behind, until it's like they're gone." speaker="0">
+                  <Conversation line="Next thing you know, there's a bunch of nightmares creatures fucking clawing at your ship, or spitting at it, or worse! Pretty suspicious, ain't it?" speaker="0">
+                    <Conversation line="Dude, you know that watchers can't be husked, right? They're too big for that to even happen!" speaker="2">
+                      <Conversation line="I fucking hope so or I will have nightmares that no medicine will fix." speaker="0" />
+                    </Conversation>
+                  </Conversation>
+                </Conversation>
+              </Conversation>
+            </Conversation>
+          </Conversation>
+          <Conversation line="For example, people have been claiming that they have seen 'Mutant Husks', this has been going around from Outpost to Outpost and the details are always grisly" speaker="0">
+            <Conversation line="Could one possibly think that they are all made up? Especially when considering multiple people have reported the same things?" speaker="1">
+              <Conversation line="Some people have reported seeing groups of strange humanoid monsters that, like most things, get terribly dismembered when shot..." speaker="0">
+                <Conversation line="Now here's the thing... These monsters supposedly KEEP ON GOIN' after they get dismembered!" speaker="0">
+                  <Conversation line="Alright, I AIN'T touching that with a hundred feet pole!" speaker="1">
+                    <Conversation line="Are you sure they weren't just regular ol' husks?" speaker="2">
+                      <Conversation line="I have no idea! I honestly hope I don't get to see them. Like ever." speaker="0" />
+                    </Conversation>
+                  </Conversation>
+                </Conversation>
+              </Conversation>
+            </Conversation>
+          </Conversation>
+          <Conversation line="I've heard stories about an odd Endworm head that prefers to stalk outside of the abyss." speaker="0">
+            <Conversation line="Oh god... so we are not safe even if we avoid the abyss?" speaker="1">
+              <Conversation line="A few have been nicknaming it 'the leviathan'. Mainly due to it's relation to a creature from an old Earth game" speaker="0">
+                <Conversation line="These things can tear through hulls with ease. Other times they just attempt to ram the submarines into the sides of the caves." speaker="2">
+                  <Conversation line="Now that's... another thing to keep me up at night." speaker="1">
+                    <Conversation line="I also heard that they are quite easily dealt with, actually it's weaker than your average rogue endworm head." speaker="2">
+                      <Conversation line="Oh thank god..." speaker="1" />
+                    </Conversation>
+                  </Conversation>
+                </Conversation>
+              </Conversation>
+              <Conversation line="It's been nicknamed 'the leviathan' " speaker="0">
+                <Conversation line="Heard that thing can tear through submarines with ease. Other times they just attempt to ram the submarines into the sides of the caves." speaker="2">
+                  <Conversation line="Now that's... another thing to keep me up at night." speaker="1">
+                    <Conversation line="I also heard that they are quite easily dealt with, actually it's weaker than your average rogue endworm head." speaker="2">
+                      <Conversation line="Oh thank god..." speaker="1" />
+                    </Conversation>
+                  </Conversation>
+                </Conversation>
+              </Conversation>
+            </Conversation>
+          </Conversation>
+          <Conversation line="For example, the several reports of husked monsters being found in the abyss!" speaker="0">
+            <Conversation line="How could that possibly make any sense?" speaker="1">
+              <Conversation line="What do you mean?" speaker="0">
+                <Conversation line="What do you think lives in the abyss?" speaker="1">
+                  <Conversation line="I'll tell you: endworms and charybdises!" speaker="1">
+                    <Conversation line="I'll tell you: endworms and charybdises! Hell I've been told even Latchers get infected, though it is hard to tell with how similar they act to their uninfected brethren." speaker="1">
+                      <Conversation line="Do you really think those monsters could ever succumb to some weak parasite that until a few months ago was only affecting humans and crawlers?" speaker="1">
+                        <Conversation line="Well... It's not like the abyss would be a safe place without husks anyway, so does that really matter at all??" speaker="0">
+                          <Conversation line="As long as whatever is down there STAYS there, I guess so." speaker="1" />
+                        </Conversation>
+                      </Conversation>
+                      <Conversation line="I've been told that there are even mutated abyss creatures, though I've only ever seen reports of endworms getting mutated." speaker="2" allowedjobs="medicaldoctor">
+                        <Conversation line="WHAT!? WHAT DO YOU MEAN MUTATED ENDWORMS!?!?" speaker="0">
+                          <Conversation line="Well I hope we never come across any mutated abyss creature, PERIOD." speaker="1" />
+                        </Conversation>
+                      </Conversation>
+                    </Conversation>
+                  </Conversation>
+                </Conversation>
+              </Conversation>
+            </Conversation>
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="I saw a crawler the other day..." speaker="0" maxintensity="0.2">
+    <Conversation line="Dear God..." speaker="1">
+      <Conversation line="But wait, there's more!" speaker="0">
+        <Conversation line="No!" speaker="1">
+          <Conversation line="This crawler, or whatever the hell it was, it looked bigger and meaner and..." speaker="0">
+            <Conversation line="Oh, I know what you're talking about. Certain crawlers can grow to pretty large sizes, so you probably just saw a big one." speaker="2">
+              <Conversation line="It wasn't a crawler! IT looked like one, but it was just... UGH! How do I say this?" speaker="0">
+                <Conversation line="I might have an idea of what it was. Did it have stingers coming out of its face?" speaker="2">
+                  <Conversation line="Yeah, if I recall correctly..." speaker="0">
+                    <Conversation line="Bingo! What you saw was just a husked crawler, then. There's plenty of them in this damned place." speaker="2">
+                      <Conversation line="No, it couldn't possibly have been a husked crawler... This thing looked ALIVE, I tell you! Not like a husk!" speaker="0" />
+                    </Conversation>
+                  </Conversation>
+                </Conversation>
+              </Conversation>
+            </Conversation>
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="You know what, in life..." speaker="0" speakertags="brokenenglish" maxintensity="0.2">
+    <Conversation line="Uh...." speaker="0">
+      <Conversation line="Don't cover the judge by... uh..." speaker="0">
+        <Conversation line="Don't judge the, the... cover! Judge the book!" speaker="0">
+          <Conversation line="Don't- Don't book the cover, book, eh!" speaker="0">
+            <Convesation line="Don't- Whatever! Don't do it! Just don't do it!" speaker="0">
+              <Conversation line="Ok...?" speaker="1" />
+            </Convesation>
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Got a question for you... What's heavier?" speaker="0" speakertags="brokenenglish" maxintensity="0.2">
+    <Conversation line="A kilogram of steel? Or a kilogram of feathers?" speaker="0">
+      <Conversation line="That's right, it's a kilogram of steel." speaker="0">
+        <Conversation line="Because steel is heavier than feathers." speaker="0">
+          <Conversation line="That's not right." speaker="1">
+            <Conversation line="...What do you mean?" speaker="0">
+              <Conversation line="They're both a kilogram." speaker="1">
+                <Conversation line="But steel is heavier than feathers." speaker="0">
+                  <Conversation line="I know! But they're both a kilogram." speaker="1">
+                    <Conversation line="...What?" speaker="0">
+                      <Conversation line="That doesn't prove anything!" speaker="0">
+                        <Conversation line="Look, they're both a kilogram, right? so they're the same." speaker="1">
+                          <Conversation line="...But steel is heavier than feathers. Someone, back me up here!" speaker="0">
+                            <Conversation line="You said that they are both a kilogram, so they are LITERALLY the same weight!" speaker="2">
+                              <Conversation line="No, no they're not!" speaker="0">
+                                <Conversation line="What is it you don't get?" speaker="2">
+                                  <Conversation line="I don't... would you all-..." speaker="0">
+                                    <Conversation line="You alright?" speaker="1">
+                                      <Conversation line="I don't get it..." speaker="0">
+                                        <Conversation line="I'm sorry." speaker="2">
+                                          <Conversation line="Don't worry about it!" speaker="1">
+                                            <Conversation line="I don't get it......." speaker="0" />
+                                          </Conversation>
+                                        </Conversation>
+                                      </Conversation>
+                                    </Conversation>
+                                  </Conversation>
+                                </Conversation>
+                              </Conversation>
+                            </Conversation>
+                          </Conversation>
+                        </Conversation>
+                      </Conversation>
+                    </Conversation>
+                  </Conversation>
+                </Conversation>
+              </Conversation>
+            </Conversation>
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="I ever tell you about that time my buddy Dave tried to deep-fry a crawler?" speaker="0" maxintensity="0.2" speakertags="joker">
+    <Conversation line="Third-degree burns over 90 percent of his body." speaker="0">
+      <Conversation line="His doctor called up, like, other doctors to look at him!" speaker="0">
+        <Conversation line="Because they'd never seen burns on top of existing burns." speaker="0">
+          <Conversation line="They say that experience is the best teacher." speaker="0">
+            <Conversation line="Well, experience had taught Dave that if you ever eat three pounds of raw crawler, it kills you." speaker="0">
+              <Conversation line="Turns out trying to fry one almost kills you too!" speaker="0" />
+            </Conversation>
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Ok, people, hear me out, I have a wonderful hypothetical for you all." speaker="0" maxintensity="0.2">
+    <Conversation line="What would you do if you were trapped inside of a ruin, and all of the sudden..." speaker="0">
+      <Conversation line="That would never happen to me, Ruins always have an exit and the walls are not indestructable." speaker="1" speakertags="professional, rude, tough">
+        <Conversation line="Oh." speaker="0" />
+      </Conversation>
+      <Conversation line="CEASE!" speaker="1">
+        <Conversation line="Wait, wait! I didn't get to tell you about the hyper-realistic blood!" speaker="0">
+          <Conversation line="STAHP!" speaker="1" />
+        </Conversation>
+      </Conversation>
+      <Conversation line="And all of the sudden the water gets warmer! Uh oh!" speaker="1" speakertags="joker">
+        <Conversation line="Wait, wait! That's not how it goes!" speaker="0">
+          <Conversation line="Stiiinky... Poop! Hahaha! Poopy! Funny poopy!" speaker="1">
+            <Conversation line="No, no, no! This is all wrong! Where's the hyper-realistic blood at?" speaker="0" />
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Is it just me or does it smell like updog in here?" speaker="0" speakertags="joker" maxintensity="0.2">
+    <Conversation line="HAHAHAHAH! FUNNY!" speaker="1" flags="Psychosis">
+      <Conversation line="HAHAHAHAHAAHAH! PLEASE LAUGH! HAHAHA! HAHAHAHAHAH!" speaker="1" flags="Psychosis" />
+    </Conversation>
+    <Conversation line="No." speaker="1" speakertags="professional, rude, tough" />
+    <Conversation line="What's updog?" speaker="1">
+      <Conversation line="Nothing much, what's up with you?" speaker="0">
+        <Conversation line="Oh my God..." speaker="1">
+          <Conversation line="You got gotten, son!" speaker="2" speakertags="joker" />
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="I read a rather peculiar thing in The Europan once." speaker="0" maxintensity="0.2">
+    <Conversation line="You can read?" speaker="1" speakertags="rude, joker" />
+    <Conversation line="They say that some people got together to figure out a way to permanently get rid of husks..." speaker="0">
+      <Conversation line="However their station got overrun by raiders, and well, I think they might have been cultists to top it all off." speaker="0">
+        <Conversation line="So now, a bunch of deranged people have the thing that they worship explained to them!" speaker="0">
+          <Conversation line="Damn right!" speaker="2">
+            <Conversation line="Jacov Subra, that monster should be buried like those who he has done so before." speaker="0">
+              <Conversation line="The 'alternative music festival' guy? Yeah, screw that guy." speaker="1">
+                <Conversation line="Atleast theor days of 'public debauchery' seem to be over, good riddance." speaker="2">
+                  <Conversation line="Worshiping the Husks, honestly I like the clowns better" speaker="1">
+                    <Conversation line="May the Honkmother be with you my friend." speaker="2" speakertags="clown">
+                      <Conversation line="Seriously?" speaker="2">
+                        <Conversation line="We are more likely to have 'communion with the husks' than those wackjobs." speaker="0">
+                          <Conversation line="Back to the Husks?" speaker="1">
+                            <Conversation line="Oh right, them." speaker="0">
+                              <Conversation line="Well, in short, a bunch of psychos prevented all of us from getting a husk vaccine of sorts..." speaker="0">
+                                <Conversation line="And possibly made things worse, too! Who knows what they figured out by stealing that research." speaker="1" />
+                              </Conversation>
+                            </Conversation>
+                          </Conversation>
+                        </Conversation>
+                      </Conversation>
+                    </Conversation>
+                  </Conversation>
+                </Conversation>
+              </Conversation>
+            </Conversation>
+          </Conversation>
+          <Conversation line="Like the bibble! That book thingy they used to have on earth!" speaker="0" speakertags="joker">
+            <Conversation line="The book with the tales of- what was his name again... Jimmy?" speaker="0">
+              <Conversation line="Pretty sure it was the bible, not the bibble." speaker="1">
+                <Conversation line="You question the words of the mighty jimmy?!" speaker="0">
+                  <Conversation line="What the fuck are you guys talking about?" speaker="2">
+                    <Conversation line="We're talking about Jimmy." speaker="0">
+                      <Conversation line="No, the thing before that, what was it?" speaker="2">
+                        <Conversation line="Husks?" speaker="1">
+                          <Conversation line="Oh right, that." speaker="0">
+                            <Conversation line="Well, in short, a bunch of psychos prevented all of us from getting a husk vaccine of sorts..." speaker="0">
+                              <Conversation line="And possibly made things worse, too! Who knows what they figured out by stealing that research." speaker="1" />
+                            </Conversation>
+                          </Conversation>
+                        </Conversation>
+                      </Conversation>
+                    </Conversation>
+                  </Conversation>
+                </Conversation>
+              </Conversation>
+            </Conversation>
+          </Conversation>
+          <Conversation line="I've heard the reports, and in the recent years there have been notable researchers." speaker="0" speakertags="medicaldoctor">
+            <Conversation line="They sure have made a name for themself by cataloguing and identifying the flora and fauna of Europa." speaker="0">
+              <Conversation line="I've heard of them! Pretty damn helpful when you need something to listen to. And if you need to know any important information." speaker="1">
+                <Conversation line="You mean people like the crew of the 'Ironic and Dead'?" speaker="2">
+                  <Conversation line="Oh Oh! My favourite is the uh... what was his name again?" speaker="1">
+                    <Conversation line="God my memory is fuzzy... I can't remember his actual name but he has been nicknamed 'Hailstone'." speaker="1">
+                      <Conversation line="A real inspiring person that man is." speaker="1">
+                        <Conversation line="Anyway back to talking about husks?" speaker="2">
+                          <Conversation line="Oh right, that." speaker="0">
+                            <Conversation line="Well, in short, a bunch of psychos prevented all of us from getting a husk vaccine of sorts..." speaker="0">
+                              <Conversation line="And possibly made things worse, too! Who knows what they figured out by stealing that research." speaker="1" />
+                            </Conversation>
+                          </Conversation>
+                        </Conversation>
+                      </Conversation>
+                    </Conversation>
+                  </Conversation>
+                </Conversation>
+              </Conversation>
+            </Conversation>
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="I don't like crawlers." speaker="0" maxintensity="0.2">
+    <Conversation line="Why not?" speaker="1">
+      <Conversation line="They're just... Too jumpy- spastic little things." speaker="0">
+        <Conversation line="You know, one time I had to shoot one off of a submarine with a coilgun." speaker="0">
+          <Conversation line="So I started shooting at it, and I missed." speaker="0">
+            <Conversation line="So I fired again, and I missed." speaker="0">
+              <Conversation line="And I fired again, and again!" speaker="0">
+                <Conversation line="And I actually missed both times there." speaker="0">
+                  <Conversation line="This went on for several minutes." speaker="0">
+                    <Conversation line="And then the coilgun ran outta ammunition." speaker="0">
+                      <Conversation line="And then I got sad." speaker="0">
+                        <Conversation line="BUT THEN I RELOADED!" speaker="0">
+                          <Conversation line="I packed the coilgun with piercing ammo, that's my secret weapon!" speaker="0">
+                            <Conversation line="So I fired again!" speaker="0">
+                              <Conversation line="I hit something! But uh... It wasn't what I was going for, so I guess I missed." speaker="0">
+                                <Conversation line="Pfft- Wh-what? Haha! What the hell?" speaker="1">
+                                  <Conversation line="Don't give me that sass, man, I'll take a swing at you!" speaker="0">
+                                    <Conversation line="I'll miss, though, I guarantee you." speaker="0">
+                                      <Conversation line="Anyway, long story short?" speaker="0">
+                                        <Conversation line="Missed." speaker="0" />
+                                      </Conversation>
+                                    </Conversation>
+                                  </Conversation>
+                                </Conversation>
+                              </Conversation>
+                            </Conversation>
+                          </Conversation>
+                        </Conversation>
+                      </Conversation>
+                    </Conversation>
+                  </Conversation>
+                </Conversation>
+              </Conversation>
+            </Conversation>
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Y'know people keep talking about a suit used by the ancients." speaker="0" maxintensity="0.2" speakertags="joker">
+    <Conversation line="What?." speaker="1" speakertags="professional, rude, tough" />
+    <Conversation line="Do go on, I'm interested." speaker="1" speakertags="medicaldoctor" />
+    <Conversation line="Yeah, they talked about divers who put it on." speaker="0">
+      <Conversation line="They didn't last that long I'll tell ya!" speaker="0">
+        <Conversation line="But what they could do was just amazing" speaker="0">
+          <Conversation line="Hmm, Does this purhaps relate to an Exosuit?" speaker="1" speakertags="medicaldoctor">
+            <Conversation line="Something tells me they are talking about a different kind of suit." speaker="2">
+              <Conversation line="Right'o, This didn't need batteries, hell you didn't need the helmet!" speaker="0">
+                <Conversation line="You get a nice pair of 'chest pockets' with it!" speaker="0">
+                  <Conversation line="What do you mean chest po- NO, NO DON'T YOU DARE I STILL CAN'T GET THE LAST TIME OUT OF MY HEAD IT COST ME A WEEKS WORTH OF SLEEP." speaker="1">
+                    <Conversation line="And I know a few people who did-." speaker="0">
+                      <Conversation line="SHUT UP!" speaker="3">
+                        <Conversation line="No fair... loser... It was just getting good but I guess you don't want to hear about it..." speaker="0" />
+                      </Conversation>
+                    </Conversation>
+                  </Conversation>
+                </Conversation>
+              </Conversation>
+            </Conversation>
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="One time, I was in a wreck." speaker="0" maxintensity="0.2">
+    <Conversation line="There were three divers swimming along the wreck that way..." speaker="0">
+      <Conversation line="I saw 'em!" speaker="0">
+        <Conversation line="I was like “Hey you three divers!”" speaker="0">
+          <Conversation line="“Why are y'all swimming that way? There's nothing down there, I checked!”" speaker="0">
+            <Conversation line="And they came at me." speaker="0">
+              <Conversation line="I shot 'em... Them were some husks." speaker="0">
+                <Conversation line="Haha!" speaker="1">
+                  <Conversation line="What the hell?" speaker="1" />
+                </Conversation>
+              </Conversation>
+            </Conversation>
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Listen." speaker="0" maxintensity="0.2" allowedjobs="medicaldoctor">
+    <Conversation line="If you're addicted to opiates, stop it." speaker="0">
+      <Conversation line="Get some help." speaker="0">
+        <Conversation line="Use like, I don't know, some other kind of medicine." speaker="0">
+          <Conversation line="Maybe let an actual doctor administer said medicines to you." speaker="0">
+            <Conversation line="Are you questioning the power of morphine?" speaker="1" flags="OpiateWithdrawalMedium, OpiateWithdrawalHigh">
+              <Conversation line="No? I'm just saying that-" speaker="0">
+                <Conversation line="You're just saying that you want it all for yourself, don't you, eh?" speaker="1">
+                  <Conversation line="Oh God." speaker="0" />
+                </Conversation>
+              </Conversation>
+            </Conversation>
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="I'm feeling quite faint..." speaker="0" flags="Bloodloss">
+    <Conversation line="Are you bleeding?" speaker="1" allowedjobs="medicaldoctor">
+      <Conversation line="I dunno man, I can't really tell!" speaker="0">
+        <Conversation line="Then maybe you have internal bleeding?" speaker="1">
+          <Conversation line="What?" speaker="0">
+            <Conversation line="You know, internal bleeding!" speaker="1">
+              <Conversation line="What the fuck is that?" speaker="0">
+                <Conversation line="Oh my god." speaker="1">
+                  <Conversation line="How can one bleed internally? Wouldn't that mean the blood is where it's supposed to be?" speaker="0" />
+                </Conversation>
+              </Conversation>
+            </Conversation>
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Man, we're really deep right now! Kinda reminds the time I found a human li-" speaker="0" flags="SubmarineDeep" speakertags="joker" maxintensity="0.2">
+    <Conversation line="SHUT THE FUCK UP!" speaker="1">
+      <Conversation line="DON'T MAKE ME THROW YOU OUT THE AIRLOCK." speaker="1">
+        <Conversation line="You're no fun." speaker="0" />
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Man, we're so deep it reminds me of your mo-" speaker="0" flags="SubmarineDeep" speakertags="joker" maxintensity="0.2">
+    <Conversation line="SHUT-" speaker="1">
+      <Conversation line="SHUT THE FUCK UP BEFORE I CASTRATE YOU, YOU PIECE OF UTTER SHIT!" speaker="3" allowedjobs="medicaldoctor" speakertags="professional,tough,rude">
+        <Conversation line="Alright... alright... jeez..." speaker="0" />
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Guyss... Will someone open the damn... the damn window? Jeez. It's too hot in here..." speaker="0" flags="DrunkMedium">
+    <Conversation line="I'll uh... do it mysself..." speaker="0">
+      <Conversation line="Dude..." speaker="1">
+        <Conversation line="Ch'yeah! Open the windows!" speaker="2" flags="DrunkMedium">
+          <Conversation line="DUDE!" speaker="1" />
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <!-- <Reworks of ingame convos> -->
+  <Conversation line="Do you ever feel...flat?" speaker="0">
+    <Conversation line="I feel like I hear you say that every time we leave a station." speaker="1">
+      <Conversation line="We all ask that question, hell you've said it... I think?" speaker="0">
+        <Conversation line="I-" speaker="1">
+          <Conversation line="..." speaker="1" />
+        </Conversation>
+      </Conversation>
+    </Conversation>
+    <Conversation line="Shut up." speaker="1" speakertags="professional,tough,rude">
+      <Conversation line="I-" speaker="0" speakertags="joker">
+        <Conversation line="Just shut up." speaker="1" speakertags="professional,tough,rude">
+          <Conversation line="..." speaker="0" speakertags="joker" />
+        </Conversation>
+      </Conversation>
+    </Conversation>
+    <Conversation line="Well yes I do but I prefer that the feeling STAY a feeling." speaker="1" flags="pressure">
+      <Conversation line="I hope so too." speaker="0">
+        <Conversation line="..." speaker="1" flags="pressure">
+          <Conversation line="Find anything interesting?" speaker="0" />
+        </Conversation>
+      </Conversation>
+    </Conversation>
+    <Conversation line="Well yes I do but I prefer that the feeling STAY a feeling." speaker="1" flags="pressureresistance">
+      <Conversation line="Oh right yeah, you're pressurised." speaker="0">
+        <Conversation line="Have fun exploding the next time a Hammerhead smashes into the sub!" speaker="1" speakertags="rude,joker" flags="pressureresistance">
+          <Conversation line="I hate you sometimes." speaker="0" />
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Is it ‘thalamuses’ or ‘thalami’?" speaker="0">
+    <Conversation line="All things considered, thalami would make the most sense." speaker="1" />
+    <Conversation line="Why don't you go ask one yourself?" speaker="1" speakertags="joker" />
+    <Conversation line="Well if I remember correctly it shares that name with a part of the human brain, we all have a thalamus in our skull." speaker="1" allowedjobs="medicaldoctor" />
+  </Conversation>
+  <Conversation line="Awfully quiet in here." speaker="0" maxintensity="0.3">
+    <Conversation line="FUCKING HELP ME!" speaker="0" flags="Headhijacking">
+      <Conversation line="AAAAAAAAAAAAAAAAAAAAAAAAAA!" speaker="0" flags="Headhijacking">
+        <Conversation line="GET IT OFF!" speaker="0" flags="Headhijacking" />
+      </Conversation>
+    </Conversation>
+    <Conversation line="Is my headset still working?" speaker="0">
+      <Conversation line="*Clicking*" speaker="1" flags="huskinfection" />
+      <Conversation line="*Clicking*" speaker="1" flags="huskinfection">
+        <Conversation line="...What?" speaker="0" />
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <!-- <Outpost stuff> -->
+  <Conversation line="Did a mutated Husk eat your crew? Did your friend get blown to bits by one? Look no further!" speaker="0" flags="OutpostNPC,CampaignNPC.Crew" />
+  <Conversation line="See your crewmates get eaten alive by a freakish amalgam of limbs belonging to Europan creatures? We got some replacements!" speaker="0" flags="OutpostNPC,CampaignNPC.Crew" />
+  <Conversation line="We've got some expendables ready for hire! Whatever you need I've got you covered!" speaker="0" flags="OutpostNPC,CampaignNPC.Crew" />
+  <Conversation line="Please hold. Your death is important to us, and a Micoteron will be with you shortly." speaker="0" flags="OutpostNPC,CampaignNPC.Crew">
+    <Conversation line="What?" speaker="1">
+      <Conversation line="Ahh, sorry, I meant “please wait for your turn”." speaker="0" />
+    </Conversation>
+  </Conversation>
+  <Conversation line="EXR-P For hire!" speaker="0" flags="OutpostNPC,CampaignNPC.Crew">
+    <Conversation line="What kind of job is that?" speaker="1">
+      <Conversation line="Oh! Sorry wrong... Ignore that." speaker="0" />
+    </Conversation>
+  </Conversation>
+  <Conversation line="Ever tried Craw-Yum?" speaker="0" flags="OutpostNPC">
+    <Conversation line="When I worked as an assistant that was all I could afford. I hope I never have to touch that shit again." speaker="1" flags="OutpostNPC">
+      <Conversation line="I don't know, I sort of like it. The occasional toenails and eyes are a bit nasty though." speaker="0">
+        <Conversation line="Oh I'm sorry." speaker="1">
+          <Conversation line="FUCKING TOENAILS!?!" speaker="1">
+            <Conversation line="Didn't know we had a husk among us." speaker="2" flags="OutpostNPC" />
+            <Conversation line="Didn't know we had a cannibal among us." speaker="2" flags="OutpostNPC" />
+            <Conversation line="What are you, a chimera?" speaker="2" flags="OutpostNPC" />
+            <Conversation line="Don't ever go near me again." speaker="1" flags="OutpostNPC" />
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="One of the ventilation pipes in my cabin's crawl space started leaking yesterday." speaker="0" flags="OutpostNPC">
+    <Conversation line="Did you manage to fix it?" speaker="1" flags="OutpostNPC">
+      <Conversation line="I keep hearing clicking from it, no way I'm getting close to it." speaker="0">
+        <Conversation line="... No wonder we have to keep hiring mechanics." speaker="1" />
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="So you remember that uh, diving suit wearing husk that security shot the head off of last week?" speaker="0" flags="OutpostNPC">
+    <Conversation line="And the head crawled into the vents?" speaker="1" flags="OutpostNPC">
+      <Conversation line="It keeps staring at me at night, I can see the gleam of that cracked glass through the vents." speaker="0">
+        <Conversation line="Remind me never to go near your room?" speaker="1" />
+        <Conversation line="Does it like crackers?" speaker="1" />
+        <Conversation line="You ever try feeding it?" speaker="1" />
+        <Conversation line="Have you tried feeding it?" speaker="1">
+          <Conversation line="Fuck-no man." speaker="0" />
+          <Conversation line="It keeps trying to bite me." speaker="0" />
+          <Conversation line="I've avoided that vent so far." speaker="0" />
+          <Conversation line="I mean yeah, it likes the Craw-Yum... I think?" speaker="0" />
+          <Conversation line="I mean yeah, it likes the Craw-Yum... I think?" speaker="0">
+            <Conversation line="You eat that shit?" speaker="1" />
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Why is it always so damn cold in here? Couldn't we turn the heating up a bit?" speaker="0" flags="OutpostNPC">
+    <Conversation line="Uranium doesn't grow on trees you know." speaker="1">
+      <Conversation line="Honestly man, at this rate I won't be surprised if it does." speaker="2" />
+    </Conversation>
+  </Conversation>
+  <Conversation line="There was a husk outside my window last night... it was just staring at me with those dead eyes." speaker="0" flags="OutpostNPC">
+    <Conversation line="Wow, you should tell security about that, I don't want to wake up to you running at me with stingers." speaker="1" flags="OutpostNPC" />
+    <Conversation line="Looks like YOU got a secret admirer." speaker="1" flags="OutpostNPC" />
+    <Conversation line="Lucky, there's a whole crew of them outside of mine." speaker="1" flags="OutpostNPC" />
+    <Conversation line="And it's not attacking you? Not even trying to break in?" speaker="1" flags="OutpostNPC" />
+  </Conversation>
+  <!-- <End level stuff> -->
+  <Conversation line="We seek the emergency transmission..." speaker="0" flags="EndLevel" allowedjobs="Captain">
+    <Conversation line="Huh!?" speaker="1">
+      <Conversation line="From Who!?!?" speaker="1">
+        <Conversation line="What transmission's down here?" speaker="2">
+          <Conversation line="Soon our eyes will be opened." speaker="0" />
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Where the hell are we?" speaker="0" flags="EndLevel">
+    <Conversation line="They keep the knowledge from us!" speaker="1" allowedjobs="Captain">
+      <Conversation line="Who's 'they'??" speaker="0">
+        <Conversation line="Are we damned by the way?" speaker="2">
+          <Conversation line="I feel like we've done this before" speaker="0" />
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="..." speaker="0" flags="EndLevel" allowedjobs="Captain">
+    <Conversation line="I've waded through the sands of time..." speaker="0" flags="pressure" allowedjobs="Captain">
+      <Conversation line="Captain!?!?" speaker="1">
+        <Conversation line="Wait who's piloting the sub?" speaker="2">
+          <Conversation line="I feel this isn't the first time we've done this." speaker="1">
+            <Conversation line="I don't like this." speaker="2" />
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="Well boys, it's about time we did this again." speaker="0" flags="EndLevel" allowedjobs="Captain">
+    <Conversation line="What do you mean again?" speaker="1" allowedjobs="Assistant">
+      <Conversation line="..." speaker="0">
+        <Conversation line="WHAT DO YOU MEAN AGAIN!?" speaker="1" allowedjobs="Assistant">
+          <Conversation line="..." speaker="2">
+            <Conversation line="WHAT IS GOING ON!?" speaker="1" />
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <Conversation line="…Rrrg, I’m just going to ignore this, I can’t layer my head behind this." speaker="0" flags="EndLevel">
+    <Conversation line="Don't you mean “I can't wrap my head around this.”?" speaker="1">
+      <Conversation line="..." speaker="0">
+        <Conversation line="Is that how you say that phrase?" speaker="1">
+          <Conversation line="Does anyone hear that?" speaker="2">
+            <Conversation line="Oh my god, you do think the phrase is said like that!" speaker="1" />
+          </Conversation>
+        </Conversation>
+      </Conversation>
+    </Conversation>
+  </Conversation>
+  <!-- <continuation of the drunk stuff> -->
+  <Conversation line="Ah shit, here we go again..." speaker="0" minintensity="0.5" />
+  <Conversation line="I don't like where this is going!" speaker="0" minintensity="0.5" />
+  <Conversation line="How the turn tables." speaker="0" minintensity="0.5" flags="DrunkMedium" />
+  <Conversation line="I knew this would happen! I FORESAW THIS!" speaker="0" minintensity="0.7">
+    <Conversation line="Well of course it was going to happen with a crew like this one!" speaker="1" speakertags="rude">
+      <Conversation line="Shut it! We can still make it out of this alive!" speaker="2" />
+    </Conversation>
+  </Conversation>
+  <Conversation line="YyoooUu k-noW, I, I, I oncCeed bit offF a dudes nosee....." speaker="0" minintensity="0.7" flags="DrunkMedium">
+    <Conversation line="Hey, hey, what do you call a guy with no body and no nose?" speaker="1" speakertags="joker" />
+    <Conversation line="ARE YOU FUCKING KIDDING ME?! ARE YOU REALLY DRUNK RIGHT NOW!?" speaker="2" speakertags="professional,tough,rude" />
+    <Conversation line="No-body nose, ha ha, get it?" speaker="1" speakertags="joker" />
+  </Conversation>
+  <Conversation line="While I'm the type to joke, we are completely and utterly fucked!" speaker="0" minintensity="0.8" speakertags="joker" />
+  <Conversation line="We shouldn't have come here!" speaker="0" minintensity="0.8" />
+  <Conversation line="Ah shit we are in DEEP SHIT!" speaker="0" minintensity="1.0" flags="SubmarineDeep" />
+</Conversations>

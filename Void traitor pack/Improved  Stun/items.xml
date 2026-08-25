@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Override>
+  <Items>
+    <Item name="" identifier="headset" scale="0.5" category="Equipment" tags="smallitem,mobileradio" description="" cargocontaineridentifier="metalcrate" impactsoundtag="impact_metal_light" hideconditionbar="true">
+      <PreferredContainer primary="crewcab" secondary="divingcab" />
+      <Price baseprice="105">
+        <Price storeidentifier="merchantoutpost" minavailable="3" />
+        <Price storeidentifier="merchantcity" multiplier="0.9" minavailable="10" />
+        <Price storeidentifier="merchantresearch" minavailable="4" />
+        <Price storeidentifier="merchantmilitary" minavailable="6" />
+        <Price storeidentifier="merchantmine" minavailable="6" />
+      </Price>
+      <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="256,0,64,64" origin="0.5,0.5" />
+      <Sprite name="Headset" texture="Content/Items/Jobgear/headgears.png" depth="0.6" sourcerect="28,321,49,62" origin="0.5,0.5" />
+      <Body radius="20" height="20" density="15" />
+      <Deconstruct time="10">
+        <Item identifier="plastic" amount="2" />
+        <Item identifier="copper" />
+      </Deconstruct>
+      <Fabricate suitablefabricators="fabricator" requiredtime="10">
+        <RequiredSkill identifier="mechanical" level="30" />
+        <RequiredItem identifier="plastic" />
+        <RequiredItem identifier="fpgacircuit" />
+      </Fabricate>
+      <!--Я эти ваши костыли маму ел /-->
+      <WifiComponent range="35000.0" LinkToChat="true" MinChatMessageInterval="0.0">
+        <RequiredItems items="mobilebattery" type="Contained" />
+      </WifiComponent>
+      <ItemContainer capacity="1" maxstacksize="1" containedstateindicatorstyle="battery" SpawnWithId="Kostil" drawinventory="false" removecontaineditemsondeconstruct="true" hideconditionbar="false">
+        <Containable items="mobilebattery">
+          <StatusEffect type="OnContaining" targettype="This" Voltage="1.0" setvalue="true" />
+        </Containable>
+      </ItemContainer>
+      <Wearable limbtype="Head" slots="Any,Headset" msg="ItemMsgPickUpSelect" displaycontainedstatus="true">
+        <sprite name="Headset Wearable" texture="Content/Items/Jobgear/headgears.png" limb="Head" depth="0.1" hidelimb="false" inheritlimbdepth="true" inheritscale="true" ignorelimbscale="true" scale="0.7" hideotherwearables="false" sourcerect="26,317,51,64" origin="0.5,0.6" />
+        <StatusEffect type="OnWearing" target="Contained,Character" Condition="0" setvalue="true">
+          <Conditional stun="gt 1" />
+        </StatusEffect>
+        <StatusEffect type="OnWearing" target="Contained,Character" Condition="100" setvalue="true">
+          <Conditional stun="lt 1" />
+        </StatusEffect>
+      </Wearable>
+    </Item>
+    <Item name="" identifier="autoinjectorheadset" scale="0.5" category="Equipment,Medical" tags="smallitem,mobileradio" allowasextracargo="true" description="" cargocontaineridentifier="metalcrate" impactsoundtag="impact_metal_light" hideconditionbar="true">
+      <PreferredContainer primary="medcab" />
+      <Price baseprice="140" sold="false">
+        <Price storeidentifier="merchantoutpost" />
+        <Price storeidentifier="merchantcity" multiplier="0.9" />
+        <Price storeidentifier="merchantresearch" />
+        <Price storeidentifier="merchantmilitary" />
+        <Price storeidentifier="merchantmine" />
+      </Price>
+      <InventoryIcon texture="Content/Items/JobGear/TalentGear.png" sourcerect="113,264,58,45" origin="0.5,0.5" />
+      <Sprite name="Headset" texture="Content/Items/JobGear/TalentGear.png" depth="0.6" sourcerect="253,301,76,64" origin="0.35,0.5" />
+      <Body radius="20" height="20" density="15" />
+      <Deconstruct time="10">
+        <Item identifier="plastic" amount="2" />
+        <Item identifier="copper" />
+      </Deconstruct>
+      <Fabricate suitablefabricators="fabricator" requiredtime="10" requiresrecipe="true">
+        <RequiredSkill identifier="mechanical" level="30" />
+        <RequiredItem identifier="plastic" />
+        <RequiredItem identifier="fpgacircuit" />
+      </Fabricate>
+      <!--Я эти ваши костыли маму ел   hideitems="true" /-->
+      <WifiComponent range="35000.0" LinkToChat="true" MinChatMessageInterval="0.0">
+        <RequiredItems items="mobilebattery" type="Contained" />
+      </WifiComponent>
+      <ItemContainer capacity="1" maxstacksize="1" autoinject="true" hideitems="true" SpawnWithId="Kostil" removecontaineditemsondeconstruct="true">
+        <Containable items="mobilebattery">
+          <SlotIcon slotindex="0" texture="Content/UI/StatusMonitorUI.png" sourcerect="1,1,1,1" origin="0.5,0.5" />
+          <SlotIcon slotindex="1" texture="Content/UI/StatusMonitorUI.png" sourcerect="384,448,64,64" origin="0.5,0.5" />
+          <StatusEffect type="OnContaining" targettype="This" Voltage="1.0" setvalue="true" />
+        </Containable>
+        <SubContainer capacity="1" maxstacksize="1" autoinject="true" hideitems="true">
+          <Containable items="chem,medical" />
+        </SubContainer>
+      </ItemContainer>
+      <Wearable limbtype="Head" slots="Any,Headset" msg="ItemMsgPickUpSelect" displaycontainedstatus="true">
+        <sprite name="Headset Wearable" texture="Content/Items/JobGear/TalentGear.png" sourcerect="253,305,76,58" limb="Head" hidelimb="false" inheritlimbdepth="true" inheritscale="true" ignorelimbscale="true" scale="0.7" hideotherwearables="false" origin="0.5,0.5" />
+        <StatusEffect type="OnWearing" target="Contained,Character" targetslot="0" Condition="0" setvalue="true">
+          <Conditional stun="gt 1" />
+        </StatusEffect>
+        <StatusEffect type="OnWearing" target="Contained,Character" targetslot="0" Condition="100" setvalue="true">
+          <Conditional stun="lt 1" />
+        </StatusEffect>
+      </Wearable>
+    </Item>
+    <Item name="IGNORE IT!" identifier="Kostil" category="Equipment" maxstacksize="1" tags="smallitem,loadable,mobilebattery," scale="0.5" hideconditionbar="true" hideinmenus="true" noninteractable="true">
+      <Sprite texture="Content/UI/StatusMonitorUI.png" sourcerect="0,0,1,1" origin="0.5,0.5" depth="0.55" />
+      <Body width="32" height="20" density="30" />
+      <Holdable slots="Any,RightHand,LeftHand" msg="ItemMsgPickUpSelect" />
+    </Item>
+  </Items>
+</Override>

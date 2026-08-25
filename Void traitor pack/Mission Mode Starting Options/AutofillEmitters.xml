@@ -1,0 +1,699 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <!--Crate variantof due to broken game, literally only difference is color-->
+  <Item name="" identifier="lchuskcrate" tags="crate" nameidentifier="metalcrate" descriptionidentifier="metalcrate" variantof="metalcrate" spritecolor="87,122,86,255" hideinmenus="true" />
+  <Item name="" identifier="LCEmitterRemovalTool" hideinmenus="true" allowasextracargo="true" description="" spritecolor="255,15,15">
+    <!--HEY DUMBASS YOU FORGOT TO PUT IT IN AN ITEMCOMPONENT-->
+    <Sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="0,384,128,128" depth="0.6" origin="0.5,0.5" />
+    <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" delay="5">
+      <TriggerEvent identifier="LCEmitterRemove" />
+      <RemoveItem />
+    </StatusEffect>
+  </Item>
+  <!--Extra cargo selectors-->
+  <Item name="" identifier="_LCAutofillAllInOneTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64" spritecolor="90,220,60">
+    <!--These items shows up as extra cargo in settings -->
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false">
+        <!--Triggers following events within the SpawnItemEvents.xml file, these handle tagging the correct container to spawn the items in relevant locations.-->
+        <SpawnItem identifiers="_LCAutofillBasicCraftingTrigger" spawnposition="SameInventory" count="3" />
+        <SpawnItem identifiers="_LCAutofillAdvancedCraftingTrigger" spawnposition="SameInventory" count="3" />
+        <SpawnItem identifiers="_LCAutofillAlienCrafting" spawnposition="SameInventory" count="3" />
+        <SpawnItem identifiers="_LCAutofillChemicalCraftingTrigger" spawnposition="SameInventory" count="2" />
+        <SpawnItem identifiers="_LCAutofillMedicalCraftingTrigger" spawnposition="SameInventory" count="4" />
+        <SpawnItem identifiers="_LCAutofillAdvancedMedicalTrigger" spawnposition="SameInventory" count="2" />
+        <SpawnItem identifiers="_LCAutofillToxCabTrigger" spawnposition="SameInventory" count="3" />
+        <SpawnItem identifiers="_LCAutofillgeneticsTrigger" spawnposition="SameInventory" count="2" />
+        <SpawnItem identifiers="_LCAutofillReactorCabTrigger" spawnposition="SameInventory" count="3" />
+        <SpawnItem identifiers="_LCAutofillenginecabTrigger" spawnposition="SameInventory" count="2" />
+        <SpawnItem identifiers="_LCAutofillwiresTrigger" spawnposition="SameInventory" count="3" />
+        <SpawnItem identifiers="_LCAutofillcrewcabTrigger" spawnposition="SameInventory" count="2" />
+        <SpawnItem identifiers="_LCAutofillsecarmcab" spawnposition="SameInventory" />
+        <SpawnItem identifiers="_LCStartAtLevel4RoundStart" spawnposition="SameInventory" />
+        <TriggerEvent identifier="LCAutofilldivingsuit" />
+        <RemoveItem />
+        <!--Remove autofiller trigger item after items spawned-->
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillBasicCraftingTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillBasicCrafting" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillAdvancedCraftingTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillAdvancedCrafting" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillChemicalCraftingTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillChemicalCrafting" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillAlienCraftingTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillAlienCrafting" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillMedicalCraftingTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillMedicalCrafting" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillAdvancedMedicalTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillAdvancedMedical" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillToxCabTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillToxCab" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillReactorCabTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillReactorCab" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillwiresTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillwires" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillenginecabTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillenginecab" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillcrewcabTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillcrewcab" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillclownTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64" spritecolor="186,7,7">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillclown" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillcultistTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64" spritecolor="12,22,34">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillcultist" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillgeneticsTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillgenetics" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillsecarmcabTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillsecarmcab" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillspawnexosuit" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64" spritecolor="144,183,193">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillexosuit" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofilldivingsuitlockerTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofilldivingsuit" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofilldivingsuitlockerhighqualityTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64" spritecolor="145,30,190">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofilldivingsuithightier" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillSupriseItemTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillSurpriseItem" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillTier1ArmedTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillTier1ArmedTrigger" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillTier2ArmedTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillTier2ArmedTrigger" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillTier3ArmedTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillTier3ArmedTrigger" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillMineralCabTrigger" hideinmenus="true" allowasextracargo="true" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <TriggerEvent identifier="LCAutofillMineralCab" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <!--######################################################################-->
+  <!--Actual spawners that randomize, easy to modify and savvy users can even use them as preplaced spawners within any container.-->
+  <Item name="" identifier="_LCAutofillBasicCrafting" nameidentifier="_LCAutofillBasicCraftingTrigger" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <!--Spawn below items randomly, total amount matches the amount spawning in preferredcontainer as spawnitemrandomly is only one item in the list. If you want to increase chance, just duplicate a line as seen on Medical Crafting organicfiber, dont use count="2" as that does not work from my testing.-->
+        <SpawnItem identifiers="plastic" spawnposition="SameInventory" />
+        <SpawnItem identifiers="iron" spawnposition="SameInventory" />
+        <SpawnItem identifiers="copper" spawnposition="SameInventory" />
+        <SpawnItem identifiers="steel" spawnposition="SameInventory" />
+        <SpawnItem identifiers="carbon" spawnposition="SameInventory" />
+        <SpawnItem identifiers="tin" spawnposition="SameInventory" />
+        <SpawnItem identifiers="lead" spawnposition="SameInventory" />
+        <RemoveItem />
+        <!--Remove autofiller item after items spawned-->
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillMineralCab" nameidentifier="_LCAutofillBasicCraftingTrigger" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <!--Spawn below items randomly, total amount matches the amount spawning in preferredcontainer as spawnitemrandomly is only one item in the list. If you want to increase chance, just duplicate a line as seen on Medical Crafting organicfiber, dont use count="2" as that does not work from my testing.-->
+        <SpawnItem identifiers="amblygonite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="aragonite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="bornite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="brockite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="cassiterite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="chalcopyrite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="chamosite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="chrysoprase" spawnposition="SameInventory" />
+        <SpawnItem identifiers="cryolite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="diamond" spawnposition="SameInventory" />
+        <SpawnItem identifiers="esperite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="galena" spawnposition="SameInventory" />
+        <SpawnItem identifiers="graphite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="hydroxyapatite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="ilmenite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="ironore" spawnposition="SameInventory" />
+        <SpawnItem identifiers="langbeinite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="lazulite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="polyhalite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="pyromorphite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="quartz" spawnposition="SameInventory" />
+        <SpawnItem identifiers="sphalerite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="stannite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="sylvite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="thorianite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="titanite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="triphylite" spawnposition="SameInventory" />
+        <SpawnItem identifiers="uraniumore" spawnposition="SameInventory" />
+        <RemoveItem />
+        <!--Remove autofiller item after items spawned-->
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillAdvancedCrafting" nameidentifier="_LCAutofillAdvancedCraftingTrigger" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <SpawnItem identifiers="titanium" spawnposition="SameInventory" />
+        <SpawnItem identifiers="titaniumaluminiumalloy" spawnposition="SameInventory" />
+        <SpawnItem identifiers="ballisticfiber" spawnposition="SameInventory" />
+        <SpawnItem identifiers="rubber" spawnposition="SameInventory" />
+        <SpawnItem identifiers="fpgacircuit" spawnposition="SameInventory" />
+        <SpawnItem identifiers="flashpowder" spawnposition="SameInventory" />
+        <SpawnItem identifiers="zinc" spawnposition="SameInventory" />
+        <SpawnItem identifiers="silicon" spawnposition="SameInventory" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillChemicalCrafting" nameidentifier="_LCAutofillChemicalCraftingTrigger" description="" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <SpawnItem identifiers="magnesium" spawnposition="SameInventory" />
+        <SpawnItem identifiers="phosphorus" spawnposition="SameInventory" />
+        <SpawnItem identifiers="lithium" spawnposition="SameInventory" />
+        <SpawnItem identifiers="potassium" spawnposition="SameInventory" />
+        <SpawnItem identifiers="sodium" spawnposition="SameInventory" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillAlienCrafting" description="" nameidentifier="_LCAutofillAlienCraftingTrigger" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <SpawnItem identifiers="fulgurium" spawnposition="SameInventory" />
+        <SpawnItem identifiers="incendium" spawnposition="SameInventory" />
+        <SpawnItem identifiers="oxygeniteshard" spawnposition="SameInventory" />
+        <SpawnItem identifiers="physicorium" spawnposition="SameInventory" />
+        <SpawnItem identifiers="sulphuriteshard" spawnposition="SameInventory" />
+        <SpawnItem identifiers="dementonite" spawnposition="SameInventory" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillMedicalCrafting" description="" nameidentifier="_LCAutofillMedicalCraftingTrigger" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <SpawnItem identifiers="organicfiber" spawnposition="SameInventory" />
+        <SpawnItem identifiers="organicfiber" spawnposition="SameInventory" />
+        <SpawnItem identifiers="alienblood" spawnposition="SameInventory" />
+        <SpawnItem identifiers="elastin" spawnposition="SameInventory" />
+        <SpawnItem identifiers="ethanol" spawnposition="SameInventory" />
+        <SpawnItem identifiers="opium" spawnposition="SameInventory" />
+        <SpawnItem identifiers="calcium" spawnposition="SameInventory" />
+        <SpawnItem identifiers="potassium" spawnposition="SameInventory" />
+        <SpawnItem identifiers="paralyxis" spawnposition="SameInventory" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillAdvancedMedical" description="" nameidentifier="_LCAutofillAdvancedMedicalTrigger" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <SpawnItem identifiers="deusizine" spawnposition="SameInventory" />
+        <SpawnItem identifiers="steroids" spawnposition="SameInventory" />
+        <SpawnItem identifiers="meth" spawnposition="SameInventory" />
+        <SpawnItem identifiers="hyperzine" spawnposition="SameInventory" />
+        <SpawnItem identifiers="combatstimulantsyringe" spawnposition="SameInventory" />
+        <SpawnItem identifiers="pressurestabilizer" spawnposition="SameInventory" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillReactorCab" description="" nameidentifier="_LCAutofillReactorCabTrigger" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <SpawnItem identifiers="uranium" spawnposition="SameInventory" />
+        <SpawnItem identifiers="uranium" spawnposition="SameInventory" />
+        <SpawnItem identifiers="thorium" spawnposition="SameInventory" />
+        <SpawnItem identifiers="fuelrod" spawnposition="SameInventory" />
+        <SpawnItem identifiers="thoriumfuelrod" spawnposition="SameInventory" />
+        <SpawnItem identifiers="fulguriumfuelrod" spawnposition="SameInventory" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillenginecab" description="" nameidentifier="_LCAutofillenginecabTrigger" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <SpawnItem identifiers="alarmbuzzer" spawnposition="SameInventory" />
+        <SpawnItem identifiers="motiondetector" spawnposition="SameInventory" />
+        <SpawnItem identifiers="repairpack" spawnposition="SameInventory" />
+        <SpawnItem identifiers="waterdetector" spawnposition="SameInventory" />
+        <SpawnItem identifiers="delaycomponent" spawnposition="SameInventory" />
+        <SpawnItem identifiers="andcomponent" spawnposition="SameInventory" />
+        <SpawnItem identifiers="signalcheckcomponent" spawnposition="SameInventory" />
+        <SpawnItem identifiers="regexcomponent" spawnposition="SameInventory" />
+        <SpawnItem identifiers="wificomponent" spawnposition="SameInventory" />
+        <SpawnItem identifiers="relaycomponent" spawnposition="SameInventory" />
+        <SpawnItem identifiers="fixfoamgrenade" spawnposition="SameInventory" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillwires" description="" nameidentifier="_LCAutofillwiresTrigger" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <SpawnItem identifiers="redwire" spawnposition="SameInventory" />
+        <SpawnItem identifiers="redwire" spawnposition="SameInventory" />
+        <SpawnItem identifiers="redwire" spawnposition="SameInventory" />
+        <SpawnItem identifiers="bluewire" spawnposition="SameInventory" />
+        <SpawnItem identifiers="bluewire" spawnposition="SameInventory" />
+        <SpawnItem identifiers="bluewire" spawnposition="SameInventory" />
+        <SpawnItem identifiers="orangewire" spawnposition="SameInventory" />
+        <SpawnItem identifiers="brownwire" spawnposition="SameInventory" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillcrewcab" description="" nameidentifier="_LCAutofillcrewcabTrigger" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <SpawnItem identifiers="clownmask" spawnposition="SameInventory" />
+        <SpawnItem identifiers="banana" spawnposition="SameInventory" />
+        <SpawnItem identifiers="rum" spawnposition="SameInventory" />
+        <SpawnItem identifiers="ethanol" spawnposition="SameInventory" />
+        <SpawnItem identifiers="proteinbar" spawnposition="SameInventory" />
+        <SpawnItem identifiers="energydrink" spawnposition="SameInventory" />
+        <SpawnItem identifiers="baseballcap" spawnposition="SameInventory" />
+        <SpawnItem identifiers="divingmask" spawnposition="SameInventory" />
+        <SpawnItem identifiers="piratebandana" spawnposition="SameInventory" />
+        <SpawnItem identifiers="chitinhelmet" spawnposition="SameInventory" />
+        <SpawnItem identifiers="administratorclothes" spawnposition="SameInventory" />
+        <SpawnItem identifiers="securitypatrolclothes" spawnposition="SameInventory" />
+        <SpawnItem identifiers="researcherclothes" spawnposition="SameInventory" />
+        <SpawnItem identifiers="crewchiefclothes" spawnposition="SameInventory" />
+        <SpawnItem identifiers="vipclothes1" spawnposition="SameInventory" />
+        <SpawnItem identifiers="medicalofficerclothes" spawnposition="SameInventory" />
+        <SpawnItem identifiers="safetyharness" spawnposition="SameInventory" />
+        <SpawnItem identifiers="bandolier" spawnposition="SameInventory" />
+        <SpawnItem identifiers="mudraptorshell" spawnposition="SameInventory" />
+        <SpawnItem identifiers="toolbelt" spawnposition="SameInventory" />
+        <SpawnItem identifiers="backpack" spawnposition="SameInventory" />
+        <SpawnItem identifiers="headset" spawnposition="SameInventory" />
+        <SpawnItem identifiers="crowbar" spawnposition="SameInventory" />
+        <SpawnItem identifiers="flashlight" spawnposition="SameInventory" />
+        <SpawnItem identifiers="handheldelectricalmonitor" spawnposition="SameInventory" />
+        <SpawnItem identifiers="handhelditemfinder" spawnposition="SameInventory" />
+        <SpawnItem identifiers="handheldstatusmonitor" spawnposition="SameInventory" />
+        <SpawnItem identifiers="reactorpda" spawnposition="SameInventory" />
+        <SpawnItem identifiers="wateringcan" spawnposition="SameInventory" />
+        <SpawnItem identifiers="toolbox" spawnposition="SameInventory" />
+        <SpawnItem identifiers="divingknife" spawnposition="SameInventory" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillclown" description="" nameidentifier="_LCAutofillclownTrigger" Tags="smallitem" maxstacksize="64" spritecolor="186,7,7">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false">
+        <!--Without spawnitemrandomly all of these will spawn-->
+        <SpawnItem identifiers="clownmask" spawnposition="SameInventory" />
+        <SpawnItem identifiers="clowncostume" spawnposition="SameInventory" />
+        <SpawnItem identifiers="bananapeel" spawnposition="SameInventory" count="8" />
+        <SpawnItem identifiers="toyhammer" spawnposition="SameInventory" />
+        <SpawnItem identifiers="bikehorn" spawnposition="SameInventory" />
+        <SpawnItem identifiers="honkmotherianscriptures1" spawnposition="SameInventory" />
+        <SpawnItem identifiers="honkmotherianscriptures2" spawnposition="SameInventory" />
+        <SpawnItem identifiers="honkmotherianscriptures3" spawnposition="SameInventory" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillcultist" description="" nameidentifier="_LCAutofillcultistTrigger" Tags="smallitem" maxstacksize="64" spritecolor="12,22,34">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false">
+        <SpawnItem identifiers="zealotrobes" spawnposition="SameInventory" />
+        <SpawnItem identifiers="huskeggs" spawnposition="SameInventory" />
+        <SpawnItem identifiers="genesplicer" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialhusk" spawnposition="SameInventory" />
+        <SpawnItem identifiers="rituallantern" spawnposition="SameInventory" />
+        <SpawnItem identifiers="bookofchalices1" spawnposition="SameInventory" />
+        <SpawnItem identifiers="bookofchalices2" spawnposition="SameInventory" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillsecarmcab" description="" nameidentifier="_LCAutofillsecarmcabTrigger" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false" spawnItemRandomly="true">
+        <SpawnItem identifiers="lchmgspawn" spawnposition="SameInventory" />
+        <SpawnItem identifiers="lcassaultriflespawn" spawnposition="SameInventory" />
+        <SpawnItem identifiers="lchandcannonspawn" spawnposition="SameInventory" />
+        <SpawnItem identifiers="lcautoshotgunspawn" spawnposition="SameInventory" />
+        <SpawnItem identifiers="lcassaultriflespawn" spawnposition="SameInventory" />
+        <SpawnItem identifiers="lchandcannonspawn" spawnposition="SameInventory" />
+        <SpawnItem identifiers="lcautoshotgunspawn" spawnposition="SameInventory" />
+        <SpawnItem identifiers="boardingaxe" spawnposition="SameInventory" />
+        <SpawnItem identifiers="boardingaxe" spawnposition="SameInventory" />
+        <SpawnItem identifiers="nucleargun" spawnposition="SameInventory" />
+        <SpawnItem identifiers="harpooncoilrifle" spawnposition="SameInventory" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name=" " identifier="lchmgspawn" description="" hideinmenus="true" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <Holdable />
+    <!--Holdable just so it can spawn in inventory-->
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false">
+        <SpawnItem identifiers="hmg" spawnposition="SameInventory" />
+        <SpawnItem identifiers="hmgmagazine" spawnposition="SameInventory" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name=" " identifier="lcassaultriflespawn" description="" hideinmenus="true" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <Holdable />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false">
+        <SpawnItem identifiers="assaultrifle" spawnposition="SameInventory" />
+        <SpawnItem identifiers="assaultriflemagazine" spawnposition="SameInventory" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name=" " identifier="lchandcannonspawn" description="" hideinmenus="true" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <Holdable />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false">
+        <SpawnItem identifiers="handcannon" spawnposition="SameInventory" />
+        <SpawnItem identifiers="handcannonround" spawnposition="SameInventory" count="6" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name=" " identifier="lcautoshotgunspawn" description="" hideinmenus="true" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <Holdable />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false">
+        <SpawnItem identifiers="autoshotgun" spawnposition="SameInventory" />
+        <SpawnItem identifiers="shotgunshell" spawnposition="SameInventory" count="12" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name=" " identifier="lcrevolverspawn" description="" hideinmenus="true" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <Holdable />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false">
+        <SpawnItem identifiers="revolver" spawnposition="SameInventory" />
+        <SpawnItem identifiers="revolverround" spawnposition="SameInventory" count="6" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name=" " identifier="lcharpoongunspawn" description="" hideinmenus="true" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <Holdable />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false">
+        <SpawnItem identifiers="harpoongun" spawnposition="SameInventory" />
+        <SpawnItem identifiers="spear" spawnposition="SameInventory" count="6" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name=" " identifier="lcmachinepistolspawn" description="" hideinmenus="true" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <Holdable />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false">
+        <SpawnItem identifiers="machinepistol" spawnposition="SameInventory" />
+        <SpawnItem identifiers="smgmagazine" spawnposition="SameInventory" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name=" " identifier="lcsmgspawn" description="" hideinmenus="true" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <Holdable />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false">
+        <SpawnItem identifiers="smg" spawnposition="SameInventory" />
+        <SpawnItem identifiers="smgmagazine" spawnposition="SameInventory" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name=" " identifier="lcshotgunspawn" description="" hideinmenus="true" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <Holdable />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false">
+        <SpawnItem identifiers="shotgun" spawnposition="SameInventory" />
+        <SpawnItem identifiers="shotgunshell" spawnposition="SameInventory" count="6" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name=" " identifier="lcriflespawn" description="" hideinmenus="true" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <Holdable />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" stackable="false">
+        <SpawnItem identifiers="rifle" spawnposition="SameInventory" />
+        <SpawnItem identifiers="riflebullet" spawnposition="SameInventory" count="6" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillgenetics" description="" nameidentifier="_LCAutofillgeneticsTrigger" Tags="smallitem" maxstacksize="64">
+    <!--Three different sets for different conditions, duping even the pointless condition ones so they are just as common.-->
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <SpawnItem identifiers="geneticmaterialcrawler" Condition="0.2" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialmudraptor" Condition="0.2" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialmoloch" Condition="0.2" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialmantis" Condition="0.2" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialthresher" Condition="0.2" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialhammerhead" Condition="0.2" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialhammerheadmatriarch" Condition="0.2" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialspineling" Condition="0.2" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialhusk" Condition="0.2" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialmollusc" Condition="0.2" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialskitter" Condition="0.2" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialhunter" Condition="0.2" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialcrawler" Condition="0.4" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialmudraptor" Condition="0.4" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialmoloch" Condition="0.4" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialmantis" Condition="0.4" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialthresher" Condition="0.4" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialhammerhead" Condition="0.4" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialhammerheadmatriarch" Condition="0.4" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialspineling" Condition="0.4" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialhusk" Condition="0.4" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialmollusc" Condition="0.4" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialskitter" Condition="0.4" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialhunter" Condition="0.4" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialcrawler" Condition="0.6" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialmudraptor" Condition="0.6" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialmoloch" Condition="0.6" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialmantis" Condition="0.6" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialthresher" Condition="0.6" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialhammerhead" Condition="0.6" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialhammerheadmatriarch" Condition="0.6" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialspineling" Condition="0.6" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialhusk" Condition="0.6" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialmollusc" Condition="0.6" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialskitter" Condition="0.6" spawnposition="SameInventory" />
+        <SpawnItem identifiers="geneticmaterialhunter" Condition="0.6" spawnposition="SameInventory" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+  <Item name="" identifier="_LCAutofillToxCab" description="" nameidentifier="_LCAutofillToxCabTrigger" Tags="smallitem" maxstacksize="64">
+    <Sprite texture="Content/UI/CommandUIBackground.png" sourcerect="512,896,128,128" depth="0.6" origin="0.5,0.5" />
+    <ItemComponent>
+      <StatusEffect type="Always" target="This" disabledeltatime="true" spawnItemRandomly="true" stackable="false">
+        <SpawnItem identifiers="huskeggs" spawnposition="SameInventory" />
+        <SpawnItem identifiers="chloralhydrate" spawnposition="SameInventory" />
+        <SpawnItem identifiers="cyanide" spawnposition="SameInventory" />
+        <SpawnItem identifiers="europabrew" spawnposition="SameInventory" />
+        <SpawnItem identifiers="morbusine" spawnposition="SameInventory" />
+        <SpawnItem identifiers="paralyzant" spawnposition="SameInventory" />
+        <SpawnItem identifiers="radiotoxin" spawnposition="SameInventory" />
+        <SpawnItem identifiers="raptorbaneextract" spawnposition="SameInventory" />
+        <SpawnItem identifiers="sufforin" spawnposition="SameInventory" />
+        <SpawnItem identifiers="sulphuricacidsyringe" spawnposition="SameInventory" />
+        <SpawnItem identifiers="antiparalysis" spawnposition="SameInventory" />
+        <SpawnItem identifiers="antirad" spawnposition="SameInventory" />
+        <SpawnItem identifiers="cyanideantidote" spawnposition="SameInventory" />
+        <SpawnItem identifiers="deliriumineantidote" spawnposition="SameInventory" />
+        <SpawnItem identifiers="antipsychosis" spawnposition="SameInventory" />
+        <SpawnItem identifiers="morbusineantidote" spawnposition="SameInventory" />
+        <SpawnItem identifiers="antinarc" spawnposition="SameInventory" />
+        <SpawnItem identifiers="sufforinantidote" spawnposition="SameInventory" />
+        <RemoveItem />
+      </StatusEffect>
+    </ItemComponent>
+  </Item>
+</Items>

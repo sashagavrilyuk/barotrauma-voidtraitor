@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Jobs>
+  <!--<Job identifier="who" onlyjobspecificdialog="false" minnumber="0" maxnumber="0" initialcount="0" hiddenjob="true">
+    <ItemSet>
+      <Item identifier="bc1" equip="true" />
+      <Item identifier="hood" equip="true" />
+      <Item identifier="idcard" equip="true" showpreview="false" />
+      <Item identifier="revolver" equip="false">
+        <Item identifier="revolverround" />
+        <Item identifier="revolverround" />
+        <Item identifier="revolverround" />
+        <Item identifier="revolverround" />
+        <Item identifier="revolverround" />
+        <Item identifier="revolverround" />
+      </Item>
+    </ItemSet>
+  </Job>-->
+</Jobs>

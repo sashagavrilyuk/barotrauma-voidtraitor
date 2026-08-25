@@ -1,0 +1,504 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+
+  <Item name="" identifier="traitoridcard" category="Hidden" hideinmenus="true" Tags="smallitem,idcard,id_medic,id_captain,id_security,id_engineer,id_mechanic,wreck_id,idmedic,idcaptain,idsecurity,idengineer,idmechanic"  scale="0.15" cargocontaineridentifier="metalcrate">
+    <Price baseprice="100" >
+      <Price locationtype="outpost" multiplier="1" sold="false" />
+      <Price locationtype="city" multiplier="0.9" sold="false" />
+      <Price locationtype="research" multiplier="0.9" sold="false" />
+      <Price locationtype="military" multiplier="1" sold="false" />
+      <Price locationtype="mine" multiplier="0.75" sold="false" />
+    </Price>
+    <InventoryIcon texture="card.png" sourcerect="0,0,40,40" origin="0.5,0.5" />
+    <Sprite texture="cardS.png" depth="0.8" sourcerect="0,0,159,44" />
+    <Body width="16" height="12" density="20" />
+    <IdCard slots="Any" msg="ItemMsgPickUpSelect" />
+  </Item>
+
+
+  <Morphine name="" identifier="traitorantidama1" category="Hidden" hideinmenus="true" maxstacksize="8" cargocontaineridentifier="mediccrate" Tags="smallitem,chem,medical,syringe" description="" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_metal_light" RequireAimToUse="True">
+    <Upgrade gameversion="0.10.0.0" scale="0.5" />
+    <Price baseprice="100" >
+      <Price locationtype="outpost" multiplier="1" sold="false" />
+      <Price locationtype="city" multiplier="0.9" sold="false" />
+      <Price locationtype="research" multiplier="0.9" sold="false" />
+      <Price locationtype="military" multiplier="1" sold="false" />
+      <Price locationtype="mine" multiplier="0.75" sold="false" />
+    </Price>
+    <SuitableTreatment type="damage" suitability="50" />
+    <SuitableTreatment type="burn" suitability="50" />
+    <SuitableTreatment identifier="huskinfection" suitability="50" />
+    <SuitableTreatment identifier="opiatewithdrawal" suitability="30" />
+    <SuitableTreatment identifier="opiateoverdose" suitability="-10" />
+    <SuitableTreatment identifier="opiateaddiction" suitability="-5" />
+    <SuitableTreatment identifier="oxygenlow" suitability="-20" />
+    <InventoryIcon texture="traitormorphine.png" sourcerect="0,0,64,64" origin="0.5,0.5" />
+    <Sprite texture="traitormorphineS.png" sourcerect="0,0,37,69" depth="0.6" origin="0.5,0.5" />
+    <Body width="35" height="65" density="20" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnFailure" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <RequiredSkill identifier="medical" level="30" />
+      <StatusEffect tags="medical" type="OnUse" target="Character" duration="10">
+        <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+        <ReduceAffliction type="damage" amount="5" />
+        <ReduceAffliction type="burn" amount="5" />
+        <Affliction identifier="oxygenlow" amount="2" />
+        <Affliction identifier="opiateaddiction" amount="0.5" />
+        <Affliction identifier="opiateoverdose" amount="1.0" />
+        <Affliction identifier="artmod_anomalyfunctionalnecrosis" amount="0.0001" />
+        <ReduceAffliction identifier="opiatewithdrawal" amount="3.0" />
+      </StatusEffect>
+      <StatusEffect tags="medical" type="OnFailure" target="Character" duration="10">
+        <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+        <ReduceAffliction type="burn" amount="2.5" />
+        <ReduceAffliction type="damage" amount="2.5" />
+        <Affliction identifier="oxygenlow" amount="3" />
+        <Affliction identifier="opiateaddiction" amount="2.5" />
+        <Affliction identifier="opiateoverdose" amount="2.0" />
+        <Affliction identifier="artmod_anomalyfunctionalnecrosis" amount="0.0001" />
+        <ReduceAffliction identifier="opiatewithdrawal" amount="3.0" />
+      </StatusEffect>
+      <!-- Remove the item when fully used -->
+      <StatusEffect type="OnBroken" target="This" delay="300" condition="1000"/>
+    </MeleeWeapon>
+    <Projectile characterusable="false" launchimpulse="20.0" sticktocharacters="true" launchrotation="-90">
+      <StatusEffect type="OnImpact" target="This" Condition="-100.0" disabledeltatime="true">
+        <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+      </StatusEffect>
+      <StatusEffect tags="medical" type="OnImpact" target="Character" duration="10">
+        <ReduceAffliction type="burn" amount="2" />
+        <ReduceAffliction type="damage" amount="2" />
+        <Affliction identifier="oxygenlow" amount="3" />
+        <Affliction identifier="opiateaddiction" amount="2.5" />
+        <Affliction identifier="opiateoverdose" amount="2.0" />
+        <Affliction identifier="artmod_anomalyfunctionalnecrosis" amount="0.0001" />
+        <ReduceAffliction identifier="opiatewithdrawal" amount="3.0" />
+      </StatusEffect>
+    </Projectile>
+  </Morphine>
+
+
+  <Item name="" identifier="Sek_explosivecharge_c4" category="Hidden" hideinmenus="true" cargocontaineridentifier="metalcrate" tags="mediumitem,weapon,explosive,demolitionsexpert" scale="0.32" impactsoundtag="impact_metal_heavy" isshootable="true" maxstacksize="1">
+    <InventoryIcon texture="С4.png" sourcerect="0,0,112,96" />
+    <Sprite texture="С4.png" sourcerect="0,0,112,96" depth="0.55" origin="0.5,0.5" />
+    <Body width="104" height="86" density="18" />
+    <!--<Throwable slots="Any,RightHand+LeftHand" holdpos="40,-10" aimpos="30,-45" aimangle="90" handle1="0,-13" handle2="0,-13" throwforce="2.0" msg="ItemMsgPickUpSelect"/>-->
+    <Holdable selectkey="Select" pickkey="Use" slots="Any,RightHand+LeftHand" msg="ItemMsgDetachWrench" PickingTime="10.0" holdpos="40,-10" aimpos="50,-5" handle1="0,-13" handle2="0,-13" attachable="true" Attached="false" AttachedByDefault="false" aimable="true">
+      <RequiredItem identifier="wrench" type="Equipped" />
+      <StatusEffect type="OnActive" target="Character" SpeedMultiplier="0.7" setvalue="true" />
+    </Holdable>
+
+    <LightComponent LightColor="255,0,0,255" range="20" blinkfrequency="1" powerconsumption="0" IsOn="false" canbeselected="false" AllowInGameEditing="false">
+      <sprite texture="Mods/More Arts (AOCS)/TraitorItems/satchelcharge_light.png" sourcerect="0,0,80,96" alpha="1" />
+      <StatusEffect type="OnActive" targettype="This" Condition="-1.667" >
+        <Sound file="Mods/More Arts (AOCS)/TraitorItems/ek_satchelbeep.ogg" loop="true" range="1000" />
+      </StatusEffect>
+    </LightComponent>
+    <ItemComponent characterusable="false">
+      <StatusEffect type="OnBroken" targettype="This" disabledeltatime="true" >
+        <sound file="Content/Items/Weapons/ExplosionMedium1.ogg" type="OnUse" range="10000" selectionmode="All" />
+        <sound file="Content/Items/Weapons/ExplosionDebris1.ogg" type="OnUse" range="10000" />
+        <ParticleEmitter particle="weldspark" particleamount="20" distancemin="0" distancemax="128" anglemin="-360" anglemax="360" scalemin="2.5" scalemax="5.0" velocitymin="250" velocitymax="500"/>
+        <ParticleEmitter particle="explosionfire" particleamount="20" distancemin="0" distancemax="128" anglemin="-360" anglemax="360" scalemin="1.5" scalemax="3.5" velocitymin="250" velocitymax="500"/>
+        <ParticleEmitter particle="explosionsmoke" particleamount="4" distancemin="0" distancemax="128" anglemin="-360" anglemax="360" scalemin="2.5" scalemax="5.0" velocitymin="250" velocitymax="500"/>
+        <ParticleEmitter particle="underwaterexplosion" particleamount="1" scalemin="1.75" scalemax="2.0" />
+        <Explosion range="800.0" structuredamage="150" itemdamage="1000" ballastfloradamage="110" levelwalldamage="500" stun="5" force="20.0" severlimbsprobability="0.5" flames="false" decal="explosion" decalsize="0.5">
+          <Affliction identifier="burn" strength="100" />
+          <Affliction identifier="internaldamage" strength="75" />
+          <Affliction identifier="bleeding" strength="30" />
+        </Explosion>
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+
+    <CustomInterface canbeselected="true" drawhudwhenequipped="false">
+      <GuiFrame relativesize="0.15,0.15" anchor="BottomLeft" absoluteoffset="20,20" style="ItemUI" />
+      <TickBox text="Armed" >
+        <sound file="Content\Items\Button\Switch1.ogg" type="OnActive" range="250.0" loop="true" volume="0.3" />
+        <StatusEffect type="OnUse" targettype="This" IsOn="true" checkconditionalalways="true">
+		  <Conditional attached="true" />
+		 </StatusEffect>
+        <StatusEffect type="OnSecondaryUse" targettype="This" IsOn="false" />
+      </TickBox>
+    </CustomInterface>
+  </Item> 
+
+
+  <Item name="" identifier="traitormazeart" category="Hidden" hideinmenus="true" Tags="smallitem,alien,alienartifact" cargocontaineridentifier="metalcrate" Scale="0.5" impactsoundtag="impact_metal_light">
+    <Price baseprice="100" >
+      <Price locationtype="outpost" multiplier="1" sold="false" />
+      <Price locationtype="city" multiplier="0.9" sold="false" />
+      <Price locationtype="research" multiplier="0.9" sold="false" />
+      <Price locationtype="military" multiplier="1" sold="false" />
+      <Price locationtype="mine" multiplier="0.75" sold="false" />
+    </Price>
+    <InventoryIcon texture="Traitormazeart.png" sourcerect="0,0,66,89" origin="0.5,0.5" />
+    <Sprite texture="Traitormazeart.png" sourcerect="0,0,66,89" depth="0.55" origin="0.5,0.5" />
+    <Body width="27" height="60" density="12" />
+    <Holdable slots="Any,RightHand,LeftHand" holdangle="30" handle1="0,-15" msg="ItemMsgPickUpSelect"/>
+    <AiTarget soundrange="50000" sonarlabel="entityname.sonarbeacon" sight="500" staticsight="true"/>
+    <LightComponent LightColor="1.0,1.0,0.0,1.0" range="50" powerconsumption="10" blinkfrequency="2" IsOn="false" canbeselected="false">
+      <StatusEffect type="OnActive" targettype="Contained" Condition="-1.0">
+        <RequiredItem items="batterycell" type="Contained" />
+      </StatusEffect>
+      <StatusEffect type="OnActive" targettype="Contained" Condition="-0.75">
+        <RequiredItem items="fulguriumbatterycell" type="Contained" />
+      </StatusEffect>
+      <StatusEffect type="OnActive" targettype="Contained" Condition="-0.25">
+        <RequiredItem excludedidentifiers="batterycell,fulguriumbatterycell" type="Contained" />
+      </StatusEffect>
+      <StatusEffect type="OnActive" targettype="This" SoundRange="50000" setvalue="true">
+        <Conditional Voltage="gt 0.5" targetitemcomponent="LightComponent" />
+        <sound file="Content/Items/Weapons/SonarDecoy.ogg" range="250.0" loop="true" volume="0.25" />
+      </StatusEffect>
+
+      <StatusEffect type="OnActive" targettype="This,NearbyCharacters" range="2500">
+    	<Affliction identifier="watchersgaze" strength="5" />
+    	<Affliction identifier="mwatchersgaze" strength="5" />
+	   <ParticleEmitter particle="gazerage" anglemax="360" scalemultiplier="1,1" particlespersecond="3" colormultiplier="255,255,255,255" />
+      </StatusEffect>
+      <StatusEffect type="OnActive" targettype="This,NearbyCharacters" range="500">
+    	<Affliction identifier="watchersgaze" strength="20" />
+      </StatusEffect>
+      <StatusEffect type="OnActive" target="Contained">
+        <Use />
+      </StatusEffect>
+
+    </LightComponent>
+    <CustomInterface canbeselected="false" drawhudwhenequipped="true" allowuioverlap="true">
+      <GuiFrame relativesize="0.16,0.15" anchor="CenterLeft" pivot="BottomLeft" relativeoffset="0.006,-0.05" style="ItemUI" />
+      <TickBox text="sonarbeacon.beaconactive">
+        <StatusEffect type="OnUse" targettype="This" IsOn="true" />
+        <StatusEffect type="OnSecondaryUse" targettype="This" IsOn="false" />
+      </TickBox>
+      <TextBox text="sonarbeacon.beaconsignal" propertyname="SonarLabel" maxtextlength="32"/>
+    </CustomInterface>
+    <ItemContainer capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery" SpawnWithId="safechip">
+      <Containable items="mobilebattery">
+        <StatusEffect type="OnContaining" targettype="This" Voltage="1.0" setvalue="true" />
+      </Containable>
+      <SubContainer capacity="1" maxstacksize="1" hideitems="true" >
+        <Containable items="safechip" />
+      </SubContainer>
+    </ItemContainer>
+  </Item>
+
+
+  <Item name="" identifier="safechip" category="Hidden" hideinmenus="true" Tags="smallitem,safechip" cargocontaineridentifier="metalcrate" Scale="0.04" impactsoundtag="impact_metal_light">
+    <PreferredContainer primary="traitormazeart" minamount="1" maxamount="1" spawnprobability="1"/>
+    <Price baseprice="150" soldeverywhere="false">
+      <Price locationtype="outpost" multiplier="1" sold="false"/>
+      <Price locationtype="city" multiplier="0.9" sold="false"/>
+      <Price locationtype="research" multiplier="1.25" sold="false" />
+      <Price locationtype="military" multiplier="1.25" sold="false" />
+      <Price locationtype="mine" multiplier="1" sold="false" />
+    </Price>
+    <InventoryIcon texture="safechip.png" sourcerect="0,0,188,224" origin="0.5,0.5" />
+    <Sprite texture="safechip.png" sourcerect="0,0,188,224" depth="0.55" origin="0.5,0.5" />
+    <Body width="27" height="60" density="12" />
+    <Holdable slots="Any" holdangle="30" handle1="0,-15" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" targettype="this,nearbyCharacters" range="5">
+    	<Affliction identifier="safechip" strength="10" />
+      </StatusEffect>
+    </Holdable>
+  </Item>
+
+
+
+  <Item name="" identifier="noseless_toolbox" category="Equipment" hideinmenus="true" tags="smallitem,mobilecontainer,tool" cargocontaineridentifier="" showcontentsintooltip="true" Scale="0.5" fireproof="true" description="" impactsoundtag="impact_metal_heavy" RequireAimToUse="True">
+    <Deconstruct time="10">
+      <Item identifier="steel" />
+    </Deconstruct>
+    <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="640,256,64,64" origin="0.5,0.6" />
+    <Sprite texture="Content/Items/Tools/tools.png" sourcerect="314,1,94,74" origin="0.5,0.5" depth="0.6" />
+    <Body width="90" height="60" density="20" />
+    <MeleeWeapon slots="RightHand,LeftHand" controlpose="true" aimpos="45,10" handle1="0,18" holdangle="90" reload="1" range="50" combatpriority="6" msg="ItemMsgPickUpSelect">
+      <Attack structuredamage="10" itemdamage="5" targetimpulse="2">
+        <Affliction identifier="blunttrauma" strength="2" />
+        <Affliction identifier="stun" strength="0.6" />
+        <Sound file="Content/Items/Weapons/Smack2.ogg" range="800" />
+      </Attack>
+    </MeleeWeapon>
+    <ItemContainer capacity="12" keepopenwhenequipped="true" movableframe="true" SpawnWithId="noseless_clownmask_special,noseless_clowncostume_special,artmod_clownlighter,smg,clown_smgmagazine,clown_smgmagazine,BOYhammer,BOYhammer,MANhammer">
+      <Containable items="smallitem" excludeditems="toolbelt,toolbox" />
+    </ItemContainer>
+    <aitarget sightrange="1000" soundrange="1000" fadeouttime="2" />
+    <Upgrade gameversion="0.10.0.0" scale="0.5" />
+  </Item>
+  
+  <Item name="" identifier="noseless_clownmask_special" category="Equipment" hideinmenus="true" cargocontaineridentifier="metalcrate" tags="smallitem,clothing,blue_clownmask" description="" scale="0.6">
+    <Price baseprice="1" soldeverywhere="false" canbespecial="false">
+      <Price locationtype="outpost" multiplier="1" sold="false" />
+      <Price locationtype="city" multiplier="1" sold="false" />
+      <Price locationtype="research" multiplier="1" sold="false" />
+      <Price locationtype="military" multiplier="1" sold="false" />
+      <Price locationtype="mine" multiplier="1" sold="false" />
+    </Price>
+    <PreferredContainer primary="outpostcrewcabinet" minamount="0" maxamount="1" spawnprobability="0.05" />
+    <Sprite name="Clown Mask" texture="blue_clownmask.png" depth="0.6" sourcerect="0,0,89,71" origin="0.5,0.5" scale="0.5" />
+    <Body width="40" radius="30" density="15" />
+    <Deconstruct time="10">
+      <Item identifier="bikehorn" />
+    </Deconstruct>
+    <Wearable limbtype="Head" slots="Any,Head" msg="ItemMsgPickUpSelect">
+	  <StatusEffect type="OnWearing" target="character" tags="bluefathers_blessing_head" duration="0.1" stackable="false" />
+      <sprite name="Clown Mask Wearable" texture="blue_clownmask.png" limb="Head" inheritlimbdepth="true" inheritscale="true" ignorelimbscale="true" scale="0.85" sourcerect="0,0,89,71" origin="0.5,0.6" hidewearablesoftype="moustache,beard,hair"/>
+      <StatusEffect tags="clown" type="OnWearing" target="Character" HideFace="true" duration="0.1" stackable="false" />
+	  <StatusEffect type="OnWearing" target="Character" OxygenAvailable="1500.0" ObstructVision="true"/>
+    </Wearable>
+	<StatusHUD drawhudwhenequipped="true" overlaycolor="176,0,0,120" range="3000" thermalgoggles="true" showdeadcharacters="false" showtexts="false" />
+  </Item>
+
+  <Item name="" identifier="noseless_clowncostume_special" category="Equipment" hideinmenus="true" cargocontaineridentifier="metalcrate" tags="smallitem,clothing,blue_clowngear" description="" impactsoundtag="impact_soft" scale="0.5">
+    <Price baseprice="1" soldeverywhere="false" canbespecial="false">
+      <Price locationtype="outpost" multiplier="1" sold="false" />
+      <Price locationtype="city" multiplier="1" sold="false" />
+      <Price locationtype="research" multiplier="1" sold="false" />
+      <Price locationtype="military" multiplier="1" sold="false" />
+      <Price locationtype="mine" multiplier="1" sold="false" />
+    </Price>
+    <PreferredContainer primary="outpostcrewcabinet" minamount="0" maxamount="1" spawnprobability="0.05" />
+    <InventoryIcon name="Clown Costume Icon" texture="blue_clown_inv.png" sourcerect="0,0,64,64" origin="0.5,0.5" />
+    <Sprite name="Clown Costume" texture="blue_clown_sprite.png" sourcerect="0,0,117,55" depth="0.6" origin="0.5,0.5" />
+    <Body width="180" height="50" density="30" friction="0.8" restitution="0.01" />
+    <Deconstruct time="40">
+      <Item identifier="bikehorn" />
+      <Item identifier="bikehorn" />
+      <Item identifier="bikehorn" />
+    </Deconstruct>
+    <Wearable slots="Any,InnerClothes" msg="ItemMsgPickUpSelect">
+	  <StatusEffect type="OnWearing" target="character" tags="bluefathers_blessing_torso" duration="0.1" stackable="false" />
+	  <StatusEffect type="OnWearing" target="Character" PressureProtection="10000.0" setvalue="true" disabledeltatime="true"/>
+      <sprite name="Clown's Costume Torso" texture="blue_clown.png" limb="Torso" hidelimb="false" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Right Hand" texture="blue_clown.png" limb="RightHand" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Left Hand" texture="blue_clown.png" limb="LeftHand" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Right Lower Arm" texture="blue_clown.png" limb="RightArm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Left Lower Arm" texture="blue_clown.png" limb="LeftArm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Right Upper Arm" texture="blue_clown.png" limb="RightForearm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Left Upper Arm" texture="blue_clown.png" limb="LeftForearm" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Waist" texture="blue_clown.png" limb="Waist" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Right Thigh" texture="blue_clown.png" limb="RightThigh" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Left Thigh" texture="blue_clown.png" limb="LeftThigh" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Right Leg" texture="blue_clown.png" limb="RightLeg" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Left Leg" texture="blue_clown.png" limb="LeftLeg" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" />
+      <sprite name="Clown's Costume Left Shoe" texture="blue_clown.png" limb="LeftFoot" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" sound="footstep_clown" />
+      <sprite name="Clown's Costume Right Shoe" texture="blue_clown.png" limb="RightFoot" hidelimb="true" inherittexturescale="true" inheritorigin="true" inheritsourcerect="true" sound="footstep_clown" />
+      <damagemodifier armorsector="0.0,360.0" afflictionidentifiers="blunttrauma,gunshotwound,bitewounds,lacerations,bleeding" damagemultiplier="0.7" damagesound="BlueClown" deflectprojectiles="true" />
+      <damagemodifier armorsector="0.0,360.0" afflictiontypes="burn" damagemultiplier="0.75" damagesound="BlueClown" deflectprojectiles="true" />
+    </Wearable>
+  </Item>
+  
+  
+  
+    <Item name="" identifier="traitor_bombinstr" category="Misc" Tags="smallitem,traitor_instructions" cargocontaineridentifier="metalcrate" scale="0.25" impactsoundtag="impact_metal_light" isshootable="true">
+		<PreferredContainer primary="artmod_ek_thallas_explosblackhole" minamount="1" maxamount="1" spawnprobability="1"/>
+		<Upgrade gameversion="0.9.9000.0" scale="0.25"/>
+		<InventoryIcon texture="Content/Items/InventoryIconAtlas2.png" sourcerect="323,193,60,61" origin="0.5,0.5" />
+        <Sprite texture="Content/Items/Electricity/signalcomp.png" sourcerect="149,371,69,93" depth="0.55" origin="0.5,0.5" />
+		<Body width="54" height="72" density="10"/>
+		<!--<Holdable slots="Any,RightHand,LeftHand" holdangle="30" handle1="-10,0" msg="ItemMsgPickUpSelect"/> -->
+		<Holdable slots="Any,RightHand,LeftHand" aimable="false" aimpos="33,20" handle1="5,0" holdangle="30" swingamount="0,2" swingspeed="0.3" swingwhenaiming="true" msg="ItemMsgPickUpSelect"/>
+		<Terminal welcomemessage="text.traitor_bombinstr" canbeselected="false" msg="ItemMsgInteractSelect" AllowInGameEditing="false" drawhudwhenequipped="true">
+			<GuiFrame relativesize="0.40,0.60" anchor="Center" style="ItemUI"/>
+		</Terminal>
+	</Item>
+
+    <Item name="" identifier="artmod_ek_thallas_explosblackhole" Health="120" category="hidden" hideinmenus="true" cargocontaineridentifier="metalcrate" tags="mediumitem,weapon,explosive" scale="0.32" impactsoundtag="impact_metal_heavy" isshootable="false" maxstacksize="1">
+    <InventoryIcon texture="С4.png" sourcerect="0,0,112,96" />
+    <Sprite texture="С4.png" sourcerect="0,0,112,96" depth="0.55" origin="0.5,0.5" />
+    <Body width="104" height="86" density="18" />
+    <!--<Throwable slots="Any,RightHand+LeftHand" holdpos="40,-10" aimpos="30,-45" aimangle="90" handle1="0,-13" handle2="0,-13" throwforce="2.0" msg="ItemMsgPickUpSelect"/>-->
+    <Holdable selectkey="Select" pickkey="Use" slots="Any,RightHand+LeftHand" msg="ItemMsgDetachWrench" PickingTime="10.0" holdpos="40,-10" aimpos="50,-5" handle1="0,-13" handle2="0,-13" attachable="true" Attached="false" AttachedByDefault="false" aimable="true">
+      <RequiredItem identifier="wrench" type="Equipped" />
+      <StatusEffect type="OnActive" target="Character" SpeedMultiplier="0.7" setvalue="true" />
+	  
+	   <StatusEffect type="OnActive" targettype="This" IsOn="false" checkconditionalalways="true">
+        <Conditional attached="false" targetitemcomponentname="Holdable"/>
+       </StatusEffect>
+	   
+	  <StatusEffect type="OnBroken" targettype="nearbyCharacters" disabledeltatime="true" range="10000" duration="75">
+		<Affliction identifier="Smusic" strength="5" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" stackable="false" duration="10">
+        <ParticleEmitter particle="skyholderfxmod2" anglemax="360" distancemin="70" distancemax="70" velocitymin="-100" velocitymax="-200" particlespersecond="10" />
+      </StatusEffect>
+	  <StatusEffect type="OnBroken" target="This" stackable="false" duration="20" delay="10">
+        <ParticleEmitter particle="skyholderfxmod2" anglemax="360" distancemin="100" distancemax="100" velocitymin="-200" velocitymax="-400" particlespersecond="15" />
+      </StatusEffect>
+	  <StatusEffect type="OnBroken" target="This" stackable="false" duration="20" delay="30">
+        <ParticleEmitter particle="skyholderfxmod2" anglemax="360" distancemin="125" distancemax="125" velocitymin="-400" velocitymax="-700" particlespersecond="20" />
+      </StatusEffect>
+	  <StatusEffect type="OnBroken" target="This" stackable="false" duration="20" delay="50">
+        <ParticleEmitter particle="skyholderfxmod2" anglemax="360" distancemin="125" distancemax="125" velocitymin="-700" velocitymax="-1000" particlespersecond="30" />
+      </StatusEffect>
+	  <StatusEffect type="OnBroken" target="This" stackable="false" duration="5" delay="70">
+        <ParticleEmitter particle="skyholderfxmod2" anglemax="360" distancemin="150" distancemax="150" velocitymin="-1000" velocitymax="-1200" particlespersecond="50" />
+      </StatusEffect>
+    </Holdable>
+
+    <LightComponent LightColor="0,0,255,255" range="20" blinkfrequency="1" powerconsumption="0" IsOn="false" canbeselected="false" AllowInGameEditing="false">
+      <sprite texture="Mods/More Arts (AOCS)/TraitorItems/satchelcharge_light.png" sourcerect="0,0,80,96" alpha="1" />
+      <StatusEffect type="OnActive" targettype="This" Condition="-1" >
+        <Sound file="Mods/More Arts (AOCS)/TraitorItems/ek_satchelbeep.ogg" loop="true" range="1000" />
+      </StatusEffect>
+    </LightComponent>
+    <ItemComponent characterusable="false">
+      <StatusEffect type="OnBroken" targettype="This" disabledeltatime="true" delay="76">
+		<SpawnItem identifier="Sthal_singularity" spawnposition="This"/>
+        <Remove />
+      </StatusEffect>
+    </ItemComponent>
+
+	<ItemContainer autofill="True" capacity="1" slotsperrow="1" maxstacksize="1" canbeselected="false" hideitems="true" SpawnWithId="traitor_bombinstr">
+      <Containable items="traitor_instructions" />
+    </ItemContainer>
+
+    <CustomInterface canbeselected="true" drawhudwhenequipped="false">
+      <GuiFrame relativesize="0.15,0.15" anchor="BottomLeft" absoluteoffset="20,20" style="ItemUI" />
+      <TickBox text="Armed" >
+        <sound file="Content\Items\Button\Switch1.ogg" type="OnActive" range="250.0" loop="true" volume="1" />
+         <StatusEffect type="OnUse" targettype="This" IsOn="true" checkconditionalalways="true">
+		  <Conditional attached="true" />
+		 </StatusEffect>
+        <StatusEffect type="OnSecondaryUse" targettype="This" IsOn="false" />
+      </TickBox>
+    </CustomInterface>
+  </Item> 
+
+
+
+  <Item name="" identifier="deliriumine_plus" Health="10" category="Hidden" hideinmenus="true" health="1" maxstacksize="1" cargocontaineridentifier="chemicalcrate" Tags="smallitem,chem,medical" description="" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_metal_light" RequireAimToUse="True">
+    <Upgrade gameversion="0.10.0.0" scale="0.5" />
+    <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="448,704,64,64" origin="0.5,0.5" />
+    <Sprite texture="Content/Items/Medical/Medicines.png" sourcerect="225,139,38,70" depth="0.6" origin="0.5,0.5" />
+    <Body width="35" height="65" density="20" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="-5,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect tags="poison" type="OnUse" target="Character" duration="20">
+        <Sound file="Content/Items/Medical/Syringe.ogg" range="500" volume="0.25"/>
+        <Affliction identifier="deliriuminepoisoning" amount="1" />
+		<Affliction identifier="blue_clowned" amount="10.0" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="10" condition="10000"/>
+    </MeleeWeapon>
+  </Item>
+  
+  <Item name="" identifier="transformationgiftsyringe_traitor" health="1" category="Hidden" hideinmenus="true" maxstacksize="1" cargocontaineridentifier="chemicalcrate" Tags="smallitem,chem,medical" description="" useinhealthinterface="true" scale="0.15" impactsoundtag="impact_metal_light" RequireAimToUse="True">
+    <Upgrade gameversion="0.10.0.0" scale="0.5" />
+	<InventoryIcon texture="Mods/More Arts (AOCS)/Items/transformgift_inv.png" sourcerect="0,0,120,153" origin="0.5,0.5" />
+    <Sprite texture="Mods/More Arts (AOCS)/Items/transformgift.png" sourcerect="0,0,176,30" depth="0.6" origin="0.5,0.5" />
+    <Body width="35" height="65" density="20" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="-5,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect tags="poison" type="OnUse" target="Character" duration="20">
+        <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+        <Affliction identifier="transformationgift" amount="1" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="600" condition="10000"/>
+    </MeleeWeapon>
+  </Item>
+
+<!-- BLACKHOLE FROM THALASSOPHOBIA-->
+
+  <Item name="Singularity" identifier="Sthal_singularity" category="Hidden" hideinmenus="true" cargocontaineridentifier="metalcrate" tags="smallitem" scale="0.3" health="100" noninteractable="true" isshootable="true">
+    <Sprite name="singularity" texture="Mods/More Arts (AOCS)/TraitorItems/singularity.png" sourcerect="0,0,400,400" origin="0.5,0.5" depth="0.02" />
+    <DecorativeSprite texture="Mods/More Arts (AOCS)/TraitorItems/singularity.png" sourcerect="0,0,400,400" depth="0.01" rotationspeed="360"/>
+    <Body width="40" radius="30" density="15" bodytype="Kinematic" />
+    <LightComponent lightcolor="255,255,255,255" range="1" powerconsumption="0" allowingameediting="false" castshadows="false" IsOn="true">
+      <Sprite name="singularity" texture="Mods/More Arts (AOCS)/TraitorItems/singularity.png" sourcerect="400,0,400,400" origin="0.5,0.5" depth="0.6" />
+      <!--shrink and noise-->
+      <sound file="Mods/More Arts (AOCS)/TraitorItems/GiygasBG.ogg" range="3500.0" loop="true" selectionmode="all" type="OnActive" />
+      <StatusEffect type="Always" target="This" scale="-0.06" condition="-1">
+        <sound file="Mods/More Arts (AOCS)/TraitorItems/Giygas.ogg" range="3000.0" loop="true" Selectionmode="all" />
+        <ParticleEmitter particle="Sthal_dust" burstamount="3" particlespersecond="5" velocitymin="0" velocitymax="0" anglemin="0" anglemax="360" scalemin="5.0" scalemax="5.0" colormultiplier="0,0,0,255" />
+      </StatusEffect>
+      <!-- remove on too small, too big -->
+      <StatusEffect delay="2.0" stackable="false" type="Always" target="This">
+        <Conditional scale="lt 0.1" />
+        <Conditional scale="gt 6.8" />
+        <Sound file="Mods/More Arts (AOCS)/TraitorItems/SingularityCollapse.ogg" range="3000" />
+        <Remove />
+      </StatusEffect>
+      <StatusEffect delay="1.0" stackable="false" type="Always" target="This" setvalue="true" condition="0">
+        <Conditional scale="gt 6.0" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="This" scale="0.03">
+        <Conditional Condition="gt 95" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="This" scale="0.03">
+        <Conditional Condition="gt 80" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="This" scale="0.03">
+        <Conditional Condition="gt 55" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="This" scale="0.05">
+        <Conditional Condition="gt 15" />
+      </StatusEffect>
+      <!--character eraser-->
+      <StatusEffect type="Always" target="NearbyCharacters" range="50" stackable="false">
+        <Affliction identifier="Sthal_blackholedeath" strength="20" />
+        <RemoveCharacter />
+      </StatusEffect>
+      <StatusEffect type="Always" target="NearbyCharacters, This" range="400" delay="0.5" stackable="false" setvalue="false" condition="30">
+        <Conditional speciesname="human" />
+      </StatusEffect>
+      <!-- small destruction 0.4-->
+      <StatusEffect type="Always" target="This" delay="4.0" stackable="false" Comparison="And">
+        <Conditional scale="gt 0.4" />
+        <Conditional scale="lt 3.0" />
+        <Explosion range="800" force="-19" stun="5" flash="false" shockwave="false" sparks="false" flames="false" smoke="false" camerashake="0" underwaterbubble="false" structuredamage="70" itemdamage="0" flashrange="0" flashduration="0"></Explosion>
+      </StatusEffect>
+      <!-- large scale destruction 3.0 -->
+      <StatusEffect type="Always" target="This" delay="4.0" stackable="false">
+        <Conditional scale="gt 3.0" />
+        <Explosion range="1400" force="-19" stun="5" flash="false" shockwave="false" sparks="false" flames="false" smoke="false" camerashake="0" underwaterbubble="false" structuredamage="70" itemdamage="0" flashrange="0" flashduration="0"></Explosion>
+        <SpawnItem spawnposition="ThisInventory" identifier="batterycell" />
+      </StatusEffect>
+      <StatusEffect type="Always" target="This" delay="2.0" stackable="false">
+        <Conditional scale="gt 0.5" />
+        <Explosion range="1600" force="-29" stun="3" flash="false" shockwave="false" sparks="false" flames="false" smoke="false" camerashake="0" underwaterbubble="false" structuredamage="0" itemdamage="0" flashrange="0" flashduration="0"></Explosion>
+        <SpawnItem spawnposition="ThisInventory" identifier="batterycell" />
+      </StatusEffect>
+      <!-- TODO: make a seperate item to destroy doors using nearbyitems so that black hole isn't constantly lagging out the server -->
+      <!-- 12/01/20 FIXME: fix "phase 2" doorbreak not working for some reason -->
+      <StatusEffect type="Always" target="This" delay="0.0" stackable="false" isshootable="false">
+        <SpawnItem identifier="Sthal_smalldoorbreaker" />
+        <Conditional isshootable="eq true" />
+      </StatusEffect>
+      <!-- large scael -->
+      <StatusEffect type="Always" target="This" delay="0.0" stackable="false" allowingameediting="true">
+        <SpawnItem identifier="Sthal_largedoorbreaker" />
+        <Conditional IsOn="eq false" />
+        <RequiredItem items="batterycell" type="Contained" />
+      </StatusEffect>
+    </LightComponent>
+    <ItemContainer capacity="1" hideitems="true" maxstacksize="1">
+      <ContainedStateIndicator texture="Content/UI/ContainerIndicators.png" sourcerect="0,157,92,27" />
+      <Containable items="batterycell" />
+    </ItemContainer>
+  </Item>
+  <!-- used for breaking doors by singularity -->
+  <Item name="doorbreaker" identifier="Sthal_smalldoorbreaker" category="Equipment" cargocontaineridentifier="metalcrate" tags="smallitem" scale="0.5" hideinmenus="true" pickdistance="0" noninteractable="true">
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <Body width="40" radius="30" density="15" bodytype="Kinematic" />
+    <LightComponent lightcolor="255,255,150,0" range="0" powerconsumption="0" allowingameediting="false" castshadows="false" IsOn="false">
+      <StatusEffect type="Always" condition="-3000.0" range="500" target="NearbyItems" delay="0" stackable="false" targetidentifiers="door,hatch,windoweddoor,doorwbuttons,hatchwbuttons,windoweddoorwbuttons,alienhatch,aliendoor,doorwrecked,hatchwrecked,windoweddoorwrecked,doorwbuttonswrecked,hatchwbuttonswrecked,windoweddoorwbuttonswrecked"></StatusEffect>
+      <StatusEffect type="Always" target="This" delay="0.1" stackable="false" isshootable="false">
+        <Remove />
+      </StatusEffect>
+    </LightComponent>
+  </Item>
+  <Item name="doorbreakerbig" identifier="Sthal_largedoorbreaker" category="Equipment" cargocontaineridentifier="metalcrate" tags="smallitem" scale="0.5" hideinmenus="true" pickdistance="0" noninteractable="true">
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="0,0,2,2" depth="0.55" origin="0.5,0.5" />
+    <Body width="40" radius="30" density="15" bodytype="Kinematic" />
+    <LightComponent lightcolor="255,255,150,0" range="0" powerconsumption="0" allowingameediting="false" castshadows="false" IsOn="false">
+      <StatusEffect type="Always" condition="-3000.0" range="1400" target="NearbyItems" delay="0" stackable="false" targetidentifiers="door,hatch,windoweddoor,doorwbuttons,hatchwbuttons,windoweddoorwbuttons,alienhatch,aliendoor,doorwrecked,hatchwrecked,windoweddoorwrecked,doorwbuttonswrecked,hatchwbuttonswrecked,windoweddoorwbuttonswrecked"></StatusEffect>
+      <StatusEffect type="Always" target="This" delay="0.1" stackable="false" isshootable="false">
+        <Remove />
+      </StatusEffect>
+    </LightComponent>
+  </Item>
+
+
+</Items>

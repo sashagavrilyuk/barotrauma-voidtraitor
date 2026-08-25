@@ -1,0 +1,499 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Randomevents>
+  <Override>
+    <EventPrefabs>
+      <!-- FAILSAFE EVENTS | triggered at the start of each round to reset guns in case the reloading animation was interrupted by loading screen -->
+      <ScriptedEvent identifier="reset.alienpistol">
+        <!-- tag the gun so event actions can target it -->
+        <TagAction criteria="itemidentifier:alienpistol" tag="alienpistol" />
+        <!-- tag the reload proxy item so event actions can target it -->
+        <TagAction criteria="itemidentifier:alpreloading" tag="alpreloading" />
+        <!-- reset gun values to default -->
+        <StatusEffectAction targettag="alienpistol">
+          <StatusEffect target="This" aimpos="90,0" handle1="2,-7" holdpos="0,0" holdangle="0" aimangle="0" condition="100" setvalue="true" />
+          <StatusEffect targetitemcomponent="LightComponent" target="This" lightcolor="175,175,225,0" setvalue="true" />
+          <StatusEffect targetitemcomponent="ItemContainer" target="This" AllowAccess="true" setvalue="true" />
+          <StatusEffect target="This" hideitems="false" setvalue="true" />
+        </StatusEffectAction>
+        <!-- reset proxy item to full condition to allow the gun to shoot again -->
+        <StatusEffectAction targettag="alpreloading">
+          <StatusEffect target="This" condition="100" setvalue="true" />
+        </StatusEffectAction>
+      </ScriptedEvent>
+      <ScriptedEvent identifier="reset.ancientweapon">
+        <!-- tag the gun so event actions can target it -->
+        <TagAction criteria="itemidentifier:ancientweapon" tag="ancientweapon" />
+        <!-- tag the reload proxy item so event actions can target it -->
+        <TagAction criteria="itemidentifier:ancreloading" tag="ancreloading" />
+        <!-- reset gun values to default -->
+        <StatusEffectAction targettag="ancientweapon">
+          <StatusEffect target="This" holdangle="-30" holdpos="90,-20" aimpos="95,3" handle1="-90,20" handle2="-32,-80" condition="100" setvalue="true" />
+          <StatusEffect targetitemcomponent="ItemContainer" target="This" AllowAccess="true" setvalue="true" />
+          <StatusEffect target="This" hideitems="false" setvalue="true" />
+        </StatusEffectAction>
+        <!-- reset proxy item to full condition to allow the gun to shoot again -->
+        <StatusEffectAction targettag="ancreloading">
+          <StatusEffect target="This" condition="100" setvalue="true" />
+        </StatusEffectAction>
+      </ScriptedEvent>
+      <ScriptedEvent identifier="reset.arcemitter">
+        <!-- tag the gun so event actions can target it -->
+        <TagAction criteria="itemidentifier:arcemitter" tag="arcemitter" />
+        <!-- reset gun values to default -->
+        <StatusEffectAction targettag="arcemitter">
+          <StatusEffect target="This" holdpos="60,-15" aimpos="60,-7" handle1="-50,-5" handle2="10,-7" holdangle="-25" aimangle="0" condition="100" setvalue="true" />
+          <StatusEffect targetitemcomponent="LightComponent" target="This" lightcolor="0,255,255,0" setvalue="true" />
+          <StatusEffect targetitemcomponent="ItemContainer" target="This" AllowAccess="true" setvalue="true" />
+          <StatusEffect target="This" hideitems="false" setvalue="true" />
+        </StatusEffectAction>
+      </ScriptedEvent>
+      <ScriptedEvent identifier="reset.assaultrifle">
+        <!-- tag the gun so event actions can target it -->
+        <TagAction criteria="itemidentifier:assaultrifle" tag="assaultrifle" />
+        <!-- tag the reload proxy item so event actions can target it -->
+        <TagAction criteria="itemidentifier:assreloading" tag="assreloading" />
+        <!-- reset gun values to default -->
+        <StatusEffectAction targettag="assaultrifle">
+          <StatusEffect target="This" holdpos="40,-20" aimpos="50,1" handle1="-35,-30" handle2="26,-10" holdangle="-30" aimangle="0" condition="100" setvalue="true" />
+          <StatusEffect targetitemcomponent="LightComponent" target="This" lightcolor="255,255,75,0" setvalue="true" />
+          <StatusEffect targetitemcomponent="ItemContainer" target="This" AllowAccess="true" setvalue="true" />
+          <StatusEffect target="This" hideitems="false" setvalue="true" />
+        </StatusEffectAction>
+        <!-- reset proxy item to full condition to allow the gun to shoot again -->
+        <StatusEffectAction targettag="assreloading">
+          <StatusEffect target="This" condition="100" setvalue="true" />
+        </StatusEffectAction>
+      </ScriptedEvent>
+      <ScriptedEvent identifier="reset.autoshotgun">
+        <!-- tag the gun so event actions can target it -->
+        <TagAction criteria="itemidentifier:autoshotgun" tag="autoshotgun" />
+        <!-- tag the reload proxy item so event actions can target it -->
+        <TagAction criteria="itemidentifier:autoreloading" tag="autoreloading" />
+        <!-- reset gun values to default -->
+        <StatusEffectAction targettag="autoshotgun">
+          <StatusEffect target="This" holdpos="20,-20" aimpos="25,4" handle1="30,-26" handle2="60,-24" holdangle="-20" aimangle="0" condition="100" setvalue="true" />
+          <StatusEffect targetitemcomponent="LightComponent" target="This" lightcolor="255,255,75,0" setvalue="true" />
+          <StatusEffect targetitemcomponent="ItemContainer" target="This" AllowAccess="true" setvalue="true" />
+        </StatusEffectAction>
+        <!-- reset proxy item to full condition to allow the gun to shoot again -->
+        <StatusEffectAction targettag="autoreloading">
+          <StatusEffect target="This" condition="100" setvalue="true" />
+        </StatusEffectAction>
+      </ScriptedEvent>
+      <ScriptedEvent identifier="reset.shotgununique">
+        <!-- tag the gun so event actions can target it -->
+        <TagAction criteria="itemidentifier:shotgununique" tag="shotgununique" />
+        <!-- tag the reload proxy item so event actions can target it -->
+        <TagAction criteria="itemidentifier:boomreloading" tag="boomreloading" />
+        <!-- reset gun values to default -->
+        <StatusEffectAction targettag="shotgununique">
+          <StatusEffect target="This" holdpos="40,-5" aimpos="40,3" aimangle="0" handle1="-30,-35" handle2="45,-10" holdangle="-40" condition="100" setvalue="true" />
+          <StatusEffect targetitemcomponent="LightComponent" target="This" lightcolor="255,255,75,0" setvalue="true" />
+          <StatusEffect targetitemcomponent="ItemContainer" target="This" AllowAccess="true" setvalue="true" />
+        </StatusEffectAction>
+        <!-- reset proxy item to full condition to allow the gun to shoot again -->
+        <StatusEffectAction targettag="boomreloading">
+          <StatusEffect target="This" condition="100" setvalue="true" />
+        </StatusEffectAction>
+      </ScriptedEvent>
+      <ScriptedEvent identifier="reset.smgunique">
+        <!-- tag the gun so event actions can target it -->
+        <TagAction criteria="itemidentifier:smgunique" tag="smgunique" />
+        <!-- tag the reload proxy item so event actions can target it -->
+        <TagAction criteria="itemidentifier:deadreloading" tag="deadreloading" />
+        <!-- reset gun values to default -->
+        <StatusEffectAction targettag="smgunique">
+          <StatusEffect target="This" holdpos="40,-15" aimpos="45,0" aimangle="0" handle1="-30,-25" handle2="18,-8" holdangle="-35" condition="100" setvalue="true" />
+          <StatusEffect targetitemcomponent="LightComponent" target="This" lightcolor="255,255,75,0" setvalue="true" />
+          <StatusEffect targetitemcomponent="ItemContainer" target="This" AllowAccess="true" setvalue="true" />
+          <StatusEffect target="This" hideitems="false" setvalue="true" />
+        </StatusEffectAction>
+        <!-- reset proxy item to full condition to allow the gun to shoot again -->
+        <StatusEffectAction targettag="deadreloading">
+          <StatusEffect target="This" condition="100" setvalue="true" />
+        </StatusEffectAction>
+      </ScriptedEvent>
+      <ScriptedEvent identifier="reset.flamer">
+        <!-- tag the gun so event actions can target it -->
+        <TagAction criteria="itemidentifier:flamer" tag="flamer" />
+        <!-- tag the reload proxy item so event actions can target it -->
+        <TagAction criteria="itemidentifier:flamreloading" tag="flamreloading" />
+        <!-- reset gun values to default -->
+        <StatusEffectAction targettag="flamer">
+          <StatusEffect target="This" holdpos="50,-30" holdangle="-30" aimpos="50,-10" handle1="-62,-16" handle2="-11,-6" aimangle="0" condition="100" setvalue="true" />
+          <StatusEffect targetitemcomponent="LightComponent" target="This" lightcolor="255,255,75,0" setvalue="true" />
+          <StatusEffect targetitemcomponent="ItemContainer" target="This" AllowAccess="true" setvalue="true" />
+          <StatusEffect target="This" hideitems="false" setvalue="true" />
+        </StatusEffectAction>
+        <!-- reset proxy item to full condition to allow the gun to shoot again -->
+        <StatusEffectAction targettag="flamreloading">
+          <StatusEffect target="This" condition="100" setvalue="true" />
+        </StatusEffectAction>
+      </ScriptedEvent>
+      <ScriptedEvent identifier="reset.grenadelauncher">
+        <!-- tag the gun so event actions can target it -->
+        <TagAction criteria="itemidentifier:grenadelauncher" tag="grenadelauncher" />
+        <!-- tag the reload proxy item so event actions can target it -->
+        <TagAction criteria="itemidentifier:grenreloading" tag="grenreloading" />
+        <!-- reset gun values to default -->
+        <StatusEffectAction targettag="grenadelauncher">
+          <StatusEffect target="This" holdpos="30,-30" aimpos="35,-7" handle1="-30,-10" handle2="50,-5" holdangle="-25" aimangle="0" condition="100" setvalue="true" />
+          <StatusEffect targetitemcomponent="LightComponent" target="This" lightcolor="255,255,75,0" setvalue="true" />
+          <StatusEffect targetitemcomponent="ItemContainer" target="This" AllowAccess="true" setvalue="true" />
+          <StatusEffect target="This" hideitems="false" setvalue="true" />
+        </StatusEffectAction>
+        <!-- reset proxy item to full condition to allow the gun to shoot again -->
+        <StatusEffectAction targettag="grenreloading">
+          <StatusEffect target="This" condition="100" setvalue="true" />
+        </StatusEffectAction>
+      </ScriptedEvent>
+      <ScriptedEvent identifier="reset.handcannon">
+        <!-- tag the gun so event actions can target it -->
+        <TagAction criteria="itemidentifier:handcannon" tag="handcannon" />
+        <!-- tag the reload proxy item so event actions can target it -->
+        <TagAction criteria="itemidentifier:handreloading" tag="handreloading" />
+        <!-- reset gun values to default -->
+        <StatusEffectAction targettag="handcannon">
+          <StatusEffect target="This" aimpos="90,-2" handle1="-20,-12" handle2="-20,-15" holdpos="100,-5" holdangle="-50" aimangle="0" condition="100" setvalue="true" />
+          <StatusEffect targetitemcomponent="LightComponent" target="This" lightcolor="255,255,75,0" setvalue="true" />
+          <StatusEffect targetitemcomponent="ItemContainer" target="This" AllowAccess="true" setvalue="true" />
+          <StatusEffect target="This" hideitems="false" setvalue="true" />
+        </StatusEffectAction>
+        <!-- reset proxy item to full condition to allow the gun to shoot again -->
+        <StatusEffectAction targettag="handreloading">
+          <StatusEffect target="This" condition="100" setvalue="true" />
+        </StatusEffectAction>
+      </ScriptedEvent>
+      <ScriptedEvent identifier="reset.harpooncoilrifle">
+        <!-- tag the gun so event actions can target it -->
+        <TagAction criteria="itemidentifier:harpooncoilrifle" tag="harpooncoilrifle" />
+        <!-- tag the reload proxy item so event actions can target it -->
+        <TagAction criteria="itemidentifier:coilreloading" tag="coilreloading" />
+        <!-- reset gun values to default -->
+        <StatusEffectAction targettag="harpooncoilrifle">
+          <StatusEffect target="This" holdpos="35,-10" aimpos="45,-6" handle1="-20,-6" handle2="30,10" holdangle="-40" aimangle="0" condition="100" setvalue="true" />
+          <StatusEffect targetitemcomponent="ItemContainer" target="This" AllowAccess="true" setvalue="true" />
+          <StatusEffect target="This" hideitems="false" setvalue="true" />
+        </StatusEffectAction>
+        <!-- reset proxy item to full condition to allow the gun to shoot again -->
+        <StatusEffectAction targettag="coilreloading">
+          <StatusEffect target="This" condition="100" setvalue="true" />
+        </StatusEffectAction>
+      </ScriptedEvent>
+      <ScriptedEvent identifier="reset.harpoongun">
+        <!-- tag the gun so event actions can target it -->
+        <TagAction criteria="itemidentifier:harpoongun" tag="harpoongun" />
+        <!-- tag the reload proxy item so event actions can target it -->
+        <TagAction criteria="itemidentifier:harpreloading" tag="harpreloading" />
+        <!-- reset gun values to default -->
+        <StatusEffectAction targettag="harpoongun">
+          <StatusEffect target="This" holdpos="35,-10" aimpos="45,-6" handle1="-20,-6" handle2="30,10" holdangle="-40" aimangle="0" condition="100" setvalue="true" />
+          <StatusEffect targetitemcomponent="ItemContainer" target="This" AllowAccess="true" setvalue="true" />
+          <StatusEffect target="This" hideitems="false" setvalue="true" />
+        </StatusEffectAction>
+        <!-- reset proxy item to full condition to allow the gun to shoot again -->
+        <StatusEffectAction targettag="harpreloading">
+          <StatusEffect target="This" condition="100" setvalue="true" />
+        </StatusEffectAction>
+      </ScriptedEvent>
+      <ScriptedEvent identifier="reset.hmg">
+        <!-- tag the gun so event actions can target it -->
+        <TagAction criteria="itemidentifier:hmg" tag="hmg" />
+        <!-- tag the reload proxy item so event actions can target it -->
+        <TagAction criteria="itemidentifier:hmgreloading" tag="hmgreloading" />
+        <!-- reset gun values to default -->
+        <StatusEffectAction targettag="hmg">
+          <StatusEffect target="This" holdpos="55,-5" aimpos="65,5" handle1="-80,-50" handle2="-15,-35" holdangle="-30" aimangle="0" setvalue="true" />
+          <StatusEffect targetitemcomponent="ItemContainer" target="This" AllowAccess="true" setvalue="true" />
+          <StatusEffect targetitemcomponent="LightComponent" target="This" lightcolor="255,255,75,0" setvalue="true" />
+          <StatusEffect target="This" hideitems="false" setvalue="true" />
+          <StatusEffect target="This" condition="100" setvalue="true">
+            <RequiredItems items="hmgammo" type="Contained" />
+          </StatusEffect>
+          <StatusEffect target="This" condition="10" setvalue="true">
+            <RequiredItems items="hmgammo" type="Contained" requireempty="true" />
+          </StatusEffect>
+        </StatusEffectAction>
+        <!-- reset proxy item to full condition to allow the gun to shoot again -->
+        <StatusEffectAction targettag="hmgreloading">
+          <StatusEffect target="This" condition="100" setvalue="true" />
+        </StatusEffectAction>
+      </ScriptedEvent>
+      <ScriptedEvent identifier="reset.machinepistol">
+        <!-- tag the gun so event actions can target it -->
+        <TagAction criteria="itemidentifier:machinepistol" tag="machinepistol" />
+        <!-- tag the reload proxy item so event actions can target it -->
+        <TagAction criteria="itemidentifier:machreloading" tag="machreloading" />
+        <!-- reset gun values to default -->
+        <StatusEffectAction targettag="machinepistol">
+          <StatusEffect target="This" aimpos="70,5" handle1="-45,-27" holdangle="0" holdpos="0,0" aimangle="0" condition="100" setvalue="true" />
+          <StatusEffect targetitemcomponent="ItemContainer" target="This" AllowAccess="true" setvalue="true" />
+          <StatusEffect targetitemcomponent="LightComponent" target="This" lightcolor="255,255,75,0" setvalue="true" />
+          <StatusEffect target="This" hideitems="false" setvalue="true" />
+        </StatusEffectAction>
+        <!-- reset proxy item to full condition to allow the gun to shoot again -->
+        <StatusEffectAction targettag="machreloading">
+          <StatusEffect target="This" condition="100" setvalue="true" />
+        </StatusEffectAction>
+      </ScriptedEvent>
+      <ScriptedEvent identifier="reset.flamerunique">
+        <!-- tag the gun so event actions can target it -->
+        <TagAction criteria="itemidentifier:flamerunique" tag="flamerunique" />
+        <!-- tag the reload proxy item so event actions can target it -->
+        <TagAction criteria="itemidentifier:steamreloading" tag="steamreloading" />
+        <!-- reset gun values to default -->
+        <StatusEffectAction targettag="flamerunique">
+          <StatusEffect target="This" holdpos="50,-30" holdangle="-30" aimpos="50,-10" handle1="-62,-16" handle2="-11,-6" condition="100" setvalue="true" />
+          <StatusEffect targetitemcomponent="ItemContainer" target="This" AllowAccess="true" setvalue="true" />
+          <StatusEffect target="This" hideitems="false" setvalue="true" />
+        </StatusEffectAction>
+        <!-- reset proxy item to full condition to allow the gun to shoot again -->
+        <StatusEffectAction targettag="steamreloading">
+          <StatusEffect target="This" condition="100" setvalue="true" />
+        </StatusEffectAction>
+      </ScriptedEvent>
+      <ScriptedEvent identifier="reset.revolver">
+        <!-- tag the gun so event actions can target it -->
+        <TagAction criteria="itemidentifier:revolver" tag="revolver" />
+        <!-- tag the reload proxy item so event actions can target it -->
+        <TagAction criteria="itemidentifier:revreloading" tag="revreloading" />
+        <!-- reset gun values to default -->
+        <StatusEffectAction targettag="revolver">
+          <StatusEffect target="This" aimpos="70,0" handle1="-20,-8" aimangle="0" holdpos="0,0" holdangle="0" condition="100" setvalue="true" />
+          <StatusEffect targetitemcomponent="ItemContainer" target="This" AllowAccess="true" setvalue="true" />
+          <StatusEffect targetitemcomponent="LightComponent" target="This" lightcolor="255,255,75,0" setvalue="true" />
+          <StatusEffect target="This" hideitems="false" setvalue="true" />
+        </StatusEffectAction>
+        <!-- reset proxy item to full condition to allow the gun to shoot again -->
+        <StatusEffectAction targettag="revreloading">
+          <StatusEffect target="This" condition="100" setvalue="true" />
+        </StatusEffectAction>
+      </ScriptedEvent>
+      <ScriptedEvent identifier="reset.rifle">
+        <!-- tag the gun so event actions can target it -->
+        <TagAction criteria="itemidentifier:rifle" tag="rifle" />
+        <!-- tag the reload proxy item so event actions can target it -->
+        <TagAction criteria="itemidentifier:rifreloading" tag="rifreloading" />
+        <!-- reset gun values to default -->
+        <StatusEffectAction targettag="rifle">
+          <StatusEffect target="This" holdpos="20,-10" aimpos="27,0" handle1="0,-19" handle2="55,-5" holdangle="-30" aimangle="0" condition="100" setvalue="true" />
+          <StatusEffect targetitemcomponent="ItemContainer" target="This" AllowAccess="true" setvalue="true" />
+          <StatusEffect targetitemcomponent="LightComponent" target="This" lightcolor="255,255,75,0" setvalue="true" />
+          <StatusEffect target="This" hideitems="false" setvalue="true" />
+        </StatusEffectAction>
+        <!-- reset proxy item to full condition to allow the gun to shoot again -->
+        <StatusEffectAction targettag="rifreloading">
+          <StatusEffect target="This" condition="100" setvalue="true" />
+        </StatusEffectAction>
+      </ScriptedEvent>
+      <ScriptedEvent identifier="reset.shotgun">
+        <!-- tag the gun so event actions can target it -->
+        <TagAction criteria="itemidentifier:shotgun" tag="shotgun" />
+        <!-- tag the reload proxy item so event actions can target it -->
+        <TagAction criteria="itemidentifier:riotreloading" tag="riotreloading" />
+        <!-- reset gun values to default -->
+        <StatusEffectAction targettag="shotgun">
+          <StatusEffect target="This" holdpos="45,-15" aimpos="30,-3" handle1="-30,-17" handle2="70,-4" holdangle="-40" aimangle="0" condition="100" setvalue="true" />
+          <StatusEffect targetitemcomponent="ItemContainer" target="This" AllowAccess="true" setvalue="true" />
+          <StatusEffect targetitemcomponent="LightComponent" target="This" lightcolor="255,255,75,0" setvalue="true" />
+          <StatusEffect target="This" hideitems="false" setvalue="true" />
+        </StatusEffectAction>
+        <!-- reset proxy item to full condition to allow the gun to shoot again -->
+        <StatusEffectAction targettag="riotreloading">
+          <StatusEffect target="This" condition="100" setvalue="true" />
+        </StatusEffectAction>
+      </ScriptedEvent>
+      <ScriptedEvent identifier="reset.smg">
+        <!-- tag the gun so event actions can target it -->
+        <TagAction criteria="itemidentifier:smg" tag="smg" />
+        <!-- tag the reload proxy item so event actions can target it -->
+        <TagAction criteria="itemidentifier:smgreloading" tag="smgreloading" />
+        <!-- reset gun values to default -->
+        <StatusEffectAction targettag="smg">
+          <StatusEffect target="This" holdpos="40,-10" aimpos="40,-2" handle1="-30,-25" handle2="26,-5" holdangle="-35" aimangle="0" condition="100" setvalue="true" />
+          <StatusEffect targetitemcomponent="ItemContainer" target="This" AllowAccess="true" setvalue="true" />
+          <StatusEffect targetitemcomponent="LightComponent" target="This" lightcolor="255,255,75,0" setvalue="true" />
+          <StatusEffect target="This" hideitems="false" setvalue="true" />
+        </StatusEffectAction>
+        <!-- reset proxy item to full condition to allow the gun to shoot again -->
+        <StatusEffectAction targettag="smgreloading">
+          <StatusEffect target="This" condition="100" setvalue="true" />
+        </StatusEffectAction>
+      </ScriptedEvent>
+    </EventPrefabs>
+    <!-- \\\\\ EVENT SETS ///// -->
+    <!-- load events in campaign level -->
+    <EventSet identifier="gunsenhanced_outpostevents.always" leveltype="outpost" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true">
+      <ScriptedEvent identifier="reset.alienpistol" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="true">
+      <ScriptedEvent identifier="reset.alienpistol" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_outpostevents.always" leveltype="outpost" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true">
+      <ScriptedEvent identifier="reset.ancientweapon" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="true">
+      <ScriptedEvent identifier="reset.ancientweapon" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_outpostevents.always" leveltype="outpost" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true">
+      <ScriptedEvent identifier="reset.arcemitter" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="true">
+      <ScriptedEvent identifier="reset.arcemitter" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_outpostevents.always" leveltype="outpost" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true">
+      <ScriptedEvent identifier="reset.assaultrifle" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="true">
+      <ScriptedEvent identifier="reset.assaultrifle" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_outpostevents.always" leveltype="outpost" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true">
+      <ScriptedEvent identifier="reset.autoshotgun" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="true">
+      <ScriptedEvent identifier="reset.autoshotgun" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_outpostevents.always" leveltype="outpost" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true">
+      <ScriptedEvent identifier="reset.shotgununique" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="true">
+      <ScriptedEvent identifier="reset.shotgununique" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_outpostevents.always" leveltype="outpost" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true">
+      <ScriptedEvent identifier="reset.smgunique" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="true">
+      <ScriptedEvent identifier="reset.smgunique" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_outpostevents.always" leveltype="outpost" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true">
+      <ScriptedEvent identifier="reset.flamer" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="true">
+      <ScriptedEvent identifier="reset.flamer" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_outpostevents.always" leveltype="outpost" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true">
+      <ScriptedEvent identifier="reset.grenadelauncher" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="true">
+      <ScriptedEvent identifier="reset.grenadelauncher" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_outpostevents.always" leveltype="outpost" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true">
+      <ScriptedEvent identifier="reset.handcannon" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="true">
+      <ScriptedEvent identifier="reset.handcannon" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_outpostevents.always" leveltype="outpost" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true">
+      <ScriptedEvent identifier="reset.harpooncoilrifle" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="true">
+      <ScriptedEvent identifier="reset.harpooncoilrifle" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_outpostevents.always" leveltype="outpost" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true">
+      <ScriptedEvent identifier="reset.harpoongun" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="true">
+      <ScriptedEvent identifier="reset.harpoongun" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_outpostevents.always" leveltype="outpost" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true">
+      <ScriptedEvent identifier="reset.hmg" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="true">
+      <ScriptedEvent identifier="reset.hmg" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_outpostevents.always" leveltype="outpost" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true">
+      <ScriptedEvent identifier="reset.machinepistol" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="true">
+      <ScriptedEvent identifier="reset.machinepistol" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_outpostevents.always" leveltype="outpost" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true">
+      <ScriptedEvent identifier="reset.flamerunique" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="true">
+      <ScriptedEvent identifier="reset.flamerunique" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_outpostevents.always" leveltype="outpost" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true">
+      <ScriptedEvent identifier="reset.revolver" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="true">
+      <ScriptedEvent identifier="reset.revolver" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_outpostevents.always" leveltype="outpost" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true">
+      <ScriptedEvent identifier="reset.rifle" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="true">
+      <ScriptedEvent identifier="reset.rifle" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_outpostevents.always" leveltype="outpost" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true">
+      <ScriptedEvent identifier="reset.shotgun" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="true">
+      <ScriptedEvent identifier="reset.shotgun" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_outpostevents.always" leveltype="outpost" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true">
+      <ScriptedEvent identifier="reset.smg" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="true">
+      <ScriptedEvent identifier="reset.smg" commonness="100" probability="1" />
+    </EventSet>
+    <!-- load events in custom game mode level -->
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="false">
+      <ScriptedEvent identifier="reset.alienpistol" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="false">
+      <ScriptedEvent identifier="reset.ancientweapon" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="false">
+      <ScriptedEvent identifier="reset.arcemitter" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="false">
+      <ScriptedEvent identifier="reset.assaultrifle" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="false">
+      <ScriptedEvent identifier="reset.autoshotgun" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="false">
+      <ScriptedEvent identifier="reset.shotgununique" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="false">
+      <ScriptedEvent identifier="reset.smgunique" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="false">
+      <ScriptedEvent identifier="reset.flamer" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="false">
+      <ScriptedEvent identifier="reset.grenadelauncher" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="false">
+      <ScriptedEvent identifier="reset.handcannon" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="false">
+      <ScriptedEvent identifier="reset.harpooncoilrifle" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="false">
+      <ScriptedEvent identifier="reset.harpoongun" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="false">
+      <ScriptedEvent identifier="reset.hmg" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="false">
+      <ScriptedEvent identifier="reset.machinepistol" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="false">
+      <ScriptedEvent identifier="reset.flamerunique" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="false">
+      <ScriptedEvent identifier="reset.revolver" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="false">
+      <ScriptedEvent identifier="reset.rifle" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="false">
+      <ScriptedEvent identifier="reset.shotgun" commonness="100" probability="1" />
+    </EventSet>
+    <EventSet identifier="gunsenhanced_transitevents.always" leveltype="locationconnection" allowatstart="true" minleveldifficulty="0" maxleveldifficulty="100" chooserandom="false" ignorecooldown="true" additive="true" selectalways="true" campaign="false">
+      <ScriptedEvent identifier="reset.smg" commonness="100" probability="1" />
+    </EventSet>
+  </Override>
+</Randomevents>

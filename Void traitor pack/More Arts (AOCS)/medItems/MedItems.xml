@@ -1,0 +1,1422 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <Item name="barmech" identifier="artmod_barmech" subcategory="artmod" maxstacksize="32" health="20" maxstacksizecharacterinventory="1" category="Misc" cargocontaineridentifier="mediccrate" Tags="smallitem,chem,medical" description="" scale="0.15" impactsoundtag="impact_metal_light" hideinmenus="false">
+    <!--<InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/SodaBluRedS.png" sourcerect="0,0,83,95" origin="0.5,0.5" />-->
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/bar3.png" sourcerect="0,0,152,59" depth="0.6" origin="0.5,0.5" />
+    <Body width="72" height="40" density="11" />
+    <Price baseprice="60" soldeverywhere="false">
+      <Price storeidentifier="merchantresearch" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="0.9" sold="false" />
+    </Price>
+    <Fabricate suitablefabricators="vendingmachine" requiredtime="2.5" requiredmoney="100" fabricationlimitmin="0" fabricationlimitmax="2" />
+    <Deconstruct time="2" />
+    <RepairTool>
+      <StatusEffect type="OnUse" target="Character" stackable="false" disabledeltatime="true">
+        <Affliction identifier="barbuffmech" amount="5" />
+        <sound file="%ModDir%/More Arts (AOCS)/medItems/minecrafteat1.ogg" range="250" loop="true" volume="1.5" selectionmode="random" />
+        <sound file="%ModDir%/More Arts (AOCS)/medItems/minecrafteat2.ogg" range="250" loop="true" volume="1.5" selectionmode="random" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="This" Condition="-0.1" disabledeltatime="true" stackable="false" />
+      <StatusEffect type="OnUse" target="This" stackable="false">
+        <ParticleEmitter particle="gib" AngleMax="360" VelocityMax="50" ScaleMin="0.5" ScaleMax="0.5" ScaleMultiplier="1,1" ParticlesPerSecond="5" ColorMultiplier="0,102,78,255" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" stackable="false">
+        <remove />
+      </StatusEffect>
+    </RepairTool>
+    <Holdable slots="RightHand,LeftHand,Any" aimable="false" aimpos="20,15" aimangle="180" holdangle="90" handle1="0,0" />
+  </Item>
+  <Item name="barelectro" identifier="artmod_barelectro" subcategory="artmod" maxstacksize="32" health="20" maxstacksizecharacterinventory="1" category="Misc" cargocontaineridentifier="mediccrate" Tags="smallitem,chem,medical" description="" scale="0.15" impactsoundtag="impact_metal_light" hideinmenus="false">
+    <!--<InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/SodaBluRedS.png" sourcerect="0,0,83,95" origin="0.5,0.5" />-->
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/bar2.png" sourcerect="0,0,152,59" depth="0.6" origin="0.5,0.5" />
+    <Body width="72" height="40" density="11" />
+    <Price baseprice="60" soldeverywhere="false">
+      <Price storeidentifier="merchantresearch" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="0.9" sold="false" />
+    </Price>
+    <Fabricate suitablefabricators="vendingmachine" requiredtime="2.5" requiredmoney="100" fabricationlimitmin="0" fabricationlimitmax="2" />
+    <Deconstruct time="2" />
+    <RepairTool>
+      <StatusEffect type="OnUse" target="Character" stackable="false" disabledeltatime="true">
+        <Affliction identifier="barbuffelectro" amount="5" />
+        <sound file="%ModDir%/More Arts (AOCS)/medItems/minecrafteat1.ogg" range="250" loop="true" volume="1.5" selectionmode="random" />
+        <sound file="%ModDir%/More Arts (AOCS)/medItems/minecrafteat2.ogg" range="250" loop="true" volume="1.5" selectionmode="random" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="This" Condition="-0.1" disabledeltatime="true" stackable="false" />
+      <StatusEffect type="OnUse" target="This" stackable="false">
+        <ParticleEmitter particle="gib" AngleMax="360" VelocityMax="50" ScaleMin="0.5" ScaleMax="0.5" ScaleMultiplier="1,1" ParticlesPerSecond="5" ColorMultiplier="0,102,78,255" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" stackable="false">
+        <remove />
+      </StatusEffect>
+    </RepairTool>
+    <Holdable slots="RightHand,LeftHand,Any" aimable="false" aimpos="20,15" aimangle="180" holdangle="90" handle1="0,0" />
+  </Item>
+  <Item name="barmed" identifier="artmod_barmed" subcategory="artmod" maxstacksize="32" health="20" maxstacksizecharacterinventory="1" category="Misc" cargocontaineridentifier="mediccrate" Tags="smallitem,chem,medical" description="" scale="0.15" impactsoundtag="impact_metal_light" hideinmenus="false">
+    <!--<InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/SodaBluRedS.png" sourcerect="0,0,83,95" origin="0.5,0.5" />-->
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/bar1.png" sourcerect="0,0,152,59" depth="0.6" origin="0.5,0.5" />
+    <Body width="72" height="40" density="11" />
+    <Price baseprice="60" soldeverywhere="false">
+      <Price storeidentifier="merchantresearch" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="0.9" sold="false" />
+    </Price>
+    <Fabricate suitablefabricators="vendingmachine" requiredtime="2.5" requiredmoney="100" fabricationlimitmin="0" fabricationlimitmax="2" />
+    <Deconstruct time="2" />
+    <RepairTool>
+      <StatusEffect type="OnUse" target="Character" stackable="false" disabledeltatime="true">
+        <Affliction identifier="barbuffmed" amount="5" />
+        <sound file="%ModDir%/More Arts (AOCS)/medItems/minecrafteat1.ogg" range="250" loop="true" volume="1.5" selectionmode="random" />
+        <sound file="%ModDir%/More Arts (AOCS)/medItems/minecrafteat2.ogg" range="250" loop="true" volume="1.5" selectionmode="random" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="This" Condition="-0.1" disabledeltatime="true" stackable="false" />
+      <StatusEffect type="OnUse" target="This" stackable="false">
+        <ParticleEmitter particle="gib" AngleMax="360" VelocityMax="50" ScaleMin="0.5" ScaleMax="0.5" ScaleMultiplier="1,1" ParticlesPerSecond="5" ColorMultiplier="0,102,78,255" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" stackable="false">
+        <remove />
+      </StatusEffect>
+    </RepairTool>
+    <Holdable slots="RightHand,LeftHand,Any" aimable="false" aimpos="20,15" aimangle="180" holdangle="90" handle1="0,0" />
+  </Item>
+  <Item name="barhelm" identifier="artmod_barhelm" subcategory="artmod" maxstacksize="32" health="20" maxstacksizecharacterinventory="1" category="Misc" cargocontaineridentifier="mediccrate" Tags="smallitem,chem,medical" description="" scale="0.15" impactsoundtag="impact_metal_light" hideinmenus="false">
+    <!--<InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/SodaBluRedS.png" sourcerect="0,0,83,95" origin="0.5,0.5" />-->
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/bar4.png" sourcerect="0,0,152,59" depth="0.6" origin="0.5,0.5" />
+    <Body width="72" height="40" density="11" />
+    <Price baseprice="60" soldeverywhere="false">
+      <Price storeidentifier="merchantresearch" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="0.9" sold="false" />
+    </Price>
+    <Fabricate suitablefabricators="vendingmachine" requiredtime="2.5" requiredmoney="100" fabricationlimitmin="0" fabricationlimitmax="2" />
+    <Deconstruct time="2" />
+    <RepairTool>
+      <StatusEffect type="OnUse" target="Character" stackable="false" disabledeltatime="true">
+        <Affliction identifier="barbuffhelm" amount="5" />
+        <sound file="%ModDir%/More Arts (AOCS)/medItems/minecrafteat1.ogg" range="250" loop="true" volume="1.5" selectionmode="random" />
+        <sound file="%ModDir%/More Arts (AOCS)/medItems/minecrafteat2.ogg" range="250" loop="true" volume="1.5" selectionmode="random" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="This" Condition="-0.1" disabledeltatime="true" stackable="false" />
+      <StatusEffect type="OnUse" target="This" stackable="false">
+        <ParticleEmitter particle="gib" AngleMax="360" VelocityMax="50" ScaleMin="0.5" ScaleMax="0.5" ScaleMultiplier="1,1" ParticlesPerSecond="5" ColorMultiplier="0,102,78,255" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" stackable="false">
+        <remove />
+      </StatusEffect>
+    </RepairTool>
+    <Holdable slots="RightHand,LeftHand,Any" aimable="false" aimpos="20,15" aimangle="180" holdangle="90" handle1="0,0" />
+  </Item>
+  <Item name="barweapons" identifier="artmod_barweapons" subcategory="artmod" maxstacksize="32" health="20" maxstacksizecharacterinventory="1" category="Misc" cargocontaineridentifier="mediccrate" Tags="smallitem,chem,medical" description="" scale="0.15" impactsoundtag="impact_metal_light" hideinmenus="false">
+    <!--<InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/SodaBluRedS.png" sourcerect="0,0,83,95" origin="0.5,0.5" />-->
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/bar5.png" sourcerect="0,0,152,59" depth="0.6" origin="0.5,0.5" />
+    <Body width="72" height="40" density="11" />
+    <Price baseprice="60" soldeverywhere="false">
+      <Price storeidentifier="merchantresearch" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="0.9" sold="false" />
+    </Price>
+    <Fabricate suitablefabricators="vendingmachine" requiredtime="2.5" requiredmoney="100" fabricationlimitmin="0" fabricationlimitmax="2" />
+    <Deconstruct time="2" />
+    <RepairTool>
+      <StatusEffect type="OnUse" target="Character" stackable="false" disabledeltatime="true">
+        <Affliction identifier="barbuffweapons" amount="4" />
+        <sound file="%ModDir%/More Arts (AOCS)/medItems/minecrafteat1.ogg" range="250" loop="true" volume="1.5" selectionmode="random" />
+        <sound file="%ModDir%/More Arts (AOCS)/medItems/minecrafteat2.ogg" range="250" loop="true" volume="1.5" selectionmode="random" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="This" Condition="-0.1" disabledeltatime="true" stackable="false" />
+      <StatusEffect type="OnUse" target="This" stackable="false">
+        <ParticleEmitter particle="gib" AngleMax="360" VelocityMax="50" ScaleMin="0.5" ScaleMax="0.5" ScaleMultiplier="1,1" ParticlesPerSecond="5" ColorMultiplier="0,102,78,255" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" stackable="false">
+        <remove />
+      </StatusEffect>
+    </RepairTool>
+    <Holdable slots="RightHand,LeftHand,Any" aimable="false" aimpos="20,15" aimangle="180" holdangle="90" handle1="0,0" />
+  </Item>
+  <Item name="" identifier="medkit" subcategory="artmod" category="Medical" tags="smallitem,toolbox" useinhealthinterface="true" cargocontaineridentifier="mediccrate" scale="0.5" pickdistance="100" impactsoundtag="impact_metal_light" HideConditionBar="false">
+    <PreferredContainer primary="medcab" minamount="1" maxamount="1" />
+    <Price baseprice="750">
+      <Price storeidentifier="merchantoutpost" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="1" minavailable="1" />
+    </Price>
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="30">
+      <RequiredSkill identifier="medical" level="50" />
+      <RequiredItem identifier="antibleeding1" count="6" />
+      <RequiredItem identifier="antibleeding2" count="2" />
+      <RequiredItem identifier="antibloodloss2" />
+      <RequiredItem identifier="ballisticfiber" />
+    </Fabricate>
+    <Fabricate suitablefabricators="medicalfabricator" displayname="recycleitem" requiredtime="10">
+      <RequiredSkill identifier="medical" level="35" />
+      <RequiredItem identifier="antibleeding1" count="6" />
+      <RequiredItem identifier="antibleeding2" count="2" />
+      <RequiredItem identifier="antibloodloss2" />
+      <RequiredItem identifier="medkit" mincondition="0.0" maxcondition="0.0" usecondition="false" />
+    </Fabricate>
+    <Deconstruct time="10">
+      <Item identifier="plastic" />
+    </Deconstruct>
+    <InventoryIcon texture="MedPack_inv.png" sourcerect="0,0,231,231" />
+    <Sprite texture="MedPack.png" depth="0.54" sourcerect="0,0,100,100" origin="0.5,0.5" />
+    <Body width="100" height="68" density="12" />
+    <Holdable slots="Any,RightHand,LeftHand" holdpos="0,-150" handle1="-2,50" aimable="false" msg="ItemMsgPickUpSelect" canBeCombined="true" removeOnCombined="true">
+      <RequiredSkill identifier="medical" level="40" />
+      <StatusEffect type="OnUse" target="This" Condition="-25.0" disabledeltatime="true" />
+      <StatusEffect tags="medical" type="OnUse" target="UseTarget" duration="10.0">
+        <Sound file="Content/Items/Medical/Bandage1.ogg" type="OnUse" range="500" />
+        <Sound file="Content/Items/Medical/Bandage2.ogg" type="OnUse" range="500" />
+        <ReduceAffliction type="bleeding" amount="4.5" />
+        <ReduceAffliction type="burn" amount="3.5" />
+        <ReduceAffliction identifier="bloodloss" amount="2.5" />
+      </StatusEffect>
+    </Holdable>
+    <ItemContainer autofill="False" capacity="4" slotsperrow="2" maxstacksize="1" canbeselected="false" hidemedItems="true" keepopenwhenequipped="true">
+      <Containable identifiers="syringe" excludedmedItems="toolbox" />
+    </ItemContainer>
+    <SkillRequirementHint identifier="medical" level="50" />
+  </Item>
+  <Item name="" identifier="greenjelly" subcategory="artmod" category="Alien" Tags="smallitem" scale="0.2" description="" useinhealthinterface="false" canbepicked="true" cargocontaineridentifier="chemicalcrate" impactsoundtag="impact_soft">
+    <Price baseprice="40" soldeverywhere="false">
+      <Price storeidentifier="merchantresearch" multiplier="1.1" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.75" sold="false" />
+      <Price storeidentifier="merchantoutpost" multiplier="0.75" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.75" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="1" minavailable="1" />
+    </Price>
+    <Deconstruct time="10"></Deconstruct>
+    <Holdable slots="Any,RightHand,LeftHand" holdangle="30" handle1="0,0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </Holdable>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/GreenBean.png" sourcerect="0,0,134,71" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/GreenBean.png" depth="0.2" sourcerect="0,0,134,71" origin="0.5,0.5" />
+    <Body width="48" height="56" density="10" />
+  </Item>
+  <Item name="" identifier="bluejelly" subcategory="artmod" category="Alien" Tags="smallitem" scale="0.2" description="" useinhealthinterface="false" canbepicked="true" cargocontaineridentifier="chemicalcrate" impactsoundtag="impact_soft">
+    <Price baseprice="50" soldeverywhere="false">
+      <Price storeidentifier="merchantresearch" multiplier="1.35" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantoutpost" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="1" minavailable="1" />
+    </Price>
+    <Deconstruct time="10"></Deconstruct>
+    <Holdable slots="Any,RightHand,LeftHand" holdangle="30" handle1="0,0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </Holdable>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/Antifire2.png" sourcerect="28,89,151,80" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/Antifire2.png" depth="0.2" sourcerect="28,89,151,80" origin="0.5,0.5" />
+    <Body width="48" height="56" density="10" />
+  </Item>
+  <Item name="" identifier="redjelly" subcategory="artmod" category="Alien" Tags="smallitem" scale="0.2" description="" useinhealthinterface="false" canbepicked="true" cargocontaineridentifier="chemicalcrate" impactsoundtag="impact_soft">
+    <Price baseprice="50" soldeverywhere="false">
+      <Price storeidentifier="merchantresearch" multiplier="1.35" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="1.25" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="1" minavailable="1" />
+    </Price>
+    <Deconstruct time="10"></Deconstruct>
+    <Holdable slots="Any,RightHand,LeftHand" holdangle="30" handle1="0,0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </Holdable>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/RedBean.png" sourcerect="0,0,134,71" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/RedBean.png" depth="0.2" sourcerect="0,0,134,71" origin="0.5,0.5" />
+    <Body width="48" height="56" density="10" />
+  </Item>
+  <Item name="" identifier="bluesoda" subcategory="artmod" maxstacksize="8" maxstacksizecharacterinventory="1" category="Misc" cargocontaineridentifier="sodacrate" Tags="smallitem,soda" description="" scale="0.15" impactsoundtag="impact_metal_light">
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/SodaBluRedS.png" sourcerect="0,0,83,95" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/SodaBluRed.png" sourcerect="0,0,83,153" depth="0.6" origin="0.5,0.5" />
+    <Body width="32" height="64" density="11" />
+    <Price baseprice="25" soldeverywhere="false">
+      <Price storeidentifier="merchantresearch" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="0.9" sold="false" />
+    </Price>
+    <Fabricate suitablefabricators="vendingmachine" requiredtime="2.5" requiredmoney="60" fabricationlimitmin="0" fabricationlimitmax="10" />
+    <Deconstruct time="2">
+      <Item identifier="aluminium" outcondition="0.2" />
+    </Deconstruct>
+    <RepairTool>
+      <StatusEffect type="OnUse" target="Character" stackable="false" disabledeltatime="true">
+        <Affliction identifier="bluesoda" amount="0.075" />
+        <!--<Affliction identifier="spaceherpesS" amount="0.0005" />-->
+        <sound file="%ModDir%/More Arts (AOCS)/medItems/Glup.ogg" range="250" loop="true" volume="1.5" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="This" Condition="-0.1" disabledeltatime="true" stackable="false" />
+      <StatusEffect type="OnUse" target="This" stackable="false">
+        <ParticleEmitter particle="artmod_blooddrop" AngleMax="360" ScaleMin="0.5" ScaleMax="0.25" ScaleMultiplier="1,1" ParticlesPerSecond="2" ColorMultiplier="0,0,255,255" />
+      </StatusEffect>
+    </RepairTool>
+    <Holdable slots="RightHand,LeftHand,Any" aimable="false" aimpos="20,7" holdpos="45,-30" aimangle="180" holdangle="-45" handle1="0,0" />
+  </Item>
+  <Item name="" identifier="redsoda" subcategory="artmod" maxstacksize="8" maxstacksizecharacterinventory="1" category="Misc" cargocontaineridentifier="sodacrate" Tags="smallitem,soda" description="" scale="0.15" impactsoundtag="impact_metal_light">
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/SodaBluRedS.png" sourcerect="0,96,83,92" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/SodaBluRed.png" sourcerect="0,154,83,154" depth="0.6" origin="0.5,0.5" />
+    <Body width="32" height="64" density="11" />
+    <Price baseprice="25" soldeverywhere="false">
+      <Price storeidentifier="merchantresearch" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="0.9" sold="false" />
+    </Price>
+    <Fabricate suitablefabricators="vendingmachine" requiredtime="2.5" requiredmoney="60" fabricationlimitmin="0" fabricationlimitmax="10" />
+    <Deconstruct time="2">
+      <Item identifier="aluminium" outcondition="0.2" />
+    </Deconstruct>
+    <RepairTool>
+      <StatusEffect type="OnUse" target="Character" stackable="false">
+        <Affliction identifier="redsoda" amount="0.075" />
+        <!--<Affliction identifier="spaceherpesS" amount="0.005" />-->
+        <sound file="%ModDir%/More Arts (AOCS)/medItems/Glup.ogg" range="250" loop="true" volume="1.5" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="This" Condition="-0.1" disabledeltatime="true" stackable="false" />
+      <StatusEffect type="OnUse" target="This" stackable="false">
+        <ParticleEmitter particle="artmod_blooddrop" AngleMax="360" ScaleMin="0.5" ScaleMax="0.25" ScaleMultiplier="1,1" ParticlesPerSecond="2" ColorMultiplier="255,0,0,255" />
+      </StatusEffect>
+    </RepairTool>
+    <Holdable slots="RightHand,LeftHand,Any" aimable="false" aimpos="20,7" holdpos="45,-30" aimangle="-45" holdangle="-45" handle1="0,0" />
+  </Item>
+  <Item name="" identifier="greensoda" subcategory="artmod" maxstacksize="8" maxstacksizecharacterinventory="1" category="Misc" cargocontaineridentifier="sodacrate" Tags="smallitem,soda" description="" scale="0.15" impactsoundtag="impact_metal_light">
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/SodaGreenS.png" sourcerect="0,0,83,92" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/SodaGreen.png" sourcerect="0,0,83,154" depth="0.6" origin="0.5,0.5" />
+    <Body width="32" height="64" density="11" />
+    <Price baseprice="25" soldeverywhere="false">
+      <Price storeidentifier="merchantresearch" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="0.9" sold="false" />
+    </Price>
+    <Fabricate suitablefabricators="vendingmachine" requiredtime="2.5" requiredmoney="60" fabricationlimitmin="0" fabricationlimitmax="10" />
+    <Deconstruct time="2">
+      <Item identifier="aluminium" outcondition="0.2" />
+    </Deconstruct>
+    <RepairTool>
+      <StatusEffect type="OnUse" target="Character" disabledeltatime="true" stackable="false">
+        <Affliction identifier="greensoda" amount="0.075" />
+        <!--<Affliction identifier="spaceherpesS" amount="0.005" />-->
+        <sound file="%ModDir%/More Arts (AOCS)/medItems/Glup.ogg" range="250" loop="true" volume="1.5" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="This" Condition="-0.1" disabledeltatime="true" stackable="false" />
+      <StatusEffect type="OnUse" target="This" stackable="false">
+        <ParticleEmitter particle="artmod_blooddrop" AngleMax="360" ScaleMin="0.5" ScaleMax="0.25" ScaleMultiplier="1,1" ParticlesPerSecond="2" ColorMultiplier="0,255,0,255" />
+      </StatusEffect>
+    </RepairTool>
+    <Holdable slots="RightHand,LeftHand,Any" aimable="false" aimpos="20,7" holdpos="45,-30" aimangle="-45" holdangle="-45" handle1="0,0" />
+  </Item>
+  <Item name="" identifier="crystalshard" subcategory="artmod" category="Alien" Tags="smallitem" maxstacksize="12" maxstacksizecharacterinventory="1" scale="0.3" cargocontaineridentifier="metalcrate" useinhealthinterface="true" canbepicked="true">
+    <PreferredContainer primary="toxcab,medfabcab,storagecab" minamount="1" maxamount="2" spawnprobability="0.01" />
+    <PreferredContainer secondary="wreckstoragecab" minamount="1" maxamount="2" spawnprobability="0.05" />
+    <PreferredContainer primary="ruinstorage,ruinstoragesmall" minamount="0" maxamount="1" spawnprobability="0.05" />
+    <PreferredContainer primary="ruinstoragelarge" minamount="0" maxamount="1" spawnprobability="0.1" />
+    <PreferredContainer primary="ruintreasure" minamount="1" maxamount="2" spawnprobability="0.25" />
+    <Price baseprice="100" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="1.1" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="1.15" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="1.35" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.8" sold="true" minavailable="1" />
+      <Price storeidentifier="merchantmedical" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchanthusk" minavailable="0" maxavailable="2" sold="true">
+        <Reputation faction="huskcult" min="10" />
+      </Price>
+    </Price>
+    <Deconstruct time="5"></Deconstruct>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/Crystalshard.png" sourcerect="0,0,25,82" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/Crystalshard.png" sourcerect="0,0,25,82" depth="0.55" origin="0.5,0.5" />
+    <Body width="25" height="55" density="50" />
+    <Holdable canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" handle1="0,0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" condition="-100" disabledeltatime="true" />
+      <StatusEffect type="OnUse" target="Character" comparison="And" disabledeltatime="False" duration="2.0">
+        <ReduceAffliction identifier="bleeding" amount="5" />
+        <ReduceAffliction identifier="burn" amount="2.5" />
+        <ReduceAffliction identifier="damage" amount="2.5" />
+        <ReduceAffliction identifier="poison" amount="2.5" />
+        <ReduceAffliction identifier="paralysis" amount="2.5" />
+        <ReduceAffliction identifier="oxygenlow" amount="4" />
+        <ReduceAffliction identifier="artmod_anomalyfunctionalnecrosis" amount="2.5" />
+        <Affliction identifier="dontusetoomuch" amount="-2.5" />
+        <ReduceAffliction identifier="huskinfection" amount="2.5" />
+        <ReduceAffliction identifier="organdamage" amount="2.5" />
+        <Affliction identifier="opiateaddiction" amount="2.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/medItems/CrystalShatter.ogg" range="250" loop="false" volume="0.1" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </Holdable>
+    <LightComponent lightcolor="155,0,0,155" range="50.0" powerconsumption="0" pulsefrequency="0.25" pulseamount="0.8" ison="true" />
+  </Item>
+  <Item name="" identifier="crystalchunk" subcategory="artmod" category="Alien" Tags="smallitem" maxstacksize="8" maxstacksizecharacterinventory="1" scale="0.4" cargocontaineridentifier="metalcrate" useinhealthinterface="true" canbepicked="true">
+    <PreferredContainer primary="wreckstoragecab" minamount="0" maxamount="1" spawnprobability="0.01" />
+    <PreferredContainer primary="ruinstoragelarge" minamount="1" maxamount="1" spawnprobability="0.025" />
+    <PreferredContainer primary="ruintreasure" minamount="1" maxamount="1" spawnprobability="0.05" />
+    <Price baseprice="500" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="1.1" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="1.15" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="1.35" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchanthusk" minavailable="0" maxavailable="1" sold="true">
+        <Reputation faction="huskcult" min="30" />
+      </Price>
+    </Price>
+    <Deconstruct time="10">
+      <Item identifier="crystalshard" copycondition="true" />
+      <Item identifier="crystalshard" copycondition="true" />
+      <Item identifier="crystalshard" copycondition="true" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/CrystalChunkS.png" sourcerect="0,0,55,66" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/CrystalChunkS.png" sourcerect="0,0,55,66" depth="0.55" origin="0.5,0.5" />
+    <Body radius="25" density="50" />
+    <Holdable canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" handle1="0,0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" condition="-50" disabledeltatime="true" />
+      <StatusEffect type="OnUse" target="Character" comparison="And" disabledeltatime="False" duration="2.0">
+        <ReduceAffliction identifier="bleeding" amount="20" />
+        <ReduceAffliction identifier="burn" amount="10" />
+        <ReduceAffliction identifier="damage" amount="10" />
+        <ReduceAffliction identifier="poison" amount="10" />
+        <ReduceAffliction identifier="paralysis" amount="10" />
+        <ReduceAffliction identifier="oxygenlow" amount="15" />
+        <ReduceAffliction identifier="artmod_anomalyfunctionalnecrosis" amount="1000" />
+        <ReduceAffliction identifier="huskinfection" amount="10" />
+        <ReduceAffliction identifier="organdamage" amount="10.0" />
+        <Affliction identifier="opiateaddiction" amount="7.5" />
+        <Affliction identifier="dontusetoomuch" amount="-10" />
+        <sound file="%ModDir%/More Arts (AOCS)/medItems/CrystalShatter.ogg" range="250" loop="false" volume="0.3" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </Holdable>
+    <LightComponent lightcolor="155,0,0,200" range="150.0" powerconsumption="0" pulsefrequency="0.5" pulseamount="0.9" ison="true" />
+  </Item>
+  <Item name="" identifier="crystalslab" subcategory="artmod" category="Alien" Tags="smallitem" maxstacksize="4" maxstacksizecharacterinventory="1" scale="0.25" cargocontaineridentifier="metalcrate" useinhealthinterface="true" canbepicked="true">
+    <PreferredContainer primary="wreckstoragecab" minamount="0" maxamount="1" spawnprobability="0.001" />
+    <PreferredContainer primary="ruintreasure" minamount="1" maxamount="1" spawnprobability="0.01" />
+    <Price baseprice="3000" soldeverywhere="false" canbespecial="false">
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.95" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.95" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchanthusk" multiplier="1.3" sold="false" />
+    </Price>
+    <Deconstruct time="10">
+      <Item identifier="crystalchunk" copycondition="true" />
+      <Item identifier="crystalchunk" copycondition="true" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/Crystalslab.png" sourcerect="0,0,97,158" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/Crystalslab.png" sourcerect="0,0,97,158" depth="0.55" origin="0.5,0.5" />
+    <Body radius="50" density="50" />
+    <Holdable canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" handle1="0,0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" condition="-25" disabledeltatime="true" />
+      <StatusEffect type="OnUse" target="Character" comparison="And" disabledeltatime="False" duration="3.0">
+        <ReduceAffliction identifier="bleeding" amount="100" />
+        <ReduceAffliction identifier="burn" amount="55.5" />
+        <ReduceAffliction identifier="damage" amount="55.5" />
+        <ReduceAffliction identifier="poison" amount="55" />
+        <ReduceAffliction identifier="paralysis" amount="55" />
+        <ReduceAffliction identifier="oxygenlow" amount="55" />
+        <ReduceAffliction identifier="artmod_anomalyfunctionalnecrosis" amount="1000" />
+        <ReduceAffliction identifier="huskinfection" amount="26" />
+        <ReduceAffliction identifier="organdamage" amount="25.1" />
+        <Affliction identifier="opiateaddiction" amount="10.0" />
+        <Affliction identifier="dontusetoomuch" amount="-55" />
+        <sound file="%ModDir%/More Arts (AOCS)/medItems/CrystalShatter.ogg" range="250" loop="false" volume="1.0" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+      <!--<StatusEffect type="Always" target="This" range="300">
+	<ParticleEmitter particle="artmod_GlowDot" distancemin="10" distancemax="50" anglemin="0" anglemax="360" particlespersecond="1" velocitymin="0" velocitymax="0" scalemin="0.1" scalemax="0.2" />
+      </StatusEffect>-->
+    </Holdable>
+    <LightComponent lightcolor="155,0,0,200" range="250.0" powerconsumption="0" pulsefrequency="1.5" pulseamount="2.9" ison="true" />
+  </Item>
+  <Item name="" identifier="bluejellymed" subcategory="artmod" category="Medical" maxstacksize="32" maxstacksizecharacterinventory="8" cargocontaineridentifier="mediccrate" Tags="smallitem,chem,medical,syringe" description="" useinhealthinterface="true" scale="0.5">
+    <PreferredContainer primary="toxcab" minamount="1" maxamount="2" />
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="4" spawnprobability="0.25" />
+    <Price baseprice="100" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.85" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.85" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="1" minavailable="2" />
+    </Price>
+    <Fabricate suitablefabricators="vendingmachine" requiredtime="2.5" requiredmoney="175" fabricationlimitmin="0" fabricationlimitmax="1" />
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="90" amount="2">
+      <RequiredSkill identifier="medical" level="20" />
+      <RequiredItem identifier="stabilozine" />
+      <RequiredItem identifier="stabilozine" />
+      <RequiredItem identifier="bluejelly" />
+    </Fabricate>
+    <Deconstruct time="20">
+      <Item identifier="stabilozine" copycondition="true" mincondition="0.1" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/Jellymeds.png" sourcerect="130,8,64,64" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/JellymedsI.png" sourcerect="38,0,36,68" depth="0.55" origin="0.5,0.5" />
+    <Body width="35" height="65" density="20" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="0" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect tags="medical" type="OnUse" target="This, Limb" duration="6.0">
+        <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+        <Affliction identifier="burnresist" strength="65" />
+      </StatusEffect>
+      <!-- Remove the item when fully used -->
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+    <SkillRequirementHint identifier="medical" level="0" />
+  </Item>
+  <Item name="" identifier="redjellymed" subcategory="artmod" category="Medical" maxstacksize="32" maxstacksizecharacterinventory="8" cargocontaineridentifier="mediccrate" Tags="smallitem,chem,medical,syringe" description="" useinhealthinterface="true" scale="0.5">
+    <PreferredContainer primary="toxcab" minamount="1" maxamount="2" />
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="4" spawnprobability="0.25" />
+    <Price baseprice="100" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.85" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="1.05" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="1" minavailable="2" />
+    </Price>
+    <Fabricate suitablefabricators="vendingmachine" requiredtime="2.5" requiredmoney="175" fabricationlimitmin="0" fabricationlimitmax="1" />
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="90" amount="2">
+      <RequiredSkill identifier="medical" level="20" />
+      <RequiredItem identifier="stabilozine" />
+      <RequiredItem identifier="stabilozine" />
+      <RequiredItem identifier="redjelly" />
+    </Fabricate>
+    <Deconstruct time="20">
+      <Item identifier="stabilozine" copycondition="true" mincondition="0.1" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/Jellymeds.png" sourcerect="0,8,64,64" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/JellymedsI.png" sourcerect="0,72,36,68" depth="0.55" origin="0.5,0.5" />
+    <Body width="35" height="65" density="20" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="0" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect tags="medical" type="OnUse" target="This, Limb" duration="6.0">
+        <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+        <Affliction identifier="bleedingresist" strength="65" />
+      </StatusEffect>
+      <!-- Remove the item when fully used -->
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+    <SkillRequirementHint identifier="medical" level="0" />
+  </Item>
+  <Item name="" identifier="greenjellymed" subcategory="artmod" category="Medical" maxstacksize="32" maxstacksizecharacterinventory="8" cargocontaineridentifier="mediccrate" Tags="smallitem,chem,medical,syringe" description="" useinhealthinterface="true" scale="0.5">
+    <PreferredContainer primary="toxcab" minamount="1" maxamount="2" spawnprobability="0.25" />
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="2" spawnprobability="0.15" />
+    <Price baseprice="100" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="0.7" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.7" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="1" minavailable="2" />
+    </Price>
+    <Fabricate suitablefabricators="vendingmachine" requiredtime="2.5" requiredmoney="175" fabricationlimitmin="0" fabricationlimitmax="1" />
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="90" amount="2">
+      <RequiredSkill identifier="medical" level="20" />
+      <RequiredItem identifier="stabilozine" />
+      <RequiredItem identifier="stabilozine" />
+      <RequiredItem identifier="greenjelly" />
+    </Fabricate>
+    <Deconstruct time="20">
+      <Item identifier="stabilozine" copycondition="true" mincondition="0.1" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/Jellymeds.png" sourcerect="70,8,64,64" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/JellymedsI.png" sourcerect="38,72,36,68" depth="0.55" origin="0.5,0.5" />
+    <Body width="35" height="65" density="20" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="0" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect tags="medical" type="OnUse" target="This, Limb" duration="6.0">
+        <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+        <Affliction identifier="chemresist" strength="65" />
+      </StatusEffect>
+      <!-- Remove the item when fully used -->
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+    <SkillRequirementHint identifier="medical" level="0" />
+  </Item>
+  <Item name="" identifier="bluejellymedS" subcategory="artmod" category="Medical" maxstacksize="32" maxstacksizecharacterinventory="8" cargocontaineridentifier="mediccrate" Tags="smallitem,chem,medical,syringe" description="" useinhealthinterface="true" scale="0.5">
+    <PreferredContainer primary="toxcab" minamount="1" maxamount="2" spawnprobability="0.1" />
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="2" spawnprobability="0.1" />
+    <Price baseprice="250" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="1.25" sold="false" />
+      <Price storeidentifier="merchanthusk" minavailable="1" maxavailable="2" sold="true">
+        <Reputation faction="huskcult" min="15" />
+      </Price>
+    </Price>
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="90" amount="2">
+      <RequiredSkill identifier="medical" level="40" />
+      <RequiredItem identifier="bluejellymed" />
+      <RequiredItem identifier="bluejellymed" />
+      <RequiredItem identifier="crystalshard" />
+    </Fabricate>
+    <Deconstruct time="20">
+      <Item identifier="stabilozine" copycondition="true" mincondition="0.1" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/JellymedsS.png" sourcerect="132,0,64,64" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/JellymedsI.png" sourcerect="38,0,36,68" depth="0.55" origin="0.5,0.5" />
+    <Body width="35" height="65" density="20" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="0" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnUse" target="usetarget" setvalue="true" duration="15">
+        <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+        <Affliction identifier="burnresistS" strength="600" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="usetarget" setvalue="true" duration="4" delay="60">
+        <Affliction identifier="dontusetoomuch" strength="0.015" />
+      </StatusEffect>
+      <!-- Remove the item when fully used -->
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+    <SkillRequirementHint identifier="medical" level="0" />
+  </Item>
+  <Item name="" identifier="redjellymedS" subcategory="artmod" category="Medical" maxstacksize="32" maxstacksizecharacterinventory="8" cargocontaineridentifier="mediccrate" Tags="smallitem,chem,medical,syringe" description="" useinhealthinterface="true" scale="0.5">
+    <PreferredContainer primary="toxcab" minamount="1" maxamount="2" spawnprobability="0.1" />
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="2" spawnprobability="0.1" />
+    <Price baseprice="250" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchanthusk" minavailable="1" maxavailable="2" sold="true">
+        <Reputation faction="huskcult" min="15" />
+      </Price>
+    </Price>
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="90" amount="2">
+      <RequiredSkill identifier="medical" level="40" />
+      <RequiredItem identifier="redjellymed" />
+      <RequiredItem identifier="redjellymed" />
+      <RequiredItem identifier="crystalshard" />
+    </Fabricate>
+    <Deconstruct time="20">
+      <Item identifier="stabilozine" copycondition="true" mincondition="0.1" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/JellymedsS.png" sourcerect="0,0,64,64" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/JellymedsI.png" sourcerect="0,72,36,68" depth="0.55" origin="0.5,0.5" />
+    <Body width="35" height="65" density="20" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="0" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnUse" target="usetarget" setvalue="true" duration="15">
+        <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+        <Affliction identifier="bleedingresistS" strength="600" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="usetarget" setvalue="true" duration="4" delay="60">
+        <Affliction identifier="dontusetoomuch" strength="0.015" />
+      </StatusEffect>
+      <!-- Remove the item when fully used -->
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+    <SkillRequirementHint identifier="medical" level="0" />
+  </Item>
+  <Item name="" identifier="greenjellymedS" subcategory="artmod" category="Medical" maxstacksize="32" maxstacksizecharacterinventory="8" cargocontaineridentifier="mediccrate" Tags="smallitem,chem,medical,syringe" description="" useinhealthinterface="true" scale="0.5">
+    <PreferredContainer primary="toxcab" minamount="1" maxamount="2" spawnprobability="0.05" />
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="2" spawnprobability="0.05" />
+    <Price baseprice="250" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="0.7" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchanthusk" minavailable="1" maxavailable="2" sold="true">
+        <Reputation faction="huskcult" min="15" />
+      </Price>
+    </Price>
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="90" amount="2">
+      <RequiredSkill identifier="medical" level="40" />
+      <RequiredItem identifier="greenjellymed" />
+      <RequiredItem identifier="greenjellymed" />
+      <RequiredItem identifier="crystalshard" />
+    </Fabricate>
+    <Deconstruct time="20">
+      <Item identifier="stabilozine" copycondition="true" mincondition="0.1" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/JellymedsS.png" sourcerect="66,0,64,64" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/JellymedsI.png" sourcerect="38,72,36,68" depth="0.55" origin="0.5,0.5" />
+    <Body width="35" height="65" density="20" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="0" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnUse" target="usetarget" setvalue="true" duration="15">
+        <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+        <Affliction identifier="chemresistS" strength="600" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="usetarget" setvalue="true" duration="4" delay="60">
+        <Affliction identifier="dontusetoomuch" strength="0.015" />
+      </StatusEffect>
+      <!-- Remove the item when fully used -->
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+    <SkillRequirementHint identifier="medical" level="0" />
+  </Item>
+  <Item name="" identifier="genetherapyS" subcategory="artmod" category="Medical" maxstacksize="10" maxstacksizecharacterinventory="1" cargocontaineridentifier="chemicalcrate" Tags="smallitem,chem,medical,syringe" description="" useinhealthinterface="true" scale="0.15" impactsoundtag="impact_metal_light">
+    <Upgrade gameversion="0.10.0.0" scale="0.5" />
+    <PreferredContainer primary="toxcab" minamount="1" maxamount="3" />
+    <PreferredContainer primary="wreckmedcab" minamount="1" maxamount="2" spawnprobability="0.045" />
+    <PreferredContainer primary="outpostmedcompartment" minamount="0" maxamount="1" spawnprobability="0.025" />
+    <Price baseprice="500" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="1.1" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="1" minavailable="1" />
+    </Price>
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="30" amount="1">
+      <RequiredSkill identifier="medical" level="40" />
+      <RequiredItem identifier="crystalchunk" mincondition="0.5" usecondition="true" />
+      <RequiredItem identifier="stabilozine" />
+      <RequiredItem identifier="antibiotics" />
+      <RequiredItem identifier="oxygeniteshard" mincondition="0.5" usecondition="true" />
+    </Fabricate>
+    <Deconstruct time="5">
+      <Item identifier="stabilozine" copycondition="true" mincondition="0.1" />
+    </Deconstruct>
+    <SuitableTreatment identifier="fn_functionalnecrosis" suitability="40" />
+    <!--<InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/genetherapyS.png" sourcerect="0,0,256,256" origin="0.5,0.5" />-->
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/syringesprite.png" sourcerect="0,0,260,218" depth="0.6" origin="0.5,0.5" />
+    <Body width="65" height="65" density="20" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="25,5" handle1="-10,-10" holdangle="0" reload="1.0" msg="ItemMsgPickUpSelect">
+      <!--Sound effect that plays after the effects of gene therapy kick in.-->
+      <!--Sounds timed just right to sound as though someone is removing the cap, injecting the syringe, and letting go-->
+      <StatusEffect type="OnUse" target="This" condition="-100" disabledeltatime="true">
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/genetherapy_cap_remove_01.ogg" range="500" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="This" delay="0.7" disabledeltatime="true">
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/genetherapy_inject_01.ogg" range="500" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="This" delay="0.8" disabledeltatime="true">
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/genetherapy_click_01.ogg" range="500" />
+      </StatusEffect>
+      <!--Slightly heal most afflictions, and greatly heal poisoning.
+      Cure functional necrosis, give the negative side effects, and give a lot of stun.-->
+      <StatusEffect type="OnUse" target="UseTarget" delay="0.4" duration="4.0">
+        <ReduceAffliction identifier="bleeding" amount="5" />
+        <ReduceAffliction identifier="bloodloss" amount="5" />
+        <ReduceAffliction identifier="morbusinepoisoning" amount="55" />
+        <ReduceAffliction identifier="sufforinpoisoning" amount="55" />
+        <ReduceAffliction identifier="cyanidepoisoning" amount="55" />
+        <ReduceAffliction identifier="radiationsickness" amount="55" />
+        <ReduceAffliction identifier="deliriuminepoisoning" amount="55" />
+        <ReduceAffliction identifier="paralysis" amount="55" />
+        <ReduceAffliction identifier="oxygenlow" amount="15" />
+        <ReduceAffliction identifier="transformationgift" amount="55" />
+        <ReduceAffliction identifier="artmod_anomalyfunctionalnecrosis" amount="55" />
+        <ReduceAffliction identifier="huskinfection" amount="55" />
+        <Affliction identifier="progressivestun" amount="8.5" />
+        <Affliction identifier="organdamage" amount="2.1" />
+        <Affliction identifier="artmod_invertcontrols" amount="7.5" />
+        <Affliction identifier="psychosis" amount="5.0" />
+        <Affliction identifier="opiateaddiction" amount="2.5" />
+        <Affliction identifier="nausea" amount="10.0" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget" delay="4.0" duration="4.0">
+        <ReduceAffliction identifier="artmod_invertcontrols" amount="7.5" />
+      </StatusEffect>
+      <!-- Remove the item when fully used -->
+      <StatusEffect type="OnBroken" target="This" delay="1.2">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+  </Item>
+  <Item name="" identifier="morehealthsyringe" subcategory="artmod" category="Medical" maxstacksize="32" maxstacksizecharacterinventory="2" cargocontaineridentifier="chemicalcrate" Tags="smallitem,chem,medical,syringe" description="" useinhealthinterface="true" scale="0.35" impactsoundtag="impact_metal_light">
+    <PreferredContainer primary="medcab" minamount="0" maxamount="1" spawnprobability="0.025" />
+    <PreferredContainer primary="wreckmedcab" minamount="0" maxamount="2" spawnprobability="0.045" />
+    <PreferredContainer primary="outpostmedcompartment" minamount="0" maxamount="1" spawnprobability="0.025" />
+    <Price baseprice="500" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="1.1" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="1" minavailable="2" />
+    </Price>
+    <Fabricate suitablefabricators="vendingmachine" requiredtime="2.5" requiredmoney="750" fabricationlimitmin="0" fabricationlimitmax="1" />
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="30" amount="1">
+      <RequiredSkill identifier="medical" level="20" />
+      <RequiredItem identifier="crystalshard" mincondition="0.5" usecondition="true" />
+      <RequiredItem identifier="stabilozine" />
+      <RequiredItem identifier="antibiotics" />
+      <RequiredItem identifier="fulgurium" mincondition="0.25" usecondition="true" />
+    </Fabricate>
+    <Deconstruct time="5">
+      <Item identifier="stabilozine" copycondition="true" mincondition="0.1" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/gj-injector_inv.png" sourcerect="0,0,128,128" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/gj-injector.png" sourcerect="0,0,9,61" depth="0.51" origin="0.5,0.5" />
+    <Body width="35" height="40" density="20" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="0" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" condition="-100" disabledeltatime="true">
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/genetherapy_cap_remove_01.ogg" range="500" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="This" delay="0.7" disabledeltatime="true">
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/genetherapy_inject_01.ogg" range="500" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="This" delay="0.8" disabledeltatime="true">
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/genetherapy_click_01.ogg" range="500" />
+      </StatusEffect>
+      <RequiredSkill identifier="medical" level="25" />
+      <StatusEffect tags="medical" type="OnUse" target="UseTarget" duration="60.0">
+        <ReduceAffliction identifier="oxygenlow" amount="0.2" />
+        <Affliction identifier="chemaddiction" amount="0.15" />
+        <ReduceAffliction identifier="chemwithdrawal" amount="1.5" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget" delay="0.4" duration="10.0">
+        <Affliction identifier="morevigor" amount="50" />
+      </StatusEffect>
+      <!-- Remove the item when fully used -->
+      <StatusEffect type="OnBroken" target="This" delay="1.2">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+    <SkillRequirementHint identifier="medical" level="0" />
+  </Item>
+  <Item name="" identifier="moremorehealthsyringe" subcategory="artmod" category="Medical" maxstacksize="32" maxstacksizecharacterinventory="2" cargocontaineridentifier="chemicalcrate" Tags="smallitem,chem,medical,syringe" description="" useinhealthinterface="true" scale="0.25" impactsoundtag="impact_metal_light">
+    <PreferredContainer primary="toxcab" minamount="0" maxamount="1" spawnprobability="0.025" />
+    <PreferredContainer primary="wreckmedcab" minamount="0" maxamount="2" spawnprobability="0.015" />
+    <PreferredContainer primary="outpostmedcompartment" minamount="0" maxamount="1" spawnprobability="0.005" />
+    <Price baseprice="1200" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="1.1" />
+      <Price storeidentifier="merchanthusk" minavailable="1" maxavailable="1" sold="true">
+        <Reputation faction="huskcult" min="25" />
+      </Price>
+    </Price>
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="60" amount="1">
+      <RequiredSkill identifier="medical" level="40" />
+      <RequiredItem identifier="crystalchunk" mincondition="0.5" usecondition="true" />
+      <RequiredItem identifier="stabilozine" />
+      <RequiredItem identifier="antibiotics" />
+      <RequiredItem identifier="fulgurium" mincondition="0.5" usecondition="true" />
+    </Fabricate>
+    <Deconstruct time="5">
+      <Item identifier="stabilozine" copycondition="true" mincondition="0.1" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/dai-injector_inv.png" sourcerect="0,0,128,128" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/dai-injector.png" sourcerect="0,0,19,89" depth="0.51" origin="0.5,0.5" />
+    <Body width="35" height="70" density="20" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="0" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" condition="-100" disabledeltatime="true">
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/genetherapy_cap_remove_01.ogg" range="500" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="This" delay="0.7" disabledeltatime="true">
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/genetherapy_inject_01.ogg" range="500" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="This" delay="0.8" disabledeltatime="true">
+        <Sound file="%ModDir%/More Arts (AOCS)/Sounds/NMRiH/genetherapy_click_01.ogg" range="500" />
+      </StatusEffect>
+      <RequiredSkill identifier="medical" level="50" />
+      <StatusEffect tags="medical" type="OnUse" target="UseTarget" duration="60.0">
+        <ReduceAffliction identifier="oxygenlow" amount="0.2" />
+        <Affliction identifier="chemaddiction" amount="0.25" />
+        <ReduceAffliction identifier="chemwithdrawal" amount="1.5" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget" delay="0.4" duration="10.0">
+        <Affliction identifier="moremorevigor" amount="50" />
+      </StatusEffect>
+      <!-- Remove the item when fully used -->
+      <StatusEffect type="OnBroken" target="This" delay="1.2">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+    <SkillRequirementHint identifier="medical" level="0" />
+  </Item>
+  <!-- возрожденные члены экипажа перестали считаться членами экипажа после завершения миссии-->
+  <!-- <Item name="" identifier="DSreanimator" category="Medical" maxstacksize="1" cargocontaineridentifier="mediccrate" Tags="smallitem,chem,medical,syringe" description="" useinhealthinterface="true" scale="0.3">
+    <PreferredContainer primary="toxcab" minamount="0" maxamount="1" spawnprobability="0.025" />
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="1" spawnprobability="0.025" />
+    <Price baseprice="2000" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="0.7" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.8" sold="false" />
+	  <Price storeidentifier="merchantmedical" multiplier="1" minavailable="1" />
+    </Price>
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="60">
+      <RequiredSkill identifier="medical" level="75" />
+      <RequiredItem identifier="crystalchunk" count="1" />
+      <RequiredItem identifier="stabilozine" count="1" />
+      <RequiredItem identifier="deusizine" count="2" />
+    </Fabricate>
+    <Deconstruct time="20">
+      <Item identifier="stabilozine" copycondition="true" mincondition="0.1" />
+      <Item identifier="deusizine" copycondition="true" mincondition="0.1" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/reanimatorS.png" sourcerect="0,0,200,200" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/reanimator.png" sourcerect="0,0,57,130" depth="0.55" origin="0.5,0.5" />
+    <Body width="62" height="115" density="20" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="0" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnUse" target="UseTarget" setvalue="true" Isdead="false">
+        <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+        <Conditional IsDead="true" />
+        <Affliction identifier="stun" strength="300" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget" setvalue="true">
+        <Conditional IsDead="false" />
+        <Affliction identifier="stun" strength="300" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+  </Item> -->
+  <!--противохимикаты-->
+  <Item name="" identifier="pills1" subcategory="artmod" category="Medical" Tags="smallitem,chem,medical,pills" scale="0.1" description="" useinhealthinterface="true" canbepicked="true" cargocontaineridentifier="mediccrate" maxstacksize="40" maxstacksizecharacterinventory="12" impactsoundtag="impact_metal_light">
+    <PreferredContainer primary="medcab" minamount="4" maxamount="10" />
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="8" spawnprobability="0.25" />
+    <Price baseprice="25" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="1" minavailable="8" />
+    </Price>
+    <Fabricate suitablefabricators="vendingmachine" requiredtime="0.5" requiredmoney="30" fabricationlimitmin="0" fabricationlimitmax="4" />
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="30" amount="2">
+      <RequiredSkill identifier="medical" level="15" />
+      <RequiredItem identifier="crystalshard" count="1" mincondition="0.25" usecondition="true" />
+      <RequiredItem identifier="antibiotics" count="1" />
+      <RequiredItem identifier="organicfiber" count="1" />
+    </Fabricate>
+    <Deconstruct time="20">
+      <Item identifier="organicfiber" copycondition="true" mincondition="0.1" />
+    </Deconstruct>
+    <Holdable slots="Any,RightHand,LeftHand" holdangle="30" handle1="0,0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnUse" target="UseTarget" setvalue="false" duration="4.0" delay="0.5">
+        <ReduceAffliction identifier="morbusinepoisoning" amount="3" />
+        <ReduceAffliction identifier="sufforinpoisoning" amount="3" />
+        <ReduceAffliction identifier="cyanidepoisoning" amount="3" />
+        <ReduceAffliction identifier="radiationsickness" amount="3" />
+        <ReduceAffliction identifier="deliriuminepoisoning" amount="3" />
+        <ReduceAffliction identifier="paralysis" amount="1.5" />
+        <ReduceAffliction identifier="huskinfection" amount="1.5" />
+        <ReduceAffliction identifier="transformationgift" amount="3" />
+        <Affliction identifier="opiateoverdose" amount="4" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget" setvalue="false" duration="2.0" delay="0.5">
+        <Conditional artmod_anomalyfunctionalnecrosis="gt 5" />
+        <ReduceAffliction identifier="artmod_anomalyfunctionalnecrosis" amount="1" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.5">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget" delay="0.0" disabledeltatime="true">
+        <Sound file="%ModDir%/More Arts (AOCS)/medItems/pillsglup.ogg" range="500" volume="10.0" />
+      </StatusEffect>
+    </Holdable>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/pills1S.png" sourcerect="0,0,151,151" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/pills1.png" depth="0.2" sourcerect="0,0,101,41" origin="0.5,0.5" />
+    <Body width="48" height="56" density="10" />
+    <SkillRequirementHint identifier="medical" level="0" />
+  </Item>
+  <!--антидеградант-->
+  <Item name="" identifier="pills2" subcategory="artmod" category="Medical" Tags="smallitem,chem,medical,pills" scale="0.1" description="" useinhealthinterface="true" canbepicked="true" cargocontaineridentifier="mediccrate" maxstacksize="40" maxstacksizecharacterinventory="12" impactsoundtag="impact_metal_light">
+    <PreferredContainer primary="medcab" minamount="2" maxamount="4" spawnprobability="0.05" />
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="4" spawnprobability="0.1" />
+    <Price baseprice="50" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="1" minavailable="8" />
+    </Price>
+    <Fabricate suitablefabricators="vendingmachine" requiredtime="0.5" requiredmoney="60" fabricationlimitmin="0" fabricationlimitmax="4" />
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="30" amount="2">
+      <RequiredSkill identifier="medical" level="20" />
+      <RequiredItem identifier="crystalshard" count="1" mincondition="0.25" usecondition="true" />
+      <RequiredItem identifier="organicfiber" count="1" />
+      <RequiredItem identifier="potassium" count="1" />
+      <RequiredItem identifier="sodium" count="1" />
+    </Fabricate>
+    <Deconstruct time="20">
+      <Item identifier="organicfiber" copycondition="true" mincondition="0.1" />
+    </Deconstruct>
+    <Holdable slots="Any,RightHand,LeftHand" holdangle="30" handle1="0,0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnUse" target="UseTarget" setvalue="false" duration="4" delay="0.5">
+        <Affliction identifier="dontusetoomuch" strength="-2.5" />
+        <Affliction identifier="opiateoverdose" amount="3.5" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.5">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget" delay="0.0" disabledeltatime="true">
+        <Sound file="%ModDir%/More Arts (AOCS)/medItems/pillsglup.ogg" range="500" volume="10.0" />
+      </StatusEffect>
+    </Holdable>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/pills2S.png" sourcerect="0,0,151,151" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/pills2.png" depth="0.2" sourcerect="0,0,96,92" origin="0.5,0.5" />
+    <Body width="48" height="56" density="10" />
+    <SkillRequirementHint identifier="medical" level="0" />
+  </Item>
+  <!--против аномальных воздействий-->
+  <Item name="" identifier="pills3" subcategory="artmod" category="Medical" Tags="smallitem,chem,medical,pills" scale="0.1" description="" useinhealthinterface="true" canbepicked="true" cargocontaineridentifier="mediccrate" maxstacksize="40" maxstacksizecharacterinventory="12" impactsoundtag="impact_metal_light">
+    <PreferredContainer primary="medcab" minamount="2" maxamount="4" spawnprobability="0.05" />
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="4" spawnprobability="0.1" />
+    <Price baseprice="50" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="1" minavailable="8" />
+    </Price>
+    <Fabricate suitablefabricators="vendingmachine" requiredtime="0.5" requiredmoney="60" fabricationlimitmin="0" fabricationlimitmax="4" />
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="30" amount="2">
+      <RequiredSkill identifier="medical" level="25" />
+      <RequiredItem identifier="crystalshard" count="1" mincondition="0.25" usecondition="true" />
+      <RequiredItem identifier="organicfiber" count="1" />
+      <RequiredItem identifier="opium" count="2" />
+    </Fabricate>
+    <Deconstruct time="20">
+      <Item identifier="organicfiber" copycondition="true" mincondition="0.1" />
+    </Deconstruct>
+    <Holdable slots="Any,RightHand,LeftHand" holdangle="30" handle1="0,0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnUse" target="UseTarget" setvalue="false" delay="0.5" duration="2">
+        <ReduceAffliction identifier="artmod_anomalyfunctionalnecrosis" amount="2.5" />
+        <ReduceAffliction identifier="soulless" strength="1.5" />
+        <ReduceAffliction identifier="infernoburn" strength="1.5" />
+        <ReduceAffliction identifier="artaddiction" strength="1.5" />
+        <ReduceAffliction identifier="braclethurt" strength="1.5" />
+        <ReduceAffliction identifier="artmod_SWblind" amount="1.5" />
+        <Affliction identifier="opiateoverdose" amount="3.5" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.5">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget" delay="0.0" disabledeltatime="true">
+        <Sound file="%ModDir%/More Arts (AOCS)/medItems/pillsglup.ogg" range="500" volume="10.0" />
+      </StatusEffect>
+    </Holdable>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/pills3S.png" sourcerect="0,0,151,151" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/pills3.png" depth="0.2" sourcerect="0,0,89,36" origin="0.5,0.5" />
+    <Body width="48" height="56" density="10" />
+    <SkillRequirementHint identifier="medical" level="0" />
+  </Item>
+  <!--красная таблетка-->
+  <Item name="" identifier="pills4" category="Medical" subcategory="artmod" Tags="smallitem,chem,medical,pills" scale="0.1" description="" useinhealthinterface="true" canbepicked="true" cargocontaineridentifier="mediccrate" maxstacksize="40" maxstacksizecharacterinventory="12" impactsoundtag="impact_metal_light">
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="2" spawnprobability="0.1" />
+    <Price baseprice="200" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchanthusk" minavailable="1" maxavailable="2" sold="true">
+        <Reputation faction="huskcult" min="30" />
+      </Price>
+    </Price>
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="45" amount="2">
+      <RequiredSkill identifier="medical" level="35" />
+      <RequiredItem identifier="crystalshard" count="1" />
+      <RequiredItem identifier="organicfiber" count="1" />
+      <RequiredItem identifier="hyperzine" count="1" />
+      <RequiredItem identifier="tonicliquid" count="1" />
+      <RequiredItem identifier="adrenaline" count="1" />
+    </Fabricate>
+    <Deconstruct time="20">
+      <Item identifier="organicfiber" copycondition="true" mincondition="0.1" />
+      <Item identifier="adrenaline" copycondition="true" mincondition="0.1" />
+    </Deconstruct>
+    <Holdable slots="Any,RightHand,LeftHand" holdangle="30" handle1="0,0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnUse" target="UseTarget" setvalue="true" delay="0.5">
+        <Affliction identifier="redroundpill" strength="100" />
+        <Affliction identifier="redroundpill2" strength="100" />
+        <Affliction identifier="redroundpill3" strength="1" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.5">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget" delay="0.0" disabledeltatime="true">
+        <Sound file="%ModDir%/More Arts (AOCS)/medItems/pillsglup.ogg" range="500" volume="10.0" />
+      </StatusEffect>
+    </Holdable>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/pills45S.png" sourcerect="0,154,165,150" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/pills45.png" depth="0.2" sourcerect="4,100,100,93" origin="0.5,0.5" />
+    <Body width="48" height="56" density="10" />
+    <SkillRequirementHint identifier="medical" level="0" />
+  </Item>
+  <!--антидот-->
+  <Item name="" identifier="pills5" category="Medical" subcategory="artmod" Tags="smallitem,chem,medical,pills" scale="0.1" description="" useinhealthinterface="true" canbepicked="true" cargocontaineridentifier="mediccrate" maxstacksize="40" maxstacksizecharacterinventory="12" impactsoundtag="impact_metal_light">
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="2" spawnprobability="0.1" />
+    <Price baseprice="200" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchanthusk" minavailable="1" maxavailable="2" sold="true">
+        <Reputation faction="huskcult" min="30" />
+      </Price>
+    </Price>
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="45" amount="2">
+      <RequiredSkill identifier="medical" level="35" />
+      <RequiredItem identifier="crystalshard" count="1" />
+      <RequiredItem identifier="organicfiber" count="1" />
+      <RequiredItem identifier="antiparalysis" count="1" />
+    </Fabricate>
+    <Deconstruct time="20">
+      <Item identifier="organicfiber" copycondition="true" mincondition="0.1" />
+    </Deconstruct>
+    <Holdable slots="Any,RightHand,LeftHand" holdangle="30" handle1="0,0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnUse" target="UseTarget" setvalue="true" delay="0.5">
+        <Affliction identifier="redroundpill" strength="0" />
+        <Affliction identifier="redroundpill2" strength="0" />
+        <Affliction identifier="redroundpill3" strength="0" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.5">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget" delay="0.0" disabledeltatime="true">
+        <Sound file="%ModDir%/More Arts (AOCS)/medItems/pillsglup.ogg" range="500" volume="10.0" />
+      </StatusEffect>
+    </Holdable>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/pills45S.png" sourcerect="0,0,165,150" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/pills45.png" depth="0.2" sourcerect="6,0,100,103" origin="0.5,0.5" />
+    <Body width="48" height="56" density="10" />
+    <SkillRequirementHint identifier="medical" level="0" />
+  </Item>
+  <Item name="" identifier="pills6" subcategory="artmod" category="Medical" Tags="smallitem,chem,medical,pills" scale="0.1" description="" useinhealthinterface="true" canbepicked="true" cargocontaineridentifier="mediccrate" maxstacksize="40" maxstacksizecharacterinventory="12" impactsoundtag="impact_metal_light">
+    <PreferredContainer primary="medcab" minamount="2" maxamount="4" spawnprobability="0.05" />
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="4" spawnprobability="0.1" />
+    <Price baseprice="350" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchanthusk" minavailable="1" maxavailable="2" sold="true">
+        <Reputation faction="huskcult" min="40" />
+      </Price>
+    </Price>
+    <Deconstruct time="20">
+      <Item identifier="organicfiber" copycondition="true" mincondition="0.1" />
+    </Deconstruct>
+    <Holdable slots="Any,RightHand,LeftHand" holdangle="30" handle1="0,0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnUse" target="UseTarget" setvalue="false" duration="10" delay="0.5">
+        <Affliction identifier="fastrepair" amount="55.0" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget" setvalue="false" duration="10" delay="0.5">
+        <Affliction identifier="dontusetoomuch" strength="0.5" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.5">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget" delay="0.0" disabledeltatime="true">
+        <Sound file="%ModDir%/More Arts (AOCS)/medItems/pillsglup.ogg" range="500" volume="10.0" />
+      </StatusEffect>
+    </Holdable>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/fastrepair.png" sourcerect="0,0,134,130" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/fastrepair.png" depth="0.2" sourcerect="47,45,43,40" origin="0.5,0.5" />
+    <Body width="48" height="56" density="10" />
+    <SkillRequirementHint identifier="medical" level="0" />
+  </Item>
+  <Item name="" identifier="pills7" subcategory="artmod" category="Medical" Tags="smallitem,chem,medical,pills" scale="0.01" description="" useinhealthinterface="true" canbepicked="true" cargocontaineridentifier="mediccrate" maxstacksize="40" maxstacksizecharacterinventory="12" impactsoundtag="impact_metal_light">
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="1" maxamount="1" spawnprobability="0.01" />
+    <Price baseprice="400" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchanthusk" minavailable="1" maxavailable="2" sold="true">
+        <Reputation faction="huskcult" min="40" />
+      </Price>
+    </Price>
+    <Holdable slots="Any" holdangle="30" handle1="0,0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnUse" target="UseTarget" setvalue="true" duration="10" PressureProtection="14000.0" delay="0.5">
+        <Affliction identifier="fastfish" strength="175" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.5">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget" delay="0.0" disabledeltatime="true">
+        <Sound file="%ModDir%/More Arts (AOCS)/medItems/pillsglup.ogg" range="500" volume="10.0" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget" setvalue="false" duration="10" delay="0.5">
+        <Affliction identifier="dontusetoomuch" strength="0.5" />
+      </StatusEffect>
+    </Holdable>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/PressurebustedS.png" sourcerect="0,0,144,167" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/Pressurebusted.png" depth="0.2" sourcerect="0,0,416,484" origin="0.5,0.5" />
+    <Body width="48" height="56" density="10" />
+    <SkillRequirementHint identifier="medical" level="0" />
+  </Item>
+  <Item name="" identifier="redsyrgine" subcategory="artmod" category="Medical" maxstacksize="12" maxstacksizecharacterinventory="2" cargocontaineridentifier="mediccrate" Tags="smallitem,chem,medical,syringe" description="" useinhealthinterface="true" scale="0.06">
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="2" spawnprobability="0.01" />
+    <Price baseprice="350" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="1.15" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchanthusk" minavailable="1" maxavailable="1" sold="true">
+        <Reputation faction="huskcult" min="40" />
+      </Price>
+    </Price>
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="60" amount="1">
+      <RequiredSkill identifier="medical" level="50" />
+      <RequiredItem identifier="crystalchunk" count="1" mincondition="0.5" usecondition="true" />
+      <RequiredItem identifier="stabilozine" count="1" />
+      <RequiredItem identifier="steroids" count="1" />
+      <RequiredItem identifier="tonicliquid" count="1" />
+      <RequiredItem identifier="redjelly" count="1" />
+    </Fabricate>
+    <Deconstruct time="20">
+      <Item identifier="stabilozine" copycondition="true" mincondition="0.1" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/redsyrgineS.png" sourcerect="0,0,95,116" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/redsyrgine.png" sourcerect="0,0,280,712" depth="0.55" origin="0.5,0.5" />
+    <Body width="62" height="115" density="20" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="0" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnUse" target="UseTarget" delay="0.0" disabledeltatime="true">
+        <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget" duration="60.0">
+        <ReduceAffliction identifier="oxygenlow" amount="0.2" />
+        <Affliction identifier="chemaddiction" amount="0.5" />
+        <ReduceAffliction identifier="chemwithdrawal" amount="1.5" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget" setvalue="true" duration="35">
+        <Affliction identifier="RedSyrgineSTRG" strength="100" />
+      </StatusEffect>
+      <!-- Remove the item when fully used -->
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+    <SkillRequirementHint identifier="medical" level="0" />
+  </Item>
+  <Item name="" identifier="bluesyrgine" subcategory="artmod" category="Medical" maxstacksize="12" maxstacksizecharacterinventory="2" cargocontaineridentifier="mediccrate" Tags="smallitem,chem,medical,syringe" description="" useinhealthinterface="true" scale="0.09">
+    <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="2" spawnprobability="0.01" />
+    <Price baseprice="350" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="1.05" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="1.1" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchanthusk" minavailable="1" maxavailable="1" sold="true">
+        <Reputation faction="huskcult" min="40" />
+      </Price>
+    </Price>
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="60" amount="1">
+      <RequiredSkill identifier="medical" level="50" />
+      <RequiredItem identifier="crystalchunk" count="1" mincondition="0.5" usecondition="true" />
+      <RequiredItem identifier="stabilozine" count="1" />
+      <RequiredItem identifier="meth" count="1" />
+      <RequiredItem identifier="tonicliquid" count="1" />
+      <RequiredItem identifier="bluejelly" count="1" />
+    </Fabricate>
+    <Deconstruct time="20">
+      <Item identifier="stabilozine" copycondition="true" mincondition="0.1" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/bluesyrgineS.png" sourcerect="0,0,79,84" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/bluesyrgine.png" sourcerect="0,0,189,480" depth="0.55" origin="0.5,0.5" />
+    <Body width="62" height="115" density="20" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="0" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnUse" target="UseTarget" delay="0.0" disabledeltatime="true">
+        <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget" duration="60.0">
+        <Affliction identifier="chemaddiction" amount="0.5" />
+        <ReduceAffliction identifier="chemwithdrawal" amount="1.5" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget" setvalue="true" duration="35">
+        <Affliction identifier="BlueSyrgineSPEED" strength="300" />
+        <Affliction identifier="strengthenOSD" strength="300" />
+      </StatusEffect>
+      <!-- Remove the item when fully used -->
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+    <SkillRequirementHint identifier="medical" level="0" />
+  </Item>
+  <!--таблетка бессмертия, мне лень придумывать ей костыли, останется в памяти пока не удалю или не появятся возможности реализовать иначе-->
+  <!--<Item 
+    name="" 
+    identifier="pills11" 
+    category="Medical" 
+    Tags="smallitem,chem,medical,pills" 
+    scale="0.01" 
+    description=""
+    useinhealthinterface="true"
+    canbepicked="true" 
+    cargocontaineridentifier="mediccrate" 
+    maxstacksize="2"
+    impactsoundtag="impact_metal_light">
+   <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="1" maxamount="1" spawnprobability="0.001" />
+    <Price baseprice="5000" soldeverywhere="false">
+      <Price storeidentifier="merchantoutpost" multiplier="0.9" sold="false"/>
+      <Price storeidentifier="merchantcity" multiplier="0.9" sold="false"/>
+      <Price storeidentifier="merchantresearch" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="1" sold="false"/>
+      <Price storeidentifier="merchantmine" multiplier="0.9" sold="false"/>
+    </Price>
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="120">
+      <RequiredSkill identifier="medical" level="80" />
+      <RequiredItem identifier="crystalslab" count="1"/>
+      <RequiredItem identifier="organicfiber" count="1" />
+    </Fabricate>
+    <Deconstruct time="5">
+    </Deconstruct>
+    <Holdable 
+      slots="Any,RightHand,LeftHand" 
+      holdangle="30" 
+      handle1="0,0" 
+      msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnUse" target="Character" setvalue="true" duration="180" delay="0.5">
+        <Affliction identifier="immortality" strength="100" />
+        <Affliction identifier="chemresistSS" strength="100" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This" delay="0.5">
+        <Remove />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="Character" delay="0.0" disabledeltatime="true">
+        <Sound file="Mods/More Arts (AOCS)/medItems/pillsglup.ogg" range="500" volume="10.0"/>
+      </StatusEffect>
+    </Holdable>
+    <InventoryIcon 
+      texture="Mods/More Arts (AOCS)/medItems/ImmortaityS.png" 
+      sourcerect="0,0,316,223"  />
+    <Sprite 
+      texture="Mods/More Arts (AOCS)/medItems/Immortaity.png" 
+      depth="0.2" 
+      sourcerect="0,0,800,392" 
+      origin="0.5,0.5" />
+    <Body 
+      width="48" 
+      height="56" 
+      density="10" />
+  </Item>-->
+  <Item name="" identifier="friendsyringe" subcategory="artmod" category="Medical" maxstacksize="32" maxstacksizecharacterinventory="8" cargocontaineridentifier="mediccrate" Tags="smallitem,chem,medical,syringe" description="" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_metal_light" RequireAimToUse="True">
+    <Price baseprice="250" canbespecial="false" sold="false">
+      <Price storeidentifier="merchantclown" minavailable="0" maxavailable="4" sold="true">
+        <Reputation faction="clowns" min="45" />
+      </Price>
+    </Price>
+    <Deconstruct time="20">
+      <Item identifier="opium" />
+    </Deconstruct>
+    <InventoryIcon texture="Friendship_inv.png" sourcerect="0,0,60,60" origin="0.5,0.5" />
+    <Sprite texture="Friendship.png" sourcerect="0,0,38,68" depth="0.6" origin="0.5,0.5" />
+    <Body width="35" height="65" density="10.2" waterdragcoefficient="1" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect" HitOnlyCharacters="true">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" setvalue="true" />
+      <StatusEffect tags="medical" type="OnSuccess" target="UseTarget" setvalue="true">
+        <Affliction identifier="friendshipismagic" amount="120" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget">
+        <Conditional entitytype="eq Character" />
+        <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+      </StatusEffect>
+      <StatusEffect type="OnImpact" target="UseTarget" multiplyafflictionsbymaxvitality="true" AllowWhenBroken="true">
+        <Affliction identifier="stun" amount="0.1" />
+      </StatusEffect>
+      <!-- Remove the item when fully used -->
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+    <Projectile characterusable="false" launchimpulse="18.0" sticktocharacters="true" launchrotation="-90" inheritstatuseffectsfrom="MeleeWeapon" inheritrequiredskillsfrom="MeleeWeapon" />
+  </Item>
+  <Item name="" identifier="clowngreensurgine" subcategory="artmod" category="Medical" maxstacksize="12" maxstacksizecharacterinventory="2" Tags="smallitem,chem,medical" scale="0.25" description="" useinhealthinterface="true" canbepicked="true" cargocontaineridentifier="metalcrate" impactsoundtag="impact_soft">
+    <Price baseprice="1250" soldeverywhere="false" canbespecial="false">
+      <Price storeidentifier="merchantoutpost" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchantcity" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantresearch" multiplier="1" sold="false" />
+      <Price storeidentifier="merchantmilitary" multiplier="0.9" sold="false" />
+      <Price storeidentifier="merchantmine" multiplier="0.8" sold="false" />
+      <Price storeidentifier="merchantmedical" multiplier="0.9" sold="false" />
+    </Price>
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect type="OnUse" target="UseTarget" delay="0.0" disabledeltatime="true">
+        <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="UseTarget" setvalue="true" delay="4">
+        <Affliction identifier="Clowned" amount="0.1" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+    <InventoryIcon texture="%ModDir%/More Arts (AOCS)/medItems/greensyrgineS.png" sourcerect="0,0,111,133" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/medItems/greensyrgine.png" depth="0.2" sourcerect="0,0,41,156" origin="0.5,0.5" />
+    <Body width="48" height="56" density="10" />
+    <SkillRequirementHint identifier="medical" level="100500" />
+  </Item>
+</Items>
