@@ -304,12 +304,12 @@ local function AreSubmarineInfosEquivalent(leftInfo, rightInfo)
     return leftName ~= "" and leftName == rightName
 end
 
-local function IsPirateMissionCharacter(character)
+local function IsPirateMissionCharacter(character, clientCharacters, pirateEnemySubmarineInfo)
     if character == nil or not character.IsHuman or character.IsDead then
         return false
     end
 
-    if Traitormod.FindClientCharacter(character) ~= nil or Traitormod.GhostRoles.IsGhostRole(character) then
+    if clientCharacters[character] or Traitormod.GhostRoles.IsGhostRole(character) then
         return false
     end
 
@@ -319,7 +319,6 @@ local function IsPirateMissionCharacter(character)
     end
 
     local submarineInfo = submarine.Info
-    local pirateEnemySubmarineInfo = GetPirateMissionEnemySubmarineInfo()
     if not IsEnemySubmarineInfo(submarineInfo) or not AreSubmarineInfosEquivalent(submarineInfo, pirateEnemySubmarineInfo) then
         return false
     end
@@ -355,11 +354,19 @@ local function TryCreatePirateMissionGhostRoles()
         return
     end
 
+    local clientCharacters = {}
+    for _, client in pairs(Client.ClientList) do
+        if client.Character ~= nil then
+            clientCharacters[client.Character] = true
+        end
+    end
+
+    local pirateEnemySubmarineInfo = GetPirateMissionEnemySubmarineInfo()
     local candidates = 0
     local created = 0
 
     for _, character in pairs(Character.CharacterList) do
-        if IsPirateMissionCharacter(character) then
+        if IsPirateMissionCharacter(character, clientCharacters, pirateEnemySubmarineInfo) then
             candidates = candidates + 1
 
             local roleCreated = Traitormod.GhostRoles.Create("pirates.mission.pirate", character, {
@@ -469,16 +476,17 @@ Hook.Add("think", "Traitormod.MiscThink", function ()
     if Traitormod.SelectedGamemode == nil or Traitormod.SelectedGamemode.Name ~= "Secret" then return end
     if not Level.Loaded.EndOutpost then return end
 
-    local targets = {}
+    local playerInOutpost = false
     local outpost = Level.Loaded.EndOutpost.WorldPosition
 
     for key, character in pairs(Character.CharacterList) do
         if character.IsRemotePlayer and character.IsHuman and not character.IsDead and Vector2.Distance(character.WorldPosition, outpost) < 5000 then
-            table.insert(targets, character)
+            playerInOutpost = true
+            break
         end
     end
 
-    if #targets > 0 then
+    if playerInOutpost then
         peopleInOutpost = peopleInOutpost + 1
     end
 

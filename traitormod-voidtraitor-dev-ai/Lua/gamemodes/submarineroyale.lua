@@ -11,6 +11,7 @@ gm.radiationEnabled = false
 
 local radiationPrefab = AfflictionPrefab.Prefabs["radiationsickness"]
 local antiRadPrefab = ItemPrefab.GetItemPrefab("antirad")
+local radiationStrengthPerSecond = 0.15
 
 
 local function StringStarts(String,Start)
@@ -117,6 +118,7 @@ function gm:StartRadiation(args, client)
     end
 
     self.radiationEnabled = true
+    self.RadiationUpdateTimer = 0
 
     return true
 end
@@ -336,12 +338,18 @@ function gm:Think(deltaTime)
 
     if not self.radiationEnabled then return end
 
+    self.RadiationUpdateTimer = (self.RadiationUpdateTimer or 0) + deltaTime
+    if self.RadiationUpdateTimer < 0.25 then return end
+
+    local radiationStrength = radiationStrengthPerSecond * self.RadiationUpdateTimer
+    self.RadiationUpdateTimer = 0
+
     for key, value in pairs(Client.ClientList) do
         if value.Character and not value.Character.IsDead then
             local char = value.Character
             local limb = char.AnimController.MainLimb
 
-            char.CharacterHealth.ApplyAffliction(limb, radiationPrefab.Instantiate(0.0025))
+            char.CharacterHealth.ApplyAffliction(limb, radiationPrefab.Instantiate(radiationStrength))
         end
     end
 end

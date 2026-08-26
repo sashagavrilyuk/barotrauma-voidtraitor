@@ -643,8 +643,15 @@ function gr.Command(client, args)
 end
 
 local function autoRegisterCharacters()
+    local clientCharacters = {}
+    for _, client in pairs(Client.ClientList) do
+        if client.Character ~= nil then
+            clientCharacters[client.Character] = true
+        end
+    end
+
     for _, character in pairs(Character.CharacterList) do
-        if character ~= nil and not character.Removed and not character.IsDead and not gr.IsGhostRole(character) and Traitormod.FindClientCharacter(character) == nil then
+        if character ~= nil and not character.Removed and not character.IsDead and not gr.IsGhostRole(character) and not clientCharacters[character] then
             local species = normalize(character.SpeciesName)
             local roleConfig = species and gr.AutoRegisterBySpecies[species] or nil
             if roleConfig ~= nil and roleConfig.Enabled ~= false then
