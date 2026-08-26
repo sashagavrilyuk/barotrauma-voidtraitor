@@ -8,12 +8,6 @@ on:
     paths:
       - P2PHostPoC/**
       - .github/workflows/build-p2p-host-poc.yml
-  pull_request:
-    branches:
-      - Ai
-    paths:
-      - P2PHostPoC/**
-      - .github/workflows/build-p2p-host-poc.yml
 
 jobs:
   build-windows:
