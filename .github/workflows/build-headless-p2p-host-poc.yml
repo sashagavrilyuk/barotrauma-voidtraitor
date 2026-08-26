@@ -1,0 +1,98 @@
+name: Build Headless P2P Host PoC
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - Ai
+    paths:
+      - P2PHeadlessHostPoC/**
+      - .github/workflows/build-headless-p2p-host-poc.yml
+  push:
+    branches:
+      - Ai
+    paths:
+      - P2PHeadlessHostPoC/**
+      - .github/workflows/build-headless-p2p-host-poc.yml
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout VoidTraitor repository
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
+        with:
+          path: project
+
+      - name: Checkout LuaCsForBarotrauma 1.13.4.0
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
+        with:
+          repository: evilfactory/LuaCsForBarotrauma
+          ref: 85ded59c4efed4d139159c4cb056cc9705a5096e
+          submodules: recursive
+          path: luacs
+
+      - name: Apply headless P2P host patch
+        shell: pwsh
+        working-directory: luacs
+        run: |
+          git apply --check ../project/P2PHeadlessHostPoC/headlessp2phost.patch
+          git apply ../project/P2PHeadlessHostPoC/headlessp2phost.patch
+          git diff --check
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@6bd8b7f7774af54e05809fcc5431931b3eb1ddee
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Build Windows LuaCs dedicated server
+        shell: pwsh
+        working-directory: luacs
+        run: >-
+          dotnet publish Barotrauma/BarotraumaServer/WindowsServer.csproj
+          -c Release
+          --self-contained
+          -r win-x64
+          /p:Platform=x64
+          /p:ErrorOnDuplicatePublishOutputFiles=false
+          /p:RollForward=Disable
+          /p:RuntimeFrameworkVersion=8.0.0
+          -o ../p2p-build
+
+      - name: Build Windows headless P2P host
+        shell: pwsh
+        working-directory: luacs
+        run: >-
+          dotnet publish Barotrauma/BarotraumaP2PHost/WindowsP2PHost.csproj
+          -c Release
+          --self-contained
+          -r win-x64
+          /p:Platform=x64
+          /p:ErrorOnDuplicatePublishOutputFiles=false
+          /p:RollForward=Disable
+          /p:RuntimeFrameworkVersion=8.0.0
+          -o ../p2p-build
+
+      - name: Verify PoC output
+        shell: pwsh
+        run: |
+          $required = @(
+            'p2p-build/VoidTraitorP2PHost.exe',
+            'p2p-build/VoidTraitorP2PHost.dll',
+            'p2p-build/Barotrauma.dll',
+            'p2p-build/DedicatedServer.exe',
+            'p2p-build/DedicatedServer.dll',
+            'p2p-build/steam_appid.txt'
+          )
+          foreach ($file in $required) {
+            if (-not (Test-Path $file)) { throw "Missing build output: $file" }
+          }
+          Remove-Item 'p2p-build/Barotrauma.exe' -ErrorAction SilentlyContinue
+
+      - name: Upload Windows headless PoC
+        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a
+        with:
+          name: VoidTraitor-Headless-P2P-Host-Windows-x64
+          path: p2p-build
+          if-no-files-found: error
