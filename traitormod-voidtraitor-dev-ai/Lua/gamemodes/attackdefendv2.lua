@@ -407,8 +407,7 @@ end
 
 function gm:Start()
 	Traitormod.DisableRespawnShuttle = true
-	self.LastThinkTime = Timer.GetTime()
-	self.NextThinkUpdate = 0
+	self.ThinkUpdateTimer = 0.25
     -- Traitormod.DisableMidRoundSpawn = true
 	
 	for _, item in pairs(Item.ItemList) do
@@ -499,15 +498,14 @@ function gm:End()
 	-- Hook.Add(entry[1], "Traitormod.CharacterCreated", entry[2])
 end
 
-function gm:Think()
+function gm:Think(deltaTime)
 	if self.IsEnding then return end
 
-	local now = Timer.GetTime()
-	if now < self.NextThinkUpdate then return end
+	self.ThinkUpdateTimer = self.ThinkUpdateTimer + deltaTime
+	if self.ThinkUpdateTimer < 0.25 then return end
 
-	local deltaTime = math.max(0, now - self.LastThinkTime)
-	self.LastThinkTime = now
-	self.NextThinkUpdate = now + 0.25
+	deltaTime = self.ThinkUpdateTimer
+	self.ThinkUpdateTimer = 0
 
 	self.DefendCountDown = self.DefendCountDown - deltaTime
 
