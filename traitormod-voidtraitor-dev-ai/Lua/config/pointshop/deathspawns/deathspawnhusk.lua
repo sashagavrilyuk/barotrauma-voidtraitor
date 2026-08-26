@@ -7,78 +7,9 @@ category.CanAccess = function(client)
     return client.Character == nil or client.Character.IsDead or not client.Character.IsHuman
 end
 
-local function SpawnCreature(species, client, product, paidPrice, insideHuman)
-    local waypoints = Submarine.MainSub.GetWaypoints(true)
-
-    if LuaUserData.IsTargetType(Game.GameSession.GameMode, "Barotrauma.PvPMode") then
-        waypoints = Submarine.MainSubs[math.random(2)].GetWaypoints(true)
-    end
-
-    local spawnPositions = {}
-
-    if insideHuman then
-        for key, value in pairs(Character.CharacterList) do
-            if value.IsHuman and not value.IsDead and value.TeamID == CharacterTeamType.Team1 then
-                table.insert(spawnPositions, value.WorldPosition)
-            end
-        end
-    else
-        for key, value in pairs(waypoints) do
-            if value.CurrentHull == nil then
-                local walls = Level.Loaded.GetTooCloseCells(value.WorldPosition, 250)
-                if #walls == 0 then
-                    table.insert(spawnPositions, value.WorldPosition)
-                end
-            end
-        end
-    end
-
-    local spawnPosition
-
-    if #spawnPositions == 0 then
-        -- no waypoints? https://c.tenor.com/RgExaLgYIScAAAAC/megamind-megamind-meme.gif
-        spawnPosition = Submarine.MainSub.WorldPosition -- spawn it in the middle of the sub
-
-        Traitormod.Log("Couldnt find any good waypoints, spawning in the middle of the sub.")
-    else
-        spawnPosition = spawnPositions[math.random(#spawnPositions)]
-    end
-
-    Entity.Spawner.AddCharacterToSpawnQueue(species, spawnPosition, function (character)
-        client.SetClientCharacter(character)
-        Traitormod.Pointshop.TrackRefund(client, product, paidPrice)
-    end)
-end
+local SpawnCreature = dofile(Traitormod.Path .. "/Lua/config/pointshop/utility/deathspawncreature.lua")
 
 category.Products = {
-    -- Начало пункта поинтшопа
-    --{
-        --Identifier = "spawnascrawler", -- Название пункта в поинтшопе, не существа, нужно для перевода
-        --Price = 400, -- Цена
-        --Limit = 5, -- Лимит
-		--IsLimitGlobal = true, -- Глобальный лимит или нет
-        --PricePerLimit = 100, -- На сколько увеличивается цена с каждым новым спавном (например первый - 400, второй - 500 и т.д.)
-        --Timeout = 150, -- Время отката
-
-        --RoundPrice = {
-            --PriceReduction = 300, -- Сколько ценна отнимаеться при оконачение падение
-            --StartTime = 15, -- Через сколько времени после начала раунда цена начинает падать (вероятно в минутах)
-            --EndTime = 30, -- Через сколько времени цена упадёт до минимума(PriceReduction)
-        --},
-
-        -- Действие при покупке
-        --Action = function (client, product, items, paidPrice)
-            --SpawnCreature("crawler", client, product, paidPrice)
-            -- SpawnCreature(
-            -- существо,
-            -- клиент(игрок),
-            -- продукт(вероятно ссылка на этот пункт поинтшопа),
-            -- Заплаченная цена
-            -- )
-            -- Сдесь лучше ничего кроме названия существа не трогать
-       --end
-    --},
-     -- Конец пункта поинтшопа
 	{
         Identifier = "spawnascrawlerhusk",
         Price = 500,

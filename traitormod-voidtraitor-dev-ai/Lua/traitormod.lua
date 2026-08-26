@@ -37,9 +37,6 @@ if discordConfig ~= nil then
 end
 
 dofile(Traitormod.Path .. "/Lua/discordwebhooks.lua")
----@type table<string, {[1]: string, [2]: function}>
-Traitormod.DefaultHooks = {}
-
 Game.OverrideTraitors(true)
 
 if Traitormod.Config.RagdollOnDisconnect ~= nil then
@@ -170,75 +167,6 @@ local function setJobSkillLevelSilent(character, skill, level)
     end)
 
     return okSet
-end
-
-function Traitormod.GetSkillLevel(character, skill)
-    if character == nil or character.Info == nil or skill == nil then
-        return 0
-    end
-
-    local identifier = Identifier(tostring(skill))
-    local callers = {
-        function()
-            return character.GetSkillLevel(identifier)
-        end,
-        function()
-            return character.GetSkillLevel(tostring(skill))
-        end,
-        function()
-            return character.Info.GetSkillLevel(identifier)
-        end,
-        function()
-            return character.Info.GetSkillLevel(tostring(skill))
-        end,
-        function()
-            return getJobSkillLevel(character, skill)
-        end,
-    }
-
-    for _, caller in ipairs(callers) do
-        local ok, value = pcall(caller)
-        if ok and value ~= nil then
-            return tonumber(value) or 0
-        end
-    end
-
-    return 0
-end
-
--- Kept for older code paths. This function still sends vanilla skill change events.
--- Temporary buffs below use setJobSkillLevelSilent instead, so they don't create +skill spam.
-function Traitormod.SetSkillLevel(character, skill, level)
-    if character == nil or character.Info == nil or skill == nil then
-        return false
-    end
-
-    level = math.max(0, tonumber(level) or 0)
-    local skillName = tostring(skill)
-    local identifier = Identifier(skillName)
-    local callers = {
-        function()
-            character.Info.SetSkillLevel(identifier, level, true)
-        end,
-        function()
-            character.Info.SetSkillLevel(skillName, level, true)
-        end,
-        function()
-            character.Info.SetSkillLevel(identifier, level)
-        end,
-        function()
-            character.Info.SetSkillLevel(skillName, level)
-        end,
-    }
-
-    for _, caller in ipairs(callers) do
-        local ok = pcall(caller)
-        if ok then
-            return true
-        end
-    end
-
-    return false
 end
 
 local function getSkillStateBonus(skillState)
@@ -770,7 +698,7 @@ Hook.Add("roundEnd", "Traitormod.RoundEnd", function()
 end)
 
 ---@param character Barotrauma.Character
-Traitormod.DefaultHooks["Traitormod.CharacterCreated"] = {"characterCreated", function(character)
+Hook.Add("characterCreated", "Traitormod.CharacterCreated", function(character)
     -- if character is valid player
     if character == nil or
         character.IsBot == true or
@@ -791,20 +719,13 @@ Traitormod.DefaultHooks["Traitormod.CharacterCreated"] = {"characterCreated", fu
             Traitormod.Error("Loading experience on characterCreated failed! Client was nil after 1sec")
         end
     end, 1000)
-end}
-
--- Добавляем все стандартные хуки
-for key, value in pairs(Traitormod.DefaultHooks) do
-    Hook.Add(value[1], key, value[2])
-end
+end)
 
 local tipDelay = 0
 local updateAbandonedCharacters
 local abandonedCharacterUpdateInterval = 0.25
 local abandonedCharacterUpdateTimer = abandonedCharacterUpdateInterval
 
--- register tick
---//TODO continue here
 Hook.Add("think", "Traitormod.Think", function(deltaTime)
     skillBuffUpdateTimer = skillBuffUpdateTimer + deltaTime
     if skillBuffUpdateTimer >= skillBuffUpdateInterval then

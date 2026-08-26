@@ -391,7 +391,6 @@ function gm:PreStart()
 		end
 	}
 
-	--Hook.Remove("characterCreated", "Traitormod.CharacterCreated")
 
 	---@param character Barotrauma.Character
 	---@param waypoint Barotrauma.WayPoint
@@ -494,8 +493,6 @@ function gm:End()
 	Hook.Remove("character.giveJobItems", "Traitormod.AttackDefendV2.CharacterGiveJobItems")
 	Hook.Remove("netMessageReceived", "Traitormod.AttackDefendV2.ClientJoined")
 
-	-- local entry = Traitormod.DefaultHooks["Traitormod.CharacterCreated"]
-	-- Hook.Add(entry[1], "Traitormod.CharacterCreated", entry[2])
 end
 
 function gm:Think(deltaTime)

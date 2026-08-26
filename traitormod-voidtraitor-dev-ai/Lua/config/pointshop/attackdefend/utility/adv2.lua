@@ -276,4 +276,59 @@ end
 
 ADV2.SpawnItems = spawnItems
 
+---@class AttackDefendClassSkill
+---@field Identifier string
+---@field Level number
+---@class AttackDefendClassAffliction
+---@field Identifier string
+---@field Strength number
+---@class AttackDefendClassConfig
+---@field Identifier string
+---@field JobId string
+---@field Skills AttackDefendClassSkill[]?
+---@field Talents string[]?
+---@field Afflictions AttackDefendClassAffliction[]?
+---@field Items ItemTable
+---@field LogSuffix string
+
+---@param teamId Barotrauma.CharacterTeamType
+---@param config AttackDefendClassConfig
+---@return Pointshop.Product
+function ADV2.CreateClassProduct(teamId, config)
+	ADV2.ApplyDefaultClassLocks(config.Items)
+
+	return {
+		Identifier = config.Identifier,
+		Price = 0,
+		Limit = math.huge,
+		CanBuy = function(client, product)
+			return ADV2.CanBuyGroup(client, product)
+		end,
+		Action = function(client, product)
+			local respawnEntry = ADV2.RespawnStart(client, teamId, product.Identifier, nil, product)
+			respawnEntry.JobId = config.JobId
+
+			respawnEntry.OnSpawn = function(character)
+				for _, skill in ipairs(config.Skills or {}) do
+					character.info.SetSkillLevel(skill.Identifier, skill.Level)
+				end
+
+				for _, talent in ipairs(config.Talents or {}) do
+					character.GiveTalent(talent)
+				end
+
+				for _, affliction in ipairs(config.Afflictions or {}) do
+					character.CharacterHealth.ApplyAffliction(nil, AfflictionPrefab.Prefabs[affliction.Identifier].Instantiate(affliction.Strength))
+				end
+
+				for itemId, itemEntry in pairs(config.Items) do
+					spawnItems(itemId, character.Inventory, itemEntry)
+				end
+			end
+
+			Traitormod.Log(client.Name .. config.LogSuffix)
+		end,
+	}
+end
+
 return ADV2

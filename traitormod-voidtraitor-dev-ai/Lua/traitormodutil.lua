@@ -670,19 +670,6 @@ Traitormod.Error = function (message, ...)
     end
 end
 
-Traitormod.AllCrewMissionsCompleted = function (missions)
-    if not missions then
-        if Game.GameSession == nil or Game.GameSession.Missions == nil then return end
-        missions = Game.GameSession.Missions
-    end
-    for key, value in pairs(missions) do
-        if not value.Completed then
-            return false
-        end
-    end
-    return true
-end
-
 Traitormod.LoadExperience = function (client)
     if client == nil then
         Traitormod.Error("Loading experience failed! Client was nil")
