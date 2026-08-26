@@ -42,7 +42,6 @@ function gm:Start()
         this:CharacterDeath(character)
     end)
 
-    self.EndCheckTimer = 0.25
     self:SelectAntagonists()
 end
 
@@ -333,12 +332,8 @@ function gm:End()
     Hook.Remove("traitormod.midroundspawn", "Traitormod.Secret.MidRoundSpawn")
 end
 
-function gm:Think(deltaTime)
+function gm:Think()
     if self.Ending or not Game.RoundStarted or not self.EndOnComplete then return end
-
-    self.EndCheckTimer = self.EndCheckTimer + deltaTime
-    if self.EndCheckTimer < 0.25 then return end
-    self.EndCheckTimer = 0
 
     local ended = true
     local anyTraitorMission = false

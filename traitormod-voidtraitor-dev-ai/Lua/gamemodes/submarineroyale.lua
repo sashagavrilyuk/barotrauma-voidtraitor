@@ -118,7 +118,7 @@ function gm:StartRadiation(args, client)
     end
 
     self.radiationEnabled = true
-    self.RadiationUpdateTimer = 0
+    self.LastRadiationUpdate = Traitormod.RoundTime
 
     return true
 end
@@ -150,7 +150,6 @@ function gm:Start()
     if Traitormod.SubmarineBuilder == nil then return end
     
     Traitormod.DisableRespawnShuttle = true
-    self.AliveCheckTimer = 0.25
 
     for key, value in pairs(Client.ClientList) do
         local message = "Welcome to Submarine Royale!\n\nUse the command !players to see in which submarine are the players located."
@@ -312,37 +311,30 @@ function gm:End()
     Traitormod.RemoveCommand("!players")
 end
 
-function gm:Think(deltaTime)
+function gm:Think()
     if not self.Ending then
-        self.AliveCheckTimer = self.AliveCheckTimer + deltaTime
-        if self.AliveCheckTimer >= 0.25 then
-            self.AliveCheckTimer = 0
-
-            local aliveClientCount = 0
-            for _, client in pairs(Client.ClientList) do
-                if client.Character and not client.Character.IsDead and client.Character.IsHuman then
-                    aliveClientCount = aliveClientCount + 1
-                end
+        local aliveClientCount = 0
+        for _, client in pairs(Client.ClientList) do
+            if client.Character and not client.Character.IsDead and client.Character.IsHuman then
+                aliveClientCount = aliveClientCount + 1
             end
+        end
 
-            if aliveClientCount < 2 then
-                Traitormod.SendMessageEveryone(Traitormod.Language.SubmarineRoyaleEnd)
-                Timer.Wait(function ()
-                    Game.EndGame()
-                end, 5000)
+        if aliveClientCount < 2 then
+            Traitormod.SendMessageEveryone(Traitormod.Language.SubmarineRoyaleEnd)
+            Timer.Wait(function ()
+                Game.EndGame()
+            end, 5000)
 
-                self.Ending = true
-            end
+            self.Ending = true
         end
     end
 
     if not self.radiationEnabled then return end
 
-    self.RadiationUpdateTimer = (self.RadiationUpdateTimer or 0) + deltaTime
-    if self.RadiationUpdateTimer < 0.25 then return end
-
-    local radiationStrength = radiationStrengthPerSecond * self.RadiationUpdateTimer
-    self.RadiationUpdateTimer = 0
+    local radiationDeltaTime = math.max(0, Traitormod.RoundTime - self.LastRadiationUpdate)
+    self.LastRadiationUpdate = Traitormod.RoundTime
+    local radiationStrength = radiationStrengthPerSecond * radiationDeltaTime
 
     for key, value in pairs(Client.ClientList) do
         if value.Character and not value.Character.IsDead then
