@@ -407,7 +407,7 @@ end
 
 function gm:Start()
 	Traitormod.DisableRespawnShuttle = true
-	self.ThinkUpdateTimer = 0.25
+	self.ThinkUpdateTimer = nil
     -- Traitormod.DisableMidRoundSpawn = true
 	
 	for _, item in pairs(Item.ItemList) do
@@ -501,11 +501,15 @@ end
 function gm:Think(deltaTime)
 	if self.IsEnding then return end
 
-	self.ThinkUpdateTimer = self.ThinkUpdateTimer + deltaTime
-	if self.ThinkUpdateTimer < 0.25 then return end
+	if self.ThinkUpdateTimer == nil then
+		self.ThinkUpdateTimer = 0
+	else
+		self.ThinkUpdateTimer = self.ThinkUpdateTimer + deltaTime
+		if self.ThinkUpdateTimer < 0.25 then return end
 
-	deltaTime = self.ThinkUpdateTimer
-	self.ThinkUpdateTimer = 0
+		deltaTime = self.ThinkUpdateTimer
+		self.ThinkUpdateTimer = 0
+	end
 
 	self.DefendCountDown = self.DefendCountDown - deltaTime
 
