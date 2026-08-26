@@ -78,7 +78,7 @@ new file mode 100644
 index 0000000..f1f8fdf
 --- /dev/null
 +++ b/Barotrauma/BarotraumaP2PHost/Program.cs
-@@ -0,0 +1,218 @@
+@@ -0,0 +1,219 @@
 +﻿#nullable enable
 +using Barotrauma.Extensions;
 +using Barotrauma.Networking;
@@ -86,6 +86,7 @@ index 0000000..f1f8fdf
 +using System.Collections.Immutable;
 +using System.Diagnostics;
 +using System.IO;
++using System.Linq;
 +using System.Security.Cryptography;
 +using System.Threading;
 +using System.Threading.Tasks;
