@@ -468,7 +468,7 @@ function gm:Start()
     self.ClassSelectionDeadline = Timer.GetTime() + self.ClassSelectionTimeoutMinutes * 60
     self.LastStartCountDown = self.StartCountDown
     self.LastRoundCountDown = self.RoundCountDown
-    self.ThinkUpdateTimer = 0.25
+    self.ThinkUpdateTimer = nil
 
     for _, waypoint in pairs(outpost.GetWaypoints(true)) do
         for tag in waypoint.Tags do
@@ -582,11 +582,15 @@ end
 function gm:Think(deltaTime)
     if self.IsEnding then return end
 
-    self.ThinkUpdateTimer = self.ThinkUpdateTimer + deltaTime
-    if self.ThinkUpdateTimer < 0.25 then return end
+    if self.ThinkUpdateTimer == nil then
+        self.ThinkUpdateTimer = 0
+    else
+        self.ThinkUpdateTimer = self.ThinkUpdateTimer + deltaTime
+        if self.ThinkUpdateTimer < 0.25 then return end
 
-    deltaTime = self.ThinkUpdateTimer
-    self.ThinkUpdateTimer = 0
+        deltaTime = self.ThinkUpdateTimer
+        self.ThinkUpdateTimer = 0
+    end
 
     for _, team in pairs(self.Teams) do
         for id, entry in pairs(team.Respawns) do
