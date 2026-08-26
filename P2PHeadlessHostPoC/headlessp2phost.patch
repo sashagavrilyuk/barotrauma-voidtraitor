@@ -1,0 +1,449 @@
+diff --git a/Barotrauma/BarotraumaClient/ClientSource/HeadlessP2PHostAccess.cs b/Barotrauma/BarotraumaClient/ClientSource/HeadlessP2PHostAccess.cs
+new file mode 100644
+index 0000000..22dcb20
+--- /dev/null
++++ b/Barotrauma/BarotraumaClient/ClientSource/HeadlessP2PHostAccess.cs
+@@ -0,0 +1,3 @@
++﻿using System.Runtime.CompilerServices;
++
++[assembly: InternalsVisibleTo("VoidTraitorP2PHost")]
+diff --git a/Barotrauma/BarotraumaClient/ClientSource/Networking/Primitives/Peers/P2POwnerPeer.cs b/Barotrauma/BarotraumaClient/ClientSource/Networking/Primitives/Peers/P2POwnerPeer.cs
+index 3d4d7bd..597c56d 100644
+--- a/Barotrauma/BarotraumaClient/ClientSource/Networking/Primitives/Peers/P2POwnerPeer.cs
++++ b/Barotrauma/BarotraumaClient/ClientSource/Networking/Primitives/Peers/P2POwnerPeer.cs
+@@ -17,6 +17,7 @@ namespace Barotrauma.Networking
+ 
+         private readonly P2PEndpoint selfPrimaryEndpoint;
+         private AccountInfo selfAccountInfo;
++        private readonly string? headlessOwnerName;
+ 
+         private long sentBytes, receivedBytes;
+ 
+@@ -56,7 +57,7 @@ namespace Barotrauma.Networking
+ 
+         private readonly List<RemotePeer> remotePeers = new();
+ 
+-        public P2POwnerPeer(Callbacks callbacks, int ownerKey, ImmutableArray<P2PEndpoint> allEndpoints) : 
++        public P2POwnerPeer(Callbacks callbacks, int ownerKey, ImmutableArray<P2PEndpoint> allEndpoints, string? headlessOwnerName = null) :
+             base(new PipeEndpoint(), allEndpoints.Cast<Endpoint>().ToImmutableArray(), callbacks, Option<int>.Some(ownerKey))
+         {
+             ServerConnection = null;
+@@ -72,6 +73,7 @@ namespace Barotrauma.Networking
+             }
+             selfPrimaryEndpoint = selfPrimaryEndpointNotNull;
+             selfAccountInfo = AccountInfo.None;
++            this.headlessOwnerName = headlessOwnerName;
+             authenticators = Authenticator.GetAuthenticatorsForHost(Option.Some<Endpoint>(selfPrimaryEndpoint));
+         }
+ 
+@@ -269,12 +271,15 @@ namespace Barotrauma.Networking
+             if (ChildServerRelay.HasShutDown || ChildServerRelay.Process is not { HasExited: false })
+             {
+                 Close(PeerDisconnectPacket.WithReason(DisconnectReason.ServerCrashed));
+-                var msgBox = new GUIMessageBox(TextManager.Get("ConnectionLost"), ChildServerRelay.CrashMessage);
+-                msgBox.Buttons[0].OnClicked += (btn, obj) =>
++                if (headlessOwnerName is null)
+                 {
+-                    GameMain.MainMenuScreen.Select();
+-                    return false;
+-                };
++                    var msgBox = new GUIMessageBox(TextManager.Get("ConnectionLost"), ChildServerRelay.CrashMessage);
++                    msgBox.Buttons[0].OnClicked += (btn, obj) =>
++                    {
++                        GameMain.MainMenuScreen.Select();
++                        return false;
++                    };
++                }
+                 return;
+             }
+ 
+@@ -412,12 +417,14 @@ namespace Barotrauma.Networking
+                     Initialization = ConnectionInitialization.AuthInfoAndVersion
+                 });
+                 outMsg.WriteNetSerializableStruct(new P2PInitializationOwnerPacket(
+-                    Name: GameMain.Client.Name,
++                    Name: headlessOwnerName ?? GameMain.Client?.Name ?? "Server",
+                     AccountId: selfAccountInfo.AccountId.Fallback(default(AccountId)!)));
+                 ForwardToServerProcess(outMsg);
+             }
+             else
+             {
++                if (headlessOwnerName is not null) { return; }
++
+                 OnInitializationComplete();
+ 
+                 var packet = INetSerializableStruct.Read<PeerPacketMessage>(inc);
+diff --git a/Barotrauma/BarotraumaP2PHost/Program.cs b/Barotrauma/BarotraumaP2PHost/Program.cs
+new file mode 100644
+index 0000000..f1f8fdf
+--- /dev/null
++++ b/Barotrauma/BarotraumaP2PHost/Program.cs
+@@ -0,0 +1,219 @@
++﻿#nullable enable
++using Barotrauma.Extensions;
++using Barotrauma.Networking;
++using System;
++using System.Collections.Immutable;
++using System.Diagnostics;
++using System.IO;
++using System.Linq;
++using System.Security.Cryptography;
++using System.Threading;
++using System.Threading.Tasks;
++using System.Xml.Linq;
++
++namespace Barotrauma;
++
++internal static class P2PHostProgram
++{
++    private static volatile bool stopRequested;
++
++    private sealed record HostSettings(string ServerName, int MaxPlayers, bool IsPublic, bool HasPassword);
++
++    public static int Main()
++    {
++        Directory.SetCurrentDirectory(AppContext.BaseDirectory);
++        DebugConsole.MessageHandler.Register("headlessp2phost".ToIdentifier(), msg => Console.WriteLine(msg.Text));
++        Console.CancelKeyPress += (_, e) =>
++        {
++            e.Cancel = true;
++            stopRequested = true;
++        };
++
++        P2POwnerPeer? ownerPeer = null;
++        Steamworks.Data.Lobby? lobby = null;
++
++        try
++        {
++            HostSettings settings = ReadHostSettings();
++
++            Steamworks.SteamClient.Init(Steam.SteamManager.AppID, false);
++            if (!Steamworks.SteamClient.IsValid || !Steamworks.SteamClient.IsLoggedOn)
++            {
++                throw new InvalidOperationException("Steam client is not initialized or not logged on.");
++            }
++
++            var steamId = new SteamId(Steamworks.SteamClient.SteamId);
++            var endpoint = new SteamP2PEndpoint(steamId);
++            Console.WriteLine($"Steam initialized: {Steamworks.SteamClient.Name} ({steamId.StringRepresentation})");
++
++            InitializeRelayNetwork();
++
++            int ownerKey = RandomNumberGenerator.GetInt32(1, int.MaxValue);
++            var callbacks = new ClientPeer.Callbacks(
++                OnMessageReceived: _ => { },
++                OnDisconnect: packet =>
++                {
++                    Console.WriteLine($"P2P owner disconnected: {packet.DisconnectReason}");
++                    stopRequested = true;
++                },
++                OnInitializationComplete: () => { });
++
++            ownerPeer = new P2POwnerPeer(
++                callbacks,
++                ownerKey,
++                ImmutableArray.Create<P2PEndpoint>(endpoint),
++                headlessOwnerName: "P2P Host");
++            ownerPeer.Start();
++            TaskPool.Update();
++
++            if (!ownerPeer.IsActive)
++            {
++                throw new InvalidOperationException("Failed to start P2P owner peer.");
++            }
++
++            string serverExe = Path.Combine(AppContext.BaseDirectory, "DedicatedServer.exe");
++            if (!File.Exists(serverExe))
++            {
++                throw new FileNotFoundException("DedicatedServer.exe was not found next to the P2P host.", serverExe);
++            }
++
++            var processInfo = new ProcessStartInfo
++            {
++                FileName = serverExe,
++                WorkingDirectory = AppContext.BaseDirectory,
++                UseShellExecute = false
++            };
++            processInfo.ArgumentList.Add("-endpoint");
++            processInfo.ArgumentList.Add(endpoint.StringRepresentation);
++            processInfo.ArgumentList.Add("-ownerkey");
++            processInfo.ArgumentList.Add(ownerKey.ToString());
++            processInfo.ArgumentList.Add("-headlessp2powner");
++
++            ChildServerRelay.Start(processInfo);
++            Console.WriteLine("DedicatedServer started through the P2P relay.");
++
++            lobby = CreateLobby(settings, steamId, ownerPeer);
++            Console.WriteLine($"Steam lobby created: {lobby.Value.Id}");
++            Console.WriteLine("Headless P2P host is running. Press Ctrl+C to stop.");
++
++            var stopwatch = Stopwatch.StartNew();
++            double previousTime = stopwatch.Elapsed.TotalSeconds;
++            while (!stopRequested && ownerPeer.IsActive && ChildServerRelay.IsProcessAlive)
++            {
++                double now = stopwatch.Elapsed.TotalSeconds;
++                float deltaTime = (float)Math.Max(now - previousTime, 0.0);
++                previousTime = now;
++
++                Timing.TotalTime += deltaTime;
++                Timing.TotalTimeUnpaused += deltaTime;
++                Steamworks.SteamClient.RunCallbacks();
++                TaskPool.Update();
++                ownerPeer.Update(deltaTime);
++                Thread.Sleep(8);
++            }
++
++            return ChildServerRelay.Process is { HasExited: true } process ? process.ExitCode : 0;
++        }
++        catch (Exception e)
++        {
++            Console.Error.WriteLine(e);
++            return 1;
++        }
++        finally
++        {
++            lobby?.Leave();
++            ownerPeer?.Close(PeerDisconnectPacket.WithReason(DisconnectReason.ServerShutdown));
++            if (ChildServerRelay.IsProcessAlive)
++            {
++                ChildServerRelay.AttemptGracefulShutDown();
++            }
++            Steam.SteamManager.ShutDown();
++        }
++    }
++
++    private static void InitializeRelayNetwork()
++    {
++        Steamworks.SteamNetworkingUtils.InitRelayNetworkAccess();
++        var stopwatch = Stopwatch.StartNew();
++        while (Steamworks.SteamNetworkingUtils.Status.Avail != Steamworks.SteamNetworkingAvailability.Current)
++        {
++            Steamworks.SteamClient.RunCallbacks();
++            var status = Steamworks.SteamNetworkingUtils.Status;
++            if (status.Avail is Steamworks.SteamNetworkingAvailability.CannotTry
++                or Steamworks.SteamNetworkingAvailability.Previously
++                or Steamworks.SteamNetworkingAvailability.Failed)
++            {
++                throw new InvalidOperationException($"Steam relay initialization failed: {status.Avail}: {status.Msg}");
++            }
++            if (stopwatch.Elapsed > TimeSpan.FromSeconds(30))
++            {
++                throw new TimeoutException($"Steam relay initialization timed out: {status.Avail}: {status.Msg}");
++            }
++            Thread.Sleep(25);
++        }
++        Console.WriteLine("Steam Datagram Relay network is ready.");
++    }
++
++    private static Steamworks.Data.Lobby? CreateLobby(HostSettings settings, SteamId steamId, P2POwnerPeer ownerPeer)
++    {
++        Task<Steamworks.Data.Lobby?> task = Steamworks.SteamMatchmaking.CreateLobbyAsync(settings.MaxPlayers + 10);
++        var stopwatch = Stopwatch.StartNew();
++        double previousTime = stopwatch.Elapsed.TotalSeconds;
++        while (!task.IsCompleted)
++        {
++            double now = stopwatch.Elapsed.TotalSeconds;
++            float deltaTime = (float)Math.Max(now - previousTime, 0.0);
++            previousTime = now;
++
++            Timing.TotalTime += deltaTime;
++            Timing.TotalTimeUnpaused += deltaTime;
++            Steamworks.SteamClient.RunCallbacks();
++            TaskPool.Update();
++            ownerPeer.Update(deltaTime);
++            if (stopwatch.Elapsed > TimeSpan.FromSeconds(30))
++            {
++                throw new TimeoutException("Steam lobby creation timed out.");
++            }
++            Thread.Sleep(16);
++        }
++
++        Steamworks.Data.Lobby? lobby = task.GetAwaiter().GetResult();
++        if (lobby is null) { throw new InvalidOperationException("Failed to create Steam lobby."); }
++
++        if (settings.IsPublic) { lobby.Value.SetPublic(); }
++        else { lobby.Value.SetFriendsOnly(); }
++        lobby.Value.SetJoinable(true);
++        lobby.Value.SetData("lobbyowner", steamId.StringRepresentation);
++        lobby.Value.SetData("servername", settings.ServerName);
++        lobby.Value.SetData("version", GameMain.Version.ToString());
++        lobby.Value.SetData("maxplayers", settings.MaxPlayers.ToString());
++        lobby.Value.SetData("haspassword", settings.HasPassword.ToString());
++        lobby.Value.SetData("playercount", "0");
++
++        return lobby;
++    }
++
++    private static HostSettings ReadHostSettings()
++    {
++        const string settingsPath = "serversettings.xml";
++        if (!File.Exists(settingsPath))
++        {
++            return new HostSettings("Server", 10, false, false);
++        }
++
++        XElement? root = XDocument.Load(settingsPath).Root;
++        if (root is null) { return new HostSettings("Server", 10, false, false); }
++
++        string serverName = root.Attribute(nameof(ServerSettings.ServerName))?.Value
++                            ?? root.Attribute("name")?.Value
++                            ?? "Server";
++        int maxPlayers = int.TryParse(root.Attribute(nameof(ServerSettings.MaxPlayers))?.Value, out int parsedMaxPlayers)
++            ? parsedMaxPlayers
++            : 10;
++        bool isPublic = bool.TryParse(root.Attribute(nameof(ServerSettings.IsPublic))?.Value, out bool parsedPublic)
++            && parsedPublic;
++        bool hasPassword = !string.IsNullOrEmpty(root.Attribute("password")?.Value);
++
++        return new HostSettings(serverName, Math.Max(maxPlayers, 1), isPublic, hasPassword);
++    }
++}
+diff --git a/Barotrauma/BarotraumaP2PHost/WindowsP2PHost.csproj b/Barotrauma/BarotraumaP2PHost/WindowsP2PHost.csproj
+new file mode 100644
+index 0000000..b311244
+--- /dev/null
++++ b/Barotrauma/BarotraumaP2PHost/WindowsP2PHost.csproj
+@@ -0,0 +1,18 @@
++<Project Sdk="Microsoft.NET.Sdk">
++  <PropertyGroup>
++    <OutputType>Exe</OutputType>
++    <TargetFramework>net8.0</TargetFramework>
++    <RootNamespace>Barotrauma</RootNamespace>
++    <AssemblyName>VoidTraitorP2PHost</AssemblyName>
++    <Version>1.13.4.0</Version>
++    <PlatformTarget>x64</PlatformTarget>
++    <InvariantGlobalization>true</InvariantGlobalization>
++    <LangVersion>latest</LangVersion>
++  </PropertyGroup>
++  <ItemGroup>
++    <ProjectReference Include="..\BarotraumaClient\WindowsClient.csproj" />
++  </ItemGroup>
++  <ItemGroup>
++    <None Include="steam_appid.txt" CopyToOutputDirectory="PreserveNewest" />
++  </ItemGroup>
++</Project>
+diff --git a/Barotrauma/BarotraumaP2PHost/steam_appid.txt b/Barotrauma/BarotraumaP2PHost/steam_appid.txt
+new file mode 100644
+index 0000000..a8f6369
+--- /dev/null
++++ b/Barotrauma/BarotraumaP2PHost/steam_appid.txt
+@@ -0,0 +1 @@
++602960
+diff --git a/Barotrauma/BarotraumaServer/ServerSource/GameMain.cs b/Barotrauma/BarotraumaServer/ServerSource/GameMain.cs
+index a784267..ef9aecf 100644
+--- a/Barotrauma/BarotraumaServer/ServerSource/GameMain.cs
++++ b/Barotrauma/BarotraumaServer/ServerSource/GameMain.cs
+@@ -157,6 +157,7 @@ namespace Barotrauma
+             int maxPlayers = 10; 
+             Option<int> ownerKey = Option.None;
+             Option<P2PEndpoint> ownerEndpoint = Option.None;
++            bool headlessP2POwner = false;
+             IPAddress listenIp = IPAddress.Any;
+ 
+             XDocument doc = XMLExtensions.TryLoadXml(ServerSettings.SettingsFile);
+@@ -245,6 +246,9 @@ namespace Barotrauma
+                     case "-lenienthandshake":
+                         NetConfig.UseLenientHandshake = true;
+                         break;
++                    case "-headlessp2powner":
++                        headlessP2POwner = true;
++                        break;
+                 }
+             }
+ 
+@@ -258,7 +262,8 @@ namespace Barotrauma
+                 enableUpnp,
+                 maxPlayers,
+                 ownerKey,
+-                ownerEndpoint);
++                ownerEndpoint,
++                headlessP2POwner);
+             Server.StartServer(registerToServerList: true);
+ 
+             for (int i = 0; i < CommandLineArgs.Length; i++)
+diff --git a/Barotrauma/BarotraumaServer/ServerSource/Networking/GameServer.cs b/Barotrauma/BarotraumaServer/ServerSource/Networking/GameServer.cs
+index 1553753..79940bf 100644
+--- a/Barotrauma/BarotraumaServer/ServerSource/Networking/GameServer.cs
++++ b/Barotrauma/BarotraumaServer/ServerSource/Networking/GameServer.cs
+@@ -136,6 +136,7 @@ namespace Barotrauma.Networking
+         public NetworkConnection OwnerConnection { get; private set; }
+         private readonly Option<int> ownerKey;
+         private readonly Option<P2PEndpoint> ownerEndpoint;
++        private readonly bool headlessP2POwner;
+ 
+         public void ClearRecentlyDisconnectedClients()
+         {
+@@ -179,7 +180,8 @@ namespace Barotrauma.Networking
+             bool attemptUPnP,
+             int maxPlayers,
+             Option<int> ownerKey,
+-            Option<P2PEndpoint> ownerEndpoint)
++            Option<P2PEndpoint> ownerEndpoint,
++            bool headlessP2POwner = false)
+         {
+             if (name.Length > NetConfig.ServerNameMaxLength)
+             {
+@@ -198,6 +200,7 @@ namespace Barotrauma.Networking
+             this.ownerKey = ownerKey;
+ 
+             this.ownerEndpoint = ownerEndpoint;
++            this.headlessP2POwner = headlessP2POwner;
+ 
+             entityEventManager = new ServerEntityEventManager(this);
+         }
+@@ -216,7 +219,7 @@ namespace Barotrauma.Networking
+             if (ownerEndpoint.TryUnwrap(out var endpoint))
+             {
+                 Log("Using P2P networking.", ServerLog.MessageType.ServerMessage);
+-                serverPeer = new P2PServerPeer(endpoint, ownerKey.Fallback(0), ServerSettings, callbacks);
++                serverPeer = new P2PServerPeer(endpoint, ownerKey.Fallback(0), ServerSettings, callbacks, headlessP2POwner);
+             }
+             else
+             {
+diff --git a/Barotrauma/BarotraumaServer/ServerSource/Networking/Primitives/Peers/Server/P2PServerPeer.cs b/Barotrauma/BarotraumaServer/ServerSource/Networking/Primitives/Peers/Server/P2PServerPeer.cs
+index 16e3094..de72789 100644
+--- a/Barotrauma/BarotraumaServer/ServerSource/Networking/Primitives/Peers/Server/P2PServerPeer.cs
++++ b/Barotrauma/BarotraumaServer/ServerSource/Networking/Primitives/Peers/Server/P2PServerPeer.cs
+@@ -9,12 +9,14 @@ namespace Barotrauma.Networking
+         private bool started;
+ 
+         private readonly P2PEndpoint ownerEndpoint;
++        private readonly bool headlessOwner;
+ 
+-        public P2PServerPeer(P2PEndpoint ownerEp, int ownerKey, ServerSettings settings, Callbacks callbacks) : base(callbacks, settings)
++        public P2PServerPeer(P2PEndpoint ownerEp, int ownerKey, ServerSettings settings, Callbacks callbacks, bool headlessOwner = false) : base(callbacks, settings)
+         {
+             this.ownerKey = Option.Some(ownerKey);
+ 
+             ownerEndpoint = ownerEp;
++            this.headlessOwner = headlessOwner;
+ 
+             started = false;
+         }
+@@ -284,8 +286,11 @@ namespace Barotrauma.Networking
+                         OwnerConnection.Language = GameSettings.CurrentConfig.Language;
+                         OwnerConnection.SetAccountInfo(senderInfo.AccountInfo);
+ 
+-                        callbacks.OnInitializationComplete.Invoke(OwnerConnection, packet.Name);
+-                        callbacks.OnOwnerDetermined.Invoke(OwnerConnection);
++                        if (!headlessOwner)
++                        {
++                            callbacks.OnInitializationComplete.Invoke(OwnerConnection, packet.Name);
++                            callbacks.OnOwnerDetermined.Invoke(OwnerConnection);
++                        }
+                     }
+ 
+                     return;
+diff --git a/Barotrauma/BarotraumaShared/SharedSource/Networking/ChildServerRelay.cs b/Barotrauma/BarotraumaShared/SharedSource/Networking/ChildServerRelay.cs
+index 865280f..4357610 100644
+--- a/Barotrauma/BarotraumaShared/SharedSource/Networking/ChildServerRelay.cs
++++ b/Barotrauma/BarotraumaShared/SharedSource/Networking/ChildServerRelay.cs
+@@ -89,7 +89,7 @@ namespace Barotrauma.Networking
+ 
+         private static void PrivateShutDown()
+         {
+-            if (Thread.CurrentThread != GameMain.MainThread)
++            if (GameMain.MainThread is not null && Thread.CurrentThread != GameMain.MainThread)
+             {
+                 throw new InvalidOperationException(
+                     $"Cannot call {nameof(ChildServerRelay)}.{nameof(PrivateShutDown)} from a thread other than the main one");
