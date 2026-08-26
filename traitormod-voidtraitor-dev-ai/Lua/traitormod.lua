@@ -89,7 +89,7 @@ Traitormod.NextSkillBuffId = 0
 local pointsGiveTimer = -1
 local roundSkillGiveTimer = -1
 local skillBuffUpdateInterval = 1
-local nextSkillBuffUpdate = 0
+local skillBuffUpdateTimer = skillBuffUpdateInterval
 
 local function isValidBuffCharacter(character)
     return character ~= nil and character.IsHuman and not character.IsDead and character.Info ~= nil and character.Info.Job ~= nil
@@ -800,12 +800,16 @@ end
 
 local tipDelay = 0
 local updateAbandonedCharacters
+local abandonedCharacterUpdateInterval = 0.25
+local abandonedCharacterUpdateTimer = abandonedCharacterUpdateInterval
 
 -- register tick
 --//TODO continue here
-Hook.Add("think", "Traitormod.Think", function()
-    if Timer.GetTime() >= nextSkillBuffUpdate then
-        nextSkillBuffUpdate = Timer.GetTime() + skillBuffUpdateInterval
+Hook.Add("think", "Traitormod.Think", function(deltaTime)
+    skillBuffUpdateTimer = skillBuffUpdateTimer + deltaTime
+    if skillBuffUpdateTimer >= skillBuffUpdateInterval then
+        skillBuffUpdateTimer = 0
+        local now = Timer.GetTime()
 
         for character, state in pairs(Traitormod.SkillBuffStates) do
             if not isValidBuffCharacter(character) then
@@ -817,7 +821,7 @@ Hook.Add("think", "Traitormod.Think", function()
                 Traitormod.SkillBuffStates[character] = nil
             else
                 for effectId, effect in pairs(state.Effects) do
-                    if effect.ExpiresAt ~= nil and Timer.GetTime() >= effect.ExpiresAt then
+                    if effect.ExpiresAt ~= nil and now >= effect.ExpiresAt then
                         Traitormod.RemoveTemporarySkillBuff(character, effectId)
                     end
                 end
@@ -857,16 +861,20 @@ Hook.Add("think", "Traitormod.Think", function()
         Traitormod.SendTip()
     end
 
-    updateAbandonedCharacters()
+    abandonedCharacterUpdateTimer = abandonedCharacterUpdateTimer + deltaTime
+    if abandonedCharacterUpdateTimer >= abandonedCharacterUpdateInterval then
+        abandonedCharacterUpdateTimer = 0
+        updateAbandonedCharacters()
+    end
 
     if not Game.RoundStarted or Traitormod.SelectedGamemode == nil then
         return
     end
 
-    Traitormod.RoundTime = Traitormod.RoundTime + 1 / 60
+    Traitormod.RoundTime = Traitormod.RoundTime + deltaTime
 
     if Traitormod.SelectedGamemode then
-        Traitormod.SelectedGamemode:Think()
+        Traitormod.SelectedGamemode:Think(deltaTime)
     end
 
     -- give points/xp on the configured experience timer
@@ -931,20 +939,6 @@ local function getDisconnectedCharacterGhostRoleDelay()
     end
 
     return math.max(0, delaySeconds)
-end
-
-local function findConnectedClientByAccountKey(accountKey)
-    if accountKey == nil then
-        return nil
-    end
-
-    for _, connectedClient in pairs(Client.ClientList) do
-        if Traitormod.GetClientAccountKey(connectedClient) == accountKey then
-            return connectedClient
-        end
-    end
-
-    return nil
 end
 
 local function sendDisconnectedGhostRoleInfo(client, character)
@@ -1016,8 +1010,16 @@ updateAbandonedCharacters = function()
     end
 
     local ghostRoleConfig = Traitormod.Config.GhostRoleConfig
-    if ghostRoleConfig == nil or not ghostRoleConfig.Enabled then
+    if ghostRoleConfig == nil or not ghostRoleConfig.Enabled or next(Traitormod.AbandonedCharacters) == nil then
         return
+    end
+
+    local connectedAccountKeys = {}
+    for _, connectedClient in pairs(Client.ClientList) do
+        local accountKey = Traitormod.GetClientAccountKey(connectedClient)
+        if accountKey ~= nil then
+            connectedAccountKeys[accountKey] = true
+        end
     end
 
     local now = Timer.GetTime()
@@ -1026,11 +1028,10 @@ updateAbandonedCharacters = function()
 
     for accountKey, abandonedCharacter in pairs(Traitormod.AbandonedCharacters) do
         local character = abandonedCharacter.Character
-        local connectedClient = findConnectedClientByAccountKey(accountKey)
 
         if character == nil or character.IsDead then
             table.insert(toRemove, accountKey)
-        elseif connectedClient ~= nil then
+        elseif connectedAccountKeys[accountKey] then
             table.insert(toRemove, accountKey)
         elseif not abandonedCharacter.GhostRoleCreated and now >= abandonedCharacter.AvailableAt then
             table.insert(toCreate, abandonedCharacter)
