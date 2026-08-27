@@ -15,8 +15,8 @@ local NET_VOTE_START = "VoidTraitor_LobbyVoteStart"
 local NET_VOTE_CAST = "VoidTraitor_LobbyVoteCast"
 
 local GLOBAL_STATE_KEY = "VoidTraitorClientMenuState"
-local GLOBAL_HUD_PATCH_KEY = "VoidTraitorClientMenuHudPatchInstalled"
-local GLOBAL_PAUSE_PATCH_KEY = "VoidTraitorClientMenuPausePatchInstalled"
+local HUD_PATCH_ID = "VoidTraitor.ClientMenu.Hud"
+local PAUSE_PATCH_ID = "VoidTraitor.ClientMenu.Pause"
 
 local previousState = rawget(_G, GLOBAL_STATE_KEY)
 if previousState ~= nil then
@@ -61,7 +61,6 @@ local guiRoot = nil
 local currentMenu = nil
 local currentMenuKind = ""
 local activeVoteUi = nil
-local pauseMenuRestoreValue = nil
 local lastResolutionX = -1
 local lastResolutionY = -1
 local escapeClosePending = false
@@ -69,7 +68,6 @@ local menuEntries = nil
 local pendingMenuOpen = false
 local voteSnapshot = nil
 local pendingVoteMenuOpen = false
-local lastVoteSnapshotRequestTime = -100
 local lastActiveVoteId = ""
 local lastShownActiveVoteId = ""
 local lastVoteButtonResolutionX = -1
@@ -275,14 +273,7 @@ end
 
 local function RequestVoteSnapshot(openAfterResponse)
     pendingVoteMenuOpen = openAfterResponse == true
-    lastVoteSnapshotRequestTime = GetTime()
     SendNetMessage(NET_VOTE_REQUEST)
-end
-
-local function RequestVoteSnapshotThrottled(openAfterResponse)
-    local now = GetTime()
-    if now > 0 and now - lastVoteSnapshotRequestTime < 1.0 then return end
-    RequestVoteSnapshot(openAfterResponse == true)
 end
 
 local function SendVoteStart(voteType)
@@ -294,19 +285,6 @@ end
 local function SendVoteCast(optionId)
     SendNetMessage(NET_VOTE_CAST, function(msg)
         msg.WriteInt32(tonumber(optionId or 0) or 0)
-    end)
-end
-
-local function SetPauseMenuBlocked()
-    if currentMenu == nil or currentMenuKind == "voteactive" then return end
-
-    pcall(function()
-        if GUI ~= nil and GUI.PreventPauseMenuToggle ~= nil then
-            if pauseMenuRestoreValue == nil then
-                pauseMenuRestoreValue = GUI.PreventPauseMenuToggle
-            end
-            GUI.PreventPauseMenuToggle = true
-        end
     end)
 end
 
@@ -327,18 +305,8 @@ CloseMenu = function()
     currentMenuKind = ""
     activeVoteUi = nil
     sharedState.CurrentMenu = nil
+    sharedState.CurrentMenuKind = ""
     escapeClosePending = false
-
-    local restoreValue = pauseMenuRestoreValue
-    pauseMenuRestoreValue = nil
-    Timer.Wait(function()
-        if currentMenu ~= nil then return end
-        pcall(function()
-            if GUI ~= nil and GUI.PreventPauseMenuToggle ~= nil then
-                GUI.PreventPauseMenuToggle = restoreValue == true
-            end
-        end)
-    end, 250)
 end
 
 sharedState.CloseMenu = CloseMenu
@@ -367,7 +335,6 @@ local function RequestEscapeClose()
 
     escapeClosePending = true
     sharedState.BlockPauseMenu = true
-    SetPauseMenuBlocked()
     CloseMenu()
     Timer.Wait(function()
         sharedState.BlockPauseMenu = false
@@ -509,7 +476,7 @@ local function ShowConfirm(title, text, action)
     currentMenu = overlay
     currentMenuKind = "confirm"
     sharedState.CurrentMenu = overlay
-    SetPauseMenuBlocked()
+    sharedState.CurrentMenuKind = currentMenuKind
 
     local box = GUI.Frame(CreateRect(0.20, 0.165, overlay, GUI.Anchor.Center), "GUIFrame")
     box.CanBeFocused = true
@@ -564,7 +531,7 @@ local function ShowVoidTraitorMenu()
     currentMenu = overlay
     currentMenuKind = "vt"
     sharedState.CurrentMenu = overlay
-    SetPauseMenuBlocked()
+    sharedState.CurrentMenuKind = currentMenuKind
 
     local panelRect = CreateRect(0.235, 0.62, overlay, GUI.Anchor.TopLeft)
     panelRect.AbsoluteOffset = Point(SafeIntScale(11), SafeIntScale(70))
@@ -700,16 +667,6 @@ local function ReadRectValue(rect, key, fallbackKey, fallback)
         if tonumber(value) ~= nil then return tonumber(value) end
     end
     return fallback or 0
-end
-
-local function Clamp(value, minimum, maximum)
-    value = tonumber(value) or 0
-    minimum = tonumber(minimum) or value
-    maximum = tonumber(maximum) or value
-    if maximum < minimum then maximum = minimum end
-    if value < minimum then return minimum end
-    if value > maximum then return maximum end
-    return value
 end
 
 local function GetComponentRect(component)
@@ -945,16 +902,6 @@ local function GetVoteTimeText(active)
     return string.format("%s: %s", voteUiText.Timer, tostring(math.floor(remaining)))
 end
 
-local function CreateVoteProgressBar(parent, active)
-    local frame = GUI.Frame(CreateRect(1, 0.045, parent, nil), "GUIFrame")
-    frame.Color = Color(25, 35, 30, 230)
-
-    local progress = GetVoteProgress(active)
-    local fill = GUI.Frame(CreateRect(progress, 1, frame, GUI.Anchor.CenterLeft), nil)
-    fill.Color = Color(120, 170, 130, 230)
-    return frame
-end
-
 local CreateVoteButton
 local IsWelcomeMenuOpen
 
@@ -970,7 +917,7 @@ local function ShowVoteStartMenu()
     currentMenu = panel
     currentMenuKind = "votestart"
     sharedState.CurrentMenu = panel
-    SetPauseMenuBlocked()
+    sharedState.CurrentMenuKind = currentMenuKind
     SafeSetAsLastChild(panel)
 
     local width, optionHeight, spacing = GetVoteStartOptionMetrics()
@@ -1131,7 +1078,7 @@ local function ShowActiveVoteMenu()
     currentMenu = panel
     currentMenuKind = "voteactive"
     sharedState.CurrentMenu = panel
-    SetPauseMenuBlocked()
+    sharedState.CurrentMenuKind = currentMenuKind
     SafeSetAsLastChild(panel)
 
     activeVoteUi = { Panel = panel, ActiveId = tostring(active.Id or ""), OptionButtons = {} }
@@ -1195,24 +1142,6 @@ local function ShowActiveVoteMenu()
     end
 
     RefreshActiveVoteUi()
-end
-
-local function ShowVoteMenu()
-    if currentMenu ~= nil then
-        CloseMenu()
-        return
-    end
-
-    if voteSnapshot == nil then
-        RequestVoteSnapshot(true)
-        return
-    end
-
-    if voteSnapshot.Active ~= nil then
-        ShowActiveVoteMenu()
-    else
-        ShowVoteStartMenu()
-    end
 end
 
 CreateVoteButton = function()
@@ -1483,65 +1412,48 @@ Timer.Wait(function() if not sharedState.Disabled then SendVoteReady() end end, 
 Timer.Wait(function() if not sharedState.Disabled then SendReady() end end, 6000)
 Timer.Wait(function() if not sharedState.Disabled then SendVoteReady() end end, 6500)
 
-if not rawget(_G, GLOBAL_HUD_PATCH_KEY) then
-    Hook.Patch("Barotrauma.GameSession", "AddToGUIUpdateList", function()
-        local state = rawget(_G, GLOBAL_STATE_KEY)
-        if state == nil or state.Disabled then return end
-        if GUI ~= nil and GUI.DisableHUD then return end
+Hook.Patch(HUD_PATCH_ID, "Barotrauma.GameSession", "AddToGUIUpdateList", function()
+    local state = rawget(_G, GLOBAL_STATE_KEY)
+    if state == nil or state.Disabled then return end
+    if GUI ~= nil and GUI.DisableHUD then return end
 
-        if state.GuiRoot ~= nil then
-            pcall(function() state.GuiRoot:AddToGUIUpdateList(false, MENU_DRAW_ORDER) end)
-        end
-        if state.ButtonRoot == nil and state.EnsureTopButtons ~= nil then
-            pcall(state.EnsureTopButtons)
-        end
-        if state.ButtonRoot ~= nil then
-            pcall(function() state.ButtonRoot:AddToGUIUpdateList(false, BUTTON_DRAW_ORDER) end)
-        end
-    end)
-    _G[GLOBAL_HUD_PATCH_KEY] = true
-end
-
-if not rawget(_G, GLOBAL_PAUSE_PATCH_KEY) then
-    local ok, err = pcall(function()
-        Hook.Patch("Barotrauma.GUI", "TogglePauseMenu", {}, function(instance, p)
-            local state = rawget(_G, GLOBAL_STATE_KEY)
-            if state ~= nil and not state.Disabled and (state.CurrentMenu ~= nil or state.BlockPauseMenu == true) then
-                if currentMenuKind == "voteactive" and state.BlockPauseMenu ~= true then
-                    return
-                end
-                if state.CurrentMenu ~= nil and state.CloseMenu ~= nil then
-                    pcall(state.CloseMenu)
-                end
-                if p ~= nil then
-                    p.PreventExecution = true
-                end
-                return false
-            end
-        end, Hook.HookMethodType.Before)
-    end)
-    if ok then
-        _G[GLOBAL_PAUSE_PATCH_KEY] = true
-    else
-        print("[VoidTraitor.ClientMenu] Failed to install pause-menu patch: " .. tostring(err))
+    if state.GuiRoot ~= nil then
+        state.GuiRoot:AddToGUIUpdateList(false, MENU_DRAW_ORDER)
     end
-end
-
-pcall(function() Hook.Remove("keyUpdate", "VoidTraitor.ClientMenu.PauseGuard") end)
-pcall(function() Hook.Remove("think", "VoidTraitor.ClientMenu.KeepPauseBlocked") end)
-
-Hook.Add("keyUpdate", "VoidTraitor.ClientMenu.PauseGuard", function()
-    if sharedState.Disabled then return end
-
-    if currentMenu ~= nil then
-        SetPauseMenuBlocked()
-        if IsEscapeHit() then
-            RequestEscapeClose()
-        end
+    if state.ButtonRoot == nil and state.EnsureTopButtons ~= nil then
+        state.EnsureTopButtons()
+    end
+    if state.ButtonRoot ~= nil then
+        state.ButtonRoot:AddToGUIUpdateList(false, BUTTON_DRAW_ORDER)
     end
 end)
 
-Hook.Add("think", "VoidTraitor.ClientMenu.KeepPauseBlocked", function(deltaTime)
+Hook.Patch(PAUSE_PATCH_ID, "Barotrauma.GUI", "TogglePauseMenu", {}, function(instance, params)
+    local state = rawget(_G, GLOBAL_STATE_KEY)
+    if state ~= nil and not state.Disabled and (state.CurrentMenu ~= nil or state.BlockPauseMenu == true) then
+        if state.CurrentMenuKind == "voteactive" and state.BlockPauseMenu ~= true then
+            return
+        end
+        if state.CurrentMenu ~= nil and state.CloseMenu ~= nil then
+            state.CloseMenu()
+        end
+        if params ~= nil then params.PreventExecution = true end
+        return false
+    end
+end, Hook.HookMethodType.Before)
+
+Hook.Remove("keyUpdate", "VoidTraitor.ClientMenu.PauseGuard")
+Hook.Remove("think", "VoidTraitor.ClientMenu.KeepPauseBlocked")
+Hook.Remove("think", "VoidTraitor.ClientMenu.UiState")
+
+Hook.Add("keyUpdate", "VoidTraitor.ClientMenu.PauseGuard", function()
+    if sharedState.Disabled then return end
+    if currentMenu ~= nil and IsEscapeHit() then
+        RequestEscapeClose()
+    end
+end)
+
+Hook.Add("think", "VoidTraitor.ClientMenu.UiState", function(deltaTime)
     if sharedState.Disabled then return end
 
     uiStateCheckTimer = uiStateCheckTimer + (tonumber(deltaTime) or 0)

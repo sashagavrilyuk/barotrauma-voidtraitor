@@ -42,9 +42,9 @@ local nextCooldownTextUpdateTime = 0
 local cooldownSnapshotRequested = false
 local buyRequestPending = false
 local searchText = ""
+local normalizedSearchText = ""
 local selectedFilter = "all"
 local productRows = {}
-local emptyProductsText = nil
 local rebuildProductList = nil
 local filterPopup = nil
 local filterButton = nil
@@ -62,8 +62,8 @@ local NET_INT32_MAX = 2147483647
 
 -- Keep a single live GUI root between Lua reloads.
 local GLOBAL_STATE_KEY = "VoidTraitorPointshopGuiState"
-local GLOBAL_PATCH_KEY = "VoidTraitorPointshopGuiAddToGuiUpdateListPatchInstalled"
-local GLOBAL_PAUSE_PATCH_KEY = "VoidTraitorPointshopGuiPauseMenuPatchInstalled"
+local HUD_PATCH_ID = "VoidTraitor.PointshopGui.Hud"
+local PAUSE_PATCH_ID = "VoidTraitor.PointshopGui.Pause"
 local previousState = rawget(_G, GLOBAL_STATE_KEY)
 if previousState ~= nil then
     previousState.Disabled = true
@@ -80,8 +80,6 @@ if previousState ~= nil then
 end
 local sharedState = { Disabled = false }
 _G[GLOBAL_STATE_KEY] = sharedState
-
-local pauseMenuRestoreValue = nil
 
 local textKeys = {
     "Categories",
@@ -177,54 +175,26 @@ sharedState.GuiRoot = guiRoot
 pcall(function() guiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER) end)
 
 -- Reinsert the root when Barotrauma rebuilds the GUI update list.
-if not rawget(_G, GLOBAL_PATCH_KEY) then
-    Hook.Patch("Barotrauma.GameSession", "AddToGUIUpdateList", function()
-        local state = rawget(_G, GLOBAL_STATE_KEY)
-        if state ~= nil and state.GuiRoot ~= nil and not state.Disabled then
-            pcall(function() state.GuiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER) end)
-        end
-    end)
-    _G[GLOBAL_PATCH_KEY] = true
-end
+Hook.Patch(HUD_PATCH_ID, "Barotrauma.GameSession", "AddToGUIUpdateList", function()
+    local state = rawget(_G, GLOBAL_STATE_KEY)
+    if state ~= nil and state.GuiRoot ~= nil and not state.Disabled then
+        state.GuiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER)
+    end
+end)
 
 -- ESC guard: close the shop instead of opening the vanilla pause menu.
-if not rawget(_G, GLOBAL_PAUSE_PATCH_KEY) then
-    local ok, err = pcall(function()
-        Hook.Patch("Barotrauma.GUI", "TogglePauseMenu", {}, function(instance, p)
-            local state = rawget(_G, GLOBAL_STATE_KEY)
-            if state ~= nil and not state.Disabled and (state.CurrentMenu ~= nil or state.BlockPauseMenu == true) then
-                if state.CurrentMenu ~= nil and state.CloseMenu ~= nil then
-                    pcall(state.CloseMenu)
-                end
-                if p ~= nil then
-                    p.PreventExecution = true
-                end
-                return false
-            end
-        end, Hook.HookMethodType.Before)
-    end)
-    if ok then
-        _G[GLOBAL_PAUSE_PATCH_KEY] = true
-    else
-        print("[VoidTraitor.PointshopGui] Failed to install pause-menu patch: " .. tostring(err))
+Hook.Patch(PAUSE_PATCH_ID, "Barotrauma.GUI", "TogglePauseMenu", {}, function(instance, params)
+    local state = rawget(_G, GLOBAL_STATE_KEY)
+    if state ~= nil and not state.Disabled and (state.CurrentMenu ~= nil or state.BlockPauseMenu == true) then
+        if state.CurrentMenu ~= nil and state.CloseMenu ~= nil then
+            state.CloseMenu()
+        end
+        if params ~= nil then params.PreventExecution = true end
+        return false
     end
-end
+end, Hook.HookMethodType.Before)
 
 local CloseMenu
-
-local function SetPauseMenuBlocked()
-    if currentMenu == nil then return end
-
-    -- While the custom shop is open, block the vanilla pause menu toggle.
-    pcall(function()
-        if GUI ~= nil and GUI.PreventPauseMenuToggle ~= nil then
-            if pauseMenuRestoreValue == nil then
-                pauseMenuRestoreValue = GUI.PreventPauseMenuToggle
-            end
-            GUI.PreventPauseMenuToggle = true
-        end
-    end)
-end
 
 local function IsEscapeHit()
     local ok, hit = pcall(function()
@@ -245,7 +215,6 @@ local function RequestEscapeClose()
     if currentMenu == nil or escapeClosePending then return end
     escapeClosePending = true
     sharedState.BlockPauseMenu = true
-    SetPauseMenuBlocked()
     CloseMenu()
     Timer.Wait(function()
         sharedState.BlockPauseMenu = false
@@ -262,11 +231,8 @@ pcall(function() Hook.Remove("keyUpdate", "VoidTraitor.PointshopGui.PauseGuard")
 -- keyUpdate fires before the game's ESC handler.
 Hook.Add("keyUpdate", "VoidTraitor.PointshopGui.PauseGuard", function()
     if sharedState.Disabled then return end
-    if currentMenu ~= nil then
-        SetPauseMenuBlocked()
-        if IsEscapeHit() then
-            RequestEscapeClose()
-        end
+    if currentMenu ~= nil and IsEscapeHit() then
+        RequestEscapeClose()
     end
 end)
 
@@ -372,16 +338,6 @@ CloseMenu = function()
     escapeClosePending = false
     buyRequestPending = false
 
-    local restoreValue = pauseMenuRestoreValue
-    pauseMenuRestoreValue = nil
-    Timer.Wait(function()
-        if currentMenu ~= nil then return end
-        pcall(function()
-            if GUI ~= nil and GUI.PreventPauseMenuToggle ~= nil then
-                GUI.PreventPauseMenuToggle = restoreValue == true
-            end
-        end)
-    end, 250)
 end
 
 sharedState.CloseMenu = CloseMenu
@@ -505,19 +461,9 @@ local function ProductMatchesSearchAndFilter(product)
         return false
     end
 
-    local query = NormalizeSearchText(searchText)
+    local query = normalizedSearchText
     if query == "" then return true end
-    local searchable = table.concat({
-        tostring(product.Name or ""),
-        tostring(product.Description or ""),
-        tostring(product.Category or ""),
-        tostring(product.Path or ""),
-        tostring(product.IconIdentifier or ""),
-        tostring(product.CategoryIdentifier or ""),
-        tostring(product.PathIdentifiers or ""),
-        tostring(product.Type or ""),
-    }, " ")
-    return string.find(NormalizeSearchText(searchable), query, 1, true) ~= nil
+    return string.find(product.SearchText or "", query, 1, true) ~= nil
 end
 
 local function GetClassLimitKey(categoryIdentifier, pathIdentifiers)
@@ -714,16 +660,24 @@ local function ReadSnapshot(message)
             classLimitValues[GetProductClassLimitKey(product)] = product.LimitText
         end
 
+        product.SearchText = NormalizeSearchText(table.concat({
+            tostring(product.Name or ""),
+            tostring(product.Description or ""),
+            tostring(product.Category or ""),
+            tostring(product.Path or ""),
+            tostring(product.IconIdentifier or ""),
+            tostring(product.CategoryIdentifier or ""),
+            tostring(product.PathIdentifiers or ""),
+            tostring(product.Type or ""),
+        }, " "))
+
         if product.Id ~= nil and product.Id ~= "" then
             table.insert(products, product)
             productById[product.Id] = product
         end
     end
 
-    local textCount = 0
-    pcall(function()
-        textCount = message.ReadInt32()
-    end)
+    local textCount = message.ReadInt32()
 
     for i = 1, textCount do
         local key = message.ReadString()
@@ -733,18 +687,12 @@ local function ReadSnapshot(message)
         end
     end
 
-    local purchaseCompleted = false
-    pcall(function()
-        purchaseCompleted = message.ReadBoolean()
-    end)
+    local purchaseCompleted = message.ReadBoolean()
 
     cooldownSnapshotRequested = false
     buyRequestPending = false
 
-    closeMenuAfterSnapshot = false
-    pcall(function()
-        closeMenuAfterSnapshot = message.ReadBoolean()
-    end)
+    closeMenuAfterSnapshot = message.ReadBoolean()
 
     if purchaseCompleted then
         ClearCart()
@@ -1799,6 +1747,7 @@ local function BuildFilterBar(parent)
     searchBox.OnTextChangedDelegate = function(_, value)
         CloseFilterPopup()
         searchText = tostring(value or "")
+        normalizedSearchText = NormalizeSearchText(searchText)
         if rebuildProductList ~= nil then rebuildProductList() end
         return true
     end
@@ -1861,7 +1810,6 @@ local function BuildShopPanel(overlay)
             pcall(function() previousScroll = list.BarScroll end)
             pcall(function() list.Content:ClearChildren() end)
             productRows = {}
-            emptyProductsText = nil
             cooldownTextBlocks.shop = {}
 
             local breadcrumb = CreateText(list.Content, 0.96, 0.075, GUI.Anchor.TopLeft, GetSelectedFolderLabel(), GUI.Alignment.Left, 1.08, Color(180, 220, 190, 255))
@@ -1876,7 +1824,7 @@ local function BuildShopPanel(overlay)
             end
 
             if not hasProducts then
-                emptyProductsText = CreateText(list.Content, 0.95, 0.13, GUI.Anchor.TopCenter, GetText("EmptyProducts"), GUI.Alignment.Center, 1.10)
+                CreateText(list.Content, 0.95, 0.13, GUI.Anchor.TopCenter, GetText("EmptyProducts"), GUI.Alignment.Center, 1.10)
             end
 
             shopListScroll = resetScroll == false and previousScroll or 0
@@ -2096,8 +2044,6 @@ ShowMenu = function()
     overlay.IgnoreLayoutGroups = true
     currentMenu = overlay
     sharedState.CurrentMenu = overlay
-
-    SetPauseMenuBlocked()
 
     BuildShopPanel(overlay)
     cartPanelRoot = BuildCartPanel(overlay)

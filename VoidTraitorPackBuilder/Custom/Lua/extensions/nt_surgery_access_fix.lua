@@ -1,46 +1,41 @@
-
-local Version = "1.0.0"
 local TagsToAdd = {"id_medic", "id_medical", "id_medicaldoctor", "med"}
 
--- Version and expansion display
-Timer.Wait(function() Timer.Wait(function()
-    local runstring = "\n/// Running NT Surgery Access Fix V "..Version.." ///\n"
-
-    local linelength = string.len(runstring)+4
-    local i = 0
-    while i < linelength do runstring=runstring.."-" i=i+1 end
-
-    print(runstring)
-end,1) end,1)
-
-local function upgradeIDCard (instance, ptable)
+local function upgradeIDCard(instance)
     local item = instance.item
     if item.HasTag("jobid:surgeon") then
         local updated = false
 
-		-- Has to be added before to preserve the job identification
+        -- Has to be added before to preserve the job identification
         if not item.HasTag("jobid:medicaldoctor") then
-            item.Tags = "jobid:medicaldoctor," .. item.Tags 
+            item.Tags = "jobid:medicaldoctor," .. item.Tags
             updated = true
         end
-		
-		for _, i in ipairs(TagsToAdd) do
-			if not item.HasTag(i) then
-				item.AddTag(i)
-				updated = true
-			end
-		end
+
+        for _, tag in ipairs(TagsToAdd) do
+            if not item.HasTag(tag) then
+                item.AddTag(tag)
+                updated = true
+            end
+        end
 
         if updated and SERVER then
-			Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(item.SerializableProperties[Identifier("Tags")], item))
+            Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(item.SerializableProperties[Identifier("Tags")], item))
         end
     end
 end
 
--- jobid:surgeon
---id_medicaldoctor or jobid:medicaldoctor or id_medic
-Hook.Patch("Barotrauma.Items.Components.IdCard", "OnItemLoaded", upgradeIDCard, Hook.HookMethodType.After)
+Hook.Patch(
+    "VoidTraitor.NTSurgeryAccessFix.OnItemLoaded",
+    "Barotrauma.Items.Components.IdCard",
+    "OnItemLoaded",
+    upgradeIDCard,
+    Hook.HookMethodType.After
+)
 
-Hook.Patch("Barotrauma.Items.Components.IdCard", "Initialize", upgradeIDCard, Hook.HookMethodType.After)
-
-
+Hook.Patch(
+    "VoidTraitor.NTSurgeryAccessFix.Initialize",
+    "Barotrauma.Items.Components.IdCard",
+    "Initialize",
+    upgradeIDCard,
+    Hook.HookMethodType.After
+)
