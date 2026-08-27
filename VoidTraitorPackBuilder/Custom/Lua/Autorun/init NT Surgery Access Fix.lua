@@ -1,6 +1,6 @@
 
-Version = "1.0.0"
-TagsToAdd = {"id_medic", "id_medical", "id_medicaldoctor", "med"}
+local Version = "1.0.0"
+local TagsToAdd = {"id_medic", "id_medical", "id_medicaldoctor", "med"}
 
 -- Version and expansion display
 Timer.Wait(function() Timer.Wait(function()
@@ -13,10 +13,10 @@ Timer.Wait(function() Timer.Wait(function()
     print(runstring)
 end,1) end,1)
 
-function upgradeIDCard (instance, ptable)
-    item = instance.item
+local function upgradeIDCard (instance, ptable)
+    local item = instance.item
     if item.HasTag("jobid:surgeon") then
-        updated = false
+        local updated = false
 
 		-- Has to be added before to preserve the job identification
         if not item.HasTag("jobid:medicaldoctor") then
