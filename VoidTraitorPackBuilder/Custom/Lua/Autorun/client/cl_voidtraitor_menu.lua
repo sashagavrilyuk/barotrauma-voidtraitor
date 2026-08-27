@@ -74,7 +74,6 @@ local lastActiveVoteId = ""
 local lastShownActiveVoteId = ""
 local lastVoteButtonResolutionX = -1
 local lastVoteButtonResolutionY = -1
-local uiStateCheckTimer = 0
 local uiText = {
     Title = "VOID TRAITOR",
     ShopButton = "SHOP",
@@ -1492,7 +1491,7 @@ if not rawget(_G, GLOBAL_HUD_PATCH_KEY) then
         if state.GuiRoot ~= nil then
             pcall(function() state.GuiRoot:AddToGUIUpdateList(false, MENU_DRAW_ORDER) end)
         end
-        if state.ButtonRoot == nil and state.EnsureTopButtons ~= nil then
+        if state.EnsureTopButtons ~= nil then
             pcall(state.EnsureTopButtons)
         end
         if state.ButtonRoot ~= nil then
@@ -1541,14 +1540,8 @@ Hook.Add("keyUpdate", "VoidTraitor.ClientMenu.PauseGuard", function()
     end
 end)
 
-Hook.Add("think", "VoidTraitor.ClientMenu.KeepPauseBlocked", function(deltaTime)
+Hook.Add("think", "VoidTraitor.ClientMenu.KeepPauseBlocked", function()
     if sharedState.Disabled then return end
-
-    uiStateCheckTimer = uiStateCheckTimer + (tonumber(deltaTime) or 0)
-    if uiStateCheckTimer < 0.1 then return end
-    uiStateCheckTimer = 0
-
-    EnsureTopButtons()
 
     if IsLobbyScreenAvailable() then
         EnsureVoteButton()
@@ -1556,5 +1549,12 @@ Hook.Add("think", "VoidTraitor.ClientMenu.KeepPauseBlocked", function(deltaTime)
     else
         if currentMenuKind == "votestart" or currentMenuKind == "voteactive" then CloseMenu() end
         DestroyVoteButton()
+    end
+
+    if currentMenu ~= nil then
+        SetPauseMenuBlocked()
+        if IsEscapeHit() then
+            RequestEscapeClose()
+        end
     end
 end)

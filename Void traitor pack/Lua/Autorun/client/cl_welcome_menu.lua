@@ -22,11 +22,6 @@ local GuideOrder = language.GuideOrder
 -- СИСТЕМНЫЙ КОД
 -- =========================================================
 
-local previousWelcomeRoot = rawget(_G, "VoidTraitorWelcomeMenuRoot")
-if previousWelcomeRoot ~= nil and previousWelcomeRoot.RectTransform ~= nil then
-    pcall(function() previousWelcomeRoot.RectTransform.Parent = nil end)
-end
-
 local currentWelcomeMenu = nil
 _G.VoidTraitorWelcomeMenuOpen = false
 _G.VoidTraitorWelcomeMenuRoot = nil
@@ -255,16 +250,10 @@ ShowCustomWelcomeMenu = function()
     end
 end
 
-local function TryShowWelcomeMenu()
+-- === АВТОМАТИЗАЦИЯ ===
+Timer.Wait(function()
     local ok, err = pcall(ShowCustomWelcomeMenu)
     if not ok then
         print("[VoidTraitor.WelcomeMenu] Failed to show welcome menu: " .. tostring(err))
     end
-end
-
-Networking.Receive("VoidTraitor_WelcomeMenuOpen", function()
-    TryShowWelcomeMenu()
-end)
-
--- === АВТОМАТИЗАЦИЯ ===
-Timer.Wait(TryShowWelcomeMenu, 1500)
+end, 1500)

@@ -50,7 +50,6 @@ local lastConnected = nil
 local lastResolutionX = -1
 local lastResolutionY = -1
 local nextRefreshTime = 0
-local stateCheckTimer = 0
 
 local text = {
     Title = "CAMERA TELEPORT",
@@ -634,6 +633,9 @@ if not rawget(_G, GLOBAL_HUD_PATCH_KEY) then
         if state.MenuRoot ~= nil then
             state.MenuRoot:AddToGUIUpdateList(false, MENU_DRAW_ORDER)
         end
+        if state.EnsureBottomButton ~= nil then
+            state.EnsureBottomButton()
+        end
         if state.ButtonRoot ~= nil then
             state.ButtonRoot:AddToGUIUpdateList(false, BUTTON_DRAW_ORDER)
         end
@@ -654,14 +656,8 @@ if not rawget(_G, GLOBAL_PAUSE_PATCH_KEY) then
 end
 
 Hook.Remove("think", "VoidTraitor.CameraTeleportGui.Think")
-Hook.Add("think", "VoidTraitor.CameraTeleportGui.Think", function(deltaTime)
+Hook.Add("think", "VoidTraitor.CameraTeleportGui.Think", function()
     if sharedState.Disabled then return end
-
-    UpdateMenuInteraction()
-
-    stateCheckTimer = stateCheckTimer + (tonumber(deltaTime) or 0)
-    if stateCheckTimer < 0.1 then return end
-    stateCheckTimer = 0
 
     local width, height = GetScreenSize()
     if width ~= lastResolutionX or height ~= lastResolutionY then
@@ -696,10 +692,9 @@ Hook.Add("think", "VoidTraitor.CameraTeleportGui.Think", function(deltaTime)
 
     if refreshNeeded and connected then SendReady() end
 
-    local showBottomButton = ShouldShowBottomButton()
-    if showBottomButton then EnsureBottomButton() end
+    if ShouldShowBottomButton() then EnsureBottomButton() end
     if buttonRoot ~= nil then
-        buttonRoot.Visible = showBottomButton and not (GUI ~= nil and GUI.DisableHUD == true)
+        buttonRoot.Visible = ShouldShowBottomButton() and not (GUI ~= nil and GUI.DisableHUD == true)
         UpdateBottomButtonPosition()
     end
 
@@ -710,6 +705,8 @@ Hook.Add("think", "VoidTraitor.CameraTeleportGui.Think", function(deltaTime)
             RequestSnapshot(false)
         end
     end
+
+    UpdateMenuInteraction()
 end)
 
 Networking.Receive(NET_SNAPSHOT, function(message)

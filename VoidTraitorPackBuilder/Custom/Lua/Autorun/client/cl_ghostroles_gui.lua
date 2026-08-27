@@ -39,8 +39,6 @@ local currentMenu = nil
 local selectedRoleId = nil
 local followCharacterId = nil
 local followPosition = nil
-local followCharacter = nil
-local followLookupTimer = 0
 local ApplyFollowPosition = nil
 local canUse = false
 local currentPoints = 0
@@ -60,7 +58,6 @@ local lastRoundStarted = nil
 local lastConnected = nil
 local lastResolutionX = -1
 local lastResolutionY = -1
-local stateCheckTimer = 0
 
 local text = {
     Title = "GHOST ROLES",
@@ -418,8 +415,6 @@ local function StartFollow(characterId, position)
 
     followCharacterId = characterId
     followPosition = position
-    followCharacter = GetCharacterById(characterId)
-    followLookupTimer = 0
     return ApplyFollowPosition(followPosition)
 end
 
@@ -771,8 +766,6 @@ end
 local function StopFollow()
     followCharacterId = nil
     followPosition = nil
-    followCharacter = nil
-    followLookupTimer = 0
 
     local gameScreen = Game ~= nil and Game.GameScreen or nil
     local camera = gameScreen ~= nil and gameScreen.Cam or nil
@@ -803,7 +796,7 @@ local function IsMovementDown()
         or bindings[InputType.Down].IsDown()
 end
 
-local function UpdateFollow(deltaTime)
+local function UpdateFollow()
     if followCharacterId == nil or followPosition == nil then return end
 
     if not IsLocalCandidate() or IsMovementDown() then
@@ -811,20 +804,13 @@ local function UpdateFollow(deltaTime)
         return
     end
 
-    if followCharacter == nil then
-        followLookupTimer = followLookupTimer + (tonumber(deltaTime) or 0)
-        if followLookupTimer >= 0.5 then
-            followLookupTimer = 0
-            followCharacter = GetCharacterById(followCharacterId)
-        end
-    end
-
-    if followCharacter ~= nil then
-        if followCharacter.Removed or followCharacter.IsDead then
+    local character = GetCharacterById(followCharacterId)
+    if character ~= nil then
+        if character.Removed or character.IsDead then
             StopFollow()
             return
         end
-        followPosition = followCharacter.WorldPosition
+        followPosition = character.WorldPosition
     end
 
     ApplyFollowPosition(followPosition)
@@ -923,6 +909,9 @@ if not rawget(_G, GLOBAL_HUD_PATCH_KEY) then
         if state.MenuRoot ~= nil then
             state.MenuRoot:AddToGUIUpdateList(false, MENU_DRAW_ORDER)
         end
+        if state.EnsureBottomButton ~= nil then
+            state.EnsureBottomButton()
+        end
         if state.ButtonRoot ~= nil then
             state.ButtonRoot:AddToGUIUpdateList(false, BUTTON_DRAW_ORDER)
         end
@@ -943,15 +932,8 @@ if not rawget(_G, GLOBAL_PAUSE_PATCH_KEY) then
 end
 
 Hook.Remove("think", "VoidTraitor.GhostRolesGui.Think")
-Hook.Add("think", "VoidTraitor.GhostRolesGui.Think", function(deltaTime)
+Hook.Add("think", "VoidTraitor.GhostRolesGui.Think", function()
     if sharedState.Disabled then return end
-
-    UpdateMenuInteraction()
-    UpdateFollow(deltaTime)
-
-    stateCheckTimer = stateCheckTimer + (tonumber(deltaTime) or 0)
-    if stateCheckTimer < 0.1 then return end
-    stateCheckTimer = 0
 
     local width, height = GetScreenSize()
     if width ~= lastResolutionX or height ~= lastResolutionY then
@@ -993,14 +975,16 @@ Hook.Add("think", "VoidTraitor.GhostRolesGui.Think", function(deltaTime)
 
     if refreshNeeded and connected then SendReady() end
 
-    local showBottomButton = ShouldShowBottomButton()
-    if showBottomButton then
+    if ShouldShowBottomButton() then
         EnsureBottomButton()
     end
 
     if buttonRoot ~= nil then
-        buttonRoot.Visible = showBottomButton and not (GUI ~= nil and GUI.DisableHUD == true)
+        buttonRoot.Visible = ShouldShowBottomButton() and not (GUI ~= nil and GUI.DisableHUD == true)
     end
+
+    UpdateMenuInteraction()
+    UpdateFollow()
 end)
 
 Networking.Receive(NET_SNAPSHOT, function(message)

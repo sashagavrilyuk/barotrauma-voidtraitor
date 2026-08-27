@@ -259,8 +259,19 @@ pcall(function() Hook.Remove("think", "VoidTraitor.PointshopGui.FilterDropDown")
 pcall(function() Hook.Remove("keyUpdate", "VoidTraitor.PointshopGui.KeyboardTrap") end)
 pcall(function() Hook.Remove("keyUpdate", "VoidTraitor.PointshopGui.PauseGuard") end)
 
--- keyUpdate fires before the game's ESC handler.
+-- keyUpdate fires before the game's ESC handler. The think hook keeps the
+-- pause toggle blocked while the shop stays open.
 Hook.Add("keyUpdate", "VoidTraitor.PointshopGui.PauseGuard", function()
+    if sharedState.Disabled then return end
+    if currentMenu ~= nil then
+        SetPauseMenuBlocked()
+        if IsEscapeHit() then
+            RequestEscapeClose()
+        end
+    end
+end)
+
+Hook.Add("think", "VoidTraitor.PointshopGui.KeepPauseBlocked", function()
     if sharedState.Disabled then return end
     if currentMenu ~= nil then
         SetPauseMenuBlocked()
