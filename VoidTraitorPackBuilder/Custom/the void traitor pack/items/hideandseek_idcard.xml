@@ -6,6 +6,7 @@
     <Body width="16" height="12" density="10.05" />
     <IdCard slots="Card,Any" msg="ItemMsgPickUpSelect" />
     <Wearable slots="Card" msg="ItemMsgPickUpSelect">
+      <sprite texture="Content/Items/idcard.png" sourcerect="0,0,16,16" limb="Head" scale="0" />
       <StatusEffect type="OnWearing" target="Character" HideFace="true" setvalue="true" disabledeltatime="true" />
     </Wearable>
   </Item>
