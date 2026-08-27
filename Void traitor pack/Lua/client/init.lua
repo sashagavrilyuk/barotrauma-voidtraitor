@@ -5,6 +5,6 @@ local spectatorCommon = assert(loadfile(packPath .. "/Lua/client/spectator/commo
 
 assert(loadfile(packPath .. "/Lua/client/spectator/camera_teleport.lua"))(packPath, spectatorCommon)
 assert(loadfile(packPath .. "/Lua/client/spectator/ghostroles.lua"))(packPath, spectatorCommon)
-assert(loadfile(packPath .. "/Lua/client/pointshop.lua"))(packPath)
-assert(loadfile(packPath .. "/Lua/client/menu.lua"))(packPath)
+assert(loadfile(packPath .. "/Lua/client/pointshop/gui.lua"))(packPath)
+assert(loadfile(packPath .. "/Lua/client/lobby/menu.lua"))(packPath)
 assert(loadfile(packPath .. "/Lua/client/welcome.lua"))(packPath)
