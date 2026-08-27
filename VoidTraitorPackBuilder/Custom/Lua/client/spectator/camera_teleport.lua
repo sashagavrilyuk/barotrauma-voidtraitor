@@ -1,5 +1,7 @@
 if SERVER then return end
 
+local Common = select(2, ...)
+
 local NET_READY = "VoidTraitor_CameraTeleportGuiReady"
 local NET_REQUEST = "VoidTraitor_CameraTeleportRequest"
 local NET_SNAPSHOT = "VoidTraitor_CameraTeleportSnapshot"
@@ -73,45 +75,11 @@ local BOTTOM_BUTTON_HORIZONTAL_PADDING_PIXELS = 22
 local BOTTOM_BUTTON_GAP_PIXELS = 6
 local BOTTOM_BUTTON_Y_PIXELS = 18
 
-local function SafeIntScale(value)
-    if GUI ~= nil and GUI.IntScale ~= nil then
-        return GUI.IntScale(value)
-    end
-    return math.floor(value)
-end
-
-local function GetScreenSize()
-    local width, height = 1920, 1080
-    local gameScreen = Game ~= nil and Game.GameScreen or nil
-    local camera = gameScreen ~= nil and gameScreen.Cam or nil
-    local resolution = camera ~= nil and camera.Resolution or nil
-    if resolution ~= nil then
-        width = tonumber(resolution.X) or width
-        height = tonumber(resolution.Y) or height
-    end
-    return width, height
-end
-
-local function CreateRect(width, height, parent, anchor)
-    local parentRect = parent ~= nil and parent.RectTransform or nil
-    return GUI.RectTransform(Vector2(width, height), parentRect, anchor)
-end
-
-local function CreateCanvasRect(x, y, width, height)
-    local rectTransform = GUI.RectTransform(
-        Point(math.max(1, math.floor(width)), math.max(1, math.floor(height))),
-        nil,
-        GUI.Anchor.TopLeft
-    )
-    rectTransform.AbsoluteOffset = Point(math.floor(x), math.floor(y))
-    return rectTransform
-end
-
-local function Clamp(value, minimum, maximum)
-    if value < minimum then return minimum end
-    if value > maximum then return maximum end
-    return value
-end
+local SafeIntScale = Common.SafeIntScale
+local GetScreenSize = Common.GetScreenSize
+local CreateRect = Common.CreateRect
+local CreateCanvasRect = Common.CreateCanvasRect
+local Clamp = Common.Clamp
 
 local function SendReady()
     local message = Networking.Start(NET_READY)
@@ -124,97 +92,14 @@ local function RequestSnapshot(openMenu)
     Networking.Send(message)
 end
 
-local function GetCharacterById(characterId)
-    characterId = tonumber(characterId)
-    if characterId == nil or characterId <= 0 then return nil end
-
-    for _, character in pairs(Character.CharacterList) do
-        if character ~= nil and tonumber(character.ID) == characterId then
-            return character
-        end
-    end
-
-    return nil
-end
-
-local function GetJobIconData(jobIdentifier)
-    if jobIdentifier == nil or jobIdentifier == "" then return nil, nil end
-
-    local prefab = JobPrefab.Get(jobIdentifier)
-    if prefab == nil then return nil, nil end
-
-    local sprite = prefab.Icon or prefab.IconSmall
-    if sprite == nil then return nil, nil end
-    return sprite, prefab.UIColor or Color(255, 255, 255, 255)
-end
-
-local function GetIconData(target)
-    local iconIdentifier = tostring(target.Icon or "")
-
-    if string.sub(iconIdentifier, 1, 4) == "job:" then
-        return GetJobIconData(string.sub(iconIdentifier, 5))
-    end
-
-    if iconIdentifier ~= "" and iconIdentifier ~= "character" then
-        local prefab = ItemPrefab.GetItemPrefab(iconIdentifier)
-        if prefab ~= nil then
-            local sprite = prefab.InventoryIcon
-            local color = Color(255, 255, 255, 255)
-            if sprite ~= nil then
-                color = prefab.InventoryIconColor
-            else
-                sprite = prefab.Sprite
-            end
-            if sprite ~= nil then return sprite, color end
-        end
-    end
-
-    local character = GetCharacterById(target.CharacterId)
-    if character ~= nil and character.AnimController ~= nil and character.AnimController.MainLimb ~= nil then
-        local sprite = character.AnimController.MainLimb.ActiveSprite
-        if sprite ~= nil then return sprite, Color(255, 255, 255, 255) end
-    end
-
-    return nil, nil
-end
+local CreateText = Common.CreateText
 
 local function CreateIcon(parent, target)
-    local box = GUI.Frame(CreateRect(1, 1, parent, GUI.Anchor.Center), "GUIFrameListBox")
-    box.CanBeFocused = false
-    box.RectTransform.IsFixedSize = true
-    box.RectTransform.MinSize = Point(ICON_PIXELS, ICON_PIXELS)
-    box.RectTransform.MaxSize = Point(ICON_PIXELS, ICON_PIXELS)
-
-    local sprite, color = GetIconData(target)
-    if sprite == nil then return box end
-
-    local image = GUI.Image(CreateRect(0.82, 0.82, box, GUI.Anchor.Center), sprite, true)
-    image.Color = color
-    return box
-end
-
-local function CreateText(parent, width, height, anchor, value, alignment, scale, color, wrap)
-    if wrap == nil then wrap = true end
-    local block = GUI.TextBlock(CreateRect(width, height, parent, anchor), value or "", nil, nil, alignment or GUI.Alignment.Left, wrap)
-    block.TextScale = scale or 1
-    block.TextColor = color or Color(230, 230, 220, 255)
-    return block
+    return Common.CreateIcon(parent, target, ICON_PIXELS)
 end
 
 local function AddResizeHandles(panel)
-    local topHandle = GUI.Frame(CreateRect(0.50, 0.024, panel, GUI.Anchor.TopCenter), nil)
-    topHandle.Color = Color(0, 0, 0, 0)
-    topHandle.CanBeFocused = true
-    local topIndicator = GUI.Image(CreateRect(0.24, 0.80, topHandle, GUI.Anchor.Center), "GUIDragIndicatorHorizontal")
-    topIndicator.CanBeFocused = false
-    table.insert(resizeTopTargets, topHandle)
-
-    local bottomHandle = GUI.Frame(CreateRect(0.50, 0.024, panel, GUI.Anchor.BottomCenter), nil)
-    bottomHandle.Color = Color(0, 0, 0, 0)
-    bottomHandle.CanBeFocused = true
-    local bottomIndicator = GUI.Image(CreateRect(0.24, 0.80, bottomHandle, GUI.Anchor.Center), "GUIDragIndicatorHorizontal")
-    bottomIndicator.CanBeFocused = false
-    table.insert(resizeBottomTargets, bottomHandle)
+    Common.AddResizeHandles(panel, resizeTopTargets, resizeBottomTargets)
 end
 
 local function SaveMenuGeometry()
@@ -261,18 +146,10 @@ local function DestroyBottomButton()
     sharedState.ButtonRoot = nil
 end
 
-local function ShouldShowBottomButton()
-    if Game == nil or Game.Client == nil or Game.RoundStarted ~= true then return false end
-    local character = Character.Controlled
-    return character == nil or character.IsDead == true
-end
+local ShouldShowBottomButton = Common.ShouldShowBottomButton
 
 local function ResizeBottomButtonToText()
-    if bottomButton == nil or bottomButton.TextBlock == nil then return end
-
-    local textWidth = bottomButton.TextBlock.TextSize.X * bottomButton.TextBlock.TextScale
-    local width = math.max(1, math.ceil(textWidth + SafeIntScale(BOTTOM_BUTTON_HORIZONTAL_PADDING_PIXELS)))
-    bottomButton.RectTransform:Resize(Point(width, SafeIntScale(32)), true)
+    Common.ResizeButtonToText(bottomButton, BOTTOM_BUTTON_HORIZONTAL_PADDING_PIXELS, 32)
 end
 
 local function UpdateBottomButtonPosition()
@@ -528,31 +405,12 @@ local function ReadSnapshot(message)
     end
 end
 
-local function IsLocalCandidate()
-    local character = Character.Controlled
-    return character == nil or character.IsDead == true
-end
-
-local function IsRoundStarted()
-    return Game ~= nil and Game.RoundStarted == true
-end
-
-local function IsConnected()
-    return Game ~= nil and Game.Client ~= nil
-end
-
-local function ContainsMouse(component)
-    return component ~= nil and component.Rect.Contains(PlayerInput.MousePosition)
-end
+local IsLocalCandidate = Common.IsLocalCandidate
+local IsRoundStarted = Common.IsRoundStarted
+local IsConnected = Common.IsConnected
 
 local function GetResizeEdge()
-    for _, target in ipairs(resizeTopTargets) do
-        if ContainsMouse(target) then return "top" end
-    end
-    for _, target in ipairs(resizeBottomTargets) do
-        if ContainsMouse(target) then return "bottom" end
-    end
-    return nil
+    return Common.GetResizeEdge(resizeTopTargets, resizeBottomTargets)
 end
 
 local function UpdateMenuInteraction()
@@ -625,33 +483,8 @@ local function UpdateMenuInteraction()
     end
 end
 
-if not rawget(_G, GLOBAL_HUD_PATCH_KEY) then
-    Hook.Patch("Barotrauma.GameSession", "AddToGUIUpdateList", function()
-        local state = rawget(_G, GLOBAL_STATE_KEY)
-        if state == nil or state.Disabled then return end
-        if GUI ~= nil and GUI.DisableHUD then return end
-
-        if state.MenuRoot ~= nil then
-            state.MenuRoot:AddToGUIUpdateList(false, MENU_DRAW_ORDER)
-        end
-        if state.ButtonRoot ~= nil then
-            state.ButtonRoot:AddToGUIUpdateList(false, BUTTON_DRAW_ORDER)
-        end
-    end)
-    _G[GLOBAL_HUD_PATCH_KEY] = true
-end
-
-if not rawget(_G, GLOBAL_PAUSE_PATCH_KEY) then
-    Hook.Patch("Barotrauma.GUI", "TogglePauseMenu", {}, function(instance, p)
-        local state = rawget(_G, GLOBAL_STATE_KEY)
-        if state ~= nil and not state.Disabled and state.CurrentMenu ~= nil then
-            if state.CloseMenu ~= nil then state.CloseMenu() end
-            if p ~= nil then p.PreventExecution = true end
-            return false
-        end
-    end, Hook.HookMethodType.Before)
-    _G[GLOBAL_PAUSE_PATCH_KEY] = true
-end
+Common.InstallHudPatch(GLOBAL_HUD_PATCH_KEY, GLOBAL_STATE_KEY, MENU_DRAW_ORDER, BUTTON_DRAW_ORDER)
+Common.InstallPausePatch(GLOBAL_PAUSE_PATCH_KEY, GLOBAL_STATE_KEY)
 
 Hook.Remove("think", "VoidTraitor.CameraTeleportGui.Think")
 Hook.Add("think", "VoidTraitor.CameraTeleportGui.Think", function(deltaTime)
