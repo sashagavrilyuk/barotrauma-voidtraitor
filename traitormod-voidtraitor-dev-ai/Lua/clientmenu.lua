@@ -11,7 +11,6 @@ local vtNet = {
 local adminNet = {
     Request = "VoidTraitor_ClientMenuAdminRequest",
     Snapshot = "VoidTraitor_ClientMenuAdminSnapshot",
-    Run = "VoidTraitor_ClientMenuAdminRun",
     DataRequest = "VoidTraitor_ClientMenuAdminDataRequest",
     DataSnapshot = "VoidTraitor_ClientMenuAdminData",
     RunV2 = "VoidTraitor_ClientMenuAdminRunV2",
@@ -260,9 +259,9 @@ addAdminAction("void", "!void", "ClientMenuAdminVoid", "ClientMenuAdminHintVoid"
 addAdminAction("unvoid", "!unvoid", "ClientMenuAdminUnvoid", "ClientMenuAdminHintUnvoid", "ClientMenuAdminCategoryPlayers", 22, "player")
 addAdminAction("addpoint", "!addpoint", "ClientMenuAdminAddPoints", "ClientMenuAdminHintAddPoints", "ClientMenuAdminCategoryPlayers", 23, "playeramount", "ClientMenuAdminAmount")
 addAdminAction("addlife", "!addlife", "ClientMenuAdminAddLives", "ClientMenuAdminHintAddLives", "ClientMenuAdminCategoryPlayers", 24, "playeramount", "ClientMenuAdminAmount")
-addAdminAction("giveghostrole", "!giveghostrole", "ClientMenuAdminGiveGhostRole", "ClientMenuAdminHintGiveGhostRole", "ClientMenuAdminCategoryRolesEvents", 30, "ghostrole", "ClientMenuAdminGhostRoleName")
-addAdminAction("assignrole", "!assignrole", "ClientMenuAdminAssignRole", "ClientMenuAdminHintAssignRole", "ClientMenuAdminCategoryRolesEvents", 31, "assignrole")
-addAdminAction("triggerevent", "!triggerevent", "ClientMenuAdminTriggerEvent", "ClientMenuAdminHintTriggerEvent", "ClientMenuAdminCategoryRolesEvents", 32, "event")
+addAdminAction("giveghostrole", "!giveghostrole", "ClientMenuAdminGiveGhostRole", "ClientMenuAdminHintGiveGhostRole", "ClientMenuAdminCategoryGhostRoles", 30, "ghostrole", "ClientMenuAdminGhostRoleName")
+addAdminAction("assignrole", "!assignrole", "ClientMenuAdminAssignRole", "ClientMenuAdminHintAssignRole", "ClientMenuAdminCategoryRoles", 31, "assignrole")
+addAdminAction("triggerevent", "!triggerevent", "ClientMenuAdminTriggerEvent", "ClientMenuAdminHintTriggerEvent", "ClientMenuAdminCategoryEvents", 32, "event")
 
 table.sort(orderedAdminActions, function(a, b)
     if a.Order ~= b.Order then return a.Order < b.Order end
@@ -481,18 +480,8 @@ function cm.RunAdminActionV2(client, actionId, targetKey, value)
 
     sendActionLog(client, "admin:" .. action.Id)
     local result = runCommand(action.Command, client, args)
-    cm.SendAdminData(client)
+    if action.Id == "revive" then cm.SendAdminData(client) end
     return result
-end
-
-function cm.RunAdminAction(client, actionId, input)
-    if not isAdmin(client) then return true end
-
-    local action = adminActions[tostring(actionId or "")]
-    if action == nil then return true end
-
-    sendActionLog(client, "admin:" .. action.Id)
-    return runCommand(action.Command, client, input)
 end
 
 function cm.RunAction(client, actionId, input)
@@ -527,12 +516,6 @@ end)
 
 Networking.Receive(adminNet.DataRequest, function(message, client)
     return cm.SendAdminData(client)
-end)
-
-Networking.Receive(adminNet.Run, function(message, client)
-    local actionId = message.ReadString()
-    local input = message.ReadString()
-    return cm.RunAdminAction(client, actionId, input)
 end)
 
 Networking.Receive(adminNet.RunV2, function(message, client)
