@@ -3,15 +3,12 @@ if SERVER then return {} end
 local Common = {}
 
 function Common.SafeIntScale(value)
-    if GUI ~= nil and GUI.IntScale ~= nil then
-        return GUI.IntScale(value)
-    end
-    return math.floor(value)
+    return GUI.IntScale(value)
 end
 
 function Common.GetScreenSize()
     local width, height = 1920, 1080
-    local gameScreen = Game ~= nil and Game.GameScreen or nil
+    local gameScreen = Game.GameScreen
     local camera = gameScreen ~= nil and gameScreen.Cam or nil
     local resolution = camera ~= nil and camera.Resolution or nil
     if resolution ~= nil then
@@ -233,11 +230,11 @@ function Common.IsLocalCandidate()
 end
 
 function Common.IsRoundStarted()
-    return Game ~= nil and Game.RoundStarted == true
+    return Game.RoundStarted == true
 end
 
 function Common.IsConnected()
-    return Game ~= nil and Game.Client ~= nil
+    return Game.Client ~= nil
 end
 
 function Common.ShouldShowBottomButton()
@@ -248,7 +245,7 @@ function Common.InstallHudPatch(patchIdentifier, stateKey, menuDrawOrder, button
     Hook.Patch(patchIdentifier, "Barotrauma.GameSession", "AddToGUIUpdateList", function()
         local state = rawget(_G, stateKey)
         if state == nil or state.Disabled then return end
-        if GUI ~= nil and GUI.DisableHUD then return end
+        if GUI.DisableHUD then return end
 
         if state.MenuRoot ~= nil then
             state.MenuRoot:AddToGUIUpdateList(false, menuDrawOrder)

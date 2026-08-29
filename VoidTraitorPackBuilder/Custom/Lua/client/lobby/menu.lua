@@ -1,5 +1,8 @@
 if SERVER then return end
 
+local packPath, Common = ...
+local Admin
+
 -- Void Traitor quick menu.
 -- Client-side buttons only. Every action is validated and executed on the server.
 
@@ -14,6 +17,8 @@ local NET_VOTE_SNAPSHOT = "VoidTraitor_LobbyVoteSnapshot"
 local NET_VOTE_START = "VoidTraitor_LobbyVoteStart"
 local NET_VOTE_CAST = "VoidTraitor_LobbyVoteCast"
 
+local DISABLED_ACTION_PREFIX = "__vt_disabled__:"
+
 local GLOBAL_STATE_KEY = "VoidTraitorClientMenuState"
 local HUD_PATCH_ID = "VoidTraitor.ClientMenu.Hud"
 local PAUSE_PATCH_ID = "VoidTraitor.ClientMenu.Pause"
@@ -21,34 +26,10 @@ local PAUSE_PATCH_ID = "VoidTraitor.ClientMenu.Pause"
 local previousState = rawget(_G, GLOBAL_STATE_KEY)
 if previousState ~= nil then
     previousState.Disabled = true
-    if previousState.CloseMenu ~= nil then pcall(previousState.CloseMenu) end
-    if previousState.ButtonRoot ~= nil then
-        pcall(function() previousState.ButtonRoot:RemoveFromGUIUpdateList(true) end)
-        pcall(function()
-            previousState.ButtonRoot.Visible = false
-            if previousState.ButtonRoot.RectTransform ~= nil then
-                previousState.ButtonRoot.RectTransform.Parent = nil
-            end
-        end)
-    end
-    if previousState.VoteButtonRoot ~= nil then
-        pcall(function() previousState.VoteButtonRoot:RemoveFromGUIUpdateList(true) end)
-        pcall(function()
-            previousState.VoteButtonRoot.Visible = false
-            if previousState.VoteButtonRoot.RectTransform ~= nil then
-                previousState.VoteButtonRoot.RectTransform.Parent = nil
-            end
-        end)
-    end
-    if previousState.GuiRoot ~= nil then
-        pcall(function() previousState.GuiRoot:RemoveFromGUIUpdateList(true) end)
-        pcall(function()
-            previousState.GuiRoot.Visible = false
-            if previousState.GuiRoot.RectTransform ~= nil then
-                previousState.GuiRoot.RectTransform.Parent = nil
-            end
-        end)
-    end
+    if previousState.CloseMenu ~= nil then previousState.CloseMenu() end
+    Common.RemoveGuiComponent(previousState.ButtonRoot)
+    Common.RemoveGuiComponent(previousState.VoteButtonRoot)
+    Common.RemoveGuiComponent(previousState.GuiRoot)
 end
 
 local sharedState = { Disabled = false }
@@ -65,6 +46,7 @@ local lastResolutionX = -1
 local lastResolutionY = -1
 local escapeClosePending = false
 local menuEntries = nil
+local vtActiveTab = "main"
 local pendingMenuOpen = false
 local voteSnapshot = nil
 local pendingVoteMenuOpen = false
@@ -73,6 +55,19 @@ local lastShownActiveVoteId = ""
 local lastVoteButtonResolutionX = -1
 local lastVoteButtonResolutionY = -1
 local uiStateCheckTimer = 0
+local vtMenuList = nil
+local vtMainList = nil
+local vtAdminList = nil
+local vtMainListFrame = nil
+local vtAdminListFrame = nil
+local vtMenuScroll = 0
+local vtAdminScroll = 0
+local vtMenuX = nil
+local vtMenuY = nil
+local vtMenuHeight = nil
+local vtResizeTopTargets = {}
+local vtResizeBottomTargets = {}
+local vtResizeState = nil
 local uiText = {
     Title = "VOID TRAITOR",
     ShopButton = "SHOP",
@@ -86,6 +81,7 @@ local uiText = {
     Yes = "Yes",
     Ok = "OK",
 }
+
 
 local voteUiText = {
     Button = "Начать голосование",
@@ -103,62 +99,37 @@ local voteUiText = {
 
 local BUTTON_DRAW_ORDER = 100
 local MENU_DRAW_ORDER = 125
+LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.NetLobbyScreen"], "respawnTabButton")
+local VT_MENU_WIDTH_PIXELS = 370
+local VT_MENU_DEFAULT_HEIGHT_PIXELS = 580
+local VT_MENU_MIN_HEIGHT_PIXELS = 340
+local VT_MENU_MARGIN_PIXELS = 0
+local VT_BUTTON_HEIGHT_PIXELS = 36
+local VT_CATEGORY_HEIGHT_PIXELS = 30
+local VT_DIVIDER_HEIGHT_PIXELS = 10
+local VT_INPUT_LABEL_HEIGHT_PIXELS = 24
+local VT_INPUT_ROW_HEIGHT_PIXELS = 40
+local VT_LIST_SIDE_PADDING_PIXELS = 6
 
-local function SafeIntScale(value)
-    local ok, result = pcall(function()
-        if GUI ~= nil and GUI.IntScale ~= nil then
-            return GUI.IntScale(value)
-        end
-        return nil
-    end)
+local SafeIntScale = Common.SafeIntScale
+local GetScreenSize = Common.GetScreenSize
+local Clamp = Common.Clamp
 
-    if ok and tonumber(result) ~= nil then
-        return tonumber(result)
-    end
+local CreateRect = Common.CreateRect
 
-    local scale = 1
-    pcall(function()
-        if GUI ~= nil and GUI.Scale ~= nil then
-            scale = tonumber(GUI.Scale) or 1
-        end
-    end)
-    return math.floor(value * scale)
+local function CreatePixelRect(width, height, parent, anchor)
+    return GUI.RectTransform(
+        Point(math.max(1, math.floor(width)), math.max(1, math.floor(height))),
+        parent ~= nil and parent.RectTransform or nil,
+        anchor
+    )
 end
 
-local function GetScreenSize()
-    local width = 1920
-    local height = 1080
-
-    pcall(function()
-        if GameMain ~= nil and GameMain.GraphicsWidth ~= nil then
-            width = GameMain.GraphicsWidth
-        end
-        if GameMain ~= nil and GameMain.GraphicsHeight ~= nil then
-            height = GameMain.GraphicsHeight
-        end
-    end)
-
-    return width, height
-end
-
-local function GetParentRect(parent)
-    if parent == nil or parent == GUI.Canvas then
-        return nil
-    end
-
-    local ok, rectTransform = pcall(function()
-        return parent.RectTransform
-    end)
-
-    if ok and rectTransform ~= nil then
-        return rectTransform
-    end
-
-    return parent
-end
-
-local function CreateRect(width, height, parent, anchor)
-    return GUI.RectTransform(Vector2(width, height), GetParentRect(parent), anchor)
+local function SetFixedHeight(component, pixels)
+    if component == nil or component.RectTransform == nil then return end
+    local height = SafeIntScale(pixels)
+    component.RectTransform.MinSize = Point(0, height)
+    component.RectTransform.MaxSize = Point(100000, height)
 end
 
 guiRoot = GUI.Frame(CreateRect(1, 1, nil, GUI.Anchor.Center), nil)
@@ -166,23 +137,11 @@ guiRoot.Color = Color(0, 0, 0, 0)
 guiRoot.CanBeFocused = false
 guiRoot.IgnoreLayoutGroups = true
 sharedState.GuiRoot = guiRoot
-pcall(function() guiRoot:AddToGUIUpdateList(false, MENU_DRAW_ORDER) end)
+guiRoot:AddToGUIUpdateList(false, MENU_DRAW_ORDER)
 
 local function CreateButtonAreaRect(buttonWidth, buttonHeight, buttonCount, padding)
     buttonCount = buttonCount or 2
     padding = padding or SafeIntScale(11)
-
-    local ok, rect = pcall(function()
-        local buttonArea = HUDLayoutSettings.ButtonAreaTop
-        local x = buttonArea.X + ((buttonWidth + padding) * 3)
-        local y = buttonArea.Center.Y - math.floor(buttonHeight / 2)
-        local width = (buttonWidth * buttonCount) + (padding * math.max(buttonCount - 1, 0))
-        return HUDLayoutSettings.ToRectTransform(Rectangle(x, y, width, buttonHeight), GUI.Canvas)
-    end)
-
-    if ok and rect ~= nil then
-        return rect
-    end
 
     local rectTransform = GUI.RectTransform(Point((buttonWidth * buttonCount) + padding, buttonHeight), nil, GUI.Anchor.TopLeft)
     rectTransform.AbsoluteOffset = Point(SafeIntScale(11) + ((buttonWidth + padding) * 3), SafeIntScale(11))
@@ -191,64 +150,26 @@ end
 
 local function GetTopButtonSize()
     local buttonHeight = SafeIntScale(40)
-    local buttonWidth = math.floor(buttonHeight * 1.72)
-
-    pcall(function()
-        local style = GUIStyle.GetComponentStyle("CrewListToggleButton")
-        if style == nil then return end
-        local sprite = style:GetDefaultSprite()
-        if sprite == nil or sprite.size == nil then return end
-
-        local spriteSize = sprite.size
-        local spriteWidth = tonumber(spriteSize.X) or tonumber(spriteSize.x) or 0
-        local spriteHeight = tonumber(spriteSize.Y) or tonumber(spriteSize.y) or 0
-        if spriteWidth > 0 and spriteHeight > 0 then
-            buttonWidth = math.floor((buttonHeight / spriteHeight) * spriteWidth)
-        end
-    end)
-
-    return buttonWidth, buttonHeight
+    return math.floor(buttonHeight * 1.72), buttonHeight
 end
 
 local function GetTopButtonSpacing()
-    local spacing = SafeIntScale(11)
-    pcall(function()
-        if HUDLayoutSettings ~= nil and HUDLayoutSettings.Padding ~= nil then
-            spacing = HUDLayoutSettings.Padding
-        end
-    end)
-    return spacing
+    return SafeIntScale(11)
 end
 
 local function SendNetMessage(identifier, writer)
-    local ok, err = pcall(function()
-        local msg = Networking.Start(identifier)
-        if writer ~= nil then writer(msg) end
-        Networking.Send(msg)
-    end)
-
-    if not ok then
-        print("[VoidTraitor.ClientMenu] Failed to send " .. tostring(identifier) .. ": " .. tostring(err))
-    end
+    local msg = Networking.Start(identifier)
+    if writer ~= nil then writer(msg) end
+    Networking.Send(msg)
 end
 
 local function GetTime()
-    local ok, result = pcall(function()
-        if Timer ~= nil and Timer.GetTime ~= nil then
-            return Timer.GetTime()
-        end
-        return 0
-    end)
-
-    if ok and tonumber(result) ~= nil then
-        return tonumber(result)
-    end
-
-    return 0
+    return Timer.GetTime()
 end
 
 local function SendReady()
     SendNetMessage(NET_READY)
+    if Admin ~= nil then Admin.RequestMetadata() end
 end
 
 local function SendCommand(command, input)
@@ -258,13 +179,10 @@ local function SendCommand(command, input)
     end)
 end
 
-local function RequestPointshop()
-    SendNetMessage(NET_POINTSHOP_REQUEST)
-end
-
 local function RequestMenuSnapshot(openAfterResponse)
     pendingMenuOpen = openAfterResponse == true
     SendNetMessage(NET_REQUEST)
+    Admin.RequestMetadata()
 end
 
 local function SendVoteReady()
@@ -288,43 +206,43 @@ local function SendVoteCast(optionId)
     end)
 end
 
+local function SaveVoidTraitorMenuGeometry()
+    if currentMenu == nil or currentMenuKind ~= "vt" then return end
+
+    local rect = currentMenu.Rect
+    vtMenuX = rect.X
+    vtMenuY = rect.Y
+    vtMenuHeight = rect.Height
+    if vtMainList ~= nil then vtMenuScroll = vtMainList.BarScroll end
+    if vtAdminList ~= nil then vtAdminScroll = vtAdminList.BarScroll end
+end
+
 local CloseMenu
+local ShowVoidTraitorMenu
 
 CloseMenu = function()
-    if currentMenu ~= nil then
-        pcall(function() currentMenu:RemoveFromGUIUpdateList(true) end)
-        pcall(function()
-            if currentMenu.RectTransform ~= nil then
-                currentMenu.RectTransform.Parent = nil
-            end
-            currentMenu.Visible = false
-        end)
-    end
+    SaveVoidTraitorMenuGeometry()
+
+    Common.RemoveGuiComponent(currentMenu)
 
     currentMenu = nil
     currentMenuKind = ""
     activeVoteUi = nil
+    vtMenuList = nil
+    vtMainList = nil
+    vtAdminList = nil
+    vtMainListFrame = nil
+    vtAdminListFrame = nil
+    vtResizeTopTargets = {}
+    vtResizeBottomTargets = {}
+    vtResizeState = nil
+    if Admin ~= nil then Admin.ClearView() end
     sharedState.CurrentMenu = nil
     sharedState.CurrentMenuKind = ""
     escapeClosePending = false
 end
 
 sharedState.CloseMenu = CloseMenu
-
-local function IsEscapeHit()
-    local ok, hit = pcall(function()
-        if Keys ~= nil and Keys.Escape ~= nil then
-            return PlayerInput.KeyHit(Keys.Escape)
-        end
-        return false
-    end)
-    if ok and hit then return true end
-
-    ok, hit = pcall(function()
-        return PlayerInput.KeyHit(Microsoft.Xna.Framework.Input.Keys.Escape)
-    end)
-    return ok and hit == true
-end
 
 local function RequestEscapeClose()
     if currentMenu == nil or escapeClosePending then return end
@@ -341,133 +259,140 @@ local function RequestEscapeClose()
     end, 250)
 end
 
-local function CreateText(parent, width, height, anchor, label, alignment, scale, color, wrap)
-    if wrap == nil then wrap = true end
-    local block = GUI.TextBlock(CreateRect(width, height, parent, anchor), label or "", nil, nil, alignment or GUI.Alignment.Left, wrap)
-    block.TextColor = color or Color(230, 230, 220, 255)
-    block.TextScale = scale or 1
-    return block
-end
+local CreateText = Common.CreateText
 
 local function SetButtonTextScale(button, scale)
-    if button == nil then return end
-    pcall(function()
-        if button.TextBlock ~= nil then
-            button.TextBlock.TextScale = scale
-            button.TextBlock.AutoScaleHorizontal = true
-        end
-    end)
-end
-
-local function ResolveGuiSoundType(name)
-    local candidates = {
-        function() if GUI ~= nil and GUI.SoundType ~= nil then return GUI.SoundType[name] end end,
-        function() if GUISoundType ~= nil then return GUISoundType[name] end end,
-        function() if Barotrauma ~= nil and Barotrauma.GUISoundType ~= nil then return Barotrauma.GUISoundType[name] end end,
-    }
-
-    for _, getter in ipairs(candidates) do
-        local ok, value = pcall(getter)
-        if ok and value ~= nil then return value end
-    end
-
-    return nil
-end
-
-local function TryPlaySoundTag(soundTag, volume)
-    if soundTag == nil or soundTag == "" then return false end
-
-    local attempts = {
-        function() return SoundPlayer.PlaySound(soundTag, volume or 1.0) end,
-        function() return Barotrauma.SoundPlayer.PlaySound(soundTag, volume or 1.0) end,
-    }
-
-    for _, attempt in ipairs(attempts) do
-        local ok, channel = pcall(attempt)
-        if ok and channel ~= nil then return true end
-    end
-
-    return false
+    if button == nil or button.TextBlock == nil then return end
+    button.TextBlock.TextScale = scale
+    button.TextBlock.AutoScaleHorizontal = true
 end
 
 local function PlayVoteSound()
-    if TryPlaySoundTag("voteding", 1.0) then return end
-
-    local soundType = ResolveGuiSoundType("Cart") or ResolveGuiSoundType("Select")
-    if soundType == nil then return end
-
-    local attempts = {
-        function() SoundPlayer.PlayUISound(soundType) end,
-        function() Barotrauma.SoundPlayer.PlayUISound(soundType) end,
-        function() GUI.AddMessage(" ", Color(255, 255, 255, 1), Vector2(0, 0), Vector2(0, 0), 0.10, true, soundType, -1) end,
-    }
-
-    for _, attempt in ipairs(attempts) do
-        if pcall(attempt) then return end
+    if SoundPlayer.PlaySound("voteding", 1.0) == nil then
+        SoundPlayer.PlayUISound(GUI.SoundType.Cart)
     end
 end
 
 local function CreateMenuButton(parent, label, enabled)
-    local button = GUI.Button(CreateRect(1, 0.070, parent, nil), label or "", GUI.Alignment.Center, "GUIButton")
+    local button = GUI.Button(CreateRect(1, 0.10, parent, nil), label or "", GUI.Alignment.Center, "GUIButton")
+    SetFixedHeight(button, VT_BUTTON_HEIGHT_PIXELS)
     button.Enabled = enabled ~= false
     SetButtonTextScale(button, 0.92)
     return button
 end
 
 local function CreateDivider(parent)
-    local frame = GUI.Frame(CreateRect(1, 0.018, parent, nil), nil)
+    local frame = GUI.Frame(CreateRect(1, 0.02, parent, nil), nil)
+    SetFixedHeight(frame, VT_DIVIDER_HEIGHT_PIXELS)
     frame.Color = Color(0, 0, 0, 0)
-    pcall(function()
-        GUI.Image(CreateRect(1, 0.50, frame, GUI.Anchor.Center), "HorizontalLine")
-    end)
+    GUI.Image(CreateRect(1, 0.50, frame, GUI.Anchor.Center), "HorizontalLine")
 end
 
 local function CreateCategoryHeader(parent, label)
-    local frame = GUI.Frame(CreateRect(1, 0.052, parent, nil), nil)
+    local frame = GUI.Frame(CreateRect(1, 0.06, parent, nil), nil)
+    SetFixedHeight(frame, VT_CATEGORY_HEIGHT_PIXELS)
     frame.Color = Color(0, 0, 0, 0)
 
-    local text = CreateText(frame, 1, 0.78, GUI.Anchor.BottomLeft, string.upper(tostring(label or "")), GUI.Alignment.Left, 0.88, Color(205, 220, 200, 255), false)
-    pcall(function() text.Font = GUI.Style.SubHeadingFont end)
+    local text = CreateText(frame, 1, 0.82, GUI.Anchor.BottomLeft, string.upper(tostring(label or "")), GUI.Alignment.Left, 0.88, Color(205, 220, 200, 255), false)
+    text.Font = GUI.Style.SubHeadingFont
     return frame
 end
 
-local function CreateTextInputRow(parent, label, placeholder, action, clearAfterSend)
-    local labelBlock = CreateText(parent, 1, 0.045, nil, label, GUI.Alignment.Left, 0.86, Color(210, 220, 200, 255), false)
-    pcall(function() labelBlock.Font = GUI.Style.SubHeadingFont end)
+local function CreateTextInputRow(parent, label, placeholder, action, enabled, tooltip)
+    local isEnabled = enabled ~= false
+    local labelBlock = CreateText(parent, 1, 0.05, nil, label, GUI.Alignment.Left, 0.86, Color(210, 220, 200, 255), false)
+    SetFixedHeight(labelBlock, VT_INPUT_LABEL_HEIGHT_PIXELS)
+    labelBlock.Font = GUI.Style.SubHeadingFont
+    labelBlock.ToolTip = tooltip or ""
 
-    local row = GUI.LayoutGroup(CreateRect(1, 0.070, parent, nil), true, GUI.Anchor.CenterLeft)
+    local row = GUI.LayoutGroup(CreateRect(1, 0.09, parent, nil), true, GUI.Anchor.CenterLeft)
+    SetFixedHeight(row, VT_INPUT_ROW_HEIGHT_PIXELS)
     row.Stretch = true
-    pcall(function() row.RelativeSpacing = 0.010 end)
+    row.RelativeSpacing = 0.010
 
     local input = GUI.TextBox(CreateRect(0.66, 1, row, nil), placeholder or "")
-    pcall(function()
-        if input.TextBlock ~= nil then
-            input.TextBlock.TextScale = 0.86
-        end
-    end)
+    input.Enabled = isEnabled
+    input.ToolTip = tooltip or ""
+    if input.TextBlock ~= nil then input.TextBlock.TextScale = 0.86 end
 
     local sendButton = GUI.Button(CreateRect(0.32, 1, row, nil), uiText.Ok, GUI.Alignment.Center, "GUIButton")
+    sendButton.Enabled = isEnabled
+    sendButton.ToolTip = tooltip or ""
     SetButtonTextScale(sendButton, 0.90)
     sendButton.OnClicked = function()
-        local value = ""
-        pcall(function() value = input.Text or "" end)
+        local value = input.Text or ""
         SendCommand(action, value)
-        if clearAfterSend then
-            pcall(function() input.Text = "" end)
-        end
+        input.Text = ""
         return true
     end
 
     return input
 end
 
-local function ShowConfirm(title, text, action)
-    if currentMenu ~= nil then
-        pcall(function()
-            currentMenu:RemoveFromGUIUpdateList(true)
-            if currentMenu.RectTransform ~= nil then currentMenu.RectTransform.Parent = nil end
-        end)
+local function CreateMenuList(parent)
+    local frame = GUI.Frame(CreateRect(1, 1, parent, GUI.Anchor.Center), "GUIFrameListBox")
+    frame.CanBeFocused = false
+
+    local list = GUI.ListBox(CreateRect(1, 0.985, frame, GUI.Anchor.Center), false, nil, "GUIListBoxNoBorder")
+    list.Color = Color(0, 0, 0, 0)
+    if list.ContentBackground ~= nil then list.ContentBackground.Color = Color(0, 0, 0, 0) end
+    list.KeepSpaceForScrollBar = true
+    local sidePadding = SafeIntScale(VT_LIST_SIDE_PADDING_PIXELS)
+    local scrollBarWidth = math.max(0, list.ScrollBar.Rect.Width)
+    list.Padding = Vector4(scrollBarWidth + sidePadding, 0, sidePadding, 0)
+    list:UpdateDimensions()
+    return frame, list
+end
+
+Admin = assert(loadfile(packPath .. "/Lua/client/lobby/admin.lua"))(Common, {
+    CreateRect = CreateRect,
+    SetFixedHeight = SetFixedHeight,
+    SetButtonTextScale = SetButtonTextScale,
+    CreateMenuButton = CreateMenuButton,
+    CreateDivider = CreateDivider,
+    CreateCategoryHeader = CreateCategoryHeader,
+    GetOkText = function() return uiText.Ok end,
+})
+
+Admin.OnAvailabilityChanged = function()
+    if currentMenuKind ~= "vt" then
+        if not Admin.IsAvailable() then vtActiveTab = "main" end
+        return
     end
+
+    CloseMenu()
+    if not Admin.IsAvailable() then vtActiveTab = "main" end
+    ShowVoidTraitorMenu()
+end
+
+local function AddVoidTraitorResizeHandles(panel)
+    vtResizeTopTargets = {}
+    vtResizeBottomTargets = {}
+    Common.AddResizeHandles(panel, vtResizeTopTargets, vtResizeBottomTargets)
+end
+
+local function UpdateVoidTraitorMenuInteraction()
+    if currentMenu == nil or currentMenuKind ~= "vt" then
+        vtResizeState = nil
+        return
+    end
+
+    vtResizeState, vtMenuX, vtMenuY, vtMenuHeight = Common.UpdateMenuInteraction(
+        currentMenu,
+        vtResizeState,
+        vtResizeTopTargets,
+        vtResizeBottomTargets,
+        VT_MENU_MIN_HEIGHT_PIXELS,
+        vtMenuList,
+        vtMenuX,
+        vtMenuY,
+        vtMenuHeight
+    )
+end
+
+local function ShowConfirm(title, text, action)
+    SaveVoidTraitorMenuGeometry()
+    Common.RemoveGuiComponent(currentMenu)
 
     local overlay = GUI.Frame(CreateRect(1, 1, guiRoot, GUI.Anchor.Center), nil)
     overlay.Color = Color(0, 0, 0, 110)
@@ -481,31 +406,25 @@ local function ShowConfirm(title, text, action)
     local box = GUI.Frame(CreateRect(0.20, 0.165, overlay, GUI.Anchor.Center), "GUIFrame")
     box.CanBeFocused = true
 
-    local content = GUI.LayoutGroup(CreateRect(0.84, 0.55, box, GUI.Anchor.TopCenter), false, GUI.Anchor.TopCenter)
-    content.Stretch = true
-    pcall(function() content.RelativeSpacing = 0.035 end)
+    local titleBlock = CreateText(box, 0.90, 0.22, GUI.Anchor.TopCenter, title, GUI.Alignment.Center, 1.02, Color(255, 235, 170, 255), false)
+    titleBlock.RectTransform.AbsoluteOffset = Point(0, SafeIntScale(8))
+    titleBlock.Font = GUI.Style.LargeFont
+    CreateText(box, 0.86, 0.30, GUI.Anchor.Center, text, GUI.Alignment.Center, 1.08, Color(230, 230, 220, 255), true)
 
-    local titleBlock = CreateText(content, 1, 0.40, nil, title, GUI.Alignment.Center, 1.02, Color(255, 235, 170, 255), false)
-    pcall(function() titleBlock.Font = GUI.Style.LargeFont end)
-    CreateText(content, 1, 0.45, nil, text, GUI.Alignment.Center, 0.82, Color(230, 230, 220, 255), true)
+    local buttons = GUI.Frame(CreateRect(0.76, 0.20, box, GUI.Anchor.BottomCenter), nil)
+    buttons.RectTransform.AbsoluteOffset = Point(0, SafeIntScale(18))
+    buttons.Color = Color(0, 0, 0, 0)
+    buttons.CanBeFocused = false
 
-    -- Компактное окно подтверждения: кнопки держим в отдельной нижней строке
-    -- и оставляем обычный ванильный GUIButton-стиль. Проблема была не в текстуре,
-    -- а в прежнем растягивании кнопок на всю строку.
-    local buttons = GUI.LayoutGroup(CreateRect(0.76, 0.20, box, GUI.Anchor.BottomCenter), true, GUI.Anchor.Center)
-    buttons.Stretch = false
-    pcall(function() buttons.RelativeSpacing = 0 end)
-    pcall(function() buttons.AbsoluteSpacing = SafeIntScale(10) end)
-
-    local cancel = GUI.Button(CreateRect(0.46, 0.92, buttons, nil), uiText.Cancel, GUI.Alignment.Center, "GUIButton")
-    SetButtonTextScale(cancel, 0.84)
+    local cancel = GUI.Button(CreateRect(0.47, 1, buttons, GUI.Anchor.CenterLeft), uiText.Cancel, GUI.Alignment.Center, "GUIButton")
+    SetButtonTextScale(cancel, 1.00)
     cancel.OnClicked = function()
         CloseMenu()
         return true
     end
 
-    local confirm = GUI.Button(CreateRect(0.46, 0.92, buttons, nil), uiText.Yes, GUI.Alignment.Center, "GUIButton")
-    SetButtonTextScale(confirm, 0.84)
+    local confirm = GUI.Button(CreateRect(0.47, 1, buttons, GUI.Anchor.CenterRight), uiText.Yes, GUI.Alignment.Center, "GUIButton")
+    SetButtonTextScale(confirm, 1.00)
     confirm.OnClicked = function()
         SendCommand(action)
         CloseMenu()
@@ -513,7 +432,7 @@ local function ShowConfirm(title, text, action)
     end
 end
 
-local function ShowVoidTraitorMenu()
+ShowVoidTraitorMenu = function()
     if currentMenu ~= nil then
         CloseMenu()
         return
@@ -524,68 +443,105 @@ local function ShowVoidTraitorMenu()
         return
     end
 
-    local overlay = GUI.Frame(CreateRect(1, 1, guiRoot, GUI.Anchor.Center), nil)
-    overlay.Color = Color(0, 0, 0, 0)
-    overlay.CanBeFocused = false
-    overlay.IgnoreLayoutGroups = true
-    currentMenu = overlay
+    if vtActiveTab == "admin" and not Admin.IsAvailable() then vtActiveTab = "main" end
+
+    local screenWidth, screenHeight = GetScreenSize()
+    local margin = SafeIntScale(VT_MENU_MARGIN_PIXELS)
+    local minHeight = SafeIntScale(VT_MENU_MIN_HEIGHT_PIXELS)
+    local maxHeight = math.max(minHeight, screenHeight - margin * 2)
+    local width = math.min(SafeIntScale(VT_MENU_WIDTH_PIXELS), math.max(1, screenWidth - margin * 2))
+    local height = Clamp(vtMenuHeight or SafeIntScale(VT_MENU_DEFAULT_HEIGHT_PIXELS), minHeight, maxHeight)
+    local x = vtMenuX or math.floor((screenWidth - width) / 2)
+    local y = vtMenuY or math.floor((screenHeight - height) / 2)
+    x = Clamp(x, margin, math.max(margin, screenWidth - width - margin))
+    y = Clamp(y, margin, math.max(margin, screenHeight - height - margin))
+
+    local rootRect = CreatePixelRect(width, height, guiRoot, GUI.Anchor.TopLeft)
+    rootRect.AbsoluteOffset = Point(x, y)
+    local root = GUI.Frame(rootRect, nil)
+    root.Color = Color(0, 0, 0, 0)
+    root.CanBeFocused = false
+    root.IgnoreLayoutGroups = true
+    currentMenu = root
     currentMenuKind = "vt"
-    sharedState.CurrentMenu = overlay
+    sharedState.CurrentMenu = root
     sharedState.CurrentMenuKind = currentMenuKind
 
-    local panelRect = CreateRect(0.235, 0.62, overlay, GUI.Anchor.TopLeft)
-    panelRect.AbsoluteOffset = Point(SafeIntScale(11), SafeIntScale(70))
-    local panel = GUI.Frame(panelRect, "GUIFrame")
-    panel.CanBeFocused = true
+    local panel = GUI.Frame(CreateRect(1, 1, root, GUI.Anchor.TopLeft), "GUIFrame")
+    panel.CanBeFocused = false
 
-    local content = GUI.LayoutGroup(CreateRect(0.93, 0.94, panel, GUI.Anchor.Center), false, GUI.Anchor.TopCenter)
+    local content = GUI.LayoutGroup(CreateRect(0.965, 0.965, panel, GUI.Anchor.Center), false, GUI.Anchor.TopLeft)
     content.Stretch = true
-    pcall(function() content.RelativeSpacing = 0.008 end)
+    content.RelativeSpacing = 0.003
 
-    local header = GUI.LayoutGroup(CreateRect(1, 0.075, content, nil), true, GUI.Anchor.CenterLeft)
-    header.Stretch = true
-    pcall(function() header.RelativeSpacing = 0.012 end)
+    local header = GUI.Frame(CreateRect(1, 0.062, content, nil), nil)
+    header.Color = Color(0, 0, 0, 0)
+    header.CanBeFocused = false
 
-    local title = CreateText(header, 0.77, 1, nil, uiText.Title, GUI.Alignment.Left, 1.14, Color(255, 235, 170, 255), false)
-    pcall(function() title.Font = GUI.Style.LargeFont end)
+    local dragArea = GUI.DragHandle(CreateRect(0.86, 1, header, GUI.Anchor.TopLeft), root.RectTransform, nil)
+    local transparent = Color(0, 0, 0, 0)
+    dragArea.Color = transparent
+    dragArea.HoverColor = transparent
+    dragArea.SelectedColor = transparent
+    dragArea.PressedColor = transparent
 
-    local close = GUI.Button(CreateRect(0.22, 0.90, header, nil), "X", GUI.Alignment.Center, "GUIButtonSmall")
-    SetButtonTextScale(close, 0.95)
+    local dragIndicator = GUI.Image(CreateRect(0.07, 0.72, dragArea, GUI.Anchor.CenterLeft), "GUIDragIndicator")
+    dragIndicator.CanBeFocused = false
+    local title = CreateText(dragArea, 0.90, 1, GUI.Anchor.CenterRight, uiText.Title, GUI.Alignment.Left, 1.00, Color(235, 205, 145, 255), false)
+    title.Font = GUI.Style.SubHeadingFont
+
+    local close = GUI.Button(CreateRect(0.10, 0.82, header, GUI.Anchor.TopRight), "", GUI.Alignment.Center, "GUICancelButton")
+    close.ToolTip = uiText.Cancel
     close.OnClicked = function()
         CloseMenu()
         return true
     end
 
-    CreateDivider(content)
+    GUI.Image(CreateRect(1, 0.006, content, nil), "HorizontalLine")
 
-    local listFrame = GUI.Frame(CreateRect(1, 0.70, content, nil), "GUIFrameListBox")
-    listFrame.CanBeFocused = false
-    local list = GUI.ListBox(CreateRect(0.985, 0.965, listFrame, GUI.Anchor.Center), false)
-    list.Color = Color(0, 0, 0, 0)
-    pcall(function() list.KeepSpaceForScrollBar = true end)
+    local hasAdmin = Admin.IsAvailable()
+    local listHeight = hasAdmin and 0.845 or 0.91
+    local mainTab = nil
+    local adminTab = nil
+
+    if hasAdmin then
+        local tabs = GUI.Frame(CreateRect(1, 0.06, content, nil), nil)
+        tabs.Color = Color(0, 0, 0, 0)
+        tabs.CanBeFocused = false
+        mainTab = GUI.Button(CreateRect(0.5, 1, tabs, GUI.Anchor.CenterLeft), Admin.GetMainTabText(), GUI.Alignment.Center, "GUITabButton")
+        adminTab = GUI.Button(CreateRect(0.5, 1, tabs, GUI.Anchor.CenterRight), Admin.GetAdminTabText(), GUI.Alignment.Center, "GUITabButton")
+        SetButtonTextScale(mainTab, 0.82)
+        SetButtonTextScale(adminTab, 0.82)
+    end
+
+    local listHost = GUI.Frame(CreateRect(1, listHeight, content, nil), nil)
+    listHost.Color = Color(0, 0, 0, 0)
+    listHost.CanBeFocused = false
+
+    vtMainListFrame, vtMainList = CreateMenuList(listHost)
+    vtMenuList = vtMainList
 
     local entries = menuEntries or {}
     if #entries == 0 then
-        CreateText(list.Content, 1, 0.08, nil, uiText.NoCommands, GUI.Alignment.Center, 0.90, Color(230, 230, 220, 255), true)
+        CreateText(vtMainListFrame, 0.90, 0.24, GUI.Anchor.Center, uiText.NoCommands, GUI.Alignment.Center, 0.90, Color(195, 195, 185, 255), true)
     end
 
     local lastCategory = nil
     for _, entry in ipairs(entries) do
         local category = tostring(entry.Category or "")
         if category ~= "" and category ~= lastCategory then
-            if lastCategory ~= nil then
-                CreateDivider(list.Content)
-            end
-            CreateCategoryHeader(list.Content, category)
+            if lastCategory ~= nil then CreateDivider(vtMainList.Content) end
+            CreateCategoryHeader(vtMainList.Content, category)
             lastCategory = category
         end
 
-        local inputType = tostring(entry.InputType or "")
-        if inputType ~= "" then
-            CreateTextInputRow(list.Content, entry.Label or entry.Command or uiText.GenericCommand, entry.InputHint or "", entry.Command or "", true)
+        local enabled = entry.Enabled ~= false
+        local tooltip = tostring(entry.Hint or "")
+        if tostring(entry.InputType or "") ~= "" then
+            CreateTextInputRow(vtMainList.Content, entry.Label or entry.Command or uiText.GenericCommand, entry.InputHint or "", entry.Command or "", enabled, tooltip)
         else
-            local button = CreateMenuButton(list.Content, entry.Label or entry.Command or uiText.GenericCommand, true)
-            button.ToolTip = entry.Hint or ""
+            local button = CreateMenuButton(vtMainList.Content, entry.Label or entry.Command or uiText.GenericCommand, enabled)
+            button.ToolTip = tooltip
             button.OnClicked = function()
                 if tostring(entry.ConfirmText or "") ~= "" then
                     ShowConfirm(entry.ConfirmTitle ~= "" and entry.ConfirmTitle or uiText.DefaultConfirmTitle, entry.ConfirmText, entry.Command)
@@ -596,156 +552,99 @@ local function ShowVoidTraitorMenu()
             end
         end
     end
+    vtMainList.BarScroll = vtMenuScroll
+    vtMainList:RecalculateChildren()
+    vtMainList:UpdateScrollBarSize()
+
+    local function showMainTab()
+        vtActiveTab = "main"
+        vtMenuList = vtMainList
+        vtMainListFrame.Visible = true
+        if vtAdminListFrame ~= nil then vtAdminListFrame.Visible = false end
+        if mainTab ~= nil then mainTab.Selected = true end
+        if adminTab ~= nil then adminTab.Selected = false end
+    end
+
+    local function showAdminTab()
+        if vtAdminList == nil then Admin.RefreshData() end
+        Admin.WhenDataReady(function()
+            if currentMenuKind ~= "vt" then return end
+            if vtAdminList == nil then
+                vtAdminListFrame, vtAdminList = CreateMenuList(listHost)
+                Admin.Build(vtAdminList.Content)
+                vtAdminList.BarScroll = vtAdminScroll
+                vtAdminList:RecalculateChildren()
+                vtAdminList:UpdateScrollBarSize()
+            end
+
+            vtActiveTab = "admin"
+            vtMenuList = vtAdminList
+            vtMainListFrame.Visible = false
+            vtAdminListFrame.Visible = true
+            mainTab.Selected = false
+            adminTab.Selected = true
+        end)
+    end
+
+    if hasAdmin then
+        mainTab.OnClicked = function()
+            showMainTab()
+            return true
+        end
+        adminTab.OnClicked = function()
+            showAdminTab()
+            return true
+        end
+
+        if vtActiveTab == "admin" then showAdminTab() else showMainTab() end
+    else
+        showMainTab()
+    end
+
+    AddVoidTraitorResizeHandles(panel)
+    SaveVoidTraitorMenuGeometry()
 end
 
 local function GetNetLobbyScreen()
-    local candidates = {
-        function()
-            if GameMain ~= nil and GameMain.NetLobbyScreen ~= nil then return GameMain.NetLobbyScreen end
-            return nil
-        end,
-        function()
-            if Game ~= nil and Game.NetLobbyScreen ~= nil then return Game.NetLobbyScreen end
-            return nil
-        end,
-    }
-
-    for _, getter in ipairs(candidates) do
-        local ok, screen = pcall(getter)
-        if ok and screen ~= nil then return screen end
-    end
-
-    return nil
+    return Game.NetLobbyScreen
 end
 
 local function IsLobbyScreenAvailable()
     local screen = GetNetLobbyScreen()
-    if screen == nil then return false end
-
-    local ok, selected = pcall(function()
-        return GUI ~= nil and GUI.Screen ~= nil and GUI.Screen.Selected == screen
-    end)
-    if ok and selected then return true end
-
-    ok, selected = pcall(function()
-        return Screen ~= nil and Screen.Selected == screen
-    end)
-    if ok and selected then return true end
-
-    return false
+    return screen ~= nil and GUI.Screen.Selected == screen
 end
 
 local function GetLobbyGuiFrame()
     local screen = GetNetLobbyScreen()
     if screen == nil then return nil end
 
-    local ok, frame = pcall(function() return screen.Frame end)
-    if ok and frame ~= nil and frame.RectTransform ~= nil then
-        return frame
-    end
-
+    local frame = screen.Frame
+    if frame ~= nil and frame.RectTransform ~= nil then return frame end
     return nil
 end
 
 local function SafeSetAsLastChild(component)
-    if component == nil or component.RectTransform == nil then return end
-
-    local hasParent = false
-    pcall(function() hasParent = component.RectTransform.Parent ~= nil end)
-    if not hasParent then return end
-
-    pcall(function() component.RectTransform.SetAsLastChild() end)
+    if component == nil or component.RectTransform == nil or component.RectTransform.Parent == nil then return end
+    component.RectTransform.SetAsLastChild()
 end
 
-local function ReadRectValue(rect, key, fallbackKey, fallback)
+local function ReadRectValue(rect, key, fallback)
     if rect == nil then return fallback or 0 end
-    local value = nil
-    pcall(function() value = rect[key] end)
-    if tonumber(value) ~= nil then return tonumber(value) end
-    if fallbackKey ~= nil then
-        pcall(function() value = rect[fallbackKey] end)
-        if tonumber(value) ~= nil then return tonumber(value) end
-    end
-    return fallback or 0
+    return tonumber(rect[key]) or fallback or 0
 end
 
 local function GetComponentRect(component)
     if component == nil then return nil end
-    local ok, rect = pcall(function() return component.Rect end)
-    if ok and rect ~= nil then return rect end
-    return nil
+    return component.Rect
 end
 
 local function GetLobbyComponent(name)
     local screen = GetNetLobbyScreen()
-    if screen == nil then return nil end
-
-    local ok, component = pcall(function() return screen[name] end)
-    if ok and component ~= nil then return component end
-
-    return nil
+    return screen ~= nil and screen[name] or nil
 end
 
 local function GetLobbyComponentRect(name)
     return GetComponentRect(GetLobbyComponent(name))
-end
-
-local function GetComponentText(component)
-    if component == nil then return "" end
-
-    local text = ""
-    pcall(function()
-        if component.TextBlock ~= nil and component.TextBlock.Text ~= nil then
-            text = tostring(component.TextBlock.Text)
-        elseif component.Text ~= nil then
-            text = tostring(component.Text)
-        end
-    end)
-
-    return text or ""
-end
-
-local function IsRespawnTabText(text)
-    local respawnText = ""
-    local ok = pcall(function()
-        respawnText = tostring(TextManager.Get("respawnsettings"))
-    end)
-
-    return ok and respawnText ~= "" and tostring(text or "") == respawnText
-end
-
-local function FindRespawnTabButtonRect()
-    local direct = GetComponentRect(GetLobbyComponent("respawnTabButton"))
-    if direct ~= nil then return direct end
-
-    local lobbyFrame = GetLobbyGuiFrame()
-    if lobbyFrame == nil then return nil end
-
-    local found = nil
-    pcall(function()
-        for child in lobbyFrame.GetAllChildren() do
-            if child ~= nil then
-                local hasTextBlock = false
-                pcall(function() hasTextBlock = child.TextBlock ~= nil end)
-                if hasTextBlock then
-                    local text = GetComponentText(child)
-                    if IsRespawnTabText(text) then
-                        local rect = GetComponentRect(child)
-                        if rect ~= nil then
-                            local width = ReadRectValue(rect, "Width", "width", 0)
-                            local height = ReadRectValue(rect, "Height", "height", 0)
-                            if width >= SafeIntScale(120) and height >= SafeIntScale(20) then
-                                found = rect
-                                return
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end)
-
-    return found
 end
 
 local function GetVoteButtonParent()
@@ -753,41 +652,29 @@ local function GetVoteButtonParent()
 end
 
 local function GetVoteButtonAnchorRect()
-    local respawnRect = FindRespawnTabButtonRect()
-    if respawnRect ~= nil then
-        local x = ReadRectValue(respawnRect, "X", "x", 0)
-        local y = ReadRectValue(respawnRect, "Y", "y", 0)
-        local width = ReadRectValue(respawnRect, "Width", "width", 0)
-        local height = ReadRectValue(respawnRect, "Height", "height", 0)
-        if width > 0 and height > 0 then
-            local buttonWidth = math.max(SafeIntScale(170), math.min(SafeIntScale(245), math.floor(width * 0.82)))
-            local gap = SafeIntScale(8)
-            return {
-                X = x - buttonWidth - gap,
-                Y = y,
-                Width = buttonWidth,
-                Height = height,
-            }
-        end
-    end
-
     local subRect = GetLobbyComponentRect("SubList")
     local modeRect = GetLobbyComponentRect("ModeList")
     local anchorRect = subRect or modeRect
     if anchorRect == nil then return nil end
 
-    local x = ReadRectValue(anchorRect, "X", "x", 0)
-    local y = ReadRectValue(anchorRect, "Y", "y", 0)
-    local width = ReadRectValue(anchorRect, "Width", "width", 0)
-    local height = ReadRectValue(anchorRect, "Height", "height", 0)
+    local x = ReadRectValue(anchorRect, "X", 0)
+    local y = ReadRectValue(anchorRect, "Y", 0)
+    local width = ReadRectValue(anchorRect, "Width", 0)
+    local height = ReadRectValue(anchorRect, "Height", 0)
     if width <= 0 or height <= 0 then return nil end
 
     local buttonWidth = math.max(SafeIntScale(170), math.min(SafeIntScale(245), math.floor(width * 0.324)))
+    local buttonY = y + height + SafeIntScale(6)
     local buttonHeight = SafeIntScale(32)
+    local respawnRect = GetComponentRect(GetLobbyComponent("respawnTabButton"))
+    if respawnRect ~= nil then
+        buttonY = ReadRectValue(respawnRect, "Y", buttonY)
+        buttonHeight = ReadRectValue(respawnRect, "Height", buttonHeight)
+    end
 
     return {
         X = x + width - buttonWidth - SafeIntScale(6),
-        Y = y + height + SafeIntScale(6),
+        Y = buttonY,
         Width = buttonWidth,
         Height = buttonHeight,
     }
@@ -812,8 +699,8 @@ local function CreateLobbyAbsoluteRect(x, y, width, height)
     if lobbyFrame == nil or lobbyFrame.RectTransform == nil then return nil end
 
     local frameRect = GetComponentRect(lobbyFrame)
-    local frameX = ReadRectValue(frameRect, "X", "x", 0)
-    local frameY = ReadRectValue(frameRect, "Y", "y", 0)
+    local frameX = ReadRectValue(frameRect, "X", 0)
+    local frameY = ReadRectValue(frameRect, "Y", 0)
 
     local rectTransform = GUI.RectTransform(Point(math.max(1, math.floor(width)), math.max(1, math.floor(height))), lobbyFrame.RectTransform, GUI.Anchor.TopLeft)
     rectTransform.AbsoluteOffset = Point(math.floor(x - frameX), math.floor(y - frameY))
@@ -828,7 +715,7 @@ local function GetVoteButtonRect(parent)
     end
 
     local width, height = GetVoteButtonMetrics()
-    return GUI.RectTransform(Point(width, height), GetParentRect(parent), GUI.Anchor.TopLeft)
+    return GUI.RectTransform(Point(width, height), parent ~= nil and parent.RectTransform or nil, GUI.Anchor.TopLeft)
 end
 
 local function GetVoteStartPanelRect(parent)
@@ -836,13 +723,13 @@ local function GetVoteStartPanelRect(parent)
 
     local buttonRect = GetComponentRect(parent)
     if buttonRect ~= nil then
-        local x = ReadRectValue(buttonRect, "X", "x", 0)
-        local y = ReadRectValue(buttonRect, "Y", "y", 0) + ReadRectValue(buttonRect, "Height", "height", optionHeight) + gap
+        local x = ReadRectValue(buttonRect, "X", 0)
+        local y = ReadRectValue(buttonRect, "Y", 0) + ReadRectValue(buttonRect, "Height", optionHeight) + gap
         local rect = CreateLobbyAbsoluteRect(x, y, width, optionHeight * 2 + spacing)
         if rect ~= nil then return rect end
     end
 
-    local rectTransform = GUI.RectTransform(Point(width, optionHeight * 2 + spacing), GetParentRect(parent), GUI.Anchor.TopLeft)
+    local rectTransform = GUI.RectTransform(Point(width, optionHeight * 2 + spacing), parent ~= nil and parent.RectTransform or nil, GUI.Anchor.TopLeft)
     rectTransform.AbsoluteOffset = Point(0, optionHeight + gap)
     return rectTransform
 end
@@ -856,16 +743,7 @@ local function GetVoteTargetComponent(voteType)
 end
 
 local function DestroyVoteButton()
-    if voteButtonRoot ~= nil then
-        pcall(function() voteButtonRoot:RemoveFromGUIUpdateList(true) end)
-        pcall(function()
-            voteButtonRoot.Visible = false
-            if voteButtonRoot.RectTransform ~= nil then
-                voteButtonRoot.RectTransform.Parent = nil
-            end
-        end)
-    end
-
+    Common.RemoveGuiComponent(voteButtonRoot)
     voteButtonRoot = nil
     voteButtonParent = nil
     sharedState.VoteButtonRoot = nil
@@ -877,13 +755,11 @@ local function AttachVoteGuiRoot()
     local lobbyFrame = GetLobbyGuiFrame()
     if lobbyFrame == nil then return false end
 
-    pcall(function() guiRoot:RemoveFromGUIUpdateList(true) end)
-    pcall(function()
-        guiRoot.Visible = true
-        guiRoot.RectTransform.Parent = lobbyFrame.RectTransform
-        guiRoot.RectTransform.RelativeSize = Vector2(1, 1)
-        guiRoot.RectTransform.AbsoluteOffset = Point(0, 0)
-    end)
+    guiRoot:RemoveFromGUIUpdateList(true)
+    guiRoot.Visible = true
+    guiRoot.RectTransform.Parent = lobbyFrame.RectTransform
+    guiRoot.RectTransform.RelativeSize = Vector2(1, 1)
+    guiRoot.RectTransform.AbsoluteOffset = Point(0, 0)
     SafeSetAsLastChild(guiRoot)
 
     return true
@@ -963,20 +839,18 @@ local function CreateVoteOverlayOnComponent(target)
     if target == nil or target.RectTransform == nil then return nil end
 
     local overlayRect = nil
-    pcall(function()
-        if target.RectTransform.Parent ~= nil then
-            overlayRect = target.RectTransform.Parent.Rect
-        end
-    end)
+    if target.RectTransform.Parent ~= nil then
+        overlayRect = target.RectTransform.Parent.Rect
+    end
     if overlayRect == nil then
         overlayRect = GetComponentRect(target)
     end
     if overlayRect == nil then return nil end
 
-    local x = ReadRectValue(overlayRect, "X", "x", 0)
-    local y = ReadRectValue(overlayRect, "Y", "y", 0)
-    local width = ReadRectValue(overlayRect, "Width", "width", 0)
-    local height = ReadRectValue(overlayRect, "Height", "height", 0)
+    local x = ReadRectValue(overlayRect, "X", 0)
+    local y = ReadRectValue(overlayRect, "Y", 0)
+    local width = ReadRectValue(overlayRect, "Width", 0)
+    local height = ReadRectValue(overlayRect, "Height", 0)
     if width <= 0 or height <= 0 then return nil end
 
     -- В NetLobbyScreen верхние блоки режима/подлодки создаются как одинаковые
@@ -991,15 +865,13 @@ local function CreateVoteOverlayOnComponent(target)
         if component == nil or component.RectTransform == nil then return end
 
         local siblingRect = nil
-        pcall(function()
-            if component.RectTransform.Parent ~= nil then
-                siblingRect = component.RectTransform.Parent.Rect
-            end
-        end)
+        if component.RectTransform.Parent ~= nil then
+            siblingRect = component.RectTransform.Parent.Rect
+        end
         if siblingRect == nil then return end
 
-        local siblingY = ReadRectValue(siblingRect, "Y", "y", topY)
-        local siblingHeight = ReadRectValue(siblingRect, "Height", "height", 0)
+        local siblingY = ReadRectValue(siblingRect, "Y", topY)
+        local siblingHeight = ReadRectValue(siblingRect, "Height", 0)
         if siblingHeight <= 0 then return end
 
         topY = math.min(topY, siblingY)
@@ -1038,18 +910,17 @@ local function RefreshActiveVoteUi()
     local progress = math.max(0, math.min(1, remaining / duration))
 
     if activeVoteUi.TimerText ~= nil then
-        pcall(function() activeVoteUi.TimerText.Text = string.format("%s: %s", voteUiText.Timer, tostring(math.floor(remaining))) end)
+        activeVoteUi.TimerText.Text = string.format("%s: %s", voteUiText.Timer, tostring(math.floor(remaining)))
     end
     if activeVoteUi.ProgressFill ~= nil and activeVoteUi.ProgressFill.RectTransform ~= nil then
-        pcall(function() activeVoteUi.ProgressFill.RectTransform.RelativeSize = Vector2(progress, 1) end)
+        activeVoteUi.ProgressFill.RectTransform.RelativeSize = Vector2(progress, 1)
     end
 
     local buttons = activeVoteUi.OptionButtons or {}
     for _, option in ipairs(active.Options or {}) do
         local button = buttons[option.Index]
-        if button ~= nil then
-            local label = FormatVoteOptionLabel(option)
-            pcall(function() button.TextBlock.Text = label end)
+        if button ~= nil and button.TextBlock ~= nil then
+            button.TextBlock.Text = FormatVoteOptionLabel(option)
         end
     end
 end
@@ -1085,14 +956,14 @@ local function ShowActiveVoteMenu()
 
     local content = GUI.LayoutGroup(CreateRect(0.985, 0.985, panel, GUI.Anchor.Center), false, GUI.Anchor.TopCenter)
     content.Stretch = true
-    pcall(function() content.RelativeSpacing = 0.008 end)
+    content.RelativeSpacing = 0.008
 
     local header = GUI.LayoutGroup(CreateRect(1, 0.10, content, nil), true, GUI.Anchor.CenterLeft)
     header.Stretch = true
-    pcall(function() header.RelativeSpacing = 0.012 end)
+    header.RelativeSpacing = 0.012
 
     local title = CreateText(header, 0.70, 1, nil, active.Title or voteUiText.StartTitle, GUI.Alignment.Left, 0.95, Color(255, 235, 170, 255), false)
-    pcall(function() title.Font = GUI.Style.SubHeadingFont end)
+    title.Font = GUI.Style.SubHeadingFont
 
     activeVoteUi.TimerText = CreateText(header, 0.30, 1, nil, GetVoteTimeText(active), GUI.Alignment.CenterRight, 1.125, Color(210, 220, 200, 255), false)
 
@@ -1117,12 +988,10 @@ local function ShowActiveVoteMenu()
 
     local list = GUI.ListBox(CreateRect(0.984, 0.944, listFrame, GUI.Anchor.Center), false, Color(0, 0, 0, 0), nil)
     list.Color = Color(0, 0, 0, 0)
-    pcall(function()
-        if list.ContentBackground ~= nil then
-            list.ContentBackground.Color = Color(0, 0, 0, 0)
-        end
-    end)
-    pcall(function() list.KeepSpaceForScrollBar = false end)
+    if list.ContentBackground ~= nil then
+        list.ContentBackground.Color = Color(0, 0, 0, 0)
+    end
+    list.KeepSpaceForScrollBar = false
 
     for _, option in ipairs(active.Options or {}) do
         local label = FormatVoteOptionLabel(option)
@@ -1182,11 +1051,8 @@ IsWelcomeMenuOpen = function()
         return rawget(_G, "VoidTraitorWelcomeMenuOpen") == true
     end
 
-    local hasParent = false
-    pcall(function() hasParent = welcomeRoot.RectTransform.Parent ~= nil end)
-    if not hasParent then
-        _G.VoidTraitorWelcomeMenuOpen = false
-    end
+    local hasParent = welcomeRoot.RectTransform.Parent ~= nil
+    if not hasParent then _G.VoidTraitorWelcomeMenuOpen = false end
     return hasParent
 end
 
@@ -1223,12 +1089,7 @@ sharedState.EnsureVoteButton = EnsureVoteButton
 
 local function CreateTopButtons()
     if buttonRoot ~= nil then
-        pcall(function() buttonRoot:RemoveFromGUIUpdateList(true) end)
-        pcall(function()
-            if buttonRoot.RectTransform ~= nil then
-                buttonRoot.RectTransform.Parent = nil
-            end
-        end)
+        Common.RemoveGuiComponent(buttonRoot)
         buttonRoot = nil
     end
 
@@ -1248,7 +1109,7 @@ local function CreateTopButtons()
     SetButtonTextScale(shop, 0.74)
     shop.OnClicked = function(button, userData)
         if currentMenu ~= nil then CloseMenu() end
-        RequestPointshop()
+        SendNetMessage(NET_POINTSHOP_REQUEST)
         return true
     end
 
@@ -1297,8 +1158,15 @@ Networking.Receive(NET_SNAPSHOT, function(message)
     local count = message.ReadInt32()
     local entries = {}
     for i = 1, count do
+        local command = message.ReadString()
+        local enabled = true
+        if string.sub(command, 1, #DISABLED_ACTION_PREFIX) == DISABLED_ACTION_PREFIX then
+            command = string.sub(command, #DISABLED_ACTION_PREFIX + 1)
+            enabled = false
+        end
+
         table.insert(entries, {
-            Command = message.ReadString(),
+            Command = command,
             Label = message.ReadString(),
             Hint = message.ReadString(),
             Category = message.ReadString(),
@@ -1306,6 +1174,7 @@ Networking.Receive(NET_SNAPSHOT, function(message)
             InputHint = message.ReadString(),
             ConfirmTitle = message.ReadString(),
             ConfirmText = message.ReadString(),
+            Enabled = enabled,
         })
     end
 
@@ -1415,7 +1284,7 @@ Timer.Wait(function() if not sharedState.Disabled then SendVoteReady() end end, 
 Hook.Patch(HUD_PATCH_ID, "Barotrauma.GameSession", "AddToGUIUpdateList", function()
     local state = rawget(_G, GLOBAL_STATE_KEY)
     if state == nil or state.Disabled then return end
-    if GUI ~= nil and GUI.DisableHUD then return end
+    if GUI.DisableHUD then return end
 
     if state.GuiRoot ~= nil then
         state.GuiRoot:AddToGUIUpdateList(false, MENU_DRAW_ORDER)
@@ -1442,19 +1311,19 @@ Hook.Patch(PAUSE_PATCH_ID, "Barotrauma.GUI", "TogglePauseMenu", {}, function(ins
     end
 end, Hook.HookMethodType.Before)
 
-Hook.Remove("keyUpdate", "VoidTraitor.ClientMenu.PauseGuard")
 Hook.Remove("think", "VoidTraitor.ClientMenu.KeepPauseBlocked")
-Hook.Remove("think", "VoidTraitor.ClientMenu.UiState")
 
 Hook.Add("keyUpdate", "VoidTraitor.ClientMenu.PauseGuard", function()
     if sharedState.Disabled then return end
-    if currentMenu ~= nil and IsEscapeHit() then
+    if currentMenu ~= nil and PlayerInput.KeyHit(Keys.Escape) then
         RequestEscapeClose()
     end
 end)
 
 Hook.Add("think", "VoidTraitor.ClientMenu.UiState", function(deltaTime)
     if sharedState.Disabled then return end
+
+    UpdateVoidTraitorMenuInteraction()
 
     uiStateCheckTimer = uiStateCheckTimer + (tonumber(deltaTime) or 0)
     if uiStateCheckTimer < 0.1 then return end

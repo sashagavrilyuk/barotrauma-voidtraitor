@@ -12,11 +12,12 @@ Timer.Wait(function() SendHandshake() end, 2000)
 -- ТЕКСТЫ И ГАЙДЫ
 -- =========================================================
 
-local packPath = table.pack(...)[1]
+local packPath, Common = ...
 local language = dofile(packPath .. "/Lua/language/welcome_russian.lua")
 local menuText = language.MenuText
 local GuideContent = language.GuideContent
 local GuideOrder = language.GuideOrder
+local CreateRect = Common.CreateRect
 
 -- =========================================================
 -- СИСТЕМНЫЙ КОД
@@ -24,7 +25,7 @@ local GuideOrder = language.GuideOrder
 
 local previousWelcomeRoot = rawget(_G, "VoidTraitorWelcomeMenuRoot")
 if previousWelcomeRoot ~= nil and previousWelcomeRoot.RectTransform ~= nil then
-    pcall(function() previousWelcomeRoot.RectTransform.Parent = nil end)
+    previousWelcomeRoot.RectTransform.Parent = nil
 end
 
 local currentWelcomeMenu = nil
@@ -36,19 +37,6 @@ local function SetWelcomeMenuState(root)
     currentWelcomeMenu = root
     _G.VoidTraitorWelcomeMenuRoot = root
     _G.VoidTraitorWelcomeMenuOpen = root ~= nil
-end
-
--- Функция создания геометрии
-local function CreateRect(width, height, parent, anchor)
-    local pRect = nil
-    if parent then
-        if parent.RectTransform then
-            pRect = parent.RectTransform
-        else
-            pRect = parent
-        end
-    end
-    return GUI.RectTransform(Vector2(width, height), pRect, anchor)
 end
 
 local function ApplyButtonStyle(btn)
@@ -66,9 +54,8 @@ local function CreateMyButton(width, height, parent, anchor, text)
     local rect = CreateRect(width, height, parent, anchor)
     local btn = GUI.Button(rect, text, GUI.Alignment.Center, "GUIButton") 
     ApplyButtonStyle(btn)
-    
-    if string.len(text) > 12 then 
-        btn.TextScale = 0.8 
+    if btn.TextBlock ~= nil then
+        btn.TextBlock.AutoScaleHorizontal = true
     end
     return btn
 end
@@ -108,14 +95,17 @@ local function ShowCopyWindow(url)
 end
 
 local function OpenLink(url)
-    pcall(function() if Steam then Steam.OpenUrl(url) end end)
+    if Steam ~= nil then
+        local ok = pcall(function() Steam.OpenUrl(url) end)
+        if ok then return end
+    end
     ShowCopyWindow(url)
 end
 
 -- Базовое окно
 local function CreateBaseWindow()
     if currentWelcomeMenu and currentWelcomeMenu.RectTransform then
-        pcall(function() currentWelcomeMenu.RectTransform.Parent = nil end)
+        currentWelcomeMenu.RectTransform.Parent = nil
         SetWelcomeMenuState(nil)
     end
     local targetParent = nil
@@ -142,7 +132,7 @@ end
 
 -- === СТРАНИЦА ГАЙДА ===
 ShowGuidePage = function(title, text)
-    local frame, overlay = CreateBaseWindow()
+    local frame = CreateBaseWindow()
     
     local headerRect = CreateRect(1, 0.15, frame, GUI.Anchor.TopCenter)
     local header = GUI.TextBlock(headerRect, title, nil, nil, GUI.Alignment.Center)
@@ -172,7 +162,7 @@ end
 
 -- === МЕНЮ ГАЙДОВ ===
 ShowGuidesMenu = function()
-    local frame, overlay = CreateBaseWindow()
+    local frame = CreateBaseWindow()
     
     local headerRect = CreateRect(1, 0.15, frame, GUI.Anchor.TopCenter)
     local header = GUI.TextBlock(headerRect, language.GuidesHeader, nil, nil, GUI.Alignment.Center)
@@ -206,7 +196,7 @@ end
 
 -- === ГЛАВНОЕ МЕНЮ ===
 ShowCustomWelcomeMenu = function()
-    local frame, overlay = CreateBaseWindow()
+    local frame = CreateBaseWindow()
 
     local headerRect = CreateRect(1, 0.15, frame, GUI.Anchor.TopCenter)
     local header = GUI.TextBlock(headerRect, language.WelcomeHeader, nil, nil, GUI.Alignment.Center)
@@ -255,16 +245,9 @@ ShowCustomWelcomeMenu = function()
     end
 end
 
-local function TryShowWelcomeMenu()
-    local ok, err = pcall(ShowCustomWelcomeMenu)
-    if not ok then
-        print("[VoidTraitor.WelcomeMenu] Failed to show welcome menu: " .. tostring(err))
-    end
-end
-
 Networking.Receive("VoidTraitor_WelcomeMenuOpen", function()
-    TryShowWelcomeMenu()
+    ShowCustomWelcomeMenu()
 end)
 
 -- === АВТОМАТИЗАЦИЯ ===
-Timer.Wait(TryShowWelcomeMenu, 1500)
+Timer.Wait(ShowCustomWelcomeMenu, 1500)

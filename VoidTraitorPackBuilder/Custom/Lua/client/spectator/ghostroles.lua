@@ -18,14 +18,7 @@ if previousState ~= nil then
     if previousState.StopFollow ~= nil then previousState.StopFollow() end
 
     for _, key in ipairs({ "GuiRoot", "MenuRoot", "ButtonRoot" }) do
-        local component = previousState[key]
-        if component ~= nil then
-            component:RemoveFromGUIUpdateList(true)
-            component.Visible = false
-            if component.RectTransform ~= nil then
-                component.RectTransform.Parent = nil
-            end
-        end
+        Common.RemoveGuiComponent(previousState[key])
     end
 end
 
@@ -161,9 +154,7 @@ local function CloseMenu()
     resizeState = nil
 
     if currentMenu ~= nil then
-        currentMenu:RemoveFromGUIUpdateList(true)
-        currentMenu.Visible = false
-        if currentMenu.RectTransform ~= nil then currentMenu.RectTransform.Parent = nil end
+        Common.RemoveGuiComponent(currentMenu)
     end
 
     currentMenu = nil
@@ -173,21 +164,9 @@ end
 
 sharedState.CloseMenu = CloseMenu
 
-local function AddMenuToUpdateList()
-    if currentMenu == nil then return end
-    currentMenu:AddToGUIUpdateList(false, MENU_DRAW_ORDER)
-end
-
-local function AddButtonToUpdateList()
-    if buttonRoot == nil then return end
-    buttonRoot:AddToGUIUpdateList(false, BUTTON_DRAW_ORDER)
-end
-
 local function DestroyBottomButton()
     if buttonRoot == nil then return end
-    buttonRoot:RemoveFromGUIUpdateList(true)
-    buttonRoot.Visible = false
-    if buttonRoot.RectTransform ~= nil then buttonRoot.RectTransform.Parent = nil end
+    Common.RemoveGuiComponent(buttonRoot)
     buttonRoot = nil
     bottomButton = nil
     bottomButtonBaseColors = nil
@@ -254,7 +233,7 @@ local function CreateBottomButton()
 
     buttonRoot = bottomButton
     sharedState.ButtonRoot = buttonRoot
-    AddButtonToUpdateList()
+    buttonRoot:AddToGUIUpdateList(false, BUTTON_DRAW_ORDER)
     return true
 end
 
@@ -285,7 +264,7 @@ local function UpdateBottomButton()
     end
 
     ApplyBottomButtonAlertStyle(false)
-    buttonRoot.Visible = not (GUI ~= nil and GUI.DisableHUD == true)
+    buttonRoot.Visible = not GUI.DisableHUD
 end
 
 local function StartFollow(characterId, position)
@@ -564,7 +543,7 @@ ShowMenu = function()
         BuildDetailsPanel(currentMenu, selectedRole, groupWidth, listWidth, gapWidth, detailsWidth)
     end
 
-    AddMenuToUpdateList()
+    currentMenu:AddToGUIUpdateList(false, MENU_DRAW_ORDER)
     UpdateBottomButton()
 end
 
@@ -641,7 +620,7 @@ local function StopFollow()
     followCharacter = nil
     followLookupTimer = 0
 
-    local gameScreen = Game ~= nil and Game.GameScreen or nil
+    local gameScreen = Game.GameScreen
     local camera = gameScreen ~= nil and gameScreen.Cam or nil
     if camera ~= nil then
         camera.TargetPos = Vector2.Zero
@@ -652,7 +631,7 @@ end
 sharedState.StopFollow = StopFollow
 
 ApplyFollowPosition = function(position)
-    local gameScreen = Game ~= nil and Game.GameScreen or nil
+    local gameScreen = Game.GameScreen
     local camera = gameScreen ~= nil and gameScreen.Cam or nil
     if camera == nil or position == nil then return false end
 
@@ -707,7 +686,6 @@ end
 Common.InstallHudPatch(HUD_PATCH_ID, GLOBAL_STATE_KEY, MENU_DRAW_ORDER, BUTTON_DRAW_ORDER)
 Common.InstallPausePatch(PAUSE_PATCH_ID, GLOBAL_STATE_KEY)
 
-Hook.Remove("think", "VoidTraitor.GhostRolesGui.Think")
 Hook.Add("think", "VoidTraitor.GhostRolesGui.Think", function(deltaTime)
     if sharedState.Disabled then return end
 
@@ -764,7 +742,7 @@ Hook.Add("think", "VoidTraitor.GhostRolesGui.Think", function(deltaTime)
     end
 
     if buttonRoot ~= nil then
-        buttonRoot.Visible = showBottomButton and not (GUI ~= nil and GUI.DisableHUD == true)
+        buttonRoot.Visible = showBottomButton and not GUI.DisableHUD
     end
 end)
 
