@@ -1,5 +1,7 @@
 if SERVER then return end
 
+local _, Common = ...
+
 -- Void Traitor Pointshop GUI.
 -- Client-side visual shell only. The server is still authoritative for prices,
 -- limits, stock, cooldowns and actual purchases.
@@ -172,7 +174,7 @@ guiRoot.Color = Color(0, 0, 0, 0)
 guiRoot.CanBeFocused = false
 guiRoot.IgnoreLayoutGroups = true
 sharedState.GuiRoot = guiRoot
-pcall(function() guiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER) end)
+guiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER)
 
 -- Reinsert the root when Barotrauma rebuilds the GUI update list.
 Hook.Patch(HUD_PATCH_ID, "Barotrauma.GameSession", "AddToGUIUpdateList", function()
@@ -221,11 +223,7 @@ local function RequestEscapeClose()
     end, 250)
 end
 
-pcall(function() Hook.Remove("think", "VoidTraitor.PointshopGui.KeepVisible") end)
-pcall(function() Hook.Remove("think", "VoidTraitor.PointshopGui.KeepPauseBlocked") end)
 pcall(function() Hook.Remove("think", "VoidTraitor.PointshopGui.CooldownClock") end)
-pcall(function() Hook.Remove("think", "VoidTraitor.PointshopGui.FilterDropDown") end)
-pcall(function() Hook.Remove("keyUpdate", "VoidTraitor.PointshopGui.KeyboardTrap") end)
 pcall(function() Hook.Remove("keyUpdate", "VoidTraitor.PointshopGui.PauseGuard") end)
 
 -- keyUpdate fires before the game's ESC handler.
@@ -318,15 +316,9 @@ CloseMenu = function()
     shopList = nil
 
     if currentMenu ~= nil then
-        pcall(function()
-            currentMenu:RemoveFromGUIUpdateList(true)
-        end)
-        pcall(function()
-            if currentMenu.RectTransform ~= nil then
-                currentMenu.RectTransform.Parent = nil
-            end
-            currentMenu.Visible = false
-        end)
+        currentMenu:RemoveFromGUIUpdateList(true)
+        currentMenu.RectTransform.Parent = nil
+        currentMenu.Visible = false
     end
 
 
@@ -343,165 +335,158 @@ CloseMenu = function()
     escapeClosePending = false
     buyRequestPending = false
 
+    if sharedState.BlockPauseMenu ~= true then
+        sharedState.BlockPauseMenu = false
+    end
 end
-
 sharedState.CloseMenu = CloseMenu
 
-local function GetCartEntry(productId)
-    for _, entry in ipairs(cart) do
-        if entry.Id == productId then return entry end
+local function CreateLayout(parent, width, height, anchor, horizontal, childAnchor)
+    local group = GUI.LayoutGroup(CreateRect(width, height, parent, anchor), horizontal == true, childAnchor or GUI.Anchor.TopLeft)
+    group.Stretch = true
+    group.RelativeSpacing = 0.006
+    return group
+end
+
+local function CreateDivider(parent, height)
+    local divider = GUI.Frame(CreateRect(1, height or 0.012, parent, nil), "HorizontalLine")
+    divider.CanBeFocused = false
+    return divider
+end
+
+local function CreatePanelTitle(parent, title, iconStyle, showLabel)
+    local frame = GUI.Frame(CreateRect(1, 0.095, parent, nil), "GUIFrame")
+    frame.CanBeFocused = false
+
+    local row = CreateLayout(frame, 0.95, 0.88, GUI.Anchor.Center, true, GUI.Anchor.CenterLeft)
+    row.RelativeSpacing = 0.012
+    row.Stretch = true
+
+    if iconStyle ~= nil then
+        local iconFrame = GUI.Frame(CreateRect(0.14, 1, row, nil), nil)
+        iconFrame.Color = Color(0, 0, 0, 0)
+        iconFrame.CanBeFocused = false
+        local icon = GUI.Image(CreateRect(0.90, 0.90, iconFrame, GUI.Anchor.Center), iconStyle)
+        icon.CanBeFocused = false
     end
+
+    if showLabel ~= false then
+        local titleBlock = CreateText(row, 0.72, 1, nil, string.upper(tostring(title or "")), GUI.Alignment.CenterLeft, 1.20, Color(245, 240, 215, 255))
+        titleBlock.AutoScaleHorizontal = true
+        titleBlock.AutoScaleVertical = true
+        return titleBlock
+    end
+
     return nil
 end
 
-local function GetCartTotal()
-    local total = 0
-    for _, entry in ipairs(cart) do
-        local product = productById[entry.Id]
-        if product ~= nil then
-            total = total + (product.Price or 0) * (entry.Quantity or 1)
-        end
+local function GetClientTime()
+    if Timer ~= nil and Timer.GetTime ~= nil then
+        return Timer.GetTime()
     end
-    return total
-end
-
-local function GetPendingProduct()
-    if pendingProductId == nil then return nil end
-    return productById[pendingProductId]
-end
-
-local function GetSelectedProduct()
-    if selectedProductId == nil then return nil end
-    return productById[selectedProductId]
-end
-
-local function IsClassProduct(product)
-    return product ~= nil and product.Type == "class"
-end
-
-local function GetClassSelectText()
-    local value = GetText("SelectClassAction")
-    if value ~= nil and value ~= "" then return value end
-    return GetText("SelectGhostAction")
+    return 0
 end
 
 local function FormatSeconds(seconds)
-    seconds = math.max(math.floor(tonumber(seconds) or 0), 0)
+    seconds = math.max(0, math.ceil(tonumber(seconds) or 0))
     local minutes = math.floor(seconds / 60)
-    local rest = seconds - minutes * 60
-    return string.format("%02d:%02d", minutes, rest)
+    local remainder = seconds % 60
+    if minutes > 0 then
+        return tostring(minutes) .. ":" .. string.format("%02d", remainder)
+    end
+    return tostring(seconds) .. "s"
 end
 
-local function GetClientTime()
-    return Timer.GetTime()
+local function GetCooldownRemaining(product)
+    if product == nil then return 0 end
+    if product.CooldownEndTime ~= nil then
+        return math.max(0, product.CooldownEndTime - GetClientTime())
+    end
+    return math.max(0, tonumber(product.CooldownRemaining) or 0)
 end
 
-local function GetCooldownRemaining(source)
-    if source == nil then return 0 end
+local function RegisterCooldownText(groupName, block, getText)
+    if block == nil or getText == nil then return end
+    local group = cooldownTextBlocks[groupName or "shop"]
+    if group == nil then
+        group = {}
+        cooldownTextBlocks[groupName or "shop"] = group
+    end
+    table.insert(group, { Block = block, GetText = getText })
+end
 
-    if source.CooldownEndTime ~= nil then
-        return math.max(math.ceil(source.CooldownEndTime - GetClientTime()), 0)
+local function UpdateCooldownTextBlocks()
+    local hadActive = false
+    for _, group in pairs(cooldownTextBlocks) do
+        for index = #group, 1, -1 do
+            local entry = group[index]
+            local ok, value, active = pcall(entry.GetText)
+            if not ok or entry.Block == nil then
+                table.remove(group, index)
+            else
+                entry.Block.Text = value or ""
+                if active then hadActive = true end
+            end
+        end
     end
 
-    return math.max(math.floor(tonumber(source.CooldownRemaining) or 0), 0)
-end
-
-local function GetProductStateDisabledReason(product)
-    if product == nil then return "" end
-    local cooldown = GetCooldownRemaining(product)
-    if cooldown > 0 then
-        return GetText("Cooldown") .. ": " .. FormatSeconds(cooldown)
+    if not hadActive and currentMenu ~= nil and not cooldownSnapshotRequested then
+        cooldownSnapshotRequested = true
+        Timer.Wait(function()
+            cooldownSnapshotRequested = false
+            if currentMenu ~= nil and not sharedState.Disabled then
+                RequestSnapshot()
+            end
+        end, 350)
     end
-    return tostring(product.DisabledReason or "")
-end
-
-local function GetProductDisabledReason(product)
-    local reason = GetProductStateDisabledReason(product)
-    if reason ~= "" then return reason end
-    if (tonumber(product.Price) or 0) > currentPoints then
-        return GetText("NotEnoughPoints")
-    end
-    return ""
-end
-
-local function IsProductAvailable(product)
-    return GetProductStateDisabledReason(product) == ""
-end
-
-local function CanBuyProduct(product)
-    return IsProductAvailable(product) and (tonumber(product.Price) or 0) <= currentPoints
-end
-
-local function IsUnlimitedProductStock(product)
-    if product == nil then return false end
-    return (tonumber(product.Stock) or 0) >= NET_INT32_MAX
-        or (tonumber(product.Limit) or 0) >= NET_INT32_MAX
-end
-
--- Match the original text PointShop rules: a zero effective price and an
--- unlimited product limit are presentation details that must not be printed.
-local function ShouldShowProductPrice(product)
-    return product ~= nil and (tonumber(product.Price) or 0) ~= 0
-end
-
-local function ShouldShowProductStock(product)
-    return product ~= nil and not IsUnlimitedProductStock(product)
-end
-
-local function GetProductStockDisplay(product)
-    if IsUnlimitedProductStock(product) then
-        return GetText("Unlimited")
-    end
-
-    local stock = math.max(math.floor(tonumber(product.Stock) or 0), 0)
-    local limit = math.max(math.floor(tonumber(product.Limit) or 0), 0)
-    return tostring(stock) .. " / " .. tostring(limit)
-end
-
-local function ProductMatchesSearchAndFilter(product)
-    if product == nil then return false end
-    if selectedFilter == "available" and not IsProductAvailable(product) then
-        return false
-    elseif selectedFilter == "affordable" and not CanBuyProduct(product) then
-        return false
-    end
-
-    local query = normalizedSearchText
-    if query == "" then return true end
-    return string.find(product.SearchText or "", query, 1, true) ~= nil
 end
 
 local function GetClassLimitKey(categoryIdentifier, pathIdentifiers)
-    return tostring(categoryIdentifier or "") .. "\30" .. tostring(pathIdentifiers or "")
+    categoryIdentifier = tostring(categoryIdentifier or "")
+    pathIdentifiers = tostring(pathIdentifiers or "")
+    return categoryIdentifier .. "\31" .. pathIdentifiers
 end
 
-local function GetProductClassLimitKey(product)
-    if product == nil then return "" end
-    return GetClassLimitKey(product.CategoryIdentifier, product.PathIdentifiers)
+local function GetClassLimitText(categoryIdentifier, pathIdentifiers)
+    return classLimitValues[GetClassLimitKey(categoryIdentifier, pathIdentifiers)] or ""
+end
+
+local function IsClassProduct(product)
+    if product == nil then return false end
+    return product.IsClassProduct == true or product.Type == "class"
 end
 
 local function GetProductLimitText(product)
-    if product == nil then return "" end
-    local key = GetProductClassLimitKey(product)
-    if IsClassProduct(product) and key ~= "" then
-        return classLimitValues[key] or ""
+    if not IsClassProduct(product) then return "" end
+    if product.ClassLimitKey ~= nil and product.ClassLimitKey ~= "" then
+        return GetClassLimitText(product.CategoryIdentifier, product.ClassLimitKey)
     end
-    return product.LimitText or ""
+    return GetClassLimitText(product.CategoryIdentifier, product.PathIdentifiers)
+end
+
+local function GetProductDisabledReason(product)
+    if product == nil then return GetText("Unavailable") end
+
+    local reason = tostring(product.DisabledReason or "")
+    if reason ~= "" then return reason end
+
+    if product.Price ~= nil and product.Price > currentPoints then
+        return GetText("NotEnoughPoints")
+    end
+
+    return ""
 end
 
 local function GetProductDescriptionText(product)
     if product == nil then return "" end
 
-    local description = tostring(product.Description or "")
-    if not IsClassProduct(product) then
-        return description
-    end
-
     local limitText = GetProductLimitText(product)
-    if description ~= "" and limitText ~= "" then
+    if limitText == "" then return tostring(product.Description or "") end
+
+    local description = tostring(product.Description or "")
+    if description ~= "" then
         return description .. "\n\n" .. limitText
     end
-    if description ~= "" then return description end
     return limitText
 end
 
@@ -525,230 +510,134 @@ local function UpdateClassLimitTextBlocks()
             if not ok or entry.Block == nil then
                 table.remove(group, index)
             else
-                pcall(function() entry.Block.Text = value or "" end)
+                entry.Block.Text = value or ""
             end
         end
     end
 end
 
-local function RegisterCooldownText(groupName, block, getText)
-    if block == nil or getText == nil then return end
+local function ProductMatchesSelectedFolder(product)
+    if product == nil then return false end
+    if selectedCategory == nil then return true end
+    if product.CategoryIdentifier ~= selectedCategory then return false end
 
-    local group = cooldownTextBlocks[groupName or "shop"]
-    if group == nil then
-        group = {}
-        cooldownTextBlocks[groupName or "shop"] = group
+    if selectedPath == nil or selectedPath == "" then
+        return true
     end
 
-    table.insert(group, { Block = block, GetText = getText })
+    local productPath = tostring(product.PathIdentifiers or "")
+    if productPath == selectedPath then return true end
+    return string.sub(productPath, 1, string.len(selectedPath) + 1) == selectedPath .. "/"
 end
 
-local function UpdateCooldownTextBlocks()
-    local anyActive = false
-    local needsSnapshot = false
+local function ProductMatchesSearchAndFilter(product)
+    if not ProductMatchesSelectedFolder(product) then return false end
 
-    for _, group in pairs(cooldownTextBlocks) do
-        for index = #group, 1, -1 do
-            local entry = group[index]
-            local ok, value, active = pcall(entry.GetText)
-            if not ok or entry.Block == nil then
-                table.remove(group, index)
-            else
-                pcall(function() entry.Block.Text = value or "" end)
-                if active == true then
-                    anyActive = true
-                elseif active == false then
-                    needsSnapshot = true
-                    table.remove(group, index)
-                end
-            end
+    if normalizedSearchText ~= "" then
+        local haystack = NormalizeSearchText(
+            tostring(product.Name or "") .. " " ..
+            tostring(product.Description or "") .. " " ..
+            tostring(product.Id or "") .. " " ..
+            tostring(product.Type or "")
+        )
+        if not string.find(haystack, normalizedSearchText, 1, true) then
+            return false
         end
     end
 
-    if needsSnapshot and not cooldownSnapshotRequested then
-        cooldownSnapshotRequested = true
-        Timer.Wait(function()
-            cooldownSnapshotRequested = false
-            if currentMenu ~= nil then ShowMenu() end
-        end, 1)
+    if selectedFilter == "available" and GetProductDisabledReason(product) ~= "" then
+        return false
+    elseif selectedFilter == "affordable" and (tonumber(product.Price) or 0) > currentPoints then
+        return false
     end
 
-    return anyActive
+    return true
 end
 
-local function IsFolderExpanded(folderKey)
-    local value = expandedFolders[folderKey]
-    if value == nil then return true end
-    return value == true
+local function ShouldShowProductPrice(product)
+    if product == nil then return false end
+    if IsClassProduct(product) and (tonumber(product.Price) or 0) <= 0 then return false end
+    return true
 end
 
-local function ToggleFolder(folderKey)
-    expandedFolders[folderKey] = not IsFolderExpanded(folderKey)
+local function ReadProduct(message)
+    local product = {}
+    product.Id = message.ReadString()
+    product.Name = message.ReadString()
+    product.Description = message.ReadString()
+    product.Type = message.ReadString()
+    product.IconIdentifier = message.ReadString()
+    product.Price = message.ReadInt32()
+    product.CategoryIdentifier = message.ReadString()
+    product.CategoryName = message.ReadString()
+    product.CategoryIconIdentifier = message.ReadString()
+    product.PathIdentifiers = message.ReadString()
+    product.PathNames = message.ReadString()
+    product.PathIcons = message.ReadString()
+    product.Limit = message.ReadInt32()
+    product.Stock = message.ReadInt32()
+    product.DisabledReason = message.ReadString()
+    product.MaxQuantity = message.ReadInt32()
+    product.CooldownRemaining = message.ReadSingle()
+    product.CooldownEndTime = product.CooldownRemaining > 0 and (GetClientTime() + product.CooldownRemaining) or nil
+    product.IsClassProduct = message.ReadBoolean()
+    product.ClassLimitKey = message.ReadString()
+    return product
 end
 
-local function AddToCart(product)
-    if product == nil or GetProductDisabledReason(product) ~= "" then return end
-
-    local maxQuantity = tonumber(product.MaxQuantity) or tonumber(product.Stock) or 1
-    maxQuantity = math.max(math.floor(maxQuantity), 1)
-    if product.AllowQuantity ~= true then
-        maxQuantity = 1
-    end
-
-    local entry = GetCartEntry(product.Id)
-    if entry ~= nil then
-        if (entry.Quantity or 1) >= maxQuantity then
-            if product.AllowQuantity ~= true then
-                lastMessage = GetText("SinglePurchase")
-            else
-                lastMessage = GetText("StockLimit")
-            end
-            return
-        end
-        entry.Quantity = math.min((entry.Quantity or 1) + 1, maxQuantity)
-    else
-        table.insert(cart, { Id = product.Id, Quantity = 1 })
-    end
-end
-
-local function RemoveFromCart(productId)
-    for index, entry in ipairs(cart) do
-        if entry.Id == productId then
-            if (entry.Quantity or 1) > 1 then
-                entry.Quantity = entry.Quantity - 1
-            else
-                table.remove(cart, index)
-            end
-            return
-        end
+local function IndexProducts()
+    productById = {}
+    for _, product in ipairs(products) do
+        productById[product.Id] = product
     end
 end
 
-local function ClearCart()
+local function ReadCart(message)
     cart = {}
+    local count = message.ReadInt32()
+    for i = 1, count do
+        table.insert(cart, {
+            Id = message.ReadString(),
+            Quantity = message.ReadInt32(),
+        })
+    end
+end
+
+local function ReadText(message)
+    for _, key in ipairs(textKeys) do
+        text[key] = message.ReadString()
+    end
+end
+
+local function ReadState(message)
+    currentPoints = message.ReadInt32()
+    lastMessage = message.ReadString()
+    selectedCategory = message.ReadString()
+    if selectedCategory == "" then selectedCategory = nil end
+    selectedPath = message.ReadString()
+    if selectedPath == "" then selectedPath = nil end
+    selectedProductId = message.ReadString()
+    if selectedProductId == "" then selectedProductId = nil end
+    currentView = message.ReadString()
+    shopMode = message.ReadString()
+    pendingProductId = message.ReadString()
+    if pendingProductId == "" then pendingProductId = nil end
+    closeMenuAfterSnapshot = message.ReadBoolean()
+    ReadCart(message)
+    return true
 end
 
 local function ReadSnapshot(message)
-    lastMessage = message.ReadString()
-    currentPoints = message.ReadInt32()
-    shopMode = message.ReadString()
-    if shopMode == nil or shopMode == "" then shopMode = "shop" end
-    local count = message.ReadInt32()
+    ReadState(message)
 
+    local productCount = message.ReadInt32()
     products = {}
-    productById = {}
-    classLimitValues = {}
-
-    for i = 1, count do
-        local product = {
-            Id = message.ReadString(),
-            Category = message.ReadString(),
-            Path = message.ReadString(),
-            Name = message.ReadString(),
-            Description = message.ReadString(),
-            Price = message.ReadInt32(),
-            Stock = message.ReadInt32(),
-            Limit = message.ReadInt32(),
-            Type = message.ReadString(),
-            IconIdentifier = message.ReadString(),
-            AllowQuantity = message.ReadBoolean(),
-            DisabledReason = message.ReadString(),
-            CategoryIdentifier = message.ReadString(),
-            CategoryIconIdentifier = message.ReadString(),
-            PathIdentifiers = message.ReadString(),
-            PathIconIdentifiers = message.ReadString(),
-            MaxQuantity = message.ReadInt32(),
-            CooldownRemaining = message.ReadInt32(),
-            CloseAfterPurchase = message.ReadBoolean(),
-            LimitText = message.ReadString(),
-        }
-
-        product.CooldownRemaining = math.max(math.floor(tonumber(product.CooldownRemaining) or 0), 0)
-        if product.CooldownRemaining > 0 then
-            product.CooldownEndTime = GetClientTime() + product.CooldownRemaining
-        else
-            product.CooldownEndTime = nil
-        end
-
-        if product.LimitText ~= nil and product.LimitText ~= "" then
-            classLimitValues[GetProductClassLimitKey(product)] = product.LimitText
-        end
-
-        product.SearchText = NormalizeSearchText(table.concat({
-            tostring(product.Name or ""),
-            tostring(product.Description or ""),
-            tostring(product.Category or ""),
-            tostring(product.Path or ""),
-            tostring(product.IconIdentifier or ""),
-            tostring(product.CategoryIdentifier or ""),
-            tostring(product.PathIdentifiers or ""),
-            tostring(product.Type or ""),
-        }, " "))
-
-        if product.Id ~= nil and product.Id ~= "" then
-            table.insert(products, product)
-            productById[product.Id] = product
-        end
+    for i = 1, productCount do
+        table.insert(products, ReadProduct(message))
     end
+    IndexProducts()
 
-    local textCount = message.ReadInt32()
-
-    for i = 1, textCount do
-        local key = message.ReadString()
-        local value = message.ReadString()
-        if key ~= nil and key ~= "" then
-            text[key] = value or ""
-        end
-    end
-
-    local purchaseCompleted = message.ReadBoolean()
-
-    cooldownSnapshotRequested = false
-    buyRequestPending = false
-
-    closeMenuAfterSnapshot = message.ReadBoolean()
-
-    if purchaseCompleted then
-        ClearCart()
-        pendingProductId = nil
-    end
-
-    for index = #cart, 1, -1 do
-        local entry = cart[index]
-        local product = productById[entry.Id]
-        if product == nil or GetProductDisabledReason(product) ~= "" or product.Stock <= 0 then
-            table.remove(cart, index)
-        else
-            local maxQuantity = tonumber(product.MaxQuantity) or tonumber(product.Stock) or 1
-            maxQuantity = math.max(maxQuantity, 1)
-            if product.AllowQuantity ~= true then
-                maxQuantity = 1
-            end
-            if entry.Quantity > maxQuantity then
-                entry.Quantity = maxQuantity
-            end
-        end
-    end
-
-    if pendingProductId ~= nil and productById[pendingProductId] == nil then
-        pendingProductId = nil
-    end
-    if selectedProductId ~= nil and productById[selectedProductId] == nil then
-        selectedProductId = nil
-    end
-
-    local selectedStillExists = false
-    for _, product in ipairs(products) do
-        if product.Category == selectedCategory and (product.Path or "") == (selectedPath or "") then
-            selectedStillExists = true
-            break
-        end
-    end
-
-    if not selectedStillExists and products[1] ~= nil then
-        selectedCategory = products[1].Category
-        selectedPath = products[1].Path or ""
-    end
+    ReadText(message)
 end
 
 local function ReadProductState(message)
@@ -757,7 +646,8 @@ local function ReadProductState(message)
     local stock = message.ReadInt32()
     local disabledReason = message.ReadString()
     local maxQuantity = message.ReadInt32()
-    local cooldownRemaining = math.max(message.ReadInt32(), 0)
+    local cooldownRemaining = message.ReadSingle()
+
     local product = productById[productId]
     if product == nil then return false end
 
@@ -778,365 +668,111 @@ local function ReadProductState(message)
 end
 
 local function ReconcileProductState(purchaseCompleted)
-    if purchaseCompleted then
-        ClearCart()
-        pendingProductId = nil
-    end
-
-    for index = #cart, 1, -1 do
-        local entry = cart[index]
+    local newCart = {}
+    for _, entry in ipairs(cart) do
         local product = productById[entry.Id]
-        if product == nil or GetProductDisabledReason(product) ~= "" or product.Stock <= 0 then
-            table.remove(cart, index)
-        else
-            local maxQuantity = math.max(tonumber(product.MaxQuantity) or tonumber(product.Stock) or 1, 1)
-            if product.AllowQuantity ~= true then maxQuantity = 1 end
-            entry.Quantity = math.min(entry.Quantity or 1, maxQuantity)
-        end
-    end
-
-
-    local selected = GetSelectedProduct()
-    if selected ~= nil and selected.Stock <= 0 then selectedProductId = nil end
-    local pending = GetPendingProduct()
-    if pending ~= nil and GetProductDisabledReason(pending) ~= "" then pendingProductId = nil end
-end
-
-local function ReadState(message)
-    lastMessage = message.ReadString()
-    currentPoints = message.ReadInt32()
-    shopMode = message.ReadString()
-    if shopMode == nil or shopMode == "" then shopMode = "shop" end
-
-    local count = message.ReadInt32()
-    local complete = true
-    for i = 1, count do
-        if not ReadProductState(message) then complete = false end
-    end
-
-    local purchaseCompleted = message.ReadBoolean()
-    closeMenuAfterSnapshot = message.ReadBoolean()
-    cooldownSnapshotRequested = false
-    buyRequestPending = false
-    ReconcileProductState(purchaseCompleted)
-    return complete
-end
-
-
-local function SplitGuiPath(value, separatorPattern)
-    local result = {}
-    value = tostring(value or "")
-    if value == "" then return result end
-
-    separatorPattern = separatorPattern or "[^>]+"
-    for part in string.gmatch(value, separatorPattern) do
-        part = string.gsub(part, "^%s+", "")
-        part = string.gsub(part, "%s+$", "")
-        table.insert(result, part)
-    end
-
-    return result
-end
-
-local function SplitIconList(value)
-    local result = {}
-    value = tostring(value or "")
-    if value == "" then return result end
-
-    for part in string.gmatch(value, "[^\31]+") do
-        table.insert(result, part)
-    end
-
-    return result
-end
-
-local function GetFolderKey(category, path)
-    return tostring(category or "") .. "\30" .. tostring(path or "")
-end
-
-local function BuildFolderList()
-    local folders = {}
-    local lookup = {}
-    local directCounts = {}
-    local totalCounts = {}
-
-    for _, product in ipairs(products) do
-        local directKey = GetFolderKey(product.Category, product.Path or "")
-        directCounts[directKey] = (directCounts[directKey] or 0) + 1
-
-        local rootKey = GetFolderKey(product.Category, "")
-        totalCounts[rootKey] = (totalCounts[rootKey] or 0) + 1
-
-        local currentPath = ""
-        for _, part in ipairs(SplitGuiPath(product.Path or "")) do
-            if part ~= "" then
-                if currentPath == "" then
-                    currentPath = part
-                else
-                    currentPath = currentPath .. " > " .. part
-                end
-                local key = GetFolderKey(product.Category, currentPath)
-                totalCounts[key] = (totalCounts[key] or 0) + 1
+        if product ~= nil then
+            local quantity = math.max(1, math.min(entry.Quantity or 1, math.max(1, product.MaxQuantity or 1)))
+            if product.Stock ~= nil and product.Stock >= 0 then
+                quantity = math.min(quantity, product.Stock)
+            end
+            if quantity > 0 then
+                table.insert(newCart, { Id = entry.Id, Quantity = quantity })
             end
         end
     end
+    cart = newCart
 
-    local function addFolder(category, path, label, depth, iconIdentifier, fallbackIconIdentifier, cooldownRemaining, cooldownEndTime, infoText, classLimitKey)
-        local key = GetFolderKey(category, path)
-        local folder = lookup[key]
-        if folder == nil then
-            folder = {
-                Key = key,
-                Category = category,
-                Path = path or "",
-                Label = label,
-                Depth = depth or 0,
-                DirectCount = directCounts[key] or 0,
-                Count = totalCounts[key] or directCounts[key] or 0,
-                IconIdentifier = iconIdentifier or fallbackIconIdentifier or "",
-                HasConfiguredIcon = iconIdentifier ~= nil and iconIdentifier ~= "",
-                InfoText = infoText or "",
-                ClassLimitKey = classLimitKey or "",
-                CooldownRemaining = math.max(math.floor(tonumber(cooldownRemaining) or 0), 0),
-                CooldownEndTime = tonumber(cooldownEndTime),
-                HasChildren = false,
-            }
-            lookup[key] = folder
-            table.insert(folders, folder)
-            return folder
-        end
-
-        if folder.IconIdentifier == "" and fallbackIconIdentifier ~= nil and fallbackIconIdentifier ~= "" then
-            folder.IconIdentifier = fallbackIconIdentifier
-        end
-        if iconIdentifier ~= nil and iconIdentifier ~= "" and not folder.HasConfiguredIcon then
-            folder.IconIdentifier = iconIdentifier
-            folder.HasConfiguredIcon = true
-        end
-        if (folder.InfoText == nil or folder.InfoText == "") and infoText ~= nil and infoText ~= "" then
-            folder.InfoText = infoText
-        end
-        if (folder.ClassLimitKey == nil or folder.ClassLimitKey == "") and classLimitKey ~= nil and classLimitKey ~= "" then
-            folder.ClassLimitKey = classLimitKey
-        end
-
-        local cooldown = math.max(math.floor(tonumber(cooldownRemaining) or 0), 0)
-        local endTime = tonumber(cooldownEndTime)
-        if endTime ~= nil then
-            if folder.CooldownEndTime == nil or endTime > folder.CooldownEndTime then
-                folder.CooldownEndTime = endTime
-            end
-        elseif cooldown > folder.CooldownRemaining then
-            folder.CooldownRemaining = cooldown
-        end
-        return folder
-    end
-
-    for _, product in ipairs(products) do
-        addFolder(product.Category, "", product.Category, 0, product.CategoryIconIdentifier, product.IconIdentifier, GetCooldownRemaining(product), product.CooldownEndTime, "", "")
-
-        local currentPath = ""
-        local parentPath = ""
-        local depth = 1
-        local pathLabels = SplitGuiPath(product.Path or "")
-        local pathIdentifiers = SplitGuiPath(product.PathIdentifiers or "")
-        local currentPathIdentifier = ""
-        local pathIcons = SplitIconList(product.PathIconIdentifiers or "")
-        for depthIndex, part in ipairs(pathLabels) do
-            if part ~= "" then
-                if currentPath == "" then
-                    currentPath = part
-                else
-                    currentPath = currentPath .. " > " .. part
-                end
-
-                local pathIdentifierPart = pathIdentifiers[depthIndex] or part
-                if currentPathIdentifier == "" then
-                    currentPathIdentifier = pathIdentifierPart
-                else
-                    currentPathIdentifier = currentPathIdentifier .. " > " .. pathIdentifierPart
-                end
-
-                local parentFolder = lookup[GetFolderKey(product.Category, parentPath)]
-                if parentFolder ~= nil then
-                    parentFolder.HasChildren = true
-                end
-
-                local infoText = depth == #pathLabels and GetProductLimitText(product) or ""
-                local classLimitKey = depth == #pathLabels and GetProductClassLimitKey(product) or ""
-                addFolder(product.Category, currentPath, part, depth, pathIcons[depth], product.IconIdentifier, GetCooldownRemaining(product), product.CooldownEndTime, infoText, classLimitKey)
-                parentPath = currentPath
-                depth = depth + 1
-            end
-        end
-    end
-
-    local visibleFolders = {}
-    for _, folder in ipairs(folders) do
-        local visible = true
-        if folder.Depth > 0 then
-            local parentPath = ""
-            if not IsFolderExpanded(GetFolderKey(folder.Category, "")) then
-                visible = false
-            end
-
-            local parts = SplitGuiPath(folder.Path or "")
-            for index = 1, #parts - 1 do
-                if parentPath == "" then
-                    parentPath = parts[index]
-                else
-                    parentPath = parentPath .. " > " .. parts[index]
-                end
-
-                if not IsFolderExpanded(GetFolderKey(folder.Category, parentPath)) then
-                    visible = false
-                    break
-                end
-            end
-        end
-
-        if visible then
-            table.insert(visibleFolders, folder)
-        end
-    end
-
-    return visibleFolders
-end
-
-local function ProductMatchesSelectedFolder(product)
-    return product.Category == selectedCategory and (product.Path or "") == (selectedPath or "")
-end
-
-local function UpdateProductRowSelection()
-    for _, entry in ipairs(productRows) do
-        entry.Row.Selected = entry.Product.Id == selectedProductId
-    end
-end
-
-local function SelectedFolderHasClassProducts()
-    for _, product in ipairs(products) do
-        if ProductMatchesSelectedFolder(product) and IsClassProduct(product) then
-            return true
-        end
-    end
-
-    return false
-end
-
-local function ClearPendingIfOutsideSelectedFolder()
-    local pending = GetPendingProduct()
-    if pending ~= nil and not ProductMatchesSelectedFolder(pending) then
+    if purchaseCompleted then
+        selectedProductId = nil
         pendingProductId = nil
-    end
-    local selected = GetSelectedProduct()
-    if selected ~= nil and not ProductMatchesSelectedFolder(selected) then
+    elseif selectedProductId ~= nil and productById[selectedProductId] == nil then
         selectedProductId = nil
     end
+
+    if pendingProductId ~= nil and productById[pendingProductId] == nil then
+        pendingProductId = nil
+    end
 end
 
-local function GetSelectedFolderLabel()
-    if selectedCategory == nil then return GetText("NoCategory") end
-    if selectedPath == nil or selectedPath == "" then return selectedCategory end
-    return selectedCategory .. " > " .. selectedPath
+local function SplitSlash(value)
+    local result = {}
+    value = tostring(value or "")
+    if value == "" then return result end
+    for part in string.gmatch(value, "[^/]+") do
+        table.insert(result, part)
+    end
+    return result
 end
 
-local function GetJobIconData(jobIdentifier)
-    if jobIdentifier == nil or jobIdentifier == "" then return nil, nil end
+local function GetSelectedProduct()
+    if selectedProductId == nil then return nil end
+    return productById[selectedProductId]
+end
 
-    local ok, prefab = pcall(function()
-        return JobPrefab.Get(jobIdentifier)
-    end)
-    if not ok or prefab == nil then return nil, nil end
+local function GetPendingProduct()
+    if pendingProductId == nil then return nil end
+    return productById[pendingProductId]
+end
 
-    local color = Color(255, 255, 255, 255)
-    pcall(function()
-        if prefab.UIColor ~= nil then
-            color = prefab.UIColor
-        elseif prefab.IconColor ~= nil then
-            color = prefab.IconColor
-        end
-    end)
+local function GetCartEntry(productId)
+    for _, entry in ipairs(cart) do
+        if entry.Id == productId then return entry end
+    end
+    return nil
+end
 
-    local candidates = { "Icon", "JobIcon", "IconSmall", "JobIconSmall" }
-    for _, propertyName in ipairs(candidates) do
-        local success, sprite = pcall(function()
-            return prefab[propertyName]
-        end)
-        if success and sprite ~= nil then
-            return sprite, color
+local function GetCartTotal()
+    local total = 0
+    for _, entry in ipairs(cart) do
+        local product = productById[entry.Id]
+        if product ~= nil then
+            total = total + (product.Price or 0) * math.max(1, entry.Quantity or 1)
         end
     end
-
-    return nil, nil
+    return total
 end
 
-local function GetItemIconData(iconIdentifier)
-    if iconIdentifier == nil or iconIdentifier == "" then return nil, nil end
+local function AddToCart(product)
+    if product == nil then return end
 
-    if string.sub(tostring(iconIdentifier), 1, 4) == "job:" then
-        return GetJobIconData(string.sub(tostring(iconIdentifier), 5))
+    local entry = GetCartEntry(product.Id)
+    if entry == nil then
+        entry = { Id = product.Id, Quantity = 0 }
+        table.insert(cart, entry)
     end
 
-    local ok, prefab = pcall(function()
-        return ItemPrefab.GetItemPrefab(iconIdentifier)
-    end)
-    if not ok or prefab == nil then return nil, nil end
+    local maxQuantity = math.max(1, tonumber(product.MaxQuantity) or 1)
+    local nextQuantity = math.min(entry.Quantity + 1, maxQuantity)
+    if product.Stock ~= nil and product.Stock >= 0 then
+        nextQuantity = math.min(nextQuantity, product.Stock)
+    end
+    entry.Quantity = math.max(1, nextQuantity)
+end
 
-    local sprite = nil
-    local color = Color(255, 255, 255, 255)
-
-    ok = pcall(function()
-        sprite = prefab.InventoryIcon
-        if sprite ~= nil then
-            color = prefab.InventoryIconColor
-        end
-    end)
-    if not ok then sprite = nil end
-
-    if sprite == nil then
-        ok = pcall(function()
-            sprite = prefab.Sprite
-            if sprite ~= nil then
-                color = prefab.SpriteColor
+local function RemoveFromCart(productId)
+    for index, entry in ipairs(cart) do
+        if entry.Id == productId then
+            if entry.Quantity > 1 then
+                entry.Quantity = entry.Quantity - 1
+            else
+                table.remove(cart, index)
             end
-        end)
-        if not ok then sprite = nil end
+            return
+        end
     end
-
-    return sprite, color
 end
 
-local function CreateProductIcon(parent, iconIdentifier, enabled)
-    -- Square vanilla-framed icon slot. The row height is sized around this slot,
-    -- otherwise Barotrauma compresses the inventory sprite into a wide rectangle.
-    local box = GUI.Frame(CreateRect(1, 1, parent, GUI.Anchor.Center), "GUIFrameListBox")
-    box.CanBeFocused = false
-
-    box.RectTransform.IsFixedSize = true
-    box.RectTransform.MinSize = Point(ITEM_ICON_PIXELS, ITEM_ICON_PIXELS)
-    box.RectTransform.MaxSize = Point(ITEM_ICON_PIXELS, ITEM_ICON_PIXELS)
-
-    local sprite, spriteColor = GetItemIconData(iconIdentifier)
-    if sprite == nil then return end
-
-    local ok, image = pcall(function()
-        return GUI.Image(CreateRect(0.82, 0.82, box, GUI.Anchor.Center), sprite, true)
-    end)
-
-    if ok and image ~= nil then
-        image.Color = enabled == false and Color(105, 105, 105, 190) or spriteColor
-        return image, spriteColor
-    end
-
-    return nil, nil
+local function ClearCart()
+    cart = {}
+    selectedProductId = nil
 end
 
 local function SendBuyRequest(entries)
-    if entries == nil or #entries == 0 then return end
     if buyRequestPending then return end
-
     buyRequestPending = true
-    local ok, err = pcall(function()
+
+    local ok = pcall(function()
         local msg = Networking.Start(NET_BUY_CART)
         msg.WriteInt32(#entries)
         for _, entry in ipairs(entries) do
@@ -1148,144 +784,168 @@ local function SendBuyRequest(entries)
 
     if not ok then
         buyRequestPending = false
-        print("[VoidTraitor.PointshopGui] Failed to send buy request: " .. tostring(err))
-        return
     end
-
-    Timer.Wait(function()
-        buyRequestPending = false
-    end, 1500)
 end
 
 local function BuyCart()
+    if #cart == 0 then return end
     SendBuyRequest(cart)
 end
 
+local function GetFolderTree()
+    local categories = {}
+    local categoryByIdentifier = {}
 
-local function CreateFolderIcon(parent, folder, selected)
-    local holder = GUI.Frame(CreateRect(0.070, 0.88, parent, nil), nil)
-    holder.Color = Color(0, 0, 0, 0)
-    holder.CanBeFocused = false
+    for _, product in ipairs(products) do
+        local categoryIdentifier = tostring(product.CategoryIdentifier or "")
+        local categoryName = tostring(product.CategoryName or categoryIdentifier)
+        local categoryIconIdentifier = tostring(product.CategoryIconIdentifier or "")
 
-    local sprite, spriteColor = GetItemIconData(folder.IconIdentifier)
-    if sprite ~= nil then
-        local ok, image = pcall(function()
-            return GUI.Image(CreateRect(0.82, 0.82, holder, GUI.Anchor.Center), sprite, true)
-        end)
-        if ok and image ~= nil then
-            image.Color = spriteColor
+        local category = categoryByIdentifier[categoryIdentifier]
+        if category == nil then
+            category = {
+                Identifier = categoryIdentifier,
+                Name = categoryName,
+                IconIdentifier = categoryIconIdentifier,
+                Children = {},
+                ChildByIdentifier = {},
+                Products = {},
+                PathIdentifiers = "",
+                PathNames = "",
+                Parent = nil,
+            }
+            categoryByIdentifier[categoryIdentifier] = category
+            table.insert(categories, category)
         end
-        return holder
+
+        local identifiers = SplitSlash(product.PathIdentifiers)
+        local names = SplitSlash(product.PathNames)
+        local icons = SplitSlash(product.PathIcons)
+        local node = category
+        local idPath = {}
+        local namePath = {}
+
+        for index, identifier in ipairs(identifiers) do
+            table.insert(idPath, identifier)
+            table.insert(namePath, names[index] or identifier)
+
+            local child = node.ChildByIdentifier[identifier]
+            if child == nil then
+                child = {
+                    Identifier = identifier,
+                    Name = names[index] or identifier,
+                    IconIdentifier = icons[index] or "",
+                    Children = {},
+                    ChildByIdentifier = {},
+                    Products = {},
+                    PathIdentifiers = table.concat(idPath, "/"),
+                    PathNames = table.concat(namePath, "/"),
+                    Parent = node,
+                }
+                node.ChildByIdentifier[identifier] = child
+                table.insert(node.Children, child)
+            end
+            node = child
+        end
+
+        table.insert(node.Products, product)
     end
 
-    local marker = folder.Depth == 0 and "■" or ">"
-    if folder.HasChildren then
-        marker = IsFolderExpanded(folder.Key) and "v" or ">"
-    end
-    local color = selected and Color(255, 245, 190, 255) or (folder.Depth == 0 and Color(160, 210, 180, 255) or Color(120, 230, 190, 255))
-    CreateText(holder, 1, 1, GUI.Anchor.Center, marker, GUI.Alignment.Center, folder.Depth == 0 and 0.95 or 1.18, color, false)
-    return holder
+    return categories
 end
 
-local function AddCategoryButton(list, folder)
-    local selected = folder.Category == selectedCategory and folder.Path == (selectedPath or "")
-    local rowHeight = folder.Depth == 0 and 0.073 or 0.061
-    local row = CreateButton(list.Content, 1, rowHeight, GUI.Anchor.TopLeft, "", true, selected, "ListBoxElement")
-
-    local inner = GUI.LayoutGroup(CreateRect(0.94, 0.92, row, GUI.Anchor.Center), true, GUI.Anchor.CenterLeft)
-    pcall(function()
-        inner.Stretch = true
-        inner.RelativeSpacing = 0.004
+local function SortFolders(folders)
+    table.sort(folders, function(a, b)
+        return string.lower(tostring(a.Name or "")) < string.lower(tostring(b.Name or ""))
     end)
-
-    local indentWidth = math.min(0.035 * folder.Depth, 0.12)
-    if indentWidth > 0 then
-        local indent = GUI.Frame(CreateRect(indentWidth, 1, inner, nil), nil)
-        indent.Color = Color(0, 0, 0, 0)
-        indent.CanBeFocused = false
-    end
-
-    CreateFolderIcon(inner, folder, selected)
-
-    local function getFolderInfoText()
-        if folder.ClassLimitKey ~= nil and folder.ClassLimitKey ~= "" then
-            return classLimitValues[folder.ClassLimitKey] or ""
-        end
-        return folder.InfoText or ""
-    end
-
-    local function getLabelText()
-        local label = folder.Label
-        local infoText = getFolderInfoText()
-        if infoText ~= nil and infoText ~= "" then
-            label = label .. "  - " .. infoText
-        elseif folder.Count > 0 then
-            label = label .. "  (" .. tostring(folder.Count) .. ")"
-        end
-        if folder.Depth > 0 then
-            label = ">  " .. label
-        end
-
-        local folderCooldown = GetCooldownRemaining(folder)
-        local active = shopMode == "ghost" and folderCooldown > 0 and (folder.DirectCount or 0) > 0
-        if active then
-            label = label .. "  - " .. GetText("Cooldown") .. ": " .. FormatSeconds(folderCooldown)
-        end
-        return label, active
-    end
-
-    local nameScale = folder.Depth == 0 and 0.95 or 0.90
-    local nameColor = selected and Color(255, 245, 190, 255) or (folder.Depth == 0 and Color(225, 230, 215, 255) or Color(210, 235, 220, 255))
-    local name = CreateText(inner, 0.86 - indentWidth, 0.88, nil, getLabelText(), GUI.Alignment.Left, nameScale, nameColor, false)
-    pcall(function()
-        name.AutoScaleHorizontal = true
-        name.Font = GUI.Style.SubHeadingFont
-    end)
-    if shopMode == "ghost" and (folder.DirectCount or 0) > 0 and GetCooldownRemaining(folder) > 0 then
-        RegisterCooldownText("shop", name, getLabelText)
-    end
-    if shopMode == "attackdefend" and folder.ClassLimitKey ~= nil and folder.ClassLimitKey ~= "" then
-        RegisterClassLimitText("shop", name, getLabelText)
-    end
-
-    row.OnClicked = function()
-        if folder.HasChildren and (folder.DirectCount or 0) == 0 then
-            ToggleFolder(folder.Key)
-            currentView = "categories"
-        else
-            selectedCategory = folder.Category
-            selectedPath = folder.Path
-            ClearPendingIfOutsideSelectedFolder()
-            currentView = "products"
-        end
-        shopListScroll = 0
-        ShowMenu()
-        return true
+    for _, folder in ipairs(folders) do
+        SortFolders(folder.Children)
     end
 end
 
+local function GetFolderDisplayCount(folder)
+    local count = #folder.Products
+    for _, child in ipairs(folder.Children) do
+        count = count + GetFolderDisplayCount(child)
+    end
+    return count
+end
+
+local function GetFolderByPath(category, path)
+    if category == nil then return nil end
+    if path == nil or path == "" then return category end
+
+    local node = category
+    for _, identifier in ipairs(SplitSlash(path)) do
+        node = node.ChildByIdentifier[identifier]
+        if node == nil then return nil end
+    end
+    return node
+end
+
+local function GetSelectedFolder()
+    if selectedCategory == nil then return nil end
+    local categories = GetFolderTree()
+    SortFolders(categories)
+    for _, category in ipairs(categories) do
+        if category.Identifier == selectedCategory then
+            return GetFolderByPath(category, selectedPath)
+        end
+    end
+    return nil
+end
+
+local function GetSelectedFolderName()
+    local folder = GetSelectedFolder()
+    if folder == nil then return GetText("Categories") end
+    return folder.Name or GetText("Categories")
+end
+
+local function GetClassSelectText()
+    local value = GetText("SelectClassAction")
+    if value == "" then value = GetText("SelectGhostAction") end
+    return value
+end
+
+local function SelectedFolderHasClassProducts()
+    if shopMode ~= "attackdefend" then return false end
+    for _, product in ipairs(products) do
+        if ProductMatchesSelectedFolder(product) and IsClassProduct(product) then
+            return true
+        end
+    end
+    return false
+end
 
 local function CreateRowInner(row, width, height)
-    local inner = GUI.Frame(CreateRect(width or 0.94, height or 0.90, row, GUI.Anchor.Center), nil)
-    inner.Color = Color(0, 0, 0, 0)
-    return GUI.LayoutGroup(CreateRect(1, 1, inner, GUI.Anchor.Center), true, GUI.Anchor.CenterLeft)
+    return CreateLayout(row, width, height, GUI.Anchor.Center, true, GUI.Anchor.CenterLeft)
 end
 
-local function CreateStoreActionButton(parent, width, style, enabled)
-    local holder = GUI.Frame(CreateRect(width or 0.155, 1, parent, nil), nil)
-    holder.Color = Color(0, 0, 0, 0)
-    holder.CanBeFocused = false
+local function CreateProductIcon(parent, iconIdentifier, enabled)
+    local box = GUI.Frame(CreateRect(1, 1, parent, GUI.Anchor.Center), "GUIFrameListBox")
+    box.CanBeFocused = false
+    box.RectTransform.IsFixedSize = true
+    box.RectTransform.MinSize = Point(ITEM_ICON_PIXELS, ITEM_ICON_PIXELS)
+    box.RectTransform.MaxSize = Point(ITEM_ICON_PIXELS, ITEM_ICON_PIXELS)
 
-    local button = GUI.Button(CreateRect(0.92, 0.92, holder, GUI.Anchor.Center), "", GUI.Alignment.Center, style)
-    button.Enabled = enabled ~= false
-    button.RectTransform.IsFixedSize = true
-    button.RectTransform.MinSize = Point(ACTION_BUTTON_PIXELS, ACTION_BUTTON_PIXELS)
-    button.RectTransform.MaxSize = Point(math.floor(ACTION_BUTTON_PIXELS * 1.12), math.floor(ACTION_BUTTON_PIXELS * 1.12))
-    if button.TextBlock ~= nil then
-        button.TextBlock.Text = ""
+    local sprite, spriteColor = Common.GetPrefabIconData(iconIdentifier)
+    if sprite == nil then return end
+
+    local image = GUI.Image(CreateRect(0.82, 0.82, box, GUI.Anchor.Center), sprite, true)
+    if image ~= nil then
+        image.Color = enabled == false and Color(105, 105, 105, 190) or spriteColor
+        return image, spriteColor
     end
 
-    return button
+    return nil, nil
+end
+
+local function UpdateProductRowSelection()
+    for _, entry in ipairs(productRows) do
+        if entry.Row ~= nil and entry.Product ~= nil then
+            entry.Row.Selected = entry.Product.Id == selectedProductId
+        end
+    end
 end
 
 local function GetProductRowSubText(product)
@@ -1303,12 +963,27 @@ local function GetProductRowSubText(product)
     return product.Type or ""
 end
 
+local function CreateStoreActionButton(parent, width, style, enabled)
+    local holder = GUI.Frame(CreateRect(width, 1, parent, nil), nil)
+    holder.Color = Color(0, 0, 0, 0)
+    holder.CanBeFocused = false
+
+    local button = GUI.Button(CreateRect(0.92, 0.92, holder, GUI.Anchor.Center), "", GUI.Alignment.Center, style)
+    button.Enabled = enabled ~= false
+    button.RectTransform.IsFixedSize = true
+    button.RectTransform.MinSize = Point(ACTION_BUTTON_PIXELS, ACTION_BUTTON_PIXELS)
+    button.RectTransform.MaxSize = Point(math.floor(ACTION_BUTTON_PIXELS * 1.12), math.floor(ACTION_BUTTON_PIXELS * 1.12))
+    if button.TextBlock ~= nil then
+        button.TextBlock.Text = ""
+    end
+
+    return button
+end
+
 local function AddProductButton(list, product)
     local disabledReason = GetProductDisabledReason(product)
     local enabled = disabledReason == ""
-    local showPrice = ShouldShowProductPrice(product)
-    -- The entire vanilla-style list row is the details button. This restores
-    -- the original large hit area and removes the visible text-only overlay.
+
     local row = CreateButton(list.Content, 1, ITEM_ROW_HEIGHT, GUI.Anchor.TopLeft, "", true, selectedProductId == product.Id, "ListBoxElement")
     if row.TextBlock ~= nil then row.TextBlock.Text = "" end
 
@@ -1324,11 +999,10 @@ local function AddProductButton(list, product)
     iconHolder.RectTransform.MaxSize = Point(ITEM_ICON_PIXELS, ITEM_ICON_PIXELS)
     local icon, iconColor = CreateProductIcon(iconHolder, product.IconIdentifier, enabled)
 
-    -- Give the name back the price column when the original PointShop would
-    -- hide a zero price (notably Attack Defend classes).
-    local textGroup = GUI.Frame(CreateRect(showPrice and 0.500 or 0.625, 0.90, inner, nil), nil)
-    textGroup.Color = Color(0, 0, 0, 0)
-    textGroup.CanBeFocused = false
+    local showPrice = ShouldShowProductPrice(product)
+    local textGroup = CreateLayout(inner, showPrice and 0.535 or 0.66, 0.95, nil, false, GUI.Anchor.CenterLeft)
+    textGroup.RelativeSpacing = 0
+    textGroup.Stretch = true
 
     local nameText = string.upper(tostring(product.Name or ""))
     local name = CreateText(textGroup, 1, 0.66, GUI.Anchor.TopLeft, nameText, GUI.Alignment.Left, 0.88, enabled and Color(235, 235, 225, 255) or Color(130, 130, 130, 255), true)
@@ -1378,7 +1052,6 @@ local function AddProductButton(list, product)
             if shopMode == "ghost" or IsClassProduct(product) then
                 pendingProductId = product.Id
             else
-                pendingProductId = nil
                 AddToCart(product)
             end
             RefreshCartOnly()
@@ -1388,14 +1061,8 @@ local function AddProductButton(list, product)
         end
         return true
     end
-
+    row.OnClicked = addProduct
     cartButton.OnClicked = addProduct
-    row.OnClicked = function()
-        selectedProductId = product.Id
-        UpdateProductRowSelection()
-        RefreshCartOnly()
-        return true
-    end
 end
 
 local function RefreshProductRows()
@@ -1422,10 +1089,8 @@ end
 local function AddCartButton(list, entry)
     local product = productById[entry.Id]
     if product == nil then return end
-    local showPrice = ShouldShowProductPrice(product)
 
-    local row = GUI.Frame(CreateRect(1, ITEM_ROW_HEIGHT, list.Content, GUI.Anchor.TopLeft), nil)
-    row.Color = Color(0, 0, 0, 0)
+    local row = GUI.Frame(CreateRect(1, ITEM_ROW_HEIGHT, list.Content, GUI.Anchor.TopLeft), "ListBoxElement")
     row.CanBeFocused = false
 
     local inner = CreateRowInner(row, 0.968, 0.90)
@@ -1440,442 +1105,422 @@ local function AddCartButton(list, entry)
     iconHolder.RectTransform.MaxSize = Point(ITEM_ICON_PIXELS, ITEM_ICON_PIXELS)
     CreateProductIcon(iconHolder, product.IconIdentifier, true)
 
-    local qty = entry.Quantity or 1
+    local textGroup = CreateLayout(inner, 0.46, 0.95, nil, false, GUI.Anchor.CenterLeft)
+    textGroup.RelativeSpacing = 0
+    textGroup.Stretch = true
 
-    local textGroup = GUI.Frame(CreateRect(showPrice and 0.500 or 0.625, 0.90, inner, nil), nil)
-    textGroup.Color = Color(0, 0, 0, 0)
-    textGroup.CanBeFocused = false
-
-    local name = CreateText(textGroup, 1, 0.66, GUI.Anchor.TopLeft, tostring(product.Name or ""), GUI.Alignment.Left, 0.88, nil, true)
+    local nameText = string.upper(tostring(product.Name or ""))
+    local name = CreateText(textGroup, 1, 0.66, GUI.Anchor.TopLeft, nameText, GUI.Alignment.Left, 0.88, Color(235, 235, 225, 255), true)
     name.Font = GUI.Style.SubHeadingFont
     name.AutoScaleHorizontal = false
     name.AutoScaleVertical = false
 
-    local quantityText = GetText("Quantity") .. ": " .. tostring(qty)
-    local quantity = CreateText(textGroup, 1, 0.24, GUI.Anchor.BottomLeft, quantityText, GUI.Alignment.Left, 0.92, Color(190, 205, 190, 235), false)
-    quantity.AutoScaleHorizontal = true
+    local details = CreateText(textGroup, 1, 0.24, GUI.Anchor.BottomLeft, GetText("Quantity") .. ": " .. tostring(entry.Quantity or 1), GUI.Alignment.Left, 0.80, Color(190, 205, 190, 235), false)
+    details.AutoScaleHorizontal = false
+    details.AutoScaleVertical = false
 
-    if showPrice then
-        local price = CreateText(inner, 0.125, 0.72, nil, tostring((product.Price or 0) * qty) .. " pt", GUI.Alignment.Right, 0.96, Color(255, 245, 210, 255), false)
-        price.Font = GUI.Style.SubHeadingFont
-        price.AutoScaleHorizontal = true
-    end
+    local price = CreateText(inner, 0.14, 0.72, nil, tostring((product.Price or 0) * (entry.Quantity or 1)) .. " pt", GUI.Alignment.Right, 0.96, Color(255, 245, 210, 255), false)
+    price.Font = GUI.Style.SubHeadingFont
+    price.AutoScaleHorizontal = true
 
     local removeButton = CreateStoreActionButton(inner, 0.165, "StoreRemoveFromCrateButton", true)
-    local removeProduct = function()
-        RemoveFromCart(entry.Id)
+    removeButton.OnClicked = function()
+        RemoveFromCart(product.Id)
         RefreshCartOnly()
         return true
     end
-
-    removeButton.OnClicked = removeProduct
-end
-
-local function CreateLayout(parent, width, height, anchor, isHorizontal, childAnchor)
-    local layout = GUI.LayoutGroup(CreateRect(width, height, parent, anchor), isHorizontal == true, childAnchor or GUI.Anchor.TopLeft)
-    layout.Stretch = true
-    layout.RelativeSpacing = 0.006
-    return layout
-end
-
-local function CreateDivider(parent, height)
-    local frame = GUI.Frame(CreateRect(1, height or 0.02, parent), nil)
-    frame.Color = Color(0, 0, 0, 0)
-    pcall(function()
-        GUI.Image(CreateRect(1, 0.55, frame, GUI.Anchor.Center), "HorizontalLine")
-    end)
-    return frame
-end
-
-local function CreatePanelTitle(parent, titleText, iconStyle, alignRight)
-    local header = GUI.Frame(CreateRect(1, 0.095, parent, nil), nil)
-    header.Color = Color(0, 0, 0, 0)
-    header.CanBeFocused = false
-
-    if not alignRight then
-        local layout = GUI.LayoutGroup(CreateRect(1, 1, header, GUI.Anchor.Center), true, GUI.Anchor.CenterLeft)
-        pcall(function()
-            layout.Stretch = true
-            layout.RelativeSpacing = 0.010
-        end)
-
-        pcall(function()
-            GUI.Image(CreateRect(0.087, 0.98, layout, nil), iconStyle or "StoreTradingIcon", true)
-        end)
-
-        local title = CreateText(layout, 0.88, 1, nil, titleText, GUI.Alignment.Left, 1.42, Color(255, 245, 190, 255), false)
-        pcall(function() title.Font = GUI.Style.LargeFont end)
-        return title
-    end
-
-    -- Right-anchored horizontal layout fills children from right to left.
-    -- Create the icon first, then the title: visually the text goes first,
-    -- the icon follows it, and the whole group stays in the right corner.
-    local layout = GUI.LayoutGroup(CreateRect(0.82, 1, header, GUI.Anchor.TopRight), true, GUI.Anchor.CenterRight)
-    pcall(function()
-        layout.Stretch = true
-        layout.RelativeSpacing = 0.012
-    end)
-
-    pcall(function()
-        GUI.Image(CreateRect(0.115, 0.92, layout, nil), iconStyle or "StoreShoppingCrateIcon", true)
-    end)
-
-    local title = CreateText(layout, 0.70, 1, nil, titleText, GUI.Alignment.Right, 1.42, Color(255, 245, 190, 255), false)
-    pcall(function() title.Font = GUI.Style.LargeFont end)
-
-    return title
 end
 
 local function BuildPurchaseSummary(parent, total)
-    -- The outer holder occupies the normal layout row. The actual summary is
-    -- a compact right-aligned group, so GUILayout cannot stretch the three
-    -- columns over the whole cart width.
-    local holder = GUI.Frame(CreateRect(1, 0.054, parent, nil), nil)
-    holder.Color = Color(0, 0, 0, 0)
-    holder.CanBeFocused = false
+    local summary = GUI.Frame(CreateRect(1, 0.12, parent, nil), "GUIFrame")
+    summary.CanBeFocused = false
 
-    local summary = GUI.LayoutGroup(CreateRect(0.58, 1, holder, GUI.Anchor.TopRight), true, GUI.Anchor.TopRight)
-    pcall(function()
-        summary.Stretch = true
-        summary.RelativeSpacing = 0.005
-    end)
+    local row = CreateLayout(summary, 0.95, 0.82, GUI.Anchor.Center, true, GUI.Anchor.CenterLeft)
+    row.RelativeSpacing = 0.008
+    row.Stretch = true
 
-    local function addColumn(label, value)
-        local column = CreateLayout(summary, 0.333, 1, nil, false, GUI.Anchor.TopRight)
-        pcall(function() column.RelativeSpacing = 0.005 end)
-        local labelBlock = CreateText(column, 1, 0.50, nil, label, GUI.Alignment.BottomCenter, 1.00, Color(235, 225, 180, 255), false)
-        local valueBlock = CreateText(column, 1, 0.50, nil, tostring(value) .. " pt", GUI.Alignment.TopCenter, 1.10, Color(255, 255, 255, 255), false)
-        pcall(function()
-            labelBlock.Font = GUI.Style.Font
-            labelBlock.AutoScaleVertical = true
-            labelBlock.CanBeFocused = false
-            valueBlock.Font = GUI.Style.SubHeadingFont
-            valueBlock.AutoScaleVertical = true
-            valueBlock.CanBeFocused = false
-        end)
-    end
+    local left = CreateLayout(row, 0.53, 1, nil, false, GUI.Anchor.TopLeft)
+    left.RelativeSpacing = 0.001
+    left.Stretch = true
+    CreateText(left, 1, 0.44, nil, GetText("Points"), GUI.Alignment.Left, 0.78, Color(190, 200, 185, 255))
+    local points = CreateText(left, 1, 0.56, nil, tostring(currentPoints), GUI.Alignment.Left, 1.12, Color(255, 245, 210, 255))
+    points.Font = GUI.Style.SubHeadingFont
 
-    -- A TopRight GUILayoutGroup fills from right to left, like vanilla.
-    addColumn(GetText("After"), currentPoints - total)
-    addColumn(GetText("Total"), total)
-    addColumn(GetText("Points"), currentPoints)
+    local right = CreateLayout(row, 0.45, 1, nil, false, GUI.Anchor.TopLeft)
+    right.RelativeSpacing = 0.001
+    right.Stretch = true
+    CreateText(right, 1, 0.44, nil, GetText("After"), GUI.Alignment.Right, 0.78, Color(190, 200, 185, 255))
+    local after = CreateText(right, 1, 0.56, nil, tostring(currentPoints - (total or 0)), GUI.Alignment.Right, 1.12, Color(255, 245, 210, 255))
+    after.Font = GUI.Style.SubHeadingFont
 end
 
 local function CreateProductDetails(parent, product, height)
     if product == nil then return nil end
+    height = height or 0.36
 
-    local card = GUI.Frame(CreateRect(1, height or 0.30, parent, GUI.Anchor.TopLeft), nil)
-    card.Color = Color(0, 0, 0, 0)
-    card.CanBeFocused = false
+    local frame = GUI.Frame(CreateRect(1, height, parent, nil), "GUIFrame")
+    frame.CanBeFocused = false
 
-    local details = CreateLayout(card, 0.94, 0.92, GUI.Anchor.Center, false, GUI.Anchor.TopLeft)
-    pcall(function()
-        details.RelativeSpacing = 0.008
-        details.Stretch = true
-    end)
+    local content = CreateLayout(frame, 0.94, 0.88, GUI.Anchor.Center, false, GUI.Anchor.TopLeft)
+    content.RelativeSpacing = 0.005
+    content.Stretch = true
 
-    local header = CreateLayout(details, 1, 0.54, nil, true, GUI.Anchor.CenterLeft)
-    pcall(function() header.RelativeSpacing = 0.012 end)
-    local iconHolder = GUI.Frame(CreateRect(0.23, 1, header, nil), nil)
+    local top = CreateLayout(content, 1, 0.42, nil, true, GUI.Anchor.CenterLeft)
+    top.RelativeSpacing = 0.012
+    top.Stretch = true
+
+    local iconHolder = GUI.Frame(CreateRect(0.23, 1, top, nil), nil)
     iconHolder.Color = Color(0, 0, 0, 0)
     iconHolder.CanBeFocused = false
-    CreateProductIcon(iconHolder, product.IconIdentifier, GetProductDisabledReason(product) == "")
+    CreateProductIcon(iconHolder, product.IconIdentifier, true)
 
-    local heading = CreateLayout(header, 0.77, 1, nil, false, GUI.Anchor.TopLeft)
-    pcall(function() heading.RelativeSpacing = 0.006 end)
-    local name = CreateText(heading, 1, 0.30, nil, string.upper(tostring(product.Name or "")), GUI.Alignment.Left, 1.00, Color(255, 245, 210, 255), true)
-    pcall(function() name.Font = GUI.Style.SubHeadingFont end)
+    local info = CreateLayout(top, 0.75, 0.94, nil, false, GUI.Anchor.TopLeft)
+    info.RelativeSpacing = 0.004
+    info.Stretch = true
+
+    local name = CreateText(info, 1, 0.60, nil, string.upper(tostring(product.Name or "")), GUI.Alignment.Left, 1.05, Color(245, 240, 215, 255), true)
+    name.Font = GUI.Style.SubHeadingFont
+    name.AutoScaleHorizontal = true
+    local price = ShouldShowProductPrice(product) and (tostring(product.Price or 0) .. " pt") or ""
+    if price ~= "" then
+        CreateText(info, 1, 0.34, nil, price, GUI.Alignment.Left, 0.90, Color(255, 235, 190, 255))
+    end
+
     local description = GetProductDescriptionText(product)
-    local descriptionBlock = CreateText(heading, 1, 0.70, nil, description, GUI.Alignment.Left, 0.84, Color(210, 220, 205, 230), true)
-    if IsClassProduct(product) then
-        RegisterClassLimitText("cart", descriptionBlock, function() return GetProductDescriptionText(product) end)
-    end
-
-    local infoLines = {}
-    if ShouldShowProductPrice(product) then
-        table.insert(infoLines, string.format("%s:  %d pt", GetText("Price"), tonumber(product.Price) or 0))
-    end
-    if ShouldShowProductStock(product) then
-        table.insert(infoLines, GetText("Remaining") .. ":  " .. GetProductStockDisplay(product))
-    end
-    table.insert(infoLines, GetText("Category") .. ":  " .. tostring(product.Category or ""))
-    local info = table.concat(infoLines, "\n")
-    CreateText(details, 1, 0.29, nil, info, GUI.Alignment.Left, 0.88, Color(225, 225, 205, 255), true)
-
-    local cooldown = GetCooldownRemaining(product)
-    local reason = GetProductDisabledReason(product)
-    if cooldown > 0 or reason ~= "" then
-        local function getStatusText()
-            local remaining = GetCooldownRemaining(product)
-            if remaining > 0 then
-                return GetText("Cooldown") .. ": " .. FormatSeconds(remaining), true
-            end
-            local currentReason = GetProductDisabledReason(product)
-            if currentReason ~= "" then
-                return GetText("Unavailable") .. ":\n" .. currentReason, false
-            end
-            return "", false
+    if description ~= "" then
+        local descriptionBlock = CreateText(content, 1, 0.42, nil, description, GUI.Alignment.TopLeft, 0.78, Color(205, 210, 195, 255), true)
+        descriptionBlock.AutoScaleVertical = true
+        if IsClassProduct(product) then
+            RegisterClassLimitText("cart", descriptionBlock, function()
+                return GetProductDescriptionText(product)
+            end)
         end
-        local status = CreateText(details, 1, 0.17, nil, getStatusText(), GUI.Alignment.Left, 0.86, Color(255, 210, 145, 255), true)
-        if cooldown > 0 then RegisterCooldownText("cart", status, getStatusText) end
     end
 
-    return card
+    return frame
 end
 
-local function BuildHeader(parent)
-    CreatePanelTitle(parent, GetText("Shop"), "StoreTradingIcon", false)
+local function SetFilterButtonLabel()
+    if filterButton == nil then return end
 
-    local balance = CreateText(parent, 1, 0.070, nil, GetText("Balance") .. "\n" .. tostring(currentPoints) .. " pt", GUI.Alignment.Left, 1.12, Color(235, 230, 185, 255))
-    pcall(function() balance.AutoScaleVertical = true end)
-
-    local tabs = CreateLayout(parent, 1, 0.030, nil, true, GUI.Anchor.CenterLeft)
-    pcall(function() tabs.RelativeSpacing = 0 end)
-
-    local categoryTab = CreateButton(tabs, 0.50, 1, nil, GetText("Categories"), true, currentView == "categories", "GUITabButton")
-    categoryTab.OnClicked = function()
-        currentView = "categories"
-        ShowMenu()
-        return true
+    local label = GetText("FilterAll")
+    if selectedFilter == "available" then
+        label = GetText("FilterAvailable")
+    elseif selectedFilter == "affordable" then
+        label = GetText("FilterAffordable")
     end
 
-    local buyTab = CreateButton(tabs, 0.50, 1, nil, GetText("BuyTab"), true, currentView == "products", "GUITabButton")
-    buyTab.OnClicked = function()
-        if selectedCategory == nil and products[1] ~= nil then
-            selectedCategory = products[1].Category
-            selectedPath = products[1].Path or ""
-        end
-        currentView = "products"
-        shopListScroll = 0
-        ShowMenu()
-        return true
-    end
-
-    CreateDivider(parent, 0.018)
-end
-
-local function GetSelectedFilterLabel()
-    if selectedFilter == "available" then return GetText("FilterAvailable") end
-    if selectedFilter == "affordable" then return GetText("FilterAffordable") end
-    return GetText("FilterAll")
+    filterButton.Text = label
 end
 
 CloseFilterPopup = function()
     if filterPopup == nil then return end
-    if filterButton ~= nil then filterButton.Selected = false end
-    pcall(function() filterPopup:RemoveFromGUIUpdateList(true) end)
-    pcall(function()
-        filterPopup.Visible = false
-        if filterPopup.RectTransform ~= nil then
-            filterPopup.RectTransform.Parent = nil
-        end
-    end)
+    filterPopup:RemoveFromGUIUpdateList(true)
+    filterPopup.RectTransform.Parent = nil
+    filterPopup.Visible = false
     filterPopup = nil
 end
 
-local function ToggleFilterPopup(button)
+local function SelectFilter(value)
+    selectedFilter = value
+    SetFilterButtonLabel()
+    CloseFilterPopup()
+    if rebuildProductList ~= nil then rebuildProductList(false) end
+end
+
+local function ToggleFilterPopup(parent)
     if filterPopup ~= nil then
         CloseFilterPopup()
         return
     end
-    if currentMenu == nil or button == nil then return end
 
-    -- Keep the exact screen geometry of the button, but make the popup the last
-    -- child of the menu overlay. If it stays inside the filter button's layout
-    -- branch, the product list is added later and gets drawn over the options.
-    local menuWidth = math.max(currentMenu.Rect.Width, 1)
-    local menuHeight = math.max(currentMenu.Rect.Height, 1)
-    local popupWidth = math.max(button.Rect.Width, 1)
-    local popupHeight = math.max(button.Rect.Height * 3, 3)
-    local popupRect = GUI.RectTransform(
-        -- RectTransform truncates relative sizes to whole pixels. The small
-        -- subpixel guard prevents an exact button width from becoming 1 px
-        -- narrower after the screen-space reparenting.
-        Vector2((popupWidth + 0.25) / menuWidth, (popupHeight + 0.25) / menuHeight),
-        currentMenu.RectTransform,
-        GUI.Anchor.TopLeft,
-        GUI.Pivot.TopLeft
-    )
-    popupRect.ScreenSpaceOffset = Point(
-        button.Rect.X - currentMenu.Rect.X,
-        button.Rect.Bottom - currentMenu.Rect.Y + 1
-    )
+    filterPopup = GUI.Frame(CreateRect(0.46, 0.30, parent, GUI.Anchor.BottomRight), "GUIFrame")
+    filterPopup.CanBeFocused = true
+    filterPopup.RectTransform.AbsoluteOffset = Point(0, 6)
 
-    -- Draw the same single frame as the vanilla GUIDropDown list, but keep the
-    -- three choices in a plain layout. A GUIListBox would reserve/restore its
-    -- scrollbar on the next update even when all three entries fit.
-    local popup = GUI.Frame(popupRect, "GUIFrameListBox")
-    popup.IgnoreLayoutGroups = true
-    popup.CanBeFocused = true
-    pcall(function()
-        GUI.Style.Apply(popup, "GUIListBox", button)
-    end)
-    filterPopup = popup
-    button.Selected = true
+    local list = CreateLayout(filterPopup, 0.94, 0.90, GUI.Anchor.Center, false, GUI.Anchor.TopLeft)
+    list.RelativeSpacing = 0.01
+    list.Stretch = true
 
-    local options = GUI.LayoutGroup(CreateRect(0.98, 0.96, popup, GUI.Anchor.Center), false, GUI.Anchor.TopLeft)
-    pcall(function()
-        options.Stretch = true
-        options.RelativeSpacing = 0
-    end)
-
-    local entries = {
-        { Value = "all", Label = GetText("FilterAll") },
-        { Value = "available", Label = GetText("FilterAvailable") },
-        { Value = "affordable", Label = GetText("FilterAffordable") },
+    local options = {
+        { "all", GetText("FilterAll") },
+        { "available", GetText("FilterAvailable") },
+        { "affordable", GetText("FilterAffordable") },
     }
-    for _, entry in ipairs(entries) do
-        local optionValue = entry.Value
-        local optionLabel = entry.Label
-        local option = GUI.Button(CreateRect(1, 0.333, options, nil), "", GUI.Alignment.CenterLeft, "ListBoxElement")
-        SetButtonStyle(option, true, selectedFilter == optionValue)
-        -- The vanilla GUITextBlock style already provides a 10 px padding.
-        -- Do not combine it with an additional percentage-based inset.
-        local optionText = CreateText(option, 1, 1, GUI.Anchor.Center, optionLabel, GUI.Alignment.CenterLeft, 0.96, Color(235, 225, 180, 255), false)
-        optionText.CanBeFocused = false
-        option.OnClicked = function()
-            selectedFilter = optionValue
-            if filterButton ~= nil then
-                filterButton.Text = GetSelectedFilterLabel()
-            end
-            CloseFilterPopup()
-            if rebuildProductList ~= nil then rebuildProductList() end
+
+    for _, option in ipairs(options) do
+        local button = CreateButton(list, 1, 0.30, nil, option[2], true, selectedFilter == option[1])
+        local value = option[1]
+        button.OnClicked = function()
+            SelectFilter(value)
             return true
         end
     end
 
-    -- Keep the popup above the product list in both draw and input order.
-    pcall(function() popup:AddToGUIUpdateList(false, GUI_DRAW_ORDER + 60) end)
+    guiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER + 1)
 end
 
-local function BuildFilterBar(parent)
-    local bar = CreateLayout(parent, 1, 0.082, nil, true, GUI.Anchor.TopLeft)
-    pcall(function() bar.RelativeSpacing = 0.018 end)
+local function BuildSearchAndFilter(parent, rebuild)
+    local row = CreateLayout(parent, 1, 0.10, nil, true, GUI.Anchor.CenterLeft)
+    row.RelativeSpacing = 0.008
+    row.Stretch = true
 
-    local filterGroup = CreateLayout(bar, 0.40, 1, nil, false, GUI.Anchor.TopLeft)
-    pcall(function() filterGroup.RelativeSpacing = 0.002 end)
-    local filterLabel = CreateText(filterGroup, 1, 0.38, nil, GetText("Filter"), GUI.Alignment.BottomLeft, 1.70, Color(235, 225, 180, 255), false)
-    filterLabel.TextOffset = Vector2(0, -2)
-    filterButton = GUI.Button(CreateRect(1, 0.60, filterGroup, nil), GetSelectedFilterLabel(), GUI.Alignment.CenterLeft, "GUIDropDown")
-    SetButtonStyle(filterButton, true, false)
-    pcall(function()
-        filterButton.ForceUpperCase = false
-        filterButton.TextBlock.TextScale = 0.98
-    end)
-    -- DropDownIcon is a child style of GUIDropDown, not a global GUI style.
-    -- Constructing GUI.Image with the string "DropDownIcon" logs an error.
-    pcall(function()
-        local dropDownIcon = GUI.Image(CreateRect(0.12, 0.58, filterButton, GUI.Anchor.CenterRight), nil, true)
-        GUI.Style.Apply(dropDownIcon, "DropDownIcon", filterButton)
-        dropDownIcon.CanBeFocused = false
-        dropDownIcon.IgnoreLayoutGroups = true
-        dropDownIcon.RectTransform.AbsoluteOffset = Point(5, 0)
-    end)
-    filterButton.OnClicked = function(button)
-        ToggleFilterPopup(button)
-        return true
-    end
-
-    local searchGroup = CreateLayout(bar, 0.60, 1, nil, false, GUI.Anchor.TopLeft)
-    pcall(function() searchGroup.RelativeSpacing = 0.002 end)
-    local searchLabel = CreateText(searchGroup, 1, 0.38, nil, GetText("Search"), GUI.Alignment.BottomLeft, 1.70, Color(235, 225, 180, 255), false)
-    searchLabel.TextOffset = Vector2(0, -2)
-    local searchBox = GUI.TextBox(CreateRect(1, 0.60, searchGroup, nil), searchText)
-    searchBox.OnTextChangedDelegate = function(_, value)
-        CloseFilterPopup()
+    local searchBox = GUI.TextBox(CreateRect(0.66, 0.90, row, nil), searchText or "", nil, GUI.Alignment.Left, "GUITextBox")
+    searchBox.PlaceholderText = GetText("Search")
+    searchBox.OnTextChanged = function(_, value)
         searchText = tostring(value or "")
         normalizedSearchText = NormalizeSearchText(searchText)
-        if rebuildProductList ~= nil then rebuildProductList() end
+        rebuild(false)
+    end
+
+    filterButton = CreateButton(row, 0.32, 0.90, nil, "", true, false)
+    SetFilterButtonLabel()
+    filterButton.OnClicked = function()
+        ToggleFilterPopup(parent)
         return true
     end
+end
+
+local function GetFolderIconIdentifier(folder)
+    if folder == nil then return "" end
+    if folder.IconIdentifier ~= nil and folder.IconIdentifier ~= "" then return folder.IconIdentifier end
+    return ""
+end
+
+local function AddCategoryButton(list, folder)
+    local count = GetFolderDisplayCount(folder)
+    local label = tostring(folder.Name or "")
+    if count > 0 then label = label .. "  (" .. tostring(count) .. ")" end
+
+    local row = CreateButton(list.Content, 1, ITEM_ROW_HEIGHT, GUI.Anchor.TopLeft, label, true, false, "ListBoxElement")
+    row.TextBlock.TextAlignment = GUI.Alignment.Left
+
+    local getLabelText = function()
+        local value = tostring(folder.Name or "")
+        local folderCount = GetFolderDisplayCount(folder)
+        if folderCount > 0 then value = value .. "  (" .. tostring(folderCount) .. ")" end
+
+        if shopMode == "attackdefend" and folder.ClassLimitKey ~= nil and folder.ClassLimitKey ~= "" then
+            local limitText = GetClassLimitText(folder.CategoryIdentifier, folder.ClassLimitKey)
+            if limitText ~= "" then value = value .. "  " .. limitText end
+        end
+
+        return value
+    end
+
+    if folder.CooldownProduct ~= nil then
+        RegisterCooldownText("shop", row.TextBlock, function()
+            local remaining = GetCooldownRemaining(folder.CooldownProduct)
+            if remaining <= 0 then return getLabelText(), false end
+            return getLabelText() .. "  " .. GetText("Cooldown") .. ": " .. FormatSeconds(remaining), true
+        end)
+    end
+    if shopMode == "attackdefend" and folder.ClassLimitKey ~= nil and folder.ClassLimitKey ~= "" then
+        RegisterClassLimitText("shop", row.TextBlock, getLabelText)
+    end
+
+    row.OnClicked = function()
+        selectedCategory = folder.CategoryIdentifier or folder.Identifier
+        selectedPath = folder.PathIdentifiers ~= "" and folder.PathIdentifiers or nil
+        selectedProductId = nil
+        currentView = "products"
+        if rebuildProductList ~= nil then rebuildProductList(true) end
+        RefreshCartOnly()
+        return true
+    end
+end
+
+local function AddFolderButton(list, folder, categoryIdentifier)
+    local row = CreateButton(list.Content, 1, ITEM_ROW_HEIGHT, GUI.Anchor.TopLeft, tostring(folder.Name or ""), true, false, "ListBoxElement")
+    row.TextBlock.TextAlignment = GUI.Alignment.Left
+    row.OnClicked = function()
+        selectedCategory = categoryIdentifier
+        selectedPath = folder.PathIdentifiers ~= "" and folder.PathIdentifiers or nil
+        selectedProductId = nil
+        if rebuildProductList ~= nil then rebuildProductList(true) end
+        RefreshCartOnly()
+        return true
+    end
+end
+
+local function BuildFolderMetadata(categories)
+    for _, category in ipairs(categories) do
+        category.CategoryIdentifier = category.Identifier
+        category.ClassLimitKey = category.PathIdentifiers
+        for _, child in ipairs(category.Children) do
+            local stack = { child }
+            while #stack > 0 do
+                local node = table.remove(stack)
+                node.CategoryIdentifier = category.Identifier
+                node.ClassLimitKey = node.PathIdentifiers
+                for _, nested in ipairs(node.Children) do
+                    table.insert(stack, nested)
+                end
+            end
+        end
+    end
+end
+
+local function GetCategoryByIdentifier(categories, identifier)
+    for _, category in ipairs(categories) do
+        if category.Identifier == identifier then return category end
+    end
+    return nil
+end
+
+local function BuildBreadcrumb(parent, categories, rebuild)
+    local row = CreateLayout(parent, 1, 0.085, nil, true, GUI.Anchor.CenterLeft)
+    row.RelativeSpacing = 0.005
+    row.Stretch = true
+
+    local rootButton = CreateButton(row, 0.30, 0.94, nil, GetText("Categories"), true, selectedCategory == nil)
+    rootButton.OnClicked = function()
+        selectedCategory = nil
+        selectedPath = nil
+        selectedProductId = nil
+        currentView = "categories"
+        rebuild(true)
+        RefreshCartOnly()
+        return true
+    end
+
+    if selectedCategory == nil then return end
+
+    local category = GetCategoryByIdentifier(categories, selectedCategory)
+    if category == nil then return end
+
+    local categoryButton = CreateButton(row, 0.30, 0.94, nil, category.Name or selectedCategory, true, selectedPath == nil)
+    categoryButton.OnClicked = function()
+        selectedPath = nil
+        selectedProductId = nil
+        currentView = "products"
+        rebuild(true)
+        RefreshCartOnly()
+        return true
+    end
+
+    if selectedPath ~= nil and selectedPath ~= "" then
+        local pathNames = SplitSlash(category.PathNames)
+        local pathIdentifiers = SplitSlash(selectedPath)
+        local label = pathNames[#pathIdentifiers] or pathIdentifiers[#pathIdentifiers] or ""
+        CreateButton(row, 0.38, 0.94, nil, label, false, true)
+    end
+end
+
+local function PopulateFolders(list, categories)
+    local folder
+    if selectedCategory == nil then
+        for _, category in ipairs(categories) do
+            AddCategoryButton(list, category)
+        end
+        return
+    end
+
+    local category = GetCategoryByIdentifier(categories, selectedCategory)
+    if category == nil then return end
+    folder = GetFolderByPath(category, selectedPath)
+    if folder == nil then return end
+
+    for _, child in ipairs(folder.Children) do
+        AddFolderButton(list, child, category.Identifier)
+    end
+end
+
+local function GetProductsForCurrentFolder()
+    local result = {}
+    for _, product in ipairs(products) do
+        if ProductMatchesSearchAndFilter(product) then
+            table.insert(result, product)
+        end
+    end
+
+    table.sort(result, function(a, b)
+        local nameA = string.lower(tostring(a.Name or ""))
+        local nameB = string.lower(tostring(b.Name or ""))
+        if nameA == nameB then return tostring(a.Id or "") < tostring(b.Id or "") end
+        return nameA < nameB
+    end)
+
+    return result
 end
 
 local function BuildShopPanel(overlay)
-    -- Keep the outer panel transparent; only the item/category selection area
-    -- uses the vanilla list frame, closer to the vanilla store layout.
     local root = GUI.Frame(CreateRect(PANEL_WIDTH, 0.985, overlay, GUI.Anchor.BottomLeft), nil)
     root.Color = Color(0, 0, 0, 0)
     root.CanBeFocused = false
 
     local content = CreateLayout(root, 0.955, 0.965, GUI.Anchor.Center, false, GUI.Anchor.TopLeft)
-    pcall(function()
-        content.RelativeSpacing = 0.007
-        content.Stretch = true
-    end)
+    content.RelativeSpacing = 0.007
+    content.Stretch = true
 
-    BuildHeader(content)
+    CreatePanelTitle(content, GetText("Shop"), "StoreShoppingCartIcon", true)
 
-    local menuFrame = GUI.Frame(CreateRect(1, 0.835, content, nil), "GUIFrame")
+    local categories = GetFolderTree()
+    SortFolders(categories)
+    BuildFolderMetadata(categories)
+
+    local menuFrame = GUI.Frame(CreateRect(1, 0.86, content, nil), "GUIFrame")
     menuFrame.CanBeFocused = false
 
-    local menuContent = CreateLayout(menuFrame, 0.955, 0.965, GUI.Anchor.Center, false, GUI.Anchor.TopLeft)
-    pcall(function()
-        menuContent.RelativeSpacing = 0.006
-        menuContent.Stretch = true
-    end)
+    local menuContent = CreateLayout(menuFrame, 0.955, 0.955, GUI.Anchor.Center, false, GUI.Anchor.TopLeft)
+    menuContent.RelativeSpacing = 0.006
+    menuContent.Stretch = true
 
-    CloseFilterPopup()
-    filterButton = nil
-    rebuildProductList = nil
-    if currentView == "products" then BuildFilterBar(menuContent) end
+    local breadcrumbHost = GUI.Frame(CreateRect(1, 0.085, menuContent, nil), nil)
+    breadcrumbHost.Color = Color(0, 0, 0, 0)
+    breadcrumbHost.CanBeFocused = false
 
-    local listHeight = currentView == "products" and 0.768 or 0.855
-    -- One vanilla green list frame. The list's own background below is kept
-    -- transparent so a second nested outline is not drawn.
-    local listFrame = GUI.Frame(CreateRect(1, listHeight, menuContent, nil), "GUIFrameListBox")
+    local searchHost = GUI.Frame(CreateRect(1, 0.10, menuContent, nil), nil)
+    searchHost.Color = Color(0, 0, 0, 0)
+    searchHost.CanBeFocused = false
+
+    local listFrame = GUI.Frame(CreateRect(1, 0.70, menuContent, nil), "GUIFrameListBox")
     listFrame.CanBeFocused = false
 
     local list = GUI.ListBox(CreateRect(1, 1, listFrame, GUI.Anchor.Center), false, nil, "GUIListBoxNoBorder")
-    shopList = list
     list.Color = Color(0, 0, 0, 0)
-    pcall(function() list.ContentBackground.Color = Color(0, 0, 0, 0) end)
-    pcall(function() list.KeepSpaceForScrollBar = false end)
-    pcall(function() list.CanBeFocused = false end)
+    list.ContentBackground.Color = Color(0, 0, 0, 0)
+    list.KeepSpaceForScrollBar = false
+    list.CanBeFocused = false
+    shopList = list
 
-    if currentView == "categories" then
-        local folders = BuildFolderList()
-        if #folders == 0 then
-            CreateText(list.Content, 0.95, 0.13, GUI.Anchor.TopCenter, GetText("EmptyCategories"), GUI.Alignment.Center, 1.10)
-        else
-            for _, folder in ipairs(folders) do
-                AddCategoryButton(list, folder)
-            end
+    local function populateProductList(resetScroll)
+        if resetScroll then shopListScroll = 0 end
+        shopListScroll = shopList ~= nil and shopList.BarScroll or shopListScroll
+        list.Content:ClearChildren()
+        productRows = {}
+        cooldownTextBlocks.shop = {}
+        classLimitTextBlocks.shop = {}
+
+        BuildBreadcrumb(breadcrumbHost, categories, populateProductList)
+        BuildSearchAndFilter(searchHost, populateProductList)
+
+        local hasFolders = false
+        if normalizedSearchText == "" and selectedFilter == "all" then
+            local folder = GetSelectedFolder()
+            hasFolders = selectedCategory == nil or (folder ~= nil and #folder.Children > 0)
+            PopulateFolders(list, categories)
         end
-    else
-        local function populateProductList(resetScroll)
-            local previousScroll = list.BarScroll
-            list.Content:ClearChildren()
-            productRows = {}
-            cooldownTextBlocks.shop = {}
-            classLimitTextBlocks.shop = {}
 
-            local breadcrumb = CreateText(list.Content, 0.96, 0.075, GUI.Anchor.TopLeft, GetSelectedFolderLabel(), GUI.Alignment.Left, 1.08, Color(180, 220, 190, 255))
-            breadcrumb.RectTransform.MinSize = Point(0, 28)
-
-            local hasProducts = false
-            for _, product in ipairs(products) do
-                if ProductMatchesSelectedFolder(product) and ProductMatchesSearchAndFilter(product) then
-                    hasProducts = true
-                    AddProductButton(list, product)
-                end
+        local displayedProducts = GetProductsForCurrentFolder()
+        if #displayedProducts > 0 then
+            for _, product in ipairs(displayedProducts) do
+                AddProductButton(list, product)
             end
-
-            if not hasProducts then
-                CreateText(list.Content, 0.95, 0.13, GUI.Anchor.TopCenter, GetText("EmptyProducts"), GUI.Alignment.Center, 1.10)
-            end
-
-            shopListScroll = resetScroll == false and previousScroll or 0
-            list.BarScroll = shopListScroll
-            list:RecalculateChildren()
-            list:UpdateScrollBarSize()
-            pcall(function() guiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER) end)
+        elseif not hasFolders then
+            local emptyText = selectedCategory == nil and GetText("EmptyCategories") or GetText("EmptyProducts")
+            CreateText(list.Content, 0.95, 0.15, GUI.Anchor.TopCenter, emptyText, GUI.Alignment.Center, 1.10)
         end
-        rebuildProductList = populateProductList
-        populateProductList()
+
+        if shopList ~= nil then
+            shopList.BarScroll = math.max(0, math.min(1, shopListScroll or 0))
+        end
+        guiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER)
     end
 
-    pcall(function() list.BarScroll = shopListScroll or 0 end)
+    list.BarScroll = shopListScroll or 0
+    rebuildProductList = populateProductList
+    populateProductList()
 
     local hintText = GetText("ClickProduct")
     if shopMode == "ghost" then
@@ -1890,7 +1535,7 @@ local function BuildShopPanel(overlay)
     end
 
     local hint = CreateText(menuContent, 1, 0.070, nil, hintText, GUI.Alignment.Left, 0.78, Color(210, 210, 190, 185))
-    pcall(function() hint.AutoScaleVertical = true end)
+    hint.AutoScaleVertical = true
 end
 
 local function BuySingleProduct(product)
@@ -1904,10 +1549,8 @@ local function BuildConfirmPanel(overlay)
     root.CanBeFocused = false
 
     local content = CreateLayout(root, 0.955, 0.965, GUI.Anchor.Center, false, GUI.Anchor.TopLeft)
-    pcall(function()
-        content.RelativeSpacing = 0.007
-        content.Stretch = true
-    end)
+    content.RelativeSpacing = 0.007
+    content.Stretch = true
 
     CreatePanelTitle(content, GetText("ConfirmTitle"), "StoreShoppingCrateIcon", true)
 
@@ -1921,10 +1564,8 @@ local function BuildConfirmPanel(overlay)
     menuFrame.CanBeFocused = false
 
     local menuContent = CreateLayout(menuFrame, 0.955, 0.955, GUI.Anchor.Center, false, GUI.Anchor.TopLeft)
-    pcall(function()
-        menuContent.RelativeSpacing = 0.006
-        menuContent.Stretch = true
-    end)
+    menuContent.RelativeSpacing = 0.006
+    menuContent.Stretch = true
 
     local listFrame = GUI.Frame(CreateRect(1, 0.805, menuContent, nil), "GUIFrameListBox")
     listFrame.CanBeFocused = false
@@ -1946,7 +1587,7 @@ local function BuildConfirmPanel(overlay)
     end
 
     local buttons = CreateLayout(menuContent, 1, 0.085, nil, true, GUI.Anchor.CenterRight)
-    pcall(function() buttons.RelativeSpacing = 0.012 end)
+    buttons.RelativeSpacing = 0.012
 
     local cancelButton = CreateButton(buttons, 0.47, 1, nil, GetText("Cancel"), product ~= nil, false)
     cancelButton.OnClicked = function()
@@ -1979,10 +1620,8 @@ local function BuildCartPanel(overlay)
     root.CanBeFocused = false
 
     local content = CreateLayout(root, 0.955, 0.965, GUI.Anchor.Center, false, GUI.Anchor.TopLeft)
-    pcall(function()
-        content.RelativeSpacing = 0.007
-        content.Stretch = true
-    end)
+    content.RelativeSpacing = 0.007
+    content.Stretch = true
 
     CreatePanelTitle(content, GetText("Cart"), "StoreShoppingCrateIcon", true)
 
@@ -1995,19 +1634,17 @@ local function BuildCartPanel(overlay)
     menuFrame.CanBeFocused = false
 
     local menuContent = CreateLayout(menuFrame, 0.955, 0.955, GUI.Anchor.Center, false, GUI.Anchor.TopLeft)
-    pcall(function()
-        menuContent.RelativeSpacing = 0.006
-        menuContent.Stretch = true
-    end)
+    menuContent.RelativeSpacing = 0.006
+    menuContent.Stretch = true
 
     local listFrame = GUI.Frame(CreateRect(1, 0.835, menuContent, nil), "GUIFrameListBox")
     listFrame.CanBeFocused = false
 
     local list = GUI.ListBox(CreateRect(1, 1, listFrame, GUI.Anchor.Center), false, nil, "GUIListBoxNoBorder")
     list.Color = Color(0, 0, 0, 0)
-    pcall(function() list.ContentBackground.Color = Color(0, 0, 0, 0) end)
-    pcall(function() list.KeepSpaceForScrollBar = false end)
-    pcall(function() list.CanBeFocused = false end)
+    list.ContentBackground.Color = Color(0, 0, 0, 0)
+    list.KeepSpaceForScrollBar = false
+    list.CanBeFocused = false
 
     local selectedProduct = GetSelectedProduct()
     if selectedProduct ~= nil then
@@ -2024,7 +1661,7 @@ local function BuildCartPanel(overlay)
     end
 
     local buttons = CreateLayout(menuContent, 1, 0.085, nil, true, GUI.Anchor.CenterRight)
-    pcall(function() buttons.RelativeSpacing = 0.012 end)
+    buttons.RelativeSpacing = 0.012
 
     local clearButton = CreateButton(buttons, 0.47, 1, nil, GetText("Clear"), #cart > 0, false)
     clearButton.OnClicked = function()
@@ -2053,19 +1690,13 @@ RefreshCartOnly = function()
     classLimitTextBlocks.cart = {}
 
     if cartPanelRoot ~= nil then
-        pcall(function()
-            cartPanelRoot:RemoveFromGUIUpdateList(true)
-        end)
-        pcall(function()
-            if cartPanelRoot.RectTransform ~= nil then
-                cartPanelRoot.RectTransform.Parent = nil
-            end
-            cartPanelRoot.Visible = false
-        end)
+        cartPanelRoot:RemoveFromGUIUpdateList(true)
+        cartPanelRoot.RectTransform.Parent = nil
+        cartPanelRoot.Visible = false
     end
 
     cartPanelRoot = BuildCartPanel(currentMenu)
-    pcall(function() guiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER) end)
+    guiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER)
 end
 
 ShowMenu = function()
@@ -2085,7 +1716,7 @@ ShowMenu = function()
 
     BuildShopPanel(overlay)
     cartPanelRoot = BuildCartPanel(overlay)
-    pcall(function() guiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER) end)
+    guiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER)
 end
 
 Hook.Add("think", "VoidTraitor.PointshopGui.CooldownClock", function()
