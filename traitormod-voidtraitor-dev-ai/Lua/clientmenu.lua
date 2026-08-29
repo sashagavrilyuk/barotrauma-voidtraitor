@@ -8,6 +8,12 @@ local vtNet = {
     Run = "VoidTraitor_ClientMenuRun",
 }
 
+local adminNet = {
+    Request = "VoidTraitor_ClientMenuAdminRequest",
+    Snapshot = "VoidTraitor_ClientMenuAdminSnapshot",
+    Run = "VoidTraitor_ClientMenuAdminRun",
+}
+
 local voteNet = {
     Ready = "VoidTraitor_LobbyVoteGuiReady",
     Request = "VoidTraitor_LobbyVoteRequest",
@@ -17,9 +23,11 @@ local voteNet = {
 }
 
 local DISABLED_ACTION_PREFIX = "__vt_disabled__:"
+local adminLanguage = dofile(Traitormod.Path .. "/Lua/language/clientmenu_admin.lua")
+local adminText = adminLanguage[Traitormod.Language.Name] or adminLanguage.English
 
 local function lang(key)
-    return Traitormod.GetText(key)
+    return adminText[key] or Traitormod.GetText(key)
 end
 
 local function parseInput(input)
@@ -220,6 +228,43 @@ addAction("version", "ClientMenuVersion", "ClientMenuHintVersion", "ClientMenuCa
     return runCommand("!version", client, input)
 end)
 
+local adminActions = {}
+local orderedAdminActions = {}
+
+local function addAdminAction(id, command, labelKey, hintKey, categoryKey, order, inputHintKey)
+    local action = {
+        Id = id,
+        Command = command,
+        LabelKey = labelKey,
+        HintKey = hintKey,
+        CategoryKey = categoryKey,
+        Order = order,
+        InputType = inputHintKey ~= nil and "text" or "",
+        InputHintKey = inputHintKey or "",
+    }
+    adminActions[id] = action
+    table.insert(orderedAdminActions, action)
+end
+
+addAdminAction("roundinfo", "!roundinfo", "ClientMenuAdminRoundInfo", "ClientMenuAdminHintRoundInfo", "ClientMenuAdminCategoryInfo", 10)
+addAdminAction("roles", "!roles", "ClientMenuAdminRoles", "ClientMenuAdminHintRoles", "ClientMenuAdminCategoryInfo", 11)
+addAdminAction("traitoralive", "!traitoralive", "ClientMenuAdminTraitorAlive", "ClientMenuAdminHintTraitorAlive", "ClientMenuAdminCategoryInfo", 12)
+addAdminAction("allpoints", "!allpoints", "ClientMenuAdminAllPoints", "ClientMenuAdminHintAllPoints", "ClientMenuAdminCategoryInfo", 13)
+addAdminAction("ongoingevents", "!ongoingevents", "ClientMenuAdminOngoingEvents", "ClientMenuAdminHintOngoingEvents", "ClientMenuAdminCategoryInfo", 14)
+addAdminAction("revive", "!revive", "ClientMenuAdminRevive", "ClientMenuAdminHintRevive", "ClientMenuAdminCategoryPlayers", 20, "ClientMenuAdminInputPlayer")
+addAdminAction("void", "!void", "ClientMenuAdminVoid", "ClientMenuAdminHintVoid", "ClientMenuAdminCategoryPlayers", 21, "ClientMenuAdminInputPlayer")
+addAdminAction("unvoid", "!unvoid", "ClientMenuAdminUnvoid", "ClientMenuAdminHintUnvoid", "ClientMenuAdminCategoryPlayers", 22, "ClientMenuAdminInputPlayer")
+addAdminAction("addpoint", "!addpoint", "ClientMenuAdminAddPoints", "ClientMenuAdminHintAddPoints", "ClientMenuAdminCategoryPlayers", 23, "ClientMenuAdminInputPlayerAmount")
+addAdminAction("addlife", "!addlife", "ClientMenuAdminAddLives", "ClientMenuAdminHintAddLives", "ClientMenuAdminCategoryPlayers", 24, "ClientMenuAdminInputPlayerAmount")
+addAdminAction("giveghostrole", "!giveghostrole", "ClientMenuAdminGiveGhostRole", "ClientMenuAdminHintGiveGhostRole", "ClientMenuAdminCategoryManagement", 30, "ClientMenuAdminInputRoleCharacter")
+addAdminAction("assignrole", "!assignrole", "ClientMenuAdminAssignRole", "ClientMenuAdminHintAssignRole", "ClientMenuAdminCategoryManagement", 31, "ClientMenuAdminInputPlayerRole")
+addAdminAction("triggerevent", "!triggerevent", "ClientMenuAdminTriggerEvent", "ClientMenuAdminHintTriggerEvent", "ClientMenuAdminCategoryManagement", 32, "ClientMenuAdminInputEvent")
+
+table.sort(orderedAdminActions, function(a, b)
+    if a.Order ~= b.Order then return a.Order < b.Order end
+    return lang(a.LabelKey) < lang(b.LabelKey)
+end)
+
 table.sort(orderedActions, function(a, b)
     if a.Order ~= b.Order then return a.Order < b.Order end
     return lang(a.LabelKey) < lang(b.LabelKey)
@@ -292,6 +337,43 @@ function cm.SendSnapshot(client)
     return true
 end
 
+function cm.SendAdminSnapshot(client)
+    if client == nil or client.Connection == nil then return false end
+
+    local hasAccess = isAdmin(client)
+    local netMessage = Networking.Start(adminNet.Snapshot)
+    netMessage.WriteBoolean(hasAccess)
+    netMessage.WriteString(lang("ClientMenuTabMain"))
+    netMessage.WriteString(lang("ClientMenuTabAdmin"))
+    netMessage.WriteInt32(hasAccess and #orderedAdminActions or 0)
+
+    if hasAccess then
+        for _, action in ipairs(orderedAdminActions) do
+            netMessage.WriteString(action.Id)
+            netMessage.WriteString(lang(action.LabelKey))
+            netMessage.WriteString(lang(action.HintKey))
+            netMessage.WriteString(lang(action.CategoryKey))
+            netMessage.WriteString(action.InputType)
+            netMessage.WriteString(action.InputHintKey ~= "" and lang(action.InputHintKey) or "")
+            netMessage.WriteString("")
+            netMessage.WriteString("")
+        end
+    end
+
+    Networking.Send(netMessage, client.Connection)
+    return true
+end
+
+function cm.RunAdminAction(client, actionId, input)
+    if not isAdmin(client) then return true end
+
+    local action = adminActions[tostring(actionId or "")]
+    if action == nil then return true end
+
+    sendActionLog(client, "admin:" .. action.Id)
+    return runCommand(action.Command, client, input)
+end
+
 function cm.RunAction(client, actionId, input)
     if client == nil then return true end
 
@@ -316,6 +398,16 @@ Networking.Receive(vtNet.Run, function(message, client)
     local actionId = message.ReadString()
     local input = message.ReadString()
     return cm.RunAction(client, actionId, input)
+end)
+
+Networking.Receive(adminNet.Request, function(message, client)
+    return cm.SendAdminSnapshot(client)
+end)
+
+Networking.Receive(adminNet.Run, function(message, client)
+    local actionId = message.ReadString()
+    local input = message.ReadString()
+    return cm.RunAdminAction(client, actionId, input)
 end)
 
 local function writeVoteSnapshot(netMessage, client)
