@@ -7,4 +7,4 @@ assert(loadfile(packPath .. "/Lua/client/spectator/camera_teleport.lua"))(packPa
 assert(loadfile(packPath .. "/Lua/client/spectator/ghostroles.lua"))(packPath, spectatorCommon)
 assert(loadfile(packPath .. "/Lua/client/pointshop/gui.lua"))(packPath)
 assert(loadfile(packPath .. "/Lua/client/lobby/menu.lua"))(packPath, spectatorCommon)
-assert(loadfile(packPath .. "/Lua/client/welcome.lua"))(packPath)
+assert(loadfile(packPath .. "/Lua/client/welcome.lua"))(packPath, spectatorCommon)

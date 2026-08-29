@@ -12,11 +12,12 @@ Timer.Wait(function() SendHandshake() end, 2000)
 -- ТЕКСТЫ И ГАЙДЫ
 -- =========================================================
 
-local packPath = table.pack(...)[1]
+local packPath, Common = ...
 local language = dofile(packPath .. "/Lua/language/welcome_russian.lua")
 local menuText = language.MenuText
 local GuideContent = language.GuideContent
 local GuideOrder = language.GuideOrder
+local CreateRect = Common.CreateRect
 
 -- =========================================================
 -- СИСТЕМНЫЙ КОД
@@ -36,19 +37,6 @@ local function SetWelcomeMenuState(root)
     currentWelcomeMenu = root
     _G.VoidTraitorWelcomeMenuRoot = root
     _G.VoidTraitorWelcomeMenuOpen = root ~= nil
-end
-
--- Функция создания геометрии
-local function CreateRect(width, height, parent, anchor)
-    local pRect = nil
-    if parent then
-        if parent.RectTransform then
-            pRect = parent.RectTransform
-        else
-            pRect = parent
-        end
-    end
-    return GUI.RectTransform(Vector2(width, height), pRect, anchor)
 end
 
 local function ApplyButtonStyle(btn)
