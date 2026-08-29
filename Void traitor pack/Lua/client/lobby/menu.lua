@@ -73,6 +73,14 @@ local lastShownActiveVoteId = ""
 local lastVoteButtonResolutionX = -1
 local lastVoteButtonResolutionY = -1
 local uiStateCheckTimer = 0
+local vtMenuList = nil
+local vtMenuScroll = 0
+local vtMenuX = nil
+local vtMenuY = nil
+local vtMenuWidth = nil
+local vtMenuHeight = nil
+local vtResizeTargets = {}
+local vtResizeState = nil
 local uiText = {
     Title = "VOID TRAITOR",
     ShopButton = "SHOP",
@@ -103,6 +111,18 @@ local voteUiText = {
 
 local BUTTON_DRAW_ORDER = 100
 local MENU_DRAW_ORDER = 125
+local VT_MENU_DEFAULT_WIDTH_PIXELS = 460
+local VT_MENU_DEFAULT_HEIGHT_PIXELS = 580
+local VT_MENU_MIN_WIDTH_PIXELS = 360
+local VT_MENU_MIN_HEIGHT_PIXELS = 340
+local VT_MENU_MARGIN_PIXELS = 10
+local VT_RESIZE_EDGE_PIXELS = 10
+local VT_RESIZE_CORNER_PIXELS = 22
+local VT_BUTTON_HEIGHT_PIXELS = 42
+local VT_CATEGORY_HEIGHT_PIXELS = 30
+local VT_DIVIDER_HEIGHT_PIXELS = 10
+local VT_INPUT_LABEL_HEIGHT_PIXELS = 24
+local VT_INPUT_ROW_HEIGHT_PIXELS = 40
 
 local function SafeIntScale(value)
     local ok, result = pcall(function()
@@ -141,6 +161,12 @@ local function GetScreenSize()
     return width, height
 end
 
+local function Clamp(value, minimum, maximum)
+    if value < minimum then return minimum end
+    if value > maximum then return maximum end
+    return value
+end
+
 local function GetParentRect(parent)
     if parent == nil or parent == GUI.Canvas then
         return nil
@@ -159,6 +185,17 @@ end
 
 local function CreateRect(width, height, parent, anchor)
     return GUI.RectTransform(Vector2(width, height), GetParentRect(parent), anchor)
+end
+
+local function CreatePixelRect(width, height, parent, anchor)
+    return GUI.RectTransform(Point(math.max(1, math.floor(width)), math.max(1, math.floor(height))), GetParentRect(parent), anchor)
+end
+
+local function SetFixedHeight(component, pixels)
+    if component == nil or component.RectTransform == nil then return end
+    local height = SafeIntScale(pixels)
+    component.RectTransform.MinSize = Point(0, height)
+    component.RectTransform.MaxSize = Point(100000, height)
 end
 
 guiRoot = GUI.Frame(CreateRect(1, 1, nil, GUI.Anchor.Center), nil)
@@ -288,9 +325,22 @@ local function SendVoteCast(optionId)
     end)
 end
 
+local function SaveVoidTraitorMenuGeometry()
+    if currentMenu == nil or currentMenuKind ~= "vt" then return end
+
+    local rect = currentMenu.Rect
+    vtMenuX = rect.X
+    vtMenuY = rect.Y
+    vtMenuWidth = rect.Width
+    vtMenuHeight = rect.Height
+    if vtMenuList ~= nil then vtMenuScroll = vtMenuList.BarScroll end
+end
+
 local CloseMenu
 
 CloseMenu = function()
+    SaveVoidTraitorMenuGeometry()
+
     if currentMenu ~= nil then
         pcall(function() currentMenu:RemoveFromGUIUpdateList(true) end)
         pcall(function()
@@ -304,6 +354,9 @@ CloseMenu = function()
     currentMenu = nil
     currentMenuKind = ""
     activeVoteUi = nil
+    vtMenuList = nil
+    vtResizeTargets = {}
+    vtResizeState = nil
     sharedState.CurrentMenu = nil
     sharedState.CurrentMenuKind = ""
     escapeClosePending = false
@@ -408,14 +461,16 @@ local function PlayVoteSound()
 end
 
 local function CreateMenuButton(parent, label, enabled)
-    local button = GUI.Button(CreateRect(1, 0.070, parent, nil), label or "", GUI.Alignment.Center, "GUIButton")
+    local button = GUI.Button(CreateRect(1, 0.10, parent, nil), label or "", GUI.Alignment.Center, "GUIButton")
+    SetFixedHeight(button, VT_BUTTON_HEIGHT_PIXELS)
     button.Enabled = enabled ~= false
     SetButtonTextScale(button, 0.92)
     return button
 end
 
 local function CreateDivider(parent)
-    local frame = GUI.Frame(CreateRect(1, 0.018, parent, nil), nil)
+    local frame = GUI.Frame(CreateRect(1, 0.02, parent, nil), nil)
+    SetFixedHeight(frame, VT_DIVIDER_HEIGHT_PIXELS)
     frame.Color = Color(0, 0, 0, 0)
     pcall(function()
         GUI.Image(CreateRect(1, 0.50, frame, GUI.Anchor.Center), "HorizontalLine")
@@ -423,19 +478,22 @@ local function CreateDivider(parent)
 end
 
 local function CreateCategoryHeader(parent, label)
-    local frame = GUI.Frame(CreateRect(1, 0.052, parent, nil), nil)
+    local frame = GUI.Frame(CreateRect(1, 0.06, parent, nil), nil)
+    SetFixedHeight(frame, VT_CATEGORY_HEIGHT_PIXELS)
     frame.Color = Color(0, 0, 0, 0)
 
-    local text = CreateText(frame, 1, 0.78, GUI.Anchor.BottomLeft, string.upper(tostring(label or "")), GUI.Alignment.Left, 0.88, Color(205, 220, 200, 255), false)
+    local text = CreateText(frame, 1, 0.82, GUI.Anchor.BottomLeft, string.upper(tostring(label or "")), GUI.Alignment.Left, 0.88, Color(205, 220, 200, 255), false)
     pcall(function() text.Font = GUI.Style.SubHeadingFont end)
     return frame
 end
 
 local function CreateTextInputRow(parent, label, placeholder, action, clearAfterSend)
-    local labelBlock = CreateText(parent, 1, 0.045, nil, label, GUI.Alignment.Left, 0.86, Color(210, 220, 200, 255), false)
+    local labelBlock = CreateText(parent, 1, 0.05, nil, label, GUI.Alignment.Left, 0.86, Color(210, 220, 200, 255), false)
+    SetFixedHeight(labelBlock, VT_INPUT_LABEL_HEIGHT_PIXELS)
     pcall(function() labelBlock.Font = GUI.Style.SubHeadingFont end)
 
-    local row = GUI.LayoutGroup(CreateRect(1, 0.070, parent, nil), true, GUI.Anchor.CenterLeft)
+    local row = GUI.LayoutGroup(CreateRect(1, 0.09, parent, nil), true, GUI.Anchor.CenterLeft)
+    SetFixedHeight(row, VT_INPUT_ROW_HEIGHT_PIXELS)
     row.Stretch = true
     pcall(function() row.RelativeSpacing = 0.010 end)
 
@@ -461,7 +519,171 @@ local function CreateTextInputRow(parent, label, placeholder, action, clearAfter
     return input
 end
 
+local function AddVoidTraitorResizeHandle(panel, edge, width, height, anchor)
+    local handle = GUI.Frame(CreateRect(width, height, panel, anchor), nil)
+    handle.Color = Color(0, 0, 0, 0)
+    handle.CanBeFocused = true
+    table.insert(vtResizeTargets, { Component = handle, Edge = edge })
+    return handle
+end
+
+local function AddVoidTraitorResizeHandles(panel)
+    vtResizeTargets = {}
+
+    local cornerScaleX = SafeIntScale(VT_RESIZE_CORNER_PIXELS) / math.max(panel.Rect.Width, 1)
+    local cornerScaleY = SafeIntScale(VT_RESIZE_CORNER_PIXELS) / math.max(panel.Rect.Height, 1)
+    local edgeScaleX = SafeIntScale(VT_RESIZE_EDGE_PIXELS) / math.max(panel.Rect.Width, 1)
+    local edgeScaleY = SafeIntScale(VT_RESIZE_EDGE_PIXELS) / math.max(panel.Rect.Height, 1)
+
+    AddVoidTraitorResizeHandle(panel, "topleft", cornerScaleX, cornerScaleY, GUI.Anchor.TopLeft)
+    AddVoidTraitorResizeHandle(panel, "topright", cornerScaleX, cornerScaleY, GUI.Anchor.TopRight)
+    AddVoidTraitorResizeHandle(panel, "bottomleft", cornerScaleX, cornerScaleY, GUI.Anchor.BottomLeft)
+    AddVoidTraitorResizeHandle(panel, "bottomright", cornerScaleX, cornerScaleY, GUI.Anchor.BottomRight)
+
+    local top = AddVoidTraitorResizeHandle(panel, "top", 0.72, edgeScaleY, GUI.Anchor.TopCenter)
+    local bottom = AddVoidTraitorResizeHandle(panel, "bottom", 0.72, edgeScaleY, GUI.Anchor.BottomCenter)
+    local left = AddVoidTraitorResizeHandle(panel, "left", edgeScaleX, 0.72, GUI.Anchor.CenterLeft)
+    local right = AddVoidTraitorResizeHandle(panel, "right", edgeScaleX, 0.72, GUI.Anchor.CenterRight)
+
+    GUI.Image(CreateRect(0.20, 0.75, top, GUI.Anchor.Center), "GUIDragIndicatorHorizontal").CanBeFocused = false
+    GUI.Image(CreateRect(0.20, 0.75, bottom, GUI.Anchor.Center), "GUIDragIndicatorHorizontal").CanBeFocused = false
+    GUI.Image(CreateRect(0.80, 0.08, left, GUI.Anchor.Center), "GUIDragIndicator").CanBeFocused = false
+    GUI.Image(CreateRect(0.80, 0.08, right, GUI.Anchor.Center), "GUIDragIndicator").CanBeFocused = false
+end
+
+local function GetVoidTraitorResizeEdge()
+    local mousePosition = PlayerInput.MousePosition
+    for _, target in ipairs(vtResizeTargets) do
+        if target.Component ~= nil and target.Component.Rect.Contains(mousePosition) then
+            return target.Edge
+        end
+    end
+    return nil
+end
+
+local function FitVoidTraitorMenuToScreen()
+    if currentMenu == nil or currentMenuKind ~= "vt" or vtResizeState ~= nil then return end
+
+    local screenWidth, screenHeight = GetScreenSize()
+    local margin = SafeIntScale(VT_MENU_MARGIN_PIXELS)
+    local minWidth = SafeIntScale(VT_MENU_MIN_WIDTH_PIXELS)
+    local minHeight = SafeIntScale(VT_MENU_MIN_HEIGHT_PIXELS)
+    local maxWidth = math.max(minWidth, screenWidth - margin * 2)
+    local maxHeight = math.max(minHeight, screenHeight - margin * 2)
+    local rect = currentMenu.Rect
+    local width = Clamp(rect.Width, minWidth, maxWidth)
+    local height = Clamp(rect.Height, minHeight, maxHeight)
+    local rectTransform = currentMenu.RectTransform
+
+    if width ~= rect.Width or height ~= rect.Height then
+        local scaleX = math.max(tonumber(rectTransform.Scale.X) or 1, 0.0001)
+        local scaleY = math.max(tonumber(rectTransform.Scale.Y) or 1, 0.0001)
+        rectTransform:Resize(Point(math.max(1, math.floor(width / scaleX + 0.5)), math.max(1, math.floor(height / scaleY + 0.5))), true)
+        rect = currentMenu.Rect
+    end
+
+    local dx = 0
+    local dy = 0
+    if rect.X < margin then
+        dx = margin - rect.X
+    elseif rect.Right > screenWidth - margin then
+        dx = (screenWidth - margin) - rect.Right
+    end
+    if rect.Y < margin then
+        dy = margin - rect.Y
+    elseif rect.Bottom > screenHeight - margin then
+        dy = (screenHeight - margin) - rect.Bottom
+    end
+
+    if dx ~= 0 or dy ~= 0 then
+        rectTransform.ScreenSpaceOffset = Point(rectTransform.ScreenSpaceOffset.X + dx, rectTransform.ScreenSpaceOffset.Y + dy)
+    end
+
+    SaveVoidTraitorMenuGeometry()
+end
+
+local function UpdateVoidTraitorMenuInteraction()
+    if currentMenu == nil or currentMenuKind ~= "vt" then
+        vtResizeState = nil
+        return
+    end
+
+    local mouseDown = PlayerInput.PrimaryMouseButtonDown()
+    local mouseHeld = PlayerInput.PrimaryMouseButtonHeld()
+
+    if mouseDown and vtResizeState == nil then
+        local edge = GetVoidTraitorResizeEdge()
+        if edge ~= nil then
+            local rect = currentMenu.Rect
+            local rectTransform = currentMenu.RectTransform
+            vtResizeState = {
+                Edge = edge,
+                MouseX = PlayerInput.MousePosition.X,
+                MouseY = PlayerInput.MousePosition.Y,
+                Left = rect.X,
+                Top = rect.Y,
+                Right = rect.Right,
+                Bottom = rect.Bottom,
+                ScreenOffsetX = rectTransform.ScreenSpaceOffset.X,
+                ScreenOffsetY = rectTransform.ScreenSpaceOffset.Y,
+            }
+        end
+    end
+
+    if not mouseHeld then
+        vtResizeState = nil
+        FitVoidTraitorMenuToScreen()
+        return
+    end
+
+    if vtResizeState == nil then
+        FitVoidTraitorMenuToScreen()
+        return
+    end
+
+    local state = vtResizeState
+    local edge = state.Edge
+    local screenWidth, screenHeight = GetScreenSize()
+    local margin = SafeIntScale(VT_MENU_MARGIN_PIXELS)
+    local minWidth = SafeIntScale(VT_MENU_MIN_WIDTH_PIXELS)
+    local minHeight = SafeIntScale(VT_MENU_MIN_HEIGHT_PIXELS)
+    local dx = PlayerInput.MousePosition.X - state.MouseX
+    local dy = PlayerInput.MousePosition.Y - state.MouseY
+    local left = state.Left
+    local top = state.Top
+    local right = state.Right
+    local bottom = state.Bottom
+
+    if edge == "left" or edge == "topleft" or edge == "bottomleft" then
+        left = Clamp(state.Left + dx, margin, state.Right - minWidth)
+    elseif edge == "right" or edge == "topright" or edge == "bottomright" then
+        right = Clamp(state.Right + dx, state.Left + minWidth, screenWidth - margin)
+    end
+
+    if edge == "top" or edge == "topleft" or edge == "topright" then
+        top = Clamp(state.Top + dy, margin, state.Bottom - minHeight)
+    elseif edge == "bottom" or edge == "bottomleft" or edge == "bottomright" then
+        bottom = Clamp(state.Bottom + dy, state.Top + minHeight, screenHeight - margin)
+    end
+
+    local width = math.max(minWidth, right - left)
+    local height = math.max(minHeight, bottom - top)
+    local rectTransform = currentMenu.RectTransform
+    local scaleX = math.max(tonumber(rectTransform.Scale.X) or 1, 0.0001)
+    local scaleY = math.max(tonumber(rectTransform.Scale.Y) or 1, 0.0001)
+    rectTransform:Resize(Point(math.max(1, math.floor(width / scaleX + 0.5)), math.max(1, math.floor(height / scaleY + 0.5))), true)
+    rectTransform.ScreenSpaceOffset = Point(state.ScreenOffsetX + (left - state.Left), state.ScreenOffsetY + (top - state.Top))
+
+    if vtMenuList ~= nil then
+        vtMenuList:RecalculateChildren()
+        vtMenuList:UpdateScrollBarSize()
+    end
+
+    SaveVoidTraitorMenuGeometry()
+end
+
 local function ShowConfirm(title, text, action)
+    SaveVoidTraitorMenuGeometry()
     if currentMenu ~= nil then
         pcall(function()
             currentMenu:RemoveFromGUIUpdateList(true)
@@ -524,49 +746,76 @@ local function ShowVoidTraitorMenu()
         return
     end
 
-    local overlay = GUI.Frame(CreateRect(1, 1, guiRoot, GUI.Anchor.Center), nil)
-    overlay.Color = Color(0, 0, 0, 0)
-    overlay.CanBeFocused = false
-    overlay.IgnoreLayoutGroups = true
-    currentMenu = overlay
+    local screenWidth, screenHeight = GetScreenSize()
+    local margin = SafeIntScale(VT_MENU_MARGIN_PIXELS)
+    local minWidth = SafeIntScale(VT_MENU_MIN_WIDTH_PIXELS)
+    local minHeight = SafeIntScale(VT_MENU_MIN_HEIGHT_PIXELS)
+    local maxWidth = math.max(minWidth, screenWidth - margin * 2)
+    local maxHeight = math.max(minHeight, screenHeight - margin * 2)
+    local width = Clamp(vtMenuWidth or SafeIntScale(VT_MENU_DEFAULT_WIDTH_PIXELS), minWidth, maxWidth)
+    local height = Clamp(vtMenuHeight or SafeIntScale(VT_MENU_DEFAULT_HEIGHT_PIXELS), minHeight, maxHeight)
+    local x = vtMenuX or math.floor((screenWidth - width) / 2)
+    local y = vtMenuY or math.floor((screenHeight - height) / 2)
+    x = Clamp(x, margin, math.max(margin, screenWidth - width - margin))
+    y = Clamp(y, margin, math.max(margin, screenHeight - height - margin))
+
+    local rootRect = CreatePixelRect(width, height, guiRoot, GUI.Anchor.TopLeft)
+    rootRect.AbsoluteOffset = Point(x, y)
+    local root = GUI.Frame(rootRect, nil)
+    root.Color = Color(0, 0, 0, 0)
+    root.CanBeFocused = false
+    root.IgnoreLayoutGroups = true
+    currentMenu = root
     currentMenuKind = "vt"
-    sharedState.CurrentMenu = overlay
+    sharedState.CurrentMenu = root
     sharedState.CurrentMenuKind = currentMenuKind
 
-    local panelRect = CreateRect(0.235, 0.62, overlay, GUI.Anchor.TopLeft)
-    panelRect.AbsoluteOffset = Point(SafeIntScale(11), SafeIntScale(70))
-    local panel = GUI.Frame(panelRect, "GUIFrame")
-    panel.CanBeFocused = true
+    local panel = GUI.Frame(CreateRect(1, 1, root, GUI.Anchor.TopLeft), "GUIFrame")
+    panel.CanBeFocused = false
 
-    local content = GUI.LayoutGroup(CreateRect(0.93, 0.94, panel, GUI.Anchor.Center), false, GUI.Anchor.TopCenter)
+    local content = GUI.LayoutGroup(CreateRect(0.965, 0.965, panel, GUI.Anchor.Center), false, GUI.Anchor.TopLeft)
     content.Stretch = true
-    pcall(function() content.RelativeSpacing = 0.008 end)
+    content.RelativeSpacing = 0.003
 
-    local header = GUI.LayoutGroup(CreateRect(1, 0.075, content, nil), true, GUI.Anchor.CenterLeft)
-    header.Stretch = true
-    pcall(function() header.RelativeSpacing = 0.012 end)
+    local header = GUI.Frame(CreateRect(1, 0.062, content, nil), nil)
+    header.Color = Color(0, 0, 0, 0)
+    header.CanBeFocused = false
 
-    local title = CreateText(header, 0.77, 1, nil, uiText.Title, GUI.Alignment.Left, 1.14, Color(255, 235, 170, 255), false)
-    pcall(function() title.Font = GUI.Style.LargeFont end)
+    local dragArea = GUI.DragHandle(CreateRect(0.86, 1, header, GUI.Anchor.TopLeft), root.RectTransform, nil)
+    local transparent = Color(0, 0, 0, 0)
+    dragArea.Color = transparent
+    dragArea.HoverColor = transparent
+    dragArea.SelectedColor = transparent
+    dragArea.PressedColor = transparent
 
-    local close = GUI.Button(CreateRect(0.22, 0.90, header, nil), "X", GUI.Alignment.Center, "GUIButtonSmall")
-    SetButtonTextScale(close, 0.95)
+    local dragIndicator = GUI.Image(CreateRect(0.07, 0.72, dragArea, GUI.Anchor.CenterLeft), "GUIDragIndicator")
+    dragIndicator.CanBeFocused = false
+    local title = CreateText(dragArea, 0.90, 1, GUI.Anchor.CenterRight, uiText.Title, GUI.Alignment.Left, 1.00, Color(235, 205, 145, 255), false)
+    pcall(function() title.Font = GUI.Style.SubHeadingFont end)
+
+    local close = GUI.Button(CreateRect(0.10, 0.82, header, GUI.Anchor.TopRight), "", GUI.Alignment.Center, "GUICancelButton")
+    close.ToolTip = uiText.Cancel
     close.OnClicked = function()
         CloseMenu()
         return true
     end
 
-    CreateDivider(content)
+    GUI.Image(CreateRect(1, 0.006, content, nil), "HorizontalLine")
 
-    local listFrame = GUI.Frame(CreateRect(1, 0.70, content, nil), "GUIFrameListBox")
+    local listFrame = GUI.Frame(CreateRect(1, 0.91, content, nil), "GUIFrameListBox")
     listFrame.CanBeFocused = false
-    local list = GUI.ListBox(CreateRect(0.985, 0.965, listFrame, GUI.Anchor.Center), false)
-    list.Color = Color(0, 0, 0, 0)
-    pcall(function() list.KeepSpaceForScrollBar = true end)
+    vtMenuList = GUI.ListBox(CreateRect(1, 0.985, listFrame, GUI.Anchor.Center), false, nil, "GUIListBoxNoBorder")
+    vtMenuList.Color = Color(0, 0, 0, 0)
+    pcall(function()
+        if vtMenuList.ContentBackground ~= nil then
+            vtMenuList.ContentBackground.Color = Color(0, 0, 0, 0)
+        end
+    end)
+    pcall(function() vtMenuList.KeepSpaceForScrollBar = true end)
 
     local entries = menuEntries or {}
     if #entries == 0 then
-        CreateText(list.Content, 1, 0.08, nil, uiText.NoCommands, GUI.Alignment.Center, 0.90, Color(230, 230, 220, 255), true)
+        CreateText(listFrame, 0.90, 0.24, GUI.Anchor.Center, uiText.NoCommands, GUI.Alignment.Center, 0.90, Color(195, 195, 185, 255), true)
     end
 
     local lastCategory = nil
@@ -574,17 +823,17 @@ local function ShowVoidTraitorMenu()
         local category = tostring(entry.Category or "")
         if category ~= "" and category ~= lastCategory then
             if lastCategory ~= nil then
-                CreateDivider(list.Content)
+                CreateDivider(vtMenuList.Content)
             end
-            CreateCategoryHeader(list.Content, category)
+            CreateCategoryHeader(vtMenuList.Content, category)
             lastCategory = category
         end
 
         local inputType = tostring(entry.InputType or "")
         if inputType ~= "" then
-            CreateTextInputRow(list.Content, entry.Label or entry.Command or uiText.GenericCommand, entry.InputHint or "", entry.Command or "", true)
+            CreateTextInputRow(vtMenuList.Content, entry.Label or entry.Command or uiText.GenericCommand, entry.InputHint or "", entry.Command or "", true)
         else
-            local button = CreateMenuButton(list.Content, entry.Label or entry.Command or uiText.GenericCommand, true)
+            local button = CreateMenuButton(vtMenuList.Content, entry.Label or entry.Command or uiText.GenericCommand, true)
             button.ToolTip = entry.Hint or ""
             button.OnClicked = function()
                 if tostring(entry.ConfirmText or "") ~= "" then
@@ -596,6 +845,12 @@ local function ShowVoidTraitorMenu()
             end
         end
     end
+
+    vtMenuList.BarScroll = vtMenuScroll
+    vtMenuList:RecalculateChildren()
+    vtMenuList:UpdateScrollBarSize()
+    AddVoidTraitorResizeHandles(panel)
+    SaveVoidTraitorMenuGeometry()
 end
 
 local function GetNetLobbyScreen()
@@ -1455,6 +1710,8 @@ end)
 
 Hook.Add("think", "VoidTraitor.ClientMenu.UiState", function(deltaTime)
     if sharedState.Disabled then return end
+
+    UpdateVoidTraitorMenuInteraction()
 
     uiStateCheckTimer = uiStateCheckTimer + (tonumber(deltaTime) or 0)
     if uiStateCheckTimer < 0.1 then return end
