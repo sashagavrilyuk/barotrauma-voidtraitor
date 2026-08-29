@@ -94,7 +94,7 @@ end
 function gm:_SetNewClient(client, lockClassSelection)
 	local char = client.Character
 	Timer.Wait(function()
-		if not client or not client.Connection then return end
+		if not client or not client.Connection or client.SpectateOnly then return end
 		client.SetClientCharacter(nil)
 		CleanRemove(char)
 
@@ -187,7 +187,7 @@ function gm:_BalanceTeams(newClients)
 			local client = table.remove(priorityTeamMembers, randomPlayerIndex)
 			priorityTeam.Counter = priorityTeam.Counter - 1
 			table.insert(notPriorityTeamMembers, client)
-			notPriorityTeam.Counter = notPriorityTeam.Counter + 1
+			priorityTeam.Counter = priorityTeam.Counter + 1
 		end
 
 		-- Записываем полученные списки в комманды
@@ -428,7 +428,7 @@ function gm:Start()
 	local newClients = {}
 	for client in Client.ClientList do
 		---@cast client Barotrauma.Networking.Client
-		if not client.SpectateOnly then
+		if client.Character ~= nil then
 			table.insert(newClients, client)
 		end
 	end
@@ -460,7 +460,7 @@ function gm:Start()
 	---@param header Barotrauma.Networking.ServerPacketHeader
 	---@param client Barotrauma.Networking.Client
 	Hook.Add("netMessageReceived", "Traitormod.AttackDefendV2.ClientJoined", function (msg, header, client)
-		if header ~= ClientPacketHeader.UPDATE_INGAME or client.InGame then
+		if header ~= ClientPacketHeader.UPDATE_INGAME or client.InGame or client.SpectateOnly then
 			return
 		end
 
