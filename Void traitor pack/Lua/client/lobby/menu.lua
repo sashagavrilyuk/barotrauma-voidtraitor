@@ -14,6 +14,8 @@ local NET_VOTE_SNAPSHOT = "VoidTraitor_LobbyVoteSnapshot"
 local NET_VOTE_START = "VoidTraitor_LobbyVoteStart"
 local NET_VOTE_CAST = "VoidTraitor_LobbyVoteCast"
 
+local DISABLED_ACTION_PREFIX = "__vt_disabled__:"
+
 local GLOBAL_STATE_KEY = "VoidTraitorClientMenuState"
 local HUD_PATCH_ID = "VoidTraitor.ClientMenu.Hud"
 local PAUSE_PATCH_ID = "VoidTraitor.ClientMenu.Pause"
@@ -527,17 +529,7 @@ local function CreateTextInputRow(parent, label, placeholder, action, clearAfter
 end
 
 local function GetEntryTooltip(entry)
-    local hint = tostring(entry.Hint or "")
-    local disabledReason = tostring(entry.DisabledReason or "")
-
-    if entry.Enabled == false and disabledReason ~= "" then
-        if hint ~= "" then
-            return disabledReason .. "\n\n" .. hint
-        end
-        return disabledReason
-    end
-
-    return hint
+    return tostring(entry.Hint or "")
 end
 
 local function AddVoidTraitorResizeHandle(panel, edge, width, height, anchor)
@@ -1581,8 +1573,15 @@ Networking.Receive(NET_SNAPSHOT, function(message)
     local count = message.ReadInt32()
     local entries = {}
     for i = 1, count do
+        local command = message.ReadString()
+        local enabled = true
+        if string.sub(command, 1, #DISABLED_ACTION_PREFIX) == DISABLED_ACTION_PREFIX then
+            command = string.sub(command, #DISABLED_ACTION_PREFIX + 1)
+            enabled = false
+        end
+
         table.insert(entries, {
-            Command = message.ReadString(),
+            Command = command,
             Label = message.ReadString(),
             Hint = message.ReadString(),
             Category = message.ReadString(),
@@ -1590,8 +1589,7 @@ Networking.Receive(NET_SNAPSHOT, function(message)
             InputHint = message.ReadString(),
             ConfirmTitle = message.ReadString(),
             ConfirmText = message.ReadString(),
-            Enabled = message.ReadBoolean(),
-            DisabledReason = message.ReadString(),
+            Enabled = enabled,
         })
     end
 
