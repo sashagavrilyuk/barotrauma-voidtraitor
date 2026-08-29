@@ -44,6 +44,8 @@ return {
         ClientMenuAdminSelectEvent = "Select an event",
         ClientMenuAdminNoEvents = "No events are registered.",
         ClientMenuAdminGhostRoleName = "Ghost role name",
+        ClientMenuAdminSelectCharacter = "Select a character",
+        ClientMenuAdminNoCharacters = "No living characters.",
     },
     Russian = {
         ClientMenuTabMain = "Основное",
@@ -90,5 +92,7 @@ return {
         ClientMenuAdminSelectEvent = "Выберите событие",
         ClientMenuAdminNoEvents = "Нет зарегистрированных событий.",
         ClientMenuAdminGhostRoleName = "Название гост-роли",
+        ClientMenuAdminSelectCharacter = "Выберите персонажа",
+        ClientMenuAdminNoCharacters = "Нет живых персонажей.",
     },
 }

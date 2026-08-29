@@ -377,6 +377,8 @@ local adminDataTextKeys = {
     "ClientMenuAdminNoRoles",
     "ClientMenuAdminSelectEvent",
     "ClientMenuAdminNoEvents",
+    "ClientMenuAdminSelectCharacter",
+    "ClientMenuAdminNoCharacters",
 }
 
 function cm.SendAdminData(client)
@@ -458,7 +460,7 @@ function cm.RunAdminActionV2(client, actionId, targetKey, value)
     local inputType = action.InputType
     local args = {}
     local target = nil
-    if inputType == "player" or inputType == "playeramount" or inputType == "ghostrole" or inputType == "assignrole" then
+    if inputType == "player" or inputType == "playeramount" or inputType == "assignrole" then
         target = Traitormod.FindClient(tostring(targetKey or ""))
         if target == nil then
             Traitormod.SendMessage(client, Traitormod.Language.CMDClientNotFound)
@@ -471,7 +473,7 @@ function cm.RunAdminActionV2(client, actionId, targetKey, value)
     elseif inputType == "playeramount" then
         args = { Traitormod.GetClientAccountKey(target), tostring(value or "") }
     elseif inputType == "ghostrole" then
-        args = { tostring(value or ""), target.Character ~= nil and tostring(target.Character.Name or "") or "" }
+        args = { tostring(value or ""), tostring(targetKey or "") }
     elseif inputType == "assignrole" then
         args = { Traitormod.GetClientAccountKey(target), tostring(value or "") }
     elseif inputType == "event" then

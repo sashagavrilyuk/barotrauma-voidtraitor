@@ -27,6 +27,8 @@ local events = {}
 local selectedPlayerKey = nil
 local selectedRoleId = nil
 local selectedEvent = nil
+local ghostCharacters = {}
+local selectedGhostCharacterName = nil
 local dataLoaded = false
 local dataRequestPending = false
 local pendingReady = nil
@@ -41,15 +43,19 @@ local text = {
     NoRoles = "No roles are registered.",
     SelectEvent = "Select an event",
     NoEvents = "No events are registered.",
+    SelectCharacter = "Select a character",
+    NoCharacters = "No living characters.",
 }
 
 local playerButtons = {}
 local roleButtons = {}
 local eventButtons = {}
+local ghostCharacterButtons = {}
 local selectedPlayerText = nil
 local playerDependentButtons = {}
 local assignRoleButton = nil
 local triggerEventButton = nil
+local ghostRoleButton = nil
 
 local CreateRect = UI.CreateRect
 local CreateText = Common.CreateText
@@ -113,6 +119,7 @@ local function refreshSelection()
     end
     for id, button in pairs(roleButtons) do button.Selected = id == selectedRoleId end
     for eventName, button in pairs(eventButtons) do button.Selected = eventName == selectedEvent end
+    for characterName, button in pairs(ghostCharacterButtons) do button.Selected = characterName == selectedGhostCharacterName end
 
     if selectedPlayerText ~= nil then
         selectedPlayerText.Text = selectedPlayer ~= nil and string.format(text.SelectedPlayer, selectedPlayer.Name) or text.NoPlayers
@@ -122,6 +129,7 @@ local function refreshSelection()
     for _, button in ipairs(playerDependentButtons) do button.Enabled = hasPlayer end
     if assignRoleButton ~= nil then assignRoleButton.Enabled = hasPlayer and selectedRoleId ~= nil end
     if triggerEventButton ~= nil then triggerEventButton.Enabled = selectedEvent ~= nil end
+    if ghostRoleButton ~= nil then ghostRoleButton.Enabled = selectedGhostCharacterName ~= nil end
 end
 
 local function createFixedList(parent, heightPixels)
@@ -209,10 +217,12 @@ function Admin.ClearView()
     playerButtons = {}
     roleButtons = {}
     eventButtons = {}
+    ghostCharacterButtons = {}
     selectedPlayerText = nil
     playerDependentButtons = {}
     assignRoleButton = nil
     triggerEventButton = nil
+    ghostRoleButton = nil
     pendingReady = nil
 end
 
@@ -263,11 +273,17 @@ function Admin.Build(parent)
     selectedPlayerText = CreateText(parent, 1, 0.05, nil, "", GUI.Alignment.Left, 0.82, Color(225, 220, 195, 255), false)
     SetFixedHeight(selectedPlayerText, INPUT_LABEL_HEIGHT)
 
+    local playerActions = GUI.LayoutGroup(CreateRect(1, 0.09, parent, nil), true, GUI.Anchor.CenterLeft)
+    SetFixedHeight(playerActions, INPUT_ROW_HEIGHT)
+    playerActions.Stretch = true
+    playerActions.RelativeSpacing = 0.008
+
     for _, actionId in ipairs({ "revive", "void", "unvoid" }) do
         local entry = entryById[actionId]
         if entry ~= nil then
-            local button = CreateMenuButton(parent, entry.Label, false)
+            local button = GUI.Button(CreateRect(0.325, 1, playerActions, nil), entry.Label, GUI.Alignment.Center, "GUIButton")
             button.ToolTip = tostring(entry.Hint or "")
+            SetButtonTextScale(button, 0.72)
             table.insert(playerDependentButtons, button)
             button.OnClicked = function()
                 if selectedPlayerKey ~= nil then sendAction(actionId, selectedPlayerKey, "") end
@@ -321,7 +337,63 @@ function Admin.Build(parent)
     if ghostEntry ~= nil then
         CreateDivider(parent)
         CreateCategoryHeader(parent, ghostEntry.Category)
-        createPlayerValueAction(parent, "giveghostrole")
+
+        ghostCharacters = {}
+        for character in Character.CharacterList do
+            if not character.IsDead and tostring(character.Name or "") ~= "" then
+                table.insert(ghostCharacters, tostring(character.Name))
+            end
+        end
+        table.sort(ghostCharacters, function(a, b) return string.lower(a) < string.lower(b) end)
+
+        local selectedFound = false
+        for _, characterName in ipairs(ghostCharacters) do
+            if characterName == selectedGhostCharacterName then selectedFound = true break end
+        end
+        if not selectedFound then selectedGhostCharacterName = ghostCharacters[1] end
+
+        local characterLabel = CreateText(parent, 1, 0.05, nil, text.SelectCharacter, GUI.Alignment.Left, 0.82, Color(210, 220, 200, 255), false)
+        SetFixedHeight(characterLabel, INPUT_LABEL_HEIGHT)
+
+        local characterList = createFixedList(parent, OPTION_LIST_HEIGHT)
+        if #ghostCharacters == 0 then
+            CreateText(characterList.Content, 1, 0.70, nil, text.NoCharacters, GUI.Alignment.Center, 0.82, Color(195, 195, 185, 255), true)
+        else
+            for _, characterName in ipairs(ghostCharacters) do
+                local button = GUI.Button(CreateRect(1, 0.12, characterList.Content, nil), characterName, GUI.Alignment.Left, "ListBoxElement")
+                SetFixedHeight(button, ROW_HEIGHT)
+                SetButtonTextScale(button, 0.82)
+                ghostCharacterButtons[characterName] = button
+                button.OnClicked = function()
+                    if selectedGhostCharacterName ~= characterName then
+                        selectedGhostCharacterName = characterName
+                        refreshSelection()
+                    end
+                    return true
+                end
+            end
+            characterList:RecalculateChildren()
+            characterList:UpdateScrollBarSize()
+        end
+
+        local row = GUI.Frame(CreateRect(1, 0.09, parent, nil), nil)
+        SetFixedHeight(row, INPUT_ROW_HEIGHT)
+        row.Color = Color(0, 0, 0, 0)
+        row.CanBeFocused = false
+
+        local input = GUI.TextBox(CreateRect(0.68, 1, row, GUI.Anchor.CenterLeft), ghostEntry.InputHint or "")
+        if input.TextBlock ~= nil then input.TextBlock.TextScale = 0.86 end
+        input.ToolTip = tostring(ghostEntry.Hint or "")
+
+        ghostRoleButton = GUI.Button(CreateRect(0.30, 1, row, GUI.Anchor.CenterRight), UI.GetOkText(), GUI.Alignment.Center, "GUIButton")
+        SetButtonTextScale(ghostRoleButton, 0.90)
+        ghostRoleButton.ToolTip = tostring(ghostEntry.Hint or "")
+        ghostRoleButton.OnClicked = function()
+            if selectedGhostCharacterName ~= nil then
+                sendAction("giveghostrole", selectedGhostCharacterName, input.Text or "")
+            end
+            return true
+        end
     end
 
     local eventEntry = entryById.triggerevent
