@@ -546,7 +546,7 @@ local function ShowConfirm(title, text, action)
     sharedState.CurrentMenu = overlay
     sharedState.CurrentMenuKind = currentMenuKind
 
-    local box = GUI.Frame(CreateRect(0.20, 0.165, overlay, GUI.Anchor.Center), "GUIFrame")
+    local box = GUI.Frame(CreateRect(0.19, 0.15, overlay, GUI.Anchor.Center), "GUIFrame")
     box.CanBeFocused = true
 
     local content = GUI.LayoutGroup(CreateRect(0.84, 0.55, box, GUI.Anchor.TopCenter), false, GUI.Anchor.TopCenter)
@@ -555,21 +555,22 @@ local function ShowConfirm(title, text, action)
 
     local titleBlock = CreateText(content, 1, 0.40, nil, title, GUI.Alignment.Center, 1.02, Color(255, 235, 170, 255), false)
     pcall(function() titleBlock.Font = GUI.Style.LargeFont end)
-    CreateText(content, 1, 0.45, nil, text, GUI.Alignment.Center, 0.82, Color(230, 230, 220, 255), true)
+    CreateText(content, 1, 0.45, nil, text, GUI.Alignment.Center, 0.92, Color(230, 230, 220, 255), true)
 
-    local buttons = GUI.Frame(CreateRect(0.76, 0.20, box, GUI.Anchor.BottomCenter), nil)
+    local buttons = GUI.Frame(CreateRect(0.76, 0.22, box, GUI.Anchor.BottomCenter), nil)
+    buttons.RectTransform.AbsoluteOffset = Point(0, -SafeIntScale(8))
     buttons.Color = Color(0, 0, 0, 0)
     buttons.CanBeFocused = false
 
     local cancel = GUI.Button(CreateRect(0.47, 1, buttons, GUI.Anchor.CenterLeft), uiText.Cancel, GUI.Alignment.Center, "GUIButton")
-    SetButtonTextScale(cancel, 0.84)
+    SetButtonTextScale(cancel, 0.90)
     cancel.OnClicked = function()
         CloseMenu()
         return true
     end
 
     local confirm = GUI.Button(CreateRect(0.47, 1, buttons, GUI.Anchor.CenterRight), uiText.Yes, GUI.Alignment.Center, "GUIButton")
-    SetButtonTextScale(confirm, 0.84)
+    SetButtonTextScale(confirm, 0.90)
     confirm.OnClicked = function()
         SendCommand(action)
         CloseMenu()
@@ -869,6 +870,7 @@ local function FindLobbyTabButtonRect(componentName, textTag)
     if lobbyFrame == nil then return nil end
 
     local found = nil
+    local foundArea = 0
     pcall(function()
         for child in lobbyFrame.GetAllChildren() do
             if child ~= nil and GetComponentText(child) == expectedText then
@@ -876,9 +878,10 @@ local function FindLobbyTabButtonRect(componentName, textTag)
                 if rect ~= nil then
                     local width = ReadRectValue(rect, "Width", "width", 0)
                     local height = ReadRectValue(rect, "Height", "height", 0)
-                    if width >= SafeIntScale(120) and height >= SafeIntScale(20) then
+                    local area = width * height
+                    if width >= SafeIntScale(120) and height >= SafeIntScale(20) and area > foundArea then
                         found = rect
-                        return
+                        foundArea = area
                     end
                 end
             end
