@@ -66,9 +66,8 @@ local function CreateMyButton(width, height, parent, anchor, text)
     local rect = CreateRect(width, height, parent, anchor)
     local btn = GUI.Button(rect, text, GUI.Alignment.Center, "GUIButton") 
     ApplyButtonStyle(btn)
-    
-    if string.len(text) > 12 then 
-        btn.TextScale = 0.8 
+    if btn.TextBlock ~= nil then
+        btn.TextBlock.AutoScaleHorizontal = true
     end
     return btn
 end
@@ -108,7 +107,10 @@ local function ShowCopyWindow(url)
 end
 
 local function OpenLink(url)
-    pcall(function() if Steam then Steam.OpenUrl(url) end end)
+    if Steam ~= nil then
+        local ok = pcall(function() Steam.OpenUrl(url) end)
+        if ok then return end
+    end
     ShowCopyWindow(url)
 end
 

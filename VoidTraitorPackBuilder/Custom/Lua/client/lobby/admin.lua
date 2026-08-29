@@ -470,7 +470,7 @@ Networking.Receive(NET_SNAPSHOT, function(message)
         events = {}
     end
 
-    if previousAvailable ~= available and Admin.OnAvailabilityChanged ~= nil then
+    if previousAvailable and not available and Admin.OnAvailabilityChanged ~= nil then
         Admin.OnAvailabilityChanged()
     end
 end)
