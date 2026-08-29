@@ -61,23 +61,37 @@ local function isAlive(client)
     return client ~= nil and client.Character ~= nil and not client.Character.IsDead
 end
 
+local function canUseAliveCharacter(client)
+    if isAlive(client) then return true end
+    return false, Traitormod.Language.CMDAliveToUse
+end
+
 local function canUseAlive(client)
-    return isAdmin(client) or not isAlive(client)
+    if not Game.RoundStarted or Traitormod.SelectedGamemode == nil then
+        return false, Traitormod.Language.RoundNotStarted
+    end
+    if isAdmin(client) or not isAlive(client) then return true end
+    return false, Traitormod.Language.CMDAliveDeadOnly
 end
 
 local function canLocateSub(client)
-    if not isAlive(client) or not client.InGame then return false end
-    if client.Character.IsHuman and client.Character.TeamID == CharacterTeamType.Team1 then return false end
+    if not isAlive(client) or not client.InGame then
+        return false, Traitormod.Language.CMDAliveToUse
+    end
+    if client.Character.IsHuman and client.Character.TeamID == CharacterTeamType.Team1 then
+        return false, Traitormod.Language.CMDOnlyMonsters
+    end
     return true
 end
 
-local function canUseSuicide(client)
-    return isAlive(client)
-end
-
 local function canDropPoints(client)
-    if not isAlive(client) or client.Character.Inventory == nil then return false end
-    return math.floor(tonumber(Traitormod.GetData(client, "Points") or 0) or 0) >= 100
+    if not isAlive(client) or client.Character.Inventory == nil then
+        return false, Traitormod.Language.CMDAliveToUse
+    end
+    if math.floor(tonumber(Traitormod.GetData(client, "Points") or 0) or 0) < 100 then
+        return false, Traitormod.GetText("CMDDropPointsNotEnough")
+    end
+    return true
 end
 
 local function canUseFakeHandcuffs(client)
@@ -87,10 +101,20 @@ local function canUseFakeHandcuffs(client)
     return item ~= nil and item.Prefab.Identifier == "handcuffs" and item.HasTag("fakehandcuffs")
 end
 
+local function canLocatePlayers(client)
+    if not isGamemode("SubmarineRoyale") then
+        return false, lang("ClientMenuHintPlayers")
+    end
+    if not isAlive(client) or not client.InGame then
+        return false, Traitormod.Language.CMDAliveToUse
+    end
+    return true
+end
+
 local actions = {}
 local orderedActions = {}
 
-local function addAction(id, labelKey, hintKey, categoryKey, order, callback, inputType, inputHintKey, confirmTitleKey, confirmTextKey, condition)
+local function addAction(id, labelKey, hintKey, categoryKey, order, callback, inputType, inputHintKey, confirmTitleKey, confirmTextKey, condition, hideWhenUnavailable)
     local action = {
         Id = id,
         LabelKey = labelKey,
@@ -103,6 +127,7 @@ local function addAction(id, labelKey, hintKey, categoryKey, order, callback, in
         ConfirmTitleKey = confirmTitleKey or "",
         ConfirmTextKey = confirmTextKey or "",
         Condition = condition,
+        HideWhenUnavailable = hideWhenUnavailable == true,
     }
 
     actions[id] = action
@@ -111,7 +136,7 @@ end
 
 addAction("role", "ClientMenuRole", "ClientMenuHintRole", "ClientMenuCategoryMain", 10, function(client, input)
     return runCommand("!role", client, input)
-end, nil, nil, nil, nil, isAlive)
+end, nil, nil, nil, nil, canUseAliveCharacter)
 
 addAction("points", "ClientMenuPoints", "ClientMenuHintPoints", "ClientMenuCategoryMain", 11, function(client, input)
     return runCommand("!points", client, input)
@@ -119,15 +144,15 @@ end)
 
 addAction("status", "ClientMenuStatus", "ClientMenuHintStatus", "ClientMenuCategoryMain", 12, function(client, input)
     return runCommand("!status", client, input)
-end, nil, nil, nil, nil, isAlive)
+end, nil, nil, nil, nil, canUseAliveCharacter)
 
 addAction("toggletraitor", "ClientMenuToggleTraitor", "ClientMenuHintToggleTraitor", "ClientMenuCategoryMain", 13, function(client, input)
     return runCommand("!toggletraitor", client, input)
-end, nil, nil, nil, nil, function() return Traitormod.Config.OptionalTraitors == true end)
+end, nil, nil, nil, nil, function() return Traitormod.Config.OptionalTraitors == true end, true)
 
 addAction("suicide", "ClientMenuSuicide", "ClientMenuHintSuicide", "ClientMenuCategoryCharacter", 20, function(client, input)
     return runCommand("!suicide", client, input)
-end, "", "", "ClientMenuConfirmTitle", "ClientMenuConfirmSuicide", canUseSuicide)
+end, "", "", "ClientMenuConfirmTitle", "ClientMenuConfirmSuicide", canUseAliveCharacter)
 
 addAction("droppoints", "ClientMenuDropPoints", "ClientMenuHintDropPoints", "ClientMenuCategoryCharacter", 21, function(client, input)
     return runCommand("!droppoints", client, input)
@@ -135,7 +160,7 @@ end, "number", "ClientMenuInputDropPoints", nil, nil, canDropPoints)
 
 addAction("freehandcuffs", "ClientMenuFreeHandcuffs", "ClientMenuHintFreeHandcuffs", "ClientMenuCategoryCharacter", 23, function(client, input)
     return runCommand("!freehandcuffs", client, input)
-end, nil, nil, nil, nil, canUseFakeHandcuffs)
+end, nil, nil, nil, nil, canUseFakeHandcuffs, true)
 
 addAction("roundtime", "ClientMenuRoundTime", "ClientMenuHintRoundTime", "ClientMenuCategoryRound", 30, function(client, input)
     return runCommand("!roundtime", client, input)
@@ -175,7 +200,7 @@ addAction("players", "ClientMenuPlayers", "ClientMenuHintPlayers", "ClientMenuCa
 
     Game.SendDirectChatMessage("", text, nil, ChatMessageType.Error, client)
     return true
-end, nil, nil, nil, nil, function(client) return isGamemode("SubmarineRoyale") and isAlive(client) end)
+end, nil, nil, nil, nil, canLocatePlayers)
 
 addAction("info", "ClientMenuInfo", "ClientMenuHintInfo", "ClientMenuCategoryInfo", 40, function(client, input)
     return runCommand("!info", client, input)
@@ -202,8 +227,20 @@ local function getVisibleActions(client)
     local visible = {}
 
     for _, action in ipairs(orderedActions) do
-        if action.Condition == nil or action.Condition(client) == true then
-            table.insert(visible, action)
+        local enabled = true
+        local disabledReason = ""
+        if action.Condition ~= nil then
+            local allowed, reason = action.Condition(client)
+            enabled = allowed == true
+            disabledReason = tostring(reason or "")
+        end
+
+        if enabled or not action.HideWhenUnavailable then
+            table.insert(visible, {
+                Action = action,
+                Enabled = enabled,
+                DisabledReason = disabledReason,
+            })
         end
     end
 
@@ -228,7 +265,8 @@ function cm.SendSnapshot(client)
     netMessage.WriteString(lang("ClientMenuOk"))
     netMessage.WriteInt32(#visibleActions)
 
-    for _, action in ipairs(visibleActions) do
+    for _, entry in ipairs(visibleActions) do
+        local action = entry.Action
         netMessage.WriteString(action.Id)
         netMessage.WriteString(lang(action.LabelKey))
         netMessage.WriteString(lang(action.HintKey))
@@ -237,6 +275,8 @@ function cm.SendSnapshot(client)
         netMessage.WriteString(action.InputHintKey ~= "" and lang(action.InputHintKey) or "")
         netMessage.WriteString(action.ConfirmTitleKey ~= "" and lang(action.ConfirmTitleKey) or "")
         netMessage.WriteString(action.ConfirmTextKey ~= "" and lang(action.ConfirmTextKey) or "")
+        netMessage.WriteBoolean(entry.Enabled)
+        netMessage.WriteString(entry.DisabledReason)
     end
 
     Networking.Send(netMessage, client.Connection)
