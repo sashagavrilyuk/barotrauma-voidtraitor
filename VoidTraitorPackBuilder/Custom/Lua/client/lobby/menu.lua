@@ -547,19 +547,16 @@ local function ShowConfirm(title, text, action)
     sharedState.CurrentMenu = overlay
     sharedState.CurrentMenuKind = currentMenuKind
 
-    local box = GUI.Frame(CreateRect(0.18, 0.14, overlay, GUI.Anchor.Center), "GUIFrame")
+    local box = GUI.Frame(CreateRect(0.20, 0.165, overlay, GUI.Anchor.Center), "GUIFrame")
     box.CanBeFocused = true
 
-    local content = GUI.LayoutGroup(CreateRect(0.86, 0.58, box, GUI.Anchor.TopCenter), false, GUI.Anchor.TopCenter)
-    content.Stretch = true
-    pcall(function() content.RelativeSpacing = 0.025 end)
-
-    local titleBlock = CreateText(content, 1, 0.40, nil, title, GUI.Alignment.Center, 1.02, Color(255, 235, 170, 255), false)
+    local titleBlock = CreateText(box, 0.90, 0.22, GUI.Anchor.TopCenter, title, GUI.Alignment.Center, 1.02, Color(255, 235, 170, 255), false)
+    titleBlock.RectTransform.AbsoluteOffset = Point(0, SafeIntScale(8))
     pcall(function() titleBlock.Font = GUI.Style.LargeFont end)
-    CreateText(content, 1, 0.45, nil, text, GUI.Alignment.Center, 1.08, Color(230, 230, 220, 255), true)
+    CreateText(box, 0.86, 0.30, GUI.Anchor.Center, text, GUI.Alignment.Center, 1.08, Color(230, 230, 220, 255), true)
 
     local buttons = GUI.Frame(CreateRect(0.76, 0.20, box, GUI.Anchor.BottomCenter), nil)
-    buttons.RectTransform.AbsoluteOffset = Point(0, -SafeIntScale(18))
+    buttons.RectTransform.AbsoluteOffset = Point(0, SafeIntScale(18))
     buttons.Color = Color(0, 0, 0, 0)
     buttons.CanBeFocused = false
 
