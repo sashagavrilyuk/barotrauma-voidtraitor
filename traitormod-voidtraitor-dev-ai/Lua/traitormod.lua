@@ -88,7 +88,7 @@ local roundSkillGiveTimer = -1
 local skillBuffUpdateInterval = 1
 local skillBuffUpdateTimer = skillBuffUpdateInterval
 local gamemodeThinkInterval = 0.25
-local gamemodeThinkTimer
+local gamemodeThinkTimer = 0
 
 local function isValidBuffCharacter(character)
     return character ~= nil and character.IsHuman and not character.IsDead and character.Info ~= nil and character.Info.Job ~= nil
@@ -791,26 +791,16 @@ Hook.Add("think", "Traitormod.Think", function(deltaTime)
     end
 
     if not Game.RoundStarted or Traitormod.SelectedGamemode == nil then
-        gamemodeThinkTimer = nil
+        gamemodeThinkTimer = 0
         return
     end
 
     Traitormod.RoundTime = Traitormod.RoundTime + deltaTime
 
-    local gamemodeDeltaTime
-    if gamemodeThinkTimer == nil then
-        gamemodeThinkTimer = 0
-        gamemodeDeltaTime = deltaTime
-    else
-        gamemodeThinkTimer = gamemodeThinkTimer + deltaTime
-        if gamemodeThinkTimer >= gamemodeThinkInterval then
-            gamemodeDeltaTime = gamemodeThinkTimer
-            gamemodeThinkTimer = 0
-        end
-    end
-
-    if gamemodeDeltaTime ~= nil then
+    gamemodeThinkTimer = gamemodeThinkTimer + deltaTime
+    if gamemodeThinkTimer >= gamemodeThinkInterval then
         Traitormod.SelectedGamemode:Think(gamemodeDeltaTime)
+        gamemodeThinkTimer = 0
     end
 
     -- give points/xp on the configured experience timer
