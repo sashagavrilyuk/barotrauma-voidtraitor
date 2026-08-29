@@ -441,7 +441,7 @@ function cm.SendAdminData(client)
 
         netMessage.WriteInt32(#adminDataTextKeys)
         for _, key in ipairs(adminDataTextKeys) do
-            netMessage.WriteString(key)
+            netMessage.WriteString(string.sub(key, #"ClientMenuAdmin" + 1))
             netMessage.WriteString(lang(key))
         end
     end
