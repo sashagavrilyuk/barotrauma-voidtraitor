@@ -16,6 +16,8 @@ local voteNet = {
     Cast = "VoidTraitor_LobbyVoteCast",
 }
 
+local DISABLED_ACTION_PREFIX = "__vt_disabled__:"
+
 local function lang(key)
     return Traitormod.GetText(key)
 end
@@ -267,16 +269,23 @@ function cm.SendSnapshot(client)
 
     for _, entry in ipairs(visibleActions) do
         local action = entry.Action
-        netMessage.WriteString(action.Id)
+        local actionId = action.Id
+        local hint = lang(action.HintKey)
+        if not entry.Enabled then
+            actionId = DISABLED_ACTION_PREFIX .. actionId
+            if entry.DisabledReason ~= "" then
+                hint = entry.DisabledReason .. (hint ~= "" and "\n\n" .. hint or "")
+            end
+        end
+
+        netMessage.WriteString(actionId)
         netMessage.WriteString(lang(action.LabelKey))
-        netMessage.WriteString(lang(action.HintKey))
+        netMessage.WriteString(hint)
         netMessage.WriteString(lang(action.CategoryKey))
         netMessage.WriteString(action.InputType)
         netMessage.WriteString(action.InputHintKey ~= "" and lang(action.InputHintKey) or "")
         netMessage.WriteString(action.ConfirmTitleKey ~= "" and lang(action.ConfirmTitleKey) or "")
         netMessage.WriteString(action.ConfirmTextKey ~= "" and lang(action.ConfirmTextKey) or "")
-        netMessage.WriteBoolean(entry.Enabled)
-        netMessage.WriteString(entry.DisabledReason)
     end
 
     Networking.Send(netMessage, client.Connection)
