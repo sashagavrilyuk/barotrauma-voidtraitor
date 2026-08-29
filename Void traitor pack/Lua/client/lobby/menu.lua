@@ -118,11 +118,12 @@ local VT_MENU_MIN_HEIGHT_PIXELS = 340
 local VT_MENU_MARGIN_PIXELS = 10
 local VT_RESIZE_EDGE_PIXELS = 10
 local VT_RESIZE_CORNER_PIXELS = 22
-local VT_BUTTON_HEIGHT_PIXELS = 42
+local VT_BUTTON_HEIGHT_PIXELS = 36
 local VT_CATEGORY_HEIGHT_PIXELS = 30
 local VT_DIVIDER_HEIGHT_PIXELS = 10
 local VT_INPUT_LABEL_HEIGHT_PIXELS = 24
 local VT_INPUT_ROW_HEIGHT_PIXELS = 40
+local VT_LIST_SIDE_PADDING_PIXELS = 6
 
 local function SafeIntScale(value)
     local ok, result = pcall(function()
@@ -487,10 +488,12 @@ local function CreateCategoryHeader(parent, label)
     return frame
 end
 
-local function CreateTextInputRow(parent, label, placeholder, action, clearAfterSend)
+local function CreateTextInputRow(parent, label, placeholder, action, clearAfterSend, enabled, tooltip)
+    local isEnabled = enabled ~= false
     local labelBlock = CreateText(parent, 1, 0.05, nil, label, GUI.Alignment.Left, 0.86, Color(210, 220, 200, 255), false)
     SetFixedHeight(labelBlock, VT_INPUT_LABEL_HEIGHT_PIXELS)
     pcall(function() labelBlock.Font = GUI.Style.SubHeadingFont end)
+    labelBlock.ToolTip = tooltip or ""
 
     local row = GUI.LayoutGroup(CreateRect(1, 0.09, parent, nil), true, GUI.Anchor.CenterLeft)
     SetFixedHeight(row, VT_INPUT_ROW_HEIGHT_PIXELS)
@@ -498,6 +501,8 @@ local function CreateTextInputRow(parent, label, placeholder, action, clearAfter
     pcall(function() row.RelativeSpacing = 0.010 end)
 
     local input = GUI.TextBox(CreateRect(0.66, 1, row, nil), placeholder or "")
+    input.Enabled = isEnabled
+    input.ToolTip = tooltip or ""
     pcall(function()
         if input.TextBlock ~= nil then
             input.TextBlock.TextScale = 0.86
@@ -505,6 +510,8 @@ local function CreateTextInputRow(parent, label, placeholder, action, clearAfter
     end)
 
     local sendButton = GUI.Button(CreateRect(0.32, 1, row, nil), uiText.Ok, GUI.Alignment.Center, "GUIButton")
+    sendButton.Enabled = isEnabled
+    sendButton.ToolTip = tooltip or ""
     SetButtonTextScale(sendButton, 0.90)
     sendButton.OnClicked = function()
         local value = ""
@@ -517,6 +524,20 @@ local function CreateTextInputRow(parent, label, placeholder, action, clearAfter
     end
 
     return input
+end
+
+local function GetEntryTooltip(entry)
+    local hint = tostring(entry.Hint or "")
+    local disabledReason = tostring(entry.DisabledReason or "")
+
+    if entry.Enabled == false and disabledReason ~= "" then
+        if hint ~= "" then
+            return disabledReason .. "\n\n" .. hint
+        end
+        return disabledReason
+    end
+
+    return hint
 end
 
 local function AddVoidTraitorResizeHandle(panel, edge, width, height, anchor)
@@ -811,7 +832,13 @@ local function ShowVoidTraitorMenu()
             vtMenuList.ContentBackground.Color = Color(0, 0, 0, 0)
         end
     end)
-    pcall(function() vtMenuList.KeepSpaceForScrollBar = true end)
+    pcall(function()
+        vtMenuList.KeepSpaceForScrollBar = true
+        local sidePadding = SafeIntScale(VT_LIST_SIDE_PADDING_PIXELS)
+        local scrollBarWidth = math.max(0, vtMenuList.ScrollBar.Rect.Width)
+        vtMenuList.Padding = Vector4(scrollBarWidth + sidePadding, 0, sidePadding, 0)
+        vtMenuList:UpdateDimensions()
+    end)
 
     local entries = menuEntries or {}
     if #entries == 0 then
@@ -829,12 +856,14 @@ local function ShowVoidTraitorMenu()
             lastCategory = category
         end
 
+        local enabled = entry.Enabled ~= false
+        local tooltip = GetEntryTooltip(entry)
         local inputType = tostring(entry.InputType or "")
         if inputType ~= "" then
-            CreateTextInputRow(vtMenuList.Content, entry.Label or entry.Command or uiText.GenericCommand, entry.InputHint or "", entry.Command or "", true)
+            CreateTextInputRow(vtMenuList.Content, entry.Label or entry.Command or uiText.GenericCommand, entry.InputHint or "", entry.Command or "", true, enabled, tooltip)
         else
-            local button = CreateMenuButton(vtMenuList.Content, entry.Label or entry.Command or uiText.GenericCommand, true)
-            button.ToolTip = entry.Hint or ""
+            local button = CreateMenuButton(vtMenuList.Content, entry.Label or entry.Command or uiText.GenericCommand, enabled)
+            button.ToolTip = tooltip
             button.OnClicked = function()
                 if tostring(entry.ConfirmText or "") ~= "" then
                     ShowConfirm(entry.ConfirmTitle ~= "" and entry.ConfirmTitle or uiText.DefaultConfirmTitle, entry.ConfirmText, entry.Command)
@@ -1561,6 +1590,8 @@ Networking.Receive(NET_SNAPSHOT, function(message)
             InputHint = message.ReadString(),
             ConfirmTitle = message.ReadString(),
             ConfirmText = message.ReadString(),
+            Enabled = message.ReadBoolean(),
+            DisabledReason = message.ReadString(),
         })
     end
 
