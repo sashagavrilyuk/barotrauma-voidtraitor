@@ -123,6 +123,7 @@ local voteUiText = {
 
 local BUTTON_DRAW_ORDER = 100
 local MENU_DRAW_ORDER = 125
+LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.NetLobbyScreen"], "respawnTabButton")
 local VT_MENU_WIDTH_PIXELS = 370
 local VT_MENU_DEFAULT_HEIGHT_PIXELS = 580
 local VT_MENU_MIN_HEIGHT_PIXELS = 340
@@ -546,31 +547,31 @@ local function ShowConfirm(title, text, action)
     sharedState.CurrentMenu = overlay
     sharedState.CurrentMenuKind = currentMenuKind
 
-    local box = GUI.Frame(CreateRect(0.19, 0.15, overlay, GUI.Anchor.Center), "GUIFrame")
+    local box = GUI.Frame(CreateRect(0.18, 0.14, overlay, GUI.Anchor.Center), "GUIFrame")
     box.CanBeFocused = true
 
-    local content = GUI.LayoutGroup(CreateRect(0.84, 0.55, box, GUI.Anchor.TopCenter), false, GUI.Anchor.TopCenter)
+    local content = GUI.LayoutGroup(CreateRect(0.86, 0.58, box, GUI.Anchor.TopCenter), false, GUI.Anchor.TopCenter)
     content.Stretch = true
-    pcall(function() content.RelativeSpacing = 0.035 end)
+    pcall(function() content.RelativeSpacing = 0.025 end)
 
     local titleBlock = CreateText(content, 1, 0.40, nil, title, GUI.Alignment.Center, 1.02, Color(255, 235, 170, 255), false)
     pcall(function() titleBlock.Font = GUI.Style.LargeFont end)
-    CreateText(content, 1, 0.45, nil, text, GUI.Alignment.Center, 0.92, Color(230, 230, 220, 255), true)
+    CreateText(content, 1, 0.45, nil, text, GUI.Alignment.Center, 1.08, Color(230, 230, 220, 255), true)
 
-    local buttons = GUI.Frame(CreateRect(0.76, 0.22, box, GUI.Anchor.BottomCenter), nil)
-    buttons.RectTransform.AbsoluteOffset = Point(0, -SafeIntScale(8))
+    local buttons = GUI.Frame(CreateRect(0.76, 0.20, box, GUI.Anchor.BottomCenter), nil)
+    buttons.RectTransform.AbsoluteOffset = Point(0, -SafeIntScale(18))
     buttons.Color = Color(0, 0, 0, 0)
     buttons.CanBeFocused = false
 
     local cancel = GUI.Button(CreateRect(0.47, 1, buttons, GUI.Anchor.CenterLeft), uiText.Cancel, GUI.Alignment.Center, "GUIButton")
-    SetButtonTextScale(cancel, 0.90)
+    SetButtonTextScale(cancel, 1.00)
     cancel.OnClicked = function()
         CloseMenu()
         return true
     end
 
     local confirm = GUI.Button(CreateRect(0.47, 1, buttons, GUI.Anchor.CenterRight), uiText.Yes, GUI.Alignment.Center, "GUIButton")
-    SetButtonTextScale(confirm, 0.90)
+    SetButtonTextScale(confirm, 1.00)
     confirm.OnClicked = function()
         SendCommand(action)
         CloseMenu()
@@ -843,82 +844,11 @@ local function GetLobbyComponentRect(name)
     return GetComponentRect(GetLobbyComponent(name))
 end
 
-local function GetComponentText(component)
-    if component == nil then return "" end
-
-    local text = ""
-    pcall(function()
-        if component.TextBlock ~= nil and component.TextBlock.Text ~= nil then
-            text = tostring(component.TextBlock.Text)
-        elseif component.Text ~= nil then
-            text = tostring(component.Text)
-        end
-    end)
-
-    return text or ""
-end
-
-local function FindLobbyTabButtonRect(componentName, textTag)
-    local direct = GetComponentRect(GetLobbyComponent(componentName))
-    if direct ~= nil then return direct end
-
-    local expectedText = ""
-    local ok = pcall(function() expectedText = tostring(TextManager.Get(textTag)) end)
-    if not ok or expectedText == "" then return nil end
-
-    local lobbyFrame = GetLobbyGuiFrame()
-    if lobbyFrame == nil then return nil end
-
-    local found = nil
-    local foundArea = 0
-    pcall(function()
-        for child in lobbyFrame.GetAllChildren() do
-            if child ~= nil and GetComponentText(child) == expectedText then
-                local rect = GetComponentRect(child)
-                if rect ~= nil then
-                    local width = ReadRectValue(rect, "Width", "width", 0)
-                    local height = ReadRectValue(rect, "Height", "height", 0)
-                    local area = width * height
-                    if width >= SafeIntScale(120) and height >= SafeIntScale(20) and area > foundArea then
-                        found = rect
-                        foundArea = area
-                    end
-                end
-            end
-        end
-    end)
-
-    return found
-end
-
 local function GetVoteButtonParent()
     return GetLobbyGuiFrame()
 end
 
 local function GetVoteButtonAnchorRect()
-    local respawnRect = FindLobbyTabButtonRect("respawnTabButton", "respawnsettings")
-    if respawnRect ~= nil then
-        local x = ReadRectValue(respawnRect, "X", "x", 0)
-        local y = ReadRectValue(respawnRect, "Y", "y", 0)
-        local width = ReadRectValue(respawnRect, "Width", "width", 0)
-        local height = ReadRectValue(respawnRect, "Height", "height", 0)
-        if width > 0 and height > 0 then
-            local gap = SafeIntScale(6)
-            local upgradesRect = FindLobbyTabButtonRect("upgradesTabButton", "disembarkpointsettings")
-            if upgradesRect ~= nil then
-                local measuredGap = ReadRectValue(upgradesRect, "X", "x", 0) - (x + width)
-                if measuredGap >= 0 then gap = measuredGap end
-            end
-
-            return {
-                X = x - width - gap,
-                Y = y,
-                Width = width,
-                Height = height,
-            }
-        end
-    end
-
     local subRect = GetLobbyComponentRect("SubList")
     local modeRect = GetLobbyComponentRect("ModeList")
     local anchorRect = subRect or modeRect
@@ -931,11 +861,17 @@ local function GetVoteButtonAnchorRect()
     if width <= 0 or height <= 0 then return nil end
 
     local buttonWidth = math.max(SafeIntScale(170), math.min(SafeIntScale(245), math.floor(width * 0.324)))
+    local buttonY = y + height + SafeIntScale(6)
     local buttonHeight = SafeIntScale(32)
+    local respawnRect = GetComponentRect(GetLobbyComponent("respawnTabButton"))
+    if respawnRect ~= nil then
+        buttonY = ReadRectValue(respawnRect, "Y", "y", buttonY)
+        buttonHeight = ReadRectValue(respawnRect, "Height", "height", buttonHeight)
+    end
 
     return {
         X = x + width - buttonWidth - SafeIntScale(6),
-        Y = y + height + SafeIntScale(6),
+        Y = buttonY,
         Width = buttonWidth,
         Height = buttonHeight,
     }
