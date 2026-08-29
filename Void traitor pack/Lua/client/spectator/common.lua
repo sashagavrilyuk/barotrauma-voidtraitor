@@ -54,8 +54,8 @@ function Common.GetCharacterById(characterId)
     return nil
 end
 
-function Common.GetIconData(entry)
-    local iconIdentifier = tostring(entry.Icon or "")
+function Common.GetPrefabIconData(iconIdentifier)
+    iconIdentifier = tostring(iconIdentifier or "")
 
     if string.sub(iconIdentifier, 1, 4) == "job:" then
         local prefab = JobPrefab.Get(string.sub(iconIdentifier, 5))
@@ -67,16 +67,20 @@ function Common.GetIconData(entry)
     elseif iconIdentifier ~= "" and iconIdentifier ~= "character" then
         local prefab = ItemPrefab.GetItemPrefab(iconIdentifier)
         if prefab ~= nil then
-            local sprite = prefab.InventoryIcon
-            local color = Color(255, 255, 255, 255)
-            if sprite ~= nil then
-                color = prefab.InventoryIconColor
-            else
-                sprite = prefab.Sprite
+            if prefab.InventoryIcon ~= nil then
+                return prefab.InventoryIcon, prefab.InventoryIconColor
+            elseif prefab.Sprite ~= nil then
+                return prefab.Sprite, prefab.SpriteColor
             end
-            if sprite ~= nil then return sprite, color end
         end
     end
+
+    return nil, nil
+end
+
+function Common.GetIconData(entry)
+    local sprite, color = Common.GetPrefabIconData(entry.Icon)
+    if sprite ~= nil then return sprite, color end
 
     local character = Common.GetCharacterById(entry.CharacterId)
     if character ~= nil and character.AnimController ~= nil and character.AnimController.MainLimb ~= nil then

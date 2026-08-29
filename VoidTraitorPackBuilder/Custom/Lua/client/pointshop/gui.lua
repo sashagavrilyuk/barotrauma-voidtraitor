@@ -1,5 +1,7 @@
 if SERVER then return end
 
+local _, Common = ...
+
 -- Void Traitor Pointshop GUI.
 -- Client-side visual shell only. The server is still authoritative for prices,
 -- limits, stock, cooldowns and actual purchases.
@@ -172,7 +174,7 @@ guiRoot.Color = Color(0, 0, 0, 0)
 guiRoot.CanBeFocused = false
 guiRoot.IgnoreLayoutGroups = true
 sharedState.GuiRoot = guiRoot
-pcall(function() guiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER) end)
+guiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER)
 
 -- Reinsert the root when Barotrauma rebuilds the GUI update list.
 Hook.Patch(HUD_PATCH_ID, "Barotrauma.GameSession", "AddToGUIUpdateList", function()
@@ -221,11 +223,7 @@ local function RequestEscapeClose()
     end, 250)
 end
 
-pcall(function() Hook.Remove("think", "VoidTraitor.PointshopGui.KeepVisible") end)
-pcall(function() Hook.Remove("think", "VoidTraitor.PointshopGui.KeepPauseBlocked") end)
 pcall(function() Hook.Remove("think", "VoidTraitor.PointshopGui.CooldownClock") end)
-pcall(function() Hook.Remove("think", "VoidTraitor.PointshopGui.FilterDropDown") end)
-pcall(function() Hook.Remove("keyUpdate", "VoidTraitor.PointshopGui.KeyboardTrap") end)
 pcall(function() Hook.Remove("keyUpdate", "VoidTraitor.PointshopGui.PauseGuard") end)
 
 -- keyUpdate fires before the game's ESC handler.
@@ -318,15 +316,9 @@ CloseMenu = function()
     shopList = nil
 
     if currentMenu ~= nil then
-        pcall(function()
-            currentMenu:RemoveFromGUIUpdateList(true)
-        end)
-        pcall(function()
-            if currentMenu.RectTransform ~= nil then
-                currentMenu.RectTransform.Parent = nil
-            end
-            currentMenu.Visible = false
-        end)
+        currentMenu:RemoveFromGUIUpdateList(true)
+        currentMenu.RectTransform.Parent = nil
+        currentMenu.Visible = false
     end
 
 
@@ -519,14 +511,8 @@ end
 
 local function UpdateClassLimitTextBlocks()
     for _, group in pairs(classLimitTextBlocks) do
-        for index = #group, 1, -1 do
-            local entry = group[index]
-            local ok, value = pcall(entry.GetText)
-            if not ok or entry.Block == nil then
-                table.remove(group, index)
-            else
-                pcall(function() entry.Block.Text = value or "" end)
-            end
+        for _, entry in ipairs(group) do
+            entry.Block.Text = entry.GetText() or ""
         end
     end
 end
@@ -550,17 +536,13 @@ local function UpdateCooldownTextBlocks()
     for _, group in pairs(cooldownTextBlocks) do
         for index = #group, 1, -1 do
             local entry = group[index]
-            local ok, value, active = pcall(entry.GetText)
-            if not ok or entry.Block == nil then
+            local value, active = entry.GetText()
+            entry.Block.Text = value or ""
+            if active == true then
+                anyActive = true
+            elseif active == false then
+                needsSnapshot = true
                 table.remove(group, index)
-            else
-                pcall(function() entry.Block.Text = value or "" end)
-                if active == true then
-                    anyActive = true
-                elseif active == false then
-                    needsSnapshot = true
-                    table.remove(group, index)
-                end
             end
         end
     end
@@ -1040,72 +1022,6 @@ local function GetSelectedFolderLabel()
     return selectedCategory .. " > " .. selectedPath
 end
 
-local function GetJobIconData(jobIdentifier)
-    if jobIdentifier == nil or jobIdentifier == "" then return nil, nil end
-
-    local ok, prefab = pcall(function()
-        return JobPrefab.Get(jobIdentifier)
-    end)
-    if not ok or prefab == nil then return nil, nil end
-
-    local color = Color(255, 255, 255, 255)
-    pcall(function()
-        if prefab.UIColor ~= nil then
-            color = prefab.UIColor
-        elseif prefab.IconColor ~= nil then
-            color = prefab.IconColor
-        end
-    end)
-
-    local candidates = { "Icon", "JobIcon", "IconSmall", "JobIconSmall" }
-    for _, propertyName in ipairs(candidates) do
-        local success, sprite = pcall(function()
-            return prefab[propertyName]
-        end)
-        if success and sprite ~= nil then
-            return sprite, color
-        end
-    end
-
-    return nil, nil
-end
-
-local function GetItemIconData(iconIdentifier)
-    if iconIdentifier == nil or iconIdentifier == "" then return nil, nil end
-
-    if string.sub(tostring(iconIdentifier), 1, 4) == "job:" then
-        return GetJobIconData(string.sub(tostring(iconIdentifier), 5))
-    end
-
-    local ok, prefab = pcall(function()
-        return ItemPrefab.GetItemPrefab(iconIdentifier)
-    end)
-    if not ok or prefab == nil then return nil, nil end
-
-    local sprite = nil
-    local color = Color(255, 255, 255, 255)
-
-    ok = pcall(function()
-        sprite = prefab.InventoryIcon
-        if sprite ~= nil then
-            color = prefab.InventoryIconColor
-        end
-    end)
-    if not ok then sprite = nil end
-
-    if sprite == nil then
-        ok = pcall(function()
-            sprite = prefab.Sprite
-            if sprite ~= nil then
-                color = prefab.SpriteColor
-            end
-        end)
-        if not ok then sprite = nil end
-    end
-
-    return sprite, color
-end
-
 local function CreateProductIcon(parent, iconIdentifier, enabled)
     -- Square vanilla-framed icon slot. The row height is sized around this slot,
     -- otherwise Barotrauma compresses the inventory sprite into a wide rectangle.
@@ -1116,19 +1032,12 @@ local function CreateProductIcon(parent, iconIdentifier, enabled)
     box.RectTransform.MinSize = Point(ITEM_ICON_PIXELS, ITEM_ICON_PIXELS)
     box.RectTransform.MaxSize = Point(ITEM_ICON_PIXELS, ITEM_ICON_PIXELS)
 
-    local sprite, spriteColor = GetItemIconData(iconIdentifier)
+    local sprite, spriteColor = Common.GetPrefabIconData(iconIdentifier)
     if sprite == nil then return end
 
-    local ok, image = pcall(function()
-        return GUI.Image(CreateRect(0.82, 0.82, box, GUI.Anchor.Center), sprite, true)
-    end)
-
-    if ok and image ~= nil then
-        image.Color = enabled == false and Color(105, 105, 105, 190) or spriteColor
-        return image, spriteColor
-    end
-
-    return nil, nil
+    local image = GUI.Image(CreateRect(0.82, 0.82, box, GUI.Anchor.Center), sprite, true)
+    image.Color = enabled == false and Color(105, 105, 105, 190) or spriteColor
+    return image, spriteColor
 end
 
 local function SendBuyRequest(entries)
@@ -1167,14 +1076,10 @@ local function CreateFolderIcon(parent, folder, selected)
     holder.Color = Color(0, 0, 0, 0)
     holder.CanBeFocused = false
 
-    local sprite, spriteColor = GetItemIconData(folder.IconIdentifier)
+    local sprite, spriteColor = Common.GetPrefabIconData(folder.IconIdentifier)
     if sprite ~= nil then
-        local ok, image = pcall(function()
-            return GUI.Image(CreateRect(0.82, 0.82, holder, GUI.Anchor.Center), sprite, true)
-        end)
-        if ok and image ~= nil then
-            image.Color = spriteColor
-        end
+        local image = GUI.Image(CreateRect(0.82, 0.82, holder, GUI.Anchor.Center), sprite, true)
+        image.Color = spriteColor
         return holder
     end
 
@@ -1193,10 +1098,8 @@ local function AddCategoryButton(list, folder)
     local row = CreateButton(list.Content, 1, rowHeight, GUI.Anchor.TopLeft, "", true, selected, "ListBoxElement")
 
     local inner = GUI.LayoutGroup(CreateRect(0.94, 0.92, row, GUI.Anchor.Center), true, GUI.Anchor.CenterLeft)
-    pcall(function()
-        inner.Stretch = true
-        inner.RelativeSpacing = 0.004
-    end)
+    inner.Stretch = true
+    inner.RelativeSpacing = 0.004
 
     local indentWidth = math.min(0.035 * folder.Depth, 0.12)
     if indentWidth > 0 then
@@ -1237,10 +1140,8 @@ local function AddCategoryButton(list, folder)
     local nameScale = folder.Depth == 0 and 0.95 or 0.90
     local nameColor = selected and Color(255, 245, 190, 255) or (folder.Depth == 0 and Color(225, 230, 215, 255) or Color(210, 235, 220, 255))
     local name = CreateText(inner, 0.86 - indentWidth, 0.88, nil, getLabelText(), GUI.Alignment.Left, nameScale, nameColor, false)
-    pcall(function()
-        name.AutoScaleHorizontal = true
-        name.Font = GUI.Style.SubHeadingFont
-    end)
+    name.AutoScaleHorizontal = true
+    name.Font = GUI.Style.SubHeadingFont
     if shopMode == "ghost" and (folder.DirectCount or 0) > 0 and GetCooldownRemaining(folder) > 0 then
         RegisterCooldownText("shop", name, getLabelText)
     end
@@ -1481,9 +1382,7 @@ end
 local function CreateDivider(parent, height)
     local frame = GUI.Frame(CreateRect(1, height or 0.02, parent), nil)
     frame.Color = Color(0, 0, 0, 0)
-    pcall(function()
-        GUI.Image(CreateRect(1, 0.55, frame, GUI.Anchor.Center), "HorizontalLine")
-    end)
+    GUI.Image(CreateRect(1, 0.55, frame, GUI.Anchor.Center), "HorizontalLine")
     return frame
 end
 
@@ -1494,17 +1393,13 @@ local function CreatePanelTitle(parent, titleText, iconStyle, alignRight)
 
     if not alignRight then
         local layout = GUI.LayoutGroup(CreateRect(1, 1, header, GUI.Anchor.Center), true, GUI.Anchor.CenterLeft)
-        pcall(function()
-            layout.Stretch = true
-            layout.RelativeSpacing = 0.010
-        end)
+        layout.Stretch = true
+        layout.RelativeSpacing = 0.010
 
-        pcall(function()
-            GUI.Image(CreateRect(0.087, 0.98, layout, nil), iconStyle or "StoreTradingIcon", true)
-        end)
+        GUI.Image(CreateRect(0.087, 0.98, layout, nil), iconStyle or "StoreTradingIcon", true)
 
         local title = CreateText(layout, 0.88, 1, nil, titleText, GUI.Alignment.Left, 1.42, Color(255, 245, 190, 255), false)
-        pcall(function() title.Font = GUI.Style.LargeFont end)
+        title.Font = GUI.Style.LargeFont
         return title
     end
 
@@ -1512,17 +1407,13 @@ local function CreatePanelTitle(parent, titleText, iconStyle, alignRight)
     -- Create the icon first, then the title: visually the text goes first,
     -- the icon follows it, and the whole group stays in the right corner.
     local layout = GUI.LayoutGroup(CreateRect(0.82, 1, header, GUI.Anchor.TopRight), true, GUI.Anchor.CenterRight)
-    pcall(function()
-        layout.Stretch = true
-        layout.RelativeSpacing = 0.012
-    end)
+    layout.Stretch = true
+    layout.RelativeSpacing = 0.012
 
-    pcall(function()
-        GUI.Image(CreateRect(0.115, 0.92, layout, nil), iconStyle or "StoreShoppingCrateIcon", true)
-    end)
+    GUI.Image(CreateRect(0.115, 0.92, layout, nil), iconStyle or "StoreShoppingCrateIcon", true)
 
     local title = CreateText(layout, 0.70, 1, nil, titleText, GUI.Alignment.Right, 1.42, Color(255, 245, 190, 255), false)
-    pcall(function() title.Font = GUI.Style.LargeFont end)
+    title.Font = GUI.Style.LargeFont
 
     return title
 end
@@ -1536,24 +1427,20 @@ local function BuildPurchaseSummary(parent, total)
     holder.CanBeFocused = false
 
     local summary = GUI.LayoutGroup(CreateRect(0.58, 1, holder, GUI.Anchor.TopRight), true, GUI.Anchor.TopRight)
-    pcall(function()
-        summary.Stretch = true
-        summary.RelativeSpacing = 0.005
-    end)
+    summary.Stretch = true
+    summary.RelativeSpacing = 0.005
 
     local function addColumn(label, value)
         local column = CreateLayout(summary, 0.333, 1, nil, false, GUI.Anchor.TopRight)
-        pcall(function() column.RelativeSpacing = 0.005 end)
+        column.RelativeSpacing = 0.005
         local labelBlock = CreateText(column, 1, 0.50, nil, label, GUI.Alignment.BottomCenter, 1.00, Color(235, 225, 180, 255), false)
         local valueBlock = CreateText(column, 1, 0.50, nil, tostring(value) .. " pt", GUI.Alignment.TopCenter, 1.10, Color(255, 255, 255, 255), false)
-        pcall(function()
-            labelBlock.Font = GUI.Style.Font
-            labelBlock.AutoScaleVertical = true
-            labelBlock.CanBeFocused = false
-            valueBlock.Font = GUI.Style.SubHeadingFont
-            valueBlock.AutoScaleVertical = true
-            valueBlock.CanBeFocused = false
-        end)
+        labelBlock.Font = GUI.Style.Font
+        labelBlock.AutoScaleVertical = true
+        labelBlock.CanBeFocused = false
+        valueBlock.Font = GUI.Style.SubHeadingFont
+        valueBlock.AutoScaleVertical = true
+        valueBlock.CanBeFocused = false
     end
 
     -- A TopRight GUILayoutGroup fills from right to left, like vanilla.
@@ -1570,22 +1457,20 @@ local function CreateProductDetails(parent, product, height)
     card.CanBeFocused = false
 
     local details = CreateLayout(card, 0.94, 0.92, GUI.Anchor.Center, false, GUI.Anchor.TopLeft)
-    pcall(function()
-        details.RelativeSpacing = 0.008
-        details.Stretch = true
-    end)
+    details.RelativeSpacing = 0.008
+    details.Stretch = true
 
     local header = CreateLayout(details, 1, 0.54, nil, true, GUI.Anchor.CenterLeft)
-    pcall(function() header.RelativeSpacing = 0.012 end)
+    header.RelativeSpacing = 0.012
     local iconHolder = GUI.Frame(CreateRect(0.23, 1, header, nil), nil)
     iconHolder.Color = Color(0, 0, 0, 0)
     iconHolder.CanBeFocused = false
     CreateProductIcon(iconHolder, product.IconIdentifier, GetProductDisabledReason(product) == "")
 
     local heading = CreateLayout(header, 0.77, 1, nil, false, GUI.Anchor.TopLeft)
-    pcall(function() heading.RelativeSpacing = 0.006 end)
+    heading.RelativeSpacing = 0.006
     local name = CreateText(heading, 1, 0.30, nil, string.upper(tostring(product.Name or "")), GUI.Alignment.Left, 1.00, Color(255, 245, 210, 255), true)
-    pcall(function() name.Font = GUI.Style.SubHeadingFont end)
+    name.Font = GUI.Style.SubHeadingFont
     local description = GetProductDescriptionText(product)
     local descriptionBlock = CreateText(heading, 1, 0.70, nil, description, GUI.Alignment.Left, 0.84, Color(210, 220, 205, 230), true)
     if IsClassProduct(product) then
@@ -1628,10 +1513,10 @@ local function BuildHeader(parent)
     CreatePanelTitle(parent, GetText("Shop"), "StoreTradingIcon", false)
 
     local balance = CreateText(parent, 1, 0.070, nil, GetText("Balance") .. "\n" .. tostring(currentPoints) .. " pt", GUI.Alignment.Left, 1.12, Color(235, 230, 185, 255))
-    pcall(function() balance.AutoScaleVertical = true end)
+    balance.AutoScaleVertical = true
 
     local tabs = CreateLayout(parent, 1, 0.030, nil, true, GUI.Anchor.CenterLeft)
-    pcall(function() tabs.RelativeSpacing = 0 end)
+    tabs.RelativeSpacing = 0
 
     local categoryTab = CreateButton(tabs, 0.50, 1, nil, GetText("Categories"), true, currentView == "categories", "GUITabButton")
     categoryTab.OnClicked = function()
@@ -1664,13 +1549,9 @@ end
 CloseFilterPopup = function()
     if filterPopup == nil then return end
     if filterButton ~= nil then filterButton.Selected = false end
-    pcall(function() filterPopup:RemoveFromGUIUpdateList(true) end)
-    pcall(function()
-        filterPopup.Visible = false
-        if filterPopup.RectTransform ~= nil then
-            filterPopup.RectTransform.Parent = nil
-        end
-    end)
+    filterPopup:RemoveFromGUIUpdateList(true)
+    filterPopup.Visible = false
+    filterPopup.RectTransform.Parent = nil
     filterPopup = nil
 end
 
@@ -1715,10 +1596,8 @@ local function ToggleFilterPopup(button)
     button.Selected = true
 
     local options = GUI.LayoutGroup(CreateRect(0.98, 0.96, popup, GUI.Anchor.Center), false, GUI.Anchor.TopLeft)
-    pcall(function()
-        options.Stretch = true
-        options.RelativeSpacing = 0
-    end)
+    options.Stretch = true
+    options.RelativeSpacing = 0
 
     local entries = {
         { Value = "all", Label = GetText("FilterAll") },
@@ -1746,15 +1625,15 @@ local function ToggleFilterPopup(button)
     end
 
     -- Keep the popup above the product list in both draw and input order.
-    pcall(function() popup:AddToGUIUpdateList(false, GUI_DRAW_ORDER + 60) end)
+    popup:AddToGUIUpdateList(false, GUI_DRAW_ORDER + 60)
 end
 
 local function BuildFilterBar(parent)
     local bar = CreateLayout(parent, 1, 0.082, nil, true, GUI.Anchor.TopLeft)
-    pcall(function() bar.RelativeSpacing = 0.018 end)
+    bar.RelativeSpacing = 0.018
 
     local filterGroup = CreateLayout(bar, 0.40, 1, nil, false, GUI.Anchor.TopLeft)
-    pcall(function() filterGroup.RelativeSpacing = 0.002 end)
+    filterGroup.RelativeSpacing = 0.002
     local filterLabel = CreateText(filterGroup, 1, 0.38, nil, GetText("Filter"), GUI.Alignment.BottomLeft, 1.70, Color(235, 225, 180, 255), false)
     filterLabel.TextOffset = Vector2(0, -2)
     filterButton = GUI.Button(CreateRect(1, 0.60, filterGroup, nil), GetSelectedFilterLabel(), GUI.Alignment.CenterLeft, "GUIDropDown")
@@ -1778,7 +1657,7 @@ local function BuildFilterBar(parent)
     end
 
     local searchGroup = CreateLayout(bar, 0.60, 1, nil, false, GUI.Anchor.TopLeft)
-    pcall(function() searchGroup.RelativeSpacing = 0.002 end)
+    searchGroup.RelativeSpacing = 0.002
     local searchLabel = CreateText(searchGroup, 1, 0.38, nil, GetText("Search"), GUI.Alignment.BottomLeft, 1.70, Color(235, 225, 180, 255), false)
     searchLabel.TextOffset = Vector2(0, -2)
     local searchBox = GUI.TextBox(CreateRect(1, 0.60, searchGroup, nil), searchText)
@@ -1799,10 +1678,8 @@ local function BuildShopPanel(overlay)
     root.CanBeFocused = false
 
     local content = CreateLayout(root, 0.955, 0.965, GUI.Anchor.Center, false, GUI.Anchor.TopLeft)
-    pcall(function()
-        content.RelativeSpacing = 0.007
-        content.Stretch = true
-    end)
+    content.RelativeSpacing = 0.007
+    content.Stretch = true
 
     BuildHeader(content)
 
@@ -1810,10 +1687,8 @@ local function BuildShopPanel(overlay)
     menuFrame.CanBeFocused = false
 
     local menuContent = CreateLayout(menuFrame, 0.955, 0.965, GUI.Anchor.Center, false, GUI.Anchor.TopLeft)
-    pcall(function()
-        menuContent.RelativeSpacing = 0.006
-        menuContent.Stretch = true
-    end)
+    menuContent.RelativeSpacing = 0.006
+    menuContent.Stretch = true
 
     CloseFilterPopup()
     filterButton = nil
@@ -1829,9 +1704,9 @@ local function BuildShopPanel(overlay)
     local list = GUI.ListBox(CreateRect(1, 1, listFrame, GUI.Anchor.Center), false, nil, "GUIListBoxNoBorder")
     shopList = list
     list.Color = Color(0, 0, 0, 0)
-    pcall(function() list.ContentBackground.Color = Color(0, 0, 0, 0) end)
-    pcall(function() list.KeepSpaceForScrollBar = false end)
-    pcall(function() list.CanBeFocused = false end)
+    list.ContentBackground.Color = Color(0, 0, 0, 0)
+    list.KeepSpaceForScrollBar = false
+    list.CanBeFocused = false
 
     if currentView == "categories" then
         local folders = BuildFolderList()
@@ -1869,13 +1744,13 @@ local function BuildShopPanel(overlay)
             list.BarScroll = shopListScroll
             list:RecalculateChildren()
             list:UpdateScrollBarSize()
-            pcall(function() guiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER) end)
+            guiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER)
         end
         rebuildProductList = populateProductList
         populateProductList()
     end
 
-    pcall(function() list.BarScroll = shopListScroll or 0 end)
+    list.BarScroll = shopListScroll or 0
 
     local hintText = GetText("ClickProduct")
     if shopMode == "ghost" then
@@ -1890,7 +1765,7 @@ local function BuildShopPanel(overlay)
     end
 
     local hint = CreateText(menuContent, 1, 0.070, nil, hintText, GUI.Alignment.Left, 0.78, Color(210, 210, 190, 185))
-    pcall(function() hint.AutoScaleVertical = true end)
+    hint.AutoScaleVertical = true
 end
 
 local function BuySingleProduct(product)
@@ -1904,10 +1779,8 @@ local function BuildConfirmPanel(overlay)
     root.CanBeFocused = false
 
     local content = CreateLayout(root, 0.955, 0.965, GUI.Anchor.Center, false, GUI.Anchor.TopLeft)
-    pcall(function()
-        content.RelativeSpacing = 0.007
-        content.Stretch = true
-    end)
+    content.RelativeSpacing = 0.007
+    content.Stretch = true
 
     CreatePanelTitle(content, GetText("ConfirmTitle"), "StoreShoppingCrateIcon", true)
 
@@ -1921,10 +1794,8 @@ local function BuildConfirmPanel(overlay)
     menuFrame.CanBeFocused = false
 
     local menuContent = CreateLayout(menuFrame, 0.955, 0.955, GUI.Anchor.Center, false, GUI.Anchor.TopLeft)
-    pcall(function()
-        menuContent.RelativeSpacing = 0.006
-        menuContent.Stretch = true
-    end)
+    menuContent.RelativeSpacing = 0.006
+    menuContent.Stretch = true
 
     local listFrame = GUI.Frame(CreateRect(1, 0.805, menuContent, nil), "GUIFrameListBox")
     listFrame.CanBeFocused = false
@@ -1946,7 +1817,7 @@ local function BuildConfirmPanel(overlay)
     end
 
     local buttons = CreateLayout(menuContent, 1, 0.085, nil, true, GUI.Anchor.CenterRight)
-    pcall(function() buttons.RelativeSpacing = 0.012 end)
+    buttons.RelativeSpacing = 0.012
 
     local cancelButton = CreateButton(buttons, 0.47, 1, nil, GetText("Cancel"), product ~= nil, false)
     cancelButton.OnClicked = function()
@@ -1979,10 +1850,8 @@ local function BuildCartPanel(overlay)
     root.CanBeFocused = false
 
     local content = CreateLayout(root, 0.955, 0.965, GUI.Anchor.Center, false, GUI.Anchor.TopLeft)
-    pcall(function()
-        content.RelativeSpacing = 0.007
-        content.Stretch = true
-    end)
+    content.RelativeSpacing = 0.007
+    content.Stretch = true
 
     CreatePanelTitle(content, GetText("Cart"), "StoreShoppingCrateIcon", true)
 
@@ -1995,19 +1864,17 @@ local function BuildCartPanel(overlay)
     menuFrame.CanBeFocused = false
 
     local menuContent = CreateLayout(menuFrame, 0.955, 0.955, GUI.Anchor.Center, false, GUI.Anchor.TopLeft)
-    pcall(function()
-        menuContent.RelativeSpacing = 0.006
-        menuContent.Stretch = true
-    end)
+    menuContent.RelativeSpacing = 0.006
+    menuContent.Stretch = true
 
     local listFrame = GUI.Frame(CreateRect(1, 0.835, menuContent, nil), "GUIFrameListBox")
     listFrame.CanBeFocused = false
 
     local list = GUI.ListBox(CreateRect(1, 1, listFrame, GUI.Anchor.Center), false, nil, "GUIListBoxNoBorder")
     list.Color = Color(0, 0, 0, 0)
-    pcall(function() list.ContentBackground.Color = Color(0, 0, 0, 0) end)
-    pcall(function() list.KeepSpaceForScrollBar = false end)
-    pcall(function() list.CanBeFocused = false end)
+    list.ContentBackground.Color = Color(0, 0, 0, 0)
+    list.KeepSpaceForScrollBar = false
+    list.CanBeFocused = false
 
     local selectedProduct = GetSelectedProduct()
     if selectedProduct ~= nil then
@@ -2024,7 +1891,7 @@ local function BuildCartPanel(overlay)
     end
 
     local buttons = CreateLayout(menuContent, 1, 0.085, nil, true, GUI.Anchor.CenterRight)
-    pcall(function() buttons.RelativeSpacing = 0.012 end)
+    buttons.RelativeSpacing = 0.012
 
     local clearButton = CreateButton(buttons, 0.47, 1, nil, GetText("Clear"), #cart > 0, false)
     clearButton.OnClicked = function()
@@ -2053,19 +1920,13 @@ RefreshCartOnly = function()
     classLimitTextBlocks.cart = {}
 
     if cartPanelRoot ~= nil then
-        pcall(function()
-            cartPanelRoot:RemoveFromGUIUpdateList(true)
-        end)
-        pcall(function()
-            if cartPanelRoot.RectTransform ~= nil then
-                cartPanelRoot.RectTransform.Parent = nil
-            end
-            cartPanelRoot.Visible = false
-        end)
+        cartPanelRoot:RemoveFromGUIUpdateList(true)
+        cartPanelRoot.RectTransform.Parent = nil
+        cartPanelRoot.Visible = false
     end
 
     cartPanelRoot = BuildCartPanel(currentMenu)
-    pcall(function() guiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER) end)
+    guiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER)
 end
 
 ShowMenu = function()
@@ -2085,7 +1946,7 @@ ShowMenu = function()
 
     BuildShopPanel(overlay)
     cartPanelRoot = BuildCartPanel(overlay)
-    pcall(function() guiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER) end)
+    guiRoot:AddToGUIUpdateList(false, GUI_DRAW_ORDER)
 end
 
 Hook.Add("think", "VoidTraitor.PointshopGui.CooldownClock", function()
