@@ -428,7 +428,7 @@ function gm:Start()
 	local newClients = {}
 	for client in Client.ClientList do
 		---@cast client Barotrauma.Networking.Client
-		if client.Character ~= nil then
+		if not client.SpectateOnly and not client.AFK then
 			table.insert(newClients, client)
 		end
 	end
