@@ -28,9 +28,10 @@ Hook.Patch("VoidTraitor.ClientRuntime.Hud", "Barotrauma.GameSession", "AddToGUIU
 
     local pointshop = rawget(_G, "VoidTraitorPointshopGuiState")
     if pointshop ~= nil and pointshop.GuiRoot ~= nil then
-        local pointshopOpen = not pointshop.Disabled and pointshop.CurrentMenu ~= nil
-        pointshop.GuiRoot.CanBeFocused = pointshopOpen
-        if pointshopOpen then pointshop.GuiRoot:AddToGUIUpdateList(false, 120) end
+        pointshop.GuiRoot.CanBeFocused = false
+        if not pointshop.Disabled and pointshop.CurrentMenu ~= nil then
+            pointshop.GuiRoot:AddToGUIUpdateList(false, 120)
+        end
     end
 
     for _, stateKey in ipairs({ "VoidTraitorCameraTeleportGuiState", "VoidTraitorGhostRolesGuiState" }) do
@@ -42,9 +43,16 @@ Hook.Patch("VoidTraitor.ClientRuntime.Hud", "Barotrauma.GameSession", "AddToGUIU
     end
 end)
 
-Hook.Patch("VoidTraitor.ClientRuntime.PointshopLockHud", "Barotrauma.Character", "ShouldLockHud", function(instance)
+Hook.Patch("VoidTraitor.ClientRuntime.PointshopLockInventory", "Barotrauma.CharacterHUD", "LockInventory", { "Barotrauma.Character" }, function(_, p)
     local pointshop = rawget(_G, "VoidTraitorPointshopGuiState")
-    if pointshop ~= nil and not pointshop.Disabled and pointshop.CurrentMenu ~= nil and instance == Character.Controlled then
+    if pointshop ~= nil and not pointshop.Disabled and pointshop.CurrentMenu ~= nil and p["character"] == Character.Controlled then
         return true
+    end
+end, Hook.HookMethodType.After)
+
+Hook.Patch("VoidTraitor.ClientRuntime.PointshopInventoryMouse", "Barotrauma.Inventory", "get_IsMouseOnInventory", {}, function()
+    local pointshop = rawget(_G, "VoidTraitorPointshopGuiState")
+    if pointshop ~= nil and not pointshop.Disabled and pointshop.CurrentMenu ~= nil then
+        return false
     end
 end, Hook.HookMethodType.After)
