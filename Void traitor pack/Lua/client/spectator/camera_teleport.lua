@@ -17,14 +17,7 @@ if previousState ~= nil then
     if previousState.CloseMenu ~= nil then previousState.CloseMenu() end
 
     for _, key in ipairs({ "MenuRoot", "ButtonRoot" }) do
-        local component = previousState[key]
-        if component ~= nil then
-            component:RemoveFromGUIUpdateList(true)
-            component.Visible = false
-            if component.RectTransform ~= nil then
-                component.RectTransform.Parent = nil
-            end
-        end
+        Common.RemoveGuiComponent(previousState[key])
     end
 end
 
@@ -94,14 +87,6 @@ end
 
 local CreateText = Common.CreateText
 
-local function CreateIcon(parent, target)
-    return Common.CreateIcon(parent, target, ICON_PIXELS)
-end
-
-local function AddResizeHandles(panel)
-    Common.AddResizeHandles(panel, resizeTopTargets, resizeBottomTargets)
-end
-
 local function SaveMenuGeometry()
     if currentMenu == nil then return end
     menuX = currentMenu.Rect.X
@@ -114,9 +99,7 @@ local function CloseMenu()
     if currentMenu == nil then return end
 
     SaveMenuGeometry()
-    currentMenu:RemoveFromGUIUpdateList(true)
-    currentMenu.Visible = false
-    if currentMenu.RectTransform ~= nil then currentMenu.RectTransform.Parent = nil end
+    Common.RemoveGuiComponent(currentMenu)
     currentMenu = nil
     targetList = nil
     resizeTopTargets = {}
@@ -128,19 +111,9 @@ end
 
 sharedState.CloseMenu = CloseMenu
 
-local function AddMenuToUpdateList()
-    if currentMenu ~= nil then currentMenu:AddToGUIUpdateList(false, MENU_DRAW_ORDER) end
-end
-
-local function AddButtonToUpdateList()
-    if buttonRoot ~= nil then buttonRoot:AddToGUIUpdateList(false, BUTTON_DRAW_ORDER) end
-end
-
 local function DestroyBottomButton()
     if buttonRoot == nil then return end
-    buttonRoot:RemoveFromGUIUpdateList(true)
-    buttonRoot.Visible = false
-    if buttonRoot.RectTransform ~= nil then buttonRoot.RectTransform.Parent = nil end
+    Common.RemoveGuiComponent(buttonRoot)
     buttonRoot = nil
     bottomButton = nil
     sharedState.ButtonRoot = nil
@@ -187,7 +160,7 @@ local function CreateBottomButton()
 
     buttonRoot = bottomButton
     sharedState.ButtonRoot = buttonRoot
-    AddButtonToUpdateList()
+    buttonRoot:AddToGUIUpdateList(false, BUTTON_DRAW_ORDER)
 end
 
 local function EnsureBottomButton()
@@ -241,7 +214,7 @@ local function CreateTargetRow(list, target)
     local iconHolder = GUI.Frame(CreateRect(0.18, 0.88, selectButton, GUI.Anchor.CenterLeft), nil)
     iconHolder.Color = Color(0, 0, 0, 0)
     iconHolder.CanBeFocused = false
-    CreateIcon(iconHolder, target)
+    Common.CreateIcon(iconHolder, target, ICON_PIXELS)
 
     local content = GUI.Frame(CreateRect(0.78, 0.86, selectButton, GUI.Anchor.CenterRight), nil)
     content.Color = Color(0, 0, 0, 0)
@@ -315,7 +288,7 @@ local function BuildPanel(root)
         targetList:UpdateScrollBarSize()
     end
 
-    AddResizeHandles(panel)
+    Common.AddResizeHandles(panel, resizeTopTargets, resizeBottomTargets)
 end
 
 local function ShowMenu()
@@ -357,7 +330,7 @@ local function ShowMenu()
     resizeState = nil
 
     BuildPanel(currentMenu)
-    AddMenuToUpdateList()
+    currentMenu:AddToGUIUpdateList(false, MENU_DRAW_ORDER)
     UpdateBottomButton()
 end
 

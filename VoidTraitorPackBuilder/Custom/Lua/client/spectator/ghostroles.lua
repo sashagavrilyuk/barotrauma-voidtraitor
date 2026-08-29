@@ -18,14 +18,7 @@ if previousState ~= nil then
     if previousState.StopFollow ~= nil then previousState.StopFollow() end
 
     for _, key in ipairs({ "GuiRoot", "MenuRoot", "ButtonRoot" }) do
-        local component = previousState[key]
-        if component ~= nil then
-            component:RemoveFromGUIUpdateList(true)
-            component.Visible = false
-            if component.RectTransform ~= nil then
-                component.RectTransform.Parent = nil
-            end
-        end
+        Common.RemoveGuiComponent(previousState[key])
     end
 end
 
@@ -161,9 +154,7 @@ local function CloseMenu()
     resizeState = nil
 
     if currentMenu ~= nil then
-        currentMenu:RemoveFromGUIUpdateList(true)
-        currentMenu.Visible = false
-        if currentMenu.RectTransform ~= nil then currentMenu.RectTransform.Parent = nil end
+        Common.RemoveGuiComponent(currentMenu)
     end
 
     currentMenu = nil
@@ -173,21 +164,9 @@ end
 
 sharedState.CloseMenu = CloseMenu
 
-local function AddMenuToUpdateList()
-    if currentMenu == nil then return end
-    currentMenu:AddToGUIUpdateList(false, MENU_DRAW_ORDER)
-end
-
-local function AddButtonToUpdateList()
-    if buttonRoot == nil then return end
-    buttonRoot:AddToGUIUpdateList(false, BUTTON_DRAW_ORDER)
-end
-
 local function DestroyBottomButton()
     if buttonRoot == nil then return end
-    buttonRoot:RemoveFromGUIUpdateList(true)
-    buttonRoot.Visible = false
-    if buttonRoot.RectTransform ~= nil then buttonRoot.RectTransform.Parent = nil end
+    Common.RemoveGuiComponent(buttonRoot)
     buttonRoot = nil
     bottomButton = nil
     bottomButtonBaseColors = nil
@@ -254,7 +233,7 @@ local function CreateBottomButton()
 
     buttonRoot = bottomButton
     sharedState.ButtonRoot = buttonRoot
-    AddButtonToUpdateList()
+    buttonRoot:AddToGUIUpdateList(false, BUTTON_DRAW_ORDER)
     return true
 end
 
@@ -564,7 +543,7 @@ ShowMenu = function()
         BuildDetailsPanel(currentMenu, selectedRole, groupWidth, listWidth, gapWidth, detailsWidth)
     end
 
-    AddMenuToUpdateList()
+    currentMenu:AddToGUIUpdateList(false, MENU_DRAW_ORDER)
     UpdateBottomButton()
 end
 

@@ -114,6 +114,13 @@ function Common.CreateText(parent, width, height, anchor, value, alignment, scal
     return block
 end
 
+function Common.RemoveGuiComponent(component)
+    if component == nil then return end
+    component:RemoveFromGUIUpdateList(true)
+    component.Visible = false
+    if component.RectTransform ~= nil then component.RectTransform.Parent = nil end
+end
+
 function Common.AddResizeHandles(panel, topTargets, bottomTargets)
     local topHandle = GUI.Frame(Common.CreateRect(0.50, 0.024, panel, GUI.Anchor.TopCenter), nil)
     topHandle.Color = Color(0, 0, 0, 0)
