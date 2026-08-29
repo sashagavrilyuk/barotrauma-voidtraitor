@@ -43,13 +43,12 @@ function Common.Clamp(value, minimum, maximum)
 end
 
 function Common.GetCharacterById(characterId)
-    characterId = tonumber(characterId)
-    if characterId == nil or characterId <= 0 then return nil end
+    characterId = math.floor(tonumber(characterId) or 0)
+    if characterId <= 0 or characterId > 65535 then return nil end
 
-    for _, character in pairs(Character.CharacterList) do
-        if character ~= nil and tonumber(character.ID) == characterId then
-            return character
-        end
+    local entity = Entity.FindEntityByID(characterId)
+    if entity ~= nil and LuaUserData.IsTargetType(entity, "Barotrauma.Character") then
+        return entity
     end
 
     return nil
@@ -138,6 +137,77 @@ function Common.GetResizeEdge(topTargets, bottomTargets)
     return nil
 end
 
+function Common.UpdateMenuInteraction(currentMenu, resizeState, topTargets, bottomTargets, minimumHeightPixels, list, menuX, menuY, menuHeight)
+    if currentMenu == nil then
+        return nil, menuX, menuY, menuHeight
+    end
+
+    local mouseDown = PlayerInput.PrimaryMouseButtonDown()
+    local mouseHeld = PlayerInput.PrimaryMouseButtonHeld()
+
+    if mouseDown and resizeState == nil then
+        local edge = Common.GetResizeEdge(topTargets, bottomTargets)
+        if edge ~= nil then
+            local rectTransform = currentMenu.RectTransform
+            resizeState = {
+                Edge = edge,
+                MouseY = PlayerInput.MousePosition.Y,
+                Top = currentMenu.Rect.Y,
+                Bottom = currentMenu.Rect.Bottom,
+                Height = currentMenu.Rect.Height,
+                NonScaledWidth = rectTransform.NonScaledSize.X,
+                ScreenOffsetX = rectTransform.ScreenSpaceOffset.X,
+                ScreenOffsetY = rectTransform.ScreenSpaceOffset.Y,
+            }
+        end
+    end
+
+    if not mouseHeld then
+        return nil, menuX, menuY, menuHeight
+    end
+    if resizeState == nil then
+        return nil, menuX, menuY, menuHeight
+    end
+
+    local _, screenHeight = Common.GetScreenSize()
+    local margin = Common.SafeIntScale(10)
+    local minimumHeight = Common.SafeIntScale(minimumHeightPixels)
+    local dy = PlayerInput.MousePosition.Y - resizeState.MouseY
+    local newHeight
+    local newTop = resizeState.Top
+
+    if resizeState.Edge == "top" then
+        newTop = Common.Clamp(resizeState.Top + dy, margin, resizeState.Bottom - minimumHeight)
+        newHeight = resizeState.Bottom - newTop
+    else
+        local maximumHeight = math.max(minimumHeight, screenHeight - resizeState.Top - margin)
+        newHeight = Common.Clamp(resizeState.Height + dy, minimumHeight, maximumHeight)
+    end
+
+    local rectTransform = currentMenu.RectTransform
+    local scaleY = rectTransform.Scale.Y
+    local nonScaledHeight = math.max(1, math.floor(newHeight / scaleY + 0.5))
+    rectTransform:Resize(Point(resizeState.NonScaledWidth, nonScaledHeight), true)
+
+    if resizeState.Edge == "top" then
+        rectTransform.ScreenSpaceOffset = Point(
+            resizeState.ScreenOffsetX,
+            resizeState.ScreenOffsetY + (newTop - resizeState.Top)
+        )
+    end
+
+    menuX = currentMenu.Rect.X
+    menuY = currentMenu.Rect.Y
+    menuHeight = currentMenu.Rect.Height
+
+    if list ~= nil then
+        list:RecalculateChildren()
+        list:UpdateScrollBarSize()
+    end
+
+    return resizeState, menuX, menuY, menuHeight
+end
+
 function Common.ResizeButtonToText(button, horizontalPaddingPixels, heightPixels)
     if button == nil or button.TextBlock == nil then return end
 
@@ -163,10 +233,8 @@ function Common.ShouldShowBottomButton()
     return Common.IsConnected() and Common.IsRoundStarted() and Common.IsLocalCandidate()
 end
 
-function Common.InstallHudPatch(patchKey, stateKey, menuDrawOrder, buttonDrawOrder)
-    if rawget(_G, patchKey) then return end
-
-    Hook.Patch("Barotrauma.GameSession", "AddToGUIUpdateList", function()
+function Common.InstallHudPatch(patchIdentifier, stateKey, menuDrawOrder, buttonDrawOrder)
+    Hook.Patch(patchIdentifier, "Barotrauma.GameSession", "AddToGUIUpdateList", function()
         local state = rawget(_G, stateKey)
         if state == nil or state.Disabled then return end
         if GUI ~= nil and GUI.DisableHUD then return end
@@ -178,13 +246,10 @@ function Common.InstallHudPatch(patchKey, stateKey, menuDrawOrder, buttonDrawOrd
             state.ButtonRoot:AddToGUIUpdateList(false, buttonDrawOrder)
         end
     end)
-    _G[patchKey] = true
 end
 
-function Common.InstallPausePatch(patchKey, stateKey)
-    if rawget(_G, patchKey) then return end
-
-    Hook.Patch("Barotrauma.GUI", "TogglePauseMenu", {}, function(instance, p)
+function Common.InstallPausePatch(patchIdentifier, stateKey)
+    Hook.Patch(patchIdentifier, "Barotrauma.GUI", "TogglePauseMenu", {}, function(instance, p)
         local state = rawget(_G, stateKey)
         if state ~= nil and not state.Disabled and state.CurrentMenu ~= nil then
             if state.CloseMenu ~= nil then state.CloseMenu() end
@@ -192,7 +257,6 @@ function Common.InstallPausePatch(patchKey, stateKey)
             return false
         end
     end, Hook.HookMethodType.Before)
-    _G[patchKey] = true
 end
 
 return Common

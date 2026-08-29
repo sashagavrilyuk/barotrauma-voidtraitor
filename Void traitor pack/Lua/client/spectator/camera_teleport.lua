@@ -8,8 +8,8 @@ local NET_SNAPSHOT = "VoidTraitor_CameraTeleportSnapshot"
 
 local GLOBAL_STATE_KEY = "VoidTraitorCameraTeleportGuiState"
 local GHOST_STATE_KEY = "VoidTraitorGhostRolesGuiState"
-local GLOBAL_HUD_PATCH_KEY = "VoidTraitorCameraTeleportGuiHudPatchInstalled"
-local GLOBAL_PAUSE_PATCH_KEY = "VoidTraitorCameraTeleportGuiPausePatchInstalled"
+local HUD_PATCH_ID = "VoidTraitor.CameraTeleportGui.Hud"
+local PAUSE_PATCH_ID = "VoidTraitor.CameraTeleportGui.Pause"
 
 local previousState = rawget(_G, GLOBAL_STATE_KEY)
 if previousState ~= nil then
@@ -362,6 +362,7 @@ local function ShowMenu()
 end
 
 local function ReadSnapshot(message)
+    nextRefreshTime = Timer.GetTime() + 1
     local openMenu = message.ReadBoolean()
     canUse = message.ReadBoolean()
 
@@ -409,82 +410,15 @@ local IsLocalCandidate = Common.IsLocalCandidate
 local IsRoundStarted = Common.IsRoundStarted
 local IsConnected = Common.IsConnected
 
-local function GetResizeEdge()
-    return Common.GetResizeEdge(resizeTopTargets, resizeBottomTargets)
-end
-
 local function UpdateMenuInteraction()
-    if currentMenu == nil then
-        resizeState = nil
-        return
-    end
-
-    local mouseDown = PlayerInput.PrimaryMouseButtonDown()
-    local mouseHeld = PlayerInput.PrimaryMouseButtonHeld()
-
-    if mouseDown and resizeState == nil then
-        local edge = GetResizeEdge()
-        if edge ~= nil then
-            local rectTransform = currentMenu.RectTransform
-            resizeState = {
-                Edge = edge,
-                MouseY = PlayerInput.MousePosition.Y,
-                Top = currentMenu.Rect.Y,
-                Bottom = currentMenu.Rect.Bottom,
-                Height = currentMenu.Rect.Height,
-                NonScaledWidth = rectTransform.NonScaledSize.X,
-                ScreenOffsetX = rectTransform.ScreenSpaceOffset.X,
-                ScreenOffsetY = rectTransform.ScreenSpaceOffset.Y,
-            }
-        end
-    end
-
-    if not mouseHeld then
-        resizeState = nil
-        return
-    end
-
-    if resizeState ~= nil then
-        local _, screenHeight = GetScreenSize()
-        local margin = SafeIntScale(10)
-        local minimumHeight = SafeIntScale(MIN_HEIGHT_PIXELS)
-        local dy = PlayerInput.MousePosition.Y - resizeState.MouseY
-        local newHeight
-        local newTop = resizeState.Top
-
-        if resizeState.Edge == "top" then
-            newTop = Clamp(resizeState.Top + dy, margin, resizeState.Bottom - minimumHeight)
-            newHeight = resizeState.Bottom - newTop
-        else
-            local maximumHeight = math.max(minimumHeight, screenHeight - resizeState.Top - margin)
-            newHeight = Clamp(resizeState.Height + dy, minimumHeight, maximumHeight)
-        end
-
-        local rectTransform = currentMenu.RectTransform
-        local scaleY = rectTransform.Scale.Y
-        local nonScaledHeight = math.max(1, math.floor(newHeight / scaleY + 0.5))
-        rectTransform:Resize(Point(resizeState.NonScaledWidth, nonScaledHeight), true)
-
-        if resizeState.Edge == "top" then
-            rectTransform.ScreenSpaceOffset = Point(
-                resizeState.ScreenOffsetX,
-                resizeState.ScreenOffsetY + (newTop - resizeState.Top)
-            )
-        end
-
-        menuX = currentMenu.Rect.X
-        menuY = currentMenu.Rect.Y
-        menuHeight = currentMenu.Rect.Height
-
-        if targetList ~= nil then
-            targetList:RecalculateChildren()
-            targetList:UpdateScrollBarSize()
-        end
-    end
+    resizeState, menuX, menuY, menuHeight = Common.UpdateMenuInteraction(
+        currentMenu, resizeState, resizeTopTargets, resizeBottomTargets,
+        MIN_HEIGHT_PIXELS, targetList, menuX, menuY, menuHeight
+    )
 end
 
-Common.InstallHudPatch(GLOBAL_HUD_PATCH_KEY, GLOBAL_STATE_KEY, MENU_DRAW_ORDER, BUTTON_DRAW_ORDER)
-Common.InstallPausePatch(GLOBAL_PAUSE_PATCH_KEY, GLOBAL_STATE_KEY)
+Common.InstallHudPatch(HUD_PATCH_ID, GLOBAL_STATE_KEY, MENU_DRAW_ORDER, BUTTON_DRAW_ORDER)
+Common.InstallPausePatch(PAUSE_PATCH_ID, GLOBAL_STATE_KEY)
 
 Hook.Remove("think", "VoidTraitor.CameraTeleportGui.Think")
 Hook.Add("think", "VoidTraitor.CameraTeleportGui.Think", function(deltaTime)
