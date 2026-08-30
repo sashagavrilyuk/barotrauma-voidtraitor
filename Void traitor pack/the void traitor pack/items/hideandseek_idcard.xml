@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
-  <Item name="" identifier="vt_hideandseek_idcard" category="hidden" tags="smallitem,identitycard" hideinmenus="true">
+  <Item name="" identifier="vt_hideandseek_idcard" category="hidden" tags="smallitem,identitycard,idcard" hideinmenus="true">
     <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="192,64,64,64" origin="0.5,0.5" />
     <Sprite texture="Content/Items/idcard.png" depth="0.5" sourcerect="0,0,16,16" />
     <Body width="16" height="12" density="10.05" />
