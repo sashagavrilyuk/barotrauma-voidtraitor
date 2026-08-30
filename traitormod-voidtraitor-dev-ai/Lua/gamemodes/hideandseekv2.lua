@@ -39,10 +39,15 @@ local function gearUpCharacter(character, team, waypoint)
     end
     Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("vt_hideandseek_idcard"), character.Inventory, nil, nil, function (newCard)
         local idCard = newCard.GetComponentString("IdCard")
-        idCard.Initialize(waypoint, character)
+        for tag in waypoint.IdCardTags do
+            newCard.AddTag(tag)
+        end
+        if waypoint.IdCardDesc ~= nil and waypoint.IdCardDesc ~= "" then
+            newCard.Description = waypoint.IdCardDesc
+            idCard.Description = waypoint.IdCardDesc
+        end
         idCard.TeamID = CharacterTeamType.None
         idCard.OwnerName = ""
-        newCard.RemoveTag(Identifier("name:" .. character.Name))
         newCard.NonPlayerTeamInteractable = true
         local lock = newCard.SerializableProperties[Identifier("NonPlayerTeamInteractable")]
         Networking.CreateEntityEvent(newCard, Item.ChangePropertyEventData(lock, newCard))
@@ -57,7 +62,13 @@ local function gearUpCharacter(character, team, waypoint)
 end
 
 local function spawnCharacter(client, team, entry)
-    if client.CharacterInfo == nil then return false end
+    if client.CharacterInfo == nil then
+        if not entry.CharacterInfoErrorLogged then
+            entry.CharacterInfoErrorLogged = true
+            Traitormod.Error("HideAndSeekV2: cannot spawn %s because CharacterInfo is nil", client.Name)
+        end
+        return false
+    end
 
     local spawnPoint = team.Spawns[math.random(1, #team.Spawns)]
     local characterInfo = client.CharacterInfo
@@ -549,7 +560,7 @@ function gm:Start()
 
     local clients = {}
     for client in Client.ClientList do
-        if client.Character ~= nil then
+        if not client.SpectateOnly then
             table.insert(clients, client)
         end
     end
