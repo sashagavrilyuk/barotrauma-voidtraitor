@@ -40,6 +40,7 @@ local function gearUpCharacter(character, team, waypoint)
     Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("vt_hideandseek_idcard"), character.Inventory, nil, nil, function (newCard)
         local idCard = newCard.GetComponentString("IdCard")
         idCard.Initialize(waypoint, character)
+        idCard.TeamID = CharacterTeamType.None
         idCard.OwnerName = ""
         newCard.RemoveTag(Identifier("name:" .. character.Name))
         newCard.NonPlayerTeamInteractable = true
@@ -170,11 +171,39 @@ function gm:SwitchTestTeam(client)
 end
 
 function gm:_AssignTeams(clients)
-    shuffle(clients)
-    local seekerCount = getSeekerCount(#clients)
+    local teams = {
+        [TeamID1] = {},
+        [TeamID2] = {},
+    }
+    local unassigned = {}
 
-    for index, client in ipairs(clients) do
-        self:_ChangeTeam(client, index <= seekerCount and TeamID2 or TeamID1)
+    for _, client in ipairs(clients) do
+        if teams[client.PreferredTeam] ~= nil then
+            table.insert(teams[client.PreferredTeam], client)
+        else
+            table.insert(unassigned, client)
+        end
+    end
+
+    shuffle(unassigned)
+    local seekerCount = getSeekerCount(#clients)
+    for _, client in ipairs(unassigned) do
+        local teamID = #teams[TeamID2] < seekerCount and TeamID2 or TeamID1
+        table.insert(teams[teamID], client)
+    end
+
+    if #clients >= 2 then
+        if #teams[TeamID1] == 0 then
+            table.insert(teams[TeamID1], table.remove(teams[TeamID2], math.random(#teams[TeamID2])))
+        elseif #teams[TeamID2] == 0 then
+            table.insert(teams[TeamID2], table.remove(teams[TeamID1], math.random(#teams[TeamID1])))
+        end
+    end
+
+    for teamID, members in pairs(teams) do
+        for _, client in ipairs(members) do
+            self:_ChangeTeam(client, teamID)
+        end
     end
 end
 
@@ -423,6 +452,7 @@ function gm:PreStart()
     self.ClassGroupCounters = {}
     self.Gates = {}
     self.DisconnectedAt = {}
+    self.CriticalTimers = {}
     self.ClassSelectionExpired = false
     self.ClassSelectionAnnounced = false
 
@@ -449,6 +479,23 @@ function gm:PreStart()
         local team = self.Teams[character.TeamID]
         if team ~= nil then
             gearUpCharacter(character, team, waypoint)
+        end
+    end)
+
+    Hook.Add("character.applyDamage", "Traitormod.HideAndSeekV2.SeekerDamage", function(characterHealth, attackResult)
+        if self.IsEnding or characterHealth == nil or attackResult == nil or attackResult.Damage <= 0 then return end
+
+        local character = characterHealth.Character
+        if character == nil or character.Removed or character.IsDead then return end
+
+        local team = self.Teams[TeamID2]
+        for id, entry in pairs(team.Respawns) do
+            local member = team.Members[id]
+            if not entry.Forfeited and entry.Spawned
+                and ((member ~= nil and member.Character == character) or entry.DisconnectedCharacter == character) then
+                character.SetStun(attackResult.Damage)
+                return true
+            end
         end
     end)
 end
@@ -571,6 +618,7 @@ function gm:End()
     Hook.Remove("client.connected", "Traitormod.HideAndSeekV2.ClientConnected")
     Hook.Remove("clientDisconnected", "Traitormod.HideAndSeekV2.ClientDisconnected")
     Hook.Remove("character.giveJobItems", "Traitormod.HideAndSeekV2.CharacterGiveJobItems")
+    Hook.Remove("character.applyDamage", "Traitormod.HideAndSeekV2.SeekerDamage")
     Hook.Remove("netMessageReceived", "Traitormod.HideAndSeekV2.ClientJoined")
 
     if self.Gates ~= nil then
@@ -632,6 +680,24 @@ function gm:Think(deltaTime)
             sendCountdown("HideAndSeekRoundStarted", self.RoundCountDown)
         end
         return
+    end
+
+    for _, team in pairs(self.Teams) do
+        for id, entry in pairs(team.Respawns) do
+            local member = team.Members[id]
+            local character = member ~= nil and member.Character or entry.DisconnectedCharacter
+            if not entry.Forfeited and entry.Spawned
+                and character ~= nil and character.IsHuman and not character.IsDead
+                and character.IsUnconscious then
+                self.CriticalTimers[id] = (self.CriticalTimers[id] or 0) + deltaTime
+                if self.CriticalTimers[id] >= 60 then
+                    self.CriticalTimers[id] = nil
+                    character.Kill(CauseOfDeathType.Unknown)
+                end
+            else
+                self.CriticalTimers[id] = nil
+            end
+        end
     end
 
     if not Traitormod.Config.TestMode and not self:_HasAliveHiders() then
