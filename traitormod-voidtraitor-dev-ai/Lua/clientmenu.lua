@@ -8,6 +8,14 @@ local vtNet = {
     Run = "VoidTraitor_ClientMenuRun",
 }
 
+local adminNet = {
+    Request = "VoidTraitor_ClientMenuAdminRequest",
+    Snapshot = "VoidTraitor_ClientMenuAdminSnapshot",
+    DataRequest = "VoidTraitor_ClientMenuAdminDataRequest",
+    DataSnapshot = "VoidTraitor_ClientMenuAdminData",
+    RunV2 = "VoidTraitor_ClientMenuAdminRunV2",
+}
+
 local voteNet = {
     Ready = "VoidTraitor_LobbyVoteGuiReady",
     Request = "VoidTraitor_LobbyVoteRequest",
@@ -16,8 +24,12 @@ local voteNet = {
     Cast = "VoidTraitor_LobbyVoteCast",
 }
 
+local DISABLED_ACTION_PREFIX = "__vt_disabled__:"
+local adminLanguage = dofile(Traitormod.Path .. "/Lua/language/clientmenu_admin.lua")
+local adminText = adminLanguage[Traitormod.Language.Name] or adminLanguage.English
+
 local function lang(key)
-    return Traitormod.GetText(key)
+    return adminText[key] or Traitormod.GetText(key)
 end
 
 local function parseInput(input)
@@ -31,7 +43,8 @@ local function runCommand(commandName, client, input)
         return true
     end
 
-    return command.Callback(client, parseInput(input))
+    local args = type(input) == "table" and input or parseInput(input)
+    return command.Callback(client, args)
 end
 
 local function sendActionLog(client, actionId)
@@ -61,23 +74,37 @@ local function isAlive(client)
     return client ~= nil and client.Character ~= nil and not client.Character.IsDead
 end
 
+local function canUseAliveCharacter(client)
+    if isAlive(client) then return true end
+    return false, Traitormod.Language.CMDAliveToUse
+end
+
 local function canUseAlive(client)
-    return isAdmin(client) or not isAlive(client)
+    if not Game.RoundStarted or Traitormod.SelectedGamemode == nil then
+        return false, Traitormod.Language.RoundNotStarted
+    end
+    if isAdmin(client) or not isAlive(client) then return true end
+    return false, Traitormod.Language.CMDAliveDeadOnly
 end
 
 local function canLocateSub(client)
-    if not isAlive(client) or not client.InGame then return false end
-    if client.Character.IsHuman and client.Character.TeamID == CharacterTeamType.Team1 then return false end
+    if not isAlive(client) or not client.InGame then
+        return false, Traitormod.Language.CMDAliveToUse
+    end
+    if client.Character.IsHuman and client.Character.TeamID == CharacterTeamType.Team1 then
+        return false, Traitormod.Language.CMDOnlyMonsters
+    end
     return true
 end
 
-local function canUseSuicide(client)
-    return isAlive(client)
-end
-
 local function canDropPoints(client)
-    if not isAlive(client) or client.Character.Inventory == nil then return false end
-    return math.floor(tonumber(Traitormod.GetData(client, "Points") or 0) or 0) >= 100
+    if not isAlive(client) or client.Character.Inventory == nil then
+        return false, Traitormod.Language.CMDAliveToUse
+    end
+    if math.floor(tonumber(Traitormod.GetData(client, "Points") or 0) or 0) < 100 then
+        return false, Traitormod.GetText("CMDDropPointsNotEnough")
+    end
+    return true
 end
 
 local function canUseFakeHandcuffs(client)
@@ -87,10 +114,20 @@ local function canUseFakeHandcuffs(client)
     return item ~= nil and item.Prefab.Identifier == "handcuffs" and item.HasTag("fakehandcuffs")
 end
 
+local function canLocatePlayers(client)
+    if not isGamemode("SubmarineRoyale") then
+        return false, lang("ClientMenuHintPlayers")
+    end
+    if not isAlive(client) or not client.InGame then
+        return false, Traitormod.Language.CMDAliveToUse
+    end
+    return true
+end
+
 local actions = {}
 local orderedActions = {}
 
-local function addAction(id, labelKey, hintKey, categoryKey, order, callback, inputType, inputHintKey, confirmTitleKey, confirmTextKey, condition)
+local function addAction(id, labelKey, hintKey, categoryKey, order, callback, inputType, inputHintKey, confirmTitleKey, confirmTextKey, condition, hideWhenUnavailable)
     local action = {
         Id = id,
         LabelKey = labelKey,
@@ -103,6 +140,7 @@ local function addAction(id, labelKey, hintKey, categoryKey, order, callback, in
         ConfirmTitleKey = confirmTitleKey or "",
         ConfirmTextKey = confirmTextKey or "",
         Condition = condition,
+        HideWhenUnavailable = hideWhenUnavailable == true,
     }
 
     actions[id] = action
@@ -111,7 +149,7 @@ end
 
 addAction("role", "ClientMenuRole", "ClientMenuHintRole", "ClientMenuCategoryMain", 10, function(client, input)
     return runCommand("!role", client, input)
-end, nil, nil, nil, nil, isAlive)
+end, nil, nil, nil, nil, canUseAliveCharacter)
 
 addAction("points", "ClientMenuPoints", "ClientMenuHintPoints", "ClientMenuCategoryMain", 11, function(client, input)
     return runCommand("!points", client, input)
@@ -119,15 +157,15 @@ end)
 
 addAction("status", "ClientMenuStatus", "ClientMenuHintStatus", "ClientMenuCategoryMain", 12, function(client, input)
     return runCommand("!status", client, input)
-end, nil, nil, nil, nil, isAlive)
+end, nil, nil, nil, nil, canUseAliveCharacter)
 
 addAction("toggletraitor", "ClientMenuToggleTraitor", "ClientMenuHintToggleTraitor", "ClientMenuCategoryMain", 13, function(client, input)
     return runCommand("!toggletraitor", client, input)
-end, nil, nil, nil, nil, function() return Traitormod.Config.OptionalTraitors == true end)
+end, nil, nil, nil, nil, function() return Traitormod.Config.OptionalTraitors == true end, true)
 
 addAction("suicide", "ClientMenuSuicide", "ClientMenuHintSuicide", "ClientMenuCategoryCharacter", 20, function(client, input)
     return runCommand("!suicide", client, input)
-end, "", "", "ClientMenuConfirmTitle", "ClientMenuConfirmSuicide", canUseSuicide)
+end, "", "", "ClientMenuConfirmTitle", "ClientMenuConfirmSuicide", canUseAliveCharacter)
 
 addAction("droppoints", "ClientMenuDropPoints", "ClientMenuHintDropPoints", "ClientMenuCategoryCharacter", 21, function(client, input)
     return runCommand("!droppoints", client, input)
@@ -135,7 +173,7 @@ end, "number", "ClientMenuInputDropPoints", nil, nil, canDropPoints)
 
 addAction("freehandcuffs", "ClientMenuFreeHandcuffs", "ClientMenuHintFreeHandcuffs", "ClientMenuCategoryCharacter", 23, function(client, input)
     return runCommand("!freehandcuffs", client, input)
-end, nil, nil, nil, nil, canUseFakeHandcuffs)
+end, nil, nil, nil, nil, canUseFakeHandcuffs, true)
 
 addAction("roundtime", "ClientMenuRoundTime", "ClientMenuHintRoundTime", "ClientMenuCategoryRound", 30, function(client, input)
     return runCommand("!roundtime", client, input)
@@ -175,7 +213,7 @@ addAction("players", "ClientMenuPlayers", "ClientMenuHintPlayers", "ClientMenuCa
 
     Game.SendDirectChatMessage("", text, nil, ChatMessageType.Error, client)
     return true
-end, nil, nil, nil, nil, function(client) return isGamemode("SubmarineRoyale") and isAlive(client) end)
+end, nil, nil, nil, nil, canLocatePlayers)
 
 addAction("info", "ClientMenuInfo", "ClientMenuHintInfo", "ClientMenuCategoryInfo", 40, function(client, input)
     return runCommand("!info", client, input)
@@ -193,6 +231,43 @@ addAction("version", "ClientMenuVersion", "ClientMenuHintVersion", "ClientMenuCa
     return runCommand("!version", client, input)
 end)
 
+local adminActions = {}
+local orderedAdminActions = {}
+
+local function addAdminAction(id, command, labelKey, hintKey, categoryKey, order, inputType, inputHintKey)
+    local action = {
+        Id = id,
+        Command = command,
+        LabelKey = labelKey,
+        HintKey = hintKey,
+        CategoryKey = categoryKey,
+        Order = order,
+        InputType = inputType or "",
+        InputHintKey = inputHintKey or "",
+    }
+    adminActions[id] = action
+    table.insert(orderedAdminActions, action)
+end
+
+addAdminAction("roundinfo", "!roundinfo", "ClientMenuAdminRoundInfo", "ClientMenuAdminHintRoundInfo", "ClientMenuAdminCategoryInfo", 10)
+addAdminAction("roles", "!roles", "ClientMenuAdminRoles", "ClientMenuAdminHintRoles", "ClientMenuAdminCategoryInfo", 11)
+addAdminAction("traitoralive", "!traitoralive", "ClientMenuAdminTraitorAlive", "ClientMenuAdminHintTraitorAlive", "ClientMenuAdminCategoryInfo", 12)
+addAdminAction("allpoints", "!allpoints", "ClientMenuAdminAllPoints", "ClientMenuAdminHintAllPoints", "ClientMenuAdminCategoryInfo", 13)
+addAdminAction("ongoingevents", "!ongoingevents", "ClientMenuAdminOngoingEvents", "ClientMenuAdminHintOngoingEvents", "ClientMenuAdminCategoryInfo", 14)
+addAdminAction("revive", "!revive", "ClientMenuAdminRevive", "ClientMenuAdminHintRevive", "ClientMenuAdminCategoryPlayers", 20, "player")
+addAdminAction("void", "!void", "ClientMenuAdminVoid", "ClientMenuAdminHintVoid", "ClientMenuAdminCategoryPlayers", 21, "player")
+addAdminAction("unvoid", "!unvoid", "ClientMenuAdminUnvoid", "ClientMenuAdminHintUnvoid", "ClientMenuAdminCategoryPlayers", 22, "player")
+addAdminAction("addpoint", "!addpoint", "ClientMenuAdminAddPoints", "ClientMenuAdminHintAddPoints", "ClientMenuAdminCategoryPlayers", 23, "playeramount", "ClientMenuAdminAmount")
+addAdminAction("addlife", "!addlife", "ClientMenuAdminAddLives", "ClientMenuAdminHintAddLives", "ClientMenuAdminCategoryPlayers", 24, "playeramount", "ClientMenuAdminAmount")
+addAdminAction("giveghostrole", "!giveghostrole", "ClientMenuAdminGiveGhostRole", "ClientMenuAdminHintGiveGhostRole", "ClientMenuAdminCategoryGhostRoles", 30, "ghostrole", "ClientMenuAdminGhostRoleName")
+addAdminAction("assignrole", "!assignrole", "ClientMenuAdminAssignRole", "ClientMenuAdminHintAssignRole", "ClientMenuAdminCategoryRoles", 31, "assignrole")
+addAdminAction("triggerevent", "!triggerevent", "ClientMenuAdminTriggerEvent", "ClientMenuAdminHintTriggerEvent", "ClientMenuAdminCategoryEvents", 32, "event")
+
+table.sort(orderedAdminActions, function(a, b)
+    if a.Order ~= b.Order then return a.Order < b.Order end
+    return lang(a.LabelKey) < lang(b.LabelKey)
+end)
+
 table.sort(orderedActions, function(a, b)
     if a.Order ~= b.Order then return a.Order < b.Order end
     return lang(a.LabelKey) < lang(b.LabelKey)
@@ -202,8 +277,20 @@ local function getVisibleActions(client)
     local visible = {}
 
     for _, action in ipairs(orderedActions) do
-        if action.Condition == nil or action.Condition(client) == true then
-            table.insert(visible, action)
+        local enabled = true
+        local disabledReason = ""
+        if action.Condition ~= nil then
+            local allowed, reason = action.Condition(client)
+            enabled = allowed == true
+            disabledReason = tostring(reason or "")
+        end
+
+        if enabled or not action.HideWhenUnavailable then
+            table.insert(visible, {
+                Action = action,
+                Enabled = enabled,
+                DisabledReason = disabledReason,
+            })
         end
     end
 
@@ -228,10 +315,20 @@ function cm.SendSnapshot(client)
     netMessage.WriteString(lang("ClientMenuOk"))
     netMessage.WriteInt32(#visibleActions)
 
-    for _, action in ipairs(visibleActions) do
-        netMessage.WriteString(action.Id)
+    for _, entry in ipairs(visibleActions) do
+        local action = entry.Action
+        local actionId = action.Id
+        local hint = lang(action.HintKey)
+        if not entry.Enabled then
+            actionId = DISABLED_ACTION_PREFIX .. actionId
+            if entry.DisabledReason ~= "" and entry.DisabledReason ~= hint then
+                hint = entry.DisabledReason .. (hint ~= "" and "\n\n" .. hint or "")
+            end
+        end
+
+        netMessage.WriteString(actionId)
         netMessage.WriteString(lang(action.LabelKey))
-        netMessage.WriteString(lang(action.HintKey))
+        netMessage.WriteString(hint)
         netMessage.WriteString(lang(action.CategoryKey))
         netMessage.WriteString(action.InputType)
         netMessage.WriteString(action.InputHintKey ~= "" and lang(action.InputHintKey) or "")
@@ -241,6 +338,152 @@ function cm.SendSnapshot(client)
 
     Networking.Send(netMessage, client.Connection)
     return true
+end
+
+function cm.SendAdminSnapshot(client)
+    if client == nil or client.Connection == nil then return false end
+
+    local hasAccess = isAdmin(client)
+    local netMessage = Networking.Start(adminNet.Snapshot)
+    netMessage.WriteBoolean(hasAccess)
+    netMessage.WriteString(lang("ClientMenuTabMain"))
+    netMessage.WriteString(lang("ClientMenuTabAdmin"))
+    netMessage.WriteInt32(hasAccess and #orderedAdminActions or 0)
+
+    if hasAccess then
+        for _, action in ipairs(orderedAdminActions) do
+            netMessage.WriteString(action.Id)
+            netMessage.WriteString(lang(action.LabelKey))
+            netMessage.WriteString(lang(action.HintKey))
+            netMessage.WriteString(lang(action.CategoryKey))
+            netMessage.WriteString(action.InputType)
+            netMessage.WriteString(action.InputHintKey ~= "" and lang(action.InputHintKey) or "")
+            netMessage.WriteString("")
+            netMessage.WriteString("")
+        end
+    end
+
+    Networking.Send(netMessage, client.Connection)
+    return true
+end
+
+local adminDataTextKeys = {
+    "ClientMenuAdminSelectedPlayer",
+    "ClientMenuAdminNoPlayers",
+    "ClientMenuAdminAlive",
+    "ClientMenuAdminDead",
+    "ClientMenuAdminNoCharacter",
+    "ClientMenuAdminSelectRole",
+    "ClientMenuAdminNoRoles",
+    "ClientMenuAdminSelectEvent",
+    "ClientMenuAdminNoEvents",
+    "ClientMenuAdminSelectCharacter",
+    "ClientMenuAdminNoCharacters",
+}
+
+function cm.SendAdminData(client)
+    if client == nil or client.Connection == nil then return false end
+
+    local hasAccess = isAdmin(client)
+    local netMessage = Networking.Start(adminNet.DataSnapshot)
+    netMessage.WriteBoolean(hasAccess)
+
+    if hasAccess then
+        local players = {}
+        for _, target in pairs(Client.ClientList) do
+            table.insert(players, {
+                Key = Traitormod.GetClientAccountKey(target),
+                Name = tostring(target.Name or ""),
+                CharacterName = target.Character ~= nil and tostring(target.Character.Name or "") or "",
+                HasCharacter = target.Character ~= nil,
+                IsDead = target.Character ~= nil and target.Character.IsDead == true,
+            })
+        end
+        table.sort(players, function(a, b) return string.lower(a.Name) < string.lower(b.Name) end)
+
+        netMessage.WriteInt32(#players)
+        for _, target in ipairs(players) do
+            netMessage.WriteString(target.Key)
+            netMessage.WriteString(target.Name)
+            netMessage.WriteString(target.CharacterName)
+            netMessage.WriteBoolean(target.HasCharacter)
+            netMessage.WriteBoolean(target.IsDead)
+        end
+
+        local roles = {}
+        for identifier, role in pairs(Traitormod.RoleManager.Roles or {}) do
+            table.insert(roles, {
+                Id = tostring(identifier),
+                Name = tostring(role.Name or identifier),
+            })
+        end
+        table.sort(roles, function(a, b) return string.lower(a.Name) < string.lower(b.Name) end)
+
+        netMessage.WriteInt32(#roles)
+        for _, role in ipairs(roles) do
+            netMessage.WriteString(role.Id)
+            netMessage.WriteString(role.Name)
+        end
+
+        local events = {}
+        local eventConfigs = Traitormod.RoundEvents
+            and Traitormod.RoundEvents.EventConfigs
+            and Traitormod.RoundEvents.EventConfigs.Events
+            or {}
+        for _, event in pairs(eventConfigs) do
+            if event.Name ~= nil then table.insert(events, tostring(event.Name)) end
+        end
+        table.sort(events, function(a, b) return string.lower(a) < string.lower(b) end)
+
+        netMessage.WriteInt32(#events)
+        for _, eventName in ipairs(events) do
+            netMessage.WriteString(eventName)
+        end
+
+        netMessage.WriteInt32(#adminDataTextKeys)
+        for _, key in ipairs(adminDataTextKeys) do
+            netMessage.WriteString(string.sub(key, #"ClientMenuAdmin" + 1))
+            netMessage.WriteString(lang(key))
+        end
+    end
+
+    Networking.Send(netMessage, client.Connection)
+    return true
+end
+
+function cm.RunAdminActionV2(client, actionId, targetKey, value)
+    if not isAdmin(client) then return true end
+
+    local action = adminActions[tostring(actionId or "")]
+    if action == nil then return true end
+
+    local inputType = action.InputType
+    local args = {}
+    local target = nil
+    if inputType == "player" or inputType == "playeramount" or inputType == "assignrole" then
+        target = Traitormod.FindClient(tostring(targetKey or ""))
+        if target == nil then
+            Traitormod.SendMessage(client, Traitormod.Language.CMDClientNotFound)
+            return true
+        end
+    end
+
+    if inputType == "player" then
+        args = { Traitormod.GetClientAccountKey(target) }
+    elseif inputType == "playeramount" then
+        args = { Traitormod.GetClientAccountKey(target), tostring(value or "") }
+    elseif inputType == "ghostrole" then
+        args = { tostring(value or ""), tostring(targetKey or "") }
+    elseif inputType == "assignrole" then
+        args = { Traitormod.GetClientAccountKey(target), tostring(value or "") }
+    elseif inputType == "event" then
+        args = { tostring(value or "") }
+    end
+
+    sendActionLog(client, "admin:" .. action.Id)
+    local result = runCommand(action.Command, client, args)
+    if action.Id == "revive" then cm.SendAdminData(client) end
+    return result
 end
 
 function cm.RunAction(client, actionId, input)
@@ -267,6 +510,21 @@ Networking.Receive(vtNet.Run, function(message, client)
     local actionId = message.ReadString()
     local input = message.ReadString()
     return cm.RunAction(client, actionId, input)
+end)
+
+Networking.Receive(adminNet.Request, function(message, client)
+    return cm.SendAdminSnapshot(client)
+end)
+
+Networking.Receive(adminNet.DataRequest, function(message, client)
+    return cm.SendAdminData(client)
+end)
+
+Networking.Receive(adminNet.RunV2, function(message, client)
+    local actionId = message.ReadString()
+    local targetKey = message.ReadString()
+    local value = message.ReadString()
+    return cm.RunAdminActionV2(client, actionId, targetKey, value)
 end)
 
 local function writeVoteSnapshot(netMessage, client)
