@@ -1,6 +1,4 @@
 local weightedRandom = dofile(Traitormod.Path .. "/Lua/weightedrandom.lua")
-local roundSummaryLanguages = dofile(Traitormod.Path .. "/Lua/language/roundsummary.lua")
-local roundSummaryLanguage = roundSummaryLanguages[Traitormod.Language.Name] or roundSummaryLanguages.English
 local gm = Traitormod.Gamemodes.Gamemode:new()
 
 gm.Name = "Secret"
@@ -278,96 +276,6 @@ function gm:CheckHandcuffedTraitors(character)
     end
 end
 
-local function formatRoundDuration(seconds)
-    seconds = math.max(0, math.floor(tonumber(seconds) or 0))
-    local hours = math.floor(seconds / 3600)
-    local minutes = math.floor(seconds / 60) % 60
-    local remainingSeconds = seconds % 60
-    return string.format("%02d:%02d:%02d", hours, minutes, remainingSeconds)
-end
-
-local roundSummaryRoleNames = {
-    Traitor = "RoleTraitor",
-    Cultist = "RoleCultist",
-    Clown = "RoleClown",
-}
-
-function gm:RoundSummary()
-    if self.RoundSummaryText ~= nil then
-        return self.RoundSummaryText
-    end
-
-    local antagonists = {}
-    local handcuffed = 0
-    local usesCodeWords = false
-
-    for character, role in pairs(Traitormod.RoleManager.RoundRoles) do
-        if role.IsAntagonist then
-            table.insert(antagonists, { Character = character, Role = role })
-            if not character.IsDead and character.IsHandcuffed then
-                handcuffed = handcuffed + 1
-            end
-            if role.TraitorMethodCommunication == "Codewords" then
-                usesCodeWords = true
-            end
-        end
-    end
-
-    table.sort(antagonists, function(a, b)
-        return a.Character.Name < b.Character.Name
-    end)
-
-    local lines = {
-        roundSummaryLanguage.Ended,
-        string.format(roundSummaryLanguage.Mode, Traitormod.Language.DiscordModeSecret),
-        string.format(roundSummaryLanguage.Duration, formatRoundDuration(Traitormod.RoundTime)),
-        "",
-        string.format(roundSummaryLanguage.Antagonists, #antagonists),
-        string.format(roundSummaryLanguage.Handcuffed, handcuffed, #antagonists),
-    }
-
-    if usesCodeWords and Traitormod.CodeWords ~= nil then
-        table.insert(lines, "")
-        table.insert(lines, string.format(Traitormod.Language.Codewords, table.concat(Traitormod.CodeWords[1], ", ")))
-        table.insert(lines, string.format(Traitormod.Language.CodeResponses, table.concat(Traitormod.CodeWords[2], ", ")))
-    end
-
-    for _, antagonist in ipairs(antagonists) do
-        local character = antagonist.Character
-        local role = antagonist.Role
-        local client = Traitormod.FindClientCharacter(character)
-        local roleNameKey = roundSummaryRoleNames[role.Name]
-        local roleName = roleNameKey and roundSummaryLanguage[roleNameKey] or role.Name
-        local name = character.Name
-
-        if client ~= nil then
-            name = string.format(roundSummaryLanguage.Player, name, client.Name)
-        end
-
-        local state = character.IsDead and roundSummaryLanguage.Dead or roundSummaryLanguage.Alive
-        if not character.IsDead and character.IsHandcuffed then
-            state = state .. ", " .. roundSummaryLanguage.HandcuffedState
-        end
-
-        table.insert(lines, "")
-        table.insert(lines, string.format(roundSummaryLanguage.Antagonist, name, roleName))
-        table.insert(lines, string.format(roundSummaryLanguage.State, state))
-        table.insert(lines, roundSummaryLanguage.Objectives)
-
-        if #role.Objectives == 0 then
-            table.insert(lines, Traitormod.Language.NoObjectives)
-        else
-            for _, objective in ipairs(role.Objectives) do
-                local completed = objective.Awarded or (not objective.Failed and objective:IsCompleted())
-                local format = completed and roundSummaryLanguage.ObjectiveSuccess or roundSummaryLanguage.ObjectiveFailed
-                table.insert(lines, string.format(format, objective.Text))
-            end
-        end
-    end
-
-    return table.concat(lines, "\n")
-end
-
 function gm:TraitorResults()
     local success = false
 
@@ -464,17 +372,5 @@ function gm:Think()
         self.Ending = true
     end
 end
-
-Hook.Patch("Traitormod.Secret.RoundSummary.EndMessage", "Barotrauma.TextManager", "FormatServerMessage", { "System.String" }, function(instance, ptable)
-    if ptable["str"] ~= "RoundSummaryRoundHasEnded" then return end
-
-    local gamemode = Traitormod.SelectedGamemode
-    if gamemode == nil or gamemode.Name ~= "Secret" then return end
-
-    local summary = gamemode:RoundSummary()
-    gamemode.RoundSummaryText = summary
-    Traitormod.LastRoundSummary = summary
-    ptable.ReturnValue = summary:gsub("/", "∕"):gsub("~", "～"):gsub("=", "＝")
-end, Hook.HookMethodType.After)
 
 return gm
