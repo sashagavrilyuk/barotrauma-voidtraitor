@@ -38,19 +38,9 @@ local function gearUpCharacter(character, team, waypoint)
         Entity.Spawner.AddItemToRemoveQueue(card)
     end
     Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("vt_hideandseek_idcard"), character.Inventory, nil, nil, function (newCard)
-        local idCard = newCard.GetComponentString("IdCard")
         for tag in waypoint.IdCardTags do
             newCard.AddTag(tag)
         end
-        if waypoint.IdCardDesc ~= nil and waypoint.IdCardDesc ~= "" then
-            newCard.Description = waypoint.IdCardDesc
-            idCard.Description = waypoint.IdCardDesc
-        end
-        idCard.TeamID = CharacterTeamType.None
-        idCard.OwnerName = ""
-        newCard.NonPlayerTeamInteractable = true
-        local lock = newCard.SerializableProperties[Identifier("NonPlayerTeamInteractable")]
-        Networking.CreateEntityEvent(newCard, Item.ChangePropertyEventData(lock, newCard))
     end, true, false, InvSlotType.Card)
 
     local innerClothes = character.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)
@@ -486,27 +476,22 @@ function gm:PreStart()
         }
     }
 
-    Hook.Add("character.giveJobItems", "Traitormod.HideAndSeekV2.CharacterGiveJobItems", function(character, waypoint)
-        local team = self.Teams[character.TeamID]
-        if team ~= nil then
-            gearUpCharacter(character, team, waypoint)
+    Hook.Add("character.applyDamage", "Traitormod.HideAndSeekV2.SeekerDamage", function(characterHealth, attackResult, hitLimb, allowStacking)
+        local character = characterHealth.Character
+        if self.IsEnding or character.TeamID ~= TeamID2 then return end
+
+        for affliction in attackResult.Afflictions do
+            if affliction.Prefab.AfflictionType == AfflictionPrefab.StunType then
+                characterHealth.ApplyAffliction(hitLimb, affliction, allowStacking)
+            end
         end
+        return true
     end)
 
-    Hook.Add("character.applyDamage", "Traitormod.HideAndSeekV2.SeekerDamage", function(characterHealth, attackResult)
-        if self.IsEnding or characterHealth == nil or attackResult == nil or attackResult.Damage <= 0 then return end
-
-        local character = characterHealth.Character
-        if character == nil or character.Removed or character.IsDead then return end
-
-        local team = self.Teams[TeamID2]
-        for id, entry in pairs(team.Respawns) do
-            local member = team.Members[id]
-            if not entry.Forfeited and entry.Spawned
-                and ((member ~= nil and member.Character == character) or entry.DisconnectedCharacter == character) then
-                character.SetStun(attackResult.Damage)
-                return true
-            end
+    Hook.Add("character.applyAffliction", "Traitormod.HideAndSeekV2.SeekerNeurotrauma", function(characterHealth, _, affliction)
+        if self.IsEnding or characterHealth.Character.TeamID ~= TeamID2 then return end
+        if affliction.Prefab.ContentPackage.Name == "Neurotrauma" then
+            return true
         end
     end)
 end
@@ -628,8 +613,8 @@ function gm:End()
 
     Hook.Remove("client.connected", "Traitormod.HideAndSeekV2.ClientConnected")
     Hook.Remove("clientDisconnected", "Traitormod.HideAndSeekV2.ClientDisconnected")
-    Hook.Remove("character.giveJobItems", "Traitormod.HideAndSeekV2.CharacterGiveJobItems")
     Hook.Remove("character.applyDamage", "Traitormod.HideAndSeekV2.SeekerDamage")
+    Hook.Remove("character.applyAffliction", "Traitormod.HideAndSeekV2.SeekerNeurotrauma")
     Hook.Remove("netMessageReceived", "Traitormod.HideAndSeekV2.ClientJoined")
 
     if self.Gates ~= nil then
