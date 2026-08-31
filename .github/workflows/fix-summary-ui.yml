@@ -1,0 +1,29 @@
+name: Fix round summary UI
+
+on:
+  push:
+    branches: [Ai-temp]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: Ai-temp
+          fetch-depth: 0
+      - name: Apply verified patch
+        run: python .github/fix_summary_ui.py
+      - name: Verify diff
+        run: git diff --check
+      - name: Commit patch and remove staging files
+        run: |
+          rm .github/fix_summary_ui.py .github/workflows/fix-summary-ui.yml
+          git config user.name "kotofey51"
+          git config user.email "38777263+sashagavrilyuk@users.noreply.github.com"
+          git add -A
+          git commit -m "Fix round summary chat and admin action"
+          git push origin HEAD:Ai-temp
