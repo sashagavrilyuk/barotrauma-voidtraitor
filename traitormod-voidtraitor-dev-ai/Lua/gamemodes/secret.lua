@@ -49,11 +49,13 @@ local function reachedLevelEnd()
         end
     end
 
-    return mainSub.ConnectedDockingPorts.ContainsKey(endOutpost)
-        or (mainSub.AtEndExit and charactersInsideOutpost > 0)
+    for dockedSub in mainSub.DockedTo do
+        if dockedSub == endOutpost then return true end
+    end
+
+    return (mainSub.AtEndExit and charactersInsideOutpost > 0)
         or charactersInsideOutpost > charactersOutsideOutpost
 end
-
 
 
 local function sendSummaryPopup(client, summary)
@@ -485,7 +487,6 @@ function gm:BeginEnding(reason)
     self:FinalizeResults()
     self.Ending = true
     self.EndReason = reason
-
     if Game.Server ~= nil then
         Game.Server.EndRoundTimer = 0
     end
