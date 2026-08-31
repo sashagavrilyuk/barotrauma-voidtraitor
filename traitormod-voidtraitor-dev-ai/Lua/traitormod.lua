@@ -658,7 +658,9 @@ Hook.Add("missionsEnded", "Traitormod.MissionsEnded", function(missions)
     if Traitormod.SelectedGamemode then
         endMessage = Traitormod.SelectedGamemode:RoundSummary()
 
-        Traitormod.SendMessageEveryone(Traitormod.HighlightClientNames(endMessage, Color.Red))
+        if Traitormod.SelectedGamemode.Name ~= "Secret" or Traitormod.SelectedGamemode.FinalSummary == nil then
+            Traitormod.SendMessageEveryone(Traitormod.HighlightClientNames(endMessage, Color.Red))
+        end
     end
     Traitormod.LastRoundSummary = endMessage
 
@@ -795,7 +797,9 @@ Hook.Add("think", "Traitormod.Think", function(deltaTime)
         return
     end
 
-    Traitormod.RoundTime = Traitormod.RoundTime + deltaTime
+    if not Traitormod.IsSecretEnding() then
+        Traitormod.RoundTime = Traitormod.RoundTime + deltaTime
+    end
 
     local gamemodeDeltaTime
     if gamemodeThinkTimer == nil then
@@ -812,6 +816,8 @@ Hook.Add("think", "Traitormod.Think", function(deltaTime)
     if gamemodeDeltaTime ~= nil then
         Traitormod.SelectedGamemode:Think(gamemodeDeltaTime)
     end
+
+    if Traitormod.IsSecretEnding() then return end
 
     -- give points/xp on the configured experience timer
     if pointsGiveTimer and Timer.GetTime() > pointsGiveTimer then
@@ -847,6 +853,7 @@ end)
 -- when a character gains skill level, add PointsToBeGiven according to config
 Traitormod.PointsToBeGiven = {}
 Hook.HookMethod("Barotrauma.CharacterInfo", "IncreaseSkillLevel", function(instance, ptable)
+    if Traitormod.IsSecretEnding() then return end
     if not ptable or ptable.gainedFromAbility or instance.Character == nil or instance.Character.IsDead then return end
 
     Traitormod.OnTrackedSkillIncrease(instance.Character, tostring(ptable.skillIdentifier), ptable.increase, ptable.gainedFromAbility)
@@ -1102,7 +1109,7 @@ Traitormod.SpawnPointItem = function(inventory, amount, text, onSpawn, onUsed)
 end
 
 Traitormod.DropPointItem = function(client, amount)
-    if client == nil or client.Character == nil or client.Character.IsDead then
+    if Traitormod.IsSecretEnding() or client == nil or client.Character == nil or client.Character.IsDead then
         return false
     end
 

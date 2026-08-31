@@ -12,8 +12,8 @@ LuaUserData.MakeFieldAccessible(missionDescriptor, "completeCheckDataAction")
 LuaUserData.MakePropertyAccessible(gameServerDescriptor, "EndRoundTimer")
 
 local summaryNetMessage = "VoidTraitor_RoundSummary"
-local softEndDelaySeconds = 60
 local updatingVoteStatus = false
+local lobbySummaryPending = nil
 
 gm.Name = "Secret"
 
@@ -55,59 +55,6 @@ local function reachedLevelEnd()
 end
 
 
-local function finalizePointshopRefunds()
-    if Traitormod.Config.TestMode or not Traitormod.Config.PointShopConfig.DeathSpawnRefundAtEndRound then return end
-
-    for client, refund in pairs(Traitormod.Pointshop.Refunds) do
-        if client.Character ~= nil and not client.Character.IsPet then
-            local price = refund.Price * math.min(client.Character.Vitality / client.Character.MaxVitality, 1)
-            Traitormod.AwardPoints(client, price)
-            Traitormod.SendMessage(client, string.format(Traitormod.Language.PointshopRefunded, price, Traitormod.Pointshop.GetProductName(refund.Product)))
-        end
-        Traitormod.Pointshop.Refunds[client] = nil
-    end
-end
-
-local function lockProgress(self)
-    self.OriginalSetData = Traitormod.SetData
-    self.OriginalAwardPoints = Traitormod.AwardPoints
-    self.OriginalAdjustLives = Traitormod.AdjustLives
-    self.OriginalActivateProduct = Traitormod.Pointshop.ActivateProduct
-
-    Traitormod.SetData = function(client, name, amount)
-        if self.Ending and (name == "Points" or name == "Lives") then return end
-        return self.OriginalSetData(client, name, amount)
-    end
-
-    Traitormod.AwardPoints = function(client, amount, isMissionXP)
-        if self.Ending then return 0 end
-        return self.OriginalAwardPoints(client, amount, isMissionXP)
-    end
-
-    Traitormod.AdjustLives = function(client, amount)
-        if self.Ending then return end
-        return self.OriginalAdjustLives(client, amount)
-    end
-
-    Traitormod.Pointshop.ActivateProduct = function(client, product, paidPrice, itemsToSpawn)
-        if self.Ending then paidPrice = 0 end
-        return self.OriginalActivateProduct(client, product, paidPrice, itemsToSpawn)
-    end
-end
-
-local function unlockProgress(self)
-    if self.OriginalSetData == nil then return end
-
-    Traitormod.SetData = self.OriginalSetData
-    Traitormod.AwardPoints = self.OriginalAwardPoints
-    Traitormod.AdjustLives = self.OriginalAdjustLives
-    Traitormod.Pointshop.ActivateProduct = self.OriginalActivateProduct
-
-    self.OriginalSetData = nil
-    self.OriginalAwardPoints = nil
-    self.OriginalAdjustLives = nil
-    self.OriginalActivateProduct = nil
-end
 
 local function sendSummaryPopup(client, summary)
     if Traitormod.ClientHasLua ~= nil and Traitormod.ClientHasLua(client) then
@@ -156,6 +103,8 @@ function gm:Start()
     self.ResultsFinalized = false
     self.AllowRealEndGame = false
     self.FinalSummary = nil
+    self.AwardedPoints = {}
+    lobbySummaryPending = nil
 
     if self.EnableRandomEvents then
         Traitormod.RoundEvents.Initialize()
@@ -475,7 +424,8 @@ function gm:FinalizeResults()
     local missions = Game.GameSession ~= nil and Game.GameSession.Missions or {}
     self:AwardCrew(missions)
 
-    finalizePointshopRefunds()
+    Traitormod.Pointshop.FinalizeRefunds()
+    Traitormod.Pointshop.Refunds = {}
     Traitormod.RoundEvents.EndRound()
 
     self.ResultsFinalized = true
@@ -507,6 +457,14 @@ function gm:RoundSummary()
 
         sb("\n%s — %s (%s)\n", character.Name, role.Name, state)
 
+        local objectivesCompleted = 0
+        for _, objective in ipairs(role.Objectives or {}) do
+            if not objective.Failed then objectivesCompleted = objectivesCompleted + 1 end
+        end
+        local client = Traitormod.FindClientCharacter(character)
+        local accountKey = client ~= nil and Traitormod.GetClientAccountKey(client) or nil
+        sb(Traitormod.Language.SecretSummary, objectivesCompleted, math.floor((accountKey ~= nil and self.AwardedPoints[accountKey]) or 0))
+
         for _, objective in ipairs(role.Objectives or {}) do
             local objectiveState
             if objective.Failed then
@@ -527,7 +485,6 @@ function gm:BeginEnding(reason)
     self:FinalizeResults()
     self.Ending = true
     self.EndReason = reason
-    lockProgress(self)
 
     if Game.Server ~= nil then
         Game.Server.EndRoundTimer = 0
@@ -538,15 +495,14 @@ function gm:BeginEnding(reason)
 
     self.FinalSummary = self:RoundSummary()
     Traitormod.LastRoundSummary = self.FinalSummary
+    lobbySummaryPending = self.FinalSummary
 
-    local delay = softEndDelaySeconds
-    local message = string.format(Traitormod.Language.HideAndSeekRoundCountdown, delay)
+    local delay = self.EndGameDelaySeconds or 0
+    local message = string.format(Traitormod.Language.SecretRoundEndingCountdown, delay)
     if reason == "traitors" then
         message = Traitormod.Language.TraitorsWin .. "\n" .. message
     elseif reason == "crew" then
-        local reachedText = tostring(TextManager.Get("hint.onavailabletransition.progresstonextemptylocation"))
-        reachedText = string.match(reachedText, "^(.-%.)") or reachedText
-        message = reachedText .. "\n" .. message
+        message = Traitormod.Language.SecretCrewReachedStation .. "\n" .. message
     end
 
     Traitormod.SendMessageEveryone(message)
@@ -570,7 +526,6 @@ function gm:End()
         self:FinalizeResults()
     end
 
-    unlockProgress(self)
     Game.EnableControlHusk(false)
 
     Hook.Remove("characterDeath", "Traitormod.Secret.CharacterDeath")
@@ -581,7 +536,6 @@ function gm:Think()
     if not Game.RoundStarted then return end
 
     if self.Ending then
-        Traitormod.PointsToBeGiven = {}
         if not self.AllowRealEndGame and Game.Server ~= nil then
             Game.Server.EndRoundTimer = 0
         end
@@ -642,6 +596,13 @@ Hook.Patch("Traitormod.Secret.EndGame.Before", "Barotrauma.Networking.GameServer
         ptable.PreventExecution = true
     end
 end, Hook.HookMethodType.Before)
+
+Hook.Patch("Traitormod.Secret.EndGame.After", "Barotrauma.Networking.GameServer", "EndGame", function ()
+    if lobbySummaryPending == nil or Game.RoundStarted then return end
+
+    Traitormod.SendMessageEveryone(Traitormod.HighlightClientNames(lobbySummaryPending, Color.Red))
+    lobbySummaryPending = nil
+end, Hook.HookMethodType.After)
 
 
 return gm

@@ -434,6 +434,12 @@ Traitormod.GetMasterData = function (name)
     return Traitormod.ClientData[name]
 end
 
+Traitormod.IsSecretEnding = function ()
+    return Traitormod.SelectedGamemode ~= nil
+        and Traitormod.SelectedGamemode.Name == "Secret"
+        and Traitormod.SelectedGamemode.Ending == true
+end
+
 Traitormod.SetData = function (client, name, amount)
     local accountKey = getClientDataKey(client)
     if Traitormod.ClientData[accountKey] == nil then
@@ -699,6 +705,7 @@ Traitormod.GiveExperience = function (character, amount, isMissionXP)
 end
 
 Traitormod.AwardPoints = function (client, amount, isMissionXP)
+    if Traitormod.IsSecretEnding() then return 0 end
     if not Traitormod.Config.TestMode then
         Traitormod.AddData(client, "Points", amount)
         Traitormod.Stats.AddClientStat("PointsGained", client, amount)
@@ -713,6 +720,7 @@ Traitormod.AwardPoints = function (client, amount, isMissionXP)
 end
 
 Traitormod.AdjustLives = function (client, amount)
+    if Traitormod.IsSecretEnding() then return end
     if not amount or amount == 0 then
         return
     end
