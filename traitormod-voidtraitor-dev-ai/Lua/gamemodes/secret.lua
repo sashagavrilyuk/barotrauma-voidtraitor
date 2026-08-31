@@ -456,6 +456,9 @@ function gm:RoundSummary()
         table.insert(entries, { Character = character, Role = role })
     end
     table.sort(entries, function(a, b)
+        if a.Role.IsAntagonist ~= b.Role.IsAntagonist then
+            return a.Role.IsAntagonist
+        end
         return string.lower(tostring(a.Character.Name)) < string.lower(tostring(b.Character.Name))
     end)
 
