@@ -55,7 +55,7 @@ rep(secret,'''        local objectivesCompleted = 0
 
 obj='traitormod-voidtraitor-dev-ai/Lua/objectives/objective.lua'
 rep(obj,'function objective:Fail()\n','function objective:Fail(silent)\n')
-rep(obj,'    if client then \n        Traitormod.SendObjectiveFailed(client, self.Text)\n    end','    if client and not silent then \n        Traitormod.SendObjectiveFailed(client, self.Text)\n    end')
+rep(obj,'    if client then \n        Traitormod.SendObjectiveFailed(client, self.Text)\n    end','    if client and not silent then\n        Traitormod.SendObjectiveFailed(client, self.Text)\n    end')
 
 rm='traitormod-voidtraitor-dev-ai/Lua/rolemanager.lua'
 rep(rm,'rm.CheckObjectives = function(endRound)\n','rm.CheckObjectives = function(endRound, silentFailures)\n')
