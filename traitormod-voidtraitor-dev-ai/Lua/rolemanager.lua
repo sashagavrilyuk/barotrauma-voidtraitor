@@ -180,7 +180,7 @@ rm.FindAntagonists = function()
 
     for character, role in pairs(rm.RoundRoles) do
         if role.IsAntagonist then
-            table.insert(antagonists, character)
+            table.insert(characters, character)
         end
     end
 
