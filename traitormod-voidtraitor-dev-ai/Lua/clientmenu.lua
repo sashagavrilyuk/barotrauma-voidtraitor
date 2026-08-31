@@ -254,6 +254,7 @@ addAdminAction("roles", "!roles", "ClientMenuAdminRoles", "ClientMenuAdminHintRo
 addAdminAction("traitoralive", "!traitoralive", "ClientMenuAdminTraitorAlive", "ClientMenuAdminHintTraitorAlive", "ClientMenuAdminCategoryInfo", 12)
 addAdminAction("allpoints", "!allpoints", "ClientMenuAdminAllPoints", "ClientMenuAdminHintAllPoints", "ClientMenuAdminCategoryInfo", 13)
 addAdminAction("ongoingevents", "!ongoingevents", "ClientMenuAdminOngoingEvents", "ClientMenuAdminHintOngoingEvents", "ClientMenuAdminCategoryInfo", 14)
+addAdminAction("endroundnow", "!endroundnow", "ClientMenuAdminEndRoundNow", "ClientMenuAdminHintEndRoundNow", "ClientMenuAdminCategoryInfo", 15)
 addAdminAction("revive", "!revive", "ClientMenuAdminRevive", "ClientMenuAdminHintRevive", "ClientMenuAdminCategoryPlayers", 20, "player")
 addAdminAction("void", "!void", "ClientMenuAdminVoid", "ClientMenuAdminHintVoid", "ClientMenuAdminCategoryPlayers", 21, "player")
 addAdminAction("unvoid", "!unvoid", "ClientMenuAdminUnvoid", "ClientMenuAdminHintUnvoid", "ClientMenuAdminCategoryPlayers", 22, "player")

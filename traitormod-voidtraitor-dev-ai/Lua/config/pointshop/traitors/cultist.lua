@@ -9,7 +9,7 @@ category.CanAccess = function(client)
 end
 
 LuaUserData.MakeMethodAccessible(Descriptors["Barotrauma.StatusEffect"], "set_Afflictions")
-LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.Affliction"], "_strength")
+LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.AfflictionHusk"] or LuaUserData.RegisterType("Barotrauma.AfflictionHusk"), "_strength")
 
 category.Init = function ()
     local replacement = [[

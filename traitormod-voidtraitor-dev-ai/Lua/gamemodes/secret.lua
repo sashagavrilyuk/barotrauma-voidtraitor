@@ -10,6 +10,7 @@ LuaUserData.MakePropertyAccessible(gameServerDescriptor, "EndRoundTimer")
 
 local summaryNetMessage = "VoidTraitor_RoundSummary"
 local updatingVoteStatus = false
+local handlingServerCommand = false
 local lobbySummaryPending = nil
 local missionDescriptors = {}
 
@@ -599,6 +600,14 @@ Hook.Patch("Traitormod.Secret.UpdateVoteStatus.After", "Barotrauma.Networking.Ga
     updatingVoteStatus = false
 end, Hook.HookMethodType.After)
 
+Hook.Patch("Traitormod.Secret.ClientReadServerCommand.Before", "Barotrauma.Networking.GameServer", "ClientReadServerCommand", function ()
+    handlingServerCommand = true
+end, Hook.HookMethodType.Before)
+
+Hook.Patch("Traitormod.Secret.ClientReadServerCommand.After", "Barotrauma.Networking.GameServer", "ClientReadServerCommand", function ()
+    handlingServerCommand = false
+end, Hook.HookMethodType.After)
+
 Hook.Patch("Traitormod.Secret.EndGame.Before", "Barotrauma.Networking.GameServer", "EndGame", function (instance, ptable)
     local selected = Traitormod.SelectedGamemode
     if selected == nil or selected.Name ~= "Secret" then return end
@@ -610,8 +619,8 @@ Hook.Patch("Traitormod.Secret.EndGame.Before", "Barotrauma.Networking.GameServer
         return
     end
 
-    if updatingVoteStatus then
-        selected:BeginEnding("vote")
+    if updatingVoteStatus or handlingServerCommand then
+        selected:BeginEnding(updatingVoteStatus and "vote" or "manual")
         ptable.PreventExecution = true
     end
 end, Hook.HookMethodType.Before)
