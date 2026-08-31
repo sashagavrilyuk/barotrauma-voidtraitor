@@ -1,25 +1,32 @@
 local weightedRandom = dofile(Traitormod.Path .. "/Lua/weightedrandom.lua")
 local gm = Traitormod.Gamemodes.Gamemode:new()
 
-local missionDescriptor = Descriptors["Barotrauma.Mission"] or LuaUserData.RegisterType("Barotrauma.Mission")
 if not LuaUserData.IsRegistered("Barotrauma.CheckDataAction") then LuaUserData.RegisterType("Barotrauma.CheckDataAction") end
 local gameServerDescriptor = Descriptors["Barotrauma.Networking.GameServer"] or LuaUserData.RegisterType("Barotrauma.Networking.GameServer")
 
 local transitionTypes = LuaUserData.CreateEnumTable("Barotrauma.CampaignMode+TransitionType")
 local voteTypes = LuaUserData.CreateEnumTable("Barotrauma.Networking.VoteType")
-LuaUserData.MakeMethodAccessible(missionDescriptor, "DetermineCompleted")
-LuaUserData.MakeFieldAccessible(missionDescriptor, "completeCheckDataAction")
 LuaUserData.MakePropertyAccessible(gameServerDescriptor, "EndRoundTimer")
 
 local summaryNetMessage = "VoidTraitor_RoundSummary"
 local updatingVoteStatus = false
 local lobbySummaryPending = nil
+local missionDescriptors = {}
 
 gm.Name = "Secret"
 
 local function missionWouldComplete(mission)
     if mission == nil or mission.ForceFailure then return false end
     if mission.Completed then return true end
+
+    local typeName = LuaUserData.TypeOf(mission)
+    if not missionDescriptors[typeName] then
+        local descriptor = Descriptors[typeName] or LuaUserData.RegisterType(typeName)
+        LuaUserData.MakeMethodAccessible(descriptor, "DetermineCompleted", {"Barotrauma.CampaignMode+TransitionType"})
+        LuaUserData.MakeFieldAccessible(descriptor, "completeCheckDataAction")
+        missionDescriptors[typeName] = true
+    end
+
     if not mission.DetermineCompleted(transitionTypes.None) then return false end
 
     local completeCheck = mission.completeCheckDataAction
@@ -435,7 +442,6 @@ end
 
 function gm:RoundSummary()
     if self.FinalSummary ~= nil then return self.FinalSummary end
-    if not self.ResultsFinalized then self:FinalizeResults() end
 
     local sb = Traitormod.StringBuilder:new()
     sb("%s\n", Traitormod.Language.RoundSummary)
@@ -461,7 +467,7 @@ function gm:RoundSummary()
 
         local objectivesCompleted = 0
         for _, objective in ipairs(role.Objectives or {}) do
-            if not objective.Failed then objectivesCompleted = objectivesCompleted + 1 end
+            if objective.Awarded then objectivesCompleted = objectivesCompleted + 1 end
         end
         local client = Traitormod.FindClientCharacter(character)
         local accountKey = client ~= nil and Traitormod.GetClientAccountKey(client) or nil
@@ -471,8 +477,10 @@ function gm:RoundSummary()
             local objectiveState
             if objective.Failed then
                 objectiveState = Traitormod.Language.Failed
-            else
+            elseif objective.Awarded then
                 objectiveState = Traitormod.Language.Completed .. string.format(Traitormod.Language.Points, objective.AmountPoints or 0)
+            else
+                objectiveState = ""
             end
             sb(" > %s %s\n", objective.Text, string.gsub(objectiveState, "^%s+", ""))
         end
