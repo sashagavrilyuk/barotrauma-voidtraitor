@@ -49,7 +49,7 @@ local function reachedLevelEnd()
         end
     end
 
-    return mainSub.DockedTo.Contains(endOutpost)
+    return mainSub.ConnectedDockingPorts.ContainsKey(endOutpost)
         or (mainSub.AtEndExit and charactersInsideOutpost > 0)
         or charactersInsideOutpost > charactersOutsideOutpost
 end
