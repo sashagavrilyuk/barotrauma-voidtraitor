@@ -657,6 +657,8 @@ Hook.Add("missionsEnded", "Traitormod.MissionsEnded", function(missions)
     local endMessage = ""
     if Traitormod.SelectedGamemode then
         endMessage = Traitormod.SelectedGamemode:RoundSummary()
+
+        Traitormod.SendMessageEveryone(Traitormod.HighlightClientNames(endMessage, Color.Red))
     end
     Traitormod.LastRoundSummary = endMessage
 
@@ -1178,7 +1180,6 @@ Traitormod.StringBuilder = dofile(Traitormod.Path .. "/Lua/stringbuilder.lua")
 Traitormod.Voting = dofile(Traitormod.Path .. "/Lua/voting.lua")
 ---@module "Lua.rolemanager"
 Traitormod.RoleManager = dofile(Traitormod.Path .. "/Lua/rolemanager.lua")
-Traitormod.RoundSummaryScreen = dofile(Traitormod.Path .. "/Lua/roundsummary.lua")
 ---@module "Lua.pointshop"
 ---@class Pointshop.Ref: Pointshop
 Traitormod.Pointshop = dofile(Traitormod.Path .. "/Lua/pointshop.lua")
