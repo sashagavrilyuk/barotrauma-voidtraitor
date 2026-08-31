@@ -526,7 +526,6 @@ function gm:BeginEnding(reason)
     end
 
     Traitormod.SendMessageEveryone(message)
-    Traitormod.SendMessageEveryone(Traitormod.HighlightClientNames(self.FinalSummary, Color.Red))
 
     for _, client in pairs(Client.ClientList) do
         sendSummaryPopup(client, self.FinalSummary)
