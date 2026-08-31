@@ -5,6 +5,10 @@ LuaUserData.RegisterType("Barotrauma.Networking.FileSender")
 local luaConfirmed = {}
 local clientTrackers = {}
 
+Traitormod.ClientHasLua = function(client)
+    return luaConfirmed[client] == true
+end
+
 local WAIT_AFTER_DOWNLOAD = 20 
 local welcomeUpdateTimer = 0
 
