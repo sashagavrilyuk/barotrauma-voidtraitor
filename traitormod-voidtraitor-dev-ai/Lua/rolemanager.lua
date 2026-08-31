@@ -45,6 +45,8 @@ rm.AddObjective = function(objective)
 end
 
 rm.CheckObjectives = function(endRound)
+    if Traitormod.IsSecretEnding() then return end
+
     for character, role in pairs(rm.RoundRoles) do
         if not character.IsDead and role.Objectives then
             for _, objective in pairs(role.Objectives) do
@@ -178,7 +180,7 @@ rm.FindAntagonists = function()
 
     for character, role in pairs(rm.RoundRoles) do
         if role.IsAntagonist then
-            table.insert(characters, character)
+            table.insert(antagonists, character)
         end
     end
 
@@ -218,6 +220,8 @@ rm.IsSameRole = function (character1, character2)
 end
 
 rm.CallObjectiveFunction = function (functionName, ...)
+    if Traitormod.IsSecretEnding() then return end
+
     for character, role in pairs(rm.RoundRoles) do
         if not character.IsDead and role.Objectives then
             for _, objective in pairs(role.Objectives) do
