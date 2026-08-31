@@ -269,6 +269,7 @@ language.Answer = "Ответить"
 language.Ignore = "Игнорировать"
 
 language.SecretSummary = "Задачи выполнены: %s - Очки получены: %s\n"
+language.SecretCrewSummary = "Очки получены: %s\n"
 language.SecretRoundEndingCountdown = "Раунд завершится через %s секунд."
 language.SecretCrewReachedStation = "Экипаж достиг конечной станции."
 language.SecretTraitorAssigned = "Вы были избраны предателем, проголосуйте,им именно вы хотите быть."

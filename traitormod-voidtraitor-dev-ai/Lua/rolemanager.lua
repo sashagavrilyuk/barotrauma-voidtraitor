@@ -44,7 +44,7 @@ rm.AddObjective = function(objective)
     objective.Static()
 end
 
-rm.CheckObjectives = function(endRound)
+rm.CheckObjectives = function(endRound, silentFailures)
     if Traitormod.IsSecretEnding() then return end
 
     for character, role in pairs(rm.RoundRoles) do
@@ -54,7 +54,7 @@ rm.CheckObjectives = function(endRound)
                     if objective:IsCompleted() then
                         objective:Award()
                     elseif objective:IsFailed() then
-                        objective:Fail()
+                        objective:Fail(silentFailures)
                     end
                 end
             end

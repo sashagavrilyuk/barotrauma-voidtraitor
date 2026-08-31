@@ -303,6 +303,7 @@ language.Answer = "Answer"
 language.Ignore = "Ignore"
 
 language.SecretSummary = "Objectives Completed: %s - Points Gained: %s\n"
+language.SecretCrewSummary = "Points Gained: %s\n"
 language.SecretRoundEndingCountdown = "The round will end in %s seconds."
 language.SecretCrewReachedStation = "The crew has reached the final station."
 language.SecretTraitorAssigned = "You have been assigned to be a traitor, vote which type you want to be."

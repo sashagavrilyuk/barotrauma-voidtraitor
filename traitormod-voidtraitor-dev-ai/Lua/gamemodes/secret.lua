@@ -72,7 +72,8 @@ local function sendSummaryPopup(client, summary)
         message.WriteString(Traitormod.GetText("GhostRolesMenuCancel"))
         Networking.Send(message, client.Connection)
     else
-        Game.SendDirectChatMessage("", summary, nil, ChatMessageType.ServerMessageBoxInGame, client, "InfoFrameTabButton.Mission")
+        local chatMessage = ChatMessage.Create(Traitormod.GetText("ChatSenderServer"), summary, ChatMessageType.ServerMessageBox, nil, nil)
+        Game.SendDirectChatMessage(chatMessage, client)
     end
 end
 
@@ -415,13 +416,13 @@ function gm:FinalizeResults()
         end
     end
 
-    Traitormod.RoleManager.CheckObjectives(false)
-    Traitormod.RoleManager.CheckObjectives(true)
+    Traitormod.RoleManager.CheckObjectives(false, true)
+    Traitormod.RoleManager.CheckObjectives(true, true)
 
     for _, role in pairs(Traitormod.RoleManager.RoundRoles) do
         for _, objective in pairs(role.Objectives or {}) do
             if not objective.Awarded and not objective.Failed then
-                objective:Fail()
+                objective:Fail(true)
             end
         end
     end
@@ -465,24 +466,30 @@ function gm:RoundSummary()
 
         sb("\n%s — %s (%s)\n", character.Name, role.Name, state)
 
-        local objectivesCompleted = 0
-        for _, objective in ipairs(role.Objectives or {}) do
-            if objective.Awarded then objectivesCompleted = objectivesCompleted + 1 end
-        end
         local client = Traitormod.FindClientCharacter(character)
         local accountKey = client ~= nil and Traitormod.GetClientAccountKey(client) or nil
-        sb(Traitormod.Language.SecretSummary, objectivesCompleted, math.floor((accountKey ~= nil and self.AwardedPoints[accountKey]) or 0))
+        local pointsGained = math.floor((accountKey ~= nil and self.AwardedPoints[accountKey]) or 0)
 
-        for _, objective in ipairs(role.Objectives or {}) do
-            local objectiveState
-            if objective.Failed then
-                objectiveState = Traitormod.Language.Failed
-            elseif objective.Awarded then
-                objectiveState = Traitormod.Language.Completed .. string.format(Traitormod.Language.Points, objective.AmountPoints or 0)
-            else
-                objectiveState = ""
+        if role.Name == "Crew" then
+            sb(Traitormod.Language.SecretCrewSummary, pointsGained)
+        else
+            local objectivesCompleted = 0
+            for _, objective in ipairs(role.Objectives or {}) do
+                if objective.Awarded then objectivesCompleted = objectivesCompleted + 1 end
             end
-            sb(" > %s %s\n", objective.Text, string.gsub(objectiveState, "^%s+", ""))
+            sb(Traitormod.Language.SecretSummary, objectivesCompleted, pointsGained)
+
+            for _, objective in ipairs(role.Objectives or {}) do
+                local objectiveState
+                if objective.Failed then
+                    objectiveState = Traitormod.Language.Failed
+                elseif objective.Awarded then
+                    objectiveState = Traitormod.Language.Completed .. string.format(Traitormod.Language.Points, objective.AmountPoints or 0)
+                else
+                    objectiveState = ""
+                end
+                sb(" > %s %s\n", objective.Text, string.gsub(objectiveState, "^%s+", ""))
+            end
         end
     end
 
