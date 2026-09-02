@@ -14,9 +14,6 @@ local missionDescriptors = {}
 
 gm.Name = "Secret"
 
-local survivorRewardThreshold = 0.4
-local survivorRewardMultiplier = 0.5
-
 local function missionWouldComplete(mission, transitionType)
     if mission == nil or mission.ForceFailure then return false end
     if mission.Completed then return true end
@@ -371,13 +368,14 @@ function gm:AwardCrew(missions, transitionType)
     end
 
     local survivorReward = 0
-    if not missionCompleted
+    if self.SurvivorRewardEnabled
+        and not missionCompleted
         and failedMissionReward > 0
         and initialCrewCount > 0
         and survivingCrewCount > 0
-        and survivingCrewCount / initialCrewCount <= survivorRewardThreshold
+        and (initialCrewCount - survivingCrewCount) / initialCrewCount * 100 >= self.SurvivorRewardRequiredDeathsPercent
     then
-        survivorReward = math.floor(failedMissionReward * survivorRewardMultiplier)
+        survivorReward = math.floor(failedMissionReward * self.SurvivorRewardPercent / 100)
     end
 
     for key, value in pairs(Client.ClientList) do
