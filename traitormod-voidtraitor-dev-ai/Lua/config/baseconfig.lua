@@ -36,7 +36,6 @@ config.ExtensionConfig = {
 config.Discord = {
     Enabled = true,
     DebugResponses = false,
-    RoundCounterFile = Traitormod.Path .. "/Lua/data/roundcounter.json",
     StateFile = Traitormod.Path .. "/Lua/data/discordstate.json",
 
     Presence = {
@@ -119,7 +118,7 @@ config.GameVote = {
         "EliminateThalamus",
         "Monster"
     },
-    SecretBlockedPrefixes = {"à-", "#Hide and seek", "Attack&Defend"},
+    SecretBlockedPrefixes = {"Ã -", "#Hide and seek", "Attack&Defend"},
     SecretBlockedTags = {"Shuttle", "HideInMenus"},
 
     AttackDefendModeIdentifier = "pvp",
