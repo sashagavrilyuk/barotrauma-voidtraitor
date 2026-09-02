@@ -29,11 +29,7 @@ statistics.SetStat = function (category, key, value)
     statistics.stats[category][key] = value
 
     if category == "Rounds" and key == "Rounds finished" then
-        local roundNumber = statistics.GetRoundNumber()
-        Traitormod.RoundNumber = roundNumber
-        if Traitormod.Discord ~= nil then
-            Traitormod.Discord.CurrentRoundNumber = roundNumber
-        end
+        Traitormod.RoundNumber = statistics.GetRoundNumber()
     end
 end
 
@@ -193,19 +189,5 @@ end
 statistics.LoadData()
 Traitormod.RoundNumber = statistics.GetRoundNumber()
 Traitormod.Stats = statistics
-
-if Traitormod.Discord ~= nil then
-    local discord = Traitormod.Discord
-
-    discord.LoadCounter = function ()
-        discord.CurrentRoundNumber = statistics.GetRoundNumber()
-        if Game ~= nil and Game.RoundStarted then
-            discord.CurrentRoundNumber = discord.CurrentRoundNumber + 1
-        end
-    end
-
-    discord.SaveCounter = function () end
-    discord.LoadCounter()
-end
 
 return statistics
