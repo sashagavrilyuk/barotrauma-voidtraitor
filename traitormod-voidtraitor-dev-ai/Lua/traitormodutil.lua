@@ -151,7 +151,6 @@ local GAME_VOTE_LEGACY_KEYS = {
 local DISCORD_INLINE_KEYS = {
     "Enabled",
     "DebugResponses",
-    "RoundCounterFile",
     "StateFile",
     "ModeNames",
 }
@@ -174,7 +173,6 @@ local function normalizeLegacyDiscordWebhookConfig(value)
 
     local result = copyMappedKeys(value, {
         DebugResponses = "DebugResponses",
-        RoundCounterFile = "CounterFile",
     })
 
     local presence = copyMappedKeys(value, {
