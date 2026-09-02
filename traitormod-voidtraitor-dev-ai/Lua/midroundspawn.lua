@@ -71,8 +71,10 @@ m.TryCreateClientCharacter = function(submarine, client)
     crewManager.AddCharacterInfo(client.CharacterInfo)
 
     local spawnWayPoints = WayPoint.SelectCrewSpawnPoints({client.CharacterInfo}, submarine)
-    local randomIndex = Random.Range(1, #spawnWayPoints)
-    local waypoint = spawnWayPoints[randomIndex]
+    local waypoint = nil
+    if #spawnWayPoints > 0 then
+        waypoint = spawnWayPoints[Random.Range(1, #spawnWayPoints + 1)]
+    end
 
     -- find waypoint the hard way
     if waypoint == nil then
@@ -230,10 +232,10 @@ Traitormod.AddCommand("!midroundspawn", function (client, args)
         if (not hasBeenSpawned[Traitormod.GetClientAccountKey(client)] or client.HasPermission(ClientPermissions.ConsoleCommands)) and (not client.Character or client.Character.IsDead) then
             m.ShowSpawnDialog(client)
         else
-            Game.SendDirectChatMessage("", "You spawned already.", nil, ChatMessageType.Error, client)
+            Game.SendDirectChatMessage("", Traitormod.GetText("CMDMidRoundAlreadySpawned"), nil, ChatMessageType.Error, client)
         end
     else
-        Game.SendDirectChatMessage("", "You are not in-game.", nil, ChatMessageType.Error, client)
+        Game.SendDirectChatMessage("", Traitormod.GetText("CMDMidRoundNotInGame"), nil, ChatMessageType.Error, client)
     end
 
     return true

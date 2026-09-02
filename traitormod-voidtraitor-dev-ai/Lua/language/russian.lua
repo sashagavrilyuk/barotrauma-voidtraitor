@@ -17,7 +17,7 @@ language.Tips = {
 
 language.Help = "\n!help - показывает это сообщение помощи\n!helptraitor - показывает все команды предателя\n!helpadmin - показывает все команды администратора\n!traitor - показывает информацию о предателе\n!pointshop или !shop - открывает магазин очков\n!points - показывает ваши очки и жизни\n!status - показывает ваши навыки и активные временные эффекты\n!alive - показывает список живых игроков (только во время смерти)\n!locatesub - показывает расстояние и направление подводной лодки, только для монстров\n!ghostrole - команда чтоб вселиться в гостроль (как надо !ghostrole pirate)\n!suicide - убивает вашего персонажа\n!version - показывает текущую версию трейтормода\n!write - записывает в ваш журнал смерти\n!roundtime - показывает текущее время раунда !startgamevote - начинает голосование за режим в лобби."
 language.HelpTraitor = "\n!toggletraitor - переключает, может ли игрок быть выбран предателем\n!tc [msg] - отправляет сообщение всем предателям\n!tannounce [msg] - отправляет объявление для предателей\n!tdm [Имя] [msg] - отправляет анонимное сообщение данному игроку"
-language.HelpAdmin = "\n!traitoralive - проверить, все ли предатели умерли\n!roundinfo - показать информацию о раунде (спойлер!)\n!allpoints - показывает количество очков у всех подключенных клиентов\n!addpoint [Client] [+/-Amount] - добавить очки клиенту\n!addlife [Client] [+/-Amount] - добавить жизнь(и) клиенту\n! оживить [клиент] - оживить персонажа данного клиента\n!void [имя персонажа] - отправить персонажа в пустоту\n!unvoid [имя персонажа] - вернуть персонажа из пустоты\n!vote [текст] [опция1] [опция2] [...] - начать голосование на сервере\n!giveghostrole [текст] [персонаж] - назначить персонажа с указанным именем на роль призрака."
+language.HelpAdmin = "\n!traitoralive - проверить, все ли предатели умерли\n!roundinfo - показать информацию о раунде (спойлер!)\n!endroundnow - немедленно завершить Secret во время финального отсчёта\n!allpoints - показывает количество очков у всех подключенных клиентов\n!addpoint [Client] [+/-Amount] - добавить очки клиенту\n!addlife [Client] [+/-Amount] - добавить жизнь(и) клиенту\n! оживить [клиент] - оживить персонажа данного клиента\n!void [имя персонажа] - отправить персонажа в пустоту\n!unvoid [имя персонажа] - вернуть персонажа из пустоты\n!vote [текст] [опция1] [опция2] [...] - начать голосование на сервере\n!giveghostrole [текст] [персонаж] - назначить персонажа с указанным именем на роль призрака."
 
 language.StatusTitle = "Статус персонажа"
 language.StatusSkillsHeader = "Навыки:"
@@ -269,6 +269,9 @@ language.Answer = "Ответить"
 language.Ignore = "Игнорировать"
 
 language.SecretSummary = "Задачи выполнены: %s - Очки получены: %s\n"
+language.SecretCrewSummary = "Очки получены: %s\n"
+language.SecretRoundEndingCountdown = "Раунд завершится через %s секунд."
+language.SecretCrewReachedStation = "Экипаж достиг конечной станции."
 language.SecretTraitorAssigned = "Вы были избраны предателем, проголосуйте,им именно вы хотите быть."
 
 language.ItemsBought = "Предметы, купленные в магазине"
@@ -856,6 +859,8 @@ language.PointshopGuiText = {
 
 language.CMDVersion = "Запущен Evil Factory's Traitor Mod v%s"
 language.Unknown = "Неизвестно"
+language.CommandError = "Ошибка команды: %s"
+language.ObjectiveSuffocateCrew = "Задушите %s до смерти."
 language.CMDFreeHandcuffsDead = "Вы мертвы!"
 language.CMDFreeHandcuffsNotFake = "Эти наручники не фальшивые!"
 language.CMDDeathLogUnable = "Вы не можете писать в журнал смерти."

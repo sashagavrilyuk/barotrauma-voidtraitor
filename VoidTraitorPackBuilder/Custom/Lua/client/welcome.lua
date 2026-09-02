@@ -1,12 +1,21 @@
 if SERVER then return end 
 
 -- === СИГНАЛЫ СЕРВЕРУ ===
+local handshakeTimer = 0
 local function SendHandshake()
+    if not Game.IsMultiplayer or not Networking.IsActive then return end
+
     local msg = Networking.Start("VoidTraitor_LuaCheck")
     Networking.Send(msg)
 end
 SendHandshake()
-Timer.Wait(function() SendHandshake() end, 2000)
+Hook.Add("think", "VoidTraitor.LuaCheck", function(deltaTime)
+    handshakeTimer = handshakeTimer + deltaTime
+    if handshakeTimer < 5 then return end
+    handshakeTimer = 0
+    SendHandshake()
+end)
+Hook.Add("roundStart", "VoidTraitor.LuaCheck.RoundStart", SendHandshake)
 
 -- =========================================================
 -- ТЕКСТЫ И ГАЙДЫ

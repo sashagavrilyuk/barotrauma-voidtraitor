@@ -151,7 +151,6 @@ local GAME_VOTE_LEGACY_KEYS = {
 local DISCORD_INLINE_KEYS = {
     "Enabled",
     "DebugResponses",
-    "RoundCounterFile",
     "StateFile",
     "ModeNames",
 }
@@ -174,7 +173,6 @@ local function normalizeLegacyDiscordWebhookConfig(value)
 
     local result = copyMappedKeys(value, {
         DebugResponses = "DebugResponses",
-        RoundCounterFile = "CounterFile",
     })
 
     local presence = copyMappedKeys(value, {
@@ -432,6 +430,12 @@ end
 
 Traitormod.GetMasterData = function (name)
     return Traitormod.ClientData[name]
+end
+
+Traitormod.IsSecretEnding = function ()
+    return Traitormod.SelectedGamemode ~= nil
+        and Traitormod.SelectedGamemode.Name == "Secret"
+        and Traitormod.SelectedGamemode.Ending == true
 end
 
 Traitormod.SetData = function (client, name, amount)
@@ -699,6 +703,7 @@ Traitormod.GiveExperience = function (character, amount, isMissionXP)
 end
 
 Traitormod.AwardPoints = function (client, amount, isMissionXP)
+    if Traitormod.IsSecretEnding() then return 0 end
     if not Traitormod.Config.TestMode then
         Traitormod.AddData(client, "Points", amount)
         Traitormod.Stats.AddClientStat("PointsGained", client, amount)
@@ -713,6 +718,7 @@ Traitormod.AwardPoints = function (client, amount, isMissionXP)
 end
 
 Traitormod.AdjustLives = function (client, amount)
+    if Traitormod.IsSecretEnding() then return end
     if not amount or amount == 0 then
         return
     end

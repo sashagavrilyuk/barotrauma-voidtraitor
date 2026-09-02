@@ -18,7 +18,7 @@ end
 
 event.Start = function ()
     if event.SubmarineID == nil then return end
-    if not Traitormod.SubmarineBuilder.IsActive then return end
+    if not Traitormod.SubmarineBuilder.IsActive() then return end
 
     local submarine = Traitormod.SubmarineBuilder.FindSubmarine(event.SubmarineID)
     event.Submarine = submarine

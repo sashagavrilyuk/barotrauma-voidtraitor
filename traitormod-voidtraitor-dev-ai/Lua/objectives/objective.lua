@@ -59,7 +59,7 @@ function objective:Award()
     end
 end
 
-function objective:Fail()
+function objective:Fail(silent)
     self.Failed = true
 
     if Traitormod.ObjectiveHud ~= nil then
@@ -68,7 +68,7 @@ function objective:Fail()
     
     local client = Traitormod.FindClientCharacter(self.Character)
 
-    if client then 
+    if client and not silent then
         Traitormod.SendObjectiveFailed(client, self.Text)
     end
 

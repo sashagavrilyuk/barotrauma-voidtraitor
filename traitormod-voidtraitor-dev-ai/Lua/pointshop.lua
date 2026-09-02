@@ -560,6 +560,7 @@ ps.BuyProduct = function(client, product)
     local points = nil
     local previousTimeout = nil
     local accountKey = Traitormod.GetClientAccountKey(client)
+    local secretEnding = Traitormod.IsSecretEnding()
 
     if not ps.CanClientSeeProduct(client, product) then
         return Traitormod.Language.PointshopCannotBeUsed
@@ -632,13 +633,18 @@ ps.BuyProduct = function(client, product)
             return ps.ProductBuyFailureReason.NoStock
         end
 
-        Traitormod.SetData(client, "Points", points - price)
+        if not secretEnding then
+            Traitormod.SetData(client, "Points", points - price)
+        end
     end
 
-    local success, result = ps.ActivateProduct(client, product, price, itemsToSpawn)
+    local paidPrice = secretEnding and 0 or price
+    local success, result = ps.ActivateProduct(client, product, paidPrice, itemsToSpawn)
     if success == false then
         if not Traitormod.Config.TestMode then
-            Traitormod.SetData(client, "Points", points)
+            if not secretEnding then
+                Traitormod.SetData(client, "Points", points)
+            end
             ps.UseProductLimit(client, product, -1)
             if product.Timeout ~= nil then
                 ps.Timeouts[accountKey] = previousTimeout
@@ -1790,20 +1796,21 @@ local function refundProduct(client, refundTable, increaseProduct)
     ps.Refunds[client] = nil
 end
 
+ps.FinalizeRefunds = function ()
+    if Traitormod.Config.TestMode or not config.PointShopConfig.DeathSpawnRefundAtEndRound then return end
+
+    for client, refundTable in pairs(ps.Refunds) do
+        if client.Character ~= nil and not client.Character.IsPet then
+            refundTable.Price = refundTable.Price * math.min(client.Character.Vitality / client.Character.MaxVitality, 1)
+            refundProduct(client, refundTable)
+        end
+    end
+end
+
 Hook.Add("roundEnd", "TraitorMod.PointShop.RoundEnd", function ()
     ps.ResetProductLimits()
     ps.ActiveCategories = {}
-
-    if Traitormod.Config.TestMode then return end
-    if config.PointShopConfig.DeathSpawnRefundAtEndRound then
-        for client, refundTable in pairs(ps.Refunds) do
-            if client.Character ~= nil and not client.Character.IsPet then -- client.Character is surely alive
-                -- it will also remove elements in the ps.Refunds
-                refundTable.Price = refundTable.Price * math.min(client.Character.Vitality / client.Character.MaxVitality, 1)
-                refundProduct(client, refundTable)
-            end
-        end
-    end 
+    ps.FinalizeRefunds()
 end)
 
 ---@param character Barotrauma.Character

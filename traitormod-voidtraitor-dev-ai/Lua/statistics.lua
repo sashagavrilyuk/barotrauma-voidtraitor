@@ -19,9 +19,18 @@ statistics.SaveData = function ()
     end
 end
 
+statistics.GetRoundNumber = function ()
+    local rounds = statistics.stats["Rounds"]
+    return math.max(0, math.floor(tonumber(rounds and rounds["Rounds finished"]) or 0))
+end
+
 statistics.SetStat = function (category, key, value)
     if statistics.stats[category] == nil then statistics.stats[category] = {} end
     statistics.stats[category][key] = value
+
+    if category == "Rounds" and key == "Rounds finished" then
+        Traitormod.RoundNumber = statistics.GetRoundNumber()
+    end
 end
 
 statistics.AddStat = function (category, key, value)
@@ -178,5 +187,7 @@ spairs = function(t, order)
 end
 
 statistics.LoadData()
+Traitormod.RoundNumber = statistics.GetRoundNumber()
 Traitormod.Stats = statistics
+
 return statistics

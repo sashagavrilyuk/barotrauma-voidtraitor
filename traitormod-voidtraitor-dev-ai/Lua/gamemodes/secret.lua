@@ -1,9 +1,96 @@
-local weightedRandom = dofile(Traitormod.Path .. "/Lua/weightedrandom.lua")
+local weightedRandom = dofile(Traitormod.Path .. "/Lua/gamemodes/weightedrandom.lua")
 local gm = Traitormod.Gamemodes.Gamemode:new()
+
+if not LuaUserData.IsRegistered("Barotrauma.CheckDataAction") then LuaUserData.RegisterType("Barotrauma.CheckDataAction") end
+local gameServerDescriptor = Descriptors["Barotrauma.Networking.GameServer"] or LuaUserData.RegisterType("Barotrauma.Networking.GameServer")
+
+local transitionTypes = LuaUserData.CreateEnumTable("Barotrauma.CampaignMode+TransitionType")
+local voteTypes = LuaUserData.CreateEnumTable("Barotrauma.Networking.VoteType")
+LuaUserData.MakePropertyAccessible(gameServerDescriptor, "EndRoundTimer")
+
+local summaryNetMessage = "VoidTraitor_RoundSummary"
+local lobbySummaryPending = nil
+local missionDescriptors = {}
 
 gm.Name = "Secret"
 
+local function missionWouldComplete(mission, transitionType)
+    if mission == nil or mission.ForceFailure then return false end
+    if mission.Completed then return true end
+
+    local typeName = LuaUserData.TypeOf(mission)
+    if not missionDescriptors[typeName] then
+        local descriptor = Descriptors[typeName] or LuaUserData.RegisterType(typeName)
+        LuaUserData.MakeMethodAccessible(descriptor, "DetermineCompleted", {"Barotrauma.CampaignMode+TransitionType"})
+        LuaUserData.MakeFieldAccessible(descriptor, "completeCheckDataAction")
+        missionDescriptors[typeName] = true
+    end
+
+    if not mission.DetermineCompleted(transitionType or transitionTypes.None) then return false end
+
+    local completeCheck = mission.completeCheckDataAction
+    return completeCheck == nil or completeCheck.GetSuccess()
+end
+
+local function getCampaignTransition()
+    if Game.GameSession == nil or Game.GameSession.GameMode == nil then
+        return nil, transitionTypes.None
+    end
+
+    local gameMode = Game.GameSession.GameMode
+    if not LuaUserData.IsTargetType(gameMode, "Barotrauma.CampaignMode") then
+        return nil, transitionTypes.None
+    end
+
+    return gameMode, gameMode.GetAvailableTransition()
+end
+
+local function reachedLevelEnd()
+    local mainSub = Submarine.MainSub
+    local level = Level.Loaded
+    if mainSub == nil or level == nil then return false end
+
+    local endOutpost = level.EndOutpost
+    if endOutpost == nil then
+        return mainSub.AtEndExit
+    end
+
+    local charactersInsideOutpost = 0
+    local charactersOutsideOutpost = 0
+    for _, client in pairs(Client.ClientList) do
+        local character = client.Character
+        if character ~= nil and not character.IsDead and not character.IsUnconscious then
+            if character.Submarine == endOutpost then
+                charactersInsideOutpost = charactersInsideOutpost + 1
+            else
+                charactersOutsideOutpost = charactersOutsideOutpost + 1
+            end
+        end
+    end
+
+    for dockedSub in mainSub.DockedTo do
+        if dockedSub == endOutpost then return true end
+    end
+
+    return (mainSub.AtEndExit and charactersInsideOutpost > 0)
+        or charactersInsideOutpost > charactersOutsideOutpost
+end
+
+
+local function sendSummaryPopup(client, summary)
+    if Traitormod.ClientHasLua ~= nil and Traitormod.ClientHasLua(client) then
+        local message = Networking.Start(summaryNetMessage)
+        message.WriteString(summary)
+        message.WriteString(Traitormod.GetText("GhostRolesMenuCancel"))
+        Networking.Send(message, client.Connection)
+    else
+        local chatMessage = ChatMessage.Create(Traitormod.GetText("ChatSenderServer"), summary, ChatMessageType.ServerMessageBox, nil, nil)
+        Game.SendDirectChatMessage(chatMessage, client)
+    end
+end
+
 function gm:CharacterDeath(character)
+    if self.Ending then return end
     local client = Traitormod.FindClientCharacter(character)
 
     -- if character is valid player
@@ -33,6 +120,17 @@ end
 
 function gm:Start()
     local this = self
+
+    self.Ending = false
+    self.ResultsFinalized = false
+    self.AllowRealEndGame = false
+    self.EndReason = nil
+    self.EndTransitionType = transitionTypes.None
+    self.EndViaCampaignTransition = false
+    self.EndTransitionStarted = false
+    self.FinalSummary = nil
+    self.AwardedPoints = {}
+    lobbySummaryPending = nil
 
     if self.EnableRandomEvents then
         Traitormod.RoundEvents.Initialize()
@@ -199,10 +297,10 @@ function gm:SelectAntagonists()
     end, delay * 1000)
 end
 
-function gm:AwardCrew()
+function gm:AwardCrew(missions, transitionType)
     local missionReward = 0
-    for _, mission in pairs(Traitormod.RoundMissions) do
-        if mission.Completed then
+    for _, mission in pairs(missions or {}) do
+        if missionWouldComplete(mission, transitionType) then
             local missionValue = self.MissionPoints.Default
 
             for key, value in pairs(self.MissionPoints) do
@@ -319,12 +417,174 @@ function gm:TraitorResults()
     return {TraitorMissionResult(self.RoundEndIcon or Traitormod.MissionIdentifier, sb:concat(), success, antagonists)}
 end
 
-function gm:End()
-    for key, character in pairs(Traitormod.RoleManager.FindAntagonists()) do
+function gm:FinalizeResults(transitionType)
+    if self.ResultsFinalized then return end
+
+    for client, value in pairs(Traitormod.PointsToBeGiven) do
+        if value > 0 then
+            local points = Traitormod.AwardPoints(client, value)
+            if client.Character ~= nil and Traitormod.GiveExperience(client.Character, Traitormod.Config.AmountExperienceWithPoints(points)) then
+                local text = Traitormod.Language.SkillsIncreased ..
+                    "\n" .. string.format(Traitormod.Language.PointsAwarded, math.floor(points))
+                Game.SendDirectChatMessage("", text, nil, Traitormod.Config.ChatMessageType, client)
+            end
+            Traitormod.PointsToBeGiven[client] = 0
+        end
+    end
+
+    Traitormod.RoleManager.CheckObjectives(false, true)
+    Traitormod.RoleManager.CheckObjectives(true, true)
+
+    for _, role in pairs(Traitormod.RoleManager.RoundRoles) do
+        for _, objective in pairs(role.Objectives or {}) do
+            if not objective.Awarded and not objective.Failed then
+                objective:Fail(true)
+            end
+        end
+    end
+
+    for _, character in pairs(Traitormod.RoleManager.FindAntagonists()) do
         self:CheckHandcuffedTraitors(character)
     end
 
-    self:AwardCrew()
+    local missions = Game.GameSession ~= nil and Game.GameSession.Missions or {}
+    self:AwardCrew(missions, transitionType)
+
+    Traitormod.Pointshop.FinalizeRefunds()
+    Traitormod.Pointshop.Refunds = {}
+    Traitormod.RoundEvents.EndRound()
+
+    self.ResultsFinalized = true
+end
+
+function gm:RoundSummary()
+    if self.FinalSummary ~= nil then return self.FinalSummary end
+
+    local sb = Traitormod.StringBuilder:new()
+    sb("%s\n", Traitormod.Language.RoundSummary)
+    sb(Traitormod.Language.Gamemode, self.Name)
+    sb("\n")
+    sb("%s: %s\n", Traitormod.Language.DiscordFieldRound, Traitormod.RoundNumber + 1)
+    sb("%s: %s\n", Traitormod.Language.DiscordFieldDuration, Traitormod.FormatTime(math.ceil(Traitormod.RoundTime)))
+
+    local entries = {}
+    for character, role in pairs(Traitormod.RoleManager.RoundRoles) do
+        table.insert(entries, { Character = character, Role = role })
+    end
+    table.sort(entries, function(a, b)
+        if a.Role.IsAntagonist ~= b.Role.IsAntagonist then
+            return a.Role.IsAntagonist
+        end
+        return string.lower(tostring(a.Character.Name)) < string.lower(tostring(b.Character.Name))
+    end)
+
+    for _, entry in ipairs(entries) do
+        local character = entry.Character
+        local role = entry.Role
+        local state = character.IsDead and Traitormod.Language.Dead or Traitormod.Language.Alive
+
+        sb("\n%s — %s (%s)\n", character.Name, role.Name, state)
+
+        local client = Traitormod.FindClientCharacter(character)
+        local accountKey = client ~= nil and Traitormod.GetClientAccountKey(client) or nil
+        local pointsGained = math.floor((accountKey ~= nil and self.AwardedPoints[accountKey]) or 0)
+
+        if role.Name == "Crew" then
+            sb(Traitormod.Language.SecretCrewSummary, pointsGained)
+        else
+            local objectivesCompleted = 0
+            for _, objective in ipairs(role.Objectives or {}) do
+                if objective.Awarded then objectivesCompleted = objectivesCompleted + 1 end
+            end
+            sb(Traitormod.Language.SecretSummary, objectivesCompleted, pointsGained)
+
+            for _, objective in ipairs(role.Objectives or {}) do
+                local objectiveState
+                if objective.Failed then
+                    objectiveState = Traitormod.Language.Failed
+                elseif objective.Awarded then
+                    objectiveState = Traitormod.Language.Completed .. string.format(Traitormod.Language.Points, objective.AmountPoints or 0)
+                else
+                    objectiveState = ""
+                end
+                sb(" > %s %s\n", objective.Text, string.gsub(objectiveState, "^%s+", ""))
+            end
+        end
+    end
+
+    return sb:concat()
+end
+
+function gm:FinishEnding()
+    if self.EndTransitionStarted or not self.Ending or not Game.RoundStarted or Traitormod.SelectedGamemode ~= self then return end
+
+    self.EndTransitionStarted = true
+    self.AllowRealEndGame = true
+
+    if self.EndViaCampaignTransition then
+        local gameMode = Game.GameSession ~= nil and Game.GameSession.GameMode or nil
+        if gameMode ~= nil
+            and LuaUserData.IsTargetType(gameMode, "Barotrauma.CampaignMode")
+            and gameMode.GetAvailableTransition() == self.EndTransitionType
+        then
+            gameMode.LoadNewLevel()
+            return
+        end
+    end
+
+    Game.Server.EndGame(self.EndTransitionType or transitionTypes.None)
+end
+
+function gm:BeginEnding(reason, transitionType, viaCampaignTransition)
+    if self.Ending or not Game.RoundStarted then return end
+
+    self.EndTransitionType = transitionType or transitionTypes.None
+    self.EndViaCampaignTransition = viaCampaignTransition == true
+    self:FinalizeResults(self.EndTransitionType)
+    self.Ending = true
+    self.EndReason = reason
+    if Game.Server ~= nil then
+        Game.Server.EndRoundTimer = 0
+    end
+    for _, client in pairs(Client.ClientList) do
+        client.SetVote(voteTypes.EndRound, false)
+    end
+
+    self.FinalSummary = self:RoundSummary()
+    Traitormod.LastRoundSummary = self.FinalSummary
+    lobbySummaryPending = self.FinalSummary
+
+    local delay = self.EndGameDelaySeconds or 0
+    local message = string.format(Traitormod.Language.SecretRoundEndingCountdown, delay)
+    if reason == "traitors" then
+        message = Traitormod.Language.TraitorsWin .. "\n" .. message
+    elseif reason == "crew" then
+        message = Traitormod.Language.SecretCrewReachedStation .. "\n" .. message
+    end
+
+    Traitormod.SendMessageEveryone(message)
+
+    for _, client in pairs(Client.ClientList) do
+        sendSummaryPopup(client, self.FinalSummary)
+    end
+
+    if Traitormod.Discord then
+        Traitormod.Discord.AnnounceRoundEnded(Traitormod.RoundTime)
+    end
+
+    Traitormod.Log("Secret round result finalized. Ending round in " .. delay .. " seconds.")
+
+    local endingRoundNumber = Traitormod.RoundNumber
+    Timer.Wait(function ()
+        if Traitormod.RoundNumber ~= endingRoundNumber or Traitormod.SelectedGamemode ~= self then return end
+        self:FinishEnding()
+    end, delay * 1000)
+end
+
+function gm:End()
+    if not self.ResultsFinalized then
+        self:FinalizeResults(self.EndTransitionType)
+    end
 
     Game.EnableControlHusk(false)
 
@@ -333,44 +593,103 @@ function gm:End()
 end
 
 function gm:Think()
-    if self.Ending or not Game.RoundStarted or not self.EndOnComplete then return end
+    if not Game.RoundStarted then return end
+
+    if self.Ending then
+        if not self.AllowRealEndGame and Game.Server ~= nil then
+            Game.Server.EndRoundTimer = 0
+        end
+        return
+    end
+
+    if reachedLevelEnd() then
+        local gameMode, transitionType = getCampaignTransition()
+        if gameMode == nil then
+            self:BeginEnding("crew", transitionTypes.None, false)
+            return
+        elseif transitionType ~= transitionTypes.None then
+            self:BeginEnding("crew", transitionType, true)
+            return
+        end
+    end
+
+    if not self.EndOnComplete then return end
 
     local ended = true
     local anyTraitorMission = false
 
-    for key, value in pairs(Character.CharacterList) do
+    for _, value in pairs(Character.CharacterList) do
         if not value.IsDead and value.IsHuman and value.TeamID == CharacterTeamType.Team1 then
             local role = Traitormod.RoleManager.GetRole(value)
             if role == nil or not role.IsAntagonist then
                 ended = false
-            else
-                if role.Objectives then
-                    for key, objective in pairs(role.Objectives) do
-                        if objective.Name == "Assassinate" or objective.Name == "Husk" then
-                            anyTraitorMission = true
-                        end
+            elseif role.Objectives then
+                for _, objective in pairs(role.Objectives) do
+                    if objective.Name == "Assassinate" or objective.Name == "Husk" then
+                        anyTraitorMission = true
                     end
                 end
             end
         end
     end
 
-    if not anyTraitorMission then
-        ended = false
-    end
-
-    if ended then
-        local delay = self.EndGameDelaySeconds or 0
-
-        Traitormod.SendMessageEveryone(Traitormod.Language.TraitorsWin)
-        Traitormod.Log("Secret gamemode complete. Ending round in " .. delay)
-
-        Timer.Wait(function ()
-            Game.EndGame()
-        end, delay * 1000)
-
-        self.Ending = true
+    if anyTraitorMission and ended then
+        self:BeginEnding("traitors", transitionTypes.None, false)
     end
 end
+
+Hook.Patch("Traitormod.Secret.LoadNewLevel.Before", "Barotrauma.CampaignMode", "LoadNewLevel", function (instance, ptable)
+    local selected = Traitormod.SelectedGamemode
+    if selected == nil or selected.Name ~= "Secret" or not Game.RoundStarted or selected.AllowRealEndGame then return end
+
+    if selected.Ending then
+        ptable.PreventExecution = true
+        return
+    end
+
+    local transitionType = instance.GetAvailableTransition()
+    if transitionType == transitionTypes.None then return end
+
+    local reason = "manual"
+    if transitionType == transitionTypes.ProgressToNextLocation
+        or transitionType == transitionTypes.ProgressToNextEmptyLocation
+        or transitionType == transitionTypes.End
+    then
+        reason = "crew"
+    end
+
+    selected:BeginEnding(reason, transitionType, true)
+    ptable.PreventExecution = true
+end, Hook.HookMethodType.Before)
+
+Hook.Patch("Traitormod.Secret.EndGame.Before", "Barotrauma.Networking.GameServer", "EndGame", function (instance, ptable)
+    local selected = Traitormod.SelectedGamemode
+    if selected == nil or selected.Name ~= "Secret" then return end
+
+    if selected.AllowRealEndGame then
+        if selected.Ending and not selected.EndTransitionStarted then
+            selected.AllowRealEndGame = false
+            ptable.PreventExecution = true
+            selected:FinishEnding()
+        end
+        return
+    end
+
+    if selected.Ending then
+        ptable.PreventExecution = true
+        return
+    end
+
+    selected:BeginEnding("manual", ptable["transitionType"] or transitionTypes.None, false)
+    ptable.PreventExecution = true
+end, Hook.HookMethodType.Before)
+
+Hook.Patch("Traitormod.Secret.EndGame.After", "Barotrauma.Networking.GameServer", "EndGame", function ()
+    if lobbySummaryPending == nil or Game.RoundStarted then return end
+
+    Traitormod.SendMessageEveryone(Traitormod.HighlightClientNames(lobbySummaryPending, Color.Red))
+    lobbySummaryPending = nil
+end, Hook.HookMethodType.After)
+
 
 return gm

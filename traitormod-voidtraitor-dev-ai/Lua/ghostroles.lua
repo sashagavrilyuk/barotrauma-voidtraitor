@@ -431,7 +431,7 @@ function gr.TryTake(client, reference)
     role.Taken = true
 
     local paid = false
-    if price > 0 and not Traitormod.Config.TestMode then
+    if price > 0 and not Traitormod.Config.TestMode and not Traitormod.IsSecretEnding() then
         local points = math.floor(Traitormod.GetData(client, "Points") or 0)
         Traitormod.SetData(client, "Points", points - price)
         paid = true

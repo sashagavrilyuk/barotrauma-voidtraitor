@@ -528,7 +528,7 @@ if Traitormod.Config.DeathLogBook then
 
     Traitormod.AddCommand("!write", function (client, args)
         if client.Character == nil or client.Character.IsDead or client.Character.SpeechImpediment > 0 or not client.Character.IsHuman then
-            Traitormod.SendChatMessage(client, "You are unable to write to your death logbook.", Color.Red)
+            Traitormod.SendChatMessage(client, Traitormod.GetText("CMDDeathLogUnable"), Color.Red)
             return true
         end
 
@@ -541,7 +541,7 @@ if Traitormod.Config.DeathLogBook then
         local message = table.concat(args, " ")
         table.insert(messages[client.Character], message)
 
-        Traitormod.SendChatMessage(client, "Wrote \"" .. message .. "\" to the death logbook.", Color.Green)
+        Traitormod.SendChatMessage(client, string.format(Traitormod.GetText("CMDDeathLogWrote"), message), Color.Green)
 
         return true
     end)

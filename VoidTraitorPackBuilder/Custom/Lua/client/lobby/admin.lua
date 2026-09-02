@@ -232,7 +232,7 @@ function Admin.Build(parent)
     local infoEntry = entryById.roundinfo
     if infoEntry ~= nil then
         CreateCategoryHeader(parent, infoEntry.Category)
-        for _, actionId in ipairs({ "roundinfo", "roles", "traitoralive", "allpoints", "ongoingevents" }) do
+        for _, actionId in ipairs({ "roundinfo", "roles", "traitoralive", "allpoints", "ongoingevents", "endroundnow" }) do
             local entry = entryById[actionId]
             if entry ~= nil then
                 local button = CreateMenuButton(parent, entry.Label, true)

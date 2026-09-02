@@ -280,6 +280,20 @@ Traitormod.AddCommand("!roundinfo", function (client, args)
     return true
 end)
 
+Traitormod.AddCommand("!endroundnow", function (client, args)
+    if not client.HasPermission(ClientPermissions.ConsoleCommands) then return end
+
+    local selected = Traitormod.SelectedGamemode
+    if not Game.RoundStarted or selected == nil or selected.Name ~= "Secret" or not selected.Ending then
+        Traitormod.SendMessage(client, Traitormod.Language.CommandNotActive)
+        return true
+    end
+
+    selected.AllowRealEndGame = true
+    Game.EndGame()
+    return true
+end)
+
 Traitormod.AddCommand({"!allpoint", "!allpoints"}, function (client, args)
     if not client.HasPermission(ClientPermissions.ConsoleCommands) then return end
     

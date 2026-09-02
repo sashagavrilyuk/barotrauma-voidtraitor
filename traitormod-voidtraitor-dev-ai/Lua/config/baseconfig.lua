@@ -36,7 +36,6 @@ config.ExtensionConfig = {
 config.Discord = {
     Enabled = true,
     DebugResponses = false,
-    RoundCounterFile = Traitormod.Path .. "/Lua/data/roundcounter.json",
     StateFile = Traitormod.Path .. "/Lua/data/discordstate.json",
 
     Presence = {
@@ -119,7 +118,7 @@ config.GameVote = {
         "EliminateThalamus",
         "Monster"
     },
-    SecretBlockedPrefixes = {"à-", "#Hide and seek", "Attack&Defend"},
+    SecretBlockedPrefixes = {"Ã -", "#Hide and seek", "Attack&Defend"},
     SecretBlockedTags = {"Shuttle", "HideInMenus"},
 
     AttackDefendModeIdentifier = "pvp",
@@ -232,7 +231,7 @@ config.GamemodeConfig = {
         PointshopCategories = {"clown", "traitor", "cultist", "deathspawn", "deathspawnhusk", "deathspawnfriend", "deathtrigerevent", "deathtrigereventevil", "deathtrigereventrandom", "abilities", "surgery", "medical", "security", "wiring", "maintenance", "materials", "ores", "otherresources", "other", "randomize", "ships"},
         EndOnComplete = true,           -- end round everyone but traitors are dead
         EnableRandomEvents = true,
-        EndGameDelaySeconds = 15,
+        EndGameDelaySeconds = 60,
         TraitorSelectDelayMin = 120,
         TraitorSelectDelayMax = 150,
 

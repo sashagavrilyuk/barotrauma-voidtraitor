@@ -17,7 +17,7 @@ language.Tips = {
 
 language.Help = "\n!help - shows this help message\n!helptraitor - shows all traitor commands\n!helpadmin - lists all admin commands\n!traitor - show traitor information\n!pointshop - opens the point shop\n!points - show your points and lives\n!status - shows your skills and active temporary effects\n!alive - list alive players (only while dead)\n!locatesub - shows you the distance and direction of the submarine, only for monsters\n!suicide - kills your character\n!version - shows running version of the traitormod\n!write - writes to your death logbook\n!roundtime - shows the current round time\n!startgamevote - starts a gamemode vote in the lobby"
 language.HelpTraitor = "\n!toggletraitor - toggles if the player can be selected as traitor\n!tc [msg] - sends a message to all traitors\n!tannounce [msg] - sends a traitor announcement for traitors\n!tdm [Name] [msg] - sends a anonymous msg to given player"
-language.HelpAdmin = "\n!traitoralive - check if all traitors died\n!roundinfo - show round information (spoiler!)\n!allpoints - shows point amounts of all connected clients\n!addpoint [Client] [+/-Amount] - add points to a client\n!addlife [Client] [+/-Amount] - add life(s) to a client\n!revive [Client] - revives a given client character\n!void [Character Name] - sends a character to the void\n!unvoid [Character Name] - brings a character back from the void\n!vote [text] [option1] [option2] [...] - starts a vote on the server\n!giveghostrole [text] [character] - assigns a character with the specified name as a ghost role"
+language.HelpAdmin = "\n!traitoralive - check if all traitors died\n!roundinfo - show round information (spoiler!)\n!endroundnow - immediately ends Secret during the final countdown\n!allpoints - shows point amounts of all connected clients\n!addpoint [Client] [+/-Amount] - add points to a client\n!addlife [Client] [+/-Amount] - add life(s) to a client\n!revive [Client] - revives a given client character\n!void [Character Name] - sends a character to the void\n!unvoid [Character Name] - brings a character back from the void\n!vote [text] [option1] [option2] [...] - starts a vote on the server\n!giveghostrole [text] [character] - assigns a character with the specified name as a ghost role"
 
 language.StatusTitle = "Character status"
 language.StatusSkillsHeader = "Skills:"
@@ -303,6 +303,9 @@ language.Answer = "Answer"
 language.Ignore = "Ignore"
 
 language.SecretSummary = "Objectives Completed: %s - Points Gained: %s\n"
+language.SecretCrewSummary = "Points Gained: %s\n"
+language.SecretRoundEndingCountdown = "The round will end in %s seconds."
+language.SecretCrewReachedStation = "The crew has reached the final station."
 language.SecretTraitorAssigned = "You have been assigned to be a traitor, vote which type you want to be."
 
 language.ItemsBought = "Items bought from point shop"
@@ -756,6 +759,8 @@ language.PointshopGuiText = {
 
 language.CMDVersion = "Running Evil Factory's Traitor Mod v%s"
 language.Unknown = "Unknown"
+language.CommandError = "Command error: %s"
+language.ObjectiveSuffocateCrew = "Suffocate %s to death."
 language.CMDFreeHandcuffsDead = "You are dead!"
 language.CMDFreeHandcuffsNotFake = "These handcuffs are not fake!"
 language.CMDDeathLogUnable = "You are unable to write to your death logbook."
