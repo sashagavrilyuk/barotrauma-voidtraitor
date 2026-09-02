@@ -5,7 +5,7 @@ if not File.DirectoryExists(dataDirectory) then
     File.CreateDirectory(dataDirectory)
 end
 
-for _, fileName in ipairs({"data.json", "stats.json", "discordstate.json", "roundcounter.json"}) do
+for _, fileName in ipairs({"data.json", "stats.json", "discordstate.json"}) do
     local oldPath = Traitormod.Path .. "/Lua/" .. fileName
     local newPath = dataDirectory .. "/" .. fileName
     if File.Exists(oldPath) then
@@ -28,9 +28,6 @@ end
 
 local discordConfig = Traitormod.Config.Discord
 if discordConfig ~= nil then
-    if discordConfig.RoundCounterFile == Traitormod.Path .. "/Lua/roundcounter.json" then
-        discordConfig.RoundCounterFile = dataDirectory .. "/roundcounter.json"
-    end
     if discordConfig.StateFile == Traitormod.Path .. "/Lua/discordstate.json" then
         discordConfig.StateFile = dataDirectory .. "/discordstate.json"
     end
