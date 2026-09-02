@@ -63,10 +63,12 @@ local function writeJsonFile(path, value)
     Traitormod.WriteJsonFile(path, value or {})
 end
 
-discord.CounterFile = cfg.RoundCounterFile or (Traitormod.Path .. "/Lua/data/roundcounter.json")
+local function getCurrentRoundNumber()
+    return Traitormod.Stats.GetRoundNumber() + 1
+end
+
 discord.StateFile = cfg.StateFile or (Traitormod.Path .. "/Lua/data/discordstate.json")
 discord.StartupAnnounced = false
-discord.CurrentRoundNumber = 0
 discord.State = readJsonFile(discord.StateFile, {})
 discord.Status = {
     Dirty = true,
@@ -346,7 +348,7 @@ local function getSecretRoundSummary(durationSeconds)
 
     return formatText(
         "DiscordRoundEndedSecret",
-        discord.CurrentRoundNumber,
+        getCurrentRoundNumber(),
         aliveTraitors,
         totalTraitors,
         aliveCrew,
@@ -368,7 +370,7 @@ local function getAttackDefendRoundSummary(durationSeconds)
 
     return formatText(
         "DiscordRoundEndedAttackDefend",
-        discord.CurrentRoundNumber,
+        getCurrentRoundNumber(),
         discord.FormatDuration(durationSeconds),
         winnerText
     )
@@ -377,7 +379,7 @@ end
 local function getGenericRoundSummary(durationSeconds)
     return formatText(
         "DiscordRoundEndedGeneric",
-        discord.CurrentRoundNumber,
+        getCurrentRoundNumber(),
         discord.FormatDuration(durationSeconds)
     )
 end
@@ -388,15 +390,6 @@ local function buildTextPayload(username, bodyText)
         content = tostring(bodyText),
         allowed_mentions = { parse = {} },
     }
-end
-
-function discord.LoadCounter()
-    local data = readJsonFile(discord.CounterFile, {})
-    discord.CurrentRoundNumber = tonumber(data.CurrentRoundNumber) or 0
-end
-
-function discord.SaveCounter()
-    writeJsonFile(discord.CounterFile, { CurrentRoundNumber = discord.CurrentRoundNumber })
 end
 
 function discord.SaveState()
@@ -459,13 +452,13 @@ function discord.GetRoundDurationText()
 end
 
 function discord.GetRoundLabel()
+    local roundNumber = math.max(getCurrentRoundNumber(), 1)
     if Game and Game.RoundStarted then
-        return string.format("#%d", math.max(discord.CurrentRoundNumber, 1))
+        return string.format("#%d", roundNumber)
     end
 
-    local nextRound = math.max(discord.CurrentRoundNumber + 1, 1)
     if statusCfg.ShowNextRoundInLobby ~= false then
-        return string.format("%s #%d", text("DiscordNextRoundPrefix"), nextRound)
+        return string.format("%s #%d", text("DiscordNextRoundPrefix"), roundNumber)
     end
 
     return text("DiscordStatusLobbyText")
@@ -843,13 +836,11 @@ function discord.AnnounceClientDisconnected(client)
 end
 
 function discord.AnnounceRoundStarted()
-    discord.CurrentRoundNumber = discord.CurrentRoundNumber + 1
-    discord.SaveCounter()
     captureRoundStartStats()
 
     local bodyText = formatText(
         "DiscordRoundStarted",
-        discord.CurrentRoundNumber,
+        getCurrentRoundNumber(),
         discord.GetModeDisplayName(),
         discord.RoundStats.StartPlayers,
         discord.GetMaxPlayers()
@@ -878,7 +869,6 @@ function discord.AnnounceRoundEnded(durationSeconds)
     discord.MarkStatusDirty(true)
 end
 
-discord.LoadCounter()
 discord.SaveState()
 
 Hook.Add("think", "Traitormod.Discord.ServerStarted", function ()
