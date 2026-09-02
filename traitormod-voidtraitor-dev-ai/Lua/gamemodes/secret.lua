@@ -102,11 +102,15 @@ function gm:CharacterDeath(character)
         return
     end
 
+    local accountKey = Traitormod.GetClientAccountKey(client)
+    if self.InitialCrew ~= nil and self.InitialCrew[accountKey] then
+        self.InitialCrewDeaths[accountKey] = true
+    end
+
     if Traitormod.RoundTime < Traitormod.Config.MinRoundTimeToLooseLives then
         return
     end
 
-    local accountKey = Traitormod.GetClientAccountKey(client)
     if Traitormod.LostLivesThisRound[accountKey] == nil then
         Traitormod.LostLivesThisRound[accountKey] = true
     else
@@ -131,6 +135,7 @@ function gm:Start()
     self.FinalSummary = nil
     self.AwardedPoints = {}
     self.InitialCrew = {}
+    self.InitialCrewDeaths = {}
     for _, client in pairs(Client.ClientList) do
         local character = client.Character
         if character ~= nil
@@ -193,7 +198,7 @@ function gm:AssignAntagonists(antagonists)
 
         for _, character in pairs(antagonists) do
             local role = Traitormod.RoleManager.GetRole(character)
-            if role ~= nil and role.IsAntagonist and role.Name ~= "Clown" then
+            if role ~= nil and role.IsAntagonist then
                 local client = Traitormod.FindClientCharacter(character)
                 if client ~= nil then
                     self.InitialCrew[Traitormod.GetClientAccountKey(client)] = nil
@@ -344,26 +349,11 @@ function gm:AwardCrew(missions, transitionType)
     end
 
     local initialCrewCount = 0
-    for _ in pairs(self.InitialCrew or {}) do
+    local deadInitialCrewCount = 0
+    for accountKey in pairs(self.InitialCrew or {}) do
         initialCrewCount = initialCrewCount + 1
-    end
-
-    local survivingCrewCount = 0
-    for _, client in pairs(Client.ClientList) do
-        local accountKey = Traitormod.GetClientAccountKey(client)
-        local character = client.Character
-        if self.InitialCrew ~= nil
-            and self.InitialCrew[accountKey]
-            and character ~= nil
-            and character.IsHuman
-            and not client.SpectateOnly
-            and not character.IsDead
-            and character.TeamID == CharacterTeamType.Team1
-        then
-            local role = Traitormod.RoleManager.GetRole(character)
-            if role == nil or not role.IsAntagonist or role.Name == "Clown" then
-                survivingCrewCount = survivingCrewCount + 1
-            end
+        if self.InitialCrewDeaths[accountKey] then
+            deadInitialCrewCount = deadInitialCrewCount + 1
         end
     end
 
@@ -372,17 +362,19 @@ function gm:AwardCrew(missions, transitionType)
         and not missionCompleted
         and failedMissionReward > 0
         and initialCrewCount > 0
-        and survivingCrewCount > 0
-        and (initialCrewCount - survivingCrewCount) / initialCrewCount * 100 >= self.SurvivorRewardRequiredDeathsPercent
+        and deadInitialCrewCount < initialCrewCount
+        and deadInitialCrewCount / initialCrewCount * 100 >= self.SurvivorRewardRequiredDeathsPercent
     then
         survivorReward = math.floor(failedMissionReward * self.SurvivorRewardPercent / 100)
     end
 
+    local reachedEnd = self.EndReason == "crew"
     for key, value in pairs(Client.ClientList) do
         if value.Character ~= nil
             and value.Character.IsHuman
             and not value.SpectateOnly
             and not value.Character.IsDead
+            and value.Character.TeamID == CharacterTeamType.Team1
         then
             local role = Traitormod.RoleManager.GetRole(value.Character)
 
@@ -391,9 +383,7 @@ function gm:AwardCrew(missions, transitionType)
                 wasAntagonist = role.IsAntagonist
             end
 
-            local reachedEnd = Traitormod.EndReached(value.Character, self.DistanceToEndOutpostRequired)
-
-            -- if client was no traitor, and in reach of end position, gain a live
+            -- if client was no traitor and the crew reached the destination, gain a live
             if not wasAntagonist and reachedEnd then
                 local msg = ""
 
@@ -422,7 +412,7 @@ function gm:AwardCrew(missions, transitionType)
                 and self.InitialCrew ~= nil
                 and self.InitialCrew[accountKey]
                 and reachedEnd
-                and (role == nil or not role.IsAntagonist or role.Name == "Clown")
+                and (role == nil or not role.IsAntagonist)
             then
                 local points = Traitormod.AwardPoints(value, survivorReward, true)
                 Traitormod.SendMessage(value, string.format(Traitormod.Language.PointsAwarded, points),
@@ -615,9 +605,9 @@ function gm:BeginEnding(reason, transitionType, viaCampaignTransition)
 
     self.EndTransitionType = transitionType or transitionTypes.None
     self.EndViaCampaignTransition = viaCampaignTransition == true
+    self.EndReason = reason
     self:FinalizeResults(self.EndTransitionType)
     self.Ending = true
-    self.EndReason = reason
     if Game.Server ~= nil then
         Game.Server.EndRoundTimer = 0
     end
