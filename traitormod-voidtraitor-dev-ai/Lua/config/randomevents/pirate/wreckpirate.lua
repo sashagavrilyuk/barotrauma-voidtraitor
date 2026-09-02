@@ -1,4 +1,4 @@
-local upcPirate = dofile(Traitormod.Path .. "/Lua/upcpirate.lua")
+local upcPirate = dofile(Traitormod.Path .. "/Lua/config/randomevents/pirate/utility/upcpirate.lua")
 local event = {}
 
 event.Name = "WreckPirate"

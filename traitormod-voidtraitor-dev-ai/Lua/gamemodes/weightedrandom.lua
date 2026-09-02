@@ -13,7 +13,14 @@ weightedRandom.Choose = function (subjects, variable, subVariable)
         total = total + weight
     end
 
-    local rng = Random.Range(0, total)
+    if total <= 0 then
+        for key in pairs(subjects) do
+            return key
+        end
+        return nil
+    end
+
+    local rng = math.random() * total
 
     local step = 0
     for key, value in pairs(subjects) do
@@ -26,14 +33,12 @@ weightedRandom.Choose = function (subjects, variable, subVariable)
         end
         step = step + weight
 
-        if rng > step - weight and rng < step then
+        if rng < step then
             return key
         end
     end
 
-    for key, value in pairs(subjects) do
-        return key
-    end
+    return nil
 end
 
 return weightedRandom

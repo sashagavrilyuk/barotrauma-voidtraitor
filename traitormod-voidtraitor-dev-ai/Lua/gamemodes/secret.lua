@@ -1,4 +1,4 @@
-local weightedRandom = dofile(Traitormod.Path .. "/Lua/weightedrandom.lua")
+local weightedRandom = dofile(Traitormod.Path .. "/Lua/gamemodes/weightedrandom.lua")
 local gm = Traitormod.Gamemodes.Gamemode:new()
 
 if not LuaUserData.IsRegistered("Barotrauma.CheckDataAction") then LuaUserData.RegisterType("Barotrauma.CheckDataAction") end

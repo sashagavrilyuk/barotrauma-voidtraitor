@@ -6,20 +6,11 @@ vt.Votes = {}
 vt.GameVote = nil
 vt.MapVote = nil
 
-local function tryMakeServerSettingsPropertiesAccessible()
-    local ok, descriptor = pcall(LuaUserData.RegisterType, "Barotrauma.Networking.ServerSettings")
-    if not ok or descriptor == nil then return end
+local serverSettingsDescriptor = Descriptors["Barotrauma.Networking.ServerSettings"] or LuaUserData.RegisterType("Barotrauma.Networking.ServerSettings")
+LuaUserData.MakePropertyAccessible(serverSettingsDescriptor, "SelectedOutpostName")
+LuaUserData.MakePropertyAccessible(serverSettingsDescriptor, "HiddenSubs")
 
-    pcall(LuaUserData.MakePropertyAccessible, descriptor, "SelectedOutpostName")
-    pcall(LuaUserData.MakePropertyAccessible, descriptor, "HiddenSubs")
-end
-
-tryMakeServerSettingsPropertiesAccessible()
-
-local SubmarineTags = nil
-pcall(function()
-    SubmarineTags = LuaUserData.CreateEnumTable("Barotrauma.SubmarineTag")
-end)
+local SubmarineTags = LuaUserData.CreateEnumTable("Barotrauma.SubmarineTag")
 
 local function getVoteText(key)
     if Traitormod ~= nil and Traitormod.Language ~= nil and Traitormod.Language[key] ~= nil then
@@ -94,10 +85,9 @@ end
 
 local function getHiddenSubNamesFromFile()
     for _, filePath in ipairs(getServerSettingsFileCandidates()) do
-        local okExists, exists = pcall(function() return File.Exists(filePath) end)
-        if okExists and exists then
-            local okRead, xml = pcall(function() return File.Read(filePath) end)
-            if okRead and xml ~= nil and xml ~= "" then
+        if File.Exists(filePath) then
+            local xml = File.Read(filePath)
+            if xml ~= nil and xml ~= "" then
                 local hiddenAttr = string.match(xml, 'HiddenSubs%s*=%s*"([^"]*)"')
                 if hiddenAttr ~= nil then
                     local hidden = {}
@@ -116,16 +106,14 @@ end
 local function getHiddenSubNames()
     local hidden = {}
 
-    pcall(function()
-        if Game ~= nil and Game.ServerSettings ~= nil and Game.ServerSettings.HiddenSubs ~= nil then
-            for name in Game.ServerSettings.HiddenSubs do
-                local text = trim(name)
-                if text ~= "" then
-                    hidden[text] = true
-                end
+    if Game ~= nil and Game.ServerSettings ~= nil and Game.ServerSettings.HiddenSubs ~= nil then
+        for name in Game.ServerSettings.HiddenSubs do
+            local text = trim(name)
+            if text ~= "" then
+                hidden[text] = true
             end
         end
-    end)
+    end
 
     local fromFile = getHiddenSubNamesFromFile()
     for name, value in pairs(fromFile) do
@@ -154,17 +142,8 @@ end
 local function markServerSettingsDirty()
     if Game == nil or Game.ServerSettings == nil then return end
 
-    pcall(function()
-        Game.ServerSettings.ServerDetailsChanged = true
-    end)
-
-    pcall(function()
-        Game.ServerSettings:ForcePropertyUpdate()
-    end)
-
-    pcall(function()
-        Game.ServerSettings.ForcePropertyUpdate(Game.ServerSettings)
-    end)
+    Game.ServerSettings.ServerDetailsChanged = true
+    Game.ServerSettings:ForcePropertyUpdate()
 end
 
 local function applyCommonLobbySync()
@@ -295,15 +274,8 @@ local function chooseBestSubmarine(candidates, playerCount)
     return preferredCandidates[math.random(1, #preferredCandidates)]
 end
 
-local function getLowerSafe(value)
-    local ok, text = pcall(function()
-        if type(value) == "function" then
-            return tostring(value() or "")
-        end
-        return tostring(value or "")
-    end)
-    if not ok then return "" end
-    return string.lower(text)
+local function getLower(value)
+    return string.lower(tostring(value or ""))
 end
 
 local function hasWord(text, word)
@@ -314,14 +286,11 @@ end
 local function hasSubTag(sub, tagName)
     if sub == nil or tagName == nil then return false end
 
-    if SubmarineTags ~= nil and SubmarineTags[tagName] ~= nil then
-        local ok, result = pcall(function()
-            return sub:HasTag(SubmarineTags[tagName])
-        end)
-        if ok then return result == true end
+    if SubmarineTags[tagName] ~= nil and sub:HasTag(SubmarineTags[tagName]) then
+        return true
     end
 
-    local lowerTags = getLowerSafe(function() return sub.Tags end)
+    local lowerTags = getLower(sub.Tags)
     if lowerTags == "" then return false end
 
     local normalized = string.gsub(lowerTags, "[%s_%-]+", "")
@@ -332,8 +301,7 @@ end
 local function isForbiddenSecretSub(sub)
     local cfg = getVoteConfig()
 
-    local okCampaign, isCampaignCompatible = pcall(function() return sub.IsCampaignCompatible end)
-    if okCampaign and isCampaignCompatible == false then return true end
+    if not sub.IsCampaignCompatible then return true end
 
     local name = tostring(sub.Name or "")
     if name == "" then return true end
@@ -351,7 +319,7 @@ local function isForbiddenSecretSub(sub)
         end
     end
 
-    local lowerPath = getLowerSafe(function() return sub.FilePath end)
+    local lowerPath = getLower(sub.FilePath)
     if lowerPath ~= "" then
         if hasWord(lowerPath, "/tutorial/") or hasWord(lowerPath, "\\tutorial\\") then return true end
         if hasWord(lowerPath, "/debugonlytest/") or hasWord(lowerPath, "\\debugonlytest\\") then return true end
@@ -479,14 +447,7 @@ local function applyAttackDefendSelection(playerCount)
     setMissionTypeList(missionTypes)
 
     local selectedOutpost = cfg.AttackDefendOutpostName or "Random"
-    local setOk = pcall(function()
-        Game.ServerSettings.SelectedOutpostName = Identifier(selectedOutpost)
-    end)
-    if not setOk then
-        pcall(function()
-            Game.ServerSettings.SelectedOutpostName = selectedOutpost
-        end)
-    end
+    Game.ServerSettings.SelectedOutpostName = Identifier(selectedOutpost)
 
     applyCommonLobbySync()
     return true, string.format(

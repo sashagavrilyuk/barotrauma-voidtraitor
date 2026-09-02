@@ -422,7 +422,7 @@ Hook.Add("think", "Traitormod.ObjectiveHud.Think", function(deltaTime)
     hud.UpdateAll(deltaTime)
 end)
 
-Hook.Add("roundEnd", "Traitormod.ObjectiveHud.RoundEnd", function()
+function hud.Reset()
     hud.RoleStates = setmetatable({}, { __mode = "k" })
     hud.ObjectiveStates = setmetatable({}, { __mode = "k" })
     hud.ApiChecked = false
@@ -431,6 +431,6 @@ Hook.Add("roundEnd", "Traitormod.ObjectiveHud.RoundEnd", function()
     hud.EventLogDisabled = false
     hud.UpdateTimer = hud.UpdateInterval
     hud.RemoveTimer = hud.RemoveInterval
-end)
+end
 
 return hud
