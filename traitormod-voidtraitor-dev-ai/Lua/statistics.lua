@@ -19,9 +19,22 @@ statistics.SaveData = function ()
     end
 end
 
+statistics.GetRoundNumber = function ()
+    local rounds = statistics.stats["Rounds"]
+    return math.max(0, math.floor(tonumber(rounds and rounds["Rounds finished"]) or 0))
+end
+
 statistics.SetStat = function (category, key, value)
     if statistics.stats[category] == nil then statistics.stats[category] = {} end
     statistics.stats[category][key] = value
+
+    if category == "Rounds" and key == "Rounds finished" then
+        local roundNumber = statistics.GetRoundNumber()
+        Traitormod.RoundNumber = roundNumber
+        if Traitormod.Discord ~= nil then
+            Traitormod.Discord.CurrentRoundNumber = roundNumber
+        end
+    end
 end
 
 statistics.AddStat = function (category, key, value)
@@ -178,5 +191,21 @@ spairs = function(t, order)
 end
 
 statistics.LoadData()
+Traitormod.RoundNumber = statistics.GetRoundNumber()
 Traitormod.Stats = statistics
+
+if Traitormod.Discord ~= nil then
+    local discord = Traitormod.Discord
+
+    discord.LoadCounter = function ()
+        discord.CurrentRoundNumber = statistics.GetRoundNumber()
+        if Game ~= nil and Game.RoundStarted then
+            discord.CurrentRoundNumber = discord.CurrentRoundNumber + 1
+        end
+    end
+
+    discord.SaveCounter = function () end
+    discord.LoadCounter()
+end
+
 return statistics
