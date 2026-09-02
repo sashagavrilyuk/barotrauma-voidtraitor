@@ -40,7 +40,7 @@ function objective:Start(target)
 
     if self.Target == nil then return false end
 
-    self.Text = string.format("Suffocate %s to death.", self.Target.Name)
+    self.Text = string.format(Traitormod.GetText("ObjectiveSuffocateCrew"), self.Target.Name)
 
     return true
 end

@@ -859,6 +859,8 @@ language.PointshopGuiText = {
 
 language.CMDVersion = "Запущен Evil Factory's Traitor Mod v%s"
 language.Unknown = "Неизвестно"
+language.CommandError = "Ошибка команды: %s"
+language.ObjectiveSuffocateCrew = "Задушите %s до смерти."
 language.CMDFreeHandcuffsDead = "Вы мертвы!"
 language.CMDFreeHandcuffsNotFake = "Эти наручники не фальшивые!"
 language.CMDDeathLogUnable = "Вы не можете писать в журнал смерти."

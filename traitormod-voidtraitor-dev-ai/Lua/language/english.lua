@@ -759,6 +759,8 @@ language.PointshopGuiText = {
 
 language.CMDVersion = "Running Evil Factory's Traitor Mod v%s"
 language.Unknown = "Unknown"
+language.CommandError = "Command error: %s"
+language.ObjectiveSuffocateCrew = "Suffocate %s to death."
 language.CMDFreeHandcuffsDead = "You are dead!"
 language.CMDFreeHandcuffsNotFake = "These handcuffs are not fake!"
 language.CMDDeathLogUnable = "You are unable to write to your death logbook."
