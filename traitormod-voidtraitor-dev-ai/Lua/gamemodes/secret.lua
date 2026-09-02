@@ -568,6 +568,10 @@ function gm:BeginEnding(reason, transitionType, viaCampaignTransition)
         sendSummaryPopup(client, self.FinalSummary)
     end
 
+    if Traitormod.Discord then
+        Traitormod.Discord.AnnounceRoundEnded(Traitormod.RoundTime)
+    end
+
     Traitormod.Log("Secret round result finalized. Ending round in " .. delay .. " seconds.")
 
     local endingRoundNumber = Traitormod.RoundNumber

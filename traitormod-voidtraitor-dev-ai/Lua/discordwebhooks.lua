@@ -83,6 +83,7 @@ discord.Status = {
 discord.RoundStats = {
     StartPlayers = 0,
 }
+discord.RoundEndAnnounced = false
 
 local function logHttpResponse(context, body, statusCode)
     if cfg.DebugResponses then
@@ -837,6 +838,7 @@ end
 
 function discord.AnnounceRoundStarted()
     captureRoundStartStats()
+    discord.RoundEndAnnounced = false
 
     local bodyText = formatText(
         "DiscordRoundStarted",
@@ -865,6 +867,9 @@ function discord.BuildRoundEndMessage(durationSeconds)
 end
 
 function discord.AnnounceRoundEnded(durationSeconds)
+    if discord.RoundEndAnnounced then return end
+
+    discord.RoundEndAnnounced = true
     discord.SendRoundMessage(discord.BuildRoundEndMessage(durationSeconds))
     discord.MarkStatusDirty(true)
 end

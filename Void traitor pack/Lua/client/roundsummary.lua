@@ -23,9 +23,9 @@ local menuY = nil
 local menuWidth = nil
 local menuHeight = nil
 
-local DEFAULT_WIDTH_PIXELS = 760
+local DEFAULT_WIDTH_PIXELS = 370
 local DEFAULT_HEIGHT_PIXELS = 630
-local MIN_WIDTH_PIXELS = 480
+local MIN_WIDTH_PIXELS = 320
 local MIN_HEIGHT_PIXELS = 320
 local MENU_DRAW_ORDER = 124
 
@@ -83,6 +83,10 @@ local function addResizeHandles(panel)
     topIndicator.CanBeFocused = false
     local bottomIndicator = GUI.Image(CreateRect(0.18, 0.018, panel, GUI.Anchor.BottomCenter), "GUIDragIndicatorHorizontal")
     bottomIndicator.CanBeFocused = false
+    local leftIndicator = GUI.Image(CreateRect(0.018, 0.18, panel, GUI.Anchor.CenterLeft), "GUIDragIndicator")
+    leftIndicator.CanBeFocused = false
+    local rightIndicator = GUI.Image(CreateRect(0.018, 0.18, panel, GUI.Anchor.CenterRight), "GUIDragIndicator")
+    rightIndicator.CanBeFocused = false
 end
 
 local function getResizeEdge()
@@ -235,8 +239,9 @@ local function showSummary(summary, closeText)
     local dragIndicator = GUI.Image(CreateRect(0.045, 0.70, dragArea, GUI.Anchor.CenterLeft), "GUIDragIndicator")
     dragIndicator.CanBeFocused = false
 
-    local headerText = Common.CreateText(dragArea, 0.94, 1, GUI.Anchor.CenterRight, title, GUI.Alignment.Left, 1.08, Color(235, 205, 145, 255), false)
+    local headerText = Common.CreateText(dragArea, 0.94, 1, GUI.Anchor.CenterRight, title, GUI.Alignment.Left, 1.35, Color(235, 205, 145, 255), false)
     headerText.Font = GUI.Style.SubHeadingFont
+    headerText.CanBeFocused = false
 
     local close = GUI.Button(CreateRect(0.075, 0.82, header, GUI.Anchor.TopRight), "", GUI.Alignment.Center, "GUICancelButton")
     close.ToolTip = closeText or "Close"
@@ -251,11 +256,13 @@ local function showSummary(summary, closeText)
     listFrame.CanBeFocused = false
 
     summaryList = GUI.ListBox(CreateRect(0.985, 0.975, listFrame, GUI.Anchor.Center), false, nil, "GUIListBoxNoBorder")
+    summaryList.CanBeFocused = false
     summaryList.Color = Color(0, 0, 0, 0)
     if summaryList.ContentBackground ~= nil then summaryList.ContentBackground.Color = Color(0, 0, 0, 0) end
     summaryList.KeepSpaceForScrollBar = true
 
-    local bodyText = Common.CreateText(summaryList.Content, 0.975, 0.20, GUI.Anchor.TopLeft, body, GUI.Alignment.TopLeft, 0.94, Color(220, 220, 210, 255), true)
+    local bodyText = Common.CreateText(summaryList.Content, 0.975, 0.20, GUI.Anchor.TopLeft, body, GUI.Alignment.TopLeft, 1.40, Color(220, 220, 210, 255), true)
+    bodyText.CanBeFocused = false
     bodyText.CalculateHeightFromText()
     summaryList:RecalculateChildren()
     summaryList:UpdateScrollBarSize()
