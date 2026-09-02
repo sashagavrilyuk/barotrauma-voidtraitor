@@ -433,4 +433,8 @@ function hud.Reset()
     hud.RemoveTimer = hud.RemoveInterval
 end
 
+Hook.Add("roundStart", "Traitormod.ObjectiveHud.RoundStart", function()
+    hud.Reset()
+end)
+
 return hud
