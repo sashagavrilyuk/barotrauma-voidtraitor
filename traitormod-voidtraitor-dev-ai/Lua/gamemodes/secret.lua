@@ -523,7 +523,10 @@ function gm:FinishEnding()
 
     if self.EndViaCampaignTransition then
         local gameMode = Game.GameSession ~= nil and Game.GameSession.GameMode or nil
-        if gameMode ~= nil and LuaUserData.IsTargetType(gameMode, "Barotrauma.CampaignMode") then
+        if gameMode ~= nil
+            and LuaUserData.IsTargetType(gameMode, "Barotrauma.CampaignMode")
+            and gameMode.GetAvailableTransition() == self.EndTransitionType
+        then
             gameMode.LoadNewLevel()
             return
         end
