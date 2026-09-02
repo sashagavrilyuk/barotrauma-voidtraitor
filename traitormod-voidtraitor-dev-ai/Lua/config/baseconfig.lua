@@ -237,6 +237,9 @@ config.GamemodeConfig = {
 
         PointsGainedFromHandcuffedTraitors = 3500,
         DistanceToEndOutpostRequired = 8000,
+        SurvivorRewardEnabled = true,
+        SurvivorRewardPercent = 50,
+        SurvivorRewardRequiredDeathsPercent = 60,
 
         MissionPoints = {
             Salvage = 1100,
