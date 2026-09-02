@@ -23,9 +23,4 @@ local config = ...
 -- config.GamemodeConfig.HideAndSeekV2.WinningPointsBlue = 2000
 -- config.GamemodeConfig.HideAndSeekV2.WinningPointsRed = 2000
 
--- Secret survivor consolation reward:
--- config.GamemodeConfig.Secret.SurvivorRewardEnabled = true
--- config.GamemodeConfig.Secret.SurvivorRewardPercent = 50
--- config.GamemodeConfig.Secret.SurvivorRewardRequiredDeathsPercent = 60
-
 return config
