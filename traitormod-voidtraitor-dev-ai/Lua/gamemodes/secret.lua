@@ -9,14 +9,12 @@ local voteTypes = LuaUserData.CreateEnumTable("Barotrauma.Networking.VoteType")
 LuaUserData.MakePropertyAccessible(gameServerDescriptor, "EndRoundTimer")
 
 local summaryNetMessage = "VoidTraitor_RoundSummary"
-local updatingVoteStatus = false
-local handlingServerCommand = false
 local lobbySummaryPending = nil
 local missionDescriptors = {}
 
 gm.Name = "Secret"
 
-local function missionWouldComplete(mission)
+local function missionWouldComplete(mission, transitionType)
     if mission == nil or mission.ForceFailure then return false end
     if mission.Completed then return true end
 
@@ -28,10 +26,23 @@ local function missionWouldComplete(mission)
         missionDescriptors[typeName] = true
     end
 
-    if not mission.DetermineCompleted(transitionTypes.None) then return false end
+    if not mission.DetermineCompleted(transitionType or transitionTypes.None) then return false end
 
     local completeCheck = mission.completeCheckDataAction
     return completeCheck == nil or completeCheck.GetSuccess()
+end
+
+local function getCampaignTransition()
+    if Game.GameSession == nil or Game.GameSession.GameMode == nil then
+        return nil, transitionTypes.None
+    end
+
+    local gameMode = Game.GameSession.GameMode
+    if not LuaUserData.IsTargetType(gameMode, "Barotrauma.CampaignMode") then
+        return nil, transitionTypes.None
+    end
+
+    return gameMode, gameMode.GetAvailableTransition()
 end
 
 local function reachedLevelEnd()
@@ -113,6 +124,10 @@ function gm:Start()
     self.Ending = false
     self.ResultsFinalized = false
     self.AllowRealEndGame = false
+    self.EndReason = nil
+    self.EndTransitionType = transitionTypes.None
+    self.EndViaCampaignTransition = false
+    self.EndTransitionStarted = false
     self.FinalSummary = nil
     self.AwardedPoints = {}
     lobbySummaryPending = nil
@@ -282,10 +297,10 @@ function gm:SelectAntagonists()
     end, delay * 1000)
 end
 
-function gm:AwardCrew(missions)
+function gm:AwardCrew(missions, transitionType)
     local missionReward = 0
     for _, mission in pairs(missions or {}) do
-        if missionWouldComplete(mission) then
+        if missionWouldComplete(mission, transitionType) then
             local missionValue = self.MissionPoints.Default
 
             for key, value in pairs(self.MissionPoints) do
@@ -402,7 +417,7 @@ function gm:TraitorResults()
     return {TraitorMissionResult(self.RoundEndIcon or Traitormod.MissionIdentifier, sb:concat(), success, antagonists)}
 end
 
-function gm:FinalizeResults()
+function gm:FinalizeResults(transitionType)
     if self.ResultsFinalized then return end
 
     for client, value in pairs(Traitormod.PointsToBeGiven) do
@@ -433,7 +448,7 @@ function gm:FinalizeResults()
     end
 
     local missions = Game.GameSession ~= nil and Game.GameSession.Missions or {}
-    self:AwardCrew(missions)
+    self:AwardCrew(missions, transitionType)
 
     Traitormod.Pointshop.FinalizeRefunds()
     Traitormod.Pointshop.Refunds = {}
@@ -500,10 +515,29 @@ function gm:RoundSummary()
     return sb:concat()
 end
 
-function gm:BeginEnding(reason)
+function gm:FinishEnding()
+    if self.EndTransitionStarted or not self.Ending or not Game.RoundStarted or Traitormod.SelectedGamemode ~= self then return end
+
+    self.EndTransitionStarted = true
+    self.AllowRealEndGame = true
+
+    if self.EndViaCampaignTransition then
+        local gameMode = Game.GameSession ~= nil and Game.GameSession.GameMode or nil
+        if gameMode ~= nil and LuaUserData.IsTargetType(gameMode, "Barotrauma.CampaignMode") then
+            gameMode.LoadNewLevel()
+            return
+        end
+    end
+
+    Game.Server.EndGame(self.EndTransitionType or transitionTypes.None)
+end
+
+function gm:BeginEnding(reason, transitionType, viaCampaignTransition)
     if self.Ending or not Game.RoundStarted then return end
 
-    self:FinalizeResults()
+    self.EndTransitionType = transitionType or transitionTypes.None
+    self.EndViaCampaignTransition = viaCampaignTransition == true
+    self:FinalizeResults(self.EndTransitionType)
     self.Ending = true
     self.EndReason = reason
     if Game.Server ~= nil then
@@ -533,16 +567,16 @@ function gm:BeginEnding(reason)
 
     Traitormod.Log("Secret round result finalized. Ending round in " .. delay .. " seconds.")
 
+    local endingRoundNumber = Traitormod.RoundNumber
     Timer.Wait(function ()
-        if not Game.RoundStarted then return end
-        self.AllowRealEndGame = true
-        Game.EndGame()
+        if Traitormod.RoundNumber ~= endingRoundNumber or Traitormod.SelectedGamemode ~= self then return end
+        self:FinishEnding()
     end, delay * 1000)
 end
 
 function gm:End()
     if not self.ResultsFinalized then
-        self:FinalizeResults()
+        self:FinalizeResults(self.EndTransitionType)
     end
 
     Game.EnableControlHusk(false)
@@ -562,8 +596,14 @@ function gm:Think()
     end
 
     if reachedLevelEnd() then
-        self:BeginEnding("crew")
-        return
+        local gameMode, transitionType = getCampaignTransition()
+        if gameMode == nil then
+            self:BeginEnding("crew", transitionTypes.None, false)
+            return
+        elseif transitionType ~= transitionTypes.None then
+            self:BeginEnding("crew", transitionType, true)
+            return
+        end
     end
 
     if not self.EndOnComplete then return end
@@ -587,41 +627,54 @@ function gm:Think()
     end
 
     if anyTraitorMission and ended then
-        self:BeginEnding("traitors")
+        self:BeginEnding("traitors", transitionTypes.None, false)
     end
 end
 
-Hook.Patch("Traitormod.Secret.UpdateVoteStatus.Before", "Barotrauma.Networking.GameServer", "UpdateVoteStatus", function ()
-    updatingVoteStatus = true
-end, Hook.HookMethodType.Before)
-
-Hook.Patch("Traitormod.Secret.UpdateVoteStatus.After", "Barotrauma.Networking.GameServer", "UpdateVoteStatus", function ()
-    updatingVoteStatus = false
-end, Hook.HookMethodType.After)
-
-Hook.Patch("Traitormod.Secret.ClientReadServerCommand.Before", "Barotrauma.Networking.GameServer", "ClientReadServerCommand", function ()
-    handlingServerCommand = true
-end, Hook.HookMethodType.Before)
-
-Hook.Patch("Traitormod.Secret.ClientReadServerCommand.After", "Barotrauma.Networking.GameServer", "ClientReadServerCommand", function ()
-    handlingServerCommand = false
-end, Hook.HookMethodType.After)
-
-Hook.Patch("Traitormod.Secret.EndGame.Before", "Barotrauma.Networking.GameServer", "EndGame", function (instance, ptable)
+Hook.Patch("Traitormod.Secret.LoadNewLevel.Before", "Barotrauma.CampaignMode", "LoadNewLevel", function (instance, ptable)
     local selected = Traitormod.SelectedGamemode
-    if selected == nil or selected.Name ~= "Secret" then return end
-
-    if selected.AllowRealEndGame then return end
+    if selected == nil or selected.Name ~= "Secret" or not Game.RoundStarted or selected.AllowRealEndGame then return end
 
     if selected.Ending then
         ptable.PreventExecution = true
         return
     end
 
-    if updatingVoteStatus or handlingServerCommand then
-        selected:BeginEnding(updatingVoteStatus and "vote" or "manual")
-        ptable.PreventExecution = true
+    local transitionType = instance.GetAvailableTransition()
+    if transitionType == transitionTypes.None then return end
+
+    local reason = "manual"
+    if transitionType == transitionTypes.ProgressToNextLocation
+        or transitionType == transitionTypes.ProgressToNextEmptyLocation
+        or transitionType == transitionTypes.End
+    then
+        reason = "crew"
     end
+
+    selected:BeginEnding(reason, transitionType, true)
+    ptable.PreventExecution = true
+end, Hook.HookMethodType.Before)
+
+Hook.Patch("Traitormod.Secret.EndGame.Before", "Barotrauma.Networking.GameServer", "EndGame", function (instance, ptable)
+    local selected = Traitormod.SelectedGamemode
+    if selected == nil or selected.Name ~= "Secret" then return end
+
+    if selected.AllowRealEndGame then
+        if selected.Ending and not selected.EndTransitionStarted then
+            selected.AllowRealEndGame = false
+            ptable.PreventExecution = true
+            selected:FinishEnding()
+        end
+        return
+    end
+
+    if selected.Ending then
+        ptable.PreventExecution = true
+        return
+    end
+
+    selected:BeginEnding("manual", ptable["transitionType"] or transitionTypes.None, false)
+    ptable.PreventExecution = true
 end, Hook.HookMethodType.Before)
 
 Hook.Patch("Traitormod.Secret.EndGame.After", "Barotrauma.Networking.GameServer", "EndGame", function ()
