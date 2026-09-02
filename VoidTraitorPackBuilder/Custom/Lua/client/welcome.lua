@@ -3,6 +3,8 @@ if SERVER then return end
 -- === СИГНАЛЫ СЕРВЕРУ ===
 local handshakeTimer = 0
 local function SendHandshake()
+    if not Game.IsMultiplayer or not Networking.IsActive then return end
+
     local msg = Networking.Start("VoidTraitor_LuaCheck")
     Networking.Send(msg)
 end
