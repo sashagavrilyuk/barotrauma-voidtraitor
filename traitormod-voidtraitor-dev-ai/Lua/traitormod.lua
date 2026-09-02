@@ -110,15 +110,7 @@ local function getJobSkill(character, skill)
     end
 
     local identifier = Identifier(tostring(skill))
-    local ok, jobSkill = pcall(function()
-        return character.Info.Job.GetSkill(identifier)
-    end)
-
-    if ok then
-        return jobSkill
-    end
-
-    return nil
+    return character.Info.Job.GetSkill(identifier)
 end
 
 local function getJobSkillLevel(character, skill)
@@ -127,15 +119,7 @@ local function getJobSkillLevel(character, skill)
     end
 
     local identifier = Identifier(tostring(skill))
-    local ok, level = pcall(function()
-        return character.Info.Job.GetSkillLevel(identifier)
-    end)
-
-    if ok and level ~= nil then
-        return math.max(0, tonumber(level) or 0)
-    end
-
-    return 0
+    return math.max(0, tonumber(character.Info.Job.GetSkillLevel(identifier)) or 0)
 end
 
 local function setJobSkillLevelSilent(character, skill, level)
@@ -148,24 +132,15 @@ local function setJobSkillLevelSilent(character, skill, level)
 
     local jobSkill = getJobSkill(character, skill)
     if jobSkill == nil then
-        local okCreate = pcall(function()
-            character.Info.Job.IncreaseSkillLevel(identifier, level, true)
-        end)
-        if not okCreate then
-            return false
-        end
-
+        character.Info.Job.IncreaseSkillLevel(identifier, level, true)
         jobSkill = getJobSkill(character, skill)
         if jobSkill == nil then
             return false
         end
     end
 
-    local okSet = pcall(function()
-        jobSkill.Level = level
-    end)
-
-    return okSet
+    jobSkill.Level = level
+    return true
 end
 
 local function getSkillStateBonus(skillState)
@@ -1049,7 +1024,7 @@ Hook.Add("chatMessage", "Traitormod.ChatMessage", function(message, client)
         Traitormod.Log(Traitormod.ClientLogName(client) .. " used command: " .. message)
         local result = { pcall(Traitormod.Commands[command].Callback, client, split) }
         if not result[1] then
-            Traitormod.SendChatMessage(client, "Command error: " + tostring(result[2]))
+            Traitormod.SendChatMessage(client, string.format(Traitormod.GetText("CommandError"), tostring(result[2])))
             return true
         end
         return table.unpack(result, 2)
