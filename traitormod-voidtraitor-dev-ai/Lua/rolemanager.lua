@@ -293,4 +293,6 @@ rm.EndRound = function ()
     rm.RoundRoles = {}
 end
 
+Traitormod.RoundStats = dofile(Traitormod.Path .. "/Lua/roundstats.lua")
+
 return rm
