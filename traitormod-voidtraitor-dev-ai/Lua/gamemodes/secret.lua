@@ -577,7 +577,15 @@ function gm:RoundSummary()
         end
     end
 
-    return sb:concat()
+    local summary = sb:concat()
+    if Traitormod.RoundStats ~= nil then
+        local distinctions = Traitormod.RoundStats.BuildSecretSummary()
+        if distinctions ~= "" then
+            summary = summary .. "\n\n" .. distinctions
+        end
+    end
+
+    return summary
 end
 
 function gm:FinishEnding()
