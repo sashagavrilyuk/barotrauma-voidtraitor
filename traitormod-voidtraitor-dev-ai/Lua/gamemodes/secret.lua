@@ -214,7 +214,7 @@ function gm:AssignAntagonists(antagonists)
 
         local roles = {}
         for key, value in pairs(antagonists) do
-            table.insert(newRoles, role)
+            table.insert(roles, role)
         end
         Assign(roles)
     else
