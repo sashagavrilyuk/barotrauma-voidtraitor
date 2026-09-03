@@ -607,10 +607,15 @@ Hook.Add("traitormod.healingTracked", "Traitormod.RoundStats.HealingTracked", fu
     if not isTrackedMode() or target == nil or healer == nil or target.TeamID ~= healer.TeamID then return end
 
     local healerAccount = getCharacterAccount(healer)
-    local targetAccount = getCharacterAccount(target)
-    if healerAccount == nil or targetAccount == nil then return end
+    if healerAccount == nil then return end
 
-    addAccount(healerAccount, healerAccount == targetAccount and "SelfHealing" or "Healing", amount)
+    local selfHealing = target == healer
+    if not selfHealing then
+        local targetAccount = getCharacterAccount(target)
+        selfHealing = targetAccount ~= nil and targetAccount == healerAccount
+    end
+
+    addAccount(healerAccount, selfHealing and "SelfHealing" or "Healing", amount)
 end)
 
 Hook.Patch("Traitormod.RoundStats.HullRepaired", "Barotrauma.HumanAIController", "StructureDamaged", function(instance, ptable)
