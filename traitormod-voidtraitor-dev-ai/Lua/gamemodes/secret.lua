@@ -214,7 +214,7 @@ function gm:AssignAntagonists(antagonists)
 
         local roles = {}
         for key, value in pairs(antagonists) do
-            table.insert(roles, role)
+            table.insert(newRoles, role)
         end
         Assign(roles)
     else
@@ -533,8 +533,23 @@ function gm:RoundSummary()
     sb("%s: %s\n", Traitormod.Language.DiscordFieldDuration, Traitormod.FormatTime(math.ceil(Traitormod.RoundTime)))
 
     local entries = {}
+    local antagonistCount = 0
+    local antagonistAlive = 0
+    local antagonistDead = 0
+    local antagonistEntries = {}
+
     for character, role in pairs(Traitormod.RoleManager.RoundRoles) do
-        table.insert(entries, { Character = character, Role = role })
+        local entry = { Character = character, Role = role }
+        table.insert(entries, entry)
+        if role.IsAntagonist then
+            antagonistCount = antagonistCount + 1
+            if character.IsDead then
+                antagonistDead = antagonistDead + 1
+            else
+                antagonistAlive = antagonistAlive + 1
+            end
+            table.insert(antagonistEntries, entry)
+        end
     end
     table.sort(entries, function(a, b)
         if a.Role.IsAntagonist ~= b.Role.IsAntagonist then
@@ -542,6 +557,27 @@ function gm:RoundSummary()
         end
         return string.lower(tostring(a.Character.Name)) < string.lower(tostring(b.Character.Name))
     end)
+    table.sort(antagonistEntries, function(a, b)
+        return string.lower(tostring(a.Character.Name)) < string.lower(tostring(b.Character.Name))
+    end)
+
+    if Traitormod.RoundStats ~= nil then
+        local distinctions = Traitormod.RoundStats.BuildSecretSummary()
+        if distinctions ~= "" then
+            sb("\n%s\n", distinctions)
+        end
+    end
+
+    sb("\n%s %d\n", Traitormod.Language.TraitorsRound, antagonistCount)
+    sb("%s: %d | %s: %d\n", Traitormod.Language.Alive, antagonistAlive, Traitormod.Language.Dead, antagonistDead)
+    if antagonistCount == 0 then
+        sb("%s\n", Traitormod.Language.NoTraitors)
+    else
+        for _, entry in ipairs(antagonistEntries) do
+            local state = entry.Character.IsDead and Traitormod.Language.Dead or Traitormod.Language.Alive
+            sb("%s — %s (%s)\n", entry.Character.Name, entry.Role.Name, state)
+        end
+    end
 
     for _, entry in ipairs(entries) do
         local character = entry.Character
@@ -577,15 +613,7 @@ function gm:RoundSummary()
         end
     end
 
-    local summary = sb:concat()
-    if Traitormod.RoundStats ~= nil then
-        local distinctions = Traitormod.RoundStats.BuildSecretSummary()
-        if distinctions ~= "" then
-            summary = summary .. "\n\n" .. distinctions
-        end
-    end
-
-    return summary
+    return sb:concat()
 end
 
 function gm:FinishEnding()
