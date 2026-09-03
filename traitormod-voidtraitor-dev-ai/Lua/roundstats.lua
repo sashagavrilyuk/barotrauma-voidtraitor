@@ -4,15 +4,17 @@ roundStats.Data = {}
 roundStats.CharacterAccounts = {}
 
 local repairActions = LuaUserData.CreateEnumTable("Barotrauma.Items.Components.Repairable+FixActions")
-local repairSnapshots = {}
+local repairBoostStates = {}
+local pendingDamageCalls = {}
 local healingStates = {}
 local pendingReductions = {}
 local pendingAfflictions = {}
 local healingUpdateTimer = 0
 
-local recentTreatmentSeconds = 12
-local duplicateHealingWindow = 0.05
-local minimumReportedHealing = 0.5
+local healConfig = Traitormod.Config.ObjectiveConfig and Traitormod.Config.ObjectiveConfig.HealCharacters or {}
+local recentTreatmentSeconds = tonumber(healConfig.RecentTreatmentAttributionSeconds) or 12
+local duplicateHealingWindow = tonumber(healConfig.DedupWindowSeconds) or 0.05
+local minimumReportedHealing = tonumber(healConfig.MinimumReportedHeal) or 0.5
 local healingUpdateInterval = 0.25
 
 local distinctionMinimums = {
@@ -102,7 +104,8 @@ end
 local function reset()
     roundStats.Data = {}
     roundStats.CharacterAccounts = {}
-    repairSnapshots = {}
+    repairBoostStates = {}
+    pendingDamageCalls = {}
     healingStates = {}
     pendingReductions = {}
     pendingAfflictions = {}
@@ -197,11 +200,11 @@ local function maxLeaders(participants, getValue)
     local leaders = {}
 
     for _, participant in ipairs(participants) do
-        local value = math.floor(tonumber(getValue(participant)) or 0)
-        if value > best then
+        local value = tonumber(getValue(participant)) or 0
+        if value > best + 0.0001 then
             best = value
             leaders = { participant }
-        elseif value > 0 and value == best then
+        elseif value > 0 and math.abs(value - best) <= 0.0001 then
             table.insert(leaders, participant)
         end
     end
@@ -248,34 +251,37 @@ local function addItemRepair(accountKey, repairable, amount)
     end
 end
 
-local function recordRepairChange(repairable)
-    local snapshot = repairSnapshots[repairable]
-    if snapshot == nil then return end
-
-    if repairable.Item == nil or repairable.Item.Removed then
-        repairSnapshots[repairable] = nil
-        return
+local function popDamageContext(character)
+    for i = #pendingDamageCalls, 1, -1 do
+        local context = pendingDamageCalls[i]
+        if context.Target == character then
+            table.remove(pendingDamageCalls, i)
+            return context
+        end
     end
-
-    local condition = tonumber(repairable.Item.Condition) or 0
-    addItemRepair(snapshot.AccountKey, repairable, condition - snapshot.Condition)
-    snapshot.Condition = condition
+    return nil
 end
 
-local function flushRepairs()
-    for repairable in pairs(repairSnapshots) do
-        recordRepairChange(repairable)
+local function addNestedDamage(character, damage)
+    if damage <= 0 then return end
+
+    for i = #pendingDamageCalls, 1, -1 do
+        local context = pendingDamageCalls[i]
+        if context.Target == character then
+            context.NestedDamage = context.NestedDamage + damage
+            return
+        end
     end
 end
 
 local function getHealingState(target)
+    if not Game.RoundStarted or target == nil or target.Removed or not target.IsHuman then return nil end
+
     local state = healingStates[target]
     if state == nil then
         state = {
             LastVitality = tonumber(target.Vitality) or 0,
-            RecentHealer = nil,
-            RecentSelf = false,
-            RecentHealerExpiresAt = 0,
+            RecentHealers = {},
             LastDirectHealer = nil,
             LastDirectAmount = 0,
             LastDirectAt = 0,
@@ -285,60 +291,56 @@ local function getHealingState(target)
     return state
 end
 
-local function getTreatmentAccounts(target, healer)
-    local healerAccount = getCurrentPlayerAccount(healer)
-    if healerAccount == nil or healer.IsDead or target == nil or target.IsDead or not target.IsHuman or target.TeamID ~= healer.TeamID then return nil end
-
-    local targetAccount = getCurrentPlayerAccount(target)
-    if targetAccount == nil then return nil end
-
-    return healerAccount, targetAccount
-end
-
-local function markRecentHealer(target, healerAccount, targetAccount)
-    if target == nil or healerAccount == nil or targetAccount == nil then return end
+local function markRecentHealer(target, healer)
+    if healer == nil or healer.Removed or not healer.IsHuman or target == nil or target.TeamID ~= healer.TeamID then return end
 
     local state = getHealingState(target)
-    state.RecentHealer = healerAccount
-    state.RecentSelf = healerAccount == targetAccount
-    state.RecentHealerExpiresAt = Timer.GetTime() + recentTreatmentSeconds
+    if state == nil then return end
+    state.RecentHealers[healer] = Timer.GetTime() + recentTreatmentSeconds
 end
 
-local function isDuplicateDirectHealing(target, healerAccount, amount)
+local function isDuplicateDirectHealing(target, healer, amount)
     local state = healingStates[target]
-    if state == nil or state.LastDirectHealer ~= healerAccount then return false end
+    if state == nil or state.LastDirectHealer ~= healer then return false end
     if math.abs(state.LastDirectAmount - amount) > minimumReportedHealing then return false end
     return Timer.GetTime() - state.LastDirectAt <= duplicateHealingWindow
 end
 
-local function registerDirectHealing(target, healerAccount, targetAccount, amount)
+local function reportHealing(target, healer, amount)
+    amount = tonumber(amount) or 0
+    if amount < minimumReportedHealing or target == nil or target.Removed or target.IsDead or healer == nil then return end
+    Hook.Call("traitormod.healingTracked", target, healer, amount)
+end
+
+local function registerDirectHealing(target, healer, amount)
     amount = tonumber(amount) or 0
     if amount < minimumReportedHealing then return end
 
     local state = getHealingState(target)
-    addAccount(healerAccount, healerAccount == targetAccount and "SelfHealing" or "Healing", amount)
+    if state == nil then return end
 
+    markRecentHealer(target, healer)
     state.LastVitality = tonumber(target.Vitality) or state.LastVitality
-    state.LastDirectHealer = healerAccount
+    state.LastDirectHealer = healer
     state.LastDirectAmount = amount
     state.LastDirectAt = Timer.GetTime()
+    reportHealing(target, healer, amount)
 end
 
 local function captureReduction(instance, ptable)
     if instance == nil or instance.Character == nil then return end
 
     local target = instance.Character
-    local healer = ptable["attacker"]
-    local healerAccount, targetAccount = getTreatmentAccounts(target, healer)
-    if healerAccount == nil then return end
+    getHealingState(target)
 
-    markRecentHealer(target, healerAccount, targetAccount)
+    local healer = ptable["attacker"]
+    if healer == nil or healer == target then return end
+
     table.insert(pendingReductions, {
         Health = instance,
         Target = target,
         PrevVitality = tonumber(target.Vitality) or 0,
-        HealerAccount = healerAccount,
-        TargetAccount = targetAccount,
+        Healer = healer,
     })
 end
 
@@ -356,19 +358,20 @@ local function finishReduction(instance)
     if context.Target == nil or context.Target.Removed then return end
 
     local healthChange = (tonumber(context.Target.Vitality) or context.PrevVitality) - context.PrevVitality
-    if healthChange >= minimumReportedHealing and not isDuplicateDirectHealing(context.Target, context.HealerAccount, healthChange) then
-        registerDirectHealing(context.Target, context.HealerAccount, context.TargetAccount, healthChange)
+    if healthChange >= minimumReportedHealing and not isDuplicateDirectHealing(context.Target, context.Healer, healthChange) then
+        registerDirectHealing(context.Target, context.Healer, healthChange)
     end
 end
 
 local function captureAppliedAffliction(instance, ptable)
     if instance == nil or instance.Character == nil or ptable["allowStacking"] ~= false then return end
 
+    local target = instance.Character
+    getHealingState(target)
+
     local affliction = ptable["affliction"]
     local healer = affliction ~= nil and affliction.Source or nil
-    local target = instance.Character
-    local healerAccount, targetAccount = getTreatmentAccounts(target, healer)
-    if healerAccount == nil or affliction.Prefab == nil then return end
+    if affliction == nil or affliction.Prefab == nil or healer == nil or healer == target then return end
 
     table.insert(pendingAfflictions, {
         Health = instance,
@@ -376,8 +379,7 @@ local function captureAppliedAffliction(instance, ptable)
         Identifier = affliction.Prefab.Identifier,
         PrevStrength = tonumber(instance.GetAfflictionStrengthByIdentifier(affliction.Prefab.Identifier, true)) or 0,
         PrevVitality = tonumber(target.Vitality) or 0,
-        HealerAccount = healerAccount,
-        TargetAccount = targetAccount,
+        Healer = healer,
     })
 end
 
@@ -398,17 +400,24 @@ local function finishAppliedAffliction(instance)
     local healthChange = (tonumber(context.Target.Vitality) or context.PrevVitality) - context.PrevVitality
 
     if currentStrength < context.PrevStrength then
-        markRecentHealer(context.Target, context.HealerAccount, context.TargetAccount)
+        markRecentHealer(context.Target, context.Healer)
     end
 
-    if healthChange >= minimumReportedHealing and not isDuplicateDirectHealing(context.Target, context.HealerAccount, healthChange) then
-        registerDirectHealing(context.Target, context.HealerAccount, context.TargetAccount, healthChange)
+    if healthChange >= minimumReportedHealing and not isDuplicateDirectHealing(context.Target, context.Healer, healthChange) then
+        registerDirectHealing(context.Target, context.Healer, healthChange)
     end
 end
 
-local function updateDelayedHealing()
-    local currentTime = Timer.GetTime()
+local function markItemTreatment(usingCharacter, targetCharacter)
+    if targetCharacter == nil or usingCharacter == nil then return end
+    getHealingState(targetCharacter)
+    markRecentHealer(targetCharacter, usingCharacter)
+end
 
+function roundStats.FlushHealing()
+    if not Game.RoundStarted then return end
+
+    local currentTime = Timer.GetTime()
     for target, state in pairs(healingStates) do
         if target == nil or target.Removed or target.IsDead then
             healingStates[target] = nil
@@ -416,18 +425,28 @@ local function updateDelayedHealing()
             local vitality = tonumber(target.Vitality) or state.LastVitality
             local gain = vitality - state.LastVitality
 
-            if gain >= minimumReportedHealing
-                and state.RecentHealer ~= nil
-                and currentTime <= state.RecentHealerExpiresAt
-            then
-                addAccount(state.RecentHealer, state.RecentSelf and "SelfHealing" or "Healing", gain)
+            if gain >= minimumReportedHealing then
+                local healers = {}
+                for healer, expiresAt in pairs(state.RecentHealers) do
+                    if currentTime <= expiresAt then
+                        table.insert(healers, healer)
+                    end
+                end
+
+                if #healers > 0 then
+                    local share = gain / #healers
+                    for _, healer in ipairs(healers) do
+                        reportHealing(target, healer, share)
+                    end
+                end
             end
 
             state.LastVitality = vitality
 
-            if state.RecentHealer ~= nil and currentTime > state.RecentHealerExpiresAt then
-                state.RecentHealer = nil
-                state.RecentSelf = false
+            for healer, expiresAt in pairs(state.RecentHealers) do
+                if currentTime > expiresAt then
+                    state.RecentHealers[healer] = nil
+                end
             end
         end
     end
@@ -436,8 +455,7 @@ end
 function roundStats.BuildSecretSummary()
     if Traitormod.SelectedGamemode == nil or Traitormod.SelectedGamemode.Name ~= "Secret" then return "" end
 
-    flushRepairs()
-    updateDelayedHealing()
+    roundStats.FlushHealing()
 
     local lines = {}
     local crew = getParticipants(false)
@@ -459,7 +477,7 @@ function roundStats.BuildSecretSummary()
             return participant.Entry[distinction[2]] or 0
         end)
         if value >= distinctionMinimums[distinction[2]] then
-            table.insert(crewLines, string.format(Traitormod.GetText(distinction[1]), names(leaders), value))
+            table.insert(crewLines, string.format(Traitormod.GetText(distinction[1]), names(leaders), math.floor(value)))
         end
     end
 
@@ -476,14 +494,14 @@ function roundStats.BuildSecretSummary()
         return points
     end)
     if objectivePoints > 0 then
-        table.insert(darkLines, string.format(Traitormod.GetText("RoundDistinctionGreyCardinal"), names(greyLeaders), objectivePoints))
+        table.insert(darkLines, string.format(Traitormod.GetText("RoundDistinctionGreyCardinal"), names(greyLeaders), math.floor(objectivePoints)))
     end
 
     local crewKills, bloodyLeaders = maxLeaders(antagonists, function(participant)
         return participant.Entry.CrewKills or 0
     end)
     if crewKills > 0 then
-        table.insert(darkLines, string.format(Traitormod.GetText("RoundDistinctionBloodyTrail"), names(bloodyLeaders), crewKills))
+        table.insert(darkLines, string.format(Traitormod.GetText("RoundDistinctionBloodyTrail"), names(bloodyLeaders), math.floor(crewKills)))
     end
 
     local cleanCompleted = 0
@@ -491,20 +509,20 @@ function roundStats.BuildSecretSummary()
     local cleanLeaders = {}
     for _, participant in ipairs(antagonists) do
         local completed = objectiveStats(participant)
-        local crewDamage = math.floor(tonumber(participant.Entry.CrewDamage) or 0)
-        local kills = math.floor(tonumber(participant.Entry.CrewKills) or 0)
+        local crewDamage = tonumber(participant.Entry.CrewDamage) or 0
+        local kills = tonumber(participant.Entry.CrewKills) or 0
         if completed > 0 and kills == 0 then
-            if completed > cleanCompleted or (completed == cleanCompleted and crewDamage < cleanDamage) then
+            if completed > cleanCompleted or (completed == cleanCompleted and crewDamage < cleanDamage - 0.0001) then
                 cleanCompleted = completed
                 cleanDamage = crewDamage
                 cleanLeaders = { participant }
-            elseif completed == cleanCompleted and crewDamage == cleanDamage then
+            elseif completed == cleanCompleted and math.abs(crewDamage - cleanDamage) <= 0.0001 then
                 table.insert(cleanLeaders, participant)
             end
         end
     end
     if cleanCompleted > 0 then
-        table.insert(darkLines, string.format(Traitormod.GetText("RoundDistinctionCleanWork"), names(cleanLeaders), cleanCompleted, cleanDamage))
+        table.insert(darkLines, string.format(Traitormod.GetText("RoundDistinctionCleanWork"), names(cleanLeaders), cleanCompleted, math.floor(cleanDamage)))
     end
 
     if #darkLines > 0 then
@@ -544,19 +562,37 @@ end, Hook.HookMethodType.After)
 
 Hook.Patch("Traitormod.RoundStats.CharacterHealed", "Barotrauma.Character", "TryAdjustHealerSkill", function(character, ptable)
     local healer = ptable["healer"]
-    local healerAccount, targetAccount = getTreatmentAccounts(character, healer)
-    if healerAccount == nil then return end
+    if healer == nil then return end
 
-    markRecentHealer(character, healerAccount, targetAccount)
+    getHealingState(character)
+    markRecentHealer(character, healer)
 
     local healthChange = tonumber(ptable["healthChange"]) or 0
-    if healthChange >= minimumReportedHealing and not isDuplicateDirectHealing(character, healerAccount, healthChange) then
-        registerDirectHealing(character, healerAccount, targetAccount, healthChange)
+    if healthChange >= minimumReportedHealing and not isDuplicateDirectHealing(character, healer, healthChange) then
+        registerDirectHealing(character, healer, healthChange)
     end
 end, Hook.HookMethodType.After)
 
+Hook.Add("item.applyTreatment", "Traitormod.RoundStats.ItemTreatment", function(item, usingCharacter, targetCharacter)
+    markItemTreatment(usingCharacter, targetCharacter)
+end)
+
+Hook.Add("NT.runItemMethod", "Traitormod.RoundStats.NTItemMethod", function(effect, deltaTime, item, targets)
+    local target = targets ~= nil and targets[1] or nil
+    if target == nil or effect == nil then return end
+
+    local targetCharacter
+    if LuaUserData.IsTargetType(target, "Barotrauma.Limb") then
+        targetCharacter = target.character
+    elseif LuaUserData.IsTargetType(target, "Barotrauma.Character") then
+        targetCharacter = target
+    end
+
+    markItemTreatment(effect.user, targetCharacter)
+end)
+
 Hook.Add("think", "Traitormod.RoundStats.DelayedHealing", function(deltaTime)
-    if not isTrackedMode() then
+    if not Game.RoundStarted then
         healingUpdateTimer = 0
         return
     end
@@ -564,7 +600,17 @@ Hook.Add("think", "Traitormod.RoundStats.DelayedHealing", function(deltaTime)
     healingUpdateTimer = healingUpdateTimer + deltaTime
     if healingUpdateTimer < healingUpdateInterval then return end
     healingUpdateTimer = 0
-    updateDelayedHealing()
+    roundStats.FlushHealing()
+end)
+
+Hook.Add("traitormod.healingTracked", "Traitormod.RoundStats.HealingTracked", function(target, healer, amount)
+    if not isTrackedMode() or target == nil or healer == nil or target.TeamID ~= healer.TeamID then return end
+
+    local healerAccount = getCharacterAccount(healer)
+    local targetAccount = getCharacterAccount(target)
+    if healerAccount == nil or targetAccount == nil then return end
+
+    addAccount(healerAccount, healerAccount == targetAccount and "SelfHealing" or "Healing", amount)
 end)
 
 Hook.Patch("Traitormod.RoundStats.HullRepaired", "Barotrauma.HumanAIController", "StructureDamaged", function(instance, ptable)
@@ -579,54 +625,78 @@ Hook.Patch("Traitormod.RoundStats.HullRepaired", "Barotrauma.HumanAIController",
     end
 end, Hook.HookMethodType.After)
 
-Hook.Patch("Traitormod.RoundStats.StartRepairing", "Barotrauma.Items.Components.Repairable", "StartRepairing", function(instance, ptable)
-    if not ptable.ReturnValue then return end
-
-    local snapshot = repairSnapshots[instance]
-    if snapshot ~= nil and (snapshot.Character ~= instance.CurrentFixer or instance.CurrentFixerAction ~= repairActions.Repair) then
-        recordRepairChange(instance)
-        repairSnapshots[instance] = nil
-    end
-
-    if instance.CurrentFixerAction ~= repairActions.Repair or repairSnapshots[instance] ~= nil then return end
-
-    local character = instance.CurrentFixer
-    if character == nil or not isOwnSubmarine(instance.Item ~= nil and instance.Item.Submarine or nil, character) then return end
+Hook.Patch("Traitormod.RoundStats.ItemRepaired", "Barotrauma.KarmaManager", "OnItemRepaired", function(instance, ptable)
+    local character = ptable["character"]
+    local repairable = ptable["repairable"]
+    local amount = tonumber(ptable["repairAmount"]) or 0
+    if character == nil or repairable == nil or amount <= 0 then return end
+    if not isOwnSubmarine(repairable.Item ~= nil and repairable.Item.Submarine or nil, character) then return end
 
     local accountKey = getCurrentPlayerAccount(character)
     if accountKey ~= nil then
-        repairSnapshots[instance] = {
-            AccountKey = accountKey,
-            Character = character,
-            Condition = tonumber(instance.Item.Condition) or 0,
-        }
+        addItemRepair(accountKey, repairable, amount)
     end
 end, Hook.HookMethodType.After)
 
-Hook.Patch("Traitormod.RoundStats.StopRepairing", "Barotrauma.Items.Components.Repairable", "StopRepairing", function(instance, ptable)
-    local snapshot = repairSnapshots[instance]
-    if snapshot == nil or snapshot.Character ~= ptable["character"] or instance.CurrentFixer ~= ptable["character"] then return end
+Hook.Patch("Traitormod.RoundStats.RepairBoost.Before", "Barotrauma.Items.Components.Repairable", "RepairBoost", function(instance, ptable)
+    if not isTrackedMode() or not ptable["qteSuccess"] or instance.CurrentFixer == nil
+        or instance.CurrentFixerAction ~= repairActions.Repair
+        or not isOwnSubmarine(instance.Item ~= nil and instance.Item.Submarine or nil, instance.CurrentFixer)
+    then
+        return
+    end
 
-    recordRepairChange(instance)
-    repairSnapshots[instance] = nil
+    local accountKey = getCurrentPlayerAccount(instance.CurrentFixer)
+    if accountKey ~= nil then
+        repairBoostStates[instance] = {
+            AccountKey = accountKey,
+            Condition = tonumber(instance.Item.Condition) or 0,
+        }
+    end
 end, Hook.HookMethodType.Before)
 
-Hook.Patch("Traitormod.RoundStats.DamageLimb", "Barotrauma.Character", "DamageLimb", function(character, ptable)
-    local attacker = ptable["attacker"]
-    local result = ptable.ReturnValue
-    if attacker == nil or attacker == character or result == nil then return end
+Hook.Patch("Traitormod.RoundStats.RepairBoost.After", "Barotrauma.Items.Components.Repairable", "RepairBoost", function(instance)
+    local state = repairBoostStates[instance]
+    repairBoostStates[instance] = nil
+    if state == nil or instance.Item == nil or instance.Item.Removed then return end
+
+    local amount = (tonumber(instance.Item.Condition) or state.Condition) - state.Condition
+    if amount > 0 then
+        addItemRepair(state.AccountKey, instance, amount)
+    end
+end, Hook.HookMethodType.After)
+
+Hook.Patch("Traitormod.RoundStats.DamageLimb.Before", "Barotrauma.Character", "DamageLimb", function(character, ptable)
+    if not isTrackedMode() or character == nil or character.IsDead then return end
+
+    table.insert(pendingDamageCalls, {
+        Target = character,
+        Attacker = ptable["attacker"],
+        PrevVitality = tonumber(character.Vitality) or 0,
+        NestedDamage = 0,
+        Source = character.LastDamageSource,
+    })
+end, Hook.HookMethodType.Before)
+
+Hook.Patch("Traitormod.RoundStats.DamageLimb.After", "Barotrauma.Character", "DamageLimb", function(character)
+    local context = popDamageContext(character)
+    if context == nil then return end
+
+    local totalDamage = math.max(context.PrevVitality - (tonumber(character.Vitality) or context.PrevVitality), 0)
+    addNestedDamage(character, totalDamage)
+
+    local damage = math.max(totalDamage - context.NestedDamage, 0)
+    local attacker = context.Attacker
+    if damage <= 0 or attacker == nil or attacker == character then return end
 
     local accountKey = getCharacterAccount(attacker)
     if accountKey == nil then return end
-
-    local damage = tonumber(result.Damage) or 0
-    if damage <= 0 then return end
 
     if isSecretAntagonistAgainstCrew(attacker, character) then
         addAccount(accountKey, "CrewDamage", damage)
     elseif isValidEnemy(attacker, character) then
         addAccount(accountKey, "Damage", damage)
-        if isTurretDamageSource(character.LastDamageSource) then
+        if isTurretDamageSource(context.Source) then
             addAccount(accountKey, "TurretDamage", damage)
         end
     end
@@ -649,9 +719,8 @@ Hook.Add("characterDeath", "Traitormod.RoundStats.CharacterDeath", function(char
 end)
 
 Hook.Add("roundEnd", "Traitormod.RoundStats.RoundEnd", function()
-    flushRepairs()
-    updateDelayedHealing()
-    repairSnapshots = {}
+    repairBoostStates = {}
+    pendingDamageCalls = {}
     healingStates = {}
     pendingReductions = {}
     pendingAfflictions = {}
