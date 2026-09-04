@@ -79,51 +79,6 @@
     <Affliction identifier="suitrusting" strength="0.2" probability="1" />
   </StatusEffect>
   <!-- The first suit that this husk is seen wearing will determine the texture of its helmet and the old husk variant it will become with suitrusting. -->
-  <StatusEffect type="Always" target="This" comparison="and">
-    <Affliction identifier="huskregularsuit" amount="500" />
-    <Conditional PressureProtection="gte 100.0" targetself="true" />
-    <Conditional huskcombatsuit="eq 0" />
-    <Conditional huskabysssuit="eq 0" />
-    <Conditional huskpucssuit="eq 0" />
-    <Conditional huskslipsuit="eq 0" />
-    <Requireditem item="divingsuit" type="picked" allowvariants="false" />
-  </StatusEffect>
-  <StatusEffect type="Always" target="This" comparison="and">
-    <Affliction identifier="huskcombatsuit" amount="500" />
-    <Conditional PressureProtection="gte 100.0" targetself="true" />
-    <Conditional huskregularsuit="eq 0" />
-    <Conditional huskabysssuit="eq 0" />
-    <Conditional huskpucssuit="eq 0" />
-    <Conditional huskslipsuit="eq 0" />
-    <Requireditem item="combatdivingsuit" type="picked" allowvariants="false" />
-  </StatusEffect>
-  <StatusEffect type="Always" target="This" comparison="and">
-    <Affliction identifier="huskabysssuit" amount="500" />
-    <Conditional PressureProtection="gte 100.0" targetself="true" />
-    <Conditional huskregularsuit="eq 0" />
-    <Conditional huskcombatsuit="eq 0" />
-    <Conditional huskpucssuit="eq 0" />
-    <Conditional huskslipsuit="eq 0" />
-    <Requireditem item="abyssdivingsuit" type="picked" allowvariants="false" />
-  </StatusEffect>
-  <StatusEffect type="Always" target="This" comparison="and">
-    <Affliction identifier="huskpucssuit" amount="500" />
-    <Conditional PressureProtection="gte 100.0" targetself="true" />
-    <Conditional huskregularsuit="eq 0" />
-    <Conditional huskcombatsuit="eq 0" />
-    <Conditional huskabysssuit="eq 0" />
-    <Conditional huskslipsuit="eq 0" />
-    <Requireditem item="pucs" type="picked" allowvariants="false" />
-  </StatusEffect>
-  <StatusEffect type="Always" target="This" comparison="and">
-    <Affliction identifier="huskslipsuit" amount="500" />
-    <Conditional PressureProtection="gte 100.0" targetself="true" />
-    <Conditional huskregularsuit="eq 0" />
-    <Conditional huskcombatsuit="eq 0" />
-    <Conditional huskabysssuit="eq 0" />
-    <Conditional huskpucssuit="eq 0" />
-    <Requireditem item="slipsuit" type="picked" allowvariants="false" />
-  </StatusEffect>
   <StatusEffect type="OnSpawn" target="This" checkconditionalalways="true" comparison="and" spawnitemrandomly="true" delay="5">
     <SpawnItem identifier="divingsuit" spawnposition="ThisInventory" />
     <SpawnItem identifier="divingsuit" spawnposition="ThisInventory" />
