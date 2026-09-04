@@ -921,51 +921,6 @@ local function shouldCloseGuiAfterPurchase(product)
     return product.CloseGuiAfterPurchase == true or product.GuiCreature ~= nil or ps.IsAttackDefendClassProduct(product)
 end
 
-local guiTextKeys = {
-    "Categories",
-    "BuyTab",
-    "Shop",
-    "Cart",
-    "Points",
-    "Total",
-    "After",
-    "Buy",
-    "Clear",
-    "EmptyCart",
-    "EmptyProducts",
-    "EmptyCategories",
-    "ClickProduct",
-    "Stock",
-    "NoCategory",
-    "SinglePurchase",
-    "StockLimit",
-    "Balance",
-    "Quantity",
-    "ConfirmTitle",
-    "ConfirmQuestion",
-    "ConfirmClassQuestion",
-    "Cancel",
-    "Cooldown",
-    "SelectGhostAction",
-    "SelectClassAction",
-    "Filter",
-    "Search",
-    "FilterAll",
-    "FilterAvailable",
-    "FilterAffordable",
-    "Price",
-    "Remaining",
-    "Unlimited",
-    "Category",
-    "Unavailable",
-    "NotEnoughPoints",
-}
-
-local function getGuiText(key)
-    local guiText = Traitormod.Language.PointshopGuiText or {}
-    return guiText[key] or ""
-end
-
 local function getGuiMessageText(value)
     if value == ps.ProductBuyFailureReason.NoPoints then
         return Traitormod.Language.PointshopNoPoints
@@ -1361,11 +1316,6 @@ function ps.SendGuiSnapshot(client, message, purchaseCompleted, closeAfterPurcha
         netMessage.WriteString(tostring(product.LimitText or ""))
     end
 
-    netMessage.WriteInt32(toNetInt32(#guiTextKeys, 0))
-    for _, key in ipairs(guiTextKeys) do
-        netMessage.WriteString(key)
-        netMessage.WriteString(getGuiText(key))
-    end
 
     netMessage.WriteBoolean(purchaseCompleted == true)
     netMessage.WriteBoolean(closeAfterPurchase == true)

@@ -994,7 +994,7 @@ end
 
 local function getGuiStartBlockedReason()
     if not isLobbyState() then
-        return getVoteText("LobbyVoteGuiLobbyOnly")
+        return getVoteText("LobbyVoteLobbyOnly")
     end
     if vt.GameVote ~= nil or vt.MapVote ~= nil then
         return getVoteText("LobbyVoteAlreadyActive")
@@ -1008,17 +1008,7 @@ end
 
 vt.GetGuiSnapshot = function(client)
     local snapshot = {
-        ButtonText = getVoteText("LobbyVoteGuiButton"),
-        ButtonTooltip = getVoteText("LobbyVoteGuiButtonTooltip"),
-        StartTitle = getVoteText("LobbyVoteGuiStartTitle"),
-        StartModeText = getVoteText("LobbyVoteGuiStartMode"),
-        StartMapText = getVoteText("LobbyVoteGuiStartMap"),
         StartBlockedReason = getGuiStartBlockedReason(),
-        CloseText = getVoteText("LobbyVoteGuiClose"),
-        NoActiveText = getVoteText("LobbyVoteGuiNoActive"),
-        StartedByLabel = getVoteText("LobbyVoteGuiStartedBy"),
-        TimerLabel = getVoteText("LobbyVoteGuiTimer"),
-        VotesLabel = getVoteText("LobbyVoteGuiVotes"),
         CanStart = isLobbyState() and vt.GameVote == nil and vt.MapVote == nil,
         Active = nil
     }
@@ -1038,7 +1028,6 @@ vt.GetGuiSnapshot = function(client)
         snapshot.Active = {
             Id = vt.GameVote.GuiId or "game",
             Type = "game",
-            Title = getVoteText("LobbyVoteGuiGameTitle"),
             StartedBy = tostring(vt.GameVote.StartedBy or ""),
             Remaining = getRemainingSeconds(vt.GameVote),
             Duration = tonumber(vt.GameVote.Duration or getVoteDurationSeconds()) or 1,
@@ -1058,7 +1047,6 @@ vt.GetGuiSnapshot = function(client)
         snapshot.Active = {
             Id = vt.MapVote.GuiId or "map",
             Type = "map",
-            Title = getVoteText("LobbyVoteGuiMapTitle"),
             StartedBy = tostring(vt.MapVote.StartedBy or ""),
             Remaining = getRemainingSeconds(vt.MapVote),
             Duration = tonumber(vt.MapVote.Duration or getVoteDurationSeconds()) or 1,

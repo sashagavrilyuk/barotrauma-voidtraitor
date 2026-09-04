@@ -47,14 +47,7 @@ local lastResolutionY = -1
 local nextRefreshTime = 0
 local stateCheckTimer = 0
 
-local text = {
-    Title = "CAMERA TELEPORT",
-    Button = "Camera teleport",
-    Player = "Player",
-    Follow = "Follow",
-    Close = "Close",
-    Empty = "There are no players with a living controlled character right now.",
-}
+local text = Common.Language.CameraTeleport
 
 local MENU_DRAW_ORDER = 122
 local BUTTON_DRAW_ORDER = 121
@@ -363,12 +356,6 @@ local function ReadSnapshot(message)
     targetById = newTargetById
     targetSignature = newSignature
 
-    local textCount = message.ReadInt32()
-    for _ = 1, textCount do
-        local key = message.ReadString()
-        local value = message.ReadString()
-        if key ~= nil and key ~= "" then text[key] = value or "" end
-    end
 
     UpdateBottomButton()
 

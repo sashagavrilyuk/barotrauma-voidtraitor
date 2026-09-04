@@ -16,9 +16,10 @@ local ROW_HEIGHT = 32
 local INPUT_LABEL_HEIGHT = 24
 local INPUT_ROW_HEIGHT = 40
 
+local language = Common.Language.AdminMenu
 local available = false
-local mainTabText = "Main"
-local adminTabText = "Admin"
+local mainTabText = language.MainTab
+local adminTabText = language.AdminTab
 local entryById = {}
 local players = {}
 local playerByKey = {}
@@ -34,17 +35,17 @@ local dataRequestPending = false
 local pendingReady = nil
 
 local text = {
-    SelectedPlayer = "Player: %s",
-    NoPlayers = "No connected players.",
-    Alive = "Alive",
-    Dead = "Dead",
-    NoCharacter = "No character",
-    SelectRole = "Select a role",
-    NoRoles = "No roles are registered.",
-    SelectEvent = "Select an event",
-    NoEvents = "No events are registered.",
-    SelectCharacter = "Select a character",
-    NoCharacters = "No living characters.",
+    SelectedPlayer = language.SelectedPlayer,
+    NoPlayers = language.NoPlayers,
+    Alive = language.Alive,
+    Dead = language.Dead,
+    NoCharacter = language.NoCharacter,
+    SelectRole = language.SelectRole,
+    NoRoles = language.NoRoles,
+    SelectEvent = language.SelectEvent,
+    NoEvents = language.NoEvents,
+    SelectCharacter = language.SelectCharacter,
+    NoCharacters = language.NoCharacters,
 }
 
 local playerButtons = {}
@@ -438,26 +439,20 @@ end
 Networking.Receive(NET_SNAPSHOT, function(message)
     local previousAvailable = available
     available = message.ReadBoolean()
-    mainTabText = message.ReadString()
-    adminTabText = message.ReadString()
 
     local entries = {}
     local count = message.ReadInt32()
     for _ = 1, count do
         local command = message.ReadString()
-        local label = message.ReadString()
-        local hint = message.ReadString()
-        local category = message.ReadString()
         message.ReadString() -- input type is enforced by the server action
-        local inputHint = message.ReadString()
-        message.ReadString() -- reserved confirm title
-        message.ReadString() -- reserved confirm text
+        local actionText = language.Actions[command] or {}
+        local categoryKey = tostring(actionText.Category or "")
         entries[command] = {
             Command = command,
-            Label = label,
-            Hint = hint,
-            Category = category,
-            InputHint = inputHint,
+            Label = actionText.Label or command,
+            Hint = actionText.Hint or "",
+            Category = language.Categories[categoryKey] or categoryKey,
+            InputHint = actionText.InputHint or "",
         }
     end
     entryById = entries
@@ -523,9 +518,6 @@ Networking.Receive(NET_DATA, function(message)
     for _ = 1, message.ReadInt32() do table.insert(newEvents, message.ReadString()) end
     events = newEvents
 
-    for _ = 1, message.ReadInt32() do
-        text[message.ReadString()] = message.ReadString()
-    end
 
     validateSelections()
     dataLoaded = true

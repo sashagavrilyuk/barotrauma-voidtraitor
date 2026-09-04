@@ -235,7 +235,7 @@ Traitormod.Patching = loadfile(Traitormod.Path .. "/Lua/xmlpatching.lua")(Traito
 
 Traitormod.Languages = Traitormod.Config.Languages
 Traitormod.DefaultLanguage = Traitormod.Languages[1]
----@module "language.english"
+---@module "language.russian"
 Traitormod.Language = Traitormod.DefaultLanguage
 
 for _, language in pairs(Traitormod.Languages) do

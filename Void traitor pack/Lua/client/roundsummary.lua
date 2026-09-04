@@ -274,7 +274,7 @@ end
 Common.InstallHudPatch(HUD_PATCH_ID, STATE_KEY, MENU_DRAW_ORDER, MENU_DRAW_ORDER)
 
 Networking.Receive(NET_SUMMARY, function(message)
-    showSummary(message.ReadString(), message.ReadString())
+    showSummary(message.ReadString(), Common.Language.Common.Close)
 end)
 
 Hook.Add("think", "VoidTraitor.RoundSummary.Think", function()

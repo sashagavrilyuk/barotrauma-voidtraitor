@@ -1,50 +1,7 @@
 local P = ...
 local S = P.State
 
-local textKeys = {
-    "Categories",
-    "BuyTab",
-    "Shop",
-    "Cart",
-    "Points",
-    "Total",
-    "After",
-    "Buy",
-    "Clear",
-    "EmptyCart",
-    "EmptyProducts",
-    "EmptyCategories",
-    "ClickProduct",
-    "Stock",
-    "NoCategory",
-    "SinglePurchase",
-    "StockLimit",
-    "Balance",
-    "Quantity",
-    "ConfirmTitle",
-    "ConfirmQuestion",
-    "ConfirmClassQuestion",
-    "Cancel",
-    "Cooldown",
-    "SelectGhostAction",
-    "SelectClassAction",
-    "Filter",
-    "Search",
-    "FilterAll",
-    "FilterAvailable",
-    "FilterAffordable",
-    "Price",
-    "Remaining",
-    "Unlimited",
-    "Category",
-    "Unavailable",
-    "NotEnoughPoints",
-}
-
-P.Text = {}
-for _, key in ipairs(textKeys) do
-    P.Text[key] = ""
-end
+P.Text = P.Common.Language.Pointshop
 
 function P.GetText(key)
     return P.Text[key] or ""

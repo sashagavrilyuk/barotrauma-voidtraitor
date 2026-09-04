@@ -81,7 +81,6 @@ local function sendSummaryPopup(client, summary)
     if Traitormod.ClientHasLua ~= nil and Traitormod.ClientHasLua(client) then
         local message = Networking.Start(summaryNetMessage)
         message.WriteString(summary)
-        message.WriteString(Traitormod.GetText("GhostRolesMenuCancel"))
         Networking.Send(message, client.Connection)
     else
         local chatMessage = ChatMessage.Create(Traitormod.GetText("ChatSenderServer"), summary, ChatMessageType.ServerMessageBox, nil, nil)
