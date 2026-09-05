@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Charactervariant inherit="Spinelinghusk" speciesname="Spinelingmispawnhusk" speciestranslationoverride="Spineling">
+  <StatusEffect type="OnSpawn" target="This" comparison="and" delay="5" disabledeltatime="true">
+    <Affliction identifier="huskspawnrandomchance4" amount="25" />
+    <!-- "husks" only exist to turn into one of the three variants. -->
+  </StatusEffect>
+</Charactervariant>
