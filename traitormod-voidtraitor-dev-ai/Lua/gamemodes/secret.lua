@@ -2,11 +2,8 @@ local weightedRandom = dofile(Traitormod.Path .. "/Lua/gamemodes/weightedrandom.
 local gm = Traitormod.Gamemodes.Gamemode:new()
 
 if not LuaUserData.IsRegistered("Barotrauma.CheckDataAction") then LuaUserData.RegisterType("Barotrauma.CheckDataAction") end
-local gameServerDescriptor = Descriptors["Barotrauma.Networking.GameServer"] or LuaUserData.RegisterType("Barotrauma.Networking.GameServer")
-
 local transitionTypes = LuaUserData.CreateEnumTable("Barotrauma.CampaignMode+TransitionType")
 local voteTypes = LuaUserData.CreateEnumTable("Barotrauma.Networking.VoteType")
-LuaUserData.MakePropertyAccessible(gameServerDescriptor, "EndRoundTimer")
 
 local summaryNetMessage = "VoidTraitor_RoundSummary"
 local lobbySummaryPending = nil
@@ -643,9 +640,6 @@ function gm:BeginEnding(reason, transitionType, viaCampaignTransition)
     self.EndReason = reason
     self:FinalizeResults(self.EndTransitionType)
     self.Ending = true
-    if Game.Server ~= nil then
-        Game.Server.EndRoundTimer = 0
-    end
     for _, client in pairs(Client.ClientList) do
         client.SetVote(voteTypes.EndRound, false)
     end
@@ -695,12 +689,7 @@ end
 function gm:Think()
     if not Game.RoundStarted then return end
 
-    if self.Ending then
-        if not self.AllowRealEndGame and Game.Server ~= nil then
-            Game.Server.EndRoundTimer = 0
-        end
-        return
-    end
+    if self.Ending then return end
 
     if reachedLevelEnd() then
         local gameMode, transitionType = getCampaignTransition()
