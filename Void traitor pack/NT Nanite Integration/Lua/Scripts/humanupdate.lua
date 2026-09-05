@@ -3,7 +3,15 @@ function NTNan.UpdateHuman(character)
         
     local afflictions = NTNan.GetAllNanAfflictions(character)
 
-    if afflictions == {} or afflictions == nil then return end
+    if #afflictions == 0 then
+        if HF.HasAffliction(character, "nanitedecay") then
+            HF.AddAffliction(character, "nanitedecay", -1*1*NT.Deltatime)
+        end
+        if HF.HasAffliction(character, "naniteremover") then
+            HF.SetAffliction(character, "naniteremover", 0)
+        end
+        return
+    end
 
     if NTNan.hasEnoughPrecursors(character, afflictions) then
         HF.AddAffliction(character, "nanitedecay", -1*1*NT.Deltatime)
