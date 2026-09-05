@@ -118,7 +118,7 @@ function gm:_SetNewClient(client, lockClassSelection)
 		end
 		
 		loop()
-	end, 1000)
+	end, 1250)
 end
 
 ---@param newClients Barotrauma.Networking.Client[]?
@@ -428,7 +428,7 @@ function gm:Start()
 	local newClients = {}
 	for client in Client.ClientList do
 		---@cast client Barotrauma.Networking.Client
-		if not client.SpectateOnly and not client.AFK then
+		if not client.SpectateOnly and (not client.AFK or not Game.ServerSettings.AllowAFK) then
 			table.insert(newClients, client)
 		end
 	end
@@ -448,6 +448,7 @@ function gm:Start()
 
 	---@param client Barotrauma.Networking.Client
 	Hook.Add("client.connected", "Traitormod.AttackDefendV2.ClientConnected", function (client)
+		if client.SpectateOnly then return end
 		local teams = self.Teams
 		for _, team in pairs(teams) do
 			if team.Members[client.AccountId] ~= nil then

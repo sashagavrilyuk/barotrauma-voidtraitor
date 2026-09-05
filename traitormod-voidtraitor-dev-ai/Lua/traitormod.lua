@@ -483,6 +483,22 @@ Voting = LuaUserData.CreateStatic("Barotrauma.Voting") --[[@as Barotrauma.Voting
 Traitormod.PreRoundStart = function (submarineInfo, chooseGamemode)
     Traitormod.SelectedGamemode = nil
 
+    for client in Client.ClientList do
+        if client.SpectateOnly then
+            local characterInfo = client.CharacterInfo
+            if characterInfo ~= nil and characterInfo.Job ~= nil and characterInfo.Job.Prefab.HiddenJob then
+                characterInfo.Job = nil
+            end
+
+            local character = client.Character
+            local activeInfo = character ~= nil and character.Info or nil
+            if activeInfo ~= nil and activeInfo ~= characterInfo
+                and activeInfo.Job ~= nil and activeInfo.Job.Prefab.HiddenJob then
+                activeInfo.Job = nil
+            end
+        end
+    end
+
     local description = submarineInfo.Description.Value
     local subConfig = Traitormod.ParseSubmarineConfig(description)
 

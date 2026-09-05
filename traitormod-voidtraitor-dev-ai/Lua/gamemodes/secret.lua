@@ -2,8 +2,10 @@ local weightedRandom = dofile(Traitormod.Path .. "/Lua/gamemodes/weightedrandom.
 local gm = Traitormod.Gamemodes.Gamemode:new()
 
 if not LuaUserData.IsRegistered("Barotrauma.CheckDataAction") then LuaUserData.RegisterType("Barotrauma.CheckDataAction") end
+local gameServerDescriptor = Descriptors["Barotrauma.Networking.GameServer"] or LuaUserData.RegisterType("Barotrauma.Networking.GameServer")
 local transitionTypes = LuaUserData.CreateEnumTable("Barotrauma.CampaignMode+TransitionType")
 local voteTypes = LuaUserData.CreateEnumTable("Barotrauma.Networking.VoteType")
+LuaUserData.MakePropertyAccessible(gameServerDescriptor, "EndRoundTimer")
 
 local summaryNetMessage = "VoidTraitor_RoundSummary"
 local lobbySummaryPending = nil
@@ -765,6 +767,7 @@ Hook.Patch("Traitormod.Secret.EndGame.Before", "Barotrauma.Networking.GameServer
     end
 
     if selected.Ending then
+        instance.EndRoundTimer = 0.1
         ptable.PreventExecution = true
         return
     end
