@@ -549,7 +549,12 @@ ps.GetProductPrice = function (client, product)
         mult = math.floor(mult)
     end
 
-    return product.Price + (product.Limit - ps.GetProductLimit(client, product)) * (product.PricePerLimit or 0) - mult
+    local price = product.Price or 0
+    local limit = product.Limit or defaultLimit
+    if limit ~= math.huge and (product.PricePerLimit or 0) ~= 0 then
+        price = price + (limit - ps.GetProductLimit(client, product)) * product.PricePerLimit
+    end
+    return price - mult
 end
 
 ---@param client Barotrauma.Networking.Client
@@ -965,7 +970,11 @@ end
 
 local function getProductPriceWithLimit(product, simulatedLimit)
     local limit = product.Limit or defaultLimit
-    return (product.Price or 0) + (limit - simulatedLimit) * (product.PricePerLimit or 0) - getRoundPriceReduction(product)
+    local price = product.Price or 0
+    if limit ~= math.huge and (product.PricePerLimit or 0) ~= 0 then
+        price = price + (limit - simulatedLimit) * product.PricePerLimit
+    end
+    return price - getRoundPriceReduction(product)
 end
 
 local function getProductType(product)

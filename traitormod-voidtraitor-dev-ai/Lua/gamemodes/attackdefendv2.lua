@@ -94,7 +94,8 @@ end
 function gm:_SetNewClient(client, lockClassSelection)
 	local char = client.Character
 	Timer.Wait(function()
-		if not client or not client.Connection or client.SpectateOnly then return end
+		if not Game.RoundStarted or Traitormod.SelectedGamemode ~= self or self.IsEnding then return end
+		if not client or not client.Connection or client.Connection.Status ~= 1 or client.SpectateOnly then return end
 		client.SetClientCharacter(nil)
 		CleanRemove(char)
 
@@ -103,12 +104,13 @@ function gm:_SetNewClient(client, lockClassSelection)
 		end
 
 		local function loop()
+			if not Game.RoundStarted or Traitormod.SelectedGamemode ~= self or self.IsEnding then return end
+			if not client.Connection or client.Connection.Status ~= 1 or client.SpectateOnly then return end
 			if not client.InGame then
 				Timer.Wait(function ()
 					loop()
 				end, 1000)
 			else
-				if not client.Connection then return end
 				if Traitormod.Pointshop.OpenGuiOrFallback ~= nil then
 					Traitormod.Pointshop.OpenGuiOrFallback(client, false)
 				else
@@ -236,10 +238,16 @@ function gm:_AddNewClient(client)
 	end
 	local notPriorityTeamID = GetOppositeTeamID(priorityTeamID)
 
-	local priorityTeamMembers = self.Teams[priorityTeamID].Members
-	local notPriorityTeamMembers = self.Teams[notPriorityTeamID].Members
+	local teamCounts = { [TeamID1] = 0, [TeamID2] = 0 }
+	for teamID, team in pairs(self.Teams) do
+		for _, member in pairs(team.Members) do
+			if member.Connection ~= nil and member.Connection.Status == 1 and not member.SpectateOnly then
+				teamCounts[teamID] = teamCounts[teamID] + 1
+			end
+		end
+	end
 
-	if #priorityTeamMembers > #notPriorityTeamMembers then
+	if teamCounts[priorityTeamID] > teamCounts[notPriorityTeamID] then
 		self:_ChangeTeam(client, notPriorityTeamID)
 		return notPriorityTeamID
 	else
@@ -406,7 +414,7 @@ end
 
 function gm:Start()
 	Traitormod.DisableRespawnShuttle = true
-    -- Traitormod.DisableMidRoundSpawn = true
+	Traitormod.DisableMidRoundSpawn = true
 	
 	for _, item in pairs(Item.ItemList) do
 		if item.GetComponentString("Reactor") and item.HasTag("deathmatchteam1reactor") then
@@ -453,6 +461,11 @@ function gm:Start()
 		for _, team in pairs(teams) do
 			if team.Members[client.AccountId] ~= nil then
 				team.Members[client.AccountId] = client
+				client.TeamID = team.TeamID
+				client.PreferredTeam = team.TeamID
+				if team.Respawns[client.AccountId].OnSpawn == nil then
+					self:_SetNewClient(client)
+				end
 			end
 		end
 	end)
@@ -468,9 +481,10 @@ function gm:Start()
 		for _, team in pairs(self.Teams) do
 			local teamMembers = team.Members
 			for id, member in pairs(teamMembers) do
-				if member == client then return end
 				if id == client.AccountId then
 					teamMembers[id] = client
+					client.TeamID = team.TeamID
+					client.PreferredTeam = team.TeamID
 					return
 				end
 			end
@@ -483,6 +497,7 @@ function gm:Start()
 end
 
 function gm:End()
+	self.IsEnding = true
 	for _, team in pairs(self.Teams) do
 		for _, member in pairs(team.Members) do
 			textPromptUtils.UnlockOption(member)
@@ -513,7 +528,8 @@ function gm:Think(deltaTime)
 		
 		for id, entry in pairs(team.Respawns) do
 			local member = team.Members[id]
-			if (member.Character == nil or member.Character.IsDead) and member.InGame then
+			if member.Connection ~= nil and not member.SpectateOnly
+				and (member.Character == nil or member.Character.IsDead) and member.InGame then
 				if entry.Timer == nil then
 					entry.Timer = team.RespawnTime
 				end
@@ -543,6 +559,7 @@ function gm:Think(deltaTime)
             -- Timer.Wait(function ()
             --     Game.EndGame()
             -- end, 5000)
+            return
         end
 	end
 end

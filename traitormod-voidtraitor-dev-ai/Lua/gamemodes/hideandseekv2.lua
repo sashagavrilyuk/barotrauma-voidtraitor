@@ -108,7 +108,8 @@ end
 function gm:_SetNewClient(client, lockClassSelection)
     local character = client.Character
     Timer.Wait(function()
-        if not client or not client.Connection or client.SpectateOnly then return end
+        if not Game.RoundStarted or Traitormod.SelectedGamemode ~= self or self.IsEnding then return end
+        if not client or not client.Connection or client.Connection.Status ~= 1 or client.SpectateOnly then return end
         client.SetClientCharacter(nil)
         cleanRemove(character)
 
@@ -117,6 +118,8 @@ function gm:_SetNewClient(client, lockClassSelection)
         end
 
         local function openClassSelection()
+            if not Game.RoundStarted or Traitormod.SelectedGamemode ~= self or self.IsEnding then return end
+            if not client.Connection or client.Connection.Status ~= 1 or client.SpectateOnly then return end
             for _, team in pairs(self.Teams) do
                 local entry = team.Respawns[client.AccountId]
                 if entry ~= nil and entry.Forfeited then return end
@@ -126,7 +129,6 @@ function gm:_SetNewClient(client, lockClassSelection)
                 Timer.Wait(openClassSelection, 1000)
                 return
             end
-            if not client.Connection then return end
 
             if Traitormod.Pointshop.OpenGuiOrFallback ~= nil then
                 Traitormod.Pointshop.OpenGuiOrFallback(client, false)
@@ -576,6 +578,8 @@ function gm:Start()
                 if entry.Forfeited then return end
 
                 team.Members[client.AccountId] = client
+                client.TeamID = team.TeamID
+                client.PreferredTeam = team.TeamID
                 if not entry.Spawned then
                     self:_SetNewClient(client)
                 end
@@ -604,6 +608,8 @@ function gm:Start()
             if entry ~= nil then
                 if not entry.Forfeited then
                     team.Members[client.AccountId] = client
+                    client.TeamID = team.TeamID
+                    client.PreferredTeam = team.TeamID
                 end
                 return
             end
@@ -612,6 +618,7 @@ function gm:Start()
 end
 
 function gm:End()
+    self.IsEnding = true
     for _, team in pairs(self.Teams) do
         for _, member in pairs(team.Members) do
             textPromptUtils.UnlockOption(member)
@@ -635,7 +642,8 @@ function gm:Think(deltaTime)
     for _, team in pairs(self.Teams) do
         for id, entry in pairs(team.Respawns) do
             local member = team.Members[id]
-            if not entry.Forfeited and member ~= nil and member.InGame and not entry.Spawned and entry.OnSpawn ~= nil then
+            if not entry.Forfeited and member ~= nil and member.Connection ~= nil and not member.SpectateOnly
+                and member.InGame and not entry.Spawned and entry.OnSpawn ~= nil then
                 spawnCharacter(member, team, entry)
             end
         end

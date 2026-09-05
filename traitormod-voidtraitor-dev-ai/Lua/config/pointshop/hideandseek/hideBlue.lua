@@ -20,7 +20,7 @@ local category = {
     Identifier = "hideBlue",
     CanAccess = function(client)
         local entry = Traitormod.SelectedGamemode.Teams[ShopTeamID].Respawns[client.AccountId]
-        return entry ~= nil and not entry.Spawned
+        return entry ~= nil and not entry.Forfeited and not entry.Spawned
     end,
     Products = {
         {
