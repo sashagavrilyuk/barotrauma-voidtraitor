@@ -4,36 +4,28 @@ local S = P.State
 Networking.Receive(P.NET_SNAPSHOT, function(message)
     if S.sharedState.Disabled then return end
 
-    P.UiText.Title = message.ReadString()
-    P.UiText.ShopButton = message.ReadString()
-    P.UiText.MainButton = message.ReadString()
-    P.UiText.ShopTooltip = message.ReadString()
-    P.UiText.MainTooltip = message.ReadString()
-    P.UiText.NoCommands = message.ReadString()
-    P.UiText.GenericCommand = message.ReadString()
-    P.UiText.DefaultConfirmTitle = message.ReadString()
-    P.UiText.Cancel = message.ReadString()
-    P.UiText.Yes = message.ReadString()
-    P.UiText.Ok = message.ReadString()
     local count = message.ReadInt32()
     local entries = {}
     for i = 1, count do
         local command = message.ReadString()
-        local enabled = true
-        if string.sub(command, 1, #P.DISABLED_ACTION_PREFIX) == P.DISABLED_ACTION_PREFIX then
-            command = string.sub(command, #P.DISABLED_ACTION_PREFIX + 1)
-            enabled = false
+        local enabled = message.ReadBoolean()
+        local disabledReason = message.ReadString()
+        local inputType = message.ReadString()
+        local actionText = P.MenuText.Actions[command] or {}
+        local hint = tostring(actionText.Hint or "")
+        if not enabled and disabledReason ~= "" then
+            hint = disabledReason .. (hint ~= "" and "\n\n" .. hint or "")
         end
-
+        local categoryKey = tostring(actionText.Category or "Main")
         table.insert(entries, {
             Command = command,
-            Label = message.ReadString(),
-            Hint = message.ReadString(),
-            Category = message.ReadString(),
-            InputType = message.ReadString(),
-            InputHint = message.ReadString(),
-            ConfirmTitle = message.ReadString(),
-            ConfirmText = message.ReadString(),
+            Label = actionText.Label or command,
+            Hint = hint,
+            Category = P.MenuText.Categories[categoryKey] or categoryKey,
+            InputType = inputType,
+            InputHint = actionText.InputHint or "",
+            ConfirmTitle = actionText.ConfirmTitle or "",
+            ConfirmText = actionText.ConfirmText or "",
             Enabled = enabled,
         })
     end

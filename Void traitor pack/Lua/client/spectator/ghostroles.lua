@@ -57,22 +57,7 @@ local lastResolutionX = -1
 local lastResolutionY = -1
 local stateCheckTimer = 0
 
-local text = {
-    Title = "GHOST ROLES",
-    Button = "Ghost roles (%d)",
-    Points = "Points",
-    Price = "Price",
-    Free = "AVAILABLE",
-    Taken = "TAKEN",
-    Dead = "DEAD",
-    Take = "Request",
-    Follow = "Follow",
-    Close = "Close",
-    Empty = "No ghost roles are registered right now.",
-    SelectRole = "Select a role on the left to see its description.",
-    FreePrice = "Free",
-    NotEnoughPoints = "Not enough points",
-}
+local text = Common.Language.GhostRoles
 
 local MENU_DRAW_ORDER = 122
 local BUTTON_DRAW_ORDER = 121
@@ -591,12 +576,6 @@ local function ReadSnapshot(message)
         bottomButtonAlert = true
     end
 
-    local textCount = message.ReadInt32()
-    for _ = 1, textCount do
-        local key = message.ReadString()
-        local value = message.ReadString()
-        if key ~= nil and key ~= "" then text[key] = value or "" end
-    end
 
     UpdateBottomButton()
     if hasNewRole and currentMenu == nil then

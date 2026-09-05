@@ -1,0 +1,296 @@
+-- SERVER ONLY: этот файл используется только серверной локализацией VoidTraitor.
+-- Клиентские статические подписи GUI находятся в Void traitor pack/Lua/language/russian.lua.
+local language = ...
+
+-- Серверные ответы и fallback-меню PointShop для игроков без client Lua
+language.PointshopInGame = "Вы должны быть в игре, чтобы использовать магазин"
+language.PointshopCannotBeUsed = "Этот товар нельзя приобрести в данный момент"
+language.PointshopWait = "Вам придется подождать %s секунд, прежде чем вы сможете приобрести этот товар"
+language.PointshopNoPoints = "У вас недостаточно очков для покупки этого товара"
+language.PointshopNoStock = "Этого товара нет в наличии"
+language.PointshopPurchased = "Приобретено \"%s\" за %s баллов\n\nНовый баланс очков составляет: %s очков."
+language.PointshopGoBack = ">> Вернуться назад <<"
+language.PointshopCancel = ">> Отменить <<"
+language.PointshopWishBuy = "Ваш текущий баланс: %s очков\nЧто вы хотите купить?"
+language.PointshopInstallation = "товар, который вы собираетесь купить, будет установлен в вашем точном месте, вы не сможете переместить его в другое место, хотите ли вы продолжить?\n"
+language.PointshopNotAvailable = "Магазин недоступен."
+language.PointshopWishCategory = "Ваш текущий баланс: %s очков\nВыберите категорию."
+language.PointshopRefunded = "Вам было возвращено %s очков за покупку %s"
+
+-- Названия категорий, товаров, классов и действий PointShop
+language.Pointshop = {
+
+    -- Способности экипажа
+    abilities = "Способности",
+    abilities_captain = "Капитан",
+    abilities_security = "Служба безопасности",
+    abilities_security_turrets = "Поставить пушку",
+    abilities_mechanic = "Механик",
+    abilities_engineer = "Инженер",
+    abilities_medical = "Медик",
+    abilities_surgeon = "Хирург",
+    CaptainHelmBoost = "Навигация +100 на 5 минут",
+    SecurityMindSense = "Wall Hack на 5 минут",
+    SecurityTurretCoilgun = "Поставить Coilgun",
+    SecurityTurretChaingun = "Поставить Chaingun",
+    SecurityTurretFlakcannon = "Поставить Flak Cannon",
+    SecurityTurretPulseLaser = "Поставить Pulse Laser",
+    SecurityTurretDoubleCoilgun = "Поставить двойную магнитную пушку",
+    SecurityTurretRailgun = "Поставить Railgun",
+    MechanicMechanicalRepair = "Починить механику на 15%",
+    MechanicHullRepair = "Починить корпус на 50%",
+    MechanicSkillBoost = "Механика +100 на 5 минут",
+    EngineerElectricalRepair = "Починить электрику на 10%",
+    EngineerSkillBoost = "Инженерия +100 на 5 минут",
+    MedicSkillBoost = "Медицина +100 и хирургия +70 на 5 минут",
+    SurgeonSkillBoost = "Хирургия +100 и медицина +70 на 5 минут",
+
+    -- Саботаж и способности предателя
+    traitor_sabotage = "Саботаж",
+    traitor_sabotage_criticalsystems = "Критические системы",
+    traitor_sabotage_oxygensabotage = "Саботаж кислорода",
+    traitor_sabotage_poisons = "Яды",
+    ReactorShutdown = "Отключение реактора",
+    SupercapacitorFailure = "Поломка суперконденсаторов",
+    JunctionBoxOverload = "Поломка электрощитков",
+    OxygenSufforin = "Заразить кислород: Страданит",
+    OxygenParalyzant = "Заразить кислород: Парализатор",
+    OxygenMorbusine = "Заразить кислород: Морбузин",
+    OxygenCyanide = "Заразить кислород: Цианид",
+    WeakBallastFlora = "Слабая балластная флора",
+    VentCreatures = "Существа в вентиляции",
+    ClownCrateSurprise = "Клоунский ящик-сюрприз",
+
+    -- Специальные предметы и эффекты
+    fakehandcuffs = "Поддельные наручники",
+    choke = "кляп",
+    choke_desc = "‖color:gui.red‖Заглушает цель‖color:end‖",
+    jailgrenade = "DarkRP Тюремная граната",
+    jailgrenade_desc = "‖color:gui.red‖ Особая граната с интересным сюрпризом...‖color:end‖",
+    clowngearcrate = "Ящик клоунского снаряжения",
+    clowntalenttree = "Дерево талантов клоуна",
+    invisibilitygear = "Одежда невидомости",
+    clownmagic = "Магия клоуна (случайным образом меняет местами людей)",
+    randomizelights = "Случайное освещение",
+    fuelrodlowquality = "Пустой топливный стержень",
+    BreackHull = "Сломать корпус на 50 едениц",
+    BreackElectrical = "Сломать электронику на 33%",
+    KillElectrical = "УНИЧТОЖИТЬ всю электронику",
+    KillHull = "УНИЧТОЖИТЬ весь корпус",
+    SuperBallastFlora = "Распространить супер баластную флору",
+    HiddenPirate = "Призвать баластного пирата",
+    FixHull = "Починить корпус на 50 едениц",
+    ElectricalFixDischarge = "Починить электронику на 33%",
+    FullFixHull = "ПОЛНОСТЬЮ починить весь корпус",
+    FullElectricalFixDischarge = "ПОЛНОСТЬЮ починить всю электронику",
+    MaintenanceToolsDelivery = "Доставить на подлодку ремонтные инструменты",
+    MedicalDelivery = "Доставить на подлодку медецинские припасы",
+    AmmoDelivery = "Доставить на подлодку боеприпасы",
+    EmergencyTeam = "Позвать инженеров и механиков для починки подлодке",
+
+    -- Обычные товары и наборы
+    gardeningkit = "Набор для садоводства",
+    randomitem = "Случайный предмет",
+    clownsuit = "Костюм клоуна",
+	maidfit = "костюм горничной", 
+    randomegg = "Случайное яйцо",
+    assistantbot = "Бот-помощник",
+    organs = "Органы",
+    firstaidkit = "Аптечка первой помощи",
+	randomize_crazy_all = "Рандомные безумные предметы",
+	randomize_normal_all = "Рандомные нормальные предметы",
+	randomize_materials = "Рандомные ресурсы",
+	randomize_medical = "Рандомная медецина",
+	randomize_weapons = "Рандомные пушки",
+
+    -- Боеприпасы, таланты, корабли и маяки
+    firemanscarrytalent = "Талант 'перенос на плече'",
+    stungunammo = "Патроны для электрошокера (x4)",
+    revolverammo = "Патроны для револьвера (x6)",
+    smgammo = "Магазин для ПП (x2)",
+    shotgunammo = "Снаряды для дробовика (x8)",
+    streamchalk = "Потоковый мел",
+    uri = "Ури - инопланетный корабль",
+    seashark = "Морская акула МК II",
+    Beaver = "Барсук",
+    barsuk = "Барсук",
+    huskattractorbeacon = "Маяк аттрактора хаска",
+    monsterattractorbeacon = "Маяк приманки чудовищ",
+    huskautoinjector = "Автоинжектор Хаска",
+    huskedbloodpack = "Зараженная кровь",
+    spawnhusk = "Призвать хасков",
+    huskoxygensupply = "Подача зараженного кислорода",
+    explosiveautoinjector = "Взрывной автоинжектор",
+    teleporterrevolver = "Револьвер телепортации",
+    poisonoxygensupply = "Подача ядовитого кислорода",
+    turnofflights = "Выключить свет на 3 минуты",
+    turnoffcommunications = "Выключить связь на 2 минуты",
+
+    -- Перерождение за существ
+    spawnasSpinelingmorbusine = "Появиться в виде морбузиновго шипостая",
+    spawnascrawler = "Появиться в виде Ползуна",
+    spawnascrawlerhusk = "Появиться в виде Ползуна-хаска",
+    spawnaslegacycrawler = "Появиться в виде Ползуна(устаревший)",
+    spawnaslegacyhusk = "Появиться в виде Хаска(устаревший)",
+    spawnascrawlerbaby = "Появиться в виде Детеныша ползуна",
+    spawnasmudraptorbaby = "Появиться в виде Детеныша грязевого раптора",
+    spawnasthresherbaby = "Появиться в виде Детеныша акульего тигра",
+    spawnasspineling = "Появиться в виде Шипостая",
+    spawnasmudraptor = "Появиться в виде Грязевого раптор",
+    spawnasmantis = "Появиться в виде Богомола",
+    spawnashusk = "Появиться в виде Хаска",
+    spawnashuskedhuman = "Появиться в виде Человека-хаска",
+    spawnasbonethresher = "Появиться в виде Костяного акульего тигра",
+    spawnastigerthresher = "Появиться в виде Акульего тигра",
+    spawnaslegacymoloch = "Появиться в виде Молоха(устаревший)",
+    spawnaslegacycarrier = "Появиться в виде Разносчика(устаревший)",
+    spawnashammerhead = "Появиться в виде Молотоглава",
+    spawnasfractalguardian = "Появиться в виде Фрактального стража",
+    spawnasgiantspineling = "Появиться в виде Гигантского шипостая",
+    spawnasveteranmudraptor = "Появиться в виде Грязевого раптора-ветерана",
+    spawnaslatcher = "Появиться в виде Блокиратора",
+    spawnascharybdis = "Появиться в виде Харибды",
+    spawnasendworm = "Появиться в виде Червя рока",
+    spawnaspeanut = "Появиться в виде Орешка",
+    spawnasClownOrangeboy = "Появиться в виде Оранжевого парня клоуна",
+    spawnasClownPeanut = "Появиться в виде Орешка клоуна",
+    spawnasClownPsilotoad = "Появиться в виде Псиложабы клоуна",
+    spawnasMudraptorpet = "Появиться в виде питомца раптора",
+    spawnasDefensebot = "Появиться в виде защищающего бота",
+    STransformedMudraptor = "Появиться в виде дружелюбного взрослого раптора",
+    Huskmutanthunteraddict = "Появиться в виде джентльмен мутанта хаск",
+    spawnasMoloch = "Появиться в виде Молоха",
+    spawnasLeucocyte = "Появиться в виде лекойцита",
+    spawnasMolochblack = "Появиться в виде Черного молоха",
+    spawnasorangeboy = "Появиться в виде Оранжевого парня",
+    spawnasHammerhead_mhusk = "Появиться в виде Молотоглава хаска",
+    spawnaWatcher = "Появиться в виде Смотритель",
+    spawnascthulhu = "Появиться в виде Ктулху",
+    spawnaspsilotoad = "Появиться в виде Псиложабы",
+    spawnasHammerheadmatriarch = "Появиться в виде Молотоглава матриарха",
+    spawnasHammerheadmatriarchhusk = "Появиться в виде Молотоглава матриарха хаска",
+    spawnasCoelanthhusk = "Появиться в виде Целакант хаска",
+    spawnasBonethresherhusk = "Появиться в виде Костяного акульего тигра хаска",
+    spawnasTigerthresherhusk = " Появиться в виде Акульего тигра хаска",
+    spawnasSnatcher = "Появиться в виде Похитителя",
+    spawnasMolochhusk = "Появиться в виде Молоха хаска",
+    spawnasMolochblackhusk = "Появиться в виде Черного молоха хаска",
+    spawnasMantishusk = "Появиться в виде Креветки хаска",
+    spawnasHuskmutanthunterranged = "Появиться в виде Охотника",
+    spawnasHuskmutanttigerthresher = "Появиться в виде Мутанта акульего тигра",
+    spawnasHuskmutantcrawler = "Появиться в виде Мутанта ползуна",
+    spawnasHuskmutantmudraptor = "Появиться в виде Мутанта раптора",
+    spawnasHuskmutantarmoredpucs = "Появиться в виде джаггернаута",
+    spawnasEndwormhuskhead = "Появиться в виде головы червя рока хаска",
+    spawnasEndwormhusk = "Появиться в виде Червя рока хаска",
+    spawnasCharybdishusk = "Появиться в виде Харибды хаска",
+    spawnasWatcherhusk = "Появиться в виде Смотрителя хаска",
+    spawnasLegacycrawlerhusk = "Появиться в виде креветки(устаревший)", 
+
+    -- Общие категории магазина
+    clown = "клоун",
+    cultist = "культисть",
+    traitor = "предатель",
+    deathspawn = "Переродиться",
+    wiring = "Проводка",
+    ores = "Руды",
+    security = "Безопасность",
+    ships = "Корабли",
+    materials = "Материалы",
+    medical = "Медицина",
+    maintenance = "Обслуживание",
+    other = "Прочее",
+    skillbooks = "Книги навыков",
+
+    -- Категории и классы Attack & Defend
+    attackdefend_scouts = "Скауты",
+    attackdefend_soldiers = "Солдаты",
+    attackdefend_stormtroopers = "Штурмовики",
+    attackdefend_snipers = "Снайперы",
+    attackdefend_medics = "Медики",
+    attackdefend_clowns = "Клоуны",
+    attackdefend_juggernauts = "Джаггернауты",
+    attackdefend_captains = "Капитаны",
+    attackdefend_engineers = "Инженеры",
+    attackdefend_gunners = "Артиллеристы",
+	randomize = "Казино предметов",
+    surgery = "Хирургия",
+    otherresources = "Остальные ресурсы",
+	spawnRed = "Команда красные",
+	spawnBlue = "Команда синие",
+    hideRed = "Искатели",
+    hideBlue = "Прячущиеся",
+
+    -- Категории и классы Hide & Seek
+    hideandseek_hider_classes = "Классы прячущихся",
+    hideandseek_seeker_classes = "Классы искателей",
+    hide_hider_1 = "Прячущийся",
+    hide_seeker_1 = "Искатель — тестовый класс 1",
+    hide_seeker_2 = "Искатель — тестовый класс 2",
+    deathspawnhusk = "Переродиться за хасков",
+    deadspawnfromsub = "Переродиться в подлодке",
+    deathspawnfriend = "Переродиться за дружулюбных существ",
+    deathtrigerevent = "Вызвать хорошие ивенты",
+    deathtrigereventevil = "Вызвать плохие ивенты",
+    deathtrigereventrandom = "Вызвать случайные ивенты",
+    deathtrigereventabilities = "Способности экипажа",
+    idcardlocator = "Локатор удостоверений личности",
+    idcardlocator_desc = "‖color:gui.red‖Локатор удостоверений личности‖color:end‖",
+    idcardlocator_result = "%s - %s - %s метров",
+
+    -- Классы команд Attack & Defend
+	coalition_scout = "Скаут - с дубинкой и ппшками",
+	coalition_soldier_1 = "Солдат - c пистолетом-пулеметом",
+	coalition_soldier_2 = "Солдат - с дробовиком",
+	coalition_stormtrooper_1 = "Штурмовик - с штурмовой винтовкой",
+	coalition_stormtrooper_2 = "Штурмовик - c гремелкой и электровинтовкой",
+	coalition_sniper_1 = "Снайпер - c ружьем и 30мл гранатами",
+	coalition_sniper_2 = "Снайпер - c винчестером и ревиком",
+	coalition_medic = "Медик - с медециной всей россии",
+	coalition_clown_1 = "Клоун - с молотками и с рандомными гранатами",
+	coalition_clown_2 = "Клоун - с драбашом и с стан дробошом",
+	coalition_clown_3 = "Клоун - с 3 клоунскими пушками",
+	coalition_juggernaut_1 = "Джагернаут - с огромной безумной батареей",
+	coalition_juggernaut_2 = "Джагернаут - с отрубателей голов секирой",
+	coalition_captain_1 = "Капитан - с двумя улучшенными револьверами",
+	coalition_captain_2 = "Капитан - с пиратской штурмовой винтовкой и ревиком",
+	coalition_engineer_1 = "Инженер - с разрядником и закаленным ломом",
+	coalition_engineer_2 = "Инженер - с ускорителем распадом",
+	coalition_gunner_1 = "Артелерист - с ручным гранатамётом",
+	coalition_gunner_2 = "Артелерист - с гранатамётом",
+	separatists_scout = "Скаут - с дубинкой и ппшками",
+	separatists_soldier_1 = "Солдат - c пистолетом-пулеметом",
+	separatists_soldier_2 = "Солдат - с дробовиком",
+	separatists_stormtrooper_1 = "Штурмовик - с штурмовой винтовкой",
+	separatists_stormtrooper_2 = "Штурмовик - c гремелкой и электровинтовкой",
+	separatists_sniper_1 = "Снайпер - c ружьем и 30мл гранатами",
+	separatists_sniper_2 = "Снайпер - c винчестером и ревиком",
+	separatists_medic = "Медик - с медециной всей россии",
+	separatists_clown_1 = "Клоун - с молотками и с рандомными гранатами",
+	separatists_clown_2 = "Клоун - с драбашом и с стан дробошом",
+	separatists_clown_3 = "Клоун - с 3 клоунскими пушками",
+	separatists_juggernaut_1 = "Джагернаут - с огромной безумной батареей",
+	separatists_juggernaut_2 = "Джагернаут - с отрубателей голов секирой",
+	separatists_captain_1 = "Капитан - с двумя улучшенными револьверами",
+	separatists_captain_2 = "Капитан - с пиратской штурмовой винтовкой и ревиком",
+	separatists_engineer_1 = "Инженер - с разрядником и закаленным ломом",
+	separatists_engineer_2 = "Инженер - с ускорителем распадом",
+	separatists_gunner_1 = "Артелерист - с ручным гранатамётом",
+	separatists_gunner_2 = "Артелерист - с гранатамётом",
+}
+
+-- Серверные проверки покупок и сообщения GUI
+language.ShipTooCloseToWall = "Невозможно купить корабль, позиция слишком близко к стене уровня."
+language.ShipTooCloseToShip = "Невозможно купить корабль, позиция находится слишком близко к другой подводной лодке."
+language.PointshopSubcategorySlots = "%d/%d мест"
+language.PointshopGuiCartEmpty = "Корзина пуста."
+language.PointshopGuiPurchased = "Покупка выполнена. Товаров: %d. Потрачено: %d pt."
+language.PointshopGuiUnavailable = "GUI Pointshop недоступен. Открываю старое меню."
+language.PointshopGuiSinglePurchase = "Этот товар можно добавить в корзину только один раз за покупку."
+language.PointshopMissingItem = "Ошибка PointShop: не удалось найти предмет с идентификатором %s. Сообщите об этой ошибке."
+
+-- Предметы, содержащие очки
+language.PointItemTerminalText = "В этом журнале %s очков. Введите \"claim\", чтобы забрать очки."
+language.PointItemClaimCommand = "claim"
+language.PointItemClaimedBy = "Забрано игроком %s"
+return language

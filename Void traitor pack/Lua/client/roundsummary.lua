@@ -23,10 +23,10 @@ local menuY = nil
 local menuWidth = nil
 local menuHeight = nil
 
-local DEFAULT_WIDTH_PIXELS = 370
+local DEFAULT_WIDTH_PIXELS = 450
 local DEFAULT_HEIGHT_PIXELS = 630
-local MIN_WIDTH_PIXELS = 320
-local MIN_HEIGHT_PIXELS = 320
+local MIN_WIDTH_PIXELS = 370
+local MIN_HEIGHT_PIXELS = 370
 local MENU_DRAW_ORDER = 124
 
 local SafeIntScale = Common.SafeIntScale
@@ -239,7 +239,7 @@ local function showSummary(summary, closeText)
     local dragIndicator = GUI.Image(CreateRect(0.045, 0.70, dragArea, GUI.Anchor.CenterLeft), "GUIDragIndicator")
     dragIndicator.CanBeFocused = false
 
-    local headerText = Common.CreateText(dragArea, 0.94, 1, GUI.Anchor.CenterRight, title, GUI.Alignment.Left, 1.35, Color(235, 205, 145, 255), false)
+    local headerText = Common.CreateText(dragArea, 0.94, 1, GUI.Anchor.CenterRight, title, GUI.Alignment.Left, 1.15, Color(235, 205, 145, 255), false)
     headerText.Font = GUI.Style.SubHeadingFont
     headerText.CanBeFocused = false
 
@@ -261,7 +261,7 @@ local function showSummary(summary, closeText)
     if summaryList.ContentBackground ~= nil then summaryList.ContentBackground.Color = Color(0, 0, 0, 0) end
     summaryList.KeepSpaceForScrollBar = true
 
-    local bodyText = Common.CreateText(summaryList.Content, 0.975, 0.20, GUI.Anchor.TopLeft, body, GUI.Alignment.TopLeft, 1.40, Color(220, 220, 210, 255), true)
+    local bodyText = Common.CreateText(summaryList.Content, 0.975, 0.20, GUI.Anchor.TopLeft, body, GUI.Alignment.TopLeft, 1.25, Color(220, 220, 210, 255), true)
     bodyText.CanBeFocused = false
     bodyText.CalculateHeightFromText()
     summaryList:RecalculateChildren()
@@ -274,7 +274,7 @@ end
 Common.InstallHudPatch(HUD_PATCH_ID, STATE_KEY, MENU_DRAW_ORDER, MENU_DRAW_ORDER)
 
 Networking.Receive(NET_SUMMARY, function(message)
-    showSummary(message.ReadString(), message.ReadString())
+    showSummary(message.ReadString(), Common.Language.Common.Close)
 end)
 
 Hook.Add("think", "VoidTraitor.RoundSummary.Think", function()

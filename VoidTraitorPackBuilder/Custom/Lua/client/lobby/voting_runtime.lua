@@ -4,17 +4,7 @@ local S = P.State
 Networking.Receive(P.NET_VOTE_SNAPSHOT, function(message)
     if S.sharedState.Disabled then return end
 
-    P.VoteUiText.Button = message.ReadString()
-    P.VoteUiText.Tooltip = message.ReadString()
-    P.VoteUiText.StartTitle = message.ReadString()
-    P.VoteUiText.StartMode = message.ReadString()
-    P.VoteUiText.StartMap = message.ReadString()
     P.VoteUiText.StartBlockedReason = message.ReadString()
-    P.VoteUiText.Close = message.ReadString()
-    P.VoteUiText.NoActive = message.ReadString()
-    P.VoteUiText.StartedBy = message.ReadString()
-    P.VoteUiText.Timer = message.ReadString()
-    P.VoteUiText.Votes = message.ReadString()
 
     local canStart = message.ReadBoolean()
     local hasActive = message.ReadBoolean()
@@ -24,12 +14,13 @@ Networking.Receive(P.NET_VOTE_SNAPSHOT, function(message)
         local active = {
             Id = message.ReadString(),
             Type = message.ReadString(),
-            Title = message.ReadString(),
+            Title = "",
             StartedBy = message.ReadString(),
             Remaining = message.ReadInt32(),
             Duration = message.ReadInt32(),
             Options = {},
         }
+        active.Title = active.Type == "map" and P.VoteUiText.MapTitle or P.VoteUiText.GameTitle
         active.LocalEndTime = P.GetTime() + math.max(0, tonumber(active.Remaining or 0) or 0)
 
         local count = message.ReadInt32()

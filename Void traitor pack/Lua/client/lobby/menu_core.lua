@@ -13,8 +13,6 @@ P.NET_SNAPSHOT = "VoidTraitor_ClientMenuSnapshot"
 P.NET_RUN = "VoidTraitor_ClientMenuRun"
 P.NET_POINTSHOP_REQUEST = "VoidTraitor_PointshopRequest"
 
-P.DISABLED_ACTION_PREFIX = "__vt_disabled__:"
-
 P.GLOBAL_STATE_KEY = "VoidTraitorClientMenuState"
 P.HUD_PATCH_ID = "VoidTraitor.ClientMenu.Hud"
 P.PAUSE_PATCH_ID = "VoidTraitor.ClientMenu.Pause"
@@ -55,19 +53,22 @@ S.vtMenuHeight = nil
 S.vtResizeTopTargets = {}
 S.vtResizeBottomTargets = {}
 S.vtResizeState = nil
+local menuText = Common.Language.ClientMenu
+local commonText = Common.Language.Common
 P.UiText = {
-    Title = "VOID TRAITOR",
-    ShopButton = "SHOP",
-    MainButton = "VT",
-    ShopTooltip = "Open Void Traitor Pointshop",
-    MainTooltip = "Open Void Traitor command menu",
-    NoCommands = "No commands were received from the server.",
-    GenericCommand = "Command",
-    DefaultConfirmTitle = "Confirmation",
-    Cancel = "Cancel",
-    Yes = "Yes",
-    Ok = "OK",
+    Title = menuText.Title,
+    ShopButton = menuText.ShopButton,
+    MainButton = menuText.MainButton,
+    ShopTooltip = menuText.ShopTooltip,
+    MainTooltip = menuText.MainTooltip,
+    NoCommands = menuText.NoCommands,
+    GenericCommand = menuText.GenericCommand,
+    DefaultConfirmTitle = menuText.DefaultConfirmTitle,
+    Cancel = commonText.Cancel,
+    Yes = commonText.Yes,
+    Ok = commonText.Ok,
 }
+P.MenuText = menuText
 
 
 

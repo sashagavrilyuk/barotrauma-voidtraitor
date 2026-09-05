@@ -64,16 +64,6 @@ function P.ReadSnapshot(message)
         end
     end
 
-    local textCount = message.ReadInt32()
-
-    for i = 1, textCount do
-        local key = message.ReadString()
-        local value = message.ReadString()
-        if key ~= nil and key ~= "" then
-            P.Text[key] = value or ""
-        end
-    end
-
     local purchaseCompleted = message.ReadBoolean()
 
     S.cooldownSnapshotRequested = false

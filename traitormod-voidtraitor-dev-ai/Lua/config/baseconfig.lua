@@ -6,10 +6,9 @@ config.DebugLogs = true
 
 ----- USER FEEDBACK -----
 config.Languages = {
-    dofile(Traitormod.Path .. "/Lua/language/english.lua"), -- If it can't find a specific language key, it will always fallback to the first language on the list.
     dofile(Traitormod.Path .. "/Lua/language/russian.lua"),
 }
-config.Language = "Russian" -- English, Russian
+config.Language = "Russian"
 config.SendWelcomeMessage = true
 config.ChatMessageType = ChatMessageType.Private    -- Error = red | Private = green | Dead = blue | Radio = yellow
 
@@ -237,6 +236,9 @@ config.GamemodeConfig = {
 
         PointsGainedFromHandcuffedTraitors = 3500,
         DistanceToEndOutpostRequired = 8000,
+        SurvivorRewardEnabled = true,
+        SurvivorRewardPercent = 50,
+        SurvivorRewardRequiredDeathsPercent = 60,
 
         MissionPoints = {
             Salvage = 1100,

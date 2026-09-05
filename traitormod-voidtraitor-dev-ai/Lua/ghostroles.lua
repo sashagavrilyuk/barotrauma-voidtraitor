@@ -23,23 +23,6 @@ local nextAutoRegisterTime = 0
 local nextStateCheckTime = 0
 local lastStateSignature = ""
 
-local guiTextKeys = {
-    "Title",
-    "Button",
-    "Points",
-    "Price",
-    "Free",
-    "Taken",
-    "Dead",
-    "Take",
-    "Follow",
-    "Close",
-    "Empty",
-    "SelectRole",
-    "FreePrice",
-    "NotEnoughPoints",
-}
-
 local function lang(key)
     return Traitormod.GetText(key)
 end
@@ -70,12 +53,6 @@ local function resolveText(value)
     end
 
     return value
-end
-
-local function getGuiText(key)
-    local language = Traitormod.Language or {}
-    local guiText = language.GhostRolesGuiText or {}
-    return tostring(guiText[key] or "")
 end
 
 local function toNetInt32(value, fallback)
@@ -599,11 +576,6 @@ function gr.SendGuiSnapshot(client, openMenu)
         netMessage.WriteBoolean(state == "free" and (Traitormod.Config.TestMode or price <= points))
     end
 
-    netMessage.WriteInt32(#guiTextKeys)
-    for _, key in ipairs(guiTextKeys) do
-        netMessage.WriteString(key)
-        netMessage.WriteString(getGuiText(key))
-    end
 
     Networking.Send(netMessage, client.Connection)
     return true

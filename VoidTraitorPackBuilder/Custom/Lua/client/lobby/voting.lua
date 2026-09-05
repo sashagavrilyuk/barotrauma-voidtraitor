@@ -17,19 +17,8 @@ S.lastShownActiveVoteId = ""
 S.lastVoteButtonResolutionX = -1
 S.lastVoteButtonResolutionY = -1
 
-P.VoteUiText = {
-    Button = "Начать голосование",
-    Tooltip = "Открыть меню голосования в лобби",
-    StartTitle = "Vote",
-    StartMode = "Start game mode vote",
-    StartMap = "Start submarine vote",
-    StartBlockedReason = "",
-    Close = "Close",
-    NoActive = "No active vote right now.",
-    StartedBy = "Started by",
-    Timer = "Time left",
-    Votes = "votes",
-}
+P.VoteUiText = P.Common.Language.Voting
+P.VoteUiText.StartBlockedReason = ""
 
 
 local base = P.PackPath .. "/Lua/client/lobby/"

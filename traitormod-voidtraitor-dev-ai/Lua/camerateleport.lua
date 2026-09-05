@@ -6,21 +6,6 @@ local guiNet = {
     Snapshot = "VoidTraitor_CameraTeleportSnapshot",
 }
 
-local guiTextKeys = {
-    "Title",
-    "Button",
-    "Player",
-    "Follow",
-    "Close",
-    "Empty",
-}
-
-local function getGuiText(key)
-    local language = Traitormod.Language or {}
-    local guiText = language.CameraTeleportGuiText or {}
-    return tostring(guiText[key] or "")
-end
-
 local function toNetInt32(value, fallback)
     value = math.floor(tonumber(value) or tonumber(fallback) or 0)
     return math.max(-2147483648, math.min(2147483647, value))
@@ -100,11 +85,6 @@ function cameraTeleport.SendSnapshot(client, openMenu)
         message.WriteString(target.Icon)
     end
 
-    message.WriteInt32(#guiTextKeys)
-    for _, key in ipairs(guiTextKeys) do
-        message.WriteString(key)
-        message.WriteString(getGuiText(key))
-    end
 
     Networking.Send(message, client.Connection)
     return true
