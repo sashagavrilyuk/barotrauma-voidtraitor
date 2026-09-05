@@ -33,8 +33,12 @@
     <target tag="cultist" state="Idle" priority="0" ignoreinside="True" ignoreoutside="True" ignoreifnotinsamesub="True" ignoreincapacitated="True" threshold="1" />
     <target tag="truepriestcultist" state="Protect" priority="1" reactdistance="1000" ignoreinside="true" />
   </ai>
-  <StatusEffect type="OnActive" target="This">
+  <StatusEffect type="OnActive" target="NearbyCharacters" range="5000">
+    <Affliction identifier="watcher'srage" strength="5" />
     <Sound file="%ModDir%/Enhanced Husks/Characters/Watcherhusk/idleloop2.ogg" loop="true" volume="0.6" range="10000" dontmuffle="true" />
+  </StatusEffect>
+  <StatusEffect type="OnActive" target="NearbyCharacters" range="1500" onlyoutside="true">
+    <Affliction identifier="watcher'srage" strength="20" />
   </StatusEffect>
   <StatusEffect type="OnActive" target="this">
     <Sound file="%ModDir%/Enhanced Husks/Characters/Watcherhusk/idleloop.ogg" loop="true" volume="0.6" range="10000" dontmuffle="true" />
