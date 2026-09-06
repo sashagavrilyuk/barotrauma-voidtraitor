@@ -31,7 +31,7 @@ category.Init = function ()
 
     Hook.Patch("Barotrauma.Items.Components.Wearable", "Equip", function(instance, ptable)
         if not instance.Item.HasTag("chocker") then return end
-        if not instance.AllowedSlots[2] == InvSlotType.Head then return end
+        if instance.AllowedSlots[2] ~= InvSlotType.Head then return end
 
         -- For some reason speechImpediment doesnt work
         if ptable["character"] ~= nil then
@@ -41,7 +41,7 @@ category.Init = function ()
 
     Hook.Patch("Barotrauma.Items.Components.Wearable", "Unequip", function(instance, ptable)
         if not instance.Item.HasTag("chocker") then return end
-        if not instance.AllowedSlots[2] == InvSlotType.Head then return end
+        if instance.AllowedSlots[2] ~= InvSlotType.Head then return end
 
         -- For some reason speechImpediment doesnt work
         if ptable["character"] ~= nil then

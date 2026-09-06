@@ -69,7 +69,7 @@ local category = {
 Identifier = "randomize",
 
 CanAccess = function (client)
-	return client.Character and not client.Character.isDead
+	return client.Character and not client.Character.IsDead
 end,
 
 Products = {
