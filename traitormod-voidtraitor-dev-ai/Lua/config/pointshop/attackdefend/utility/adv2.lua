@@ -216,7 +216,9 @@ end
 ---@param itemId string
 ---@param inventory Barotrauma.Inventory
 ---@param itemEntry ItemTableEntry
-local function spawnItems(itemId, inventory, itemEntry, inheritedLocked)
+---@param inheritedLocked boolean?
+---@param teamId Barotrauma.CharacterTeamType?
+local function spawnItems(itemId, inventory, itemEntry, inheritedLocked, teamId)
 	local onSpawn = nil
 	local quantity = 1
 	local condition, quality, spawnIfFull, ignoreLimbs, invSlotType
@@ -255,7 +257,7 @@ local function spawnItems(itemId, inventory, itemEntry, inheritedLocked)
 
 				if items ~= nil then
 					for key, value in pairs(items) do
-						spawnItems(key, item.OwnInventory, value, lockContainedItems)
+						spawnItems(key, item.OwnInventory, value, lockContainedItems, teamId)
 					end
 				end
 			end
@@ -266,6 +268,19 @@ local function spawnItems(itemId, inventory, itemEntry, inheritedLocked)
 		---@param item Barotrauma.Item
 		onSpawn = function (item)
 			applyNativeItemLocks(item, locked, lockContainer)
+		end
+	end
+
+	if teamId ~= nil then
+		local previousOnSpawn = onSpawn
+		---@param item Barotrauma.Item
+		onSpawn = function (item)
+			if previousOnSpawn ~= nil then previousOnSpawn(item) end
+
+			local wifi = item.GetComponentString("WifiComponent")
+			if wifi ~= nil then
+				wifi.TeamID = teamId
+			end
 		end
 	end
 
@@ -322,7 +337,7 @@ function ADV2.CreateClassProduct(teamId, config)
 				end
 
 				for itemId, itemEntry in pairs(config.Items) do
-					spawnItems(itemId, character.Inventory, itemEntry)
+					spawnItems(itemId, character.Inventory, itemEntry, nil, character.TeamID)
 				end
 			end
 
