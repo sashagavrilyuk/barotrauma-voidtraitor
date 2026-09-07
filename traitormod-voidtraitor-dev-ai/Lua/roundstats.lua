@@ -481,6 +481,14 @@ function roundStats.BuildSecretSummary()
         end
     end
 
+    local pointsEarned, pointLeaders = maxLeaders(crew, function(participant)
+        local accountKey = getCharacterAccount(participant.Character)
+        return accountKey ~= nil and (Traitormod.SelectedGamemode.AwardedPoints or {})[accountKey] or 0
+    end)
+    if pointsEarned > 0 then
+        table.insert(crewLines, string.format(Traitormod.GetText("RoundDistinctionPoints"), names(pointLeaders), math.floor(pointsEarned)))
+    end
+
     if #crewLines > 0 then
         table.insert(lines, Traitormod.GetText("RoundDistinctionsTitle"))
         for _, line in ipairs(crewLines) do table.insert(lines, line) end
