@@ -1,5 +1,8 @@
 local category = {}
 
+local huskBeacons = {}
+local huskBeaconTimer = 0
+
 category.Identifier = "cultist"
 category.Decoration = "cultist"
 category.FadeToBlack = true
@@ -12,6 +15,7 @@ LuaUserData.MakeMethodAccessible(Descriptors["Barotrauma.StatusEffect"], "set_Af
 LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.AfflictionHusk"] or LuaUserData.RegisterType("Barotrauma.AfflictionHusk"), "_strength")
 
 category.Init = function ()
+    huskBeaconTimer = Timer.GetTime()
     local replacement = [[
         <overwrite>
         <!--Can't fail, but can't use OnUse for projectiles-->
@@ -80,6 +84,37 @@ category.Init = function ()
             end
         end
     end)
+
+    Hook.Add("think", "Cultist.HuskBeacon.Think", function ()
+        if huskBeaconTimer > Timer.GetTime() then return end
+        if not Game.RoundStarted then return end
+
+        for item, timeLeft in pairs(huskBeacons) do
+            if item == nil or item.Removed then
+                huskBeacons[item] = nil
+            else
+                local interface = item.GetComponentString("CustomInterface")
+                if interface ~= nil and interface.customInterfaceElementList[1].State then
+                    huskBeacons[item] = timeLeft - 5
+                end
+
+                if huskBeacons[item] ~= nil and huskBeacons[item] <= 0 then
+                    for i = 1, 4, 1 do
+                        Entity.Spawner.AddCharacterToSpawnQueue("husk", item.WorldPosition)
+                    end
+
+                    Entity.Spawner.AddEntityToRemoveQueue(item)
+                    huskBeacons[item] = nil
+                end
+            end
+        end
+
+        huskBeaconTimer = Timer.GetTime() + 5
+    end)
+
+    Hook.Add("roundEnd", "Cultist.HuskBeacon.RoundEnd", function ()
+        huskBeacons = {}
+    end)
 end
 
 category.Products = {
@@ -115,7 +150,7 @@ category.Products = {
                 interface.customInterfaceElementList[2].Signal = "Husk Beacon"
                 item.CreateServerEvent(interface, interface)
 
-                Traitormod.AddHuskBeacon(item, 30)
+                huskBeacons[item] = 30
             end)
         end
     },

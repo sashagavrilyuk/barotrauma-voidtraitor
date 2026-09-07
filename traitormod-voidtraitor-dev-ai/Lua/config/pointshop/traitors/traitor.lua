@@ -1,3 +1,5 @@
+local monsterBeacon = dofile(Traitormod.Path .. "/Lua/config/pointshop/utility/monsterbeacon.lua")
+
 local category = {}
 
 category.Identifier = "traitor"
@@ -50,6 +52,7 @@ category.Init = function ()
     end, Hook.HookMethodType.After) 
 
 
+    monsterBeacon.Init()
 end
 
 category.Products = {
@@ -243,7 +246,7 @@ category.Products = {
                 interface.customInterfaceElementList[2].Signal = "Monster Beacon"
                 item.CreateServerEvent(interface, interface)
 
-                Traitormod.AddMonsterBeacon(item, client.Character)
+                monsterBeacon.Add(item, client.Character)
             end)
         end
     },
