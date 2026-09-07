@@ -27,6 +27,18 @@ function role:CultistLoop(first)
             end, delay)
         end
 
+        local fail = husk.Fail
+        husk.Fail = function(objective, silent)
+            fail(objective, silent)
+
+            if Traitormod.IsSecretEnding() then return end
+
+            local delay = math.random(this.NextObjectiveDelayMin, this.NextObjectiveDelayMax) * 1000
+            Timer.Wait(function(...)
+                this:CultistLoop()
+            end, delay)
+        end
+
 
         if client and not first then
             Traitormod.SendMessage(client, string.format(Traitormod.Language.HuskNewObjective, target.Name),
