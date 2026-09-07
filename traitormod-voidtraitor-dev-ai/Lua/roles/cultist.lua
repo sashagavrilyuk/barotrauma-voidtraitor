@@ -1,5 +1,6 @@
 local role = Traitormod.RoleManager.Roles.Antagonist:new()
 role.Name = "Cultist"
+local characterEventType = LuaUserData.CreateEnumTable("Barotrauma.Character+EventType")
 
 function role:CultistLoop(first)
     if not Game.RoundStarted then return end
@@ -224,5 +225,21 @@ Hook.Add("husk.clientControlHusk", "Traitormod.Cultist.HuskControl", function (c
         Traitormod.RoleManager.AssignRole(client.Character, Traitormod.RoleManager.Roles.HuskServant:new())
     end
 end)
+
+Hook.Patch("Traitormod.Cultist.PreventInfectedSurrender", "Barotrauma.Character", "ServerEventRead", function (character, ptable)
+    local msg = ptable["msg"]
+    local client = ptable["c"]
+    local rewindBit = msg.BitPosition
+    local eventType = msg.ReadRangedInteger(characterEventType.MinValue, characterEventType.MaxValue)
+    msg.BitPosition = rewindBit
+
+    if eventType ~= characterEventType.Status or client.Character ~= character or not character.IsIncapacitated then return end
+    if #Traitormod.RoleManager.FindCharactersByRole("Cultist") == 0 then return end
+
+    local aff = character.CharacterHealth.GetAffliction("huskinfection", true)
+    if aff == nil or aff.Strength < 1 then return end
+
+    ptable.PreventExecution = true
+end, Hook.HookMethodType.Before)
 
 return role
