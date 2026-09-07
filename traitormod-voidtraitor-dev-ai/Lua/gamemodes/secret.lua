@@ -79,7 +79,7 @@ end
 local function sendSummaryPopup(client, summary)
     if Traitormod.ClientHasLua ~= nil and Traitormod.ClientHasLua(client) then
         local message = Networking.Start(summaryNetMessage)
-        message.WriteString(summary)
+        message.WriteString(Traitormod.HighlightClientNames(summary, Color.Red))
         Networking.Send(message, client.Connection)
     else
         local chatMessage = ChatMessage.Create(Traitormod.GetText("ChatSenderServer"), summary, ChatMessageType.ServerMessageBox, nil, nil)
@@ -562,11 +562,6 @@ function gm:RoundSummary()
     sb("%s: %d | %s: %d\n", Traitormod.Language.Alive, antagonistAlive, Traitormod.Language.Dead, antagonistDead)
     if antagonistCount == 0 then
         sb("%s\n", Traitormod.Language.NoTraitors)
-    else
-        for _, entry in ipairs(antagonistEntries) do
-            local state = entry.Character.IsDead and Traitormod.Language.Dead or Traitormod.Language.Alive
-            sb("%s — %s (%s)\n", entry.Character.Name, entry.Role.Name, state)
-        end
     end
 
     for _, entry in ipairs(antagonistEntries) do
