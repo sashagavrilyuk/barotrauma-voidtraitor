@@ -4,6 +4,19 @@ local textPromptUtils = require("textpromptutils")
 
 local ItemsShown = 30 -- Sets how many lines will be shown. Should not be much more than 50
 local spairs
+local playtimeUpdateTimer = 0
+
+Hook.Add("think", "Traitormod.Playtime.think", function(deltaTime)
+    playtimeUpdateTimer = playtimeUpdateTimer + deltaTime
+    if playtimeUpdateTimer < 1 then return end
+
+    local elapsed = playtimeUpdateTimer
+    playtimeUpdateTimer = 0
+
+    for _, client in pairs(Client.ClientList) do
+        Traitormod.AddData(client, "Playtime", elapsed)
+    end
+end)
 
 statistics.LoadData = function ()
     if Traitormod.Config.PermanentStatistics then
