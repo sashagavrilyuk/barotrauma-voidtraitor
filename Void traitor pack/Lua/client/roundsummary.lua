@@ -263,6 +263,7 @@ local function showSummary(summary, closeText)
 
     local bodyText = Common.CreateText(summaryList.Content, 0.975, 0.20, GUI.Anchor.TopLeft, body, GUI.Alignment.TopLeft, 1.25, Color(220, 220, 210, 255), true)
     bodyText.CanBeFocused = false
+    bodyText.SetRichText(body)
     bodyText.CalculateHeightFromText()
     summaryList:RecalculateChildren()
     summaryList:UpdateScrollBarSize()
