@@ -530,16 +530,14 @@ function gm:RoundSummary()
     sb("%s: %s\n", Traitormod.Language.DiscordFieldRound, Traitormod.RoundNumber + 1)
     sb("%s: %s\n", Traitormod.Language.DiscordFieldDuration, Traitormod.FormatTime(math.ceil(Traitormod.RoundTime)))
 
-    local entries = {}
     local antagonistCount = 0
     local antagonistAlive = 0
     local antagonistDead = 0
     local antagonistEntries = {}
 
     for character, role in pairs(Traitormod.RoleManager.RoundRoles) do
-        local entry = { Character = character, Role = role }
-        table.insert(entries, entry)
         if role.IsAntagonist then
+            local entry = { Character = character, Role = role }
             antagonistCount = antagonistCount + 1
             if character.IsDead then
                 antagonistDead = antagonistDead + 1
@@ -549,12 +547,6 @@ function gm:RoundSummary()
             table.insert(antagonistEntries, entry)
         end
     end
-    table.sort(entries, function(a, b)
-        if a.Role.IsAntagonist ~= b.Role.IsAntagonist then
-            return a.Role.IsAntagonist
-        end
-        return string.lower(tostring(a.Character.Name)) < string.lower(tostring(b.Character.Name))
-    end)
     table.sort(antagonistEntries, function(a, b)
         return string.lower(tostring(a.Character.Name)) < string.lower(tostring(b.Character.Name))
     end)
@@ -577,37 +569,29 @@ function gm:RoundSummary()
         end
     end
 
-    for _, entry in ipairs(entries) do
+    for _, entry in ipairs(antagonistEntries) do
         local character = entry.Character
         local role = entry.Role
         local state = character.IsDead and Traitormod.Language.Dead or Traitormod.Language.Alive
 
         sb("\n%s — %s (%s)\n", character.Name, role.Name, state)
 
-        local client = Traitormod.FindClientCharacter(character)
-        local accountKey = client ~= nil and Traitormod.GetClientAccountKey(client) or nil
-        local pointsGained = math.floor((accountKey ~= nil and self.AwardedPoints[accountKey]) or 0)
+        local objectivesCompleted = 0
+        for _, objective in ipairs(role.Objectives or {}) do
+            if objective.Awarded then objectivesCompleted = objectivesCompleted + 1 end
+        end
+        sb(Traitormod.Language.SecretRoundObjectivesSummary, objectivesCompleted)
 
-        if role.Name == "Crew" then
-            sb(Traitormod.Language.SecretCrewSummary, pointsGained)
-        else
-            local objectivesCompleted = 0
-            for _, objective in ipairs(role.Objectives or {}) do
-                if objective.Awarded then objectivesCompleted = objectivesCompleted + 1 end
+        for _, objective in ipairs(role.Objectives or {}) do
+            local objectiveState
+            if objective.Failed then
+                objectiveState = Traitormod.Language.Failed
+            elseif objective.Awarded then
+                objectiveState = Traitormod.Language.Completed .. string.format(Traitormod.Language.Points, objective.AmountPoints or 0)
+            else
+                objectiveState = ""
             end
-            sb(Traitormod.Language.SecretSummary, objectivesCompleted, pointsGained)
-
-            for _, objective in ipairs(role.Objectives or {}) do
-                local objectiveState
-                if objective.Failed then
-                    objectiveState = Traitormod.Language.Failed
-                elseif objective.Awarded then
-                    objectiveState = Traitormod.Language.Completed .. string.format(Traitormod.Language.Points, objective.AmountPoints or 0)
-                else
-                    objectiveState = ""
-                end
-                sb(" > %s %s\n", objective.Text, string.gsub(objectiveState, "^%s+", ""))
-            end
+            sb(" > %s %s\n", objective.Text, string.gsub(objectiveState, "^%s+", ""))
         end
     end
 
