@@ -600,7 +600,7 @@ end)
 Hook.Add("traitormod.healingTracked", "Traitormod.RoundStats.HealingTracked", function(target, healer, amount)
     if not isTrackedMode() or target == nil or healer == nil or target.TeamID ~= healer.TeamID then return end
 
-    local healerAccount = getCharacterAccount(healer)
+    local healerAccount = getCachedPlayerAccount(healer)
     if healerAccount == nil then return end
 
     local selfHealing = target == healer
