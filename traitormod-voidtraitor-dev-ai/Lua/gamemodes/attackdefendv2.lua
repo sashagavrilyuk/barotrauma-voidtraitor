@@ -239,10 +239,11 @@ function gm:_AddNewClient(client)
 	local notPriorityTeamID = GetOppositeTeamID(priorityTeamID)
 
 	local teamCounts = { [TeamID1] = 0, [TeamID2] = 0 }
-	for teamID, team in pairs(self.Teams) do
-		for _, member in pairs(team.Members) do
-			if member.Connection ~= nil and member.Connection.Status == 1 and not member.SpectateOnly then
-				teamCounts[teamID] = teamCounts[teamID] + 1
+	for member in Client.ClientList do
+		if member ~= client and not member.SpectateOnly and (not member.AFK or not Game.ServerSettings.AllowAFK) then
+			local team = self.Teams[member.TeamID]
+			if team ~= nil and team.Members[member.AccountId] ~= nil then
+				teamCounts[member.TeamID] = teamCounts[member.TeamID] + 1
 			end
 		end
 	end
