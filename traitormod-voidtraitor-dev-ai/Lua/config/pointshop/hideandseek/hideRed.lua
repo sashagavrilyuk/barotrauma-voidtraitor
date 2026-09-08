@@ -1,14 +1,13 @@
 ---@diagnostic disable-next-line: unknown-cast-variable
 ---@cast Traitormod.SelectedGamemode Gamemodes.HideAndSeekV2
 
-local respawnStart = dofile(Traitormod.Path .. "/Lua/config/pointshop/attackdefend/utility/adv2.lua").RespawnStart
-local ShopTeamID = CharacterTeamType.Team2
+---@module "adv2"
+local ADV2 = dofile(Traitormod.Path .. "/Lua/config/pointshop/attackdefend/utility/adv2.lua")
+local CreateClassProduct = ADV2.CreateClassProduct
+local CreateClassSubcategory = ADV2.CreateClassSubcategory
+ADV2 = nil
 
-local classSubcategory = {
-    Identifier = "hideandseek_seeker_classes",
-    CounterType = "ClassGroup",
-    CounterId = "hideandseek_seeker_classes",
-}
+local ShopTeamID = CharacterTeamType.Team2
 
 ---@type Pointshop.Category
 local category = {
@@ -18,29 +17,42 @@ local category = {
         return entry ~= nil and not entry.Forfeited and not entry.Spawned
     end,
     Products = {
-        {
+        CreateClassProduct(ShopTeamID, {
             Identifier = "hide_seeker_1",
-            Price = 0,
-            Limit = math.huge,
-            Subcategory = classSubcategory,
-            GuiJobIdentifier = "securityofficer",
-            Action = function(client, product)
-                local entry = respawnStart(client, ShopTeamID, product.Identifier, "securityofficer", product)
-                entry.OnSpawn = function(character) end
-            end,
-        },
-        {
+            JobId = "securityofficer",
+            Items = {
+                ["idcard"] = {
+                    InvSlotType = InvSlotType.Card,
+                    OnSpawn = function(card, spawnPoint, character)
+                        card.GetComponentString("IdCard").Initialize(spawnPoint, character)
+                    end,
+                },
+                ["headset"] = {
+                    InvSlotType = InvSlotType.Headset,
+                },
+            },
+        }),
+        CreateClassProduct(ShopTeamID, {
             Identifier = "hide_seeker_2",
-            Price = 0,
-            Limit = math.huge,
-            Subcategory = classSubcategory,
-            GuiJobIdentifier = "captain",
-            Action = function(client, product)
-                local entry = respawnStart(client, ShopTeamID, product.Identifier, "captain", product)
-                entry.OnSpawn = function(character) end
-            end,
-        },
+            JobId = "captain",
+            Items = {
+                ["idcard"] = {
+                    InvSlotType = InvSlotType.Card,
+                    OnSpawn = function(card, spawnPoint, character)
+                        card.GetComponentString("IdCard").Initialize(spawnPoint, character)
+                    end,
+                },
+                ["headset"] = {
+                    InvSlotType = InvSlotType.Headset,
+                },
+            },
+        }),
     }
 }
+
+local classSubcategory = CreateClassSubcategory("hideandseek_seeker_classes", math.huge)
+for _, product in ipairs(category.Products) do
+    product.Subcategory = classSubcategory
+end
 
 return category

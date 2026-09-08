@@ -32,17 +32,7 @@ local function cleanRemove(character)
     end
 end
 
-local function gearUpCharacter(character, team, waypoint)
-    local card = character.Inventory.GetItemInLimbSlot(InvSlotType.Card)
-    if card ~= nil then
-        Entity.Spawner.AddItemToRemoveQueue(card)
-    end
-    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("vt_hideandseek_idcard"), character.Inventory, nil, nil, function (newCard)
-        for tag in waypoint.IdCardTags do
-            newCard.AddTag(tag)
-        end
-    end, true, false, InvSlotType.Card)
-
+local function colorTeamClothes(character, team)
     local innerClothes = character.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)
     if innerClothes then
         innerClothes.SpriteColor = team.Color
@@ -68,8 +58,8 @@ local function spawnCharacter(client, team, entry)
     local character = Character.Create(characterInfo, spawnPoint.WorldPosition, characterInfo.Name, 0, true, true)
     client.SetClientCharacter(character)
     textPromptUtils.UnlockOption(client)
-    gearUpCharacter(character, team, spawnPoint)
-    entry.OnSpawn(character)
+    entry.OnSpawn(character, spawnPoint)
+    colorTeamClothes(character, team)
     entry.Spawned = true
     return true
 end
