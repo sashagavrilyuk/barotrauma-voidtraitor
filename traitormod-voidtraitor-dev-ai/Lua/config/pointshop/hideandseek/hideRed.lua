@@ -50,7 +50,7 @@ local category = {
     }
 }
 
-local classSubcategory = CreateClassSubcategory("hideandseek_seeker_classes", math.huge)
+local classSubcategory = CreateClassSubcategory("hideandseek_seeker_classes")
 for _, product in ipairs(category.Products) do
     product.Subcategory = classSubcategory
 end
