@@ -57,6 +57,8 @@ function role:CompletedObjectives(name)
 end
 
 function role:FindValidTarget(objective)
+    if self.Character.IsDead then return nil end
+
     local targets = {}
     local debug = ""
     for key, value in pairs(Character.CharacterList) do
