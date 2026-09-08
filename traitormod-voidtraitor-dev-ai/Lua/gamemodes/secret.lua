@@ -2,8 +2,10 @@ local weightedRandom = dofile(Traitormod.Path .. "/Lua/gamemodes/weightedrandom.
 local gm = Traitormod.Gamemodes.Gamemode:new()
 
 if not LuaUserData.IsRegistered("Barotrauma.CheckDataAction") then LuaUserData.RegisterType("Barotrauma.CheckDataAction") end
+local gameServerDescriptor = Descriptors["Barotrauma.Networking.GameServer"] or LuaUserData.RegisterType("Barotrauma.Networking.GameServer")
 local transitionTypes = LuaUserData.CreateEnumTable("Barotrauma.CampaignMode+TransitionType")
 local voteTypes = LuaUserData.CreateEnumTable("Barotrauma.Networking.VoteType")
+LuaUserData.MakePropertyAccessible(gameServerDescriptor, "EndRoundTimer")
 
 local summaryNetMessage = "VoidTraitor_RoundSummary"
 local lobbySummaryPending = nil
@@ -77,7 +79,7 @@ end
 local function sendSummaryPopup(client, summary)
     if Traitormod.ClientHasLua ~= nil and Traitormod.ClientHasLua(client) then
         local message = Networking.Start(summaryNetMessage)
-        message.WriteString(summary)
+        message.WriteString(Traitormod.HighlightClientNames(summary, Color.Red))
         Networking.Send(message, client.Connection)
     else
         local chatMessage = ChatMessage.Create(Traitormod.GetText("ChatSenderServer"), summary, ChatMessageType.ServerMessageBox, nil, nil)
@@ -528,16 +530,14 @@ function gm:RoundSummary()
     sb("%s: %s\n", Traitormod.Language.DiscordFieldRound, Traitormod.RoundNumber + 1)
     sb("%s: %s\n", Traitormod.Language.DiscordFieldDuration, Traitormod.FormatTime(math.ceil(Traitormod.RoundTime)))
 
-    local entries = {}
     local antagonistCount = 0
     local antagonistAlive = 0
     local antagonistDead = 0
     local antagonistEntries = {}
 
     for character, role in pairs(Traitormod.RoleManager.RoundRoles) do
-        local entry = { Character = character, Role = role }
-        table.insert(entries, entry)
         if role.IsAntagonist then
+            local entry = { Character = character, Role = role }
             antagonistCount = antagonistCount + 1
             if character.IsDead then
                 antagonistDead = antagonistDead + 1
@@ -547,12 +547,6 @@ function gm:RoundSummary()
             table.insert(antagonistEntries, entry)
         end
     end
-    table.sort(entries, function(a, b)
-        if a.Role.IsAntagonist ~= b.Role.IsAntagonist then
-            return a.Role.IsAntagonist
-        end
-        return string.lower(tostring(a.Character.Name)) < string.lower(tostring(b.Character.Name))
-    end)
     table.sort(antagonistEntries, function(a, b)
         return string.lower(tostring(a.Character.Name)) < string.lower(tostring(b.Character.Name))
     end)
@@ -568,44 +562,31 @@ function gm:RoundSummary()
     sb("%s: %d | %s: %d\n", Traitormod.Language.Alive, antagonistAlive, Traitormod.Language.Dead, antagonistDead)
     if antagonistCount == 0 then
         sb("%s\n", Traitormod.Language.NoTraitors)
-    else
-        for _, entry in ipairs(antagonistEntries) do
-            local state = entry.Character.IsDead and Traitormod.Language.Dead or Traitormod.Language.Alive
-            sb("%s — %s (%s)\n", entry.Character.Name, entry.Role.Name, state)
-        end
     end
 
-    for _, entry in ipairs(entries) do
+    for _, entry in ipairs(antagonistEntries) do
         local character = entry.Character
         local role = entry.Role
         local state = character.IsDead and Traitormod.Language.Dead or Traitormod.Language.Alive
 
         sb("\n%s — %s (%s)\n", character.Name, role.Name, state)
 
-        local client = Traitormod.FindClientCharacter(character)
-        local accountKey = client ~= nil and Traitormod.GetClientAccountKey(client) or nil
-        local pointsGained = math.floor((accountKey ~= nil and self.AwardedPoints[accountKey]) or 0)
+        local objectivesCompleted = 0
+        for _, objective in ipairs(role.Objectives or {}) do
+            if objective.Awarded then objectivesCompleted = objectivesCompleted + 1 end
+        end
+        sb(Traitormod.Language.SecretRoundObjectivesSummary, objectivesCompleted)
 
-        if role.Name == "Crew" then
-            sb(Traitormod.Language.SecretCrewSummary, pointsGained)
-        else
-            local objectivesCompleted = 0
-            for _, objective in ipairs(role.Objectives or {}) do
-                if objective.Awarded then objectivesCompleted = objectivesCompleted + 1 end
+        for _, objective in ipairs(role.Objectives or {}) do
+            local objectiveState
+            if objective.Failed then
+                objectiveState = Traitormod.Language.Failed
+            elseif objective.Awarded then
+                objectiveState = Traitormod.Language.Completed .. string.format(Traitormod.Language.Points, objective.AmountPoints or 0)
+            else
+                objectiveState = ""
             end
-            sb(Traitormod.Language.SecretSummary, objectivesCompleted, pointsGained)
-
-            for _, objective in ipairs(role.Objectives or {}) do
-                local objectiveState
-                if objective.Failed then
-                    objectiveState = Traitormod.Language.Failed
-                elseif objective.Awarded then
-                    objectiveState = Traitormod.Language.Completed .. string.format(Traitormod.Language.Points, objective.AmountPoints or 0)
-                else
-                    objectiveState = ""
-                end
-                sb(" > %s %s\n", objective.Text, string.gsub(objectiveState, "^%s+", ""))
-            end
+            sb(" > %s %s\n", objective.Text, string.gsub(objectiveState, "^%s+", ""))
         end
     end
 
@@ -765,6 +746,7 @@ Hook.Patch("Traitormod.Secret.EndGame.Before", "Barotrauma.Networking.GameServer
     end
 
     if selected.Ending then
+        instance.EndRoundTimer = 0.1
         ptable.PreventExecution = true
         return
     end

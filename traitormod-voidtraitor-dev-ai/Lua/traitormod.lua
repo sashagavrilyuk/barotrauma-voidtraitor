@@ -33,7 +33,7 @@ if discordConfig ~= nil then
     end
 end
 
-dofile(Traitormod.Path .. "/Lua/discordwebhooks.lua")
+dofile(Traitormod.Path .. "/Lua/features/discordwebhooks.lua")
 Game.OverrideTraitors(true)
 
 if Traitormod.Config.RagdollOnDisconnect ~= nil then
@@ -1164,17 +1164,19 @@ Traitormod.RoleManager = dofile(Traitormod.Path .. "/Lua/rolemanager.lua")
 Traitormod.Pointshop = dofile(Traitormod.Path .. "/Lua/pointshop.lua")
 ---@module "Lua.roundevents"
 Traitormod.RoundEvents = dofile(Traitormod.Path .. "/Lua/roundevents.lua")
----@module "Lua.midroundspawn"
-Traitormod.MidRoundSpawn = dofile(Traitormod.Path .. "/Lua/midroundspawn.lua")
+---@module "Lua.features.midroundspawn"
+Traitormod.MidRoundSpawn = dofile(Traitormod.Path .. "/Lua/features/midroundspawn.lua")
 ---@module "Lua.ghostroles"
 Traitormod.GhostRoles = dofile(Traitormod.Path .. "/Lua/ghostroles.lua")
 Traitormod.RoundStats = dofile(Traitormod.Path .. "/Lua/roundstats.lua")
-Traitormod.CameraTeleport = dofile(Traitormod.Path .. "/Lua/camerateleport.lua")
+Traitormod.CameraTeleport = dofile(Traitormod.Path .. "/Lua/features/camerateleport.lua")
 
-dofile(Traitormod.Path .. "/Lua/playtime.lua")
 Traitormod.Stats = dofile(Traitormod.Path .. "/Lua/statistics.lua")
-dofile(Traitormod.Path .. "/Lua/respawnshuttle.lua")
-dofile(Traitormod.Path .. "/Lua/traitormodmisc.lua")
+dofile(Traitormod.Path .. "/Lua/features/respawnshuttle.lua")
+dofile(Traitormod.Path .. "/Lua/features/welcome.lua")
+dofile(Traitormod.Path .. "/Lua/features/deathlogbook.lua")
+dofile(Traitormod.Path .. "/Lua/features/serverlogs.lua")
+dofile(Traitormod.Path .. "/Lua/features/piratemissionghostroles.lua")
 
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/gamemode.lua"))
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/secret.lua"))

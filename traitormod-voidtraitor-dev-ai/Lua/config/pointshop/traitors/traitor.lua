@@ -1,3 +1,5 @@
+local monsterBeacon = dofile(Traitormod.Path .. "/Lua/config/pointshop/utility/monsterbeacon.lua")
+
 local category = {}
 
 category.Identifier = "traitor"
@@ -31,7 +33,7 @@ category.Init = function ()
 
     Hook.Patch("Barotrauma.Items.Components.Wearable", "Equip", function(instance, ptable)
         if not instance.Item.HasTag("chocker") then return end
-        if not instance.AllowedSlots[2] == InvSlotType.Head then return end
+        if instance.AllowedSlots[2] ~= InvSlotType.Head then return end
 
         -- For some reason speechImpediment doesnt work
         if ptable["character"] ~= nil then
@@ -41,7 +43,7 @@ category.Init = function ()
 
     Hook.Patch("Barotrauma.Items.Components.Wearable", "Unequip", function(instance, ptable)
         if not instance.Item.HasTag("chocker") then return end
-        if not instance.AllowedSlots[2] == InvSlotType.Head then return end
+        if instance.AllowedSlots[2] ~= InvSlotType.Head then return end
 
         -- For some reason speechImpediment doesnt work
         if ptable["character"] ~= nil then
@@ -50,6 +52,7 @@ category.Init = function ()
     end, Hook.HookMethodType.After) 
 
 
+    monsterBeacon.Init()
 end
 
 category.Products = {
@@ -243,7 +246,7 @@ category.Products = {
                 interface.customInterfaceElementList[2].Signal = "Monster Beacon"
                 item.CreateServerEvent(interface, interface)
 
-                Traitormod.AddMonsterBeacon(item, client.Character)
+                monsterBeacon.Add(item, client.Character)
             end)
         end
     },

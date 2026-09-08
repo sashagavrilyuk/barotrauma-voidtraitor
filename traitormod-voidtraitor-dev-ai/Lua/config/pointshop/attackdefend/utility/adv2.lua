@@ -154,6 +154,7 @@ end
 ---@field Locked boolean?
 ---@field LockContainedItems boolean?
 ---@field LockContainer boolean?
+---@field OnSpawn fun(item: Barotrauma.Item, spawnPoint: Barotrauma.WayPoint?, character: Barotrauma.Character?)?
 
 local function syncItemProperty(item, propertyName)
 	if item == nil or item.Removed or item.SerializableProperties == nil then return end
@@ -216,7 +217,11 @@ end
 ---@param itemId string
 ---@param inventory Barotrauma.Inventory
 ---@param itemEntry ItemTableEntry
-local function spawnItems(itemId, inventory, itemEntry, inheritedLocked)
+---@param inheritedLocked boolean?
+---@param teamId Barotrauma.CharacterTeamType?
+---@param spawnPoint Barotrauma.WayPoint?
+---@param character Barotrauma.Character?
+local function spawnItems(itemId, inventory, itemEntry, inheritedLocked, teamId, spawnPoint, character)
 	local onSpawn = nil
 	local quantity = 1
 	local condition, quality, spawnIfFull, ignoreLimbs, invSlotType
@@ -224,6 +229,7 @@ local function spawnItems(itemId, inventory, itemEntry, inheritedLocked)
 	local locked = inheritedLocked == true
 	local lockContainedItems = locked
 	local lockContainer = false
+	local itemOnSpawn = nil
 
 	if type(itemEntry) == "number" then
 		quantity = itemEntry
@@ -234,6 +240,7 @@ local function spawnItems(itemId, inventory, itemEntry, inheritedLocked)
 		spawnIfFull = itemEntry.SpawnIfFull
 		ignoreLimbs = itemEntry.IgnoreLimbs
 		invSlotType = itemEntry.InvSlotType
+		itemOnSpawn = itemEntry.OnSpawn
 
 		if itemEntry.Locked ~= nil then
 			locked = itemEntry.Locked
@@ -255,7 +262,7 @@ local function spawnItems(itemId, inventory, itemEntry, inheritedLocked)
 
 				if items ~= nil then
 					for key, value in pairs(items) do
-						spawnItems(key, item.OwnInventory, value, lockContainedItems)
+						spawnItems(key, item.OwnInventory, value, lockContainedItems, teamId, spawnPoint, character)
 					end
 				end
 			end
@@ -266,6 +273,25 @@ local function spawnItems(itemId, inventory, itemEntry, inheritedLocked)
 		---@param item Barotrauma.Item
 		onSpawn = function (item)
 			applyNativeItemLocks(item, locked, lockContainer)
+		end
+	end
+
+	if teamId ~= nil or itemOnSpawn ~= nil then
+		local previousOnSpawn = onSpawn
+		---@param item Barotrauma.Item
+		onSpawn = function (item)
+			if previousOnSpawn ~= nil then previousOnSpawn(item) end
+
+			if teamId ~= nil then
+				local wifi = item.GetComponentString("WifiComponent")
+				if wifi ~= nil then
+					wifi.TeamID = teamId
+				end
+			end
+
+			if itemOnSpawn ~= nil then
+				itemOnSpawn(item, spawnPoint, character)
+			end
 		end
 	end
 
@@ -288,17 +314,20 @@ ADV2.SpawnItems = spawnItems
 ---@field Skills AttackDefendClassSkill[]?
 ---@field Talents string[]?
 ---@field Afflictions AttackDefendClassAffliction[]?
----@field Items ItemTable
----@field LogSuffix string
+---@field Items ItemTable | fun(): ItemTable
+---@field LogSuffix string?
 
 ---@param teamId Barotrauma.CharacterTeamType
 ---@param config AttackDefendClassConfig
 ---@return Pointshop.Product
 function ADV2.CreateClassProduct(teamId, config)
-	ADV2.ApplyDefaultClassLocks(config.Items)
+	if type(config.Items) == "table" then
+		ADV2.ApplyDefaultClassLocks(config.Items)
+	end
 
 	return {
 		Identifier = config.Identifier,
+		JobId = config.JobId,
 		Price = 0,
 		Limit = math.huge,
 		CanBuy = function(client, product)
@@ -308,7 +337,7 @@ function ADV2.CreateClassProduct(teamId, config)
 			local respawnEntry = ADV2.RespawnStart(client, teamId, product.Identifier, nil, product)
 			respawnEntry.JobId = config.JobId
 
-			respawnEntry.OnSpawn = function(character)
+			respawnEntry.OnSpawn = function(character, spawnPoint)
 				for _, skill in ipairs(config.Skills or {}) do
 					character.info.SetSkillLevel(skill.Identifier, skill.Level)
 				end
@@ -321,12 +350,18 @@ function ADV2.CreateClassProduct(teamId, config)
 					character.CharacterHealth.ApplyAffliction(nil, AfflictionPrefab.Prefabs[affliction.Identifier].Instantiate(affliction.Strength))
 				end
 
-				for itemId, itemEntry in pairs(config.Items) do
-					spawnItems(itemId, character.Inventory, itemEntry)
+				local items = config.Items
+				if type(items) == "function" then
+					items = ADV2.ApplyDefaultClassLocks(items())
+				end
+				for itemId, itemEntry in pairs(items) do
+					spawnItems(itemId, character.Inventory, itemEntry, nil, character.TeamID, spawnPoint, character)
 				end
 			end
 
-			Traitormod.Log(client.Name .. config.LogSuffix)
+			if config.LogSuffix ~= nil then
+				Traitormod.Log(client.Name .. config.LogSuffix)
+			end
 		end,
 	}
 end

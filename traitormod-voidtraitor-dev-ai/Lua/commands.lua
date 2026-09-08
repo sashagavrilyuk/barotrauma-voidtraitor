@@ -664,7 +664,8 @@ Traitormod.AddCommand("!triggerevent", function (client, args)
 end)
 
 Traitormod.AddCommand({"!locatesub", "!locatesubmarine"}, function (client, args)
-    if client.Character == nil or not client.InGame then
+    local mainSub = Submarine.MainSub
+    if client.Character == nil or not client.InGame or mainSub == nil then
         Traitormod.SendMessage(client, Traitormod.Language.CMDAliveToUse)
         return true
     end
@@ -675,7 +676,7 @@ Traitormod.AddCommand({"!locatesub", "!locatesubmarine"}, function (client, args
     end
 
     local center = client.Character.WorldPosition
-    local target = Submarine.MainSub.WorldPosition
+    local target = mainSub.WorldPosition
 
     local distance = Vector2.Distance(center, target) * Physics.DisplayToRealWorldRatio
 

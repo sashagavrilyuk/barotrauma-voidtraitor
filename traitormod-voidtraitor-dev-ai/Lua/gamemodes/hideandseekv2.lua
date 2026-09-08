@@ -32,17 +32,7 @@ local function cleanRemove(character)
     end
 end
 
-local function gearUpCharacter(character, team, waypoint)
-    local card = character.Inventory.GetItemInLimbSlot(InvSlotType.Card)
-    if card ~= nil then
-        Entity.Spawner.AddItemToRemoveQueue(card)
-    end
-    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("vt_hideandseek_idcard"), character.Inventory, nil, nil, function (newCard)
-        for tag in waypoint.IdCardTags do
-            newCard.AddTag(tag)
-        end
-    end, true, false, InvSlotType.Card)
-
+local function colorTeamClothes(character, team)
     local innerClothes = character.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)
     if innerClothes then
         innerClothes.SpriteColor = team.Color
@@ -68,8 +58,8 @@ local function spawnCharacter(client, team, entry)
     local character = Character.Create(characterInfo, spawnPoint.WorldPosition, characterInfo.Name, 0, true, true)
     client.SetClientCharacter(character)
     textPromptUtils.UnlockOption(client)
-    gearUpCharacter(character, team, spawnPoint)
-    entry.OnSpawn(character)
+    entry.OnSpawn(character, spawnPoint)
+    colorTeamClothes(character, team)
     entry.Spawned = true
     return true
 end
@@ -108,7 +98,8 @@ end
 function gm:_SetNewClient(client, lockClassSelection)
     local character = client.Character
     Timer.Wait(function()
-        if not client or not client.Connection then return end
+        if not Game.RoundStarted or Traitormod.SelectedGamemode ~= self or self.IsEnding then return end
+        if not client or not client.Connection or client.Connection.Status ~= 1 or client.SpectateOnly then return end
         client.SetClientCharacter(nil)
         cleanRemove(character)
 
@@ -117,6 +108,8 @@ function gm:_SetNewClient(client, lockClassSelection)
         end
 
         local function openClassSelection()
+            if not Game.RoundStarted or Traitormod.SelectedGamemode ~= self or self.IsEnding then return end
+            if not client.Connection or client.Connection.Status ~= 1 or client.SpectateOnly then return end
             for _, team in pairs(self.Teams) do
                 local entry = team.Respawns[client.AccountId]
                 if entry ~= nil and entry.Forfeited then return end
@@ -126,7 +119,6 @@ function gm:_SetNewClient(client, lockClassSelection)
                 Timer.Wait(openClassSelection, 1000)
                 return
             end
-            if not client.Connection then return end
 
             if Traitormod.Pointshop.OpenGuiOrFallback ~= nil then
                 Traitormod.Pointshop.OpenGuiOrFallback(client, false)
@@ -136,7 +128,7 @@ function gm:_SetNewClient(client, lockClassSelection)
         end
 
         openClassSelection()
-    end, 1000)
+    end, 1250)
 end
 
 function gm:_ChangeTeam(client, teamID)
@@ -176,28 +168,34 @@ function gm:_AssignTeams(clients)
         [TeamID1] = {},
         [TeamID2] = {},
     }
+    local preferredHiders = {}
+    local preferredSeekers = {}
     local unassigned = {}
 
     for _, client in ipairs(clients) do
-        if teams[client.PreferredTeam] ~= nil then
-            table.insert(teams[client.PreferredTeam], client)
+        if client.PreferredTeam == TeamID2 then
+            table.insert(preferredSeekers, client)
+        elseif client.PreferredTeam == TeamID1 then
+            table.insert(preferredHiders, client)
         else
             table.insert(unassigned, client)
         end
     end
 
+    shuffle(preferredSeekers)
     shuffle(unassigned)
-    local seekerCount = getSeekerCount(#clients)
-    for _, client in ipairs(unassigned) do
-        local teamID = #teams[TeamID2] < seekerCount and TeamID2 or TeamID1
-        table.insert(teams[teamID], client)
-    end
+    shuffle(preferredHiders)
 
-    if #clients >= 2 then
-        if #teams[TeamID1] == 0 then
-            table.insert(teams[TeamID1], table.remove(teams[TeamID2], math.random(#teams[TeamID2])))
-        elseif #teams[TeamID2] == 0 then
-            table.insert(teams[TeamID2], table.remove(teams[TeamID1], math.random(#teams[TeamID1])))
+    local seekerCount = getSeekerCount(#clients)
+    local pools = { preferredSeekers, unassigned, preferredHiders }
+    for _, pool in ipairs(pools) do
+        while #teams[TeamID2] < seekerCount and #pool > 0 do
+            table.insert(teams[TeamID2], table.remove(pool))
+        end
+    end
+    for _, pool in ipairs(pools) do
+        for _, client in ipairs(pool) do
+            table.insert(teams[TeamID1], client)
         end
     end
 
@@ -545,7 +543,7 @@ function gm:Start()
 
     local clients = {}
     for client in Client.ClientList do
-        if not client.SpectateOnly then
+        if not client.SpectateOnly and (not client.AFK or not Game.ServerSettings.AllowAFK) then
             table.insert(clients, client)
         end
     end
@@ -563,12 +561,15 @@ function gm:Start()
     end
 
     Hook.Add("client.connected", "Traitormod.HideAndSeekV2.ClientConnected", function(client)
+        if client.SpectateOnly then return end
         for _, team in pairs(self.Teams) do
             local entry = team.Respawns[client.AccountId]
             if entry ~= nil then
                 if entry.Forfeited then return end
 
                 team.Members[client.AccountId] = client
+                client.TeamID = team.TeamID
+                client.PreferredTeam = team.TeamID
                 if not entry.Spawned then
                     self:_SetNewClient(client)
                 end
@@ -590,13 +591,15 @@ function gm:Start()
     end)
 
     Hook.Add("netMessageReceived", "Traitormod.HideAndSeekV2.ClientJoined", function(msg, header, client)
-        if header ~= ClientPacketHeader.UPDATE_INGAME or client.InGame then return end
+        if header ~= ClientPacketHeader.UPDATE_INGAME or client.InGame or client.SpectateOnly then return end
 
         for _, team in pairs(self.Teams) do
             local entry = team.Respawns[client.AccountId]
             if entry ~= nil then
                 if not entry.Forfeited then
                     team.Members[client.AccountId] = client
+                    client.TeamID = team.TeamID
+                    client.PreferredTeam = team.TeamID
                 end
                 return
             end
@@ -605,6 +608,7 @@ function gm:Start()
 end
 
 function gm:End()
+    self.IsEnding = true
     for _, team in pairs(self.Teams) do
         for _, member in pairs(team.Members) do
             textPromptUtils.UnlockOption(member)
@@ -628,7 +632,8 @@ function gm:Think(deltaTime)
     for _, team in pairs(self.Teams) do
         for id, entry in pairs(team.Respawns) do
             local member = team.Members[id]
-            if not entry.Forfeited and member ~= nil and member.InGame and not entry.Spawned and entry.OnSpawn ~= nil then
+            if not entry.Forfeited and member ~= nil and member.Connection ~= nil and not member.SpectateOnly
+                and member.InGame and not entry.Spawned and entry.OnSpawn ~= nil then
                 spawnCharacter(member, team, entry)
             end
         end
