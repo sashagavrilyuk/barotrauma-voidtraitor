@@ -37,17 +37,11 @@ local function gearUpCharacter(character, team, waypoint)
     if card ~= nil then
         Entity.Spawner.AddItemToRemoveQueue(card)
     end
-    if team.TeamID == TeamID2 then
-        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("idcard"), character.Inventory, nil, nil, function (newCard)
-            newCard.GetComponentString("IdCard").Initialize(waypoint, character)
-        end, true, false, InvSlotType.Card)
-    else
-        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("vt_hideandseek_idcard"), character.Inventory, nil, nil, function (newCard)
-            for tag in waypoint.IdCardTags do
-                newCard.AddTag(tag)
-            end
-        end, true, false, InvSlotType.Card)
-    end
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("vt_hideandseek_idcard"), character.Inventory, nil, nil, function (newCard)
+        for tag in waypoint.IdCardTags do
+            newCard.AddTag(tag)
+        end
+    end, true, false, InvSlotType.Card)
 
     local innerClothes = character.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)
     if innerClothes then
