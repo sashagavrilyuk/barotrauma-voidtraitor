@@ -224,9 +224,9 @@ language.Pointshop = {
     -- Категории и классы Hide & Seek
     hideandseek_hider_classes = "Классы прячущихся",
     hideandseek_seeker_classes = "Классы искателей",
-    hide_hider_1 = "Прячущийся",
-    hide_seeker_1 = "Искатель — тестовый класс 1",
-    hide_seeker_2 = "Искатель — тестовый класс 2",
+    hide_hider_1 = "Прячущийся — инструменты и медицина",
+    hide_seeker_1 = "Искатель — офицер безопасности",
+    hide_seeker_2 = "Искатель — капитан",
     deathspawnhusk = "Переродиться за хасков",
     deadspawnfromsub = "Переродиться в подлодке",
     deathspawnfriend = "Переродиться за дружулюбных существ",

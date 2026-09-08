@@ -1,8 +1,17 @@
 ---@diagnostic disable-next-line: unknown-cast-variable
 ---@cast Traitormod.SelectedGamemode Gamemodes.HideAndSeekV2
 
-local respawnStart = dofile(Traitormod.Path .. "/Lua/config/pointshop/attackdefend/utility/adv2.lua").RespawnStart
+---@module "adv2"
+local ADV2 = dofile(Traitormod.Path .. "/Lua/config/pointshop/attackdefend/utility/adv2.lua")
+local respawnStart = ADV2.RespawnStart
+local spawnItems = ADV2.SpawnItems
+ADV2 = nil
+
 local ShopTeamID = CharacterTeamType.Team2
+
+local function gearUpSeeker(character)
+    spawnItems("headset", character.Inventory, { InvSlotType = InvSlotType.Headset })
+end
 
 local classSubcategory = {
     Identifier = "hideandseek_seeker_classes",
@@ -26,7 +35,7 @@ local category = {
             GuiJobIdentifier = "securityofficer",
             Action = function(client, product)
                 local entry = respawnStart(client, ShopTeamID, product.Identifier, "securityofficer", product)
-                entry.OnSpawn = function(character) end
+                entry.OnSpawn = gearUpSeeker
             end,
         },
         {
@@ -37,7 +46,7 @@ local category = {
             GuiJobIdentifier = "captain",
             Action = function(client, product)
                 local entry = respawnStart(client, ShopTeamID, product.Identifier, "captain", product)
-                entry.OnSpawn = function(character) end
+                entry.OnSpawn = gearUpSeeker
             end,
         },
     }
