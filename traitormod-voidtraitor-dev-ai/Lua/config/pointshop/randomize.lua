@@ -84,7 +84,8 @@ Hook.Add("item.interact", "Traitormod.Pointshop.RandomizeCrateInteract", functio
 
 	openingCrates[item] = true
 	local prefab = randomizer.GetRandom(list)
-	local position = item.WorldPosition
+	local floorY = item.WorldRect.Y - item.WorldRect.Height
+	local position = Vector2(item.WorldPosition.X, floorY + prefab.Size.Y * prefab.Scale / 2)
 	local submarine = item.Submarine
 
 	if submarine == nil then
