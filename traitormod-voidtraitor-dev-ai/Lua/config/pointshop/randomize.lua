@@ -63,6 +63,44 @@ randomizer.CreateList("Medical", function (prefab)
 	return btest(prefab.Category, categories.Medical)
 end)
 
+local crateLists = {
+	vtcasinocratecrazy = "All",
+	vtcasinocratenormal = "CanBeBoughtOrSold",
+	vtcasinocratematerials = "Material",
+	vtcasinocratemedical = "Medical",
+	vtcasinocrateweapons = "Weapons"
+}
+local openingCrates = setmetatable({}, { __mode = "k" })
+
+Hook.Add("item.interact", "Traitormod.Pointshop.RandomizeCrateInteract", function (item, character)
+	if item == nil or character == nil or openingCrates[item] then return end
+
+	local list = crateLists[item.Prefab.Identifier.Value]
+	if list == nil then return end
+
+	local holdable = item.GetComponentString("Holdable")
+	if holdable == nil or not holdable.IsAttached then return end
+
+	openingCrates[item] = true
+	local prefab = randomizer.GetRandom(list)
+	local position = item.WorldPosition
+	local submarine = item.Submarine
+
+	local function onSpawned(reward)
+		if not character.Removed then
+			character.Inventory.TryPutItem(reward, character)
+		end
+	end
+
+	if submarine == nil then
+		Entity.Spawner.AddItemToSpawnQueue(prefab, position, nil, nil, onSpawned)
+	else
+		Entity.Spawner.AddItemToSpawnQueue(prefab, position - submarine.Position, submarine, nil, nil, onSpawned)
+	end
+	Entity.Spawner.AddEntityToRemoveQueue(item)
+	return true
+end)
+
 ---@type Pointshop.Category
 local category = {
 
@@ -77,46 +115,31 @@ Products = {
 		Identifier = "randomize_crazy_all",
 		Price = 150,
 		Limit = 10,
-
-		Action = function (client)
-			Entity.Spawner.AddItemToSpawnQueue(randomizer.GetRandom("All"), client.Character.Inventory)
-		end,
+		Items = {"vtcasinocratecrazy"},
 	},
 	{
 		Identifier = "randomize_normal_all",
 		Price = 75,
 		Limit = 15,
-		
-		Action = function (client)
-			Entity.Spawner.AddItemToSpawnQueue(randomizer.GetRandom("CanBeBoughtOrSold"), client.Character.Inventory)
-		end
+		Items = {"vtcasinocratenormal"},
 	},
 	{
 		Identifier = "randomize_materials",
 		Price = 25,
 		Limit = 20,
-		
-		Action = function (client)
-			Entity.Spawner.AddItemToSpawnQueue(randomizer.GetRandom("Material"), client.Character.Inventory)
-		end
+		Items = {"vtcasinocratematerials"},
 	},
 	{
 		Identifier = "randomize_medical",
 		Price = 50,
 		Limit = 10,
-		
-		Action = function (client)
-			Entity.Spawner.AddItemToSpawnQueue(randomizer.GetRandom("Medical"), client.Character.Inventory)
-		end
+		Items = {"vtcasinocratemedical"},
 	},
 	{
 		Identifier = "randomize_weapons",
 		Price = 750,
 		Limit = 5,
-		
-		Action = function (client)
-			Entity.Spawner.AddItemToSpawnQueue(randomizer.GetRandom("Weapons"), client.Character.Inventory)
-		end
+		Items = {"vtcasinocrateweapons"},
 	},
 }
 
