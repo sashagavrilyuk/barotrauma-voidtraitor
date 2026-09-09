@@ -62,7 +62,11 @@ P.ShowVoidTraitorMenu = function()
     local close = GUI.Button(P.CreateRect(0.10, 0.82, header, GUI.Anchor.TopRight), "", GUI.Alignment.Center, "GUICancelButton")
     close.ToolTip = P.UiText.Cancel
     close.OnClicked = function()
-        P.CloseMenu()
+        if S.currentMenu == root then
+            P.CloseMenu()
+        else
+            P.Common.RemoveGuiComponent(root)
+        end
         return true
     end
 
@@ -126,6 +130,8 @@ P.ShowVoidTraitorMenu = function()
     S.vtMainList:UpdateScrollBarSize()
 
     local function showMainTab()
+        if S.currentMenu ~= root then return end
+
         S.vtActiveTab = "main"
         S.vtMenuList = S.vtMainList
         S.vtMainListFrame.Visible = true
@@ -135,9 +141,11 @@ P.ShowVoidTraitorMenu = function()
     end
 
     local function showAdminTab()
+        if S.currentMenu ~= root then return end
+
         if S.vtAdminList == nil then P.Admin.RefreshData() end
         P.Admin.WhenDataReady(function()
-            if S.currentMenuKind ~= "vt" then return end
+            if S.currentMenu ~= root then return end
             if S.vtAdminList == nil then
                 S.vtAdminListFrame, S.vtAdminList = P.CreateMenuList(listHost)
                 P.Admin.Build(S.vtAdminList.Content)
