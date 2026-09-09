@@ -63,13 +63,41 @@ randomizer.CreateList("Medical", function (prefab)
 	return btest(prefab.Category, categories.Medical)
 end)
 
+local function canPreview(prefab)
+	if prefab.ConfigElement.GetAttributeBool('NonInteractable', false) then return false end
+	for tag in prefab.Tags do
+		if tag == "alienartifact" then return false end
+	end
+
+	for element in prefab.ConfigElement.Descendants() do
+		local name = string.lower(element.Name.LocalName)
+		if name == "door"
+			or name == "entityspawnercomponent"
+			or name == "spawnitem"
+			or name == "spawncharacter"
+			or element.GetAttributeString("spawnwithid", "") ~= "" then
+			return false
+		end
+		if name == "statuseffect" and string.lower(element.GetAttributeString("type", "")) == "onspawn" then
+			return false
+		end
+	end
+	return true
+end
+
+randomizer.CreateFrom("PreviewAll", "All", canPreview)
+randomizer.CreateFrom("PreviewNormal", "CanBeBoughtOrSold", canPreview)
+randomizer.CreateFrom("PreviewMaterial", "Material", canPreview)
+randomizer.CreateFrom("PreviewMedical", "Medical", canPreview)
+randomizer.CreateFrom("PreviewWeapons", "Weapons", canPreview)
+
 local BodyType = LuaUserData.CreateEnumTable("FarseerPhysics.BodyType")
 local crateLists = {
-	vtcasinocratecrazy = "All",
-	vtcasinocratenormal = "CanBeBoughtOrSold",
-	vtcasinocratematerials = "Material",
-	vtcasinocratemedical = "Medical",
-	vtcasinocrateweapons = "Weapons"
+	vtcasinocratecrazy = { reward = "All", preview = "PreviewAll" },
+	vtcasinocratenormal = { reward = "CanBeBoughtOrSold", preview = "PreviewNormal" },
+	vtcasinocratematerials = { reward = "Material", preview = "PreviewMaterial" },
+	vtcasinocratemedical = { reward = "Medical", preview = "PreviewMedical" },
+	vtcasinocrateweapons = { reward = "Weapons", preview = "PreviewWeapons" }
 }
 local rouletteChangeTimes = {
 	0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6,
@@ -91,9 +119,16 @@ local function getRouletteBottom(state)
 	return state.floorY + (state.hoverBottomY - state.floorY) * progress
 end
 
+local function removeItemAndContents(item)
+	for containedItem in item.ContainedItems do
+		Entity.Spawner.AddEntityToRemoveQueue(containedItem)
+	end
+	Entity.Spawner.AddEntityToRemoveQueue(item)
+end
+
 local function removePreview(state)
 	if state.preview ~= nil and not state.preview.Removed then
-		Entity.Spawner.AddEntityToRemoveQueue(state.preview)
+		removeItemAndContents(state.preview)
 	end
 	state.preview = nil
 end
@@ -103,16 +138,19 @@ local function spawnPreview(state)
 	local generation = state.generation
 	removePreview(state)
 
-	local prefab = randomizer.GetRandom(state.list)
+	local prefab = randomizer.GetRandom(state.previewList)
 	local position = Vector2(state.x, getRouletteBottom(state) + prefab.Size.Y * prefab.Scale / 2)
 	spawnAtPosition(prefab, position, state.submarine, function(preview)
 		if state.finished or state.generation ~= generation then
-			Entity.Spawner.AddEntityToRemoveQueue(preview)
+			removeItemAndContents(preview)
 			return
 		end
 
 		preview.NonInteractable = true
+		preview.SpriteDepth = state.previewDepth
 		preview.IsActive = false
+		Networking.CreateEntityEvent(preview, Item.ChangePropertyEventData(preview.SerializableProperties[Identifier("NonInteractable")], preview))
+		Networking.CreateEntityEvent(preview, Item.ChangePropertyEventData(preview.SerializableProperties[Identifier("SpriteDepth")], preview))
 		if preview.body ~= nil then
 			preview.body.BodyType = BodyType.Kinematic
 			preview.body.LinearVelocity = Vector2.Zero
@@ -176,8 +214,8 @@ end)
 Hook.Add("item.interact", "Traitormod.Pointshop.RandomizeCrateInteract", function (item, character, _, forceSelectKey)
 	if item == nil or character == nil or openingCrates[item] then return end
 
-	local list = crateLists[item.Prefab.Identifier.Value]
-	if list == nil then return end
+	local crateConfig = crateLists[item.Prefab.Identifier.Value]
+	if crateConfig == nil then return end
 
 	local holdable = item.GetComponentString("Holdable")
 	if holdable == nil or not holdable.IsAttached then return end
@@ -185,12 +223,13 @@ Hook.Add("item.interact", "Traitormod.Pointshop.RandomizeCrateInteract", functio
 
 	local floorY = item.Rect.Y - item.Rect.Height
 	local state = {
-		list = list,
-		reward = randomizer.GetRandom(list),
+		previewList = crateConfig.preview,
+		reward = randomizer.GetRandom(crateConfig.reward),
 		submarine = item.Submarine,
 		x = item.Position.X,
 		floorY = floorY,
 		hoverBottomY = item.Rect.Y + 20,
+		previewDepth = math.max(0.001, item.SpriteDepth - 0.01),
 		elapsed = 0,
 		nextChange = 1,
 		generation = 0,
@@ -198,6 +237,7 @@ Hook.Add("item.interact", "Traitormod.Pointshop.RandomizeCrateInteract", functio
 	}
 	openingCrates[item] = state
 	item.NonInteractable = true
+	Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(item.SerializableProperties[Identifier("NonInteractable")], item))
 	spawnPreview(state)
 	return true
 end)
