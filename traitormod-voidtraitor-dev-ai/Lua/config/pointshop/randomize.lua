@@ -72,7 +72,7 @@ local crateLists = {
 }
 local openingCrates = setmetatable({}, { __mode = "k" })
 
-Hook.Add("item.interact", "Traitormod.Pointshop.RandomizeCrateInteract", function (item, character)
+Hook.Add("item.interact", "Traitormod.Pointshop.RandomizeCrateInteract", function (item, character, _, forceSelectKey)
 	if item == nil or character == nil or openingCrates[item] then return end
 
 	local list = crateLists[item.Prefab.Identifier.Value]
@@ -80,22 +80,17 @@ Hook.Add("item.interact", "Traitormod.Pointshop.RandomizeCrateInteract", functio
 
 	local holdable = item.GetComponentString("Holdable")
 	if holdable == nil or not holdable.IsAttached then return end
+	if not forceSelectKey and not character.IsKeyHit(InputType.Select) then return end
 
 	openingCrates[item] = true
 	local prefab = randomizer.GetRandom(list)
 	local position = item.WorldPosition
 	local submarine = item.Submarine
 
-	local function onSpawned(reward)
-		if not character.Removed then
-			character.Inventory.TryPutItem(reward, character)
-		end
-	end
-
 	if submarine == nil then
-		Entity.Spawner.AddItemToSpawnQueue(prefab, position, nil, nil, onSpawned)
+		Entity.Spawner.AddItemToSpawnQueue(prefab, position)
 	else
-		Entity.Spawner.AddItemToSpawnQueue(prefab, position - submarine.Position, submarine, nil, nil, onSpawned)
+		Entity.Spawner.AddItemToSpawnQueue(prefab, position - submarine.Position, submarine)
 	end
 	Entity.Spawner.AddEntityToRemoveQueue(item)
 	return true
