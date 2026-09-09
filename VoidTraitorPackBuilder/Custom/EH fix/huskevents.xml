@@ -63,8 +63,8 @@
           <MonsterEvent characterfile="Crawlerhusk" minamount="1" maxamount="3" spawntype="mainpath,sidepath" />
         </EventSet>
       </EventSet> -->
-      <!--3 min-->
-      <EventSet identifier="first" chooserandom="true" mindistancetraveled="0.30" minmissiontime="240" minintensity="0.0" maxintensity="1.0">
+      <!--6 min-->
+      <EventSet identifier="first" chooserandom="true" mindistancetraveled="0.30" minmissiontime="360" minintensity="0.0" maxintensity="0.20">
         <EventSet identifier="husks" chooserandom="false" commonness="15">
           <MonsterEvent characterfile="Crawlerhusk" minamount="1" maxamount="2" spawntype="mainpath,sidepath" />
           <MonsterEvent characterfile="Mudraptor_unarmoredhusk" minamount="1" amount="1" spawntype="mainpath,sidepath" />
@@ -82,8 +82,8 @@
           <MonsterEvent characterfile="Crawlerhusk" minamount="1" maxamount="3" spawntype="mainpath,sidepath" />
         </EventSet>
       </EventSet>
-      <!--6 min-->
-      <EventSet identifier="second" chooserandom="true" mindistancetraveled="0.50" minmissiontime="360" minintensity="0.0" maxintensity="1.0">
+      <!--15 min-->
+      <EventSet identifier="second" chooserandom="true" mindistancetraveled="0.50" minmissiontime="900" minintensity="0.0" maxintensity="0.20">
         <EventSet identifier="husks" chooserandom="false" commonness="15">
           <MonsterEvent characterfile="Crawlerhusk" minamount="1" maxamount="2" spawntype="mainpath,sidepath" />
           <MonsterEvent characterfile="Mudraptor_unarmoredhusk" minamount="1" amount="1" spawntype="mainpath,sidepath" />
@@ -110,8 +110,8 @@
           <MonsterEvent characterfile="Hammerheadhusk" minamount="1" maxamount="2" spawntype="mainpath,sidepath" />
         </EventSet>
       </EventSet>
-      <!--12 min-->
-      <EventSet identifier="third" chooserandom="true" mindistancetraveled="0.70" minmissiontime="720" minintensity="0.0" maxintensity="1.0">
+      <!--25 min-->
+      <EventSet identifier="third" chooserandom="true" mindistancetraveled="0.70" minmissiontime="1500" minintensity="0.0" maxintensity="0.20">
         <EventSet identifier="husks" chooserandom="false" commonness="15">
           <MonsterEvent characterfile="Crawlerhusk" minamount="1" maxamount="2" spawntype="mainpath,sidepath" />
           <MonsterEvent characterfile="Mudraptor_unarmoredhusk" minamount="1" amount="1" spawntype="mainpath,sidepath" />
@@ -137,8 +137,8 @@
           <MonsterEvent characterfile="Hammerheadhusk" minamount="1" maxamount="2" spawntype="mainpath,sidepath" />
         </EventSet>
       </EventSet>
-      <!--24-->
-      <EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.90" minmissiontime="1440" minintensity="0.0" maxintensity="1.0">
+      <!--40 min-->
+      <EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.90" minmissiontime="2400" minintensity="0.0" maxintensity="0.20">
         <EventSet identifier="husks" chooserandom="false" commonness="15">
           <MonsterEvent characterfile="Crawlerhusk" minamount="1" maxamount="2" spawntype="mainpath,sidepath" />
           <MonsterEvent characterfile="Mudraptor_unarmoredhusk" minamount="1" amount="1" spawntype="mainpath,sidepath" />
@@ -265,8 +265,8 @@
           <MonsterEvent characterfile="Hammerheadhusk" minamount="1" maxamount="2" spawntype="mainpath,sidepath" />
         </EventSet>
       </EventSet> -->
-      <!--3 min-->
-      <EventSet identifier="first" chooserandom="true" mindistancetraveled="0.30" minmissiontime="240" minintensity="0.0" maxintensity="1.0">
+      <!--6 min-->
+      <EventSet identifier="first" chooserandom="true" mindistancetraveled="0.30" minmissiontime="360" minintensity="0.0" maxintensity="0.40">
         <EventSet identifier="husks" chooserandom="false" commonness="15">
           <MonsterEvent characterfile="Crawlerhusk" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
           <MonsterEvent characterfile="Swarmcrawlerhusk" minamount="1" maxamount="1" spawntype="mainpath,sidepath" />
@@ -295,8 +295,8 @@
           <MonsterEvent characterfile="Hammerheadhusk" minamount="1" maxamount="2" spawntype="mainpath,sidepath" />
         </EventSet>
       </EventSet>
-      <!--6 min-->
-      <EventSet identifier="second" chooserandom="true" mindistancetraveled="0.50" minmissiontime="360" minintensity="0.0" maxintensity="1.0">
+      <!--15 min-->
+      <EventSet identifier="second" chooserandom="true" mindistancetraveled="0.50" minmissiontime="900" minintensity="0.0" maxintensity="0.40">
         <EventSet identifier="husks" chooserandom="false" commonness="15">
           <MonsterEvent characterfile="Crawlerhusk" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
           <MonsterEvent characterfile="Swarmcrawlerhusk" minamount="1" maxamount="1" spawntype="mainpath,sidepath" />
@@ -336,8 +336,8 @@
           <MonsterEvent characterfile="Tigerthresherhusk" minamount="1" maxamount="2" spawntype="mainpath,sidepath" />
         </EventSet>
       </EventSet>
-      <!--12 min-->
-      <EventSet identifier="third" chooserandom="true" mindistancetraveled="0.70" minmissiontime="720" minintensity="0.0" maxintensity="1.0">
+      <!--25 min-->
+      <EventSet identifier="third" chooserandom="true" mindistancetraveled="0.70" minmissiontime="1500" minintensity="0.0" maxintensity="0.40">
         <EventSet identifier="husks" chooserandom="false" commonness="15">
           <MonsterEvent characterfile="Crawlerhusk" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
           <MonsterEvent characterfile="Swarmcrawlerhusk" minamount="1" maxamount="1" spawntype="mainpath,sidepath" />
@@ -383,8 +383,8 @@
           <MonsterEvent characterfile="Huskbomber" minamount="1" maxamount="2" spawntype="mainpath,sidepath" probability="0.05" />
         </EventSet>
       </EventSet>
-      <!--24-->
-      <EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.90" minmissiontime="1440" minintensity="0.0" maxintensity="1.0">
+      <!--40 min-->
+      <EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.90" minmissiontime="2400" minintensity="0.0" maxintensity="0.40">
         <EventSet identifier="husks" chooserandom="false" commonness="15">
           <MonsterEvent characterfile="Crawlerhusk" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
           <MonsterEvent characterfile="Swarmcrawlerhusk" minamount="1" maxamount="1" spawntype="mainpath,sidepath" />
@@ -531,8 +531,8 @@
           <MonsterEvent characterfile="Hammerheadhusk" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
         </EventSet>
       </EventSet> -->
-      <!--3 min-->
-      <EventSet identifier="first" chooserandom="true" mindistancetraveled="0.30" minmissiontime="240" minintensity="0.0" maxintensity="1.0">
+      <!--6 min-->
+      <EventSet identifier="first" chooserandom="true" mindistancetraveled="0.30" minmissiontime="360" minintensity="0.0" maxintensity="0.60">
         <EventSet identifier="husks" chooserandom="false" commonness="15">
           <MonsterEvent characterfile="Crawlerhusk" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
           <MonsterEvent characterfile="Swarmcrawlerhusk" minamount="1" maxamount="2" spawntype="mainpath,sidepath" />
@@ -563,8 +563,8 @@
           <MonsterEvent characterfile="Hammerheadhusk" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
         </EventSet>
       </EventSet>
-      <!--6 min-->
-      <EventSet identifier="second" chooserandom="true" mindistancetraveled="0.50" minmissiontime="360" minintensity="0.0" maxintensity="1.0">
+      <!--15 min-->
+      <EventSet identifier="second" chooserandom="true" mindistancetraveled="0.50" minmissiontime="900" minintensity="0.0" maxintensity="0.60">
         <EventSet identifier="husks" chooserandom="false" commonness="15">
           <MonsterEvent characterfile="Crawlerhusk" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
           <MonsterEvent characterfile="Swarmcrawlerhusk" minamount="1" maxamount="2" spawntype="mainpath,sidepath" />
@@ -609,8 +609,8 @@
           <MonsterEvent characterfile="Tigerthresherhusk" minamount="1" maxamount="2" spawntype="mainpath,sidepath" />
         </EventSet>
       </EventSet>
-      <!--12 min-->
-      <EventSet identifier="third" chooserandom="true" mindistancetraveled="0.70" minmissiontime="720" minintensity="0.0" maxintensity="1.0">
+      <!--25 min-->
+      <EventSet identifier="third" chooserandom="true" mindistancetraveled="0.70" minmissiontime="1500" minintensity="0.0" maxintensity="0.60">
         <EventSet identifier="husks" chooserandom="false" commonness="15">
           <MonsterEvent characterfile="Crawlerhusk" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
           <MonsterEvent characterfile="Swarmcrawlerhusk" minamount="1" maxamount="2" spawntype="mainpath,sidepath" />
@@ -662,8 +662,8 @@
           <MonsterEvent characterfile="Huskbomber" minamount="1" maxamount="2" spawntype="mainpath,sidepath" probability="0.05" />
         </EventSet>
       </EventSet>
-      <!--24-->
-      <EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.90" minmissiontime="1440" minintensity="0.0" maxintensity="1.0">
+      <!--40 min-->
+      <EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.90" minmissiontime="2400" minintensity="0.0" maxintensity="0.60">
         <EventSet identifier="husks" chooserandom="false" commonness="15">
           <MonsterEvent characterfile="Crawlerhusk" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
           <MonsterEvent characterfile="Swarmcrawlerhusk" minamount="1" maxamount="2" spawntype="mainpath,sidepath" />

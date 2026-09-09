@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <Item name="" identifier="vtcasinocratecrazy" category="Misc" hideinmenus="true" tags="crate" scale="0.5" pickdistance="150" impactsoundtag="impact_metal_heavy" waterproof="true" fireproof="true" description="">
+    <InventoryIcon texture="%ModDir%/the void traitor pack/items/casino/casino_crates.png" sourcerect="0,0,147,79" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/the void traitor pack/items/casino/casino_crates.png" sourcerect="0,0,147,79" depth="0.54" origin="0.5,0.5" />
+    <Body width="145" height="75" density="25" />
+    <Holdable slots="Any,RightHand+LeftHand" holdpos="0,-80" handle1="-20,14" handle2="20,14" aimable="false" msg="ItemMsgPickUpSelect" />
+  </Item>
+  <Item name="" identifier="vtcasinocratenormal" category="Misc" hideinmenus="true" tags="crate" scale="0.5" pickdistance="150" impactsoundtag="impact_metal_heavy" waterproof="true" fireproof="true" description="">
+    <InventoryIcon texture="%ModDir%/the void traitor pack/items/casino/casino_crates.png" sourcerect="326,0,148,79" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/the void traitor pack/items/casino/casino_crates.png" sourcerect="326,0,148,79" depth="0.54" origin="0.5,0.5" />
+    <Body width="145" height="75" density="25" />
+    <Holdable slots="Any,RightHand+LeftHand" holdpos="0,-80" handle1="-20,14" handle2="20,14" aimable="false" msg="ItemMsgPickUpSelect" />
+  </Item>
+  <Item name="" identifier="vtcasinocrateweapons" category="Misc" hideinmenus="true" tags="crate" scale="0.5" pickdistance="150" impactsoundtag="impact_metal_heavy" waterproof="true" fireproof="true" description="">
+    <InventoryIcon texture="%ModDir%/the void traitor pack/items/casino/casino_crates.png" sourcerect="163,0,147,79" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/the void traitor pack/items/casino/casino_crates.png" sourcerect="163,0,147,79" depth="0.54" origin="0.5,0.5" />
+    <Body width="145" height="75" density="25" />
+    <Holdable slots="Any,RightHand+LeftHand" holdpos="0,-80" handle1="-20,14" handle2="20,14" aimable="false" msg="ItemMsgPickUpSelect" />
+  </Item>
+  <Item name="" identifier="vtcasinocratemedical" category="Misc" hideinmenus="true" tags="crate" scale="0.5" pickdistance="150" impactsoundtag="impact_metal_heavy" waterproof="true" fireproof="true" description="">
+    <InventoryIcon texture="%ModDir%/the void traitor pack/items/casino/casino_crates.png" sourcerect="489,0,147,79" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/the void traitor pack/items/casino/casino_crates.png" sourcerect="489,0,147,79" depth="0.54" origin="0.5,0.5" />
+    <Body width="145" height="75" density="25" />
+    <Holdable slots="Any,RightHand+LeftHand" holdpos="0,-80" handle1="-20,14" handle2="20,14" aimable="false" msg="ItemMsgPickUpSelect" />
+  </Item>
+  <Item name="" identifier="vtcasinocratematerials" category="Misc" hideinmenus="true" tags="crate" scale="0.5" pickdistance="150" impactsoundtag="impact_metal_heavy" waterproof="true" fireproof="true" description="">
+    <InventoryIcon texture="%ModDir%/the void traitor pack/items/casino/casino_crates.png" sourcerect="652,0,148,79" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/the void traitor pack/items/casino/casino_crates.png" sourcerect="652,0,148,79" depth="0.54" origin="0.5,0.5" />
+    <Body width="145" height="75" density="25" />
+    <Holdable slots="Any,RightHand+LeftHand" holdpos="0,-80" handle1="-20,14" handle2="20,14" aimable="false" msg="ItemMsgPickUpSelect" />
+  </Item>
+</Items>
