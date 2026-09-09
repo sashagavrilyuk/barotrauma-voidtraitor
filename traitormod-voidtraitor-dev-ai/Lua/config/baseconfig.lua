@@ -82,6 +82,7 @@ config.DiscordWebhookConfig = nil -- legacy compatibility for old webhook-only c
 
 config.GameVote = {
     DurationSeconds = 30,
+    CooldownSeconds = 300,
 
     Modes = {
         {

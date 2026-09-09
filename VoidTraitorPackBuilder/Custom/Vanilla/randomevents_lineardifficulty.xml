@@ -129,7 +129,7 @@ MonsterEvent
 
 
 			<!--20% or 2 min-->
-			<EventSet chooserandom="true" mindistancetraveled="0.20" minmissiontime="120" minintensity="0.0" maxintensity="0.1" allowatstart="false">
+			<EventSet chooserandom="true" mindistancetraveled="0.10" minmissiontime="120" minintensity="0.0" maxintensity="0.1" allowatstart="true">
 				<MonsterEvent characterfile="Crawler" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
 				<MonsterEvent characterfile="CrawlerHusk" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
 				<MonsterEvent characterfile="Spineling" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
@@ -138,7 +138,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--40% or 10 min-->
-			<EventSet chooserandom="true" mindistancetraveled="0.40" minmissiontime="600" minintensity="0.0" maxintensity="0.1" allowatstart="false">
+			<EventSet chooserandom="true" mindistancetraveled="0.30" minmissiontime="600" minintensity="0.0" maxintensity="0.1" allowatstart="true">
 				<MonsterEvent characterfile="Crawler" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
 				<MonsterEvent characterfile="CrawlerHusk" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
 				<MonsterEvent characterfile="Spineling" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
@@ -147,7 +147,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--60% or 20 min-->
-			<EventSet chooserandom="true" mindistancetraveled="0.60" minmissiontime="1200" minintensity="0.0" maxintensity="0.1" allowatstart="false">
+			<EventSet chooserandom="true" mindistancetraveled="0.50" minmissiontime="1200" minintensity="0.0" maxintensity="0.1" allowatstart="true">
 				<MonsterEvent characterfile="Crawler" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
 				<MonsterEvent characterfile="CrawlerHusk" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
 				<MonsterEvent characterfile="Spineling" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
@@ -156,7 +156,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--80% or 30 min-->
-			<EventSet chooserandom="true" mindistancetraveled="0.80" minmissiontime="1800" minintensity="0.0" maxintensity="0.1" allowatstart="false">
+			<EventSet chooserandom="true" mindistancetraveled="0.70" minmissiontime="1800" minintensity="0.0" maxintensity="0.1" allowatstart="true">
 				<MonsterEvent characterfile="Crawler" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
 				<MonsterEvent characterfile="CrawlerHusk" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
 				<MonsterEvent characterfile="Spineling" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
@@ -277,7 +277,7 @@ MonsterEvent
 
 
 			<!--20% or 2 min-->
-			<EventSet identifier="first" chooserandom="true" mindistancetraveled="0.20" minmissiontime="120" minintensity="0.0" maxintensity="0.15" allowatstart="false">
+			<EventSet identifier="first" chooserandom="true" mindistancetraveled="0.10" minmissiontime="120" minintensity="0.0" maxintensity="0.15" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="3" maxamount="5" spawntype="mainpath,sidepath" />
 				</EventSet>
@@ -308,7 +308,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--40% or 10 min-->
-			<EventSet identifier="second" chooserandom="true" mindistancetraveled="0.40" minmissiontime="600" minintensity="0.0" maxintensity="0.15" allowatstart="false">
+			<EventSet identifier="second" chooserandom="true" mindistancetraveled="0.30" minmissiontime="600" minintensity="0.0" maxintensity="0.15" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="3" maxamount="5" spawntype="mainpath,sidepath" />
 				</EventSet>
@@ -336,7 +336,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--60% or 20 min-->
-			<EventSet identifier="third" chooserandom="true" mindistancetraveled="0.60" minmissiontime="1200" minintensity="0.0" maxintensity="0.15" allowatstart="false">
+			<EventSet identifier="third" chooserandom="true" mindistancetraveled="0.50" minmissiontime="1200" minintensity="0.0" maxintensity="0.15" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="3" maxamount="5" spawntype="mainpath,sidepath" />
 				</EventSet>
@@ -364,7 +364,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--80% or 30 min-->
-			<EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.80" minmissiontime="1800" minintensity="0.0" maxintensity="0.15" allowatstart="false">
+			<EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.70" minmissiontime="1800" minintensity="0.0" maxintensity="0.15" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="3" maxamount="5" spawntype="mainpath,sidepath" />
 				</EventSet>
@@ -534,7 +534,7 @@ MonsterEvent
 
 
 			<!--20% or 2 min-->
-			<EventSet identifier="first" chooserandom="true" mindistancetraveled="0.20" minmissiontime="120" minintensity="0.0" maxintensity="0.2" allowatstart="false">
+			<EventSet identifier="first" chooserandom="true" mindistancetraveled="0.10" minmissiontime="120" minintensity="0.0" maxintensity="0.2" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="4" maxamount="5" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_giant" minamount="0" maxamount="1" spawntype="mainpath,sidepath" />
@@ -575,7 +575,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--40% or 10 min-->
-			<EventSet identifier="second" chooserandom="true" mindistancetraveled="0.40" minmissiontime="600" minintensity="0.0" maxintensity="0.2" allowatstart="false">
+			<EventSet identifier="second" chooserandom="true" mindistancetraveled="0.30" minmissiontime="600" minintensity="0.0" maxintensity="0.2" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="4" maxamount="5" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_giant" minamount="0" maxamount="1" spawntype="mainpath,sidepath" />
@@ -613,7 +613,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--60% or 20 min-->
-			<EventSet identifier="third" chooserandom="true" mindistancetraveled="0.60" minmissiontime="1200" minintensity="0.0" maxintensity="0.2" allowatstart="false">
+			<EventSet identifier="third" chooserandom="true" mindistancetraveled="0.50" minmissiontime="1200" minintensity="0.0" maxintensity="0.2" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="4" maxamount="5" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_giant" minamount="0" maxamount="1" spawntype="mainpath,sidepath" />
@@ -651,7 +651,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--80% or 30 min-->
-			<EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.80" minmissiontime="1800" minintensity="0.0" maxintensity="0.2" allowatstart="false">
+			<EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.70" minmissiontime="1800" minintensity="0.0" maxintensity="0.2" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="4" maxamount="6" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_giant" minamount="0" maxamount="1" spawntype="mainpath,sidepath" />
@@ -847,7 +847,7 @@ MonsterEvent
 
 
 			<!--20% or 2 min-->
-			<EventSet identifier="first" chooserandom="true" mindistancetraveled="0.20" minmissiontime="120" minintensity="0.0" maxintensity="0.3" allowatstart="false">
+			<EventSet identifier="first" chooserandom="true" mindistancetraveled="0.10" minmissiontime="120" minintensity="0.0" maxintensity="0.3" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="5" maxamount="6" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_giant" minamount="0" maxamount="1" spawntype="mainpath,sidepath" />
@@ -900,7 +900,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--40% or 10 min-->
-			<EventSet identifier="second" chooserandom="true" mindistancetraveled="0.40" minmissiontime="600" minintensity="0.0" maxintensity="0.3" allowatstart="false">
+			<EventSet identifier="second" chooserandom="true" mindistancetraveled="0.30" minmissiontime="600" minintensity="0.0" maxintensity="0.3" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="5" maxamount="6" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_giant" minamount="0" maxamount="1" spawntype="mainpath,sidepath" />
@@ -953,7 +953,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--60% or 20 min-->
-			<EventSet identifier="third" chooserandom="true" mindistancetraveled="0.60" minmissiontime="1200" minintensity="0.0" maxintensity="0.3" allowatstart="false">
+			<EventSet identifier="third" chooserandom="true" mindistancetraveled="0.50" minmissiontime="1200" minintensity="0.0" maxintensity="0.3" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="5" maxamount="6" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_giant" minamount="0" maxamount="1" spawntype="mainpath,sidepath" />
@@ -1006,7 +1006,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--80% or 30 min-->
-			<EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.80" minmissiontime="1800" minintensity="0.0" maxintensity="0.3" allowatstart="false">
+			<EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.70" minmissiontime="1800" minintensity="0.0" maxintensity="0.3" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="5" maxamount="6" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_giant" minamount="0" maxamount="1" spawntype="mainpath,sidepath" />
@@ -1214,7 +1214,7 @@ MonsterEvent
 
 
 			<!--20% or 2 min-->
-			<EventSet identifier="first" chooserandom="true" mindistancetraveled="0.20" minmissiontime="120" minintensity="0.0" maxintensity="0.4" allowatstart="false">
+			<EventSet identifier="first" chooserandom="true" mindistancetraveled="0.10" minmissiontime="120" minintensity="0.0" maxintensity="0.4" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="6" maxamount="7" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_giant" minamount="1" maxamount="1" spawntype="mainpath,sidepath" />
@@ -1267,7 +1267,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--40% or 10 min-->
-			<EventSet identifier="second" chooserandom="true" mindistancetraveled="0.40" minmissiontime="600" minintensity="0.0" maxintensity="0.4" allowatstart="false">
+			<EventSet identifier="second" chooserandom="true" mindistancetraveled="0.30" minmissiontime="600" minintensity="0.0" maxintensity="0.4" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="6" maxamount="7" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_giant" minamount="1" maxamount="1" spawntype="mainpath,sidepath" />
@@ -1320,7 +1320,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--60% or 20 min-->
-			<EventSet identifier="third" chooserandom="true" mindistancetraveled="0.60" minmissiontime="1200" minintensity="0.0" maxintensity="0.4" allowatstart="false">
+			<EventSet identifier="third" chooserandom="true" mindistancetraveled="0.50" minmissiontime="1200" minintensity="0.0" maxintensity="0.4" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="6" maxamount="7" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_giant" minamount="1" maxamount="1" spawntype="mainpath,sidepath" />
@@ -1373,7 +1373,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--80% or 30 min-->
-			<EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.80" minmissiontime="1800" minintensity="0.0" maxintensity="0.4" allowatstart="false">
+			<EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.70" minmissiontime="1800" minintensity="0.0" maxintensity="0.4" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="6" maxamount="7" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_giant" minamount="1" maxamount="1" spawntype="mainpath,sidepath" />
@@ -1591,7 +1591,7 @@ MonsterEvent
 
 
 			<!--20% or 2 min-->
-			<EventSet identifier="first" chooserandom="true" mindistancetraveled="0.20" minmissiontime="120" minintensity="0.0" maxintensity="0.5" allowatstart="false">
+			<EventSet identifier="first" chooserandom="true" mindistancetraveled="0.10" minmissiontime="120" minintensity="0.0" maxintensity="0.5" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="6" maxamount="8" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_giant" minamount="1" maxamount="1" spawntype="mainpath,sidepath" />
@@ -1649,7 +1649,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--40% or 10 min-->
-			<EventSet identifier="second" chooserandom="true" mindistancetraveled="0.40" minmissiontime="600" minintensity="0.0" maxintensity="0.5" allowatstart="false">
+			<EventSet identifier="second" chooserandom="true" mindistancetraveled="0.30" minmissiontime="600" minintensity="0.0" maxintensity="0.5" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="6" maxamount="8" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_giant" minamount="1" maxamount="1" spawntype="mainpath,sidepath" />
@@ -1707,7 +1707,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--60% or 20 min-->
-			<EventSet identifier="third" chooserandom="true" mindistancetraveled="0.60" minmissiontime="1200" minintensity="0.0" maxintensity="0.5" allowatstart="false">
+			<EventSet identifier="third" chooserandom="true" mindistancetraveled="0.50" minmissiontime="1200" minintensity="0.0" maxintensity="0.5" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="6" maxamount="8" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_giant" minamount="1" maxamount="1" spawntype="mainpath,sidepath" />
@@ -1765,7 +1765,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--80% or 30 min-->
-			<EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.80" minmissiontime="1800" minintensity="0.0" maxintensity="0.5" allowatstart="false">
+			<EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.70" minmissiontime="1800" minintensity="0.0" maxintensity="0.5" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="6" maxamount="8" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_giant" minamount="1" maxamount="1" spawntype="mainpath,sidepath" />
@@ -1987,7 +1987,7 @@ MonsterEvent
 
 
 			<!--20% or 2 min-->
-			<EventSet identifier="first" chooserandom="true" mindistancetraveled="0.20" minmissiontime="120" minintensity="0.0" maxintensity="0.6" allowatstart="false">
+			<EventSet identifier="first" chooserandom="true" mindistancetraveled="0.10" minmissiontime="120" minintensity="0.0" maxintensity="0.6" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="5" maxamount="6" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_morbusine" minamount="2" maxamount="2" spawntype="mainpath,sidepath" />
@@ -2046,7 +2046,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--40% or 10 min-->
-			<EventSet identifier="second" chooserandom="true" mindistancetraveled="0.40" minmissiontime="600" minintensity="0.0" maxintensity="0.6" allowatstart="false">
+			<EventSet identifier="second" chooserandom="true" mindistancetraveled="0.30" minmissiontime="600" minintensity="0.0" maxintensity="0.6" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="5" maxamount="6" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_morbusine" minamount="2" maxamount="2" spawntype="mainpath,sidepath" />
@@ -2108,7 +2108,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--60% or 20 min-->
-			<EventSet identifier="third" chooserandom="true" mindistancetraveled="0.60" minmissiontime="1200" minintensity="0.0" maxintensity="0.6" allowatstart="false">
+			<EventSet identifier="third" chooserandom="true" mindistancetraveled="0.50" minmissiontime="1200" minintensity="0.0" maxintensity="0.6" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="5" maxamount="6" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_morbusine" minamount="2" maxamount="2" spawntype="mainpath,sidepath" />
@@ -2170,7 +2170,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--80% or 30 min-->
-			<EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.80" minmissiontime="1800" minintensity="0.0" maxintensity="0.6" allowatstart="false">
+			<EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.70" minmissiontime="1800" minintensity="0.0" maxintensity="0.6" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="5" maxamount="6" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_morbusine" minamount="2" maxamount="2" spawntype="mainpath,sidepath" />
@@ -2396,7 +2396,7 @@ MonsterEvent
 
 
 			<!--20% or 2 min-->
-			<EventSet identifier="first" chooserandom="true" mindistancetraveled="0.20" minmissiontime="120" minintensity="0.0" maxintensity="0.7" allowatstart="false">
+			<EventSet identifier="first" chooserandom="true" mindistancetraveled="0.10" minmissiontime="120" minintensity="0.0" maxintensity="0.7" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="5" maxamount="6" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_morbusine" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
@@ -2458,7 +2458,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--40% or 10 min-->
-			<EventSet identifier="second" chooserandom="true" mindistancetraveled="0.40" minmissiontime="600" minintensity="0.0" maxintensity="0.7" allowatstart="false">
+			<EventSet identifier="second" chooserandom="true" mindistancetraveled="0.30" minmissiontime="600" minintensity="0.0" maxintensity="0.7" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="5" maxamount="6" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_morbusine" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
@@ -2520,7 +2520,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--60% or 20 min-->
-			<EventSet identifier="third" chooserandom="true" mindistancetraveled="0.60" minmissiontime="1200" minintensity="0.0" maxintensity="0.7" allowatstart="false">
+			<EventSet identifier="third" chooserandom="true" mindistancetraveled="0.50" minmissiontime="1200" minintensity="0.0" maxintensity="0.7" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="5" maxamount="6" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_morbusine" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
@@ -2582,7 +2582,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--80% or 30 min-->
-			<EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.80" minmissiontime="1800" minintensity="0.0" maxintensity="0.7" allowatstart="false">
+			<EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.70" minmissiontime="1800" minintensity="0.0" maxintensity="0.7" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="5" maxamount="6" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_morbusine" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
@@ -2817,7 +2817,7 @@ MonsterEvent
 
 
 			<!--20% or 2 min-->
-			<EventSet identifier="first" chooserandom="true" mindistancetraveled="0.20" minmissiontime="120" minintensity="0.0" maxintensity="0.8" allowatstart="false">
+			<EventSet identifier="first" chooserandom="true" mindistancetraveled="0.10" minmissiontime="120" minintensity="0.0" maxintensity="0.8" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="6" maxamount="7" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_morbusine" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
@@ -2879,7 +2879,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--40% or 10 min-->
-			<EventSet identifier="second" chooserandom="true" mindistancetraveled="0.40" minmissiontime="600" minintensity="0.0" maxintensity="0.8" allowatstart="false">
+			<EventSet identifier="second" chooserandom="true" mindistancetraveled="0.30" minmissiontime="600" minintensity="0.0" maxintensity="0.8" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="6" maxamount="7" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_morbusine" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
@@ -2941,7 +2941,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--60% or 20 min-->
-			<EventSet identifier="third" chooserandom="true" mindistancetraveled="0.60" minmissiontime="1200" minintensity="0.0" maxintensity="0.8" allowatstart="false">
+			<EventSet identifier="third" chooserandom="true" mindistancetraveled="0.50" minmissiontime="1200" minintensity="0.0" maxintensity="0.8" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="6" maxamount="7" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_morbusine" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
@@ -3003,7 +3003,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--80% or 30 min-->
-			<EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.80" minmissiontime="1800" minintensity="0.0" maxintensity="0.8" allowatstart="false">
+			<EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.70" minmissiontime="1800" minintensity="0.0" maxintensity="0.8" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="6" maxamount="7" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_morbusine" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
@@ -3236,7 +3236,7 @@ MonsterEvent
 
 			
 			<!--20% or 2 min-->
-			<EventSet identifier="first" chooserandom="true" mindistancetraveled="0.20" minmissiontime="120" minintensity="0.0" maxintensity="0.9" allowatstart="false">
+			<EventSet identifier="first" chooserandom="true" mindistancetraveled="0.10" minmissiontime="120" minintensity="0.0" maxintensity="0.9" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="6" maxamount="7" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_morbusine" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
@@ -3298,7 +3298,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--40% or 10 min-->
-			<EventSet identifier="second" chooserandom="true" mindistancetraveled="0.40" minmissiontime="600" minintensity="0.0" maxintensity="0.9" allowatstart="false">
+			<EventSet identifier="second" chooserandom="true" mindistancetraveled="0.30" minmissiontime="600" minintensity="0.0" maxintensity="0.9" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="6" maxamount="7" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_morbusine" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
@@ -3360,7 +3360,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--60% or 20 min-->
-			<EventSet identifier="third" chooserandom="true" mindistancetraveled="0.60" minmissiontime="1200" minintensity="0.0" maxintensity="0.9" allowatstart="false">
+			<EventSet identifier="third" chooserandom="true" mindistancetraveled="0.50" minmissiontime="1200" minintensity="0.0" maxintensity="0.9" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="6" maxamount="7" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_morbusine" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />
@@ -3422,7 +3422,7 @@ MonsterEvent
 			</EventSet>
 
 			<!--80% or 30 min-->
-			<EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.80" minmissiontime="1800" minintensity="0.0" maxintensity="0.9" allowatstart="false">
+			<EventSet identifier="fourth" chooserandom="true" mindistancetraveled="0.70" minmissiontime="1800" minintensity="0.0" maxintensity="0.9" allowatstart="true">
 				<EventSet identifier="spinelings">
 					<MonsterEvent characterfile="Spineling" minamount="6" maxamount="7" spawntype="mainpath,sidepath" />
 					<MonsterEvent characterfile="Spineling_morbusine" minamount="2" maxamount="3" spawntype="mainpath,sidepath" />

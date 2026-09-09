@@ -43,6 +43,10 @@ Networking.Receive(P.NET_VOTE_SNAPSHOT, function(message)
         S.lastShownActiveVoteId = ""
     end
 
+    local now = P.GetTime()
+    snapshot.GameCooldownEndTime = now + math.max(0, message.ReadInt32())
+    snapshot.MapCooldownEndTime = now + math.max(0, message.ReadInt32())
+
     S.voteSnapshot = snapshot
 
     if S.voteButtonRoot ~= nil and P.IsLobbyScreenAvailable() and S.currentMenuKind ~= "votestart" and S.currentMenuKind ~= "voteactive" then

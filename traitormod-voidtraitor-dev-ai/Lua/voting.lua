@@ -5,6 +5,8 @@ local textPromptUtils = require("textpromptutils")
 vt.Votes = {}
 vt.GameVote = nil
 vt.MapVote = nil
+vt.GameVoteCooldownUntil = 0
+vt.MapVoteCooldownUntil = 0
 
 local serverSettingsDescriptor = Descriptors["Barotrauma.Networking.ServerSettings"] or LuaUserData.RegisterType("Barotrauma.Networking.ServerSettings")
 LuaUserData.MakePropertyAccessible(serverSettingsDescriptor, "SelectedOutpostName")
@@ -39,6 +41,28 @@ local function getVoteDurationSeconds()
     end
 
     return math.max(1, math.floor(duration))
+end
+
+local function getVoteCooldownSeconds()
+    local cooldown = tonumber(getVoteConfig().CooldownSeconds)
+    if cooldown == nil then return 300 end
+    return math.max(0, math.floor(cooldown))
+end
+
+local function isVoteCooldownBypassed(client)
+    return client == nil or client.HasPermission(ClientPermissions.ConsoleCommands)
+end
+
+local function getVoteCooldownRemaining(voteType, client)
+    if isVoteCooldownBypassed(client) then return 0 end
+
+    local cooldownUntil = voteType == "map" and vt.MapVoteCooldownUntil or vt.GameVoteCooldownUntil
+    return math.max(0, math.ceil((tonumber(cooldownUntil) or 0) - Timer.GetTime()))
+end
+
+local function formatCooldownTime(seconds)
+    seconds = math.max(0, math.ceil(tonumber(seconds) or 0))
+    return string.format("%d:%02d", math.floor(seconds / 60), seconds % 60)
 end
 
 local function isLobbyState()
@@ -579,6 +603,7 @@ local function finishGameVote(cancelledText)
     if vote == nil then return end
 
     vt.GameVote = nil
+    vt.GameVoteCooldownUntil = Timer.GetTime() + getVoteCooldownSeconds()
 
     if cancelledText ~= nil then
         Traitormod.SendMessageEveryone(cancelledText)
@@ -643,6 +668,7 @@ local function finishMapVote(cancelledText)
     if vote == nil then return end
 
     vt.MapVote = nil
+    vt.MapVoteCooldownUntil = Timer.GetTime() + getVoteCooldownSeconds()
 
     if cancelledText ~= nil then
         Traitormod.SendMessageEveryone(cancelledText)
@@ -790,6 +816,12 @@ vt.StartGameVote = function(client, silent)
         return true
     end
 
+    local cooldownRemaining = getVoteCooldownRemaining("game", client)
+    if cooldownRemaining > 0 then
+        Traitormod.SendMessage(client, string.format(getVoteText("GameVoteCooldown"), formatCooldownTime(cooldownRemaining)))
+        return true
+    end
+
     local gameVoteModes = getConfiguredGameVoteModes()
     if #gameVoteModes == 0 then
         Traitormod.SendMessage(client, getVoteText("GameVoteApplyFailed"))
@@ -836,6 +868,12 @@ vt.StartMapVote = function(client, silent)
 
     if vt.GameVote ~= nil or vt.MapVote ~= nil then
         Traitormod.SendMessage(client, getVoteText("LobbyVoteAlreadyActive"))
+        return true
+    end
+
+    local cooldownRemaining = getVoteCooldownRemaining("map", client)
+    if cooldownRemaining > 0 then
+        Traitormod.SendMessage(client, string.format(getVoteText("MapVoteCooldown"), formatCooldownTime(cooldownRemaining)))
         return true
     end
 
@@ -1010,6 +1048,8 @@ vt.GetGuiSnapshot = function(client)
     local snapshot = {
         StartBlockedReason = getGuiStartBlockedReason(),
         CanStart = isLobbyState() and vt.GameVote == nil and vt.MapVote == nil,
+        GameCooldownRemaining = getVoteCooldownRemaining("game", client),
+        MapCooldownRemaining = getVoteCooldownRemaining("map", client),
         Active = nil
     }
 
