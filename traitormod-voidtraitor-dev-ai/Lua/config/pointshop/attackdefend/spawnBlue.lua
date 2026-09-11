@@ -81,7 +81,6 @@ Products = {
             ["medtoolbox"] = {
                 Items = {
                     ["deusizine"] = 2,
-                    ["pills2"] = 1,
                     ["ointment"] = 8,
                     ["skinaid"] = 8,
                     ["opium"] = 4,
@@ -959,7 +958,7 @@ Products = {
                     ["combatstimulantsyringe"] = 1,
                 }
             },
-            ["captainseparatistsuniform3"] = {
+            ["captainsuniform3"] = {
                 InvSlotType = InvSlotType.InnerClothes,
             },
             ["piratebodyarmor"] = {
@@ -980,7 +979,6 @@ Products = {
                 }
             },
             ["artmod_scraphammer"] = 1,
-            ["captainsuniform3"] = 1,
             ["wrench"] = 1,
             ["medkit"] = {
                 Items = {
@@ -989,6 +987,8 @@ Products = {
                 }
             },
             ["antibleeding1"] = 8,
+            ["gypsum"] = 4,
+            ["tourniquet"] = 4,
         },
         LogSuffix = " has spawned as juggernaut1",
     }),
@@ -1029,7 +1029,7 @@ Products = {
                     ["combatstimulantsyringe"] = 1,
                 }
             },
-            ["captainseparatistsuniform3"] = {
+            ["captainsuniform3"] = {
                 InvSlotType = InvSlotType.InnerClothes,
             },
             ["piratebodyarmor"] = {
@@ -1050,7 +1050,6 @@ Products = {
                 }
             },
             ["artmod_scrapsecira"] = 1,
-            ["captainsuniform3"] = 1,
             ["wrench"] = 1,
             ["medkit"] = {
                 Items = {
@@ -1059,6 +1058,8 @@ Products = {
                 }
             },
             ["antibleeding1"] = 8,
+            ["gypsum"] = 4,
+            ["tourniquet"] = 4,
         },
         LogSuffix = " has spawned as juggernaut2",
     }),
@@ -1097,7 +1098,7 @@ Products = {
                     ["deusizine"] = 1,
                 }
             },
-            ["captainseparatistsuniform2"] = {
+            ["captainsuniform1"] = {
                 InvSlotType = InvSlotType.InnerClothes,
             },
             ["bodyarmor"] = {
@@ -1126,7 +1127,6 @@ Products = {
             },
             ["empgrenade"] = 2,
             ["piratecaptainhat"] = 1,
-            ["captainsuniform1"] = 1,
             ["beerbottle2"] = 2,
             ["beerbottle1"] = 2,
             ["rum"] = 2,
@@ -1185,7 +1185,7 @@ Products = {
                     ["deusizine"] = 1,
                 }
             },
-            ["captainseparatistsuniform2"] = {
+            ["captainsuniform1"] = {
                 InvSlotType = InvSlotType.InnerClothes,
             },
             ["bodyarmor"] = {
@@ -1218,7 +1218,6 @@ Products = {
             },
             ["empgrenade"] = 2,
             ["piratecaptainhat"] = 1,
-            ["captainsuniform1"] = 1,
             ["rum"] = 2,
             ["beerbottle1"] = 2,
             ["beerbottle2"] = 2,
@@ -1445,7 +1444,7 @@ Products = {
             ["autoinjectorheadset"] = {
                 InvSlotType = InvSlotType.Headset,
             },
-            ["mechanicseparatistsuniform1"] = {
+            ["bluejumpsuit1"] = {
                 InvSlotType = InvSlotType.InnerClothes,
             },
             ["makeshiftarmor"] = {
@@ -1479,7 +1478,6 @@ Products = {
                     ["40mmchemgrenade"] = 4,
                 }
             },
-            ["bluejumpsuit1"] = 1,
             ["alienartifactpiece"] = 1,
             ["fraggrenade"] = 2,
             ["stungrenade"] = 2,
@@ -1521,7 +1519,7 @@ Products = {
             ["autoinjectorheadset"] = {
                 InvSlotType = InvSlotType.Headset,
             },
-            ["mechanicseparatistsuniform1"] = {
+            ["bluejumpsuit1"] = {
                 InvSlotType = InvSlotType.InnerClothes,
             },
             ["makeshiftarmor"] = {
@@ -1550,7 +1548,6 @@ Products = {
                     ["40mmchemgrenade"] = 3,
                 }
             },
-            ["bluejumpsuit1"] = 1,
             ["alienartifactpiece"] = 4,
             ["fraggrenade"] = 2,
             ["stungrenade"] = 2,

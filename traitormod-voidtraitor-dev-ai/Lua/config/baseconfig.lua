@@ -103,17 +103,15 @@ config.GameVote = {
     },
 
     SecretModeIdentifier = "mission",
-    SecretTraitorProbability = 1,
+    SecretTraitorProbability = 100,
     SecretDifficulty = 50,
     SecretMissionTypes = {
         "Pirate",
-        "Nest",
         "Salvage",
         "SalvageWreck",
         "SalvageCave",
         "SalvageRuin",
         "Mineral",
-        "ClearAlienRuins",
         "Beacon",
         "ScanAlienRuins",
         "EliminateThalamus",
@@ -129,7 +127,7 @@ config.GameVote = {
     AttackDefendTraitorProbability = 100,
 
     HideModeIdentifier = "pvp",
-    HideTraitorProbability = 0,
+    HideTraitorProbability = 100,
     HideMissionTypes = {"HideAndSeekV2"},
     HideKeepSecretMissionTypes = true,
     HideOutpostName = "Random"
@@ -339,7 +337,7 @@ config.GamemodeConfig = {
         PointshopCategories = {"hideBlue", "hideRed"},
         StartDelayMinutes = 1,
         RoundDurationMinutes = 6,
-        ClassSelectionTimeoutMinutes = 3,
+        ClassSelectionTimeoutMinutes = 1,
         ReconnectGraceSeconds = 60,
         WinningPointsBlue = 2000,
         WinningPointsRed = 2000,

@@ -81,7 +81,6 @@ Products = {
             ["medtoolbox"] = {
                 Items = {
                     ["deusizine"] = 2,
-                    ["pills2"] = 1,
                     ["ointment"] = 8,
                     ["skinaid"] = 8,
                     ["opium"] = 4,
@@ -980,15 +979,17 @@ Products = {
                 }
             },
             ["artmod_scraphammer"] = 1,
-            ["captainsuniform3"] = 1,
             ["wrench"] = 1,
             ["medkit"] = {
                 Items = {
                     ["redjellymedS"] = 1,
                     ["bluejellymed"] = 1,
+                    ["hyperzine"] = 1,
                 }
             },
             ["antibleeding1"] = 8,
+            ["gypsum"] = 4,
+            ["tourniquet"] = 4,
         },
         LogSuffix = " has spawned as juggernaut1",
     }),
@@ -1050,7 +1051,6 @@ Products = {
                 }
             },
             ["artmod_scrapsecira"] = 1,
-            ["captainsuniform3"] = 1,
             ["wrench"] = 1,
             ["medkit"] = {
                 Items = {
@@ -1059,6 +1059,8 @@ Products = {
                 }
             },
             ["antibleeding1"] = 8,
+            ["gypsum"] = 4,
+            ["tourniquet"] = 4,
         },
         LogSuffix = " has spawned as juggernaut2",
     }),
@@ -1126,7 +1128,6 @@ Products = {
             },
             ["empgrenade"] = 2,
             ["piratecaptainhat"] = 1,
-            ["captainsuniform1"] = 1,
             ["beerbottle2"] = 2,
             ["beerbottle1"] = 2,
             ["rum"] = 2,
@@ -1218,7 +1219,6 @@ Products = {
             },
             ["empgrenade"] = 2,
             ["piratecaptainhat"] = 1,
-            ["captainsuniform1"] = 1,
             ["rum"] = 2,
             ["beerbottle1"] = 2,
             ["beerbottle2"] = 2,
@@ -1479,7 +1479,6 @@ Products = {
                     ["40mmchemgrenade"] = 4,
                 }
             },
-            ["bluejumpsuit1"] = 1,
             ["alienartifactpiece"] = 1,
             ["fraggrenade"] = 2,
             ["stungrenade"] = 2,
@@ -1550,7 +1549,6 @@ Products = {
                     ["40mmchemgrenade"] = 3,
                 }
             },
-            ["bluejumpsuit1"] = 1,
             ["alienartifactpiece"] = 4,
             ["fraggrenade"] = 2,
             ["stungrenade"] = 2,
