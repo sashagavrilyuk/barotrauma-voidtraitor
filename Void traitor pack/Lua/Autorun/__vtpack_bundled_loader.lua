@@ -23,8 +23,15 @@ package.path = modulePaths
 
 local function runBundled(modFolder, scriptPath)
     local modPath = packPath .. "/" .. modFolder
-    local chunk = loadfile(modPath .. "/" .. scriptPath)
-    chunk(modPath)
+    local chunk, loadError = loadfile(modPath .. "/" .. scriptPath)
+    if chunk == nil then error(loadError, 0) end
+
+    local markerName = "__VTPACK_BUNDLED_AUTORUN"
+    local previousMarker = rawget(_G, markerName)
+    _G[markerName] = modFolder .. "/" .. scriptPath
+    local ok, runError = pcall(chunk, modPath)
+    _G[markerName] = previousMarker
+    if not ok then error(runError, 0) end
 end
 
 runBundled("NT Surgery Plus", "Lua/Autorun/init.lua")
