@@ -68,6 +68,7 @@ Products = {
                 InvSlotType = InvSlotType.Bag,
                 Items = {
                     ["smgmagazine"] = 4,
+                    ["hyperzine"] = 2,
                     ["wrench"] = 1,
                 }
             },
@@ -106,7 +107,7 @@ Products = {
         },
         Talents = {
             "implacable",
-            "inordinatexsanguination",
+            "inordinateexsanguination",
             "swole",
             "commando",
             "ntsp_captainresist",
@@ -193,7 +194,7 @@ Products = {
         },
         Talents = {
             "implacable",
-            "inordinatexsanguination",
+            "inordinateexsanguination",
             "swole",
             "commando",
             "ntsp_captainresist",
@@ -284,7 +285,7 @@ Products = {
         Talents = {
             "physicalconditioning",
             "implacable",
-            "inordinatexsanguination",
+            "inordinateexsanguination",
             "specops",
             "foolhardy",
             "rifleman",
@@ -359,7 +360,7 @@ Products = {
         Talents = {
             "physicalconditioning",
             "implacable",
-            "inordinatexsanguination",
+            "inordinateexsanguination",
             "specops",
             "foolhardy",
             "rifleman",
@@ -437,11 +438,11 @@ Products = {
         Talents = {
             "commando",
             "specops",
-            "inordinatexsanguination",
+            "inordinateexsanguination",
             "beatcop",
             "gunrunner",
             "warlord",
-            "exstrapowder",
+            "extrapowder",
         },
         Afflictions = {
             { Identifier = "precursor", Strength = 23 },
@@ -517,11 +518,11 @@ Products = {
         Talents = {
             "commando",
             "specops",
-            "inordinatexsanguination",
+            "inordinateexsanguination",
             "beatcop",
             "gunrunner",
             "warlord",
-            "exstrapowder",
+            "extrapowder",
         },
         Afflictions = {
             { Identifier = "precursor", Strength = 23 },
@@ -600,7 +601,7 @@ Products = {
             "ntsp_adrenalinepump",
             "ntsp_therapisttintraining",
             "ntsp_captainresist",
-            "ntsp_fallandcantgetapp",
+            "ntsp_fallenandcantgetup",
             "ntsp_underpressure",
             "ntsp_bedsidemanner",
             "ntsp_preventativepermit",
@@ -938,7 +939,7 @@ Products = {
             "crustyseaman",
             "ntsp_therapisttintraining",
             "foolhardy",
-            "ntsp_fallandcantgetapp",
+            "ntsp_fallenandcantgetup",
             "iamthatguy",
             "skedaddle",
         },
@@ -1008,7 +1009,7 @@ Products = {
             "crustyseaman",
             "ntsp_therapisttintraining",
             "foolhardy",
-            "ntsp_fallandcantgetapp",
+            "ntsp_fallenandcantgetup",
             "iamthatguy",
             "skedaddle",
         },
@@ -1079,7 +1080,7 @@ Products = {
             "drunkensailor",
             "family",
             "leadingbyexample",
-            "inordinatexsanguination",
+            "inordinateexsanguination",
             "commando",
         },
         Afflictions = {
@@ -1167,7 +1168,7 @@ Products = {
             "drunkensailor",
             "family",
             "leadingbyexample",
-            "inordinatexsanguination",
+            "inordinateexsanguination",
             "commando",
         },
         Afflictions = {
@@ -1252,10 +1253,10 @@ Products = {
         Talents = {
             "beatcop",
             "phdinnuclearphysics",
-            "lightingwizard",
+            "lightningwizard",
             "dangerzone",
             "swole",
-            "agressiveengineering",
+            "aggressiveengineering",
             "multifunctional",
             "iamthatguy",
             "grounded",
@@ -1340,14 +1341,13 @@ Products = {
         Talents = {
             "beatcop",
             "phdinnuclearphysics",
-            "lightingwizard",
+            "lightningwizard",
             "dangerzone",
             "swole",
-            "agressiveengineering",
+            "aggressiveengineering",
             "multifunctional",
             "iamthatguy",
             "grounded",
-            "aggressiveengineering",
         },
         Afflictions = {
             { Identifier = "precursor", Strength = 23 },
