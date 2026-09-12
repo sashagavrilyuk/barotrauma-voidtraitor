@@ -84,7 +84,7 @@ assert(loadfile(modulePath .. "shop_panel.lua"))(P)
 assert(loadfile(modulePath .. "cart_items.lua"))(P)
 assert(loadfile(modulePath .. "cart_panel.lua"))(P)
 
-P.CloseMenu = function()
+P.CloseMenu = function(preserveNavigation)
     if P.CloseFilterPopup ~= nil then P.CloseFilterPopup() end
 
     if S.shopList ~= nil then
@@ -108,10 +108,18 @@ P.CloseMenu = function()
     S.escapeClosePending = false
     S.buyRequestPending = false
 
+    if not preserveNavigation then
+        S.currentView = "categories"
+        S.selectedCategory = nil
+        S.selectedPath = nil
+        S.selectedProductId = nil
+        S.pendingProductId = nil
+        S.shopListScroll = 0
+    end
 end
 
 P.ShowMenu = function()
-    P.CloseMenu()
+    P.CloseMenu(true)
     S.cooldownTextBlocks.shop = {}
     S.cooldownTextBlocks.cart = {}
     S.classLimitTextBlocks.shop = {}
