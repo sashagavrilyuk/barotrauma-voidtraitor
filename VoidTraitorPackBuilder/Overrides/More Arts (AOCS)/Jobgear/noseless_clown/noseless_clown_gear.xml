@@ -104,7 +104,7 @@
   </Item>
   <Override>
     <Item name="" identifier="artmod_clownstanding" health="100" scale="0.75" hideinmenus="true" Tags="smallitem" damagedbyprojectiles="true" noninteractable="true">
-      <Sprite texture="%ModDir%/More Arts (AOCS)/Items/standinghere.png" sourcerect="0,0,62,226" depth="0.51" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/Items/standinghere.png" sourcerect="0,0,62,226" depth="0.51" origin="0.5,0.5" />
       <Body width="65" height="226" density="10" bodytype="Kinematic" />
       <AiTarget maxsoundrange="500" maxsightrange="3000" />
       <GreaterComponent TimeFrame="0" AllowInGameEditing="false">
@@ -127,19 +127,19 @@
         </StatusEffect>
         <StatusEffect type="OnBroken" target="This" setvalue="true" stackable="false">
           <ParticleEmitter particle="artmod_spark2" anglemin="0" anglemax="360" particleamount="25" distancemin="10" distancemax="100" velocitymin="100" velocitymax="500" />
-          <Sound file="%ModDir%/More Arts (AOCS)/Items/The Big Laugh end.ogg" volume="1.25" range="1250" loop="false" />
+          <Sound file="%ModDir%/Items/The Big Laugh end.ogg" volume="1.25" range="1250" loop="false" />
         </StatusEffect>
         <StatusEffect type="OnDamaged" target="This" disabledeltatime="true" setvalue="true">
           <particleemitter particle="artmod_spark2" drawontop="true" particleamount="5" velocitymin="100" velocitymax="500" anglemin="0" anglemax="360" distancemin="0" distancemax="20" scalemin="0.75" scalemax="1.5" />
-          <Sound file="%ModDir%/More Arts (AOCS)/Items/holoclowndamage1.ogg" range="600" selectionmode="Random" volume="1.25" type="OnDamaged" dontmuffle="false" />
-          <Sound file="%ModDir%/More Arts (AOCS)/Items/holoclowndamage2.ogg" range="600" volume="1.25" type="OnDamaged" dontmuffle="false" />
-          <Sound file="%ModDir%/More Arts (AOCS)/Items/holoclowndamage3.ogg" range="600" volume="1.25" type="OnDamaged" dontmuffle="false" />
+          <Sound file="%ModDir%/Items/holoclowndamage1.ogg" range="600" selectionmode="Random" volume="1.25" type="OnDamaged" dontmuffle="false" />
+          <Sound file="%ModDir%/Items/holoclowndamage2.ogg" range="600" volume="1.25" type="OnDamaged" dontmuffle="false" />
+          <Sound file="%ModDir%/Items/holoclowndamage3.ogg" range="600" volume="1.25" type="OnDamaged" dontmuffle="false" />
         </StatusEffect>
         <StatusEffect type="OnDamaged" target="This" IsOn="true" />
       </ItemComponent>
       <LightComponent LightColor="255,25,25,200" PulseFrequency="1.0" PulseAmount="1" Flicker="0.5" FlickerSpeed="3.0" range="600" PowerConsumption="0" IsOn="false">
         <LightTexture texture="Content/Lights/pointlight_falloff.png" />
-        <Sound file="%ModDir%/More Arts (AOCS)/Items/The Big Laugh.ogg" type="OnActive" range="1250" loop="true" dontmuffle="true" volume="1.75" />
+        <Sound file="%ModDir%/Items/The Big Laugh.ogg" type="OnActive" range="1250" loop="true" dontmuffle="true" volume="1.75" />
         <StatusEffect type="OnSpawn" target="This" setvalue="true" soundrange="500" sightrange="3000" delay="0.1" />
         <StatusEffect type="always" target="This" setvalue="true" LightColor="255,25,25,200" stackable="false" checkconditionalalways="true" interval="0.1">
           <Conditional TimeFrame="eq 100" />
