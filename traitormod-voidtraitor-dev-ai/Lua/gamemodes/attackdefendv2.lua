@@ -189,7 +189,7 @@ function gm:_BalanceTeams(newClients)
 			local client = table.remove(priorityTeamMembers, randomPlayerIndex)
 			priorityTeam.Counter = priorityTeam.Counter - 1
 			table.insert(notPriorityTeamMembers, client)
-				notPriorityTeam.Counter = notPriorityTeam.Counter + 1
+			notPriorityTeam.Counter = notPriorityTeam.Counter + 1
 		end
 
 		-- Записываем полученные списки в комманды
