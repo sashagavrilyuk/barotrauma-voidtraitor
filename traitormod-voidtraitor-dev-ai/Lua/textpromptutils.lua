@@ -2,6 +2,7 @@ local c = {}
 
 local promptIDToCallback = {}
 local lockedOptions = setmetatable({}, { __mode = "k" })
+local pointshopCloseLockNet = "VoidTraitor_PointshopCloseLock"
 
 local function SendEventMessage(msg, options, id, eventSprite, fadeToBlack, client)
     local message = Networking.Start()
@@ -43,12 +44,22 @@ Hook.Add("netMessageReceived", "Traitormod.promptResponse", function (msg, heade
     end
 end)
 
+local function SetPointshopCloseLock(client, locked)
+    if client.Connection == nil then return end
+
+    local message = Networking.Start(pointshopCloseLockNet)
+    message.WriteBoolean(locked)
+    Networking.Send(message, client.Connection, DeliveryMethod.Reliable)
+end
+
 c.LockOption = function (client, option)
     lockedOptions[client] = option
+    SetPointshopCloseLock(client, true)
 end
 
 c.UnlockOption = function (client)
     lockedOptions[client] = nil
+    SetPointshopCloseLock(client, false)
 end
 
 c.Prompt = function (message, options, client, callback, eventSprite, fadeToBlack)

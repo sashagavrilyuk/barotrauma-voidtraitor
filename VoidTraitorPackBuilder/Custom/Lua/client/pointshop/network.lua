@@ -23,6 +23,11 @@ Networking.Receive(P.NET_PURCHASE_SOUND, function(message)
     SoundPlayer.PlayUISound(GUI.SoundType.ConfirmTransaction)
 end)
 
+Networking.Receive(P.NET_CLOSE_LOCK, function(message)
+    if S.sharedState.Disabled then return end
+    S.sharedState.CloseLocked = message.ReadBoolean()
+end)
+
 Networking.Receive(P.NET_CLASS_LIMITS, function(message)
     if S.sharedState.Disabled then return end
 
