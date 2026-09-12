@@ -984,7 +984,6 @@ Products = {
                 Items = {
                     ["redjellymedS"] = 1,
                     ["bluejellymed"] = 1,
-                    ["hyperzine"] = 1,
                 }
             },
             ["antibleeding1"] = 8,
@@ -1575,7 +1574,7 @@ local classGroups = {
     sniper = { Subcategory = CreateClassSubcategory("attackdefend_snipers", 2, "separatists_sniper") },
     medic = { Subcategory = CreateClassSubcategory("attackdefend_medics", 1, "separatists_medic") },
     clown = { Subcategory = CreateClassSubcategory("attackdefend_clowns", 3, "separatists_clown") },
-    juggernaut = { Subcategory = CreateClassSubcategory("attackdefend_juggernauts", 2, "separatists_juggernaut") },
+    juggernaut = { Subcategory = CreateClassSubcategory("attackdefend_juggernauts", 1, "separatists_juggernaut") },
     captain = { Subcategory = CreateClassSubcategory("attackdefend_captains", 2, "separatists_captain") },
     engineer = { Subcategory = CreateClassSubcategory("attackdefend_engineers", 2, "separatists_engineer") },
     gunner = { Subcategory = CreateClassSubcategory("attackdefend_gunners", 2, "separatists_gunner") },
