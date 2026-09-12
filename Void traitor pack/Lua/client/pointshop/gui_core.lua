@@ -18,6 +18,7 @@ P.NET_BUY_CART = "VoidTraitor_PointshopBuyCart"
 P.NET_PROBE = "VoidTraitor_PointshopProbe"
 P.NET_PURCHASE_SOUND = "VoidTraitor_PointshopPurchaseSound"
 P.NET_CLASS_LIMITS = "VoidTraitor_PointshopClassLimits"
+P.NET_CLOSE_LOCK = "VoidTraitor_PointshopCloseLock"
 
 P.GUI_DRAW_ORDER = 120
 P.PANEL_WIDTH = 0.290
@@ -68,7 +69,7 @@ if previousState ~= nil then
     if previousState.CloseMenu ~= nil then previousState.CloseMenu() end
     Common.RemoveGuiComponent(previousState.GuiRoot)
 end
-S.sharedState = { Disabled = false }
+S.sharedState = { Disabled = false, CloseLocked = false }
 _G[P.GLOBAL_STATE_KEY] = S.sharedState
 
 local modulePath = packPath .. "/Lua/client/pointshop/"
@@ -173,7 +174,7 @@ end)
 Hook.Patch(P.PAUSE_PATCH_ID, "Barotrauma.GUI", "TogglePauseMenu", {}, function(instance, params)
     local state = rawget(_G, P.GLOBAL_STATE_KEY)
     if state ~= nil and not state.Disabled and (state.CurrentMenu ~= nil or state.BlockPauseMenu == true) then
-        if state.CurrentMenu ~= nil and state.CloseMenu ~= nil then
+        if state.CurrentMenu ~= nil and state.CloseMenu ~= nil and state.CloseLocked ~= true then
             state.CloseMenu()
         end
         if params ~= nil then params.PreventExecution = true end
@@ -182,7 +183,7 @@ Hook.Patch(P.PAUSE_PATCH_ID, "Barotrauma.GUI", "TogglePauseMenu", {}, function(i
 end, Hook.HookMethodType.Before)
 
 function P.RequestEscapeClose()
-    if S.currentMenu == nil or S.escapeClosePending then return end
+    if S.currentMenu == nil or S.escapeClosePending or S.sharedState.CloseLocked == true then return end
     S.escapeClosePending = true
     S.sharedState.BlockPauseMenu = true
     P.CloseMenu()
