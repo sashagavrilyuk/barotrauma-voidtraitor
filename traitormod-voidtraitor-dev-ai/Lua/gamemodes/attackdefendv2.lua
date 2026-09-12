@@ -416,6 +416,17 @@ end
 function gm:Start()
 	Traitormod.DisableRespawnShuttle = true
 	Traitormod.DisableMidRoundSpawn = true
+
+	local outpost = Game.GameSession.Level.StartOutpost
+	for key, value in pairs(Traitormod.ParseSubmarineConfig(outpost.Info.Description.Value)) do
+		self[key] = value
+	end
+	self.DefendCountDown = self.DefendTime * 60
+	self.LastDefendCountDown = self.DefendTime * 60
+	self.Teams[TeamID1].RespawnTime = self.DefendRespawn
+	self.Teams[TeamID1].WinningPoints = self.WinningPointsTeam1
+	self.Teams[TeamID2].RespawnTime = self.AttackRespawn
+	self.Teams[TeamID2].WinningPoints = self.WinningPointsTeam2
 	
 	for _, item in pairs(Item.ItemList) do
 		if item.GetComponentString("Reactor") and item.HasTag("deathmatchteam1reactor") then
@@ -424,7 +435,7 @@ function gm:Start()
 		end
 	end
 
-	for _, waypoint in pairs(Game.GameSession.Level.StartOutpost.GetWaypoints(true)) do
+	for _, waypoint in pairs(outpost.GetWaypoints(true)) do
 		for tag in waypoint.Tags do
 			if tag == "deathmatchteam1" then
                 table.insert(self.Teams[1].Spawns, waypoint)
