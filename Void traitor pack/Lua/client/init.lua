@@ -6,7 +6,6 @@ clientCommon.Language = assert(loadfile(packPath .. "/Lua/language/russian.lua")
 
 assert(loadfile(packPath .. "/Lua/client/welcome.lua"))(packPath, clientCommon)
 assert(loadfile(packPath .. "/Lua/client/roundsummary.lua"))(packPath, clientCommon)
-assert(loadfile(packPath .. "/Lua/client/aocs_trinket_animation.lua"))(packPath)
 assert(loadfile(packPath .. "/Lua/client/spectator/camera_teleport.lua"))(packPath, clientCommon)
 assert(loadfile(packPath .. "/Lua/client/spectator/ghostroles.lua"))(packPath, clientCommon)
 assert(loadfile(packPath .. "/Lua/client/pointshop/gui.lua"))(packPath, clientCommon)
