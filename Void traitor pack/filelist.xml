@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<contentpackage name="the void traitor pack" modversion="0.5.39" corepackage="False" steamworkshopid="3466169195" gameversion="1.13.4.0">
+<contentpackage name="the void traitor pack" modversion="0.7.6" corepackage="False" steamworkshopid="3466169195" gameversion="1.13.4.0">
   <RandomEvents file="%ModDir%/EH fix/HuskFactionEventsFix.xml" />
   <RandomEvents file="%ModDir%/EH fix/huskevents.xml" />
   <RandomEvents file="%ModDir%/EH fix/huskeventscampaign.xml" />
