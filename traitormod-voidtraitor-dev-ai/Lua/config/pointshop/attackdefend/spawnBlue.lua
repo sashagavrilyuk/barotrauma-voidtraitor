@@ -1574,7 +1574,7 @@ local classGroups = {
     sniper = { Subcategory = CreateClassSubcategory("attackdefend_snipers", 2, "coalition_sniper") },
     medic = { Subcategory = CreateClassSubcategory("attackdefend_medics", 1, "coalition_medic") },
     clown = { Subcategory = CreateClassSubcategory("attackdefend_clowns", 3, "coalition_clown") },
-    juggernaut = { Subcategory = CreateClassSubcategory("attackdefend_juggernauts", 2, "coalition_juggernaut") },
+    juggernaut = { Subcategory = CreateClassSubcategory("attackdefend_juggernauts", 1, "coalition_juggernaut") },
     captain = { Subcategory = CreateClassSubcategory("attackdefend_captains", 2, "coalition_captain") },
     engineer = { Subcategory = CreateClassSubcategory("attackdefend_engineers", 2, "coalition_engineer") },
     gunner = { Subcategory = CreateClassSubcategory("attackdefend_gunners", 2, "coalition_gunner") },
