@@ -2,7 +2,6 @@ local NET_RESPAWNS = "VoidTraitor_AttackDefendRespawns"
 local ATTACK_DEFEND_MISSION = Identifier("AttackDefenceV2")
 
 local respawnEnds = {}
-local crewRows = {}
 local deadRows = {}
 local nextUpdate = 0
 
@@ -38,27 +37,19 @@ Networking.Receive(NET_RESPAWNS, function(message)
 end)
 
 Hook.Patch(
-	"VoidTraitor.AttackDefendRespawn.TrackCrewRow",
+	"VoidTraitor.AttackDefendRespawn.ClearDeadCrewRow",
 	"Barotrauma.CrewManager",
 	"AddCharacterToCrewList",
 	function(instance, ptable)
 		local character = ptable["character"]
-		local row = ptable.ReturnValue
-		if row == nil then return end
+		if character == nil or character.Info == nil then return end
 
 		local infoId = character.Info.ID
 		local oldEntry = deadRows[infoId]
 		if oldEntry ~= nil and oldEntry.Character ~= character then
-			oldEntry.Row.UserData = oldEntry.Character
 			instance.RemoveCharacterFromCrewList(oldEntry.Character)
-			crewRows[oldEntry.Character] = nil
 			deadRows[infoId] = nil
 		end
-
-		crewRows[character] = {
-			Row = row,
-			NameBlock = assert(row.FindChild("name", true), "AttackDefend respawn: crew row has no name block"),
-		}
 	end,
 	Hook.HookMethodType.After
 )
@@ -72,24 +63,22 @@ Hook.Patch(
 
 		local character = ptable["killedCharacter"]
 		local myClient = Game.Client.MyClient
+		if myClient == nil then return end
+
 		local isPlayer = character.IsRemotePlayer or Game.Client.Character == character or Game.Client.CharacterInfo == character.Info
 		if not isPlayer or character.TeamID ~= myClient.TeamID then return end
 
-		local row = crewRows[character]
-		if row == nil then
-			instance.RemoveCharacterFromCrewList(character)
-			instance.AddCharacterToCrewList(character)
-			row = assert(crewRows[character], "AttackDefend respawn: player crew row could not be rebuilt for " .. character.Name)
-		end
-
-		row.Row.UserData = character.Info
+		instance.RemoveCharacterFromCrewList(character)
+		local row = assert(instance.AddCharacterToCrewList(character), "AttackDefend respawn: failed to create dead crew row for " .. character.Name)
+		local nameBlock = assert(row.FindChild("name", true), "AttackDefend respawn: crew row has no name block")
 
 		local infoId = character.Info.ID
 		local entry = {
 			Character = character,
 			Name = character.Name,
-			NameBlock = row.NameBlock,
-			Row = row.Row,
+			NameBlock = nameBlock,
+			Row = row,
+			CrewArea = row.Parent.Parent.Parent.Parent,
 		}
 		deadRows[infoId] = entry
 
@@ -100,7 +89,7 @@ Hook.Patch(
 		UpdateDeadRow(infoId, entry, Timer.GetTime())
 		nextUpdate = 0
 	end,
-	Hook.HookMethodType.Before
+	Hook.HookMethodType.After
 )
 
 Hook.Patch(
@@ -111,8 +100,11 @@ Hook.Patch(
 		if next(deadRows) == nil then return end
 
 		local now = Timer.GetTime()
-		for _, entry in pairs(deadRows) do
-			entry.Row.Visible = true
+		if not GUI.DisableUpperHUD and CharacterHealth.OpenHealthWindow == nil then
+			for _, entry in pairs(deadRows) do
+				entry.CrewArea.Visible = true
+				entry.Row.Visible = true
+			end
 		end
 
 		if now < nextUpdate then return end
@@ -126,7 +118,6 @@ Hook.Patch(
 
 Hook.Add("roundEnd", "VoidTraitor.AttackDefendRespawn.RoundEnd", function()
 	respawnEnds = {}
-	crewRows = {}
 	deadRows = {}
 	nextUpdate = 0
 end)
