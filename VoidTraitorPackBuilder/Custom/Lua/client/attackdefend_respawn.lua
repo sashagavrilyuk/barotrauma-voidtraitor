@@ -4,7 +4,6 @@ local ATTACK_DEFEND_MISSION = Identifier("AttackDefenceV2")
 local respawnEnds = {}
 local crewRows = {}
 local deadRows = {}
-local keptCharacters = {}
 local nextUpdate = 0
 
 local function IsAttackDefend()
@@ -50,8 +49,6 @@ Hook.Patch(
 		local infoId = character.Info.ID
 		local oldEntry = deadRows[infoId]
 		if oldEntry ~= nil and oldEntry.Character ~= character then
-			keptCharacters[oldEntry.Character] = nil
-			instance.RemoveCharacter(oldEntry.Character, false, false)
 			instance.RemoveCharacterFromCrewList(oldEntry.Character)
 			crewRows[oldEntry.Character] = nil
 			deadRows[infoId] = nil
@@ -69,7 +66,7 @@ Hook.Patch(
 	"VoidTraitor.AttackDefendRespawn.KeepDeadCrewRow",
 	"Barotrauma.CrewManager",
 	"KillCharacter",
-	function(_, ptable)
+	function(instance, ptable)
 		if not IsAttackDefend() then return end
 
 		local character = ptable["killedCharacter"]
@@ -77,9 +74,15 @@ Hook.Patch(
 		local isPlayer = character.IsRemotePlayer or Game.Client.Character == character or Game.Client.CharacterInfo == character.Info
 		if not isPlayer or character.TeamID ~= myClient.TeamID then return end
 
-		local row = assert(crewRows[character], "AttackDefend respawn: player crew row was not tracked for " .. character.Name)
+		local row = crewRows[character]
+		if row == nil then
+			instance.RemoveCharacterFromCrewList(character)
+			instance.AddCharacterToCrewList(character)
+			row = assert(crewRows[character], "AttackDefend respawn: player crew row could not be rebuilt for " .. character.Name)
+		end
+
 		ptable.PreventExecution = true
-		keptCharacters[character] = true
+		instance.RemoveCharacter(character, false, false)
 
 		local infoId = character.Info.ID
 		local entry = {
@@ -101,27 +104,19 @@ Hook.Patch(
 )
 
 Hook.Patch(
-	"VoidTraitor.AttackDefendRespawn.KeepDeadCharacter",
-	"Barotrauma.CrewManager",
-	"RemoveCharacter",
-	function(_, ptable)
-		if keptCharacters[ptable["character"]] then
-			ptable.PreventExecution = true
-		end
-	end,
-	Hook.HookMethodType.Before
-)
-
-Hook.Patch(
 	"VoidTraitor.AttackDefendRespawn.KeepCrewRowVisible",
 	"Barotrauma.CrewManager",
 	"Update",
 	function()
-		if next(deadRows) == nil then return end
+		if next(deadRows) == nil or GUI.DisableUpperHUD then return end
 
 		local now = Timer.GetTime()
 		for _, entry in pairs(deadRows) do
-			entry.Row.Visible = true
+			local component = entry.Row
+			while component ~= nil do
+				component.Visible = true
+				component = component.Parent
+			end
 		end
 
 		if now < nextUpdate then return end
@@ -137,6 +132,5 @@ Hook.Add("roundEnd", "VoidTraitor.AttackDefendRespawn.RoundEnd", function()
 	respawnEnds = {}
 	crewRows = {}
 	deadRows = {}
-	keptCharacters = {}
 	nextUpdate = 0
 end)
