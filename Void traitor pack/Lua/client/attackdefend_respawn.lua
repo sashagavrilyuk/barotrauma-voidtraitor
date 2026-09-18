@@ -1,5 +1,6 @@
 local NET_RESPAWNS = "VoidTraitor_AttackDefendRespawns"
 local ATTACK_DEFEND_MISSION = Identifier("AttackDefenceV2")
+local language = table.pack(...)[2].Language.AttackDefendRespawn
 
 local respawnEnds = {}
 local deadRows = {}
@@ -15,15 +16,14 @@ local function IsAttackDefend()
 end
 
 local function UpdateDeadRow(infoId, entry, now)
-	local timerText = ""
 	local endTime = respawnEnds[infoId]
-	if endTime ~= nil then
-		local remaining = math.max(0, math.ceil(endTime - now))
-		timerText = string.format("  %02d:%02d", math.floor(remaining / 60), remaining % 60)
+	if endTime == nil then
+		entry.TimerBlock.Text = ""
+		return
 	end
 
-	local nameWidth = math.max(1, math.floor(entry.NameBlock.Rect.Width - entry.NameBlock.Font.MeasureString(timerText).X))
-	entry.NameBlock.Text = tostring(ToolBox.LimitString(entry.Name, entry.NameBlock.Font, nameWidth)) .. timerText
+	local remaining = math.max(0, math.ceil(endTime - now))
+	entry.TimerBlock.Text = string.format(language.Timer, remaining)
 end
 
 Networking.Receive(NET_RESPAWNS, function(message)
@@ -72,20 +72,43 @@ Hook.Patch(
 		local row = assert(instance.AddCharacterToCrewList(character), "AttackDefend respawn: failed to create dead crew row for " .. character.Name)
 		local nameBlock = assert(row.FindChild("name", true), "AttackDefend respawn: crew row has no name block")
 
+		local orderGroup = nil
+		local previous = nil
+		for component in nameBlock.Parent.Children do
+			if component.UserData == "extraicons" then
+				orderGroup = previous
+				break
+			end
+			previous = component
+		end
+		assert(orderGroup ~= nil, "AttackDefend respawn: crew row has no order group")
+		orderGroup:ClearChildren()
+
+		local timerBlock = GUI.TextBlock(
+			GUI.RectTransform(Vector2.One, orderGroup.RectTransform),
+			"",
+			nil,
+			GUI.GUIStyle.SmallFont,
+			GUI.Alignment.CenterLeft,
+			false
+		)
+		timerBlock.CanBeFocused = false
+		timerBlock.TextScale = 0.9
+		timerBlock.TextColor = Color(255, 170, 170, 255)
+
 		local infoId = character.Info.ID
 		local entry = {
 			Character = character,
-			Name = character.Name,
-			NameBlock = nameBlock,
+			TimerBlock = timerBlock,
 			Row = row,
 			CrewArea = row.Parent.Parent.Parent.Parent,
 		}
 		deadRows[infoId] = entry
 
 		entry.Row.Color = Color.DarkRed
-		for component in entry.Row.GetAllChildren() do
-			component.Color = Color.DarkRed
-		end
+		entry.Row.HoverColor = Color.DarkRed
+		entry.Row.PressedColor = Color.DarkRed
+		entry.Row.SelectedColor = Color.DarkRed
 		UpdateDeadRow(infoId, entry, Timer.GetTime())
 		nextUpdate = 0
 	end,
