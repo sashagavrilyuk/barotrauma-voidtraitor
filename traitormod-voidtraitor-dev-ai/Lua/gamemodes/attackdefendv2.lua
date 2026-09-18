@@ -69,7 +69,7 @@ local function SpawnCharacter(client, team, class, jobId)
 	characterInfo.Job = Job(JobPrefab.Get(jobId or "commoner"), true)
 	characterInfo.TeamID = team.TeamID
 
-	local character = Character.Create(characterInfo, spawnPoint.WorldPosition, characterInfo.Name, 0, true, false)
+	local character = Character.Create(characterInfo, spawnPoint.WorldPosition, characterInfo.Name, 0, true, true)
 	client.SetClientCharacter(character)
 	textPromptUtils.UnlockOption(client)
 
@@ -449,7 +449,6 @@ function gm:Think(deltaTime)
 				and (member.Character == nil or member.Character.IsDead) and member.InGame then
 				if entry.Timer == nil then
 					entry.Timer = team.RespawnTime
-					if member.Character ~= nil then member.SetClientCharacter(nil) end
 					respawnChanged = true
 				end
 				entry.Timer = entry.Timer - deltaTime
