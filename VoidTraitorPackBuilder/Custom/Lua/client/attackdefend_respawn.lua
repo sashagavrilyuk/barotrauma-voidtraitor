@@ -49,6 +49,7 @@ Hook.Patch(
 		local infoId = character.Info.ID
 		local oldEntry = deadRows[infoId]
 		if oldEntry ~= nil and oldEntry.Character ~= character then
+			oldEntry.Row.UserData = oldEntry.Character
 			instance.RemoveCharacterFromCrewList(oldEntry.Character)
 			crewRows[oldEntry.Character] = nil
 			deadRows[infoId] = nil
@@ -81,8 +82,7 @@ Hook.Patch(
 			row = assert(crewRows[character], "AttackDefend respawn: player crew row could not be rebuilt for " .. character.Name)
 		end
 
-		ptable.PreventExecution = true
-		instance.RemoveCharacter(character, false, false)
+		row.Row.UserData = character.Info
 
 		local infoId = character.Info.ID
 		local entry = {
