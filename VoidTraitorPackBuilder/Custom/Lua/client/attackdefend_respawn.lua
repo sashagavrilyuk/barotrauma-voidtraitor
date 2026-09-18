@@ -108,15 +108,11 @@ Hook.Patch(
 	"Barotrauma.CrewManager",
 	"Update",
 	function()
-		if next(deadRows) == nil or GUI.DisableUpperHUD then return end
+		if next(deadRows) == nil then return end
 
 		local now = Timer.GetTime()
 		for _, entry in pairs(deadRows) do
-			local component = entry.Row
-			while component ~= nil do
-				component.Visible = true
-				component = component.Parent
-			end
+			entry.Row.Visible = true
 		end
 
 		if now < nextUpdate then return end
