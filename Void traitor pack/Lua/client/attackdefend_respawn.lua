@@ -72,17 +72,21 @@ Hook.Patch(
 		local row = assert(instance.AddCharacterToCrewList(character), "AttackDefend respawn: failed to create dead crew row for " .. character.Name)
 		local nameBlock = assert(row.FindChild("name", true), "AttackDefend respawn: crew row has no name block")
 
+		local layoutGroup = nameBlock.Parent
+		local extraIcons = assert(row.FindChild("extraicons", true), "AttackDefend respawn: crew row has no extra icon frame")
 		local orderGroup = nil
 		local previous = nil
-		for component in nameBlock.Parent.Children do
-			if component.UserData == "extraicons" then
+		for component in layoutGroup.Children do
+			if component == extraIcons then
 				orderGroup = previous
 				break
 			end
 			previous = component
 		end
 		assert(orderGroup ~= nil, "AttackDefend respawn: crew row has no order group")
-		orderGroup:ClearChildren()
+		for component in orderGroup.Children do
+			component.Visible = false
+		end
 
 		local timerBlock = GUI.TextBlock(
 			GUI.RectTransform(Vector2.One, orderGroup.RectTransform),
@@ -93,6 +97,7 @@ Hook.Patch(
 			false
 		)
 		timerBlock.CanBeFocused = false
+		timerBlock.IgnoreLayoutGroups = true
 		timerBlock.TextScale = 0.9
 		timerBlock.TextColor = Color(255, 170, 170, 255)
 
