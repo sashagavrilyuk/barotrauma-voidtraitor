@@ -26,32 +26,6 @@ local function UpdateDeadRow(infoId, entry, now)
 	entry.NameBlock.Text = tostring(ToolBox.LimitString(entry.Name, entry.NameBlock.Font, nameWidth)) .. timerText
 end
 
--- Older hot-loaded versions used these patch IDs with different behavior.
--- Re-registering the same ID and hook type replaces those callbacks in LuaCs.
-Hook.Patch(
-	"VoidTraitor.AttackDefendRespawn.KeepDeadCrewRow",
-	"Barotrauma.CrewManager",
-	"KillCharacter",
-	function() end,
-	Hook.HookMethodType.Before
-)
-
-Hook.Patch(
-	"VoidTraitor.AttackDefendRespawn.KeepDeadCharacter",
-	"Barotrauma.CrewManager",
-	"RemoveCharacter",
-	function() end,
-	Hook.HookMethodType.Before
-)
-
-Hook.Patch(
-	"VoidTraitor.AttackDefendRespawn.TrackCrewRow",
-	"Barotrauma.CrewManager",
-	"AddCharacterToCrewList",
-	function() end,
-	Hook.HookMethodType.After
-)
-
 Networking.Receive(NET_RESPAWNS, function(message)
 	respawnEnds = {}
 	local now = Timer.GetTime()
@@ -94,7 +68,6 @@ Hook.Patch(
 		local isPlayer = character.IsRemotePlayer or Game.Client.Character == character or Game.Client.CharacterInfo == character.Info
 		if not isPlayer or character.TeamID ~= myClient.TeamID then return end
 
-		instance.RemoveCharacter(character, false, false)
 		instance.RemoveCharacterFromCrewList(character)
 		local row = assert(instance.AddCharacterToCrewList(character), "AttackDefend respawn: failed to create dead crew row for " .. character.Name)
 		local nameBlock = assert(row.FindChild("name", true), "AttackDefend respawn: crew row has no name block")
