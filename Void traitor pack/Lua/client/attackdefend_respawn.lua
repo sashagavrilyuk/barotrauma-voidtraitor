@@ -49,6 +49,10 @@ Hook.Patch(
 		if oldEntry ~= nil and oldEntry.Character ~= character then
 			instance.RemoveCharacterFromCrewList(oldEntry.Character)
 			deadRows[infoId] = nil
+
+			if GameSession.IsTabMenuOpen and TabMenu.SelectedTab == TabMenu.InfoFrameTab.Crew then
+				GameSession.TabMenuInstance.SelectInfoFrameTab(TabMenu.InfoFrameTab.Crew)
+			end
 		end
 	end,
 	Hook.HookMethodType.After
