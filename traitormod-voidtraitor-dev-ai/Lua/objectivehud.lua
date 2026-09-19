@@ -232,6 +232,8 @@ function hud.GetRoleHeader(role)
         return Traitormod.Language.ObjectiveHudCultistSummary
     elseif role.Name == "Clown" then
         return Traitormod.Language.ObjectiveHudClownSummary
+    elseif role.Name == "Saboteur" then
+        return Traitormod.Language.ObjectiveHudSaboteurSummary
     elseif role.Name == "HuskServant" then
         return Traitormod.Language.ObjectiveHudHuskServantSummary
     elseif role.Name == "Crew" then
