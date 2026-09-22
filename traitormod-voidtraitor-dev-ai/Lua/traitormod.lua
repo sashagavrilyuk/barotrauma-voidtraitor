@@ -644,10 +644,6 @@ Hook.Add("missionsEnded", "Traitormod.MissionsEnded", function(missions)
     Traitormod.RoundEvents.EndRound()
 
     Traitormod.SelectedGamemode = nil
-    Traitormod.RoundMissions = nil
-    if Traitormod.RoundStats ~= nil then
-        Traitormod.RoundStats.CharacterAccounts = {}
-    end
 
     Traitormod.SaveData()
     Traitormod.Stats.SaveData()
