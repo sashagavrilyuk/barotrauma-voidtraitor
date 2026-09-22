@@ -604,7 +604,8 @@ end)
 
 ---@param missions Barotrauma.Mission[]
 Hook.Add("missionsEnded", "Traitormod.MissionsEnded", function(missions)
-    Traitormod.Debug("missionsEnded with " .. #missions .. " missions.")
+    Traitormod.RoundMissions = missions
+    Traitormod.Debug("missionsEnded with " .. #Traitormod.RoundMissions .. " missions.")
 
     for key, value in pairs(Client.ClientList) do
         -- add weight according to points and config conversion
@@ -634,9 +635,6 @@ Hook.Add("missionsEnded", "Traitormod.MissionsEnded", function(missions)
         end
     end
     Traitormod.LastRoundSummary = endMessage
-    if Traitormod.RoundStats ~= nil then
-        Traitormod.RoundStats.CharacterAccounts = {}
-    end
 
     if Traitormod.SelectedGamemode then
         Traitormod.SelectedGamemode:End(missions)
@@ -646,6 +644,10 @@ Hook.Add("missionsEnded", "Traitormod.MissionsEnded", function(missions)
     Traitormod.RoundEvents.EndRound()
 
     Traitormod.SelectedGamemode = nil
+    Traitormod.RoundMissions = nil
+    if Traitormod.RoundStats ~= nil then
+        Traitormod.RoundStats.CharacterAccounts = {}
+    end
 
     Traitormod.SaveData()
     Traitormod.Stats.SaveData()
