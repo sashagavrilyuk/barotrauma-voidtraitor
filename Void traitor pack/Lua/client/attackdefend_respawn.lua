@@ -26,6 +26,18 @@ local function UpdateDeadRow(infoId, entry, now)
 	entry.TimerBlock.Text = string.format(language.Timer, remaining)
 end
 
+local function RemoveDeadRow(instance, infoId)
+	local entry = deadRows[infoId]
+	if entry == nil then return false end
+
+	if entry.Row ~= nil and entry.Row.Parent ~= nil then
+		entry.Row.UserData = entry.Character
+		instance.RemoveCharacterFromCrewList(entry.Character)
+	end
+	deadRows[infoId] = nil
+	return true
+end
+
 Networking.Receive(NET_RESPAWNS, function(message)
 	respawnEnds = {}
 	local now = Timer.GetTime()
@@ -47,8 +59,7 @@ Hook.Patch(
 		local infoId = character.Info.ID
 		local oldEntry = deadRows[infoId]
 		if oldEntry ~= nil and oldEntry.Character ~= character then
-			instance.RemoveCharacterFromCrewList(oldEntry.Character)
-			deadRows[infoId] = nil
+			RemoveDeadRow(instance, infoId)
 
 			if GameSession.IsTabMenuOpen and TabMenu.SelectedTab == TabMenu.InfoFrameTab.Crew then
 				GameSession.TabMenuInstance.SelectInfoFrameTab(TabMenu.InfoFrameTab.Crew)
@@ -66,11 +77,20 @@ Hook.Patch(
 		if not IsAttackDefend() then return end
 
 		local character = ptable["killedCharacter"]
+		if character == nil or character.Info == nil or character.Removed then return end
+
 		local myClient = Game.Client.MyClient
 		if myClient == nil then return end
 
 		local isPlayer = character.IsRemotePlayer or Game.Client.Character == character or Game.Client.CharacterInfo == character.Info
 		if not isPlayer or character.TeamID ~= myClient.TeamID then return end
+
+		local infoId = character.Info.ID
+		local oldEntry = deadRows[infoId]
+		if oldEntry ~= nil then
+			if oldEntry.Character == character then return end
+			RemoveDeadRow(instance, infoId)
+		end
 
 		instance.RemoveCharacterFromCrewList(character)
 		local row = assert(instance.AddCharacterToCrewList(character), "AttackDefend respawn: failed to create dead crew row for " .. character.Name)
@@ -91,6 +111,19 @@ Hook.Patch(
 		for component in orderGroup.Children do
 			component.Visible = false
 		end
+		extraIcons.Visible = false
+
+		row.UserData = infoId
+		row.OnSecondaryClicked = nil
+		row.CanBeFocused = false
+		for component in row.GetAllChildren() do
+			component.CanBeFocused = false
+		end
+		for component in row.Children do
+			if LuaUserData.IsTargetType(component, "Barotrauma.GUIButton") then
+				component.Visible = false
+			end
+		end
 
 		local timerBlock = GUI.TextBlock(
 			GUI.RectTransform(Vector2.One, orderGroup.RectTransform),
@@ -105,7 +138,6 @@ Hook.Patch(
 		timerBlock.TextScale = 0.9
 		timerBlock.TextColor = Color(255, 170, 170, 255)
 
-		local infoId = character.Info.ID
 		local entry = {
 			Character = character,
 			TimerBlock = timerBlock,
@@ -149,7 +181,13 @@ Hook.Patch(
 )
 
 Hook.Add("roundEnd", "VoidTraitor.AttackDefendRespawn.RoundEnd", function()
+	if Game.GameSession ~= nil and Game.GameSession.CrewManager ~= nil then
+		for infoId in pairs(deadRows) do
+			RemoveDeadRow(Game.GameSession.CrewManager, infoId)
+		end
+	else
+		deadRows = {}
+	end
 	respawnEnds = {}
-	deadRows = {}
 	nextUpdate = 0
 end)
