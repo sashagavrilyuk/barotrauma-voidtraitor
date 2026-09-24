@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<contentpackage name="the void traitor pack" modversion="0.5.39" corepackage="False" steamworkshopid="3466169195" gameversion="1.13.4.0">
+<contentpackage name="the void traitor pack" modversion="1.1.0.0" corepackage="False" steamworkshopid="3466169195" gameversion="1.13.4.0">
   <RandomEvents file="%ModDir%/EH fix/HuskFactionEventsFix.xml" />
   <RandomEvents file="%ModDir%/EH fix/huskevents.xml" />
   <RandomEvents file="%ModDir%/EH fix/huskeventscampaign.xml" />
@@ -15,6 +15,7 @@
   <Talents file="%ModDir%/the void traitor pack/Talents/Fighters/Fighters.xml" />
   <TalentTrees file="%ModDir%/the void traitor pack/Talents/TalentTrees.xml" />
   <Item file="%ModDir%/the void traitor pack/items/item.xml" />
+  <Item file="%ModDir%/the void traitor pack/items/casino/casino_crates.xml" />
   <Item file="%ModDir%/the void traitor pack/items/hideandseek_idcard.xml" />
   <Submarine file="%ModDir%/void traitor pack submarine/fun boat/Я-HMS Elizabeth.sub" />
   <Submarine file="%ModDir%/void traitor pack submarine/fun boat/Я-↓The Coliseum Of Death.sub" />

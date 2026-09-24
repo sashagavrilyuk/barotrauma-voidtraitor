@@ -155,6 +155,16 @@ language.CameraTeleport = {
     Empty = "Сейчас нет игроков с живым управляемым персонажем.",
 }
 
+-- Киллфид PvP
+language.KillFeed = {
+    Died = "погиб",
+}
+
+-- Attack & Defends
+language.AttackDefendRespawn = {
+    Timer = "До возрождения %d секунд",
+}
+
 -- Клиентский интерфейс голосований в лобби
 language.Voting = {
     Button = "НАЧАТЬ ГОЛОСОВАНИЕ",

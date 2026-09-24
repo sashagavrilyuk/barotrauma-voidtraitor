@@ -471,22 +471,25 @@ local function writeVoteSnapshot(netMessage, client)
 
     local active = snapshot.Active
     netMessage.WriteBoolean(active ~= nil)
-    if active == nil then return end
+    if active ~= nil then
+        netMessage.WriteString(tostring(active.Id or ""))
+        netMessage.WriteString(tostring(active.Type or ""))
+        netMessage.WriteString(tostring(active.StartedBy or ""))
+        netMessage.WriteInt32(math.max(0, math.floor(tonumber(active.Remaining or 0) or 0)))
+        netMessage.WriteInt32(math.max(1, math.floor(tonumber(active.Duration or 1) or 1)))
 
-    netMessage.WriteString(tostring(active.Id or ""))
-    netMessage.WriteString(tostring(active.Type or ""))
-    netMessage.WriteString(tostring(active.StartedBy or ""))
-    netMessage.WriteInt32(math.max(0, math.floor(tonumber(active.Remaining or 0) or 0)))
-    netMessage.WriteInt32(math.max(1, math.floor(tonumber(active.Duration or 1) or 1)))
-
-    local options = active.Options or {}
-    netMessage.WriteInt32(#options)
-    for _, option in ipairs(options) do
-        netMessage.WriteInt32(tonumber(option.Index or 0) or 0)
-        netMessage.WriteString(tostring(option.Text or ""))
-        netMessage.WriteInt32(math.max(0, math.floor(tonumber(option.Votes or 0) or 0)))
-        netMessage.WriteBoolean(option.Selected == true)
+        local options = active.Options or {}
+        netMessage.WriteInt32(#options)
+        for _, option in ipairs(options) do
+            netMessage.WriteInt32(tonumber(option.Index or 0) or 0)
+            netMessage.WriteString(tostring(option.Text or ""))
+            netMessage.WriteInt32(math.max(0, math.floor(tonumber(option.Votes or 0) or 0)))
+            netMessage.WriteBoolean(option.Selected == true)
+        end
     end
+
+    netMessage.WriteInt32(math.max(0, math.floor(tonumber(snapshot.GameCooldownRemaining or 0) or 0)))
+    netMessage.WriteInt32(math.max(0, math.floor(tonumber(snapshot.MapCooldownRemaining or 0) or 0)))
 end
 
 function cm.SendVoteSnapshot(client)

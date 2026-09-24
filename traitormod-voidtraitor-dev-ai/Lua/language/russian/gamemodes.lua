@@ -27,6 +27,7 @@ language.TraitorsWin = "Предатели успешно выполнили с�
 language.TraitorsRound = "Предатели раунда:"
 language.NoTraitors = "Предателей нет"
 language.SecretSummary = "Задачи выполнены: %s - Очки получены: %s\n"
+language.SecretCrewSummary = "Очки получены: %s\n"
 language.SecretRoundObjectivesSummary = "Задачи выполнены: %s\n"
 language.SecretRoundEndingCountdown = "Раунд завершится через %s секунд."
 language.SecretCrewReachedStation = "Экипаж достиг конечной станции."
@@ -39,6 +40,7 @@ language.SubmarineRoyaleEnd = "Раунд заканчивается."
 language.GameVoteLobbyOnly = "Голосование за режим можно начать только в лобби."
 language.LobbyVoteAlreadyActive = "Голосование в лобби уже идёт. Дождись его завершения."
 language.LobbyVoteLobbyOnly = "Голосования за режим и подлодку можно запускать только в лобби."
+language.GameVoteCooldown = "Голосование за режим недавно уже проводилось. Повторно можно начать через %s."
 language.GameVoteStarted = "%s начал голосование за режим. У вас %s секунд."
 language.GameVoteOptionsHeader = "Голосование за режим:"
 language.GameVoteHowToVote = "Чтобы проголосовать, напиши: %s"
@@ -62,6 +64,7 @@ language.GameVoteTie = "Ничья между режимами: %s. Выбира
 language.GameVoteStartedByServer = "Сервер"
 
 -- Голосование за подлодку
+language.MapVoteCooldown = "Голосование за подлодку недавно уже проводилось. Повторно можно начать через %s."
 language.MapVoteStarted = "%s начал голосование за подлодку. У вас %s секунд."
 language.MapVoteOptionsHeader = "Голосование за подлодку:"
 language.MapVoteHowToVote = "Чтобы проголосовать, напиши: %s"

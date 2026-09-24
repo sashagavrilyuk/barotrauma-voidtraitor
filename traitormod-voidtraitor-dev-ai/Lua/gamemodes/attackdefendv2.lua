@@ -76,6 +76,31 @@ local function SpawnCharacter(client, team, class, jobId)
     GearUpCharacter(character, team, spawnPoint, class)
 end
 
+local NET_RESPAWNS = "VoidTraitor_AttackDefendRespawns"
+
+local function SyncRespawnTeam(team)
+	local respawning = {}
+	for id, entry in pairs(team.Respawns) do
+		local member = team.Members[id]
+		if entry.Timer ~= nil and member.InGame and member.Connection ~= nil and not member.SpectateOnly then
+			table.insert(respawning, { InfoId = member.CharacterInfo.ID, Timer = math.max(0, entry.Timer) })
+		end
+	end
+
+	local message = Networking.Start(NET_RESPAWNS)
+	message.WriteByte(Byte(#respawning))
+	for _, data in ipairs(respawning) do
+		message.WriteUInt16(UShort(data.InfoId))
+		message.WriteSingle(data.Timer)
+	end
+
+	for _, member in pairs(team.Members) do
+		if member.Connection ~= nil and not member.SpectateOnly then
+			Networking.Send(message, member.Connection)
+		end
+	end
+end
+
 -- Функция очистки (оставляем, она работает отлично)
 local function CleanRemove(char)
 	if not char or char.Removed then return end
@@ -238,6 +263,8 @@ function gm:SwitchTestTeam(client)
 	self:_ChangeTeam(client, toTeamID, fromTeamID)
 	self.Teams[toTeamID].Respawns[id].Timer = 0
 	self:_SetNewClient(client)
+	SyncRespawnTeam(self.Teams[fromTeamID])
+	SyncRespawnTeam(self.Teams[toTeamID])
 	return toTeamID
 end
 
@@ -375,11 +402,13 @@ function gm:Start()
 				team.Members[client.AccountId] = client
 				client.TeamID = team.TeamID
 				client.PreferredTeam = team.TeamID
+				SyncRespawnTeam(team)
 				return
 			end
 		end
-		self:_AddNewClient(client)
+		local teamID = self:_AddNewClient(client)
 		self:_SetNewClient(client)
+		SyncRespawnTeam(self.Teams[teamID])
 	end)
 end
 
@@ -412,6 +441,7 @@ function gm:Think(deltaTime)
     end
 
 	for _, team in pairs(self.Teams) do
+		local respawnChanged = false
 		
 		for id, entry in pairs(team.Respawns) do
 			local member = team.Members[id]
@@ -419,14 +449,17 @@ function gm:Think(deltaTime)
 				and (member.Character == nil or member.Character.IsDead) and member.InGame then
 				if entry.Timer == nil then
 					entry.Timer = team.RespawnTime
+					respawnChanged = true
 				end
 				entry.Timer = entry.Timer - deltaTime
 				if entry.Timer <= 0 and entry.OnSpawn ~= nil then
 					SpawnCharacter(member, team, entry.OnSpawn, entry.JobId)
 					entry.Timer = nil
+					respawnChanged = true
 				end
 			end
 		end
+		if respawnChanged then SyncRespawnTeam(team) end
 
 		if team.CheckWinCondition() then
             self.IsEnding = true

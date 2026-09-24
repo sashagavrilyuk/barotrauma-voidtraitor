@@ -14,6 +14,15 @@ function P.GetVoteTimeText(active)
     return string.format("%s: %s", P.VoteUiText.Timer, tostring(math.floor(remaining)))
 end
 
+local function getStartCooldownRemaining(cooldownEndTime)
+    return math.max(0, math.ceil((tonumber(cooldownEndTime) or 0) - P.GetTime()))
+end
+
+local function formatStartCooldown(seconds)
+    seconds = math.max(0, math.ceil(tonumber(seconds) or 0))
+    return string.format("%d:%02d", math.floor(seconds / 60), seconds % 60)
+end
+
 function P.ShowVoteStartMenu()
     if P.IsWelcomeMenuOpen ~= nil and P.IsWelcomeMenuOpen() then return end
     if not P.IsLobbyScreenAvailable() then return end
@@ -30,29 +39,42 @@ function P.ShowVoteStartMenu()
     P.SafeSetAsLastChild(panel)
 
     local width, optionHeight, spacing = P.GetVoteStartOptionMetrics()
-    local canStart = S.voteSnapshot == nil or S.voteSnapshot.CanStart ~= false
+    local buttonWidth = math.floor(width * 0.82)
+    local timerWidth = width - buttonWidth
 
     local modeRect = GUI.RectTransform(Point(width, optionHeight), panel.RectTransform, GUI.Anchor.TopCenter)
     modeRect.AbsoluteOffset = Point(0, 0)
-    local modeButton = GUI.Button(modeRect, P.VoteUiText.StartMode, GUI.Alignment.Center, "GUIButtonSmall")
-    modeButton.Enabled = canStart
+    local modeRow = GUI.Frame(modeRect, nil)
+    modeRow.Color = Color(0, 0, 0, 0)
+    local modeButton = GUI.Button(P.CreateRect(buttonWidth / width, 1, modeRow, GUI.Anchor.CenterLeft), P.VoteUiText.StartMode, GUI.Alignment.Center, "GUIButtonSmall")
     P.SetButtonTextScale(modeButton, 0.70)
     modeButton.OnClicked = function()
         P.SendVoteStart("game")
         P.CloseMenu()
         return true
     end
+    local modeTimer = P.CreateText(modeRow, timerWidth / width, 1, GUI.Anchor.CenterRight, "", GUI.Alignment.CenterRight, 0.9, Color(210, 220, 200, 255), false)
 
     local mapRect = GUI.RectTransform(Point(width, optionHeight), panel.RectTransform, GUI.Anchor.TopCenter)
     mapRect.AbsoluteOffset = Point(0, optionHeight + spacing)
-    local mapButton = GUI.Button(mapRect, P.VoteUiText.StartMap, GUI.Alignment.Center, "GUIButtonSmall")
-    mapButton.Enabled = canStart
+    local mapRow = GUI.Frame(mapRect, nil)
+    mapRow.Color = Color(0, 0, 0, 0)
+    local mapButton = GUI.Button(P.CreateRect(buttonWidth / width, 1, mapRow, GUI.Anchor.CenterLeft), P.VoteUiText.StartMap, GUI.Alignment.Center, "GUIButtonSmall")
     P.SetButtonTextScale(mapButton, 0.70)
     mapButton.OnClicked = function()
         P.SendVoteStart("map")
         P.CloseMenu()
         return true
     end
+    local mapTimer = P.CreateText(mapRow, timerWidth / width, 1, GUI.Anchor.CenterRight, "", GUI.Alignment.CenterRight, 0.9, Color(210, 220, 200, 255), false)
+
+    S.voteStartUi = {
+        ModeButton = modeButton,
+        ModeTimer = modeTimer,
+        MapButton = mapButton,
+        MapTimer = mapTimer,
+    }
+    P.RefreshActiveVoteUi()
 end
 
 function P.GetActiveVoteRemaining(active)
@@ -133,6 +155,19 @@ function P.CreateVoteOverlayOnComponent(target)
 end
 
 function P.RefreshActiveVoteUi()
+    if S.currentMenuKind == "votestart" and S.voteStartUi ~= nil then
+        local snapshot = S.voteSnapshot or {}
+        local canStart = snapshot.CanStart ~= false
+        local gameRemaining = getStartCooldownRemaining(snapshot.GameCooldownEndTime)
+        local mapRemaining = getStartCooldownRemaining(snapshot.MapCooldownEndTime)
+
+        S.voteStartUi.ModeButton.Enabled = canStart and gameRemaining <= 0
+        S.voteStartUi.MapButton.Enabled = canStart and mapRemaining <= 0
+        S.voteStartUi.ModeTimer.Text = gameRemaining > 0 and formatStartCooldown(gameRemaining) or ""
+        S.voteStartUi.MapTimer.Text = mapRemaining > 0 and formatStartCooldown(mapRemaining) or ""
+        return
+    end
+
     if S.currentMenuKind ~= "voteactive" or S.activeVoteUi == nil then return end
     local active = S.voteSnapshot and S.voteSnapshot.Active or nil
     if active == nil then return end

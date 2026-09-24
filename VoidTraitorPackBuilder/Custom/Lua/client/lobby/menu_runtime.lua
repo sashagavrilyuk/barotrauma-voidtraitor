@@ -84,6 +84,11 @@ Hook.Add("keyUpdate", "VoidTraitor.ClientMenu.PauseGuard", function()
     end
 end)
 
+Hook.Add("roundEnd", "VoidTraitor.ClientMenu.RoundEnd", function()
+    if S.sharedState.Disabled then return end
+    P.CloseMenu()
+end)
+
 Hook.Add("think", "VoidTraitor.ClientMenu.UiState", function(deltaTime)
     if S.sharedState.Disabled then return end
 

@@ -23,4 +23,10 @@
 <missiondescription1.traitormod_hideandseekv2>Вы — прячущийся. Спрячьтесь и останьтесь в живых до конца раунда.</missiondescription1.traitormod_hideandseekv2>
 <missiondescription2.traitormod_hideandseekv2>Вы — искатель. Найдите всех прячущихся до окончания времени.</missiondescription2.traitormod_hideandseekv2>
 
+<entityname.vtcasinocratecrazy>Ящик с безумными предметами</entityname.vtcasinocratecrazy>
+<entityname.vtcasinocratenormal>Ящик со случайными предметами</entityname.vtcasinocratenormal>
+<entityname.vtcasinocrateweapons>Ящик со случайным оружием</entityname.vtcasinocrateweapons>
+<entityname.vtcasinocratemedical>Ящик со случайными медикаментами</entityname.vtcasinocratemedical>
+<entityname.vtcasinocratematerials>Ящик со случайными материалами</entityname.vtcasinocratematerials>
+
 </infotexts>
