@@ -78,11 +78,9 @@ local function resolveTrackedWeapon(victim, causeOfDeath)
     if killer == nil then return "" end
 
     local direct = resolveWeaponFromSource(causeOfDeath.DamageSource, killer)
-    if direct ~= "" then return direct end
-
     local victimHistory = damageHistory[victim]
     local history = victimHistory ~= nil and victimHistory[killer] or nil
-    if history == nil then return "" end
+    if history == nil then return direct end
 
     local causeIdentifier = causeOfDeath.Affliction ~= nil and tostring(causeOfDeath.Affliction.Identifier) or ""
     if causeIdentifier ~= "" then
@@ -96,9 +94,9 @@ local function resolveTrackedWeapon(victim, causeOfDeath)
         end
     end
 
-    if history.LastWeapon == nil then return "" end
     if history.Last ~= history.LastWeapon and history.Last ~= nil and history.Last.WeaponIdentifier == "" then return "" end
-    return history.LastWeapon.WeaponIdentifier
+    if history.LastWeapon ~= nil then return history.LastWeapon.WeaponIdentifier end
+    return direct
 end
 
 local function sendKillFeed(victim, causeOfDeath)
