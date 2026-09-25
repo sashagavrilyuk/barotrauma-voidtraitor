@@ -539,6 +539,28 @@ Traitormod.SendTraitorMessageBox = function (client, text, icon)
     Game.SendDirectChatMessage("", text, nil, Traitormod.Config.ChatMessageType, client)
 end
 
+Traitormod.SendVanillaTraitorState = function(client)
+    if client == nil or client.Connection == nil then return end
+
+    local message = Networking.Start()
+    message.WriteByte(Byte(ServerPacketHeader.TRAITOR_MESSAGE))
+    message.WriteByte(Byte(0))
+    message.WriteIdentifier(Identifier("saboteur"))
+    Networking.Send(message, client.Connection, DeliveryMethod.Reliable)
+end
+
+local setHighlightEventData = LuaUserData.CreateStatic("Barotrauma.Item+SetHighlightEventData", true)
+local systemArray = LuaUserData.CreateStatic("System.Array")
+local clientDescriptor = Descriptors["Barotrauma.Networking.Client"] or LuaUserData.RegisterType("Barotrauma.Networking.Client")
+
+Traitormod.SetClientItemHighlight = function(client, item, highlighted)
+    if client == nil or item == nil or item.Removed then return end
+
+    local targetClients = systemArray.CreateInstance(clientDescriptor.Type, Int32(1))
+    targetClients.SetValue(client, Int32(0))
+    Networking.CreateEntityEvent(item, setHighlightEventData.__new(highlighted == true, Color(255, 165, 0, 255), targetClients))
+end
+
 -- set character traitor to enable sabotage, set mission objective text then sync with session
 Traitormod.UpdateVanillaTraitor = function (client, enabled, objectiveSummary, missionIdentifier)
     if not client or not client.Character then

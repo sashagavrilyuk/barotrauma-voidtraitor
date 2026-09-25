@@ -260,8 +260,11 @@ Hook.Add("characterDeath", "Traitormod.RoleManager.CharacterDeath", function(dea
 end)
 
 Hook.Patch("Barotrauma.Items.Components.Repairable", "StopRepairing", function (instance, ptable)
-    rm.CallObjectiveFunction("StopRepairing", instance.Item, ptable["character"])
-end)
+    local character = ptable["character"]
+    if instance.CurrentFixer ~= character then return end
+
+    rm.CallObjectiveFunction("StopRepairing", instance.Item, character, instance.CurrentFixerAction)
+end, Hook.HookMethodType.Before)
 
 Hook.Patch("Barotrauma.HumanAIController", "StructureDamaged", function (instance, ptable)
     local damage = ptable["damageAmount"]
