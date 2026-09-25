@@ -277,10 +277,9 @@ config.GamemodeConfig = {
 
         TraitorTypeSelectionMode = "Random", -- Vote | Random
         TraitorTypeChance = {
-            Traitor = 50,
+            Traitor = 50, -- Traitors have 33% chance of being a normal traitor
             Cultist = 50,
             Clown = 50,
-            Saboteur = 50,
         },
 
         AmountTraitors = function (amountPlayers)
@@ -420,21 +419,6 @@ config.RoleConfig = {
         SelectBotsAsTargets = true,
         SelectPiratesAsTargets = false,
     },
-
-    Saboteur = {
-        SubObjectives = {"SabotageReactor", "FloodSubmarine", "DestroyFuelRods", "Survive"},
-        MinSubObjectives = 2,
-        MaxSubObjectives = 3,
-
-        NextObjectiveDelayMin = 30,
-        NextObjectiveDelayMax = 60,
-        PointsPerSabotage = 50,
-
-        TraitorBroadcast = true,
-        TraitorBroadcastHearable = false,
-        TraitorDm = true,
-        TraitorMethodCommunication = "Names",
-    },
 }
 
 config.ObjectiveConfig = {
@@ -498,25 +482,6 @@ config.ObjectiveConfig = {
         RequireVictimChance = 0.5,
         MaxVictimDistance = 500,
         DetonatorIdentifiers = {"detonator", "timeddetonator", "artmod_detonator"},
-    },
-
-    Sabotage = {
-        AmountPoints = 50,
-    },
-
-    SabotageReactor = {
-        AmountPoints = 2500,
-    },
-
-    FloodSubmarine = {
-        AmountPoints = 400,
-        RequiredFloodPercent = 80,
-        CheckInterval = 1,
-    },
-
-    DestroyFuelRods = {
-        AmountPoints = 500,
-        Amount = 3,
     },
 }
 
