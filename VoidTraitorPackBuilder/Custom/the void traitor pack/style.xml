@@ -6,4 +6,10 @@
   <HuskMissionIcon color="0,100,100,255">
     <Sprite name="HuskMissionIcon" texture="Content/UI/MissionIcons.png" sourcerect="512,0,256,256" origin="0.5,0.5" maintainaspectratio="true" tile="false" />
   </HuskMissionIcon>
+  <MsCookieSKillFeed_TimeBar color="255,255,255,255">
+    <Sprite name="MsCookieS_KillFeed_TimeBar_None" texture="%ModDir%/the void traitor pack/UI/TimeBar.png" state="None" tile="false" sourcerect="0,0,320,40" />
+  </MsCookieSKillFeed_TimeBar>
+  <MsCookieSKillFeed_TimeBar_Stop color="255,255,255,255">
+    <Sprite name="MsCookieS_KillFeed_TimeBar_Stop" texture="%ModDir%/the void traitor pack/UI/TimeBar.png" state="Stop" tile="false" sourcerect="0,40,320,40" />
+  </MsCookieSKillFeed_TimeBar_Stop>
 </style>
