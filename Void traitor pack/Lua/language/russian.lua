@@ -157,7 +157,8 @@ language.CameraTeleport = {
 
 -- Киллфид PvP
 language.KillFeed = {
-    Died = "погиб",
+    Died = "Погиб",
+    FatalWound = "Смерт. рана:",
 }
 
 -- Attack & Defends
