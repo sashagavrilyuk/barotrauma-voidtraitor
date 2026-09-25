@@ -207,5 +207,4 @@ end)
 Hook.Add("roundEnd", "Traitormod.KillFeed.RoundEnd", function()
     pendingDamageCalls = {}
     damageHistory = {}
-    damageSequence = 0
 end)
