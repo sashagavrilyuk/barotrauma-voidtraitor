@@ -3,7 +3,6 @@ local DISPLAY_DELAY_MS = 100
 
 local pendingDamageCalls = {}
 local damageHistory = {}
-local damageSequence = 0
 
 local function isEnabledMode()
     if not Game.RoundStarted or Traitormod.SelectedGamemode == nil then return false end
@@ -203,7 +202,6 @@ end)
 Hook.Add("roundStart", "Traitormod.KillFeed.RoundStart", function()
     pendingDamageCalls = {}
     damageHistory = {}
-    damageSequence = 0
 end)
 
 Hook.Add("roundEnd", "Traitormod.KillFeed.RoundEnd", function()
