@@ -1,6 +1,7 @@
+local packPath = table.pack(...)[1]
 local NET_RESPAWNS = "VoidTraitor_AttackDefendRespawns"
 local ATTACK_DEFEND_MISSION = Identifier("AttackDefenceV2")
-local language = table.pack(...)[2].Language.AttackDefendRespawn
+local language = assert(loadfile(packPath .. "/Lua/language/russian.lua"))().AttackDefendRespawn
 
 local respawnEnds = {}
 local deadRows = {}
