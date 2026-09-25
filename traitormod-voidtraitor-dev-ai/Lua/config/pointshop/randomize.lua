@@ -92,6 +92,7 @@ randomizer.CreateFrom("PreviewMedical", "Medical", canPreview)
 randomizer.CreateFrom("PreviewWeapons", "Weapons", canPreview)
 
 local BodyType = LuaUserData.CreateEnumTable("FarseerPhysics.BodyType")
+local Category = LuaUserData.CreateEnumTable("FarseerPhysics.Dynamics.Category")
 local crateLists = {
 	vtcasinocratecrazy = { reward = "All", preview = "PreviewAll" },
 	vtcasinocratenormal = { reward = "CanBeBoughtOrSold", preview = "PreviewNormal" },
@@ -113,49 +114,75 @@ local function spawnAtPosition(prefab, position, submarine, onSpawned)
 	end
 end
 
+local function getSpriteBottomOffset(prefab)
+	return (prefab.Sprite.size.Y - prefab.Sprite.Origin.Y) * prefab.Scale
+end
+
 local function getRouletteBottom(state)
 	local progress = math.min(state.elapsed / 1.5, 1)
 	progress = 1 - (1 - progress) ^ 3
 	return state.floorY + (state.hoverBottomY - state.floorY) * progress
 end
 
-local function removeItemAndContents(item)
-	for containedItem in item.ContainedItems do
-		Entity.Spawner.AddEntityToRemoveQueue(containedItem)
+local function hidePreview(state)
+	local preview = state.preview
+	if preview == nil or preview.Removed then
+		state.preview = nil
+		return
 	end
-	Entity.Spawner.AddEntityToRemoveQueue(item)
-end
 
-local function removePreview(state)
-	if state.preview ~= nil and not state.preview.Removed then
-		removeItemAndContents(state.preview)
+	preview.HiddenInGame = true
+	preview.IsActive = false
+	if preview.body ~= nil then
+		preview.body.CollisionCategories = Category.None
+		preview.body.CollidesWith = Category.None
+		preview.PositionUpdateInterval = math.huge
 	end
+	Networking.CreateEntityEvent(preview, Item.ChangePropertyEventData(preview.SerializableProperties[Identifier("HiddenInGame")], preview))
 	state.preview = nil
 end
 
 local function spawnPreview(state)
 	state.generation = state.generation + 1
 	local generation = state.generation
-	removePreview(state)
+	hidePreview(state)
 
 	local prefab = randomizer.GetRandom(state.previewList)
-	local position = Vector2(state.x, getRouletteBottom(state) + prefab.Size.Y * prefab.Scale / 2)
+	local position = Vector2(state.x, getRouletteBottom(state) + getSpriteBottomOffset(prefab))
 	spawnAtPosition(prefab, position, state.submarine, function(preview)
-		if state.finished or state.generation ~= generation then
-			removeItemAndContents(preview)
+		if state.finished then
+			if preview.body ~= nil then
+				preview.body.CollisionCategories = Category.None
+				preview.body.CollidesWith = Category.None
+				preview.PositionUpdateInterval = math.huge
+			end
+			Entity.Spawner.AddEntityToRemoveQueue(preview)
 			return
 		end
 
+		table.insert(state.previews, preview)
 		preview.NonInteractable = true
 		preview.SpriteDepth = state.previewDepth
 		preview.IsActive = false
-		Networking.CreateEntityEvent(preview, Item.ChangePropertyEventData(preview.SerializableProperties[Identifier("NonInteractable")], preview))
-		Networking.CreateEntityEvent(preview, Item.ChangePropertyEventData(preview.SerializableProperties[Identifier("SpriteDepth")], preview))
 		if preview.body ~= nil then
 			preview.body.BodyType = BodyType.Kinematic
+			preview.body.CollisionCategories = Category.None
+			preview.body.CollidesWith = Category.None
 			preview.body.LinearVelocity = Vector2.Zero
 			preview.body.AngularVelocity = 0
-			preview.PositionUpdateInterval = state.elapsed < 1.5 and 0.1 or 30
+			preview.PositionUpdateInterval = state.elapsed < 1.5 and 0.1 or math.huge
+		end
+		preview.SetTransform(ConvertUnits.ToSimUnits(Vector2(state.x, getRouletteBottom(state) + getSpriteBottomOffset(preview.Prefab))), 0, false, false, state.submarine)
+		Networking.CreateEntityEvent(preview, Item.ChangePropertyEventData(preview.SerializableProperties[Identifier("NonInteractable")], preview))
+		Networking.CreateEntityEvent(preview, Item.ChangePropertyEventData(preview.SerializableProperties[Identifier("SpriteDepth")], preview))
+
+		if state.generation ~= generation then
+			preview.HiddenInGame = true
+			if preview.body ~= nil then
+				preview.PositionUpdateInterval = math.huge
+			end
+			Networking.CreateEntityEvent(preview, Item.ChangePropertyEventData(preview.SerializableProperties[Identifier("HiddenInGame")], preview))
+			return
 		end
 		state.preview = preview
 	end)
@@ -164,17 +191,25 @@ end
 local function finishRoulette(crate, state)
 	state.finished = true
 	state.generation = state.generation + 1
-	removePreview(state)
+	hidePreview(state)
 
 	local prefab = state.reward
-	local position = Vector2(state.x, state.hoverBottomY + prefab.Size.Y * prefab.Scale / 2)
+	local position = Vector2(state.x, state.hoverBottomY + getSpriteBottomOffset(prefab))
 	spawnAtPosition(prefab, position, state.submarine, function(reward)
-		if reward.body == nil or reward.body.BodyType ~= BodyType.Dynamic then
-			local floorPosition = Vector2(state.x, state.floorY + reward.Prefab.Size.Y * reward.Scale / 2)
-			reward.SetTransform(ConvertUnits.ToSimUnits(floorPosition), 0, true, true, state.submarine)
+		local targetY
+		if reward.body ~= nil and reward.body.BodyType == BodyType.Dynamic then
+			targetY = state.hoverBottomY + getSpriteBottomOffset(reward.Prefab)
+		else
+			targetY = state.floorY + getSpriteBottomOffset(reward.Prefab)
 		end
+		reward.SetTransform(ConvertUnits.ToSimUnits(Vector2(state.x, targetY)), 0, true, true, state.submarine)
 	end)
 
+	for _, preview in ipairs(state.previews) do
+		if not preview.Removed then
+			Entity.Spawner.AddEntityToRemoveQueue(preview)
+		end
+	end
 	Entity.Spawner.AddEntityToRemoveQueue(crate)
 	openingCrates[crate] = nil
 end
@@ -184,7 +219,12 @@ Hook.Add("think", "Traitormod.Pointshop.RandomizeCrateRoulette", function(deltaT
 		if crate.Removed then
 			state.finished = true
 			state.generation = state.generation + 1
-			removePreview(state)
+			hidePreview(state)
+			for _, preview in ipairs(state.previews) do
+				if not preview.Removed then
+					Entity.Spawner.AddEntityToRemoveQueue(preview)
+				end
+			end
 			openingCrates[crate] = nil
 		else
 			state.elapsed = state.elapsed + deltaTime
@@ -193,7 +233,7 @@ Hook.Add("think", "Traitormod.Pointshop.RandomizeCrateRoulette", function(deltaT
 			else
 				local preview = state.preview
 				if preview ~= nil and not preview.Removed and preview.body ~= nil and state.elapsed <= 1.5 then
-					local position = Vector2(state.x, getRouletteBottom(state) + preview.Prefab.Size.Y * preview.Scale / 2)
+					local position = Vector2(state.x, getRouletteBottom(state) + getSpriteBottomOffset(preview.Prefab))
 					preview.SetTransform(ConvertUnits.ToSimUnits(position), 0, false, false, state.submarine)
 					preview.PositionUpdateInterval = 0.1
 				end
@@ -230,6 +270,7 @@ Hook.Add("item.interact", "Traitormod.Pointshop.RandomizeCrateInteract", functio
 		floorY = floorY,
 		hoverBottomY = item.Rect.Y + 20,
 		previewDepth = math.max(0.001, item.SpriteDepth - 0.01),
+		previews = {},
 		elapsed = 0,
 		nextChange = 1,
 		generation = 0,
