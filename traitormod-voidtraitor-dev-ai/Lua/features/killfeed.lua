@@ -30,8 +30,8 @@ local function resolveWeaponFromSource(source, attacker)
 
     local projectile = source.GetComponentString("Projectile")
     if projectile ~= nil then
-        local weapon = projectile.Launcher or source
-        return weapon.Prefab ~= nil and tostring(weapon.Prefab.Identifier) or ""
+        local weapon = projectile.Launcher
+        return weapon ~= nil and weapon.Prefab ~= nil and tostring(weapon.Prefab.Identifier) or ""
     end
 
     if source.Equipper == attacker or (source.ParentInventory ~= nil and source.ParentInventory.Owner == attacker) then
@@ -56,10 +56,8 @@ local function rememberDamage(victim, attacker, weaponIdentifier, afflictions, c
         victimHistory[attacker] = attackerHistory
     end
 
-    damageSequence = damageSequence + 1
     local event = {
         WeaponIdentifier = weaponIdentifier,
-        Sequence = damageSequence,
     }
 
     attackerHistory.Last = event
@@ -100,10 +98,7 @@ local function resolveTrackedWeapon(victim, causeOfDeath)
     end
 
     if history.LastWeapon == nil then return "" end
-    if history.Last ~= nil and history.Last.Sequence > history.LastWeapon.Sequence and history.Last.WeaponIdentifier == "" then
-        return ""
-    end
-
+    if history.Last ~= history.LastWeapon and history.Last ~= nil and history.Last.WeaponIdentifier == "" then return "" end
     return history.LastWeapon.WeaponIdentifier
 end
 
