@@ -3,6 +3,14 @@ local NET_RESPAWNS = "VoidTraitor_AttackDefendRespawns"
 local ATTACK_DEFEND_MISSION = Identifier("AttackDefenceV2")
 local language = assert(loadfile(packPath .. "/Lua/language/russian.lua"))().AttackDefendRespawn
 
+local GAME_SESSION_TYPE = "Barotrauma.GameSession"
+local TAB_MENU_TYPE = "Barotrauma.TabMenu"
+if not LuaUserData.IsRegistered(GAME_SESSION_TYPE) then LuaUserData.RegisterType(GAME_SESSION_TYPE) end
+if not LuaUserData.IsRegistered(TAB_MENU_TYPE) then LuaUserData.RegisterType(TAB_MENU_TYPE) end
+local gameSessionStatic = LuaUserData.CreateStatic(GAME_SESSION_TYPE)
+local tabMenuStatic = LuaUserData.CreateStatic(TAB_MENU_TYPE)
+local infoFrameTab = LuaUserData.CreateEnumTable(TAB_MENU_TYPE .. "+InfoFrameTab")
+
 local respawnEnds = {}
 local deadRows = {}
 local nextUpdate = 0
@@ -62,8 +70,9 @@ Hook.Patch(
 		if oldEntry ~= nil and oldEntry.Character ~= character then
 			RemoveDeadRow(instance, infoId)
 
-			if GameSession.IsTabMenuOpen and TabMenu.SelectedTab == TabMenu.InfoFrameTab.Crew then
-				GameSession.TabMenuInstance.SelectInfoFrameTab(TabMenu.InfoFrameTab.Crew)
+			local tabMenu = gameSessionStatic.TabMenuInstance
+			if tabMenu ~= nil and tabMenuStatic.SelectedTab == infoFrameTab.Crew then
+				tabMenu.SelectInfoFrameTab(infoFrameTab.Crew)
 			end
 		end
 	end,
