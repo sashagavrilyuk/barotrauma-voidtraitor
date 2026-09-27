@@ -10,7 +10,7 @@ category.CanAccess = function(client)
     if not client.Character or client.Character.IsDead then return false end
 
     local role = Traitormod.RoleManager.GetRole(client.Character)
-    return role ~= nil and (role.Name == "Traitor" or role.Name == "Saboteur")
+    return role ~= nil and role.Name == "Traitor"
 end
 
 category.Init = function ()
