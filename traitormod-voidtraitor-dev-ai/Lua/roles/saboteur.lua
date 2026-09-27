@@ -23,7 +23,8 @@ function role:SabotageLoop(first)
 
     local sabotage = Traitormod.RoleManager.Objectives.Sabotage:new()
     sabotage:Init(self.Character)
-    sabotage.AmountPoints = self.PointsPerSabotage or sabotage.AmountPoints
+    -- every already assigned sabotage raises the reward of the next one by PointsPerSabotage
+    sabotage.AmountPoints = sabotage.AmountPoints + (self:CompletedObjectives("Sabotage") * self.PointsPerSabotage)
     sabotage.ExcludedItem = self.LastSabotageItem
 
     if not sabotage:Start() then

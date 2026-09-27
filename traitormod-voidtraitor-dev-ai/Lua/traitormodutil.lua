@@ -550,15 +550,12 @@ Traitormod.SendVanillaTraitorState = function(client)
 end
 
 local setHighlightEventData = LuaUserData.CreateStatic("Barotrauma.Item+SetHighlightEventData", true)
-local systemArray = LuaUserData.CreateStatic("System.Array")
-local clientDescriptor = Descriptors["Barotrauma.Networking.Client"] or LuaUserData.RegisterType("Barotrauma.Networking.Client")
 
 Traitormod.SetClientItemHighlight = function(client, item, highlighted)
     if client == nil or item == nil or item.Removed then return end
 
-    local targetClients = systemArray.CreateInstance(clientDescriptor.Type, Int32(1))
-    targetClients.SetValue(client, Int32(0))
-    Networking.CreateEntityEvent(item, setHighlightEventData.__new(highlighted == true, Color(255, 165, 0, 255), targetClients))
+    -- the table is converted to the IEnumerable<Client> the event data expects
+    Networking.CreateEntityEvent(item, setHighlightEventData.__new(highlighted == true, Color(255, 165, 0, 255), { client }))
 end
 
 -- set character traitor to enable sabotage, set mission objective text then sync with session
