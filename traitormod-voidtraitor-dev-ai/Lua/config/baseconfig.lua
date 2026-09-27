@@ -227,7 +227,7 @@ end
 ----- GAMEMODE -----
 config.GamemodeConfig = {
     Secret = {
-        PointshopCategories = {"clown", "traitor", "cultist", "deathspawn", "deathspawnhusk", "deathspawnfriend", "deathtrigerevent", "deathtrigereventevil", "deathtrigereventrandom", "abilities", "surgery", "medical", "security", "wiring", "maintenance", "materials", "ores", "otherresources", "other", "randomize", "ships"},
+        PointshopCategories = {"clown", "traitor", "saboteur", "cultist", "deathspawn", "deathspawnhusk", "deathspawnfriend", "deathtrigerevent", "deathtrigereventevil", "deathtrigereventrandom", "abilities", "surgery", "medical", "security", "wiring", "maintenance", "materials", "ores", "otherresources", "other", "randomize", "ships"},
         EndOnComplete = true,           -- end round everyone but traitors are dead
         EnableRandomEvents = true,
         EndGameDelaySeconds = 60,
@@ -600,6 +600,7 @@ config.PointShopConfig = {
         dofile(Traitormod.Path .. "/Lua/config/pointshop/traitors/clown.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/traitors/cultist.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/traitors/traitor.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/pointshop/traitors/saboteur.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/attackdefend/spawnBlue.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/attackdefend/spawnRed.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/hideandseek/hideBlue.lua"),
