@@ -191,6 +191,7 @@ language.Pointshop = {
     clown = "клоун",
     cultist = "культист",
     traitor = "предатель",
+    saboteur = "саботажник",
     deathspawn = "Переродиться",
     wiring = "Проводка",
     ores = "Руды",
