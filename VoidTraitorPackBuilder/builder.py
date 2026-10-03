@@ -655,6 +655,46 @@ def save_filelist(root: ET.Element, destination: Path) -> None:
     destination.write_bytes(codecs.BOM_UTF8 + data)
 
 
+def report_existing_pack_drift(output: Path) -> None:
+    existing_pack = BASE_DIR.parent / output.name
+    if not existing_pack.is_dir():
+        return
+
+    def files(root: Path) -> dict[str, Path]:
+        return {
+            path.relative_to(root).as_posix(): path
+            for path in root.rglob("*")
+            if path.is_file()
+        }
+
+    built_files = files(output)
+    existing_files = files(existing_pack)
+    added = sorted(set(built_files) - set(existing_files), key=str.casefold)
+    removed = sorted(set(existing_files) - set(built_files), key=str.casefold)
+    changed: list[str] = []
+
+    for relative in sorted(set(built_files) & set(existing_files), key=str.casefold):
+        built = built_files[relative]
+        existing = existing_files[relative]
+        if built.stat().st_size != existing.stat().st_size or built.read_bytes() != existing.read_bytes():
+            changed.append(relative)
+
+    if not added and not removed and not changed:
+        print("Current Pack: совпадает с результатом Builder.")
+        return
+
+    print("\nWARNING: текущий Void traitor pack отличается от результата Builder:")
+    for label, paths in (("будут добавлены", added), ("будут удалены", removed), ("будут изменены", changed)):
+        if not paths:
+            continue
+        print(f"  {label}: {len(paths)}")
+        for relative in paths[:30]:
+            print(f"    - {relative}")
+        if len(paths) > 30:
+            print(f"    ... и ещё {len(paths) - 30}")
+    print("Проверь этот список перед заменой текущего Pack содержимым Build.")
+
+
 def main() -> None:
     config = load_config()
     workshop_root = workshop_root_from_config(config)
@@ -856,6 +896,8 @@ def main() -> None:
         if len(missing_xml) > 50:
             print(f"  ... и ещё {len(missing_xml) - 50}")
         fail("Сборка остановлена: ссылка сломана после сборки или находится в Custom/Overrides")
+
+    report_existing_pack_drift(output)
 
     print(f"\nГОТОВО: {output}")
     print(f"Bundled Lua autorun: {len(bundled_autoruns)}")
