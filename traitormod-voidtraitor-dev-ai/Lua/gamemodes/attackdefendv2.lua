@@ -62,7 +62,7 @@ end
 ---@param class classFunction
 ---@param jobId string
 local function SpawnCharacter(client, team, class, jobId)
-	if client.CharacterInfo == nil then return false end
+	if client.CharacterInfo == nil then client.CharacterInfo = CharacterInfo("human", client.Name) end
 	local spawnPoint = team.Spawns[math.random(1, #team.Spawns)]
 
 	local characterInfo = client.CharacterInfo
@@ -82,7 +82,8 @@ local function SyncRespawnTeam(team)
 	local respawning = {}
 	for id, entry in pairs(team.Respawns) do
 		local member = team.Members[id]
-		if entry.Timer ~= nil and member.InGame and member.Connection ~= nil and not member.SpectateOnly then
+		if entry.Timer ~= nil and member.InGame and member.Connection ~= nil and not member.SpectateOnly
+			and not member.NeedsMidRoundSync and member.CharacterInfo ~= nil then
 			table.insert(respawning, { InfoId = member.CharacterInfo.ID, Timer = math.max(0, entry.Timer) })
 		end
 	end
@@ -379,6 +380,9 @@ function gm:Start()
 		if client.SpectateOnly then return end
 		for _, team in pairs(self.Teams) do
 			if team.Members[client.AccountId] ~= nil then
+				if client.CharacterInfo == nil then
+					client.CharacterInfo = team.Members[client.AccountId].CharacterInfo
+				end
 				team.Members[client.AccountId] = client
 				client.TeamID = team.TeamID
 				client.PreferredTeam = team.TeamID
@@ -402,13 +406,13 @@ function gm:Start()
 				team.Members[client.AccountId] = client
 				client.TeamID = team.TeamID
 				client.PreferredTeam = team.TeamID
-				SyncRespawnTeam(team)
+				team.Respawns[client.AccountId].SyncRespawns = true
 				return
 			end
 		end
 		local teamID = self:_AddNewClient(client)
 		self:_SetNewClient(client)
-		SyncRespawnTeam(self.Teams[teamID])
+		self.Teams[teamID].Respawns[client.AccountId].SyncRespawns = true
 	end)
 end
 
@@ -445,8 +449,12 @@ function gm:Think(deltaTime)
 		
 		for id, entry in pairs(team.Respawns) do
 			local member = team.Members[id]
+			if entry.SyncRespawns and member.InGame and not member.NeedsMidRoundSync then
+				entry.SyncRespawns = nil
+				respawnChanged = true
+			end
 			if member.Connection ~= nil and not member.SpectateOnly
-				and (member.Character == nil or member.Character.IsDead) and member.InGame then
+				and (member.Character == nil or member.Character.IsDead) and member.InGame and not member.NeedsMidRoundSync then
 				if entry.Timer == nil then
 					entry.Timer = team.RespawnTime
 					respawnChanged = true
