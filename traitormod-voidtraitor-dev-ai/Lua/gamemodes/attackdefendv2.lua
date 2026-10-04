@@ -83,7 +83,7 @@ local function SyncRespawnTeam(team)
 	for id, entry in pairs(team.Respawns) do
 		local member = team.Members[id]
 		if entry.Timer ~= nil and member.InGame and member.Connection ~= nil and not member.SpectateOnly
-			and member.CharacterInfo ~= nil then
+			and not member.NeedsMidRoundSync and member.CharacterInfo ~= nil then
 			table.insert(respawning, { InfoId = member.CharacterInfo.ID, Timer = math.max(0, entry.Timer) })
 		end
 	end
@@ -406,13 +406,13 @@ function gm:Start()
 				team.Members[client.AccountId] = client
 				client.TeamID = team.TeamID
 				client.PreferredTeam = team.TeamID
-				team.SyncRespawns = true
+				team.Respawns[client.AccountId].SyncRespawns = true
 				return
 			end
 		end
 		local teamID = self:_AddNewClient(client)
 		self:_SetNewClient(client)
-		self.Teams[teamID].SyncRespawns = true
+		self.Teams[teamID].Respawns[client.AccountId].SyncRespawns = true
 	end)
 end
 
@@ -445,11 +445,14 @@ function gm:Think(deltaTime)
     end
 
 	for _, team in pairs(self.Teams) do
-		local respawnChanged = team.SyncRespawns == true
-		team.SyncRespawns = nil
+		local respawnChanged = false
 		
 		for id, entry in pairs(team.Respawns) do
 			local member = team.Members[id]
+			if entry.SyncRespawns and member.InGame and not member.NeedsMidRoundSync then
+				entry.SyncRespawns = nil
+				respawnChanged = true
+			end
 			if member.Connection ~= nil and not member.SpectateOnly
 				and (member.Character == nil or member.Character.IsDead) and member.InGame and not member.NeedsMidRoundSync then
 				if entry.Timer == nil then
