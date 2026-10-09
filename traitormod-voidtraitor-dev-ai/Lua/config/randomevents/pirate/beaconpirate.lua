@@ -1,4 +1,5 @@
 local upcPirate = dofile(Traitormod.Path .. "/Lua/config/randomevents/pirate/utility/upcpirate.lua")
+local eventNPC = dofile(Traitormod.Path .. "/Lua/config/randomevents/utility/eventnpc.lua")
 local event = {}
 
 event.Name = "BeaconPirate"
@@ -25,11 +26,15 @@ event.Start = function ()
         return
     end
 
+    local spawnPoint = eventNPC.GetSpawnPoint(beacon)
+    if spawnPoint == nil then error("BeaconPirate: no interior spawn point") end
+
     for key, value in pairs(Character.CharacterList) do
         if value.IsHuman and value.TeamID == CharacterTeamType.None and value.Submarine == beacon then
             value.Info.Name = "Pirate " .. value.Info.Name
             value.SetOriginalTeamAndChangeTeam(CharacterTeamType.Team2, true)
             value.CanSpeak = false
+            eventNPC.Stay(value, beacon)
 
             Traitormod.GhostRoles.Create("pirates.beacon.helper", value)
         end
@@ -48,7 +53,7 @@ event.Start = function ()
     info.Name = "Pirate " .. info.Name
     info.Job = Job(JobPrefab.Get("mechanic"), false)
 
-    local character = Character.Create(info, beacon.WorldPosition, info.Name, 0, false, true)
+    local character = Character.Create(info, spawnPoint.WorldPosition, info.Name, 0, false, true)
     event.Character = character
     event.Beacon = beacon
     event.EnteredMainSub = false
@@ -57,11 +62,8 @@ event.Start = function ()
     character.CanSpeak = false
     character.TeamID = CharacterTeamType.Team2
     character.GiveJobItems(false, nil)
-	
-	local orderPrefab = OrderPrefab.Prefabs["wait"]
-	local orderTarget = OrderTarget(beacon.WorldPosition, nil)
-	local order = Order(orderPrefab, orderTarget).WithManualPriority(CharacterInfo.HighestManualOrderPriority-2)
-	character.SetOrder(order, true, false, true)
+
+    eventNPC.Stay(character, beacon)
 
     local idCard = character.Inventory.GetItemInLimbSlot(InvSlotType.Card)
     if idCard then
@@ -153,6 +155,7 @@ event.Start = function ()
     end)
 
     Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("pucs"), character.Inventory, nil, nil, function (item)
+        character.Inventory.TryPutItem(item, character.Inventory.FindLimbSlot(InvSlotType.OuterClothes), true, false, character)
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("combatstimulantsyringe"), item.OwnInventory)
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygenitetank"), item.OwnInventory)
     end)
@@ -184,6 +187,7 @@ end
 
 
 event.End = function (isEndRound)
+    eventNPC.Release(event.Character)
     upcPirate.Stop(event)
     Hook.Remove("think", "BeaconPirate.Think")
 

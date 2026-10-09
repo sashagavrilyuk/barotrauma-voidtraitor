@@ -4,8 +4,11 @@
 ---@field Message string
 ---@field GhostRole string
 ---@field HookName string
+---@field SpawnSonar boolean
 ---@field CanStart fun(): boolean
 ---@field GetSubmarine fun(): any
+
+local eventNPC = dofile(Traitormod.Path .. "/Lua/config/randomevents/utility/eventnpc.lua")
 
 ---@param config RescueEventConfig
 ---@return table
@@ -25,25 +28,6 @@ local function CreateRescueEvent(config)
         if Traitormod.RoundEvents.ThisRoundEvents[config.PirateEvent] == nil then
             Traitormod.RoundEvents.ThisRoundEvents[config.PirateEvent] = 0
         end
-    end
-
-    local function getSpawnPosition(submarine)
-        if submarine == nil then
-            return nil
-        end
-
-        local positions = {}
-        for _, waypoint in pairs(submarine.GetWaypoints(true)) do
-            if waypoint.CurrentHull ~= nil then
-                table.insert(positions, waypoint.WorldPosition)
-            end
-        end
-
-        if #positions == 0 then
-            return submarine.WorldPosition
-        end
-
-        return positions[math.random(#positions)]
     end
 
     local function spawnItem(identifier, inventory, onSpawned)
@@ -104,7 +88,8 @@ local function CreateRescueEvent(config)
 
         for _, client in pairs(Client.ClientList) do
             local character = client.Character
-            if character ~= nil and character.IsHuman and not character.IsDead and character.TeamID == CharacterTeamType.Team1 then
+            if character ~= nil and character.IsHuman and not character.IsDead and character.TeamID == CharacterTeamType.Team1
+                and (event.Rescuer ~= nil or character.Submarine == (event.Character.Submarine or event.Submarine)) then
                 local distance = Vector2.Distance(character.WorldPosition, event.Character.WorldPosition)
                 if distance < closestDistance then
                     closestDistance = distance
@@ -124,27 +109,44 @@ local function CreateRescueEvent(config)
 
     event.Start = function()
         local submarine = config.GetSubmarine()
-        local position = getSpawnPosition(submarine)
-        if submarine == nil or position == nil then
+        if submarine == nil then
             event.End()
             return
         end
+        local spawnPoint = eventNPC.GetSpawnPoint(submarine)
+        if spawnPoint == nil then error(config.Name .. ": no interior spawn point") end
 
         reservePirateEvent()
 
         local info = CharacterInfo(Identifier("human"))
         info.Job = Job(JobPrefab.Get("assistant"), false)
 
-        local character = Character.Create(info, position, info.Name, 0, false, true)
+        local character = Character.Create(info, spawnPoint.WorldPosition, info.Name, 0, false, true)
         character.TeamID = CharacterTeamType.Team1
         character.GiveJobItems(false, nil)
 
         event.Character = character
+        event.Submarine = submarine
+        event.Rescuer = nil
         event.Success = false
         event.NextOrderUpdate = 0
+        eventNPC.Stay(character, submarine)
 
         equipSurvivalSuit(character)
         giveWeakSurvivalSupplies(character)
+
+        if config.SpawnSonar then
+            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.Prefabs["sonarbeacon"], submarine.WorldPosition, nil, nil, function(item)
+                item.NonInteractable = true
+                Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.Prefabs["batterycell"], item.OwnInventory, nil, nil, function(battery)
+                    battery.Indestructible = true
+                    local interface = item.GetComponentString("CustomInterface")
+                    interface.customInterfaceElementList[1].State = true
+                    interface.customInterfaceElementList[2].Signal = Traitormod.Language[config.Name .. "Name"]
+                    item.CreateServerEvent(interface, interface)
+                end)
+            end)
+        end
 
         Traitormod.RoundEvents.SendEventMessage(string.format(Traitormod.Language[config.Message], event.AmountPoints), "GameModeIcon.sandbox", Color.Yellow)
 
@@ -165,6 +167,8 @@ local function CreateRescueEvent(config)
             if currentTime >= event.NextOrderUpdate and Traitormod.FindClientCharacter(survivor) == nil then
                 local closestCrew = findClosestCrew()
                 if closestCrew ~= nil then
+                    event.Rescuer = closestCrew
+                    eventNPC.Release(survivor)
                     local orderPrefab = OrderPrefab.Prefabs["follow"]
                     local order = Order(orderPrefab, nil, closestCrew).WithManualPriority(CharacterInfo.HighestManualOrderPriority)
                     survivor.SetOrder(order, true, false, true)
@@ -182,6 +186,9 @@ local function CreateRescueEvent(config)
 
     event.End = function(isEndRound)
         Hook.Remove("think", config.HookName)
+        eventNPC.Release(event.Character)
+        event.Submarine = nil
+        event.Rescuer = nil
 
         if event.Success then
             event.Character = nil

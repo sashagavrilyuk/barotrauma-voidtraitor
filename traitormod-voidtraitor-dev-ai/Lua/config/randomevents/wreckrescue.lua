@@ -6,6 +6,7 @@ return CreateRescueEvent({
     Message = "WreckRescue",
     GhostRole = "rescue.wreck",
     HookName = "WreckRescue.Think",
+    SpawnSonar = true,
     CanStart = function()
         return #Level.Loaded.Wrecks > 0
     end,

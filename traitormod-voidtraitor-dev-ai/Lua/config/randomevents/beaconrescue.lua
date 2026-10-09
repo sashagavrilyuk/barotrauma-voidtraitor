@@ -6,6 +6,7 @@ return CreateRescueEvent({
     Message = "BeaconRescue",
     GhostRole = "rescue.beacon",
     HookName = "BeaconRescue.Think",
+    SpawnSonar = true,
     CanStart = function()
         return Level.Loaded.BeaconStation ~= nil
     end,

@@ -227,7 +227,7 @@ end
 ----- GAMEMODE -----
 config.GamemodeConfig = {
     Secret = {
-        PointshopCategories = {"clown", "traitor", "cultist", "deathspawn", "deathspawnhusk", "deathspawnfriend", "deathtrigerevent", "deathtrigereventevil", "deathtrigereventrandom", "abilities", "surgery", "medical", "security", "wiring", "maintenance", "materials", "ores", "otherresources", "other", "randomize", "ships"},
+        PointshopCategories = {"clown", "traitor", "saboteur", "cultist", "deathspawn", "deathspawnhusk", "deathspawnfriend", "deathtrigerevent", "deathtrigereventevil", "deathtrigereventrandom", "abilities", "surgery", "medical", "security", "wiring", "maintenance", "materials", "ores", "otherresources", "other", "randomize", "ships"},
         EndOnComplete = true,           -- end round everyone but traitors are dead
         EnableRandomEvents = true,
         EndGameDelaySeconds = 60,
@@ -277,9 +277,10 @@ config.GamemodeConfig = {
 
         TraitorTypeSelectionMode = "Random", -- Vote | Random
         TraitorTypeChance = {
-            Traitor = 50, -- Traitors have 33% chance of being a normal traitor
+            Traitor = 50,
             Cultist = 50,
             Clown = 50,
+            Saboteur = 50,
         },
 
         AmountTraitors = function (amountPlayers)
@@ -419,6 +420,21 @@ config.RoleConfig = {
         SelectBotsAsTargets = true,
         SelectPiratesAsTargets = false,
     },
+
+    Saboteur = {
+        SubObjectives = {"SabotageReactor", "FloodSubmarine", "DestroyFuelRods", "Survive"},
+        MinSubObjectives = 2,
+        MaxSubObjectives = 3,
+
+        NextObjectiveDelayMin = 30,
+        NextObjectiveDelayMax = 60,
+        PointsPerSabotage = 50,
+
+        TraitorBroadcast = true,
+        TraitorBroadcastHearable = false,
+        TraitorDm = true,
+        TraitorMethodCommunication = "Names",
+    },
 }
 
 config.ObjectiveConfig = {
@@ -482,6 +498,25 @@ config.ObjectiveConfig = {
         RequireVictimChance = 0.5,
         MaxVictimDistance = 500,
         DetonatorIdentifiers = {"detonator", "timeddetonator", "artmod_detonator"},
+    },
+
+    Sabotage = {
+        AmountPoints = 50,
+    },
+
+    SabotageReactor = {
+        AmountPoints = 2500,
+    },
+
+    FloodSubmarine = {
+        AmountPoints = 400,
+        RequiredFloodPercent = 80,
+        CheckInterval = 1,
+    },
+
+    DestroyFuelRods = {
+        AmountPoints = 500,
+        Amount = 3,
     },
 }
 
@@ -565,6 +600,7 @@ config.PointShopConfig = {
         dofile(Traitormod.Path .. "/Lua/config/pointshop/traitors/clown.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/traitors/cultist.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/traitors/traitor.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/pointshop/traitors/saboteur.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/attackdefend/spawnBlue.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/attackdefend/spawnRed.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/hideandseek/hideBlue.lua"),

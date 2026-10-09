@@ -92,6 +92,7 @@ randomizer.CreateFrom("PreviewMedical", "Medical", canPreview)
 randomizer.CreateFrom("PreviewWeapons", "Weapons", canPreview)
 
 local BodyType = LuaUserData.CreateEnumTable("FarseerPhysics.BodyType")
+local Category = LuaUserData.CreateEnumTable("FarseerPhysics.Dynamics.Category")
 local crateLists = {
 	vtcasinocratecrazy = { reward = "All", preview = "PreviewAll" },
 	vtcasinocratenormal = { reward = "CanBeBoughtOrSold", preview = "PreviewNormal" },
@@ -153,6 +154,8 @@ local function spawnPreview(state)
 		Networking.CreateEntityEvent(preview, Item.ChangePropertyEventData(preview.SerializableProperties[Identifier("SpriteDepth")], preview))
 		if preview.body ~= nil then
 			preview.body.BodyType = BodyType.Kinematic
+			preview.body.CollisionCategories = Category.None
+			preview.body.CollidesWith = Category.None
 			preview.body.LinearVelocity = Vector2.Zero
 			preview.body.AngularVelocity = 0
 			preview.PositionUpdateInterval = state.elapsed < 1.5 and 0.1 or 30
