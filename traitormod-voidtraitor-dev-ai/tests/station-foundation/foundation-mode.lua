@@ -46,6 +46,15 @@ assert(parameters.PreventExecution and calls.finish==1 and not gm.AllowRealEndGa
 gm.AllowRealEndGame=true gm.EndTransitionStarted=true parameters={}
 hook(instance,parameters)
 assert(not parameters.PreventExecution,'final native EndGame was blocked')
+Traitormod.SelectedGamemode=secret:new()
+parameters={}
+hook(instance,parameters)
+assert(parameters.PreventExecution and calls.ending==2,'Secret ending flow was broken')
+Traitormod.SelectedGamemode={Name='AttackDefendV2'}
+parameters={}
+hook(instance,parameters)
+assert(not parameters.PreventExecution,'unrelated gamemode was intercepted')
+Traitormod.SelectedGamemode=gm
 gm:End()
 assert(calls.ended and Game.ServerSettings.MissionTypes=='Salvage')
 assert(secret.Name=='Secret' and #secret.PointshopCategories==2,'station mutated Secret defaults')
