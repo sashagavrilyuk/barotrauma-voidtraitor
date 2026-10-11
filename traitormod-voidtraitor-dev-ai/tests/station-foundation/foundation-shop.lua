@@ -7,7 +7,7 @@ local currentRole='Crew'
 for _,name in ipairs({'traitor','cultist','saboteur','clown','medical'}) do
     categories[#categories+1]={Identifier=name,Products={{Identifier=name..'_product',Price=0}},CanAccess=function() return name=='medical' or name==string.lower(currentRole) end}
 end
-Traitormod={Config={PointShopConfig={Enabled=true,ItemCategories=categories}},Language={PointshopNotAvailable='Unavailable',PointshopCannotBeUsed='Denied',Pointshop={}},SelectedGamemode={Name='Station'},GetClientAccountKey=function() return 'player' end,IsSecretEnding=function() return false end,SendMessage=function() messages=messages+1 end}
+Traitormod={Config={PointShopConfig={Enabled=true,ItemCategories=categories}},Language={PointshopNotAvailable='Unavailable',PointshopCannotBeUsed='Denied',Pointshop={}},SelectedGamemode={Name='Station',RestrictShopToAccessibleCategories=true},GetClientAccountKey=function() return 'player' end,IsRoundFinalizing=function() return false end,SendMessage=function() messages=messages+1 end}
 local ps=dofile(modpath..'/Lua/pointshop.lua')
 ps.Initialize({'traitor','cultist','saboteur','clown'})
 assert(not ps.CanUseShop(client) and not ps.ValidateClient(client))
@@ -23,7 +23,7 @@ end
 client.Character.IsDead=true
 assert(not ps.CanUseShop(client))
 client.Character.IsDead=false
-currentRole='Crew' Traitormod.SelectedGamemode.Name='Secret'
+currentRole='Crew' Traitormod.SelectedGamemode.Name='Secret' Traitormod.SelectedGamemode.RestrictShopToAccessibleCategories=false
 ps.Initialize({'medical','traitor'})
 assert(ps.CanUseShop(client) and ps.ValidateClient(client) and ps.CanClientSeeProduct(client,ps.AllCategories.medical.Products[1]),'original Secret crew shop changed')
 return 'PASS foundation shop: crew denied, all four antagonists only own products, dead denied, original Secret retained'
