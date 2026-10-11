@@ -438,7 +438,7 @@ local function applyRoundSkillGain()
         return
     end
 
-    if config.SecretOnly and (Traitormod.SelectedGamemode == nil or not Traitormod.SelectedGamemode.UsesSecretRoundFlow) then
+    if config.SecretOnly and (Traitormod.SelectedGamemode == nil or not Traitormod.SelectedGamemode.UsesSecretRules) then
         return
     end
 
@@ -630,7 +630,7 @@ Hook.Add("missionsEnded", "Traitormod.MissionsEnded", function(missions)
     if Traitormod.SelectedGamemode then
         endMessage = Traitormod.SelectedGamemode:RoundSummary()
 
-        if Traitormod.SelectedGamemode.FinalSummary == nil then
+        if not Traitormod.SelectedGamemode.UsesSecretRules or Traitormod.SelectedGamemode.FinalSummary == nil then
             Traitormod.SendMessageEveryone(Traitormod.HighlightClientNames(endMessage, Color.Red))
         end
     end
