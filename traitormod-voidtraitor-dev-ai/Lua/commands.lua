@@ -284,7 +284,7 @@ Traitormod.AddCommand("!endroundnow", function (client, args)
     if not client.HasPermission(ClientPermissions.ConsoleCommands) then return end
 
     local selected = Traitormod.SelectedGamemode
-    if not Game.RoundStarted or selected == nil or not selected.UsesSecretRoundFlow or not selected.Ending then
+    if not Game.RoundStarted or selected == nil or not selected.UsesSecretRules or not selected.Ending then
         Traitormod.SendMessage(client, Traitormod.Language.CommandNotActive)
         return true
     end
