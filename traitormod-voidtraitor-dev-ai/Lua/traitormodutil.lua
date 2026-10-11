@@ -434,7 +434,7 @@ end
 
 Traitormod.IsSecretEnding = function ()
     return Traitormod.SelectedGamemode ~= nil
-        and Traitormod.SelectedGamemode.Name == "Secret"
+        and (Traitormod.SelectedGamemode.Name == "Secret" or Traitormod.SelectedGamemode.Name == "Station")
         and Traitormod.SelectedGamemode.Ending == true
 end
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Missions>
+  <CustomMission identifier="vt_station" type="VoidTraitorStation" multiplayeronly="true" commonness="100" reward="0" loadsubmarines="true" allowothermissionsinlevel="false" successstate="1" failurestate="-1" requiredestinationreached="false">
+    <Icon texture="Content/UI/MissionIcons2.png" sourcerect="0,768,256,256" color="125,195,220" />
+  </CustomMission>
+</Missions>

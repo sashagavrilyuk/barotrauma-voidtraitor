@@ -32,7 +32,7 @@ local function isTrackedMode()
     if not Game.RoundStarted or Traitormod.SelectedGamemode == nil then return false end
 
     local name = Traitormod.SelectedGamemode.Name
-    return name == "Secret" or name == "AttackDefendV2"
+    return name == "Secret" or name == "Station" or name == "AttackDefendV2"
 end
 
 local function isGhostRole(character)
@@ -137,7 +137,7 @@ local function getRole(character)
 end
 
 local function isSecretAntagonistAgainstCrew(attacker, target)
-    if Traitormod.SelectedGamemode == nil or Traitormod.SelectedGamemode.Name ~= "Secret" then return false end
+    if Traitormod.SelectedGamemode == nil or (Traitormod.SelectedGamemode.Name ~= "Secret" and Traitormod.SelectedGamemode.Name ~= "Station") then return false end
     if target == nil or not target.IsHuman or target.TeamID ~= CharacterTeamType.Team1 then return false end
 
     local attackerRole = getRole(attacker)
@@ -149,7 +149,7 @@ end
 local function isValidEnemy(attacker, target)
     if attacker == nil or target == nil or attacker == target then return false end
 
-    if Traitormod.SelectedGamemode ~= nil and Traitormod.SelectedGamemode.Name == "Secret" then
+    if Traitormod.SelectedGamemode ~= nil and (Traitormod.SelectedGamemode.Name == "Secret" or Traitormod.SelectedGamemode.Name == "Station") then
         local attackerRole = getRole(attacker)
         if attackerRole ~= nil and attackerRole.IsAntagonist then
             return false
@@ -440,7 +440,7 @@ function roundStats.FlushHealing()
 end
 
 function roundStats.BuildSecretSummary()
-    if Traitormod.SelectedGamemode == nil or Traitormod.SelectedGamemode.Name ~= "Secret" then return "" end
+    if Traitormod.SelectedGamemode == nil or (Traitormod.SelectedGamemode.Name ~= "Secret" and Traitormod.SelectedGamemode.Name ~= "Station") then return "" end
 
     roundStats.FlushHealing()
 

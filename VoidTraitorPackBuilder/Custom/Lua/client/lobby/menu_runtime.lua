@@ -30,6 +30,7 @@ Networking.Receive(P.NET_SNAPSHOT, function(message)
         })
     end
 
+    S.shopAvailable = message.BitPosition >= message.LengthBits or message.ReadBoolean()
     S.menuEntries = entries
     if S.buttonRoot ~= nil then
         P.CreateTopButtons()
@@ -87,6 +88,8 @@ end)
 Hook.Add("roundEnd", "VoidTraitor.ClientMenu.RoundEnd", function()
     if S.sharedState.Disabled then return end
     P.CloseMenu()
+    S.shopAvailable = nil
+    P.CreateTopButtons()
 end)
 
 Hook.Add("think", "VoidTraitor.ClientMenu.UiState", function(deltaTime)
