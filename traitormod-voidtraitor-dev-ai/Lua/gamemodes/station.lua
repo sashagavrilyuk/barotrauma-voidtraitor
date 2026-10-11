@@ -54,15 +54,4 @@ function gm:End()
     Game.ServerSettings.ServerDetailsChanged = true
 end
 
-Hook.Patch("Traitormod.Station.EndGame.Before", "Barotrauma.Networking.GameServer", "EndGame", function(instance, parameters)
-    local selected = Traitormod.SelectedGamemode
-    if selected == nil or selected.Name ~= "Station" or selected.AllowRealEndGame then return end
-    if selected.Ending then
-        instance.EndRoundTimer = 0.1
-    else
-        selected:BeginEnding("manual", parameters["transitionType"], false)
-    end
-    parameters.PreventExecution = true
-end, Hook.HookMethodType.Before)
-
 return gm
