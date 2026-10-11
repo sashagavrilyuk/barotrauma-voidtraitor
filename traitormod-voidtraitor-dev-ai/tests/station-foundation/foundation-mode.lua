@@ -24,7 +24,7 @@ secret.End=function() calls.ended=true end
 local gm=dofile(modpath..'/Lua/gamemodes/station.lua'):new()
 gm.PointshopCategories={'traitor','cultist','saboteur','clown'}
 Traitormod.SelectedGamemode=gm
-assert(gm.UsesSecretRoundFlow and not patches['Traitormod.Station.EndGame.Before'],'station must share the Secret ending hook')
+assert(gm.UsesSecretRules and not patches['Traitormod.Station.EndGame.Before'],'station must share the Secret ending hook')
 gm:PreStart()
 assert(Game.ServerSettings.MissionTypes=='VoidTraitorStation' and calls.categories==gm.PointshopCategories)
 gm:Start()
