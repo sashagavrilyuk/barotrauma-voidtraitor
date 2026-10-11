@@ -91,6 +91,11 @@ config.GameVote = {
             Apply = "Secret"
         },
         {
+            Name = "Station",
+            LanguageKey = "GameVoteOptionStation",
+            Apply = "Station"
+        },
+        {
             Name = "AttackDefend",
             LanguageKey = "GameVoteOptionAttackDefend",
             Apply = "AttackDefend"
@@ -309,6 +314,19 @@ config.GamemodeConfig = {
             if client.Character.HasJob("surgeon") then return 0.5 end
             return 1
         end
+    },
+
+    Station = {
+        PointshopCategories = {"traitor", "cultist", "saboteur", "clown"},
+        EndOnComplete = false,
+        EnableRandomEvents = false,
+        TraitorTypeSelectionMode = "Random",
+        TraitorTypeChance = {
+            Traitor = 50,
+            Cultist = 50,
+            Saboteur = 50,
+            Clown = 50,
+        },
     },
 
     PvP = {

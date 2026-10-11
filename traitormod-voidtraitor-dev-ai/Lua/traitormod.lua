@@ -438,7 +438,7 @@ local function applyRoundSkillGain()
         return
     end
 
-    if config.SecretOnly and (Traitormod.SelectedGamemode == nil or Traitormod.SelectedGamemode.Name ~= "Secret") then
+    if config.SecretOnly and (Traitormod.SelectedGamemode == nil or (Traitormod.SelectedGamemode.Name ~= "Secret" and Traitormod.SelectedGamemode.Name ~= "Station")) then
         return
     end
 
@@ -630,7 +630,7 @@ Hook.Add("missionsEnded", "Traitormod.MissionsEnded", function(missions)
     if Traitormod.SelectedGamemode then
         endMessage = Traitormod.SelectedGamemode:RoundSummary()
 
-        if Traitormod.SelectedGamemode.Name ~= "Secret" or Traitormod.SelectedGamemode.FinalSummary == nil then
+        if (Traitormod.SelectedGamemode.Name ~= "Secret" and Traitormod.SelectedGamemode.Name ~= "Station") or Traitormod.SelectedGamemode.FinalSummary == nil then
             Traitormod.SendMessageEveryone(Traitormod.HighlightClientNames(endMessage, Color.Red))
         end
     end
@@ -1181,6 +1181,7 @@ dofile(Traitormod.Path .. "/Lua/features/piratemissionghostroles.lua")
 
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/gamemode.lua"))
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/secret.lua"))
+Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/station.lua"))
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/pvp.lua"))
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/submarineroyale.lua"))
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/attackdefendv2.lua"))

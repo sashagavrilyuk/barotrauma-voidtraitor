@@ -421,4 +421,7 @@
   <Sounds file="%ModDir%/Sounds/Sound.xml" />
   <Outpost file="%ModDir%/void traitor pack submarine/attack-defends/Attack&amp;Defend I Shipbuilding.sub" />
   <Outpost file="%ModDir%/void traitor pack submarine/fun boat/Hide and seek I in Residence.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/VoidTraitor Station Test.sub" />
+  <Missions file="%ModDir%/the void traitor pack/MissionsStation.xml" />
+  <Text file="%ModDir%/the void traitor pack/StationText.xml" />
 </contentpackage>

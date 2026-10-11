@@ -163,6 +163,7 @@ function P.RefreshActiveVoteUi()
 
         S.voteStartUi.ModeButton.Enabled = canStart and gameRemaining <= 0
         S.voteStartUi.MapButton.Enabled = canStart and mapRemaining <= 0
+        S.voteStartUi.MapButton.Text = snapshot.StationMap and P.VoteUiText.StartStation or P.VoteUiText.StartMap
         S.voteStartUi.ModeTimer.Text = gameRemaining > 0 and formatStartCooldown(gameRemaining) or ""
         S.voteStartUi.MapTimer.Text = mapRemaining > 0 and formatStartCooldown(mapRemaining) or ""
         return

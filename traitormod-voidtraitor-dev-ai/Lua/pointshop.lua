@@ -386,6 +386,17 @@ ps.CanClientSeeProduct = function(client, product)
         return false
     end
 
+    if Traitormod.SelectedGamemode ~= nil and Traitormod.SelectedGamemode.Name == "Station" then
+        local allowed = false
+        for _, category in ipairs(ps.ActiveCategories) do
+            if category.Identifier == product.CategoryIdentifier and ps.CanClientAccessCategory(client, category) then
+                allowed = true
+                break
+            end
+        end
+        if not allowed then return false end
+    end
+
     if product.VisibleJobs ~= nil then
         local character = client ~= nil and client.Character or nil
         if character == nil or character.IsDead or not character.IsHuman then
@@ -406,6 +417,15 @@ end
 
 ---@param client Barotrauma.Networking.Client
 ---@return boolean
+ps.CanUseShop = function(client)
+    if Traitormod.SelectedGamemode == nil or Traitormod.SelectedGamemode.Name ~= "Station" then return true end
+    if client.Character == nil or client.Character.IsDead or not client.Character.IsHuman then return false end
+    for _, category in ipairs(ps.ActiveCategories) do
+        if ps.CanClientAccessCategory(client, category) then return true end
+    end
+    return false
+end
+
 ps.ValidateClient = function(client)
     if not config.PointShopConfig.Enabled then
         Traitormod.SendMessage(client, Traitormod.Language.CommandNotActive)
@@ -414,6 +434,11 @@ ps.ValidateClient = function(client)
 
     if not client.InGame then
         Traitormod.SendMessage(client, Traitormod.Language.PointshopInGame)
+        return false
+    end
+
+    if not ps.CanUseShop(client) then
+        Traitormod.SendMessage(client, Traitormod.Language.PointshopNotAvailable)
         return false
     end
 

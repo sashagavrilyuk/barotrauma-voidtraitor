@@ -294,6 +294,8 @@ function cm.SendSnapshot(client)
         netMessage.WriteString(entry.Action.InputType)
     end
 
+    netMessage.WriteBoolean(Traitormod.Pointshop.CanUseShop(client))
+
     Networking.Send(netMessage, client.Connection)
     return true
 end
@@ -490,6 +492,7 @@ local function writeVoteSnapshot(netMessage, client)
 
     netMessage.WriteInt32(math.max(0, math.floor(tonumber(snapshot.GameCooldownRemaining or 0) or 0)))
     netMessage.WriteInt32(math.max(0, math.floor(tonumber(snapshot.MapCooldownRemaining or 0) or 0)))
+    netMessage.WriteBoolean(snapshot.StationMap == true)
 end
 
 function cm.SendVoteSnapshot(client)
