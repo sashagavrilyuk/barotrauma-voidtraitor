@@ -6,6 +6,7 @@ LuaUserData.RegisterType("System.Collections.Generic.Queue`1[[Barotrauma.Entity]
 gm.Name = "Station"
 gm.RequiredGamemode = "mission"
 gm.EndOnComplete = false
+gm.RestrictShopToAccessibleCategories = true
 
 function gm:PreStart()
     Traitormod.Gamemodes.Gamemode.PreStart(self)
