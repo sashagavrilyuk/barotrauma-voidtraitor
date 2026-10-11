@@ -12,7 +12,7 @@ local lobbySummaryPending = nil
 local missionDescriptors = {}
 
 gm.Name = "Secret"
-gm.UsesSecretRoundFlow = true
+gm.UsesSecretRules = true
 
 local function missionWouldComplete(mission, transitionType)
     if mission == nil or mission.ForceFailure then return false end
@@ -735,7 +735,7 @@ end, Hook.HookMethodType.Before)
 
 Hook.Patch("Traitormod.Secret.EndGame.Before", "Barotrauma.Networking.GameServer", "EndGame", function (instance, ptable)
     local selected = Traitormod.SelectedGamemode
-    if selected == nil or not selected.UsesSecretRoundFlow then return end
+    if selected == nil or not selected.UsesSecretRules then return end
 
     if selected.AllowRealEndGame then
         if selected.Ending and not selected.EndTransitionStarted then
