@@ -434,7 +434,7 @@ end
 
 Traitormod.IsRoundFinalizing = function ()
     return Traitormod.SelectedGamemode ~= nil
-        and Traitormod.SelectedGamemode.UsesSecretRoundFlow == true
+        and Traitormod.SelectedGamemode.UsesSecretRules == true
         and Traitormod.SelectedGamemode.Ending == true
 end
 
