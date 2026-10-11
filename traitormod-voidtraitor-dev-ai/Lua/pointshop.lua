@@ -590,7 +590,7 @@ ps.BuyProduct = function(client, product)
     local points = nil
     local previousTimeout = nil
     local accountKey = Traitormod.GetClientAccountKey(client)
-    local secretEnding = Traitormod.IsSecretEnding()
+    local roundFinalizing = Traitormod.IsRoundFinalizing()
 
     if not ps.CanClientSeeProduct(client, product) then
         return Traitormod.Language.PointshopCannotBeUsed
@@ -663,16 +663,16 @@ ps.BuyProduct = function(client, product)
             return ps.ProductBuyFailureReason.NoStock
         end
 
-        if not secretEnding then
+        if not roundFinalizing then
             Traitormod.SetData(client, "Points", points - price)
         end
     end
 
-    local paidPrice = secretEnding and 0 or price
+    local paidPrice = roundFinalizing and 0 or price
     local success, result = ps.ActivateProduct(client, product, paidPrice, itemsToSpawn)
     if success == false then
         if not Traitormod.Config.TestMode then
-            if not secretEnding then
+            if not roundFinalizing then
                 Traitormod.SetData(client, "Points", points)
             end
             ps.UseProductLimit(client, product, -1)
