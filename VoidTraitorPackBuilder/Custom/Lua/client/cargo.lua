@@ -275,7 +275,21 @@ Hook.Patch("VoidTraitor.Cargo.Inventory", "Barotrauma.CharacterHUD", "LockInvent
     if not UI.Disabled and UI.CurrentMenu ~= nil and parameters["character"] == Character.Controlled then return true end
 end, Hook.HookMethodType.After)
 Hook.Add("roundEnd", "VoidTraitor.Cargo.End", function() UI.CloseMenu() UI.SelectedItem = nil end)
-local elapsed = 0
+function UI.RequestOpen(item)
+    UI.SelectedItem, UI.ItemId, UI.AwaitingOpen = item, item.ID, true
+    local message = Networking.Start("VoidTraitor_CargoOpen")
+    message.WriteUInt16(UShort(item.ID))
+    Networking.Send(message)
+end
+
+Hook.Add("item.interact", "VoidTraitor.Cargo.Interact", function(item, character)
+    if UI.Disabled or not Networking.IsActive or character ~= Character.Controlled
+        or item.Prefab.Identifier ~= "vt_cargo_console" or not character.CanInteractWith(item)
+        or UI.SelectedItem == item then return end
+    if UI.SelectedItem ~= nil then UI.CloseMenu() end
+    UI.RequestOpen(item)
+end)
+
 Hook.Add("think", "VoidTraitor.Cargo.Selection", function(deltaTime)
     if UI.Disabled then return end
     if UI.MenuRoot ~= nil then
@@ -291,17 +305,10 @@ Hook.Add("think", "VoidTraitor.Cargo.Selection", function(deltaTime)
     end
     local item = character.SelectedItem
     if UI.SelectedItem ~= nil and (UI.AwaitingOpen or UI.MenuRoot ~= nil) then
-        if item ~= nil and item ~= UI.SelectedItem then
+        if (item ~= nil and item ~= UI.SelectedItem) or UI.SelectedItem.Removed
+            or not character.CanInteractWith(UI.SelectedItem) then
             UI.CloseMenu()
             UI.SelectedItem = nil
-        else
-            elapsed = elapsed + deltaTime
-            if UI.AwaitingOpen and elapsed >= 0.05 then
-                elapsed = 0
-                local message = Networking.Start("VoidTraitor_CargoOpen")
-                message.WriteUInt16(UShort(UI.SelectedItem.ID))
-                Networking.Send(message)
-            end
         end
         return
     end
@@ -309,8 +316,5 @@ Hook.Add("think", "VoidTraitor.Cargo.Selection", function(deltaTime)
         UI.SelectedItem = nil
         return
     end
-    UI.SelectedItem, UI.ItemId, UI.AwaitingOpen, elapsed = item, item.ID, true, 0
-    local message = Networking.Start("VoidTraitor_CargoOpen")
-    message.WriteUInt16(UShort(item.ID))
-    Networking.Send(message)
+    UI.RequestOpen(item)
 end)
