@@ -87,6 +87,8 @@ assert(info.OwnerName=='Next name' and #identityEvents==4)
 assert(console.Apply(client,item,{Tags={'vt_access_security','vt_access_reactor'},Job='custom_laboratory',Title='Laboratory technician',Revision=console.Revision(item)}),'custom preset was not accepted')
 assert(info.OwnerJobId.Value=='assistant' and target.HasTag('jobid:assistant') and target.HasTag('vt_access_reactor'),'custom preset changed the native job ID')
 assert(not console.Apply(client,item,{Tags={'vt_access_lab'},Job='custom_laboratory',Revision=console.Revision(item)}),'custom preset bypassed authorization')
+assert(console.Apply(client,item,{Tags={'vt_access_security','vt_access_reactor'},Job='engineer',Title='Engineer',Revision=console.Revision(item)}),'native engineer preset failed')
+assert(info.OwnerJobId.Value=='engineer' and target.HasTag('jobid:engineer') and not target.HasTag('jobid:assistant'),'explicit native JobId did not update the card correctly')
 assert(not console.Apply(client,item,payload({'vt_access_security'},'bad,tag','Job')),'tag injection accepted')
 client.Character.SelectedItem=nil
 assert(not console.Apply(client,item,payload({'vt_access_security'})),'remote edit accepted')
