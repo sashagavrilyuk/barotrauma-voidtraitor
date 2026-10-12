@@ -153,12 +153,12 @@ think(1)
 assert(#sent == messagesBefore, 'idle catalog still requests a full refresh')
 Character.Controlled.SelectedItem = nil
 think(0.15)
-assert(ui.MenuRoot == nil, 'cargo did not close like ID console on deselection')
-Character.Controlled.SelectedItem = item
-think(0.01)
-assert(sent[#sent].Id == 'VoidTraitor_CargoOpen', 'reselection did not request opening')
+assert(ui.MenuRoot ~= nil, 'native deselection closed an already open cargo menu')
 receivers.VoidTraitor_CargoSnapshot(reply)
-assert(ui.MenuRoot ~= nil, 'cargo did not reopen after reselection')
+assert(ui.MenuRoot ~= nil, 'snapshot was lost when native selection cleared')
+Character.Controlled.SelectedItem = item
+think(0.1)
+assert(ui.MenuRoot ~= nil, 'native reselection recreated the menu')
 buttons(ui.MenuRoot).close.OnClicked()
 assert(deselected==1 and not ui.MenuRoot and not Character.Controlled.SelectedItem,'close button did not deselect')
 local count=#sent
