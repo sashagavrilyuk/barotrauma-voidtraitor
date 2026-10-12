@@ -2,7 +2,7 @@
 <Items>
   <Item identifier="vt_cloning_scanner" name="" category="Machine" scale="0.5" interactdistance="180" tags="vt_cloning_scanner">
     <Sprite texture="Content/Items/Fabricators/FabricatorsAndDeconstructors.png" sourcerect="0,304,256,320" depth="0.8" />
-    <TriggerComponent radius="360" triggeredby="Character">
+    <TriggerComponent radius="360" triggeredby="Character" moveoutsidesub="true">
       <StatusEffect type="Always" target="Character" IsContainable="true" LockHands="true" setvalue="true">
         <Conditional IsDead="true" />
       </StatusEffect>
@@ -57,7 +57,7 @@
     </ConnectionPanel>
   </Item>
   <Item identifier="vt_biomass_reclaimer" name="" nameidentifier="deconstructor" variantof="deconstructor">
-    <TriggerComponent radius="360" triggeredby="Character">
+    <TriggerComponent radius="360" triggeredby="Character" moveoutsidesub="true">
       <StatusEffect type="Always" target="Character" IsContainable="true" LockHands="true" setvalue="true">
         <Conditional IsDead="true" />
       </StatusEffect>

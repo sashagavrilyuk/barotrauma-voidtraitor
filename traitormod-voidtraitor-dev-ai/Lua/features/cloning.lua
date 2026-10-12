@@ -8,6 +8,9 @@ local state
 
 function cloning.Start()
     state = { Consoles = {}, Pods = {}, Jobs = {}, Owners = {}, Reclaimed = {}, Pending = {} }
+    for _, client in pairs(Client.ClientList) do
+        if client.Character ~= nil then state.Owners[client.Character] = client end
+    end
     for item in Item.ItemList do
         if item.Prefab.Identifier == "vt_cloning_console" then state.Consoles[#state.Consoles + 1] = item end
         if item.Prefab.Identifier == "vt_cloning_pod" then state.Pods[item] = { Biomass = 0, Consumed = {} } end
