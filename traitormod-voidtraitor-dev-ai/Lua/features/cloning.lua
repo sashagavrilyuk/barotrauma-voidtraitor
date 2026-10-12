@@ -7,7 +7,7 @@ local contentElement = LuaUserData.CreateStatic("Barotrauma.ContentXElement")
 local state
 
 function cloning.Start()
-    state = { Consoles = {}, Pods = {}, Jobs = {}, Owners = {}, Reclaimed = {}, Pending = {} }
+    state = { Consoles = {}, Pods = {}, Jobs = {}, Owners = {}, Reclaimed = {}, Pending = {}, ReconnectCheck = 0 }
     for _, client in pairs(Client.ClientList) do
         if client.Character ~= nil then state.Owners[client.Character] = client end
     end
@@ -148,8 +148,11 @@ function cloning.Update(deltaTime)
             end
         end
     end
+    state.ReconnectCheck = state.ReconnectCheck - deltaTime
+    local checkOwners = state.ReconnectCheck <= 0
+    if checkOwners then state.ReconnectCheck = 1 end
     for pod, job in pairs(state.Jobs) do
-        if not job.Accepted and not job.Declined and job.Account ~= nil then
+        if checkOwners and not job.Accepted and not job.Declined and job.Account ~= nil then
             for _, owner in pairs(Client.ClientList) do
                 if owner.InGame ~= false and Traitormod.GetClientAccountKey(owner) == job.Account then
                     offerClone(owner, job)

@@ -68,6 +68,7 @@
     <ItemContainer>
       <Containable items="unidentifiedbiologicalmaterial" />
     </ItemContainer>
+    <ItemContainer maxstacksize="64" />
     <TriggerComponent radius="360" triggeredby="Character">
       <StatusEffect type="Always" target="Character" IsContainable="true" LockHands="true" setvalue="true">
         <Conditional IsDead="true" />
