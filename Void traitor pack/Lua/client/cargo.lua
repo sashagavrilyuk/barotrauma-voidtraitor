@@ -124,13 +124,13 @@ function UI.UpdateOrders()
         icon.CanBeFocused = false
         P.CreateProductIcon(icon, order.IconIdentifier)
         local status = snapshot.Text[order.Status] or snapshot.Text[string.gsub(order.Status, "^%l", string.upper)] or ""
-        local details = P.CreateText(row, 0.57, 1, nil,
+        local details = P.CreateText(row, 0.54, 1, nil,
             order.Name .. " ×" .. tostring(order.Quantity) .. "  ·  " .. UI.Money(order.Price) .. "  ·  " .. status .. "\n"
             .. order.Author .. "  ·  " .. order.Reason, GUI.Alignment.Left, 0.88)
         details.ToolTip = order.Name .. "\n" .. order.Author .. "\n" .. order.Reason
         local canManage = snapshot.CanManage and (order.Status == "pending" or order.Status == "accepted" or order.Status == "Pending" or order.Status == "Accepted")
-        local approve = P.CreateButton(row, 0.12, 0.65, nil, snapshot.Text.Approve, canManage and (order.Status == "pending" or order.Status == "Pending"))
-        local reject = P.CreateButton(row, 0.12, 0.65, nil, snapshot.Text.Reject, canManage)
+        local approve = P.CreateButton(row, 0.14, 0.65, nil, snapshot.Text.Approve, canManage and (order.Status == "pending" or order.Status == "Pending"))
+        local reject = P.CreateButton(row, 0.14, 0.65, nil, snapshot.Text.Reject, canManage)
         approve.OnClicked = function() UI.Send("approve", { OrderId = order.Id }) return true end
         reject.OnClicked = function() UI.Send("reject", { OrderId = order.Id }) return true end
     end
@@ -196,7 +196,7 @@ function UI.Show(itemId, snapshot)
     local close = P.CreateButton(heading, 0.12, 1, nil, snapshot.Text.Close)
     close.OnClicked = function() UI.CloseMenu(true) return true end
     UI.Budget = P.CreateText(layout, 1, 0.065, nil, "", GUI.Alignment.Left, 0.85)
-    local upper = P.CreateLayout(layout, 1, 0.59, nil, true)
+    local upper = P.CreateLayout(layout, 1, 0.58, nil, true)
     upper.RelativeSpacing = 0.015
     S.catalogHost = GUI.Frame(P.CreateRect(0.66, 1, upper), nil)
     S.catalogHost.Color = Color(0, 0, 0, 0)
