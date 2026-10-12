@@ -11,7 +11,7 @@ local function vector(x, y)
 end
 Vector2, UShort = vector, function(value) return value end
 local power = { HasPower = true }
-local body = { IsDead = true, Mass = 80, TeamID = 1, SpeciesName = { Value = 'human' }, Info = { Save = function() return { Name = 'Original', Job = 'engineer' } end } }
+local body = { IsDead = true, IsHuman = true, Mass = 80, TeamID = 1, SpeciesName = { Value = 'human' }, Info = { Save = function() return { Name = 'Original', Job = 'engineer' } end } }
 local material = { GetComponentString = function() return { Character = body } end }
 local scanner = { Prefab = { Identifier = 'vt_cloning_scanner' }, OwnInventory = { GetItemAt = function() return material end } }
 local biomass = {}
@@ -50,7 +50,7 @@ Entity = { Spawner = { AddEntityToRemoveQueue = function(item) removed[#removed 
     AddItemToSpawnQueue = function(prefab, inventory) spawned[#spawned + 1] = { Prefab = prefab, Inventory = inventory } end } }
 local role = { Character = body, Objectives = { { Character = body, Progress = 77 } }, Greet = function() return 'same role' end, IsAntagonist = true }
 local roles = { [body] = role }
-Traitormod = { Config = { Cloning = { Time = 30, BiomassYield = 0.4 } }, GhostRoles = { ExcludedCharacters = {} }, Pointshop = { GuiClients = { [owner] = true } },
+Traitormod = { Config = { Cloning = { Time = 30, HumanBiomassCost = 50, HumanBiomassYield = 28 } }, GhostRoles = { ExcludedCharacters = {} }, Pointshop = { GuiClients = { [owner] = true } },
     IsRoundFinalizing = function() return false end, GetText = function(key) return key end,
     FormatText = function(key, value) return key .. ' ' .. value end,
     GetClientAccountKey = function(client) return client.Account end,
@@ -143,18 +143,21 @@ local params = { c = operator, msg = { ReadBoolean = function() return true end 
 patches['Traitormod.Cloning.Terminal']({ Item = console }, params)
 assert(params.PreventExecution)
 local output = {}
-local deconstructor = { OutputContainer = { Inventory = output } }
-local victim = { Mass = 250, IsDead = true }
+local deconstructor = { Item = { Prefab = { Identifier = 'vt_biomass_reclaimer' } }, OutputContainer = { Inventory = output } }
+local victim = { Mass = 250, IsDead = true, IsHuman = false }
 local wrapped = { GetComponentString = function() return { Character = victim } end }
 local count = #spawned
+patches['Traitormod.Cloning.Biomass']({ Item = { Prefab = { Identifier = 'deconstructor' } }, OutputContainer = { Inventory = output } },
+    { type = ActionType.OnDeconstructed, targetItem = wrapped })
+assert(#spawned == count, 'ordinary deconstructor produced station biomass')
 patches['Traitormod.Cloning.Biomass'](deconstructor, { type = ActionType.OnDeconstructed, targetItem = wrapped })
-assert(#spawned - count == 100 and spawned[#spawned].Inventory == output, 'biomass not proportional to native corpse mass/output')
+assert(#spawned - count == 87 and spawned[#spawned].Inventory == output, 'biomass not proportional to native corpse mass/output')
 patches['Traitormod.Cloning.Biomass'](deconstructor, { type = ActionType.OnDeconstructed, targetItem = wrapped })
-assert(#spawned - count == 100, 'duplicate reclamation')
+assert(#spawned - count == 87, 'duplicate reclamation')
 victim.IsDead = false
 victim = { Mass = 250 }
 patches['Traitormod.Cloning.Biomass'](deconstructor, { type = ActionType.OnDeconstructed, targetItem = wrapped })
-assert(#spawned - count == 100, 'living body produced corpse biomass')
+assert(#spawned - count == 87, 'living body produced corpse biomass')
 hooks['Traitormod.Cloning.End']()
 assert(not cloning.Answer(owner, true))
 -- Real objective transfer must resume healing without resetting earned progress.

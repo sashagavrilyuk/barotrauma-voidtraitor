@@ -43,7 +43,7 @@ config.Cargo = {
     LargeAreaSize = 200,
     DeliveredHistorySeconds = 150,
 }
-config.Cloning = { Time = 30, BiomassYield = 0.4 }
+config.Cloning = { Time = 30, HumanBiomassCost = 50, HumanBiomassYield = 28 }
 
 ----- DISCORD -----
 
