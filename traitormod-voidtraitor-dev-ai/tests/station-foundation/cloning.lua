@@ -28,7 +28,7 @@ local connections = {
 local console = { Prefab = { Identifier = 'vt_cloning_console' }, Connections = iterable(connections) }
 console.GetComponentString = function(name) return name == 'Powered' and power or terminal end
 console.CanClientAccess = function() return true end
-local operator = { Account = 'doctor', Character = { SelectedItem = console } }
+local operator = { Account = 'doctor', Character = { SelectedItem = console, Inventory = {} } }
 local owner = { Account = 'patient', Character = body }
 owner.SetClientCharacter = function(clone) owner.Character = clone end
 Client = { ClientList = { operator, owner } }
@@ -221,18 +221,23 @@ assert(roles[body] == nil and roles[rejoined.Character].Name == 'Crew' and not r
 cloning.Update(28)
 for _ = 1, 4 do biomass[#biomass + 1] = { Prefab = { Identifier = 'vt_biomass' } } end
 cloning.Update(0)
+biomass[#biomass + 1] = { Prefab = { Identifier = 'vt_biomass' } }
 pod.CanClientAccess = function() return true end
 operator.Character.SelectedItem = pod
 local beforeWithdrawal = #spawned
 local withdraw = { c = operator, msg = { ReadBoolean = function() return true end } }
 patches['Traitormod.Cloning.Terminal']({ Item = pod }, withdraw)
-assert(withdraw.PreventExecution and #spawned - beforeWithdrawal >= 4,
+assert(withdraw.PreventExecution and #spawned - beforeWithdrawal >= 5,
     'withdrawal did not return stored biomass')
 for index = beforeWithdrawal + 1, #spawned do
     assert(spawned[index].Prefab == 'vt_biomass' and spawned[index].Inventory == operator.Character.Inventory,
         'biomass withdrawal sent the wrong item or destination')
 end
 local afterWithdrawal = #spawned
+operator.Character.SelectedItem = nil
+patches['Traitormod.Cloning.Terminal']({ Item = pod }, withdraw)
+assert(#spawned == afterWithdrawal, 'unselected user withdrew biomass')
+operator.Character.SelectedItem = pod
 patches['Traitormod.Cloning.Terminal']({ Item = pod }, withdraw)
 assert(#spawned == afterWithdrawal, 'repeated withdrawal duplicated biomass')
 operator.Character.SelectedItem = nil
