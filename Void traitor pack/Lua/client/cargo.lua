@@ -37,6 +37,7 @@ function UI.Send(action, payload)
 end
 
 function UI.CloseMenu(deselect)
+    if deselect then UI.ClosedItem = UI.SelectedItem end
     UI.Send("close")
     local character = Character.Controlled
     if deselect and character ~= nil and character.SelectedItem ~= nil and character.SelectedItem.ID == UI.ItemId then
@@ -258,6 +259,10 @@ Hook.Add("think", "VoidTraitor.Cargo.Selection", function(deltaTime)
     local character = Character.Controlled
     local item = character ~= nil and not character.IsDead and not character.IsIncapacitated and character.SelectedItem or nil
     if item == nil or item.Prefab.Identifier ~= "vt_cargo_console" then
+        if UI.ClosedItem ~= nil then
+            UI.ClosedItem, UI.SelectedItem = nil, nil
+            return
+        end
         if UI.SelectedItem ~= nil then
             unselectedTime = unselectedTime + deltaTime
             if unselectedTime >= 0.35 then
@@ -268,6 +273,7 @@ Hook.Add("think", "VoidTraitor.Cargo.Selection", function(deltaTime)
         return
     end
     unselectedTime = 0
+    if UI.ClosedItem == item then return end
     if UI.SelectedItem ~= item then
         if UI.SelectedItem ~= nil then UI.CloseMenu() end
         UI.SelectedItem, UI.ItemId, UI.AwaitingOpen, elapsed = item, item.ID, true, 0.05
