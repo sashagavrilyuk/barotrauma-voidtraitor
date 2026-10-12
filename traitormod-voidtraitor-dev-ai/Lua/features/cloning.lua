@@ -146,18 +146,22 @@ function cloning.Answer(client, accept)
     return true
 end
 
+local function storeBiomass(pod, data)
+    for item in pod.OwnInventory.AllItems do
+        if item.Prefab.Identifier == "vt_biomass" and not data.Consumed[item] then
+            data.Consumed[item] = true
+            data.Biomass = data.Biomass + 1
+            Entity.Spawner.AddEntityToRemoveQueue(item)
+        end
+    end
+end
+
 function cloning.Update(deltaTime)
     if state == nil or not Game.RoundStarted or Traitormod.IsRoundFinalizing() then return end
     for pod, data in pairs(state.Pods) do
         if not pod.Removed then
             for item in pairs(data.Consumed) do if item.Removed then data.Consumed[item] = nil end end
-            for item in pod.OwnInventory.AllItems do
-                if item.Prefab.Identifier == "vt_biomass" and not data.Consumed[item] then
-                    data.Consumed[item] = true
-                    data.Biomass = data.Biomass + 1
-                    Entity.Spawner.AddEntityToRemoveQueue(item)
-                end
-            end
+            storeBiomass(pod, data)
         end
     end
     for scanner, entry in pairs(state.Scanners) do
@@ -242,7 +246,9 @@ Hook.Patch("Traitormod.Cloning.Terminal", "Barotrauma.Items.Components.CustomInt
             or client == nil or client.Character == nil or client.Character.IsDead
             or client.Character.SelectedItem ~= item or not item.CanClientAccess(client) then return end
         local data = state.Pods[item]
-        if data == nil or data.Biomass == 0 then return end
+        if data == nil then return end
+        storeBiomass(item, data)
+        if data.Biomass == 0 then return end
         local amount = data.Biomass
         data.Biomass = 0
         for _ = 1, amount do
