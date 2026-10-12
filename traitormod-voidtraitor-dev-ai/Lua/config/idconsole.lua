@@ -17,20 +17,14 @@ config.Access = {
 }
 
 config.Presets = {
-    { Id = "assistant", Tags = { "vt_access_maintenance" } },
-    { Id = "mechanic", Tags = { "vt_access_maintenance", "vt_access_engineering", "vt_access_engineering_stock" } },
-    { Id = "engineer", Tags = { "vt_access_maintenance", "vt_access_engineering", "vt_access_reactor", "vt_access_engineering_stock" } },
-    { Id = "medicaldoctor", Tags = { "vt_access_maintenance", "vt_access_medical", "vt_access_medical_stock" } },
-    { Id = "surgeon", Tags = { "vt_access_maintenance", "vt_access_medical", "vt_access_medical_stock" } },
-    { Id = "securityofficer", Tags = { "vt_access_maintenance", "vt_access_security", "vt_access_armory" } },
-    { Id = "captain", AllAccess = true, Tags = {} },
+    { Id = "assistant", JobId = "assistant", Tags = { "vt_access_maintenance" } },
+    { Id = "mechanic", JobId = "mechanic", Tags = { "vt_access_maintenance", "vt_access_engineering", "vt_access_engineering_stock" } },
+    { Id = "engineer", JobId = "engineer", Tags = { "vt_access_maintenance", "vt_access_engineering", "vt_access_reactor", "vt_access_engineering_stock" } },
+    { Id = "medicaldoctor", JobId = "medicaldoctor", Tags = { "vt_access_maintenance", "vt_access_medical", "vt_access_medical_stock" } },
+    { Id = "surgeon", JobId = "surgeon", Tags = { "vt_access_maintenance", "vt_access_medical", "vt_access_medical_stock" } },
+    { Id = "securityofficer", JobId = "securityofficer", Tags = { "vt_access_maintenance", "vt_access_security", "vt_access_armory" } },
+    { Id = "captain", JobId = "captain", AllAccess = true, Tags = {} },
     { Id = "headpersonnel", Name = "IdConsoleHeadPersonnel", AllAccess = true, Tags = {} },
     { Id = "cargo", Name = "IdConsoleCargoJob", Tags = { "vt_access_maintenance", "vt_access_cargo" } },
 }
-for _, preset in ipairs(config.Presets) do
-    if preset.AllAccess then
-        for _, entry in ipairs(config.Access) do table.insert(preset.Tags, entry.Tag) end
-    end
-end
-
 return config
