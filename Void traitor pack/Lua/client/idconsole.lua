@@ -81,33 +81,35 @@ function UI.Show(itemId, snapshot)
     local identity = GUI.LayoutGroup(Common.CreateRect(1, 0.14, layout), false)
     identity.RelativeSpacing = 0.05
     local nameRow = GUI.LayoutGroup(Common.CreateRect(1, 0.48, identity), true)
-    GUI.TextBlock(Common.CreateRect(0.24, 1, nameRow), text.Name)
+    local nameLabel = GUI.TextBlock(Common.CreateRect(0.24, 1, nameRow), text.Name)
+    nameLabel.AutoScaleHorizontal = true
     local name = GUI.TextBox(Common.CreateRect(0.54, 1, nameRow), "")
     name.MaxTextLength = 64
     local saveName = GUI.Button(Common.CreateRect(0.21, 1, nameRow), text.Save)
     local jobRow = GUI.LayoutGroup(Common.CreateRect(1, 0.48, identity), true)
-    GUI.TextBlock(Common.CreateRect(0.24, 1, jobRow), text.Job)
+    local jobLabel = GUI.TextBlock(Common.CreateRect(0.24, 1, jobRow), text.Job)
+    jobLabel.AutoScaleHorizontal = true
     local job = GUI.TextBox(Common.CreateRect(0.54, 1, jobRow), "")
     job.MaxTextLength = 64
     local saveJob = GUI.Button(Common.CreateRect(0.21, 1, jobRow), text.Save)
     saveName.TextBlock.AutoScaleHorizontal = true
     saveJob.TextBlock.AutoScaleHorizontal = true
     local presetRow = GUI.LayoutGroup(Common.CreateRect(1, 0.065, layout), true)
-    GUI.TextBlock(Common.CreateRect(0.24, 1, presetRow), text.Preset)
+    local presetLabel = GUI.TextBlock(Common.CreateRect(0.24, 1, presetRow), text.Preset)
+    presetLabel.AutoScaleHorizontal = true
     local preset = GUI.DropDown(Common.CreateRect(0.54, 1, presetRow), text.Preset, 6)
     UI.Popups[#UI.Popups + 1] = preset
     for _, entry in ipairs(snapshot.Presets) do preset.AddItem(entry.Name, entry.Id) end
     local rights = GUI.ListBox(Common.CreateRect(1, 0.335, layout), false)
     local checks = {}
-    local columns = width < math.max(710, Common.SafeIntScale(710)) and 2 or 4
-    for index = 1, #snapshot.Access, columns do
+    for index = 1, #snapshot.Access, 2 do
         local row = GUI.LayoutGroup(Common.CreateRect(1, 0.16, rights.Content), true)
-        row.RectTransform.MinSize = Point(0, Common.SafeIntScale(30))
+        row.RectTransform.MinSize = Point(0, Common.SafeIntScale(38))
         row.RelativeSpacing = 0.02
-        for offset = 0, columns - 1 do
+        for offset = 0, 1 do
             local entry = snapshot.Access[index + offset]
             if entry ~= nil then
-                local checkbox = GUI.TickBox(Common.CreateRect((1 - 0.02 * (columns - 1)) / columns, 1, row), entry.Name)
+                local checkbox = GUI.TickBox(Common.CreateRect(0.49, 1, row), entry.Name)
                 checkbox.TextBlock.AutoScaleHorizontal = true
                 checks[entry.Tag] = checkbox
             end

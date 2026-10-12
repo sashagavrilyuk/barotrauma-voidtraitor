@@ -23,6 +23,7 @@ function P.AddProductButton(list, product)
     -- The entire vanilla-style list row is the details button. This restores
     -- the original large hit area and removes the visible text-only overlay.
     local row = P.CreateButton(list.Content, 1, P.ITEM_ROW_HEIGHT, GUI.Anchor.TopLeft, "", true, S.selectedProductId == product.Id, "ListBoxElement")
+    if P.PRODUCT_ROW_MIN_HEIGHT ~= nil then row.RectTransform.MinSize = Point(0, P.PRODUCT_ROW_MIN_HEIGHT) end
     if row.TextBlock ~= nil then row.TextBlock.Text = "" end
 
     local inner = P.CreateRowInner(row, 0.968, 0.90)
@@ -46,7 +47,7 @@ function P.AddProductButton(list, product)
     local nameText = string.upper(tostring(product.Name or ""))
     local name = P.CreateText(textGroup, 1, 0.66, GUI.Anchor.TopLeft, nameText, GUI.Alignment.Left, 0.88, enabled and Color(235, 235, 225, 255) or Color(130, 130, 130, 255), true)
     name.Font = GUI.Style.SubHeadingFont
-    name.AutoScaleHorizontal = false
+    name.AutoScaleHorizontal = P.PRODUCT_ROW_MIN_HEIGHT ~= nil
     name.AutoScaleVertical = false
 
     local cooldownRemaining = P.GetCooldownRemaining(product)

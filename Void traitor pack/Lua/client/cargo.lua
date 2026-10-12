@@ -10,6 +10,7 @@ _G.VoidTraitorCargoGuiState = UI
 local inputTypes = LuaUserData.CreateEnumTable("Barotrauma.InputType")
 
 local P = { Common = Common, State = {}, GUI_DRAW_ORDER = 120, PANEL_WIDTH = 1, CATEGORY_ROW_MIN_HEIGHT = Common.SafeIntScale(40), FILTER_BAR_HEIGHT = 0.18,
+    FILTER_BAR_MIN_HEIGHT = Common.SafeIntScale(48), PRODUCT_ROW_MIN_HEIGHT = Common.SafeIntScale(54),
     FILTER_LABEL_SCALE = 0.95, PRODUCT_LIST_HEIGHT = 0.68,
     ITEM_ROW_HEIGHT = 0.27, ITEM_ICON_PIXELS = Common.SafeIntScale(40), ACTION_BUTTON_PIXELS = Common.SafeIntScale(42), NET_INT32_MAX = 2147483647 }
 local S = P.State

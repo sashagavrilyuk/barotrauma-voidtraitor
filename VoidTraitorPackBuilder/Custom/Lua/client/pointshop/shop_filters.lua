@@ -87,6 +87,7 @@ end
 
 function P.BuildFilterBar(parent)
     local bar = P.CreateLayout(parent, 1, P.FILTER_BAR_HEIGHT or 0.082, nil, true, GUI.Anchor.TopLeft)
+    if P.FILTER_BAR_MIN_HEIGHT ~= nil then bar.RectTransform.MinSize = Point(0, P.FILTER_BAR_MIN_HEIGHT) end
     bar.RelativeSpacing = 0.018
 
     local filterGroup = P.CreateLayout(bar, 0.40, 1, nil, false, GUI.Anchor.TopLeft)
