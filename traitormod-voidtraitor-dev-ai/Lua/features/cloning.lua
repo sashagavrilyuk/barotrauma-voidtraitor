@@ -192,6 +192,7 @@ function cloning.Update(deltaTime)
                 job.Clone.CharacterHealth.Stun = 0
                 job.Clone.SelectedItem = nil
                 job.Clone.TeleportTo(pod.WorldPosition + Vector2(pod.Rect.Width / 2 + 60, 0))
+                if not job.Corpse.IsPlayer and job.Clone.AIController ~= nil then job.Clone.AIController.Enabled = true end
                 pod.GetComponentString("LightComponent").IsOn = false
                 state.Jobs[pod] = nil
                 for client, pending in pairs(state.Pending) do if pending == job then state.Pending[client] = nil end end

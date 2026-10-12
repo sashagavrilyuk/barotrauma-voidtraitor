@@ -6,13 +6,21 @@
       <StatusEffect type="Always" target="Character" IsContainable="true" LockHands="true" setvalue="true">
         <Conditional IsDead="true" />
       </StatusEffect>
+      <StatusEffect type="Always" target="Character" IsContainable="false" setvalue="true">
+        <Conditional IsDead="false" />
+      </StatusEffect>
     </TriggerComponent>
     <ItemContainer capacity="1" maxstacksize="1" canbeselected="false" hideitems="true" drawinventory="false">
       <Containable items="unidentifiedbiologicalmaterial" />
     </ItemContainer>
     <Controller msg="ItemMsgPutInside" kickoutcharactermsg="ItemMsgTakeOut" putothercharactermsg="ItemMsgPutInside" canbeselectedbycharacters="false" hideallitemcomponenthuds="true" allowputtinginothercharacters="true" selectingkickscharacterout="true" spawnitemonselected="unidentifiedbiologicalmaterial" allowingameediting="false" userpos="0,0" canbeselected="true" selectkey="Use" drawuserbehind="true" forceusertostayattached="true">
-      <limbposition limb="Head" position="0,35" />
-      <limbposition limb="Torso" position="0,0" />
+      <limbposition limb="Head" position="128,40" />
+      <limbposition limb="Torso" position="128,-30" />
+      <limbposition limb="Waist" position="128,-95" />
+      <limbposition limb="LeftHand" position="106,-85" />
+      <limbposition limb="RightHand" position="150,-85" />
+      <limbposition limb="LeftFoot" position="116,-230" />
+      <limbposition limb="RightFoot" position="140,-230" />
       <StatusEffect type="OnActive" targettype="Character" delay="0.1" stackable="true" indetectable="true" DisableFocusingOnEntities="true" invisibletimer="0.1" IgnoreMeleeWeapons="true" PressureProtection="6500.0" setvalue="true" />
     </Controller>
     <CustomInterface canbeselected="true" msg="ItemMsgInteractSelect" allowuioverlap="true">
