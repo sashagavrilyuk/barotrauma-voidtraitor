@@ -432,11 +432,13 @@ Traitormod.GetMasterData = function (name)
     return Traitormod.ClientData[name]
 end
 
-Traitormod.IsSecretEnding = function ()
+Traitormod.IsRoundFinalizing = function ()
     return Traitormod.SelectedGamemode ~= nil
-        and (Traitormod.SelectedGamemode.Name == "Secret" or Traitormod.SelectedGamemode.Name == "Station")
+        and Traitormod.SelectedGamemode.UsesSecretRules == true
         and Traitormod.SelectedGamemode.Ending == true
 end
+
+Traitormod.IsSecretEnding = Traitormod.IsRoundFinalizing
 
 Traitormod.SetData = function (client, name, amount)
     local accountKey = getClientDataKey(client)
@@ -722,7 +724,7 @@ Traitormod.GiveExperience = function (character, amount, isMissionXP)
 end
 
 Traitormod.AwardPoints = function (client, amount, isMissionXP)
-    if Traitormod.IsSecretEnding() then return 0 end
+    if Traitormod.IsRoundFinalizing() then return 0 end
     if not Traitormod.Config.TestMode then
         Traitormod.AddData(client, "Points", amount)
         Traitormod.Stats.AddClientStat("PointsGained", client, amount)
@@ -737,7 +739,7 @@ Traitormod.AwardPoints = function (client, amount, isMissionXP)
 end
 
 Traitormod.AdjustLives = function (client, amount)
-    if Traitormod.IsSecretEnding() then return end
+    if Traitormod.IsRoundFinalizing() then return end
     if not amount or amount == 0 then
         return
     end

@@ -16,6 +16,7 @@ assert(loadfile(path .. "ghostroles.lua"))(language)
 
 -- PointShop: серверные товары, категории, проверки и fallback
 assert(loadfile(path .. "pointshop.lua"))(language)
+assert(loadfile(path .. "idconsole.lua"))(language)
 
 -- Игровые режимы, итог раунда и голосования
 assert(loadfile(path .. "gamemodes.lua"))(language)

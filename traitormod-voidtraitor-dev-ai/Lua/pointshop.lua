@@ -386,7 +386,7 @@ ps.CanClientSeeProduct = function(client, product)
         return false
     end
 
-    if Traitormod.SelectedGamemode ~= nil and Traitormod.SelectedGamemode.Name == "Station" then
+    if Traitormod.SelectedGamemode ~= nil and Traitormod.SelectedGamemode.RestrictShopToAccessibleCategories then
         local allowed = false
         for _, category in ipairs(ps.ActiveCategories) do
             if category.Identifier == product.CategoryIdentifier and ps.CanClientAccessCategory(client, category) then
@@ -418,7 +418,7 @@ end
 ---@param client Barotrauma.Networking.Client
 ---@return boolean
 ps.CanUseShop = function(client)
-    if Traitormod.SelectedGamemode == nil or Traitormod.SelectedGamemode.Name ~= "Station" then return true end
+    if Traitormod.SelectedGamemode == nil or not Traitormod.SelectedGamemode.RestrictShopToAccessibleCategories then return true end
     if client.Character == nil or client.Character.IsDead or not client.Character.IsHuman then return false end
     for _, category in ipairs(ps.ActiveCategories) do
         if ps.CanClientAccessCategory(client, category) then return true end
@@ -590,7 +590,7 @@ ps.BuyProduct = function(client, product)
     local points = nil
     local previousTimeout = nil
     local accountKey = Traitormod.GetClientAccountKey(client)
-    local secretEnding = Traitormod.IsSecretEnding()
+    local roundFinalizing = Traitormod.IsRoundFinalizing()
 
     if not ps.CanClientSeeProduct(client, product) then
         return Traitormod.Language.PointshopCannotBeUsed
@@ -663,16 +663,16 @@ ps.BuyProduct = function(client, product)
             return ps.ProductBuyFailureReason.NoStock
         end
 
-        if not secretEnding then
+        if not roundFinalizing then
             Traitormod.SetData(client, "Points", points - price)
         end
     end
 
-    local paidPrice = secretEnding and 0 or price
+    local paidPrice = roundFinalizing and 0 or price
     local success, result = ps.ActivateProduct(client, product, paidPrice, itemsToSpawn)
     if success == false then
         if not Traitormod.Config.TestMode then
-            if not secretEnding then
+            if not roundFinalizing then
                 Traitormod.SetData(client, "Points", points)
             end
             ps.UseProductLimit(client, product, -1)

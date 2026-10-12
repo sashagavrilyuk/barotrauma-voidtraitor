@@ -45,7 +45,7 @@ rm.AddObjective = function(objective)
 end
 
 rm.CheckObjectives = function(endRound, silentFailures)
-    if Traitormod.IsSecretEnding() then return end
+    if Traitormod.IsRoundFinalizing() then return end
 
     for character, role in pairs(rm.RoundRoles) do
         if not character.IsDead and role.Objectives then
@@ -220,7 +220,7 @@ rm.IsSameRole = function (character1, character2)
 end
 
 rm.CallObjectiveFunction = function (functionName, ...)
-    if Traitormod.IsSecretEnding() then return end
+    if Traitormod.IsRoundFinalizing() then return end
 
     for character, role in pairs(rm.RoundRoles) do
         if not character.IsDead and role.Objectives then

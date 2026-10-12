@@ -438,7 +438,7 @@ local function applyRoundSkillGain()
         return
     end
 
-    if config.SecretOnly and (Traitormod.SelectedGamemode == nil or (Traitormod.SelectedGamemode.Name ~= "Secret" and Traitormod.SelectedGamemode.Name ~= "Station")) then
+    if config.SecretOnly and (Traitormod.SelectedGamemode == nil or not Traitormod.SelectedGamemode.UsesSecretRules) then
         return
     end
 
@@ -630,7 +630,7 @@ Hook.Add("missionsEnded", "Traitormod.MissionsEnded", function(missions)
     if Traitormod.SelectedGamemode then
         endMessage = Traitormod.SelectedGamemode:RoundSummary()
 
-        if (Traitormod.SelectedGamemode.Name ~= "Secret" and Traitormod.SelectedGamemode.Name ~= "Station") or Traitormod.SelectedGamemode.FinalSummary == nil then
+        if not Traitormod.SelectedGamemode.UsesSecretRules or Traitormod.SelectedGamemode.FinalSummary == nil then
             Traitormod.SendMessageEveryone(Traitormod.HighlightClientNames(endMessage, Color.Red))
         end
     end
@@ -769,7 +769,7 @@ Hook.Add("think", "Traitormod.Think", function(deltaTime)
         return
     end
 
-    if not Traitormod.IsSecretEnding() then
+    if not Traitormod.IsRoundFinalizing() then
         Traitormod.RoundTime = Traitormod.RoundTime + deltaTime
     end
 
@@ -789,7 +789,7 @@ Hook.Add("think", "Traitormod.Think", function(deltaTime)
         Traitormod.SelectedGamemode:Think(gamemodeDeltaTime)
     end
 
-    if Traitormod.IsSecretEnding() then return end
+    if Traitormod.IsRoundFinalizing() then return end
 
     -- give points/xp on the configured experience timer
     if pointsGiveTimer and Timer.GetTime() > pointsGiveTimer then
@@ -825,7 +825,7 @@ end)
 -- when a character gains skill level, add PointsToBeGiven according to config
 Traitormod.PointsToBeGiven = {}
 Hook.HookMethod("Barotrauma.CharacterInfo", "IncreaseSkillLevel", function(instance, ptable)
-    if Traitormod.IsSecretEnding() then return end
+    if Traitormod.IsRoundFinalizing() then return end
     if not ptable or ptable.gainedFromAbility or instance.Character == nil or instance.Character.IsDead then return end
 
     Traitormod.OnTrackedSkillIncrease(instance.Character, tostring(ptable.skillIdentifier), ptable.increase, ptable.gainedFromAbility)
@@ -1081,7 +1081,7 @@ Traitormod.SpawnPointItem = function(inventory, amount, text, onSpawn, onUsed)
 end
 
 Traitormod.DropPointItem = function(client, amount)
-    if Traitormod.IsSecretEnding() or client == nil or client.Character == nil or client.Character.IsDead then
+    if Traitormod.IsRoundFinalizing() or client == nil or client.Character == nil or client.Character.IsDead then
         return false
     end
 
@@ -1174,6 +1174,7 @@ Traitormod.CameraTeleport = dofile(Traitormod.Path .. "/Lua/features/cameratelep
 Traitormod.Stats = dofile(Traitormod.Path .. "/Lua/statistics.lua")
 dofile(Traitormod.Path .. "/Lua/features/respawnshuttle.lua")
 dofile(Traitormod.Path .. "/Lua/features/welcome.lua")
+dofile(Traitormod.Path .. "/Lua/features/idconsole.lua")
 dofile(Traitormod.Path .. "/Lua/features/deathlogbook.lua")
 dofile(Traitormod.Path .. "/Lua/features/killfeed.lua")
 dofile(Traitormod.Path .. "/Lua/features/serverlogs.lua")

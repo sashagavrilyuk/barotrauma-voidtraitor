@@ -6,6 +6,7 @@ LuaUserData.RegisterType("System.Collections.Generic.Queue`1[[Barotrauma.Entity]
 gm.Name = "Station"
 gm.RequiredGamemode = "mission"
 gm.EndOnComplete = false
+gm.RestrictShopToAccessibleCategories = true
 
 function gm:PreStart()
     Traitormod.Gamemodes.Gamemode.PreStart(self)
@@ -18,6 +19,11 @@ function gm:Start()
     Submarine.MainSub.SubBody.Body.BodyType = bodyTypes.Static
     self.ShopAvailability = {}
     secret.Start(self)
+    for character in Character.CharacterList do
+        if character.IsHuman and not character.IsDead and character.Submarine == Submarine.MainSub then
+            Traitormod.IdConsole.InitializeCard(character)
+        end
+    end
 end
 
 function gm:Think()
@@ -54,15 +60,11 @@ function gm:End()
     Game.ServerSettings.ServerDetailsChanged = true
 end
 
-Hook.Patch("Traitormod.Station.EndGame.Before", "Barotrauma.Networking.GameServer", "EndGame", function(instance, parameters)
-    local selected = Traitormod.SelectedGamemode
-    if selected == nil or selected.Name ~= "Station" or selected.AllowRealEndGame then return end
-    if selected.Ending then
-        instance.EndRoundTimer = 0.1
-    else
-        selected:BeginEnding("manual", parameters["transitionType"], false)
-    end
-    parameters.PreventExecution = true
-end, Hook.HookMethodType.Before)
+Hook.Add("character.giveJobItems", "Traitormod.Station.IdCardAccess", function(character)
+    if Traitormod.SelectedGamemode == nil or Traitormod.SelectedGamemode.Name ~= "Station" then return end
+    Timer.Wait(function()
+        if not character.Removed and character.Submarine == Submarine.MainSub then Traitormod.IdConsole.InitializeCard(character) end
+    end, 0)
+end)
 
 return gm
