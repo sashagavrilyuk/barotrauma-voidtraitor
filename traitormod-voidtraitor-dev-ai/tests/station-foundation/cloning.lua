@@ -63,7 +63,7 @@ Traitormod = { Config = { Cloning = { Time = 30, BiomassYield = 0.4 } }, GhostRo
     UpdateVanillaTraitor = function(client, enabled) client.Character.IsTraitor = enabled end,
     MidRoundSpawn = { SetSpawnedClient = function(client, char) client.SpawnedBody = char end },
 }
-local cloning = dofile(modpath .. '/Lua/features/cloning.lua')
+local cloning = dofile(modpath .. '/Lua/gamemodes/station_cloning.lua')
 assert(not cloning.Begin(operator, console), 'cloner active outside Station lifecycle')
 cloning.Start()
 hooks['Traitormod.Cloning.Owner'](body)
