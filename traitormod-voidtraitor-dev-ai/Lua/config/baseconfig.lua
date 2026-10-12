@@ -617,7 +617,10 @@ config.PointShopConfig = {
     DeathTimeoutTime = 60,
     DeathSpawnRefundAtEndRound = true,
     ItemCategories = {
-        dofile(Traitormod.Path .. "/Lua/config/pointshop/biomass.lua"),
+        { Identifier = "biomass", IconIdentifier = "vt_biomass", Products = {
+            { Identifier = "vt_biomass", Price = 100, Limit = 20,
+                Items = { "vt_biomass", "vt_biomass", "vt_biomass", "vt_biomass", "vt_biomass", "vt_biomass", "vt_biomass", "vt_biomass", "vt_biomass", "vt_biomass" } },
+        } },
         dofile(Traitormod.Path .. "/Lua/config/pointshop/security.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/maintenance.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/materials.lua"),
