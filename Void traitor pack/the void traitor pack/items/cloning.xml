@@ -2,7 +2,7 @@
 <Items>
   <Item identifier="vt_cloning_scanner" name="" category="Machine" scale="0.5" interactdistance="180" tags="vt_cloning_scanner">
     <Sprite texture="Content/Items/Fabricators/FabricatorsAndDeconstructors.png" sourcerect="0,304,256,320" depth="0.8" />
-    <TriggerComponent radius="360" triggeredby="Character" moveoutsidesub="true">
+    <TriggerComponent radius="360" triggeredby="Character">
       <StatusEffect type="Always" target="Character" IsContainable="true" LockHands="true" setvalue="true">
         <Conditional IsDead="true" />
       </StatusEffect>
@@ -11,8 +11,16 @@
       <Containable items="unidentifiedbiologicalmaterial" />
     </ItemContainer>
     <Controller msg="ItemMsgPutInside" kickoutcharactermsg="ItemMsgTakeOut" putothercharactermsg="ItemMsgPutInside" canbeselectedbycharacters="false" hideallitemcomponenthuds="true" allowputtinginothercharacters="true" selectingkickscharacterout="true" spawnitemonselected="unidentifiedbiologicalmaterial" allowingameediting="false" userpos="0,0" canbeselected="true" selectkey="Use" drawuserbehind="true" forceusertostayattached="true">
-      <limbposition limb="Head" position="0,35" />
-      <limbposition limb="Torso" position="0,0" />
+      <limbposition limb="Head" position="74,-40" />
+      <limbposition limb="Torso" position="74,-40" />
+      <limbposition limb="Waist" position="74,-40" />
+      <limbposition limb="LeftHand" position="74,-40" />
+      <limbposition limb="RightHand" position="74,-40" />
+      <limbposition limb="RightLeg" position="74,-40" />
+      <limbposition limb="LeftLeg" position="74,-40" />
+      <limbposition limb="RightFoot" position="74,-40" />
+      <limbposition limb="LeftFoot" position="74,-40" />
+      <StatusEffect type="OnActive" targettype="Character" delay="0.1" stackable="true" indetectable="true" DisableFocusingOnEntities="true" invisibletimer="0.1" IgnoreMeleeWeapons="true" PressureProtection="6500.0" setvalue="true" />
     </Controller>
     <ConnectionPanel canbeselected="true" selectkey="Action" msg="ItemMsgRewireScrewdriver">
       <GuiFrame relativesize="0.2,0.25" anchor="Center" style="ConnectionPanel" />
@@ -45,7 +53,7 @@
       <GuiFrame relativesize="0.32,0.22" minsize="260,120" maxsize="440,180" anchor="Center" relativeoffset="0,-0.08" style="ItemUI" />
     </Terminal>
     <CustomInterface canbeselected="true" msg="ItemMsgInteractSelect" allowuioverlap="true">
-      <GuiFrame relativesize="0.32,0.08" minsize="260,40" maxsize="440,65" anchor="Center" relativeoffset="0,0.09" style="ItemUI" />
+      <GuiFrame relativesize="0.32,0.16" minsize="260,80" maxsize="440,110" anchor="Center" relativeoffset="0,0.2" style="ItemUI" />
       <Button text="CloneStart" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
     </CustomInterface>
     <ConnectionPanel canbeselected="true" selectkey="Action" msg="ItemMsgRewireScrewdriver">
@@ -57,7 +65,10 @@
     </ConnectionPanel>
   </Item>
   <Item identifier="vt_biomass_reclaimer" name="" nameidentifier="deconstructor" variantof="deconstructor">
-    <TriggerComponent radius="360" triggeredby="Character" moveoutsidesub="true">
+    <ItemContainer>
+      <Containable items="unidentifiedbiologicalmaterial" />
+    </ItemContainer>
+    <TriggerComponent radius="360" triggeredby="Character">
       <StatusEffect type="Always" target="Character" IsContainable="true" LockHands="true" setvalue="true">
         <Conditional IsDead="true" />
       </StatusEffect>
