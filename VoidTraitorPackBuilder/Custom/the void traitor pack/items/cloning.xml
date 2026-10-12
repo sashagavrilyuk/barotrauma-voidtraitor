@@ -22,6 +22,10 @@
       <limbposition limb="LeftFoot" position="74,-40" />
       <StatusEffect type="OnActive" targettype="Character" delay="0.1" stackable="true" indetectable="true" DisableFocusingOnEntities="true" invisibletimer="0.1" IgnoreMeleeWeapons="true" PressureProtection="6500.0" setvalue="true" />
     </Controller>
+    <CustomInterface canbeselected="true" msg="ItemMsgInteractSelect" allowuioverlap="true">
+      <GuiFrame relativesize="0.22,0.14" minsize="200,65" maxsize="300,95" anchor="Center" relativeoffset="0,0.18" style="ItemUI" />
+      <Button text="CloneEject" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
+    </CustomInterface>
     <ConnectionPanel canbeselected="true" selectkey="Action" msg="ItemMsgRewireScrewdriver">
       <GuiFrame relativesize="0.2,0.25" anchor="Center" style="ConnectionPanel" />
       <RequiredItem items="screwdriver" type="Equipped" />

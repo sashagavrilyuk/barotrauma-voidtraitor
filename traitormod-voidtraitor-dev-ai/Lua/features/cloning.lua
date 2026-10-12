@@ -200,10 +200,24 @@ Hook.Add("characterDeath", "Traitormod.Cloning.Owner", function(character)
     if client ~= nil then state.Owners[character] = client end
 end)
 Hook.Patch("Traitormod.Cloning.Terminal", "Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, parameters)
-    if instance.Item.Prefab.Identifier ~= "vt_cloning_console" then return end
-    local clone = parameters["msg"].ReadBoolean()
+    local item = instance.Item
+    local identifier = item.Prefab.Identifier
+    if identifier ~= "vt_cloning_console" and identifier ~= "vt_cloning_scanner" then return end
+    local pressed = parameters["msg"].ReadBoolean()
     parameters.PreventExecution = true
-    if clone then cloning.Begin(parameters["c"], instance.Item) end
+    if identifier == "vt_cloning_console" then
+        if pressed then cloning.Begin(parameters["c"], item) end
+    elseif pressed and state ~= nil then
+        local client = parameters["c"]
+        if client ~= nil and client.Character ~= nil and not client.Character.IsDead
+            and client.Character.SelectedItem == item and item.CanClientAccess(client) then
+            local controller = item.GetComponentString("Controller")
+            if controller.User ~= nil then
+                client.Character.DeselectCharacter()
+                controller.Select(client.Character)
+            end
+        end
+    end
 end, Hook.HookMethodType.Before)
 Hook.Patch("Traitormod.Cloning.Biomass", "Barotrauma.Items.Components.Deconstructor", "ApplyDeconstructionStatusEffects", function(instance, parameters)
     if state == nil or instance.Item.Prefab.Identifier ~= "vt_biomass_reclaimer" or parameters["type"] ~= ActionType.OnDeconstructed then return end
