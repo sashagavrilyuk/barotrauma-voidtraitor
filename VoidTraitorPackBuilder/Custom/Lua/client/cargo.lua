@@ -11,7 +11,7 @@ local inputTypes = LuaUserData.CreateEnumTable("Barotrauma.InputType")
 
 local P = { Common = Common, State = {}, GUI_DRAW_ORDER = 120, PANEL_WIDTH = 1, CATEGORY_ROW_MIN_HEIGHT = 40, FILTER_BAR_HEIGHT = 0.18,
     FILTER_LABEL_SCALE = 0.95, PRODUCT_LIST_HEIGHT = 0.68,
-    ITEM_ROW_HEIGHT = 0.225, ITEM_ICON_PIXELS = 42, ACTION_BUTTON_PIXELS = 42, NET_INT32_MAX = 2147483647 }
+    ITEM_ROW_HEIGHT = 0.27, ITEM_ICON_PIXELS = 40, ACTION_BUTTON_PIXELS = 42, NET_INT32_MAX = 2147483647 }
 local S = P.State
 S.products, S.productById, S.cart, S.expandedFolders = {}, {}, {}, {}
 S.cooldownTextBlocks, S.classLimitTextBlocks = { shop = {}, cart = {} }, { shop = {}, cart = {} }
