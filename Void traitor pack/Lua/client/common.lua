@@ -118,7 +118,7 @@ function Common.RemoveGuiComponent(component)
     if component.RectTransform ~= nil then component.RectTransform.Parent = nil end
 end
 
-function Common.AddResizeHandles(panel, topTargets, bottomTargets)
+function Common.AddResizeHandles(panel, topTargets, bottomTargets, sideTargets)
     local topHandle = GUI.Frame(Common.CreateRect(0.50, 0.024, panel, GUI.Anchor.TopCenter), nil)
     topHandle.Color = Color(0, 0, 0, 0)
     topHandle.CanBeFocused = true
@@ -132,9 +132,21 @@ function Common.AddResizeHandles(panel, topTargets, bottomTargets)
     local bottomIndicator = GUI.Image(Common.CreateRect(0.24, 0.80, bottomHandle, GUI.Anchor.Center), "GUIDragIndicatorHorizontal")
     bottomIndicator.CanBeFocused = false
     table.insert(bottomTargets, bottomHandle)
+
+    if sideTargets ~= nil then
+        for _, side in ipairs({ "left", "right" }) do
+            local anchor = side == "left" and GUI.Anchor.CenterLeft or GUI.Anchor.CenterRight
+            local handle = GUI.Frame(Common.CreateRect(0.025, 0.38, panel, anchor), nil)
+            handle.Color = Color(0, 0, 0, 0)
+            handle.CanBeFocused = true
+            local indicator = GUI.Image(Common.CreateRect(0.70, 0.35, handle, GUI.Anchor.Center), "GUIDragIndicator")
+            indicator.CanBeFocused = false
+            table.insert(sideTargets[side], handle)
+        end
+    end
 end
 
-function Common.GetResizeEdge(topTargets, bottomTargets)
+function Common.GetResizeEdge(topTargets, bottomTargets, sideTargets)
     local mousePosition = PlayerInput.MousePosition
     for _, target in ipairs(topTargets) do
         if target ~= nil and target.Rect.Contains(mousePosition) then return "top" end
@@ -142,10 +154,17 @@ function Common.GetResizeEdge(topTargets, bottomTargets)
     for _, target in ipairs(bottomTargets) do
         if target ~= nil and target.Rect.Contains(mousePosition) then return "bottom" end
     end
+    if sideTargets ~= nil then
+        for _, side in ipairs({ "left", "right" }) do
+            for _, target in ipairs(sideTargets[side]) do
+                if target.Rect.Contains(mousePosition) then return side end
+            end
+        end
+    end
     return nil
 end
 
-function Common.UpdateMenuInteraction(currentMenu, resizeState, topTargets, bottomTargets, minimumHeightPixels, list, menuX, menuY, menuHeight)
+function Common.UpdateMenuInteraction(currentMenu, resizeState, topTargets, bottomTargets, minimumHeightPixels, list, menuX, menuY, menuHeight, sideTargets)
     if currentMenu == nil then
         return nil, menuX, menuY, menuHeight
     end
@@ -154,16 +173,21 @@ function Common.UpdateMenuInteraction(currentMenu, resizeState, topTargets, bott
     local mouseHeld = PlayerInput.PrimaryMouseButtonHeld()
 
     if mouseDown and resizeState == nil then
-        local edge = Common.GetResizeEdge(topTargets, bottomTargets)
+        local edge = Common.GetResizeEdge(topTargets, bottomTargets, sideTargets)
         if edge ~= nil then
             local rectTransform = currentMenu.RectTransform
             resizeState = {
                 Edge = edge,
+                MouseX = PlayerInput.MousePosition.X,
                 MouseY = PlayerInput.MousePosition.Y,
+                Left = currentMenu.Rect.X,
+                Right = currentMenu.Rect.Right,
+                Width = currentMenu.Rect.Width,
                 Top = currentMenu.Rect.Y,
                 Bottom = currentMenu.Rect.Bottom,
                 Height = currentMenu.Rect.Height,
                 NonScaledWidth = rectTransform.NonScaledSize.X,
+                NonScaledHeight = rectTransform.NonScaledSize.Y,
                 ScreenOffsetX = rectTransform.ScreenSpaceOffset.X,
                 ScreenOffsetY = rectTransform.ScreenSpaceOffset.Y,
             }
@@ -177,27 +201,42 @@ function Common.UpdateMenuInteraction(currentMenu, resizeState, topTargets, bott
         return nil, menuX, menuY, menuHeight
     end
 
-    local _, screenHeight = Common.GetScreenSize()
+    local screenWidth, screenHeight = Common.GetScreenSize()
     local margin = Common.SafeIntScale(10)
     local minimumHeight = Common.SafeIntScale(minimumHeightPixels)
+    local minimumWidth = sideTargets ~= nil and math.min(Common.SafeIntScale(sideTargets.minimumWidth), screenWidth - 2 * margin) or 0
     local dy = PlayerInput.MousePosition.Y - resizeState.MouseY
-    local newHeight
-    local newTop = resizeState.Top
+    local dx = PlayerInput.MousePosition.X - resizeState.MouseX
+    local newHeight, newWidth = resizeState.Height, resizeState.Width
+    local newTop, newLeft = resizeState.Top, resizeState.Left
 
     if resizeState.Edge == "top" then
         newTop = Common.Clamp(resizeState.Top + dy, margin, resizeState.Bottom - minimumHeight)
         newHeight = resizeState.Bottom - newTop
-    else
+    elseif resizeState.Edge == "bottom" then
         local maximumHeight = math.max(minimumHeight, screenHeight - resizeState.Top - margin)
         newHeight = Common.Clamp(resizeState.Height + dy, minimumHeight, maximumHeight)
+    elseif resizeState.Edge == "left" then
+        newLeft = Common.Clamp(resizeState.Left + dx, margin, resizeState.Right - minimumWidth)
+        newWidth = resizeState.Right - newLeft
+    elseif resizeState.Edge == "right" then
+        newWidth = Common.Clamp(resizeState.Width + dx, minimumWidth, screenWidth - resizeState.Left - margin)
     end
 
     local rectTransform = currentMenu.RectTransform
-    local scaleY = rectTransform.Scale.Y
-    local nonScaledHeight = math.max(1, math.floor(newHeight / scaleY + 0.5))
-    rectTransform:Resize(Point(resizeState.NonScaledWidth, nonScaledHeight), true)
+    local nonScaledWidth = (resizeState.Edge == "left" or resizeState.Edge == "right")
+        and math.max(1, math.floor(newWidth / rectTransform.Scale.X + 0.5)) or resizeState.NonScaledWidth
+    local nonScaledHeight = (resizeState.Edge == "top" or resizeState.Edge == "bottom")
+        and math.max(1, math.floor(newHeight / rectTransform.Scale.Y + 0.5)) or resizeState.NonScaledHeight
+    rectTransform:Resize(Point(nonScaledWidth, nonScaledHeight), true)
 
-    if resizeState.Edge == "top" then
+    if sideTargets ~= nil then
+        local offset = rectTransform.ScreenSpaceOffset
+        rectTransform.ScreenSpaceOffset = Point(
+            offset.X + newLeft - currentMenu.Rect.X,
+            offset.Y + newTop - currentMenu.Rect.Y
+        )
+    elseif resizeState.Edge == "top" then
         rectTransform.ScreenSpaceOffset = Point(
             resizeState.ScreenOffsetX,
             resizeState.ScreenOffsetY + (newTop - resizeState.Top)
