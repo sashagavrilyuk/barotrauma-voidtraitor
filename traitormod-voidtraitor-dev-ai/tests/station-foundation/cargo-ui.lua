@@ -32,6 +32,7 @@ end
 GUI={RectTransform=rect,Anchor={Center=1,TopLeft=2,TopCenter=3,BottomLeft=4,CenterLeft=5,CenterRight=6,TopRight=7,BottomCenter=8},
     Pivot={TopLeft=1},Alignment={Left=1,Center=2,Right=3,BottomLeft=4,CenterLeft=5},Style={SubHeadingFont='sub',LargeFont='large',Apply=function() end}}
 GUI.Frame=component
+GUI.DragHandle=component
 GUI.LayoutGroup=component
 GUI.TextBlock=component
 GUI.TextBox=component
@@ -62,7 +63,7 @@ local common={Language={Pointshop={Categories='categories',BuyTab='products',Tot
     CreateText=function(p,w,h,anchor,text) return component(rect(Vector2(w,h),p and p.RectTransform),text) end,
     RemoveGuiComponent=function(c) if c then c.Visible=false end end,InstallPausePatch=function() end,
     GetPrefabIconData=function() return 'sprite',Color(1,1,1) end,GetScreenSize=function() return 1600,900 end,
-    SafeIntScale=function(value) return value end}
+    SafeIntScale=function(value) return value end, AddResizeHandles=function() end, UpdateMenuInteraction=function() return nil end}
 VoidTraitorPointshopGuiState={Marker='ordinary shop'}
 local ordinary=VoidTraitorPointshopGuiState
 assert(baseLoad(packpath..'/Lua/client/cargo.lua'))(packpath,common)
@@ -70,7 +71,8 @@ local ui=VoidTraitorCargoGuiState
 local think=hooks['VoidTraitor.Cargo.Selection']
 local deselected=0
 local item={ID=1237,Prefab={Identifier='vt_cargo_console'}}
-Character={Controlled={SelectedItem=item,EmulateInput=function() deselected=deselected+1 end}}
+Character={Controlled={SelectedItem=item,EmulateInput=function() deselected=deselected+1 end,
+    CanInteractWith=function(target) return target==item end}}
 think(0.01)
 assert(#sent==1 and sent[1].Id=='VoidTraitor_CargoOpen','immediate opening')
 think(0.049) think(0.002)
@@ -83,7 +85,7 @@ local snapshot={Products={product('hardware:1','Гаечный ключ'),produc
     Text={Title='cargo',Close='close',Budget='budget',Reserved='reserved',Reason='reason',Submit='submit',Approve='approve',Reject='reject',Orders='orders',Quantity='quantity',Pending='pending',Accepted='accepted',Outbound='outbound',Delivered='delivered',Rejected='rejected',Home='home',Capacity='capacity',Large='large',Ship='ship',Sales='sales',LastSale='lastsale',NoShip='noship',Empty='empty',Search='search',Cart='cart'}}
 local reply={ReadUInt16=function() return item.ID end,ReadString=function() return snapshot end}
 receivers.VoidTraitor_CargoSnapshot(reply)
-assert(ui.MenuRoot and ui.MenuRoot.RectTransform.ScreenSpaceOffset.Y == -25 and ui.MenuRoot.RectTransform.Size.X == 800 and ui.MenuRoot.RectTransform.Size.Y == 580 and not ui.AwaitingOpen,'first snapshot did not open')
+assert(ui.MenuRoot and ui.MenuRoot.RectTransform.ScreenSpaceOffset.Y == -25 and ui.MenuRoot.RectTransform.Size.X == 880 and ui.MenuRoot.RectTransform.Size.Y == 585 and not ui.AwaitingOpen,'first snapshot did not open')
 assert(VoidTraitorPointshopGuiState==ordinary and ordinary.Marker=='ordinary shop','pointshop state mutated')
 local p,s=cargoP,cargoP.State
 assert(#p.BuildFolderList()==2 and p.FILTER_BAR_HEIGHT == 0.18 and p.FILTER_LABEL_SCALE == 0.95,'compact cargo catalog was not configured')
@@ -151,8 +153,10 @@ local messagesBefore = #sent
 think(1)
 assert(#sent == messagesBefore, 'idle catalog still requests a full refresh')
 Character.Controlled.SelectedItem = nil
-think(0.15)
-assert(ui.MenuRoot ~= nil, 'transient loss of selection closed the menu')
+think(0.15) think(1)
+assert(ui.MenuRoot ~= nil, 'temporary loss of selection closed the GUI session')
+receivers.VoidTraitor_CargoSnapshot(reply)
+assert(ui.MenuRoot ~= nil, 'GUI session stopped receiving snapshots after selection loss')
 Character.Controlled.SelectedItem = item
 think(0.1)
 assert(ui.MenuRoot ~= nil, 'selection recovery did not preserve the menu')
