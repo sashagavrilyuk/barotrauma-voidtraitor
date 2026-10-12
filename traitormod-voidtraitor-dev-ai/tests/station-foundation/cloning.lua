@@ -146,6 +146,17 @@ assert(cloning.Status(console) == 'CloneDisconnected' and not cloning.Begin(oper
 local params = { c = operator, msg = { ReadBoolean = function() return true end } }
 patches['Traitormod.Cloning.Terminal']({ Item = console }, params)
 assert(params.PreventExecution)
+local ejected = false
+local held = { IsDead = true }
+local scannerController = { User = held, Select = function() ejected = true end }
+scanner.GetComponentString = function() return scannerController end
+scanner.CanClientAccess = function() return true end
+operator.Character.DeselectCharacter = function() operator.Character.SelectedCharacter = nil end
+operator.Character.SelectedItem = scanner
+local eject = { c = operator, msg = { ReadBoolean = function() return true end } }
+patches['Traitormod.Cloning.Terminal']({ Item = scanner }, eject)
+assert(eject.PreventExecution and ejected, 'scanner eject button did not release corpse')
+operator.Character.SelectedItem = console
 local output = {}
 local deconstructor = { Item = { Prefab = { Identifier = 'vt_biomass_reclaimer' } }, OutputContainer = { Inventory = output } }
 local victim = { Mass = 250, IsDead = true, IsHuman = false }
