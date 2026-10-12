@@ -38,14 +38,8 @@ function UI.Send(action, payload)
     Networking.Send(message)
 end
 
-function UI.CloseMenu(deselect)
-    if deselect then UI.ClosedItem = UI.SelectedItem end
+function UI.CloseMenu()
     UI.Send("close")
-    local character = Character.Controlled
-    if deselect and character ~= nil and character.SelectedItem ~= nil and character.SelectedItem.ID == UI.ItemId then
-        character.EmulateInput(inputTypes.Deselect)
-        character.SelectedItem = nil
-    end
     P.CloseFilterPopup()
     Common.RemoveGuiComponent(UI.MenuRoot)
     UI.MenuRoot, UI.CurrentMenu, UI.ItemId, UI.Data = nil, nil, nil, nil
@@ -203,11 +197,20 @@ function UI.Show(itemId, snapshot)
     local drag = GUI.DragHandle(P.CreateRect(0.87, 1, heading, GUI.Anchor.TopLeft), root.RectTransform, nil)
     local transparent = Color(0, 0, 0, 0)
     drag.Color, drag.HoverColor, drag.SelectedColor, drag.PressedColor = transparent, transparent, transparent, transparent
-    local title = P.CreateText(drag, 1, 1, nil, snapshot.Text.Title, GUI.Alignment.Left, 1.15)
+    local indicator = GUI.Image(P.CreateRect(0.07, 0.72, drag, GUI.Anchor.CenterLeft), "GUIDragIndicator")
+    indicator.CanBeFocused = false
+    local title = P.CreateText(drag, 0.90, 1, GUI.Anchor.CenterRight, snapshot.Text.Title, GUI.Alignment.Left, 1.15)
     title.Font = GUI.Style.SubHeadingFont
     local close = P.CreateButton(heading, 0.12, 1, nil, snapshot.Text.Close)
     close.TextBlock.AutoScaleHorizontal = true
-    close.OnClicked = function() UI.CloseMenu(true) return true end
+    close.OnClicked = function()
+        UI.CloseMenu()
+        if Character.Controlled ~= nil then
+            Character.Controlled.EmulateInput(inputTypes.Deselect)
+            Character.Controlled.SelectedItem = nil
+        end
+        return true
+    end
     UI.Budget = P.CreateText(layout, 1, 0.065, nil, "", GUI.Alignment.Left, 0.85, nil, false)
     UI.Budget.AutoScaleHorizontal = true
     UI.Budget.AutoScaleVertical = true
@@ -254,9 +257,8 @@ Networking.Receive("VoidTraitor_CargoSnapshot", function(message)
     if UI.Disabled then return end
     local itemId, snapshot = message.ReadUInt16(), json.parse(message.ReadString())
     local character = Character.Controlled
-    if character ~= nil and UI.ItemId == itemId
-        and ((UI.AwaitingOpen and character.SelectedItem ~= nil and character.SelectedItem.ID == itemId)
-            or UI.MenuRoot ~= nil) then UI.Show(itemId, snapshot) end
+    if character ~= nil and character.SelectedItem ~= nil and character.SelectedItem.ID == itemId
+        and (UI.AwaitingOpen or UI.ItemId == itemId) then UI.Show(itemId, snapshot) end
 end)
 
 Hook.Patch("VoidTraitor.Cargo.Hud", "Barotrauma.GameSession", "AddToGUIUpdateList", function()
@@ -271,9 +273,6 @@ end, Hook.HookMethodType.Before)
 Hook.Patch("VoidTraitor.Cargo.Inventory", "Barotrauma.CharacterHUD", "LockInventory", { "Barotrauma.Character" }, function(_, parameters)
     if not UI.Disabled and UI.CurrentMenu ~= nil and parameters["character"] == Character.Controlled then return true end
 end, Hook.HookMethodType.After)
-Hook.Patch("VoidTraitor.Cargo.InventoryMouse", "Barotrauma.Inventory", "get_IsMouseOnInventory", {}, function()
-    if not UI.Disabled and UI.CurrentMenu ~= nil then return false end
-end, Hook.HookMethodType.After)
 Hook.Add("roundEnd", "VoidTraitor.Cargo.End", function() UI.CloseMenu() UI.SelectedItem = nil end)
 local elapsed = 0
 Hook.Add("think", "VoidTraitor.Cargo.Selection", function(deltaTime)
@@ -286,16 +285,10 @@ Hook.Add("think", "VoidTraitor.Cargo.Selection", function(deltaTime)
     local character = Character.Controlled
     local item = character ~= nil and not character.IsDead and not character.IsIncapacitated and character.SelectedItem or nil
     if item == nil or item.Prefab.Identifier ~= "vt_cargo_console" then
-        if UI.ClosedItem ~= nil then
-            UI.ClosedItem, UI.SelectedItem = nil, nil
-        elseif UI.SelectedItem ~= nil and (character == nil or character.IsDead or character.IsIncapacitated
-            or item ~= nil or not character.CanInteractWith(UI.SelectedItem)) then
-            UI.CloseMenu()
-            UI.SelectedItem = nil
-        end
+        if UI.SelectedItem ~= nil then UI.CloseMenu() end
+        UI.SelectedItem = nil
         return
     end
-    if UI.ClosedItem == item then return end
     if UI.SelectedItem ~= item then
         if UI.SelectedItem ~= nil then UI.CloseMenu() end
         UI.SelectedItem, UI.ItemId, UI.AwaitingOpen, elapsed = item, item.ID, true, 0.05

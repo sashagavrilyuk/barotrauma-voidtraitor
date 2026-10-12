@@ -457,14 +457,12 @@ end
 
 function cargo.Action(client, item, action, payload)
     local session = sessions[client]
-    if session == nil or session.Item ~= item then return false end
+    if session == nil or session.Item ~= item or not cargo.Validate(client, item) then return false end
+    local success, reason = true, nil
     if action == "close" then
         if session.Gui then sessions[client] = nil else session.Prompt = nil end
         return true
-    end
-    if not cargo.Validate(client, item, session.Gui) then return false end
-    local success, reason = true, nil
-    if action == "submit" then success, reason = cargo.Submit(client, payload)
+    elseif action == "submit" then success, reason = cargo.Submit(client, payload)
     elseif action == "approve" or action == "reject" then success, reason = cargo.Decide(client, action, payload.OrderId)
     elseif action == "view" and (payload.View == "main" or payload.View == "catalog") then session.View, session.Page = payload.View, 1
     elseif action == "page" and type(payload.Page) == "number" and payload.Page == math.floor(payload.Page) and payload.Page >= 1

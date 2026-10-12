@@ -43,7 +43,9 @@ function UI.Show(itemId, snapshot)
     local drag = GUI.DragHandle(Common.CreateRect(0.87, 1, heading, GUI.Anchor.TopLeft), root.RectTransform, nil)
     local transparent = Color(0, 0, 0, 0)
     drag.Color, drag.HoverColor, drag.SelectedColor, drag.PressedColor = transparent, transparent, transparent, transparent
-    local title = GUI.TextBlock(Common.CreateRect(1, 1, drag), text.Title)
+    local indicator = GUI.Image(Common.CreateRect(0.07, 0.72, drag, GUI.Anchor.CenterLeft), "GUIDragIndicator")
+    indicator.CanBeFocused = false
+    local title = GUI.TextBlock(Common.CreateRect(0.90, 1, drag, GUI.Anchor.CenterRight), text.Title)
     title.Font = GUI.Style.SubHeadingFont
     title.AutoScaleHorizontal = true
     local close = GUI.Button(Common.CreateRect(0.12, 1, heading), text.Close)
@@ -104,7 +106,7 @@ function UI.Show(itemId, snapshot)
     local preset = GUI.DropDown(Common.CreateRect(0.54, 1, presetRow), text.Preset, 6)
     UI.Popups[#UI.Popups + 1] = preset
     for _, entry in ipairs(snapshot.Presets) do preset.AddItem(entry.Name, entry.Id) end
-    local rights = GUI.ListBox(Common.CreateRect(1, 0.335, layout), false)
+    local rights = GUI.ListBox(Common.CreateRect(1, 0.395, layout), false)
     UI.Rights = rights
     local checks = {}
     local columns = screenWidth >= Common.SafeIntScale(1024) and 4 or 2
@@ -133,10 +135,6 @@ function UI.Show(itemId, snapshot)
     local reset = GUI.Button(Common.CreateRect(0.2425, 1, actions), text.Reset)
     local apply = GUI.Button(Common.CreateRect(0.2425, 1, actions), text.Apply)
     for _, button in ipairs({ all, clear, reset, apply }) do button.TextBlock.AutoScaleHorizontal = true end
-    local status = GUI.TextBlock(Common.CreateRect(1, 0.06, layout), "")
-    status.Wrap = true
-    status.AutoScaleHorizontal = true
-    status.AutoScaleVertical = true
     local selectedJob
     local function tags()
         local result = {}
@@ -218,7 +216,6 @@ function UI.Show(itemId, snapshot)
         if revision ~= updated.Revision then revision = updated.Revision resetDraft() end
         for _, control in ipairs({ name, job, saveName, saveJob, all, clear, reset, apply, preset }) do control.Enabled = updated.CanEdit end
         preset.ButtonEnabled = updated.CanEdit
-        status.Text = updated.CanEdit and text.Ready or text.Missing
     end
     UI.Update(snapshot)
 end

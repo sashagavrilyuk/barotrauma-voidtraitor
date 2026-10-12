@@ -143,11 +143,31 @@ function Common.AddResizeHandles(panel, topTargets, bottomTargets, sideTargets)
             indicator.CanBeFocused = false
             table.insert(sideTargets[side], handle)
         end
+        sideTargets.corners = {}
+        for _, corner in ipairs({
+            { "top-left", GUI.Anchor.TopLeft, 0.785398 },
+            { "top-right", GUI.Anchor.TopRight, -0.785398 },
+            { "bottom-left", GUI.Anchor.BottomLeft, -0.785398 },
+            { "bottom-right", GUI.Anchor.BottomRight, 0.785398 },
+        }) do
+            local handle = GUI.Frame(Common.CreateRect(0.045, 0.07, panel, corner[2]), nil)
+            handle.Color = Color(0, 0, 0, 0)
+            handle.CanBeFocused = true
+            local indicator = GUI.Image(Common.CreateRect(0.7, 0.7, handle, GUI.Anchor.Center), "GUIDragIndicatorHorizontal")
+            indicator.Rotation = corner[3]
+            indicator.CanBeFocused = false
+            sideTargets.corners[#sideTargets.corners + 1] = { Edge = corner[1], Handle = handle }
+        end
     end
 end
 
 function Common.GetResizeEdge(topTargets, bottomTargets, sideTargets)
     local mousePosition = PlayerInput.MousePosition
+    if sideTargets ~= nil then
+        for _, corner in ipairs(sideTargets.corners) do
+            if corner.Handle.Rect.Contains(mousePosition) then return corner.Edge end
+        end
+    end
     for _, target in ipairs(topTargets) do
         if target ~= nil and target.Rect.Contains(mousePosition) then return "top" end
     end
@@ -210,23 +230,25 @@ function Common.UpdateMenuInteraction(currentMenu, resizeState, topTargets, bott
     local newHeight, newWidth = resizeState.Height, resizeState.Width
     local newTop, newLeft = resizeState.Top, resizeState.Left
 
-    if resizeState.Edge == "top" then
+    local edge = resizeState.Edge
+    if edge == "top" or edge == "top-left" or edge == "top-right" then
         newTop = Common.Clamp(resizeState.Top + dy, margin, resizeState.Bottom - minimumHeight)
         newHeight = resizeState.Bottom - newTop
-    elseif resizeState.Edge == "bottom" then
+    elseif edge == "bottom" or edge == "bottom-left" or edge == "bottom-right" then
         local maximumHeight = math.max(minimumHeight, screenHeight - resizeState.Top - margin)
         newHeight = Common.Clamp(resizeState.Height + dy, minimumHeight, maximumHeight)
-    elseif resizeState.Edge == "left" then
+    end
+    if edge == "left" or edge == "top-left" or edge == "bottom-left" then
         newLeft = Common.Clamp(resizeState.Left + dx, margin, resizeState.Right - minimumWidth)
         newWidth = resizeState.Right - newLeft
-    elseif resizeState.Edge == "right" then
+    elseif edge == "right" or edge == "top-right" or edge == "bottom-right" then
         newWidth = Common.Clamp(resizeState.Width + dx, minimumWidth, screenWidth - resizeState.Left - margin)
     end
 
     local rectTransform = currentMenu.RectTransform
-    local nonScaledWidth = (resizeState.Edge == "left" or resizeState.Edge == "right")
+    local nonScaledWidth = newWidth ~= resizeState.Width
         and math.max(1, math.floor(newWidth / rectTransform.Scale.X + 0.5)) or resizeState.NonScaledWidth
-    local nonScaledHeight = (resizeState.Edge == "top" or resizeState.Edge == "bottom")
+    local nonScaledHeight = newHeight ~= resizeState.Height
         and math.max(1, math.floor(newHeight / rectTransform.Scale.Y + 0.5)) or resizeState.NonScaledHeight
     rectTransform:Resize(Point(nonScaledWidth, nonScaledHeight), true)
 

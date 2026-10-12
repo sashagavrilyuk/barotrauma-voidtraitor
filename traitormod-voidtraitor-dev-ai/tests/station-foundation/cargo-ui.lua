@@ -29,7 +29,7 @@ local function component(transform,text)
     all[#all+1]=c
     return c
 end
-GUI={RectTransform=rect,Anchor={Center=1,TopLeft=2,TopCenter=3,BottomLeft=4,CenterLeft=5,CenterRight=6,TopRight=7,BottomCenter=8},
+GUI={RectTransform=rect,Anchor={Center=1,TopLeft=2,TopCenter=3,BottomLeft=4,CenterLeft=5,CenterRight=6,TopRight=7,BottomCenter=8,BottomRight=9},
     Pivot={TopLeft=1},Alignment={Left=1,Center=2,Right=3,BottomLeft=4,CenterLeft=5},Style={SubHeadingFont='sub',LargeFont='large',Apply=function() end}}
 GUI.Frame=component
 GUI.DragHandle=component
@@ -71,8 +71,7 @@ local ui=VoidTraitorCargoGuiState
 local think=hooks['VoidTraitor.Cargo.Selection']
 local deselected=0
 local item={ID=1237,Prefab={Identifier='vt_cargo_console'}}
-Character={Controlled={SelectedItem=item,EmulateInput=function() deselected=deselected+1 end,
-    CanInteractWith=function(target) return target==item end}}
+Character={Controlled={SelectedItem=item,EmulateInput=function() deselected=deselected+1 end}}
 think(0.01)
 assert(#sent==1 and sent[1].Id=='VoidTraitor_CargoOpen','immediate opening')
 think(0.049) think(0.002)
@@ -153,15 +152,15 @@ local messagesBefore = #sent
 think(1)
 assert(#sent == messagesBefore, 'idle catalog still requests a full refresh')
 Character.Controlled.SelectedItem = nil
-think(0.15) think(1)
-assert(ui.MenuRoot ~= nil, 'temporary loss of selection closed the GUI session')
-receivers.VoidTraitor_CargoSnapshot(reply)
-assert(ui.MenuRoot ~= nil, 'GUI session stopped receiving snapshots after selection loss')
+think(0.15)
+assert(ui.MenuRoot == nil, 'cargo did not close like ID console on deselection')
 Character.Controlled.SelectedItem = item
-think(0.1)
-assert(ui.MenuRoot ~= nil, 'selection recovery did not preserve the menu')
-ui.CloseMenu(true)
-assert(deselected==1 and not ui.MenuRoot and not Character.Controlled.SelectedItem,'close did not deselect')
+think(0.01)
+assert(sent[#sent].Id == 'VoidTraitor_CargoOpen', 'reselection did not request opening')
+receivers.VoidTraitor_CargoSnapshot(reply)
+assert(ui.MenuRoot ~= nil, 'cargo did not reopen after reselection')
+buttons(ui.MenuRoot).close.OnClicked()
+assert(deselected==1 and not ui.MenuRoot and not Character.Controlled.SelectedItem,'close button did not deselect')
 local count=#sent
 receivers.VoidTraitor_CargoSnapshot(reply)
 assert(not ui.MenuRoot and #sent==count,'late reply reopened menu')

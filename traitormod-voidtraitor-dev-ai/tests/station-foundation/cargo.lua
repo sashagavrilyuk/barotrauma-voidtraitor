@@ -176,11 +176,11 @@ assert(unpacked.Prefab == prefabs.lamp and unpacked.Lit and cargo.State.Packages
 client.Character.SelectedItem = console
 cargo.Open(manager, console, true)
 manager.Character.SelectedItem = nil
-assert(cargo.Action(manager, console, 'refresh', {}), 'valid GUI session lost access when item selection cleared')
+assert(not cargo.Action(manager, console, 'refresh', {}), 'unselected GUI session could modify orders')
+manager.Character.SelectedItem = console
 console.CanClientAccess = function() return false end
 assert(not cargo.Action(manager, console, 'refresh', {}), 'GUI session ignored interaction distance')
 console.CanClientAccess = function() return true end
-manager.Character.SelectedItem = console
 cargo.Open(client, console, false)
 cargo.Action(client, console, 'product', { Id = 'medical:2' })
 cargo.Action(client, console, 'close', {})
