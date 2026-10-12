@@ -38,7 +38,10 @@ end
 local function GetRespawnClients()
     local clients = {}
     for key, value in pairs(Client.ClientList) do
-        if value.Character == nil or value.Character.IsDead then
+        local mode = Traitormod.SelectedGamemode
+        if mode ~= nil and mode.CanShuttleRespawn ~= nil then
+            if mode:CanShuttleRespawn(value) then table.insert(clients, value) end
+        elseif value.Character == nil or value.Character.IsDead then
             table.insert(clients, value)
         end
     end
@@ -116,6 +119,9 @@ local function SpawnCharacter(client, submarine)
     if Traitormod.Config.RespawnedPlayersDontLooseLives then
         Traitormod.LostLivesThisRound[Traitormod.GetClientAccountKey(client)] = true
     end
+
+    local mode = Traitormod.SelectedGamemode
+    if mode ~= nil and mode.OnShuttleSpawn ~= nil then mode:OnShuttleSpawn(client, character) end
 end
 
 local function ResetSubmarine(submarine)
@@ -173,20 +179,22 @@ Hook.Add("think", "RespawnShuttle.Think", function(deltaTime)
             respawnCheckTimer = 0
 
             local clientCount = 0
-            local respawnClientCount = 0
             for _, client in pairs(Client.ClientList) do
                 clientCount = clientCount + 1
-                if client.Character == nil or client.Character.IsDead then
-                    respawnClientCount = respawnClientCount + 1
-                end
             end
+            local respawnClientCount = #GetRespawnClients()
 
             local ratio = 0
             if clientCount > 0 then
                 ratio = respawnClientCount / clientCount
             end
 
-            if ratio > Game.ServerSettings.MinRespawnRatio then
+            local mode = Traitormod.SelectedGamemode
+            local shouldRespawn = ratio > Game.ServerSettings.MinRespawnRatio
+            if mode ~= nil and mode.ShouldStartShuttleRespawn ~= nil then
+                shouldRespawn = mode:ShouldStartShuttleRespawn(respawnClientCount)
+            end
+            if shouldRespawn then
                 if not timerActive then
                     timerActive = true
                     respawnTimer = Game.ServerSettings.RespawnInterval
