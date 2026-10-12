@@ -19,7 +19,11 @@ vt.IsStationSub = function(sub)
 end
 
 vt.IsStationLobby = function()
-    return Game.ServerSettings.GameModeIdentifier == "mission" and vt.IsStationSub(Game.NetLobbyScreen.SelectedSub)
+    if Game.ServerSettings.GameModeIdentifier ~= "mission" then return false end
+    for value in Game.ServerSettings.AllowedRandomMissionTypes do
+        if value == "VoidTraitorStation" then return true end
+    end
+    return false
 end
 
 local function getVoteText(key)
@@ -841,6 +845,8 @@ Hook.Add("think", "Traitormod.Voting.Think", function()
     if vt.MapVote ~= nil then
         if Game.RoundStarted then
             finishMapVote(getVoteText("MapVoteCancelledRoundStarted"))
+        elseif vt.MapVote.StationMap ~= vt.IsStationLobby() then
+            finishMapVote(getVoteText("LobbyVoteCancelledMissionChanged"))
         elseif Timer.GetTime() > vt.MapVote.Time then
             finishMapVote()
         end

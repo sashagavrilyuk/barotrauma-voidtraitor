@@ -36,7 +36,7 @@ function UI.Show(itemId, snapshot)
         math.floor(math.min(screenWidth * 0.78, 800)),
         math.floor(math.min(screenHeight * 0.8, 530))), nil, GUI.Anchor.Center), "GUIFrame")
     UI.MenuRoot, UI.CurrentMenu, UI.Popups = root, root, {}
-    local layout = GUI.LayoutGroup(Common.CreateRect(0.95, 0.94, root, GUI.Anchor.Center), false)
+    local layout = GUI.LayoutGroup(Common.CreateRect(0.95, 0.98, root, GUI.Anchor.Center), false)
     layout.RelativeSpacing = 0.008
     local heading = GUI.LayoutGroup(Common.CreateRect(1, 0.065, layout), true)
     local title = GUI.TextBlock(Common.CreateRect(0.87, 1, heading), text.Title)
@@ -91,14 +91,14 @@ function UI.Show(itemId, snapshot)
     local preset = GUI.DropDown(Common.CreateRect(0.54, 1, presetRow), text.Preset, 6)
     UI.Popups[#UI.Popups + 1] = preset
     for _, entry in ipairs(snapshot.Presets) do preset.AddItem(entry.Name, entry.Id) end
-    local rights = GUI.ListBox(Common.CreateRect(1, 0.30, layout), false)
+    local rights = GUI.ListBox(Common.CreateRect(1, 0.335, layout), false)
     local checks = {}
-    for index = 1, #snapshot.Access, 2 do
+    for index = 1, #snapshot.Access, 4 do
         local row = GUI.LayoutGroup(Common.CreateRect(1, 0.16, rights.Content), true)
         row.RelativeSpacing = 0.02
-        for offset = 0, 1 do
+        for offset = 0, 3 do
             local entry = snapshot.Access[index + offset]
-            if entry ~= nil then checks[entry.Tag] = GUI.TickBox(Common.CreateRect(0.49, 1, row), entry.Name) end
+            if entry ~= nil then checks[entry.Tag] = GUI.TickBox(Common.CreateRect(0.235, 1, row), entry.Name) end
         end
     end
     local actions = GUI.LayoutGroup(Common.CreateRect(1, 0.07, layout), true)
@@ -230,10 +230,10 @@ Hook.Add("think", "VoidTraitor.IdConsole.Selection", function(deltaTime)
     end
     if UI.SelectedItem ~= item then
         UI.SelectedItem = item
-        UI.AwaitingOpen, elapsed = true, 0.5
+        UI.AwaitingOpen, elapsed = true, 0.05
     end
     elapsed = elapsed + deltaTime
-    if UI.AwaitingOpen and elapsed >= 0.5 then
+    if UI.AwaitingOpen and elapsed >= 0.05 then
         elapsed = 0
         local message = Networking.Start("VoidTraitor_IdConsoleOpen")
         message.WriteUInt16(UShort(item.ID))

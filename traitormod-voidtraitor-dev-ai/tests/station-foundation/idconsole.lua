@@ -91,7 +91,12 @@ assert(console.Apply(client,item,{Tags={'vt_access_security','vt_access_reactor'
 assert(info.OwnerJobId.Value=='engineer' and target.HasTag('jobid:engineer') and not target.HasTag('jobid:assistant'),'explicit native JobId did not update the card correctly')
 assert(not console.Apply(client,item,payload({'vt_access_security'},'bad,tag','Job')),'tag injection accepted')
 client.Character.SelectedItem=nil
+assert(console.Validate(client,item,true),'nearby read-only snapshot waited for native selection')
+assert(not console.Validate(client,item),'unselected write validation accepted')
 assert(not console.Apply(client,item,payload({'vt_access_security'})),'remote edit accepted')
+item.CanClientAccess=function() return false end
+assert(not console.Validate(client,item,true),'read-only snapshot bypassed interaction range')
+item.CanClientAccess=function() return true end
 client.Character.SelectedItem=item
 client.Character.IsIncapacitated=true
 assert(not console.Apply(client,item,payload({'vt_access_security'})),'incapacitated edit accepted')
