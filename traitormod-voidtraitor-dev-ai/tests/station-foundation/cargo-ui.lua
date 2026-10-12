@@ -71,12 +71,13 @@ local ui=VoidTraitorCargoGuiState
 local think=hooks['VoidTraitor.Cargo.Selection']
 local deselected=0
 local item={ID=1237,Prefab={Identifier='vt_cargo_console'}}
-Character={Controlled={SelectedItem=item,EmulateInput=function() deselected=deselected+1 end}}
-think(0.01)
-assert(#sent==1 and sent[1].Id=='VoidTraitor_CargoOpen','immediate opening')
-Character.Controlled.SelectedItem = nil
-think(0.049) think(0.002)
-assert(#sent==2,'opening stopped while the character approached the console')
+local inRange = true
+Character={Controlled={SelectedItem=nil,EmulateInput=function() deselected=deselected+1 end,
+    CanInteractWith=function(_, target) return inRange and target == item end}}
+hooks['VoidTraitor.Cargo.Interact'](item, Character.Controlled)
+assert(#sent==1 and sent[1].Id=='VoidTraitor_CargoOpen','first interaction did not request an immediate snapshot')
+think(0.06)
+assert(#sent==1,'opening repeatedly requested expensive snapshots')
 local function product(id,name,path)
     return {Id=id,Name=name,Category='hardware',Path=path or '',Description='description',Price=10,Currency='кр',Stock=3,Limit=3,AllowQuantity=true,MaxQuantity=3,Type='item',DisabledReason='',IconIdentifier='wrench'}
 end
@@ -171,6 +172,10 @@ Character.Controlled.SelectedItem=item think(0.01)
 assert(sent[#sent].Id=='VoidTraitor_CargoOpen','reselection cannot open')
 receivers.VoidTraitor_CargoSnapshot(reply)
 assert(ui.MenuRoot and s.shopList and #s.catalogHost.Children>0,'same catalog absent after reopening')
+inRange = false
+think(0.01)
+assert(not ui.MenuRoot,'cargo window remained open after leaving interaction distance')
+inRange = true
 Networking.IsActive=false think(0.01)
 assert(not ui.AwaitingOpen and ui.SelectedItem==nil,'disconnect left selection')
 local normalP={Common=common,State={currentPoints=100,products={},productById={},cart={},classLimitValues={},classLimitTextBlocks={shop={}},cooldownTextBlocks={shop={}},productRows={}},ITEM_ROW_HEIGHT=0.1,ITEM_ICON_PIXELS=56,ACTION_BUTTON_PIXELS=56,NET_INT32_MAX=2147483647}

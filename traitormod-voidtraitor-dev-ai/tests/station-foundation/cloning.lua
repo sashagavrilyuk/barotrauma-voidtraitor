@@ -70,14 +70,17 @@ cloning.Start()
 local frozenLimb = { body = { PhysEnabled = true } }
 local scannedBody = { IsDead = true, AnimController = { Frozen = false, Limbs = iterable({ frozenLimb }) } }
 local scanControl = { User = scannedBody }
+scanControl.Select = function(user)
+    assert(user == scanControl.User)
+    scanControl.User = nil
+end
 scanner.GetComponentString = function() return scanControl end
 cloning.Update(0.75)
-assert(scannedBody.AnimController.Frozen and not frozenLimb.body.PhysEnabled,
-    'scanner did not hold the body after settling')
-scanControl.User = nil
-cloning.Update(0)
 assert(not scannedBody.AnimController.Frozen and frozenLimb.body.PhysEnabled,
-    'scanner did not restore normal physics after ejection')
+    'scanner overrode the native controller with unsynchronized ragdoll freezing')
+scanControl.User = { IsDead = false }
+cloning.Update(0)
+assert(scanControl.User == nil, 'living character remained inside cloning scanner')
 hooks['Traitormod.Cloning.Owner'](body)
 assert(cloning.Status(console) == 'CloneNoBiomass' and not cloning.Begin(operator, console))
 for _ = 1, 49 do biomass[#biomass + 1] = { Prefab = { Identifier = 'vt_biomass' } } end
