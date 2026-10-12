@@ -54,7 +54,7 @@ end
 
 function gm:CanShuttleRespawn(client)
     return not self.SpawnedAccounts[Traitormod.GetClientAccountKey(client)]
-        and client.InGame and not client.SpectateOnly and client.CharacterInfo ~= nil
+        and client.InGame and not client.SpectateOnly
         and (client.Character == nil or client.Character.IsDead)
 end
 
@@ -62,9 +62,10 @@ function gm:ShouldStartShuttleRespawn(pending)
     return pending > 0
 end
 
-function gm:OnShuttleSpawn(client, character)
-    self.SpawnedAccounts[Traitormod.GetClientAccountKey(client)] = true
-    Hook.Call("traitormod.midroundspawn", client, character)
+function gm:SpawnNewcomerOnShuttle(client, submarine)
+    if Traitormod.MidRoundSpawn.SpawnClientCharacterOnSub(submarine, client) then
+        self.SpawnedAccounts[Traitormod.GetClientAccountKey(client)] = true
+    end
 end
 
 function gm:Think()
