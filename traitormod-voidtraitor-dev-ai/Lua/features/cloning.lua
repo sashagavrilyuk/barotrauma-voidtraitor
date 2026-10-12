@@ -157,7 +157,9 @@ function cloning.Update(deltaTime)
         if not scanner.Removed then
             local controller = scanner.GetComponentString("Controller")
             if controller ~= nil and controller.User ~= nil and not controller.User.IsDead then
-                controller.Select(controller.User)
+                local user = controller.User
+                if user.SelectedCharacter ~= nil then user.DeselectCharacter() end
+                controller.Select(user)
             end
         end
     end
@@ -262,6 +264,7 @@ Hook.Patch("Traitormod.Cloning.DeadOnly", "Barotrauma.Items.Components.Controlle
     if identifier ~= "vt_cloning_scanner" and identifier ~= "vt_biomass_reclaimer" then return end
     local character = parameters["activator"]
     if character == nil then return end
+    if identifier == "vt_cloning_scanner" and instance.User == character then return end
     local selected = character.SelectedCharacter
     if selected ~= nil and not selected.IsDead then
         parameters.PreventExecution = true

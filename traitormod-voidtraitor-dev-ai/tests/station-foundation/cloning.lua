@@ -78,7 +78,8 @@ scanner.GetComponentString = function() return scanControl end
 cloning.Update(0.75)
 assert(not scannedBody.AnimController.Frozen and frozenLimb.body.PhysEnabled,
     'scanner overrode the native controller with unsynchronized ragdoll freezing')
-scanControl.User = { IsDead = false }
+scanControl.User = { IsDead = false, SelectedCharacter = { IsDead = false } }
+scanControl.User.DeselectCharacter = function(self) self.SelectedCharacter = nil end
 cloning.Update(0)
 assert(scanControl.User == nil, 'living character remained inside cloning scanner')
 hooks['Traitormod.Cloning.Owner'](body)
