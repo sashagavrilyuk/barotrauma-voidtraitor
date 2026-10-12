@@ -7,19 +7,19 @@
         <Conditional IsDead="true" />
       </StatusEffect>
     </TriggerComponent>
-    <ItemContainer capacity="1" maxstacksize="1" canbeselected="true" hideitems="true" hudpos="0.5,0.8" slotsperrow="1">
+    <ItemContainer capacity="1" maxstacksize="1" canbeselected="false" hideitems="true" drawinventory="false">
       <Containable items="unidentifiedbiologicalmaterial" />
     </ItemContainer>
     <Controller msg="ItemMsgPutInside" kickoutcharactermsg="ItemMsgTakeOut" putothercharactermsg="ItemMsgPutInside" canbeselectedbycharacters="false" hideallitemcomponenthuds="true" allowputtinginothercharacters="true" selectingkickscharacterout="true" spawnitemonselected="unidentifiedbiologicalmaterial" allowingameediting="false" userpos="0,0" canbeselected="true" selectkey="Use" drawuserbehind="true" forceusertostayattached="true">
-      <limbposition limb="Head" position="74,-40" />
-      <limbposition limb="Torso" position="74,-40" />
-      <limbposition limb="Waist" position="74,-40" />
-      <limbposition limb="LeftHand" position="74,-40" />
-      <limbposition limb="RightHand" position="74,-40" />
-      <limbposition limb="RightLeg" position="74,-40" />
-      <limbposition limb="LeftLeg" position="74,-40" />
-      <limbposition limb="RightFoot" position="74,-40" />
-      <limbposition limb="LeftFoot" position="74,-40" />
+      <limbposition limb="Head" position="128,-20" />
+      <limbposition limb="Torso" position="128,-65" />
+      <limbposition limb="Waist" position="128,-105" />
+      <limbposition limb="LeftHand" position="98,-85" />
+      <limbposition limb="RightHand" position="158,-85" />
+      <limbposition limb="RightLeg" position="116,-145" />
+      <limbposition limb="LeftLeg" position="140,-145" />
+      <limbposition limb="RightFoot" position="116,-200" />
+      <limbposition limb="LeftFoot" position="140,-200" />
       <StatusEffect type="OnActive" targettype="Character" delay="0.1" stackable="true" indetectable="true" DisableFocusingOnEntities="true" invisibletimer="0.1" IgnoreMeleeWeapons="true" PressureProtection="6500.0" setvalue="true" />
     </Controller>
     <CustomInterface canbeselected="true" msg="ItemMsgInteractSelect" allowuioverlap="true">
@@ -40,9 +40,13 @@
       <limbposition limb="Torso" position="0,0" />
     </Controller>
     <LightComponent ison="false" powerconsumption="0" range="140" lightcolor="80,210,240,210" pulsemagnitude="0.4" pulsefrequency="0.8" castshadows="false" />
-    <ItemContainer capacity="4" maxstacksize="64" canbeselected="true" hideitems="true" hudpos="0.5,0.8" slotsperrow="4" uilabel="CloneBiomass">
+    <ItemContainer capacity="4" maxstacksize="64" canbeselected="false" hideitems="true" drawinventory="false">
       <Containable items="vt_biomass" />
     </ItemContainer>
+    <CustomInterface canbeselected="true" msg="ItemMsgInteractSelect" allowuioverlap="true">
+      <GuiFrame relativesize="0.24,0.12" minsize="200,65" maxsize="300,95" anchor="Center" style="ItemUI" />
+      <Button text="CloneTakeBiomass" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
+    </CustomInterface>
     <ConnectionPanel canbeselected="true" selectkey="Action" msg="ItemMsgRewireScrewdriver">
       <GuiFrame relativesize="0.2,0.25" anchor="Center" style="ConnectionPanel" />
       <RequiredItem items="screwdriver" type="Equipped" />

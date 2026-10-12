@@ -9,4 +9,5 @@
   <CloneBiomass>Биомасса</CloneBiomass>
   <CloneStart>Клонировать</CloneStart>
   <CloneEject>Извлечь тело</CloneEject>
+  <CloneTakeBiomass>Извлечь всю биомассу</CloneTakeBiomass>
 </infotexts>
