@@ -10,7 +10,7 @@ local function releaseScannerBody(entry)
     if entry.Frozen and entry.Corpse ~= nil and not entry.Corpse.Removed then
         local ragdoll = entry.Corpse.AnimController
         ragdoll.Frozen = false
-        for _, limb in ipairs(ragdoll.Limbs) do
+        for limb in ragdoll.Limbs do
             if limb.body ~= nil and not limb.Removed then limb.body.PhysEnabled = true end
         end
     end
@@ -172,7 +172,7 @@ function cloning.Update(deltaTime)
             if entry.Elapsed >= 0.75 then
                 local ragdoll = entry.Corpse.AnimController
                 ragdoll.Frozen = true
-                for _, limb in ipairs(ragdoll.Limbs) do
+                for limb in ragdoll.Limbs do
                     if limb.body ~= nil and not limb.Removed then limb.body.PhysEnabled = false end
                 end
                 entry.Frozen = true
