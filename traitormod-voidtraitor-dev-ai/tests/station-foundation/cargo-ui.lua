@@ -74,8 +74,9 @@ local item={ID=1237,Prefab={Identifier='vt_cargo_console'}}
 Character={Controlled={SelectedItem=item,EmulateInput=function() deselected=deselected+1 end}}
 think(0.01)
 assert(#sent==1 and sent[1].Id=='VoidTraitor_CargoOpen','immediate opening')
+Character.Controlled.SelectedItem = nil
 think(0.049) think(0.002)
-assert(#sent==2,'retry after selection sync')
+assert(#sent==2,'opening stopped while the character approached the console')
 local function product(id,name,path)
     return {Id=id,Name=name,Category='hardware',Path=path or '',Description='description',Price=10,Currency='кр',Stock=3,Limit=3,AllowQuantity=true,MaxQuantity=3,Type='item',DisabledReason='',IconIdentifier='wrench'}
 end
@@ -84,6 +85,7 @@ local snapshot={Products={product('hardware:1','Гаечный ключ'),produc
     Text={Title='cargo',Close='close',Budget='budget',Reserved='reserved',Reason='reason',Submit='submit',Approve='approve',Reject='reject',Orders='orders',Quantity='quantity',Pending='pending',Accepted='accepted',Outbound='outbound',Delivered='delivered',Rejected='rejected',Home='home',Capacity='capacity',Large='large',Ship='ship',Sales='sales',LastSale='lastsale',NoShip='noship',Empty='empty',Search='search',Cart='cart'}}
 local reply={ReadUInt16=function() return item.ID end,ReadString=function() return snapshot end}
 receivers.VoidTraitor_CargoSnapshot(reply)
+Character.Controlled.SelectedItem = item
 assert(ui.MenuRoot and ui.MenuRoot.RectTransform.ScreenSpaceOffset.Y == -25 and ui.MenuRoot.RectTransform.Size.X == 880 and ui.MenuRoot.RectTransform.Size.Y == 585 and not ui.AwaitingOpen,'first snapshot did not open')
 assert(VoidTraitorPointshopGuiState==ordinary and ordinary.Marker=='ordinary shop','pointshop state mutated')
 local p,s=cargoP,cargoP.State
