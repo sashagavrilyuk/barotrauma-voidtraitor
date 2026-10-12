@@ -38,7 +38,7 @@ CharacterInfo = function(xml) return { Name = xml.Name, Job = xml.Job } end
 Character = { Create = function(species, _, _, info, _, remote, hasAi, _, _, _, initialItems)
     assert(not remote and hasAi, 'ownerless body must use native AICharacter physics')
     assert(initialItems == false, 'cloning duplicated starting equipment')
-    local clone = { Species = species, Info = info, Enabled = false, Unkillable = false, CharacterHealth = { Stun = 0 }, AIController = { Enabled = true } }
+    local clone = { Species = species, IsHuman = species == 'human', Info = info, Enabled = false, Unkillable = false, CharacterHealth = { Stun = 0 }, AIController = { Enabled = true } }
     clone.LoadTalents = function() clone.TalentsLoaded = true end
     clone.TeleportTo = function(position) clone.Position = position end
     clone.Kill = function() clone.IsDead = true end
@@ -56,7 +56,8 @@ Traitormod = { Config = { Cloning = { Time = 30, HumanBiomassCost = 50, HumanBio
     GetClientAccountKey = function(client) return client.Account end,
     FindClientCharacter = function(char) return char == owner.Character and owner or nil end,
     SendChatMessage = function(client, text) chat[#chat + 1] = { Client = client, Text = text } end,
-    RoleManager = { GetRole = function(char) return roles[char] end, TransferRole = function(char, value)
+    RoleManager = { GetRole = function(char) return roles[char] end, RemoveRole = function(char) roles[char] = nil end,
+    AssignRole = function(char, value) value.Character = char roles[char] = value end, TransferRole = function(char, value)
         roles[value.Character], value.Character = nil, char roles[char] = value
         for _, obj in ipairs(value.Objectives) do obj.Character = char end
     end }, ObjectiveHud = { SyncRole = function() end },
@@ -68,7 +69,10 @@ assert(not cloning.Begin(operator, console), 'cloner active outside Station life
 cloning.Start()
 hooks['Traitormod.Cloning.Owner'](body)
 assert(cloning.Status(console) == 'CloneNoBiomass' and not cloning.Begin(operator, console))
-for _ = 1, 160 do biomass[#biomass + 1] = { Prefab = { Identifier = 'vt_biomass' } } end
+for _ = 1, 49 do biomass[#biomass + 1] = { Prefab = { Identifier = 'vt_biomass' } } end
+cloning.Update(0)
+assert(cloning.Status(console) == 'CloneNoBiomass', 'human cloning allowed below 50 biomass')
+for _ = 1, 111 do biomass[#biomass + 1] = { Prefab = { Identifier = 'vt_biomass' } } end
 cloning.Update(0)
 assert(#removed == 160 and cloning.Status(console) == 'CloneReady')
 cloning.Update(0)
@@ -158,6 +162,40 @@ victim.IsDead = false
 victim = { Mass = 250 }
 patches['Traitormod.Cloning.Biomass'](deconstructor, { type = ActionType.OnDeconstructed, targetItem = wrapped })
 assert(#spawned - count == 87, 'living body produced corpse biomass')
+victim = { Mass = 80, IsDead = true, IsHuman = true }
+patches['Traitormod.Cloning.Biomass'](deconstructor, { type = ActionType.OnDeconstructed, targetItem = wrapped })
+assert(#spawned - count == 115, 'human corpse must yield 28 biomass')
+local dragged = { IsDead = false }
+local activator = { SelectedCharacter = dragged }
+activator.DeselectCharacter = function() activator.SelectedCharacter = nil end
+local scannerController = { Item = { Prefab = { Identifier = 'vt_cloning_scanner' } }, User = nil }
+local selectArgs = { activator = activator }
+patches['Traitormod.Cloning.DeadOnly'](scannerController, selectArgs)
+assert(selectArgs.PreventExecution, 'living patient entered cloning scanner')
+selectArgs.PreventExecution = nil
+dragged.IsDead = true
+scannerController.User = dragged
+patches['Traitormod.Cloning.DeadOnly'](scannerController, selectArgs)
+assert(not selectArgs.PreventExecution and activator.SelectedCharacter == nil, 'grabbed corpse cannot be released from machine')
+activator.SelectedCharacter = { IsDead = false }
+selectArgs.PreventExecution = nil
+patches['Traitormod.Cloning.DeadOnly']({ Item = deconstructor.Item }, selectArgs)
+assert(selectArgs.PreventExecution, 'living body entered biomass reclaimer')
+connections[1].Recipients = iterable({ { Item = scanner } })
+material = { GetComponentString = function() return { Character = body } end }
+Traitormod.RoleManager.Roles = { Crew = { new = function() return { Name = 'Crew', IsAntagonist = false, Objectives = {} } end } }
+roles[body] = { Name = 'HuskServant' }
+assert(cloning.Begin(operator, console))
+hooks['Traitormod.Cloning.Disconnect'](owner)
+Client.ClientList = { operator }
+cloning.Update(1)
+local rejoined = { Account = 'patient', InGame = true }
+rejoined.SetClientCharacter = function(character) rejoined.Character = character end
+Client.ClientList = { operator, rejoined }
+cloning.Update(1)
+assert(cloning.Answer(rejoined, true), 'reconnected dead player never received cloning consent')
+assert(roles[body] == nil and roles[rejoined.Character].Name == 'Crew' and not rejoined.Character.IsTraitor, 'parasite role survived a clean clone')
+cloning.Update(28)
 hooks['Traitormod.Cloning.End']()
 assert(not cloning.Answer(owner, true))
 -- Real objective transfer must resume healing without resetting earned progress.
