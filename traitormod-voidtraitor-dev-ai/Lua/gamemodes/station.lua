@@ -75,7 +75,7 @@ function gm:Think()
         local accountKey = Traitormod.GetClientAccountKey(client)
         if client.Character ~= nil and not client.Character.IsDead then
             self.SpawnedAccounts[accountKey] = true
-        elseif self.SpawnedAccounts[accountKey] and not client.SpectateOnly then
+        elseif self.SpawnedAccounts[accountKey] and client.Character == nil and not client.SpectateOnly then
             local reclaimable = false
             for character in Character.CharacterList do
                 if not character.IsDead and character.IsClientOwner(client) then
@@ -134,6 +134,24 @@ Hook.Add("client.connected", "Traitormod.Station.Reconnect", function(client)
     end
     client.SpectateOnly = true
 end)
+
+Hook.Patch("Barotrauma.Networking.GameServer", "SetClientCharacter", function(instance, parameters)
+    local selected = Traitormod.SelectedGamemode
+    if selected == nil or selected.Name ~= "Station" then return end
+    local client, character = parameters["client"], parameters["newCharacter"]
+    if client ~= nil and character ~= nil and not character.IsDead then client.SpectateOnly = false end
+end, Hook.HookMethodType.After)
+
+Hook.Patch("Barotrauma.Character", "Revive", function(character)
+    local selected = Traitormod.SelectedGamemode
+    if selected == nil or selected.Name ~= "Station" or character.IsDead then return end
+    for _, client in pairs(Client.ClientList) do
+        if client.SpectateOnly and (client.Character == nil or client.Character == character)
+            and character.IsClientOwner(client) then
+            client.SpectateOnly = false
+        end
+    end
+end, Hook.HookMethodType.After)
 
 Hook.Add("character.giveJobItems", "Traitormod.Station.IdCardAccess", function(character)
     if Traitormod.SelectedGamemode == nil or Traitormod.SelectedGamemode.Name ~= "Station" then return end
