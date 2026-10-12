@@ -166,16 +166,16 @@ patches['Traitormod.Cloning.Biomass']({ Item = { Prefab = { Identifier = 'decons
     { type = ActionType.OnDeconstructed, targetItem = wrapped })
 assert(#spawned == count, 'ordinary deconstructor produced station biomass')
 patches['Traitormod.Cloning.Biomass'](deconstructor, { type = ActionType.OnDeconstructed, targetItem = wrapped })
-assert(#spawned - count == 87 and spawned[#spawned].Inventory == output, 'biomass not proportional to native corpse mass/output')
+assert(#spawned - count == 58 and spawned[#spawned].Inventory == output, 'biomass not proportional to native corpse mass/output')
 patches['Traitormod.Cloning.Biomass'](deconstructor, { type = ActionType.OnDeconstructed, targetItem = wrapped })
-assert(#spawned - count == 87, 'duplicate reclamation')
+assert(#spawned - count == 58, 'duplicate reclamation')
 victim.IsDead = false
 victim = { Mass = 250 }
 patches['Traitormod.Cloning.Biomass'](deconstructor, { type = ActionType.OnDeconstructed, targetItem = wrapped })
-assert(#spawned - count == 87, 'living body produced corpse biomass')
+assert(#spawned - count == 58, 'living body produced corpse biomass')
 victim = { Mass = 80, IsDead = true, IsHuman = true }
 patches['Traitormod.Cloning.Biomass'](deconstructor, { type = ActionType.OnDeconstructed, targetItem = wrapped })
-assert(#spawned - count == 115, 'human corpse must yield 28 biomass')
+assert(#spawned - count == 86, 'human corpse must yield 28 biomass')
 local dragged = { IsDead = false }
 local activator = { SelectedCharacter = dragged }
 activator.DeselectCharacter = function() activator.SelectedCharacter = nil end

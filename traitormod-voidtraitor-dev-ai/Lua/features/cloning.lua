@@ -225,7 +225,7 @@ Hook.Patch("Traitormod.Cloning.Biomass", "Barotrauma.Items.Components.Deconstruc
     local corpse = linked ~= nil and linked.Character or nil
     if corpse == nil or corpse.Removed or not corpse.IsDead or state.Reclaimed[corpse] then return end
     state.Reclaimed[corpse] = true
-    local amount = corpse.IsHuman and config.HumanBiomassYield or math.max(1, math.floor(corpse.Mass * config.HumanBiomassYield / 80))
+    local amount = corpse.IsHuman and config.HumanBiomassYield or math.max(5, math.min(58, math.floor(corpse.Mass * config.HumanBiomassYield / 80)))
     for _ = 1, amount do
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("vt_biomass"), instance.OutputContainer.Inventory)
     end
