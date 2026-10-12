@@ -18,11 +18,11 @@ local interfaceEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateE
 local known = {}
 for _, entry in ipairs(console.Config.Access) do known[entry.Tag] = true end
 
-function console.Validate(client, item)
+function console.Validate(client, item, allowUnselected)
     return Game.RoundStarted and not Traitormod.IsRoundFinalizing()
         and client ~= nil and client.Character ~= nil and not client.Character.IsDead
         and not client.Character.IsIncapacitated and client.Character.IsHuman
-        and item ~= nil and client.Character.SelectedItem == item and not item.Removed
+        and item ~= nil and (client.Character.SelectedItem == item or allowUnselected == true) and not item.Removed
         and item.Prefab.Identifier == "vt_station_access" and item.CanClientAccess(client)
 end
 
@@ -151,7 +151,7 @@ end
 
 function console.Send(client)
     local session = sessions[client]
-    if session == nil or not console.Validate(client, session.Item) then return end
+    if session == nil or not console.Validate(client, session.Item, session.Gui) then return end
     local snapshot = console.Snapshot(client, session.Item)
     session.Revision = snapshot.Revision
     local terminal = session.Item.GetComponentString("Terminal")
@@ -214,7 +214,8 @@ function console.Send(client)
 end
 
 function console.Open(client, item, gui)
-    if not console.Validate(client, item) then return false end
+    -- The Lua request can precede native selection; only its read-only snapshot may do so.
+    if not console.Validate(client, item, gui == true) then return false end
     sessions[client] = { Item = item, View = "main", Gui = gui == true }
     console.Send(client)
     return true

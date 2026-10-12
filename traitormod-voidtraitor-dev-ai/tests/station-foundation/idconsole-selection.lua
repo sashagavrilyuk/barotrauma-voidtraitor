@@ -15,7 +15,7 @@ local item={ID=1237,Prefab={Identifier='vt_station_access'}}
 Character={Controlled={SelectedItem=item}}
 think(0.01)
 assert(#sent==1 and sent[1]=='VoidTraitor_IdConsoleOpen','selection was not requested immediately')
-think(0.49) think(0.01)
+think(0.049) think(0.002)
 assert(#sent==2,'open rejected during selection sync was not retried')
 local shown=0
 ui.Show=function(id) shown=shown+1 ui.AwaitingOpen=false ui.ItemId=id ui.MenuRoot={} end
