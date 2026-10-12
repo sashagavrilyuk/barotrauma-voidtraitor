@@ -2,9 +2,10 @@ param([string]$GamePath = 'D:/SteamLibrary/steamapps/common/Barotrauma')
 $ErrorActionPreference = 'Stop'
 [void][Reflection.Assembly]::LoadFrom((Join-Path $GamePath 'MoonSharp.Interpreter.dll'))
 $stationMod = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
-foreach ($stationTest in @('foundation-mode.lua', 'foundation-shop.lua', 'foundation-voting.lua', 'idconsole.lua', 'idconsole-selection.lua')) {
+foreach ($stationTest in @('foundation-mode.lua', 'foundation-shop.lua', 'foundation-voting.lua', 'idconsole.lua', 'idconsole-selection.lua', 'cargo.lua', 'cargo-ui.lua')) {
     $stationScript = [MoonSharp.Interpreter.Script]::new()
     $stationScript.Globals['modpath'] = $stationMod.Replace('\', '/')
+    $stationScript.Globals['packpath'] = (Join-Path (Split-Path $stationMod) 'Void traitor pack').Replace('\', '/')
     try {
         $stationResult = $stationScript.DoString([IO.File]::ReadAllText((Join-Path $PSScriptRoot $stationTest)))
         Write-Output $stationResult.String

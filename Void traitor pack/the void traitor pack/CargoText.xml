@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="Russian" translatedname="Русский">
+  <entityname.vt_cargo_console>Консоль карго</entityname.vt_cargo_console>
+  <entitydescription.vt_cargo_console>Заявки на снабжение и общий бюджет. Для согласования заявок требуется ID-карта с доступом карго.</entitydescription.vt_cargo_console>
+  <entityname.vt_cargo_remote>Управление шаттлом карго</entityname.vt_cargo_remote>
+  <entitydescription.vt_cargo_remote>Штатный навигационный терминал шаттла: ручное управление, автопилот и стыковка.</entitydescription.vt_cargo_remote>
+  <entityname.vt_cargo_large_marker>Зона крупного груза</entityname.vt_cargo_large_marker>
+  <entitydescription.vt_cargo_large_marker>Размещайте крупные товары внутри отмеченного квадрата.</entitydescription.vt_cargo_large_marker>
+  <entityname.vt_cargo_package>Доставка оборудования</entityname.vt_cargo_package>
+  <entitydescription.vt_cargo_package>Перенесите коробку на станцию, поставьте её в нужном месте и разверните оборудование.</entitydescription.vt_cargo_package>
+  <CargoQuantity>Количество</CargoQuantity>
+  <CargoReason>Причина заявки</CargoReason>
+  <CargoMenu>Каталог и заявки</CargoMenu>
+  <CargoSubmit>Отправить заявку</CargoSubmit>
+  <CargoLargeZone>КРУПНЫЙ ГРУЗ</CargoLargeZone>
+  <CargoUnpack>Развернуть оборудование</CargoUnpack>
+</infotexts>

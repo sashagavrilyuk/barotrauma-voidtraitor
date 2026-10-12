@@ -32,6 +32,7 @@ config.ExtensionConfig = {
 }
 
 config.IdConsole = dofile(Traitormod.Path .. "/Lua/config/idconsole.lua")
+config.Cargo = dofile(Traitormod.Path .. "/Lua/config/cargo.lua")
 
 ----- DISCORD -----
 

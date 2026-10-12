@@ -67,7 +67,7 @@ function P.AddProductButton(list, product)
 
     local price = nil
     if showPrice then
-        price = P.CreateText(inner, 0.125, 0.72, nil, tostring(product.Price or 0) .. " pt", GUI.Alignment.Right, 0.96, enabled and Color(255, 245, 210, 255) or Color(125, 125, 125, 255), false)
+        price = P.CreateText(inner, 0.125, 0.72, nil, tostring(product.Price or 0) .. " " .. tostring(product.Currency or "pt"), GUI.Alignment.Right, 0.96, enabled and Color(255, 245, 210, 255) or Color(125, 125, 125, 255), false)
         price.Font = GUI.Style.SubHeadingFont
         price.AutoScaleHorizontal = true
     end
@@ -123,7 +123,7 @@ function P.RefreshProductRows()
         entry.Details.TextColor = enabled and Color(190, 205, 190, 235) or Color(120, 120, 120, 220)
 
         if entry.Price ~= nil then
-            entry.Price.Text = tostring(product.Price or 0) .. " pt"
+            entry.Price.Text = tostring(product.Price or 0) .. " " .. tostring(product.Currency or "pt")
             entry.Price.TextColor = enabled and Color(255, 245, 210, 255) or Color(125, 125, 125, 255)
         end
         if entry.Icon ~= nil then

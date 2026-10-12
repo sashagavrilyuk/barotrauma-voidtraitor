@@ -19,6 +19,7 @@ function gm:Start()
     Submarine.MainSub.SubBody.Body.BodyType = bodyTypes.Static
     self.ShopAvailability = {}
     secret.Start(self)
+    Traitormod.Cargo.Start()
     for character in Character.CharacterList do
         if character.IsHuman and not character.IsDead and character.Submarine == Submarine.MainSub then
             Traitormod.IdConsole.InitializeCard(character)

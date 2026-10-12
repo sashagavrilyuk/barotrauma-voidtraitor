@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <Item identifier="vt_cargo_console" name="" category="Electrical" tags="vt_cargo_console" scale="0.5" isshootable="true" interactdistance="150" grabwhenselected="true">
+    <Sprite texture="Content/Items/Electricity/signalcomp.png" depth="0.8" sourcerect="0,368,144,128" origin="0.5,0.3" canflipx="false" />
+    <Terminal canbeselected="true" readonly="true" allowingameediting="false" msg="ItemMsgInteractSelect" maxmessages="1" maxmessagelength="4096" allowuioverlap="true">
+      <GuiFrame relativesize="0.35,0.45" anchor="CenterLeft" style="ItemUI" />
+    </Terminal>
+    <CustomInterface canbeselected="true" msg="ItemMsgInteractSelect" allowuioverlap="true">
+      <GuiFrame relativesize="0.35,0.26" anchor="CenterRight" style="ItemUI" />
+      <TextBox text="CargoQuantity" signal="1" maxtextlength="4">
+        <StatusEffect type="OnUse" target="This" />
+      </TextBox>
+      <TextBox text="CargoReason" signal="" maxtextlength="128">
+        <StatusEffect type="OnUse" target="This" />
+      </TextBox>
+      <Button text="CargoMenu" signal="1">
+        <StatusEffect type="OnUse" target="This" />
+      </Button>
+      <Button text="CargoSubmit" signal="1">
+        <StatusEffect type="OnUse" target="This" />
+      </Button>
+    </CustomInterface>
+    <ConnectionPanel canbeselected="false" locked="true">
+      <RequiredItem items="screwdriver" type="Equipped" />
+      <input name="power_in" displayname="connection.powerin" />
+    </ConnectionPanel>
+  </Item>
+  <Item identifier="vt_cargo_remote" name="" category="Machine" scale="0.25" interactdistance="150" grabwhenselected="true">
+    <Sprite texture="Content/Items/Command/CommandDevices.png" depth="0.8" sourcerect="400,0,288,240" origin="0.5,0.5" />
+    <RemoteController target="vt_cargo_helm" onlyinownsub="false" range="500000" canbeselected="true" msg="ItemMsgInteractSelect" allowingameediting="false" />
+  </Item>
+  <Item identifier="vt_cargo_large_marker" name="" category="Misc" size="200,200" scale="1" resizehorizontal="true" resizevertical="true" interactdistance="0" indestructible="true">
+    <Sprite texture="Content/Items/Labels/labels.png" sourcerect="1,99,126,126" depth="0.92" origin="0.5,0.5" />
+    <ItemLabel text="CargoLargeZone" textcolor="255,220,80,255" textscale="0.8" allowingameediting="false" />
+  </Item>
+  <Item identifier="vt_cargo_package" name="" category="Misc" tags="vt_cargo_package" scale="0.5" pickdistance="150" impactsoundtag="impact_metal_heavy">
+    <Sprite texture="Content/Items/Containers/containers.png" depth="0.54" sourcerect="407,376,152,89" origin="0.5,0.5" />
+    <Body width="150" height="75" density="25" />
+    <Holdable pickkey="Use" slots="RightHand+LeftHand" holdpos="0,-80" handle1="-30,14" handle2="30,14" aimable="false" msg="ItemMsgPickUpUse" />
+    <CustomInterface selectkey="Select" canbeselected="true" msg="ItemMsgInteractSelect">
+      <GuiFrame relativesize="0.24,0.1" anchor="Center" style="ItemUI" />
+      <Button text="CargoUnpack" signal="1">
+        <StatusEffect type="OnUse" target="This" />
+      </Button>
+    </CustomInterface>
+  </Item>
+</Items>
