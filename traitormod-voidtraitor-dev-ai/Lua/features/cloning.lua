@@ -6,13 +6,25 @@ LuaUserData.RegisterType("Barotrauma.ContentXElement")
 local contentElement = LuaUserData.CreateStatic("Barotrauma.ContentXElement")
 local state
 
+local function releaseScannerBody(entry)
+    if entry.Frozen and entry.Corpse ~= nil and not entry.Corpse.Removed then
+        local ragdoll = entry.Corpse.AnimController
+        ragdoll.Frozen = false
+        for _, limb in ipairs(ragdoll.Limbs) do
+            if limb.body ~= nil and not limb.Removed then limb.body.PhysEnabled = true end
+        end
+    end
+    entry.Corpse, entry.Elapsed, entry.Frozen = nil, 0, false
+end
+
 function cloning.Start()
-    state = { Consoles = {}, Pods = {}, Jobs = {}, Owners = {}, Reclaimed = {}, Pending = {}, ReconnectCheck = 0 }
+    state = { Consoles = {}, Scanners = {}, Pods = {}, Jobs = {}, Owners = {}, Reclaimed = {}, Pending = {}, ReconnectCheck = 0 }
     for _, client in pairs(Client.ClientList) do
         if client.Character ~= nil then state.Owners[client.Character] = client end
     end
     for item in Item.ItemList do
         if item.Prefab.Identifier == "vt_cloning_console" then state.Consoles[#state.Consoles + 1] = item end
+        if item.Prefab.Identifier == "vt_cloning_scanner" then state.Scanners[item] = { Elapsed = 0 } end
         if item.Prefab.Identifier == "vt_cloning_pod" then state.Pods[item] = { Biomass = 0, Consumed = {} } end
     end
 end
@@ -148,6 +160,25 @@ function cloning.Update(deltaTime)
             end
         end
     end
+    for scanner, entry in pairs(state.Scanners) do
+        local controller = not scanner.Removed and scanner.GetComponentString("Controller") or nil
+        local corpse = controller ~= nil and controller.User or nil
+        if corpse ~= entry.Corpse or (corpse ~= nil and (corpse.Removed or not corpse.IsDead)) then
+            releaseScannerBody(entry)
+            if corpse ~= nil and not corpse.Removed and corpse.IsDead then entry.Corpse = corpse end
+        end
+        if entry.Corpse ~= nil and not entry.Frozen then
+            entry.Elapsed = entry.Elapsed + deltaTime
+            if entry.Elapsed >= 0.75 then
+                local ragdoll = entry.Corpse.AnimController
+                ragdoll.Frozen = true
+                for _, limb in ipairs(ragdoll.Limbs) do
+                    if limb.body ~= nil and not limb.Removed then limb.body.PhysEnabled = false end
+                end
+                entry.Frozen = true
+            end
+        end
+    end
     state.ReconnectCheck = state.ReconnectCheck - deltaTime
     local checkOwners = state.ReconnectCheck <= 0
     if checkOwners then state.ReconnectCheck = 1 end
@@ -202,10 +233,22 @@ end)
 Hook.Patch("Traitormod.Cloning.Terminal", "Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, parameters)
     local item = instance.Item
     local identifier = item.Prefab.Identifier
-    if identifier ~= "vt_cloning_console" and identifier ~= "vt_cloning_scanner" then return end
+    if identifier ~= "vt_cloning_console" and identifier ~= "vt_cloning_scanner" and identifier ~= "vt_cloning_pod" then return end
     local pressed = parameters["msg"].ReadBoolean()
     parameters.PreventExecution = true
-    if identifier == "vt_cloning_console" then
+    if identifier == "vt_cloning_pod" then
+        local client = parameters["c"]
+        if not pressed or state == nil or not Game.RoundStarted or Traitormod.IsRoundFinalizing()
+            or client == nil or client.Character == nil or client.Character.IsDead
+            or client.Character.SelectedItem ~= item or not item.CanClientAccess(client) then return end
+        local data = state.Pods[item]
+        if data == nil or data.Biomass == 0 then return end
+        local amount = data.Biomass
+        data.Biomass = 0
+        for _ = 1, amount do
+            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("vt_biomass"), client.Character.Inventory)
+        end
+    elseif identifier == "vt_cloning_console" then
         if pressed then cloning.Begin(parameters["c"], item) end
     elseif pressed and state ~= nil then
         local client = parameters["c"]
@@ -243,7 +286,12 @@ Hook.Patch("Traitormod.Cloning.DeadOnly", "Barotrauma.Items.Components.Controlle
     end
 end, Hook.HookMethodType.Before)
 Hook.Add("think", "Traitormod.Cloning.Update", cloning.Update)
-Hook.Add("roundEnd", "Traitormod.Cloning.End", function() state = nil end)
+Hook.Add("roundEnd", "Traitormod.Cloning.End", function()
+    if state ~= nil then
+        for _, entry in pairs(state.Scanners) do releaseScannerBody(entry) end
+    end
+    state = nil
+end)
 Hook.Add("client.disconnected", "Traitormod.Cloning.Disconnect", function(client)
     if state == nil then return end
     if client.Character ~= nil then state.Owners[client.Character] = client end
