@@ -67,6 +67,17 @@ Traitormod = { Config = { Cloning = { Time = 30, HumanBiomassCost = 50, HumanBio
 local cloning = dofile(modpath .. '/Lua/features/cloning.lua')
 assert(not cloning.Begin(operator, console), 'cloner active outside Station lifecycle')
 cloning.Start()
+local frozenLimb = { body = { PhysEnabled = true } }
+local scannedBody = { IsDead = true, AnimController = { Frozen = false, Limbs = iterable({ frozenLimb }) } }
+local scanControl = { User = scannedBody }
+scanner.GetComponentString = function() return scanControl end
+cloning.Update(0.75)
+assert(scannedBody.AnimController.Frozen and not frozenLimb.body.PhysEnabled,
+    'scanner did not hold the body after settling')
+scanControl.User = nil
+cloning.Update(0)
+assert(not scannedBody.AnimController.Frozen and frozenLimb.body.PhysEnabled,
+    'scanner did not restore normal physics after ejection')
 hooks['Traitormod.Cloning.Owner'](body)
 assert(cloning.Status(console) == 'CloneNoBiomass' and not cloning.Begin(operator, console))
 for _ = 1, 49 do biomass[#biomass + 1] = { Prefab = { Identifier = 'vt_biomass' } } end
@@ -148,7 +159,8 @@ patches['Traitormod.Cloning.Terminal']({ Item = console }, params)
 assert(params.PreventExecution)
 local ejected = false
 local held = { IsDead = true }
-local scannerController = { User = held, Select = function() ejected = true end }
+local scannerController = { User = held }
+scannerController.Select = function() ejected, scannerController.User = true, nil end
 scanner.GetComponentString = function() return scannerController end
 scanner.CanClientAccess = function() return true end
 operator.Character.DeselectCharacter = function() operator.Character.SelectedCharacter = nil end
@@ -207,6 +219,23 @@ cloning.Update(1)
 assert(cloning.Answer(rejoined, true), 'reconnected dead player never received cloning consent')
 assert(roles[body] == nil and roles[rejoined.Character].Name == 'Crew' and not rejoined.Character.IsTraitor, 'parasite role survived a clean clone')
 cloning.Update(28)
+for _ = 1, 4 do biomass[#biomass + 1] = { Prefab = { Identifier = 'vt_biomass' } } end
+cloning.Update(0)
+pod.CanClientAccess = function() return true end
+operator.Character.SelectedItem = pod
+local beforeWithdrawal = #spawned
+local withdraw = { c = operator, msg = { ReadBoolean = function() return true end } }
+patches['Traitormod.Cloning.Terminal']({ Item = pod }, withdraw)
+assert(withdraw.PreventExecution and #spawned - beforeWithdrawal >= 4,
+    'withdrawal did not return stored biomass')
+for index = beforeWithdrawal + 1, #spawned do
+    assert(spawned[index].Prefab == 'vt_biomass' and spawned[index].Inventory == operator.Character.Inventory,
+        'biomass withdrawal sent the wrong item or destination')
+end
+local afterWithdrawal = #spawned
+patches['Traitormod.Cloning.Terminal']({ Item = pod }, withdraw)
+assert(#spawned == afterWithdrawal, 'repeated withdrawal duplicated biomass')
+operator.Character.SelectedItem = nil
 hooks['Traitormod.Cloning.End']()
 assert(not cloning.Answer(owner, true))
 -- Real objective transfer must resume healing without resetting earned progress.
