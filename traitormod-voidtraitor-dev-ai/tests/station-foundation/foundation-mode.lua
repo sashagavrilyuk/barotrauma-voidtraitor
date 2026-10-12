@@ -6,7 +6,8 @@ LuaUserData = {
     MakePropertyAccessible=function() end
 }
 Descriptors = {}
-Hook={Patch=function(id,_,_,callback) patches[id]=callback end,HookMethodType={Before=1,After=2}}
+Hook={Patch=function(id,_,_,callback) patches[id]=callback end,Add=function() end,HookMethodType={Before=1,After=2}}
+Character={CharacterList=function() end}
 Game={RoundStarted=true,ServerSettings={MissionTypes='Salvage'},NetLobbyScreen={},GameSession={Missions=function() end}}
 Submarine={MainSub={SubBody={Body={BodyType=2}}}}
 local client={}

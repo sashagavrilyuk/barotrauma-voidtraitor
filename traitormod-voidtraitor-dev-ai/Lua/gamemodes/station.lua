@@ -19,6 +19,11 @@ function gm:Start()
     Submarine.MainSub.SubBody.Body.BodyType = bodyTypes.Static
     self.ShopAvailability = {}
     secret.Start(self)
+    for character in Character.CharacterList do
+        if character.IsHuman and not character.IsDead and character.Submarine == Submarine.MainSub then
+            Traitormod.IdConsole.InitializeCard(character)
+        end
+    end
 end
 
 function gm:Think()
@@ -54,5 +59,12 @@ function gm:End()
     Game.ServerSettings.MissionTypes = self.PreviousMissionTypes
     Game.ServerSettings.ServerDetailsChanged = true
 end
+
+Hook.Add("character.giveJobItems", "Traitormod.Station.IdCardAccess", function(character)
+    if Traitormod.SelectedGamemode == nil or Traitormod.SelectedGamemode.Name ~= "Station" then return end
+    Timer.Wait(function()
+        if not character.Removed and character.Submarine == Submarine.MainSub then Traitormod.IdConsole.InitializeCard(character) end
+    end, 0)
+end)
 
 return gm

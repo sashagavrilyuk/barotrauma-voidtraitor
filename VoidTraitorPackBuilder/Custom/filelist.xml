@@ -43,4 +43,6 @@
   <Submarine file="%ModDir%/void traitor pack submarine/VoidTraitor Station Test.sub" />
   <Missions file="%ModDir%/the void traitor pack/MissionsStation.xml" />
   <Text file="%ModDir%/the void traitor pack/StationText.xml" />
+  <Item file="%ModDir%/the void traitor pack/items/idconsole.xml" />
+  <Text file="%ModDir%/the void traitor pack/IdConsoleText.xml" />
 </contentpackage>
