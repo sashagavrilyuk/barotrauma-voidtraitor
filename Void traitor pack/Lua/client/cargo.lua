@@ -49,7 +49,8 @@ function UI.CloseMenu(deselect)
     P.CloseFilterPopup()
     Common.RemoveGuiComponent(UI.MenuRoot)
     UI.MenuRoot, UI.CurrentMenu, UI.ItemId, UI.Data = nil, nil, nil, nil
-    UI.AwaitingOpen, UI.SubmitPending = false, false
+    UI.AwaitingOpen, UI.SubmitPending, UI.ResizeState = false, false, nil
+    UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides = nil, nil, nil
     S.currentMenu, S.guiRoot, S.catalogHost, S.shopList, S.rebuildProductList = nil, nil, nil, nil, nil
     S.productRows, S.cart = {}, {}
     S.currentView, S.selectedCategory, S.selectedPath, S.selectedProductId = "categories", nil, nil, nil
@@ -191,15 +192,18 @@ function UI.Show(itemId, snapshot)
     if UI.MenuRoot ~= nil then UI.Update(snapshot) return end
     UI.ItemId = itemId
     local screenWidth, screenHeight = Common.GetScreenSize()
-    local width = math.floor(math.min(screenWidth * 0.92, math.max(800, Common.SafeIntScale(800))))
-    local height = math.floor(math.min(screenHeight * 0.92, math.max(580, Common.SafeIntScale(580))))
+    local width = math.floor(math.min(screenWidth * 0.92, math.max(Common.SafeIntScale(800), screenWidth * 0.55)))
+    local height = math.floor(math.min(screenHeight * 0.92, math.max(Common.SafeIntScale(580), screenHeight * 0.65)))
     local root = GUI.Frame(GUI.RectTransform(Point(width, height), nil, GUI.Anchor.Center), "GUIFrame")
     root.RectTransform.ScreenSpaceOffset = Point(0, -Common.SafeIntScale(25))
     UI.MenuRoot, UI.CurrentMenu, S.currentMenu, S.guiRoot = root, root, root, root
     local layout = P.CreateLayout(root, 0.965, 0.955, GUI.Anchor.Center, false)
     layout.RelativeSpacing = 0.007
     local heading = P.CreateLayout(layout, 1, 0.055, nil, true)
-    local title = P.CreateText(heading, 0.87, 1, nil, snapshot.Text.Title, GUI.Alignment.Left, 1.15)
+    local drag = GUI.DragHandle(P.CreateRect(0.87, 1, heading, GUI.Anchor.TopLeft), root.RectTransform, nil)
+    local transparent = Color(0, 0, 0, 0)
+    drag.Color, drag.HoverColor, drag.SelectedColor, drag.PressedColor = transparent, transparent, transparent, transparent
+    local title = P.CreateText(drag, 1, 1, nil, snapshot.Text.Title, GUI.Alignment.Left, 1.15)
     title.Font = GUI.Style.SubHeadingFont
     local close = P.CreateButton(heading, 0.12, 1, nil, snapshot.Text.Close)
     close.TextBlock.AutoScaleHorizontal = true
@@ -239,6 +243,9 @@ function UI.Show(itemId, snapshot)
     end
     P.CreateText(layout, 1, 0.04, nil, snapshot.Text.Orders, GUI.Alignment.Left, 1.0)
     UI.OrderList = GUI.ListBox(P.CreateRect(1, 0.225, layout), false)
+    UI.ResizeTop, UI.ResizeBottom = {}, {}
+    UI.ResizeSides = { left = {}, right = {}, minimumWidth = 720 }
+    Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
     UI.Update(snapshot)
     if S.shopList == nil then P.ShowMenu() end
 end
@@ -247,8 +254,9 @@ Networking.Receive("VoidTraitor_CargoSnapshot", function(message)
     if UI.Disabled then return end
     local itemId, snapshot = message.ReadUInt16(), json.parse(message.ReadString())
     local character = Character.Controlled
-    if character ~= nil and character.SelectedItem ~= nil and character.SelectedItem.ID == itemId and UI.ItemId == itemId
-        and (UI.AwaitingOpen or UI.MenuRoot ~= nil) then UI.Show(itemId, snapshot) end
+    if character ~= nil and UI.ItemId == itemId
+        and ((UI.AwaitingOpen and character.SelectedItem ~= nil and character.SelectedItem.ID == itemId)
+            or UI.MenuRoot ~= nil) then UI.Show(itemId, snapshot) end
 end)
 
 Hook.Patch("VoidTraitor.Cargo.Hud", "Barotrauma.GameSession", "AddToGUIUpdateList", function()
@@ -267,27 +275,26 @@ Hook.Patch("VoidTraitor.Cargo.InventoryMouse", "Barotrauma.Inventory", "get_IsMo
     if not UI.Disabled and UI.CurrentMenu ~= nil then return false end
 end, Hook.HookMethodType.After)
 Hook.Add("roundEnd", "VoidTraitor.Cargo.End", function() UI.CloseMenu() UI.SelectedItem = nil end)
-local elapsed, unselectedTime = 0, 0
+local elapsed = 0
 Hook.Add("think", "VoidTraitor.Cargo.Selection", function(deltaTime)
     if UI.Disabled then return end
+    if UI.MenuRoot ~= nil then
+        UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom,
+            480, UI.OrderList, nil, nil, nil, UI.ResizeSides)
+    end
     if not Networking.IsActive then UI.CloseMenu() UI.SelectedItem = nil return end
     local character = Character.Controlled
     local item = character ~= nil and not character.IsDead and not character.IsIncapacitated and character.SelectedItem or nil
     if item == nil or item.Prefab.Identifier ~= "vt_cargo_console" then
         if UI.ClosedItem ~= nil then
             UI.ClosedItem, UI.SelectedItem = nil, nil
-            return
-        end
-        if UI.SelectedItem ~= nil then
-            unselectedTime = unselectedTime + deltaTime
-            if unselectedTime >= 0.35 then
-                UI.CloseMenu()
-                UI.SelectedItem = nil
-            end
+        elseif UI.SelectedItem ~= nil and (character == nil or character.IsDead or character.IsIncapacitated
+            or item ~= nil or not character.CanInteractWith(UI.SelectedItem)) then
+            UI.CloseMenu()
+            UI.SelectedItem = nil
         end
         return
     end
-    unselectedTime = 0
     if UI.ClosedItem == item then return end
     if UI.SelectedItem ~= item then
         if UI.SelectedItem ~= nil then UI.CloseMenu() end

@@ -24,6 +24,7 @@ function UI.CloseMenu()
     Common.RemoveGuiComponent(UI.MenuRoot)
     UI.MenuRoot, UI.CurrentMenu, UI.ItemId, UI.Update = nil, nil, nil, nil
     UI.Popups = {}
+    UI.ResizeState, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides, UI.Rights = nil, nil, nil, nil, nil
 end
 
 function UI.Show(itemId, snapshot)
@@ -32,14 +33,17 @@ function UI.Show(itemId, snapshot)
     UI.ItemId = itemId
     local text = snapshot.Text
     local screenWidth, screenHeight = Common.GetScreenSize()
-    local width = math.floor(math.min(screenWidth * 0.92, math.max(800, Common.SafeIntScale(800))))
-    local height = math.floor(math.min(screenHeight * 0.92, math.max(590, Common.SafeIntScale(590))))
+    local width = math.floor(math.min(screenWidth * 0.92, math.max(Common.SafeIntScale(900), screenWidth * 0.58)))
+    local height = math.floor(math.min(screenHeight * 0.92, math.max(Common.SafeIntScale(590), screenHeight * 0.70)))
     local root = GUI.Frame(GUI.RectTransform(Point(width, height), nil, GUI.Anchor.Center), "GUIFrame")
     UI.MenuRoot, UI.CurrentMenu, UI.Popups = root, root, {}
     local layout = GUI.LayoutGroup(Common.CreateRect(0.95, 0.98, root, GUI.Anchor.Center), false)
     layout.RelativeSpacing = 0.008
     local heading = GUI.LayoutGroup(Common.CreateRect(1, 0.065, layout), true)
-    local title = GUI.TextBlock(Common.CreateRect(0.87, 1, heading), text.Title)
+    local drag = GUI.DragHandle(Common.CreateRect(0.87, 1, heading, GUI.Anchor.TopLeft), root.RectTransform, nil)
+    local transparent = Color(0, 0, 0, 0)
+    drag.Color, drag.HoverColor, drag.SelectedColor, drag.PressedColor = transparent, transparent, transparent, transparent
+    local title = GUI.TextBlock(Common.CreateRect(1, 1, drag), text.Title)
     title.Font = GUI.Style.SubHeadingFont
     title.AutoScaleHorizontal = true
     local close = GUI.Button(Common.CreateRect(0.12, 1, heading), text.Close)
@@ -101,15 +105,17 @@ function UI.Show(itemId, snapshot)
     UI.Popups[#UI.Popups + 1] = preset
     for _, entry in ipairs(snapshot.Presets) do preset.AddItem(entry.Name, entry.Id) end
     local rights = GUI.ListBox(Common.CreateRect(1, 0.335, layout), false)
+    UI.Rights = rights
     local checks = {}
-    for index = 1, #snapshot.Access, 2 do
+    local columns = screenWidth >= Common.SafeIntScale(1024) and 4 or 2
+    for index = 1, #snapshot.Access, columns do
         local row = GUI.LayoutGroup(Common.CreateRect(1, 0.16, rights.Content), true)
         row.RectTransform.MinSize = Point(0, Common.SafeIntScale(38))
         row.RelativeSpacing = 0.02
-        for offset = 0, 1 do
+        for offset = 0, columns - 1 do
             local entry = snapshot.Access[index + offset]
             if entry ~= nil then
-                local checkbox = GUI.TickBox(Common.CreateRect(0.49, 1, row), entry.Name)
+                local checkbox = GUI.TickBox(Common.CreateRect(columns == 4 and 0.235 or 0.49, 1, row), entry.Name)
                 checkbox.TextBlock.AutoScaleHorizontal = true
                 checks[entry.Tag] = checkbox
             end
@@ -117,6 +123,9 @@ function UI.Show(itemId, snapshot)
     end
     rights:RecalculateChildren()
     rights:UpdateScrollBarSize()
+    UI.ResizeTop, UI.ResizeBottom = {}, {}
+    UI.ResizeSides = { left = {}, right = {}, minimumWidth = columns == 4 and 850 or 520 }
+    Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
     local actions = GUI.LayoutGroup(Common.CreateRect(1, 0.07, layout), true)
     actions.RelativeSpacing = 0.01
     local all = GUI.Button(Common.CreateRect(0.2425, 1, actions), text.All)
@@ -238,6 +247,10 @@ Hook.Add("roundEnd", "VoidTraitor.IdConsole.End", function() UI.CloseMenu() UI.S
 local elapsed = 0
 Hook.Add("think", "VoidTraitor.IdConsole.Selection", function(deltaTime)
     if UI.Disabled then return end
+    if UI.MenuRoot ~= nil then
+        UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom,
+            510, UI.Rights, nil, nil, nil, UI.ResizeSides)
+    end
     if not Networking.IsActive then UI.CloseMenu() UI.SelectedItem = nil return end
     local character = Character.Controlled
     local item = character ~= nil and not character.IsDead and not character.IsIncapacitated and character.SelectedItem or nil
