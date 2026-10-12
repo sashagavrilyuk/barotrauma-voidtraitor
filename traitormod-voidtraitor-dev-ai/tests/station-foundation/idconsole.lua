@@ -8,12 +8,15 @@ local patches = {}
 Hook = { Add = function() end, Patch = function(id, _, _, callback) patches[id] = callback end, HookMethodType = {Before=1} }
 Networking = { Receive = function() end, CreateEntityEvent = function() end }
 Item = { ChangePropertyEventData = function(property) assert(property=='Tags','non-editable ID property sent over the property channel') return {} end }
-JobPrefab = { Prefabs={ContainsKey=function() return true end}, Get = function(id) return { Name = {Value=id} } end }
+JobPrefab = { Prefabs={ContainsKey=function(id) return id=='engineer' or id=='captain' or id=='assistant' end}, Get = function(id) return { Name = {Value=id} } end }
 local identityEvents = {}
 LuaUserData = { CreateStatic=function(kind) return function(item) return {Kind=kind,Item=item} end end,
     IsTargetType=function(data,kind) return data.Kind==kind end }
 Entity = { Spawner={CreateNetworkEvent=function(event) identityEvents[#identityEvents+1]=event end} }
 Traitormod = { Path=modpath, IsRoundFinalizing=function() return false end }
+Traitormod.Config = { IdConsole=dofile(modpath..'/Lua/config/idconsole.lua') }
+table.insert(Traitormod.Config.IdConsole.Access,{Tag='vt_access_lab',Name='Laboratory'})
+table.insert(Traitormod.Config.IdConsole.Presets,{Id='custom_laboratory',Name='Laboratory technician',Tags={'vt_access_lab','vt_access_engineering'}})
 Game = { RoundStarted=true, Server={EntityEventManager={Events=sequence({})}} }
 require = function(module)
     if module == 'json' then return { encode=function(parts)
@@ -24,6 +27,11 @@ require = function(module)
     return {}
 end
 local console = dofile(modpath..'/Lua/features/idconsole.lua')
+local captainPreset
+for _, preset in ipairs(console.Config.Presets) do
+    if preset.Id=='captain' then captainPreset=preset end
+end
+assert(captainPreset ~= nil and captainPreset.Tags[#captainPreset.Tags]=='vt_access_lab','AllAccess did not include a user-configured permission')
 local function card(id, tags)
     local data = { ID=id, Description='original', Tags='', Name='ID' }
     local info = { OwnerName='Original name', OwnerJobId=identifier('assistant'), OwnerJob={Name={Value='Assistant'}}, Description='original', SerializableProperties=sequence({}) }
@@ -76,6 +84,11 @@ assert(console.Apply(client,item,payload({'vt_access_security'})),'pending ident
 pending({{Entity=target,Sent=true,Data={Kind='Status'}}})
 assert(console.Apply(client,item,payload({'vt_access_security'},'Next name','Next title')),'identity retry after sent events failed')
 assert(info.OwnerName=='Next name' and #identityEvents==4)
+assert(console.Apply(client,item,{Tags={'vt_access_security','vt_access_reactor'},Job='custom_laboratory',Title='Laboratory technician',Revision=console.Revision(item)}),'custom preset was not accepted')
+assert(info.OwnerJobId.Value=='assistant' and target.HasTag('jobid:assistant') and target.HasTag('vt_access_reactor'),'custom preset changed the native job ID')
+assert(not console.Apply(client,item,{Tags={'vt_access_lab'},Job='custom_laboratory',Revision=console.Revision(item)}),'custom preset bypassed authorization')
+assert(console.Apply(client,item,{Tags={'vt_access_security','vt_access_reactor'},Job='engineer',Title='Engineer',Revision=console.Revision(item)}),'native engineer preset failed')
+assert(info.OwnerJobId.Value=='engineer' and target.HasTag('jobid:engineer') and not target.HasTag('jobid:assistant'),'explicit native JobId did not update the card correctly')
 assert(not console.Apply(client,item,payload({'vt_access_security'},'bad,tag','Job')),'tag injection accepted')
 client.Character.SelectedItem=nil
 assert(not console.Apply(client,item,payload({'vt_access_security'})),'remote edit accepted')
@@ -86,4 +99,17 @@ client.Character.IsIncapacitated=false
 slots[1]=nil
 assert(not console.Apply(client,item,payload({'vt_access_security'})),'missing authority accepted')
 assert(patches['Traitormod.IdConsole.Native'],'native console handler missing')
+InvSlotType={Card=1}
+local captainCard=card(9,{})
+console.InitializeCard({Info={Job={Prefab={Identifier=identifier('captain')}}},Inventory={GetItemInLimbSlot=function() return captainCard end}})
+assert(captainCard.HasTag('vt_station_original_captain_id'),'genuine captain ID marker was not set')
+local fakeCaptain=card(10,{})
+fakeCaptain.GetComponentString('IdCard').OwnerJobId=identifier('captain')
+Traitormod.RoleManager={Objectives={Objective={new=function(self) return setmetatable({}, {__index=self}) end}}}
+Traitormod.SelectedGamemode={Name='Station'}
+local steal=dofile(modpath..'/Lua/objectives/stealcaptainid.lua')
+steal.Character={Inventory={AllItems=sequence({fakeCaptain})}}
+assert(not steal:IsCompleted(),'forged captain job ID counted as stolen captain card')
+steal.Character.Inventory.AllItems=sequence({captainCard})
+assert(steal:IsCompleted(),'genuine captain card did not complete the objective')
 return 'PASS ID console: authority differences, unknown tags, stale/swapped cards, identity, compatibility tags, physical interaction'

@@ -1,6 +1,14 @@
 local console = {}
 Traitormod.IdConsole = console
-console.Config = dofile(Traitormod.Path .. "/Lua/config/idconsole.lua")
+console.Config = Traitormod.Config.IdConsole
+for _, preset in ipairs(console.Config.Presets) do
+    if preset.AllAccess then
+        preset.Tags = {}
+        for _, entry in ipairs(console.Config.Access) do
+            preset.Tags[#preset.Tags + 1] = entry.Tag
+        end
+    end
+end
 local json = require("json")
 local prompts = require("textpromptutils")
 local sessions = {}
@@ -55,10 +63,10 @@ function console.Apply(client, item, payload)
     local preset
     if payload.Job ~= nil then
         for _, entry in ipairs(console.Config.Presets) do if entry.Id == payload.Job then preset = entry break end end
-        if preset == nil then return false end
+        if preset == nil or (preset.JobId ~= nil and not JobPrefab.Prefabs.ContainsKey(preset.JobId)) then return false end
     end
     local replace = (name ~= nil and name ~= info.OwnerName) or (title ~= nil and title ~= console.CardTitle(target))
-        or (preset ~= nil and preset.Id ~= info.OwnerJobId.Value)
+        or (preset ~= nil and preset.JobId ~= nil and preset.JobId ~= info.OwnerJobId.Value)
     if replace then
         -- A pending refresh/status event must reach clients before another refresh.
         -- Otherwise the native event queue can merge away the new condition event.
@@ -75,7 +83,7 @@ function console.Apply(client, item, payload)
     for tag in target.GetTags() do
         local value = tag.Value
         if (name ~= nil and value:sub(1, 5) == "name:") or (title ~= nil and value:sub(1, 12) == "vt_jobtitle:")
-            or (preset ~= nil and value:sub(1, 6) == "jobid:") then remove[#remove + 1] = tag end
+            or (preset ~= nil and preset.JobId ~= nil and value:sub(1, 6) == "jobid:") then remove[#remove + 1] = tag end
     end
     for _, tag in ipairs(remove) do target.RemoveTag(tag) end
     if name ~= nil then
@@ -83,10 +91,9 @@ function console.Apply(client, item, payload)
         target.AddTag("name:" .. name)
     end
     if title ~= nil then target.AddTag("vt_jobtitle:" .. title) end
-    if preset ~= nil then
-        -- A custom job title is allowed even when it has no native JobPrefab.
-        info.OwnerJobId = Identifier(JobPrefab.Prefabs.ContainsKey(preset.Id) and preset.Id or "")
-        if info.OwnerJobId.Value ~= "" then target.AddTag("jobid:" .. info.OwnerJobId.Value) end
+    if preset ~= nil and preset.JobId ~= nil then
+        info.OwnerJobId = Identifier(preset.JobId)
+        target.AddTag("jobid:" .. preset.JobId)
     end
     if replace and (name ~= nil or title ~= nil) then
         local currentTitle = title or console.CardTitle(target)
@@ -319,6 +326,9 @@ function console.InitializeCard(character)
             for _, tag in ipairs(preset.Tags) do card.AddTag(tag) end
             break
         end
+    end
+    if character.Info.Job.Prefab.Identifier.Value == "captain" then
+        card.AddTag("vt_station_original_captain_id")
     end
     card.AddTag("vt_station_card_initialized")
     console.Sync(card, card, "Tags")
