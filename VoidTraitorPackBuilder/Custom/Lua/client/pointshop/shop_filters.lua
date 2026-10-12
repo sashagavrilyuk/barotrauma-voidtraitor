@@ -86,12 +86,12 @@ function P.ToggleFilterPopup(button)
 end
 
 function P.BuildFilterBar(parent)
-    local bar = P.CreateLayout(parent, 1, 0.082, nil, true, GUI.Anchor.TopLeft)
+    local bar = P.CreateLayout(parent, 1, P.FILTER_BAR_HEIGHT or 0.082, nil, true, GUI.Anchor.TopLeft)
     bar.RelativeSpacing = 0.018
 
     local filterGroup = P.CreateLayout(bar, 0.40, 1, nil, false, GUI.Anchor.TopLeft)
     filterGroup.RelativeSpacing = 0.002
-    local filterLabel = P.CreateText(filterGroup, 1, 0.38, nil, P.GetText("Filter"), GUI.Alignment.BottomLeft, 1.70, Color(235, 225, 180, 255), false)
+    local filterLabel = P.CreateText(filterGroup, 1, 0.38, nil, P.GetText("Filter"), GUI.Alignment.BottomLeft, P.FILTER_LABEL_SCALE or 1.70, Color(235, 225, 180, 255), false)
     filterLabel.TextOffset = Vector2(0, -2)
     S.filterButton = GUI.Button(P.CreateRect(1, 0.60, filterGroup, nil), P.GetSelectedFilterLabel(), GUI.Alignment.CenterLeft, "GUIDropDown")
     P.SetButtonStyle(S.filterButton, true, false)
@@ -111,7 +111,7 @@ function P.BuildFilterBar(parent)
 
     local searchGroup = P.CreateLayout(bar, 0.60, 1, nil, false, GUI.Anchor.TopLeft)
     searchGroup.RelativeSpacing = 0.002
-    local searchLabel = P.CreateText(searchGroup, 1, 0.38, nil, P.GetText("Search"), GUI.Alignment.BottomLeft, 1.70, Color(235, 225, 180, 255), false)
+    local searchLabel = P.CreateText(searchGroup, 1, 0.38, nil, P.GetText("Search"), GUI.Alignment.BottomLeft, P.FILTER_LABEL_SCALE or 1.70, Color(235, 225, 180, 255), false)
     searchLabel.TextOffset = Vector2(0, -2)
     local searchBox = GUI.TextBox(P.CreateRect(1, 0.60, searchGroup, nil), S.searchText)
     searchBox.OnTextChangedDelegate = function(_, value)

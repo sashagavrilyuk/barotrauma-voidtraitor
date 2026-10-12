@@ -82,10 +82,10 @@ local snapshot={Products={product('hardware:1','Гаечный ключ'),produc
     Text={Title='cargo',Close='close',Budget='budget',Reserved='reserved',Reason='reason',Submit='submit',Approve='approve',Reject='reject',Orders='orders',Quantity='quantity',Pending='pending',Accepted='accepted',Outbound='outbound',Delivered='delivered',Rejected='rejected',Home='home',Capacity='capacity',Large='large',Ship='ship',Sales='sales',LastSale='lastsale',NoShip='noship',Empty='empty',Search='search',Cart='cart'}}
 local reply={ReadUInt16=function() return item.ID end,ReadString=function() return snapshot end}
 receivers.VoidTraitor_CargoSnapshot(reply)
-assert(ui.MenuRoot and ui.MenuRoot.RectTransform.Size.X == 800 and ui.MenuRoot.RectTransform.Size.Y == 530 and not ui.AwaitingOpen,'first snapshot did not open')
+assert(ui.MenuRoot and ui.MenuRoot.RectTransform.ScreenSpaceOffset.Y == -25 and ui.MenuRoot.RectTransform.Size.X == 800 and ui.MenuRoot.RectTransform.Size.Y == 580 and not ui.AwaitingOpen,'first snapshot did not open')
 assert(VoidTraitorPointshopGuiState==ordinary and ordinary.Marker=='ordinary shop','pointshop state mutated')
 local p,s=cargoP,cargoP.State
-assert(#p.BuildFolderList()==2,'folder hierarchy not reused')
+assert(#p.BuildFolderList()==2 and p.FILTER_BAR_HEIGHT == 0.18 and p.FILTER_LABEL_SCALE == 0.95,'compact cargo catalog was not configured')
 s.currentView,s.selectedCategory,s.selectedPath='products','hardware',''
 p.ShowMenu()
 assert(#s.productRows==1 and s.productRows[1].Price.Text=='10 кр','Cargo currency display')

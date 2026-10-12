@@ -26,7 +26,7 @@ function P.BuildShopPanel(overlay)
     S.rebuildProductList = nil
     if S.currentView == "products" then P.BuildFilterBar(menuContent) end
 
-    local listHeight = S.currentView == "products" and 0.768 or 0.855
+    local listHeight = S.currentView == "products" and (P.PRODUCT_LIST_HEIGHT or 0.768) or 0.855
     -- One vanilla green list frame. The list's own background below is kept
     -- transparent so a second nested outline is not drawn.
     local listFrame = GUI.Frame(P.CreateRect(1, listHeight, menuContent, nil), "GUIFrameListBox")

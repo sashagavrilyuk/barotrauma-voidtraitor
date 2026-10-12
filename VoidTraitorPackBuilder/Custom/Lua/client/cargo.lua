@@ -9,7 +9,8 @@ local UI = {}
 _G.VoidTraitorCargoGuiState = UI
 local inputTypes = LuaUserData.CreateEnumTable("Barotrauma.InputType")
 
-local P = { Common = Common, State = {}, GUI_DRAW_ORDER = 120, PANEL_WIDTH = 1, CATEGORY_ROW_MIN_HEIGHT = 40,
+local P = { Common = Common, State = {}, GUI_DRAW_ORDER = 120, PANEL_WIDTH = 1, CATEGORY_ROW_MIN_HEIGHT = 40, FILTER_BAR_HEIGHT = 0.18,
+    FILTER_LABEL_SCALE = 0.95, PRODUCT_LIST_HEIGHT = 0.68,
     ITEM_ROW_HEIGHT = 0.225, ITEM_ICON_PIXELS = 42, ACTION_BUTTON_PIXELS = 42, NET_INT32_MAX = 2147483647 }
 local S = P.State
 S.products, S.productById, S.cart, S.expandedFolders = {}, {}, {}, {}
@@ -105,7 +106,7 @@ function P.RefreshCartOnly()
     UI.CartList.BarScroll = scroll
     UI.Total.Text = P.GetText("Total") .. ": " .. UI.Money(P.GetCartTotal())
     local selected = P.GetSelectedProduct()
-    UI.Details.Text = S.lastMessage ~= "" and S.lastMessage or (selected ~= nil and P.Utf8Truncate(selected.Name .. "\n" .. P.GetProductDescriptionText(selected), 160) or "")
+    UI.Details.Text = S.lastMessage ~= "" and S.lastMessage or (selected ~= nil and P.Utf8Truncate(selected.Name .. "\n" .. P.GetProductDescriptionText(selected), 58) or "")
     UI.Details.ToolTip = selected ~= nil and P.GetProductDescriptionText(selected) or ""
     UI.Reason.Enabled = not UI.SubmitPending
     UI.Submit.Enabled = not UI.SubmitPending and #S.cart > 0 and string.find(tostring(UI.Reason.Text), "%S") ~= nil
@@ -123,13 +124,13 @@ function UI.UpdateOrders()
         icon.CanBeFocused = false
         P.CreateProductIcon(icon, order.IconIdentifier)
         local status = snapshot.Text[order.Status] or snapshot.Text[string.gsub(order.Status, "^%l", string.upper)] or ""
-        local details = P.CreateText(row, 0.63, 1, nil,
+        local details = P.CreateText(row, 0.57, 1, nil,
             order.Name .. " ×" .. tostring(order.Quantity) .. "  ·  " .. UI.Money(order.Price) .. "  ·  " .. status .. "\n"
             .. order.Author .. "  ·  " .. order.Reason, GUI.Alignment.Left, 0.88)
         details.ToolTip = order.Name .. "\n" .. order.Author .. "\n" .. order.Reason
         local canManage = snapshot.CanManage and (order.Status == "pending" or order.Status == "accepted" or order.Status == "Pending" or order.Status == "Accepted")
-        local approve = P.CreateButton(row, 0.14, 0.65, nil, snapshot.Text.Approve, canManage and (order.Status == "pending" or order.Status == "Pending"))
-        local reject = P.CreateButton(row, 0.14, 0.65, nil, snapshot.Text.Reject, canManage)
+        local approve = P.CreateButton(row, 0.12, 0.65, nil, snapshot.Text.Approve, canManage and (order.Status == "pending" or order.Status == "Pending"))
+        local reject = P.CreateButton(row, 0.12, 0.65, nil, snapshot.Text.Reject, canManage)
         approve.OnClicked = function() UI.Send("approve", { OrderId = order.Id }) return true end
         reject.OnClicked = function() UI.Send("reject", { OrderId = order.Id }) return true end
     end
@@ -171,12 +172,12 @@ function UI.Update(snapshot)
         else entry.Quantity = math.min(entry.Quantity, math.max(product.AllowQuantity and (product.MaxQuantity or product.Stock or 1) or 1, 1)) end
     end
     if changed then P.ShowMenu() else P.RefreshProductRows() P.RefreshCartOnly() end
-    UI.Budget.Text = snapshot.Text.Budget .. ": " .. UI.Money(snapshot.Budget) .. "  ·  " .. snapshot.Text.Reserved .. ": " .. UI.Money(snapshot.Reserved)
     local ship = snapshot.Ship
     local shipState = snapshot.Text[ship.State] or snapshot.Text[string.gsub(ship.State, "^%l", string.upper)] or ""
-    UI.Ship.Text = snapshot.Text.Ship .. ": " .. shipState .. "  ·  " .. snapshot.Text.Capacity .. ": "
-        .. tostring(ship.SlotsFree) .. "/" .. tostring(ship.SlotsTotal) .. "  ·  " .. snapshot.Text.Large .. ": " .. tostring(ship.LargeFree) .. "/" .. tostring(ship.LargeTotal)
-        .. "  ·  " .. snapshot.Text.Sales .. ": " .. UI.Money(ship.SalesValue) .. "  ·  " .. snapshot.Text.LastSale .. ": " .. UI.Money(ship.LastSale)
+    UI.Budget.Text = snapshot.Text.Budget .. ": " .. UI.Money(snapshot.Budget) .. "  ·  " .. snapshot.Text.Reserved .. ": " .. UI.Money(snapshot.Reserved)
+        .. "  ·  " .. snapshot.Text.Ship .. ": " .. shipState .. "\n"
+        .. snapshot.Text.Capacity .. ": " .. tostring(ship.SlotsFree) .. "/" .. tostring(ship.SlotsTotal)
+        .. "  ·  " .. snapshot.Text.Large .. ": " .. tostring(ship.LargeFree) .. "/" .. tostring(ship.LargeTotal)
     UI.UpdateOrders()
 end
 
@@ -184,7 +185,8 @@ function UI.Show(itemId, snapshot)
     if UI.MenuRoot ~= nil then UI.Update(snapshot) return end
     UI.ItemId = itemId
     local screenWidth, screenHeight = Common.GetScreenSize()
-    local root = GUI.Frame(GUI.RectTransform(Point(math.floor(math.min(screenWidth * 0.78, 800)), math.floor(math.min(screenHeight * 0.8, 530))), nil, GUI.Anchor.Center), "GUIFrame")
+    local root = GUI.Frame(GUI.RectTransform(Point(math.floor(math.min(screenWidth * 0.78, 800)), math.floor(math.min(screenHeight * 0.86, 580))), nil, GUI.Anchor.Center), "GUIFrame")
+    root.RectTransform.ScreenSpaceOffset = Point(0, -25)
     UI.MenuRoot, UI.CurrentMenu, S.currentMenu, S.guiRoot = root, root, root, root
     local layout = P.CreateLayout(root, 0.965, 0.955, GUI.Anchor.Center, false)
     layout.RelativeSpacing = 0.007
@@ -193,9 +195,8 @@ function UI.Show(itemId, snapshot)
     title.Font = GUI.Style.SubHeadingFont
     local close = P.CreateButton(heading, 0.12, 1, nil, snapshot.Text.Close)
     close.OnClicked = function() UI.CloseMenu(true) return true end
-    UI.Budget = P.CreateText(layout, 1, 0.035, nil, "", GUI.Alignment.Left, 0.95)
-    UI.Ship = P.CreateText(layout, 1, 0.04, nil, "", GUI.Alignment.Left, 0.85)
-    local upper = P.CreateLayout(layout, 1, 0.56, nil, true)
+    UI.Budget = P.CreateText(layout, 1, 0.065, nil, "", GUI.Alignment.Left, 0.85)
+    local upper = P.CreateLayout(layout, 1, 0.59, nil, true
     upper.RelativeSpacing = 0.015
     S.catalogHost = GUI.Frame(P.CreateRect(0.66, 1, upper), nil)
     S.catalogHost.Color = Color(0, 0, 0, 0)
@@ -203,9 +204,9 @@ function UI.Show(itemId, snapshot)
     local cartFrame = GUI.Frame(P.CreateRect(0.325, 1, upper), "GUIFrameListBox")
     local cart = P.CreateLayout(cartFrame, 0.95, 0.94, GUI.Anchor.Center, false)
     cart.RelativeSpacing = 0.007
-    P.CreateText(cart, 1, 0.065, nil, snapshot.Text.Cart, GUI.Alignment.Left, 1.0)
-    UI.Details = P.CreateText(cart, 1, 0.14, nil, "", GUI.Alignment.Left, 0.80)
-    UI.CartList = GUI.ListBox(P.CreateRect(1, 0.36, cart), false)
+    P.CreateText(cart, 1, 0.085, nil, snapshot.Text.Cart, GUI.Alignment.Left, 1.0)
+    UI.Details = P.CreateText(cart, 1, 0.14, nil, "", GUI.Alignment.Left, 0.75)
+    UI.CartList = GUI.ListBox(P.CreateRect(1, 0.34, cart), false)
     UI.Total = P.CreateText(cart, 1, 0.07, nil, "", GUI.Alignment.Left, 0.95)
     P.CreateText(cart, 1, 0.06, nil, snapshot.Text.Reason, GUI.Alignment.Left, 0.9)
     UI.Reason = GUI.TextBox(P.CreateRect(1, 0.105, cart), "")
