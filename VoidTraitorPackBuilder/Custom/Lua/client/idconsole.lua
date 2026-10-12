@@ -32,16 +32,18 @@ function UI.Show(itemId, snapshot)
     UI.ItemId = itemId
     local text = snapshot.Text
     local screenWidth, screenHeight = Common.GetScreenSize()
-    local root = GUI.Frame(GUI.RectTransform(Point(
-        math.floor(math.min(screenWidth * 0.78, 800)),
-        math.floor(math.min(screenHeight * 0.8, 530))), nil, GUI.Anchor.Center), "GUIFrame")
+    local width = math.floor(math.min(screenWidth * 0.92, math.max(800, Common.SafeIntScale(800))))
+    local height = math.floor(math.min(screenHeight * 0.92, math.max(590, Common.SafeIntScale(590))))
+    local root = GUI.Frame(GUI.RectTransform(Point(width, height), nil, GUI.Anchor.Center), "GUIFrame")
     UI.MenuRoot, UI.CurrentMenu, UI.Popups = root, root, {}
     local layout = GUI.LayoutGroup(Common.CreateRect(0.95, 0.98, root, GUI.Anchor.Center), false)
     layout.RelativeSpacing = 0.008
     local heading = GUI.LayoutGroup(Common.CreateRect(1, 0.065, layout), true)
     local title = GUI.TextBlock(Common.CreateRect(0.87, 1, heading), text.Title)
     title.Font = GUI.Style.SubHeadingFont
+    title.AutoScaleHorizontal = true
     local close = GUI.Button(Common.CreateRect(0.12, 1, heading), text.Close)
+    close.TextBlock.AutoScaleHorizontal = true
     close.OnClicked = function()
         UI.CloseMenu()
         if Character.Controlled ~= nil then
@@ -61,11 +63,13 @@ function UI.Show(itemId, snapshot)
         GUI.TextBlock(Common.CreateRect(1, 0.16, content), index == 1 and text.Auth or text.Target)
         local details = GUI.TextBlock(Common.CreateRect(1, 0.42, content), "")
         details.Wrap = true
+        details.AutoScaleVertical = true
         local row = GUI.LayoutGroup(Common.CreateRect(1, 0.32, content), true)
         row.RelativeSpacing = 0.02
         local picker = GUI.DropDown(Common.CreateRect(0.60, 1, row), text.Choose, 5)
         UI.Popups[#UI.Popups + 1] = picker
         local transfer = GUI.Button(Common.CreateRect(0.38, 1, row), text.Insert)
+        transfer.TextBlock.AutoScaleHorizontal = true
         transfer.OnClicked = function()
             local slot = current.Slots[index]
             if slot.Id ~= 0 then UI.Send("eject", { Slot = slot.Slot, Card = slot.Id })
@@ -86,6 +90,8 @@ function UI.Show(itemId, snapshot)
     local job = GUI.TextBox(Common.CreateRect(0.54, 1, jobRow), "")
     job.MaxTextLength = 64
     local saveJob = GUI.Button(Common.CreateRect(0.21, 1, jobRow), text.Save)
+    saveName.TextBlock.AutoScaleHorizontal = true
+    saveJob.TextBlock.AutoScaleHorizontal = true
     local presetRow = GUI.LayoutGroup(Common.CreateRect(1, 0.065, layout), true)
     GUI.TextBlock(Common.CreateRect(0.24, 1, presetRow), text.Preset)
     local preset = GUI.DropDown(Common.CreateRect(0.54, 1, presetRow), text.Preset, 6)
@@ -93,14 +99,22 @@ function UI.Show(itemId, snapshot)
     for _, entry in ipairs(snapshot.Presets) do preset.AddItem(entry.Name, entry.Id) end
     local rights = GUI.ListBox(Common.CreateRect(1, 0.335, layout), false)
     local checks = {}
-    for index = 1, #snapshot.Access, 4 do
+    local columns = width < math.max(710, Common.SafeIntScale(710)) and 2 or 4
+    for index = 1, #snapshot.Access, columns do
         local row = GUI.LayoutGroup(Common.CreateRect(1, 0.16, rights.Content), true)
+        row.RectTransform.MinSize = Point(0, Common.SafeIntScale(30))
         row.RelativeSpacing = 0.02
-        for offset = 0, 3 do
+        for offset = 0, columns - 1 do
             local entry = snapshot.Access[index + offset]
-            if entry ~= nil then checks[entry.Tag] = GUI.TickBox(Common.CreateRect(0.235, 1, row), entry.Name) end
+            if entry ~= nil then
+                local checkbox = GUI.TickBox(Common.CreateRect((1 - 0.02 * (columns - 1)) / columns, 1, row), entry.Name)
+                checkbox.TextBlock.AutoScaleHorizontal = true
+                checks[entry.Tag] = checkbox
+            end
         end
     end
+    rights:RecalculateChildren()
+    rights:UpdateScrollBarSize()
     local actions = GUI.LayoutGroup(Common.CreateRect(1, 0.07, layout), true)
     actions.RelativeSpacing = 0.01
     local all = GUI.Button(Common.CreateRect(0.2425, 1, actions), text.All)
@@ -110,6 +124,8 @@ function UI.Show(itemId, snapshot)
     for _, button in ipairs({ all, clear, reset, apply }) do button.TextBlock.AutoScaleHorizontal = true end
     local status = GUI.TextBlock(Common.CreateRect(1, 0.06, layout), "")
     status.Wrap = true
+    status.AutoScaleHorizontal = true
+    status.AutoScaleVertical = true
     local selectedJob
     local function tags()
         local result = {}

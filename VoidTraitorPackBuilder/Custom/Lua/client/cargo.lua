@@ -9,9 +9,9 @@ local UI = {}
 _G.VoidTraitorCargoGuiState = UI
 local inputTypes = LuaUserData.CreateEnumTable("Barotrauma.InputType")
 
-local P = { Common = Common, State = {}, GUI_DRAW_ORDER = 120, PANEL_WIDTH = 1, CATEGORY_ROW_MIN_HEIGHT = 40, FILTER_BAR_HEIGHT = 0.18,
+local P = { Common = Common, State = {}, GUI_DRAW_ORDER = 120, PANEL_WIDTH = 1, CATEGORY_ROW_MIN_HEIGHT = Common.SafeIntScale(40), FILTER_BAR_HEIGHT = 0.18,
     FILTER_LABEL_SCALE = 0.95, PRODUCT_LIST_HEIGHT = 0.68,
-    ITEM_ROW_HEIGHT = 0.27, ITEM_ICON_PIXELS = 40, ACTION_BUTTON_PIXELS = 42, NET_INT32_MAX = 2147483647 }
+    ITEM_ROW_HEIGHT = 0.27, ITEM_ICON_PIXELS = Common.SafeIntScale(40), ACTION_BUTTON_PIXELS = Common.SafeIntScale(42), NET_INT32_MAX = 2147483647 }
 local S = P.State
 S.products, S.productById, S.cart, S.expandedFolders = {}, {}, {}, {}
 S.cooldownTextBlocks, S.classLimitTextBlocks = { shop = {}, cart = {} }, { shop = {}, cart = {} }
@@ -92,7 +92,7 @@ function P.RefreshCartOnly()
         local product = S.productById[entry.Id]
         if product ~= nil then
             local row = P.CreateLayout(UI.CartList.Content, 1, 0.34, nil, true, GUI.Anchor.CenterLeft)
-            row.RectTransform.MinSize = Point(0, 38)
+            row.RectTransform.MinSize = Point(0, Common.SafeIntScale(38))
             local name = P.CreateText(row, 0.61, 1, nil, product.Name .. " ×" .. tostring(entry.Quantity) .. "\n" .. UI.Money(product.Price * entry.Quantity), GUI.Alignment.Left, 0.85)
             name.ToolTip = product.Name
             local remove = P.CreateButton(row, 0.18, 0.85, nil, "−", not UI.SubmitPending)
@@ -118,7 +118,7 @@ function UI.UpdateOrders()
     list.Content:ClearChildren()
     for _, order in ipairs(snapshot.Orders) do
         local row = P.CreateLayout(list.Content, 1, 0.40, nil, true, GUI.Anchor.CenterLeft)
-        row.RectTransform.MinSize = Point(0, 50)
+        row.RectTransform.MinSize = Point(0, Common.SafeIntScale(50))
         local icon = GUI.Frame(P.CreateRect(0.07, 1, row), nil)
         icon.Color = Color(0, 0, 0, 0)
         icon.CanBeFocused = false
@@ -127,12 +127,17 @@ function UI.UpdateOrders()
         local details = P.CreateText(row, 0.54, 1, nil,
             order.Name .. " ×" .. tostring(order.Quantity) .. "  ·  " .. UI.Money(order.Price) .. "  ·  " .. status .. "\n"
             .. order.Author .. "  ·  " .. order.Reason, GUI.Alignment.Left, 0.88)
+        details.Wrap = false
+        details.AutoScaleHorizontal = true
+        details.AutoScaleVertical = true
         details.ToolTip = order.Name .. "\n" .. order.Author .. "\n" .. order.Reason
         local canManage = snapshot.CanManage and (order.Status == "pending" or order.Status == "accepted" or order.Status == "Pending" or order.Status == "Accepted")
         local approve = P.CreateButton(row, 0.14, 0.65, nil, snapshot.Text.Approve, canManage and (order.Status == "pending" or order.Status == "Pending"))
         local reject = P.CreateButton(row, 0.14, 0.65, nil, snapshot.Text.Reject, canManage)
         approve.OnClicked = function() UI.Send("approve", { OrderId = order.Id }) return true end
         reject.OnClicked = function() UI.Send("reject", { OrderId = order.Id }) return true end
+        approve.TextBlock.AutoScaleHorizontal = true
+        reject.TextBlock.AutoScaleHorizontal = true
     end
     if #snapshot.Orders == 0 then P.CreateText(list.Content, 1, 0.3, nil, snapshot.Text.Empty, GUI.Alignment.Center) end
     list:RecalculateChildren()
@@ -185,8 +190,10 @@ function UI.Show(itemId, snapshot)
     if UI.MenuRoot ~= nil then UI.Update(snapshot) return end
     UI.ItemId = itemId
     local screenWidth, screenHeight = Common.GetScreenSize()
-    local root = GUI.Frame(GUI.RectTransform(Point(math.floor(math.min(screenWidth * 0.78, 800)), math.floor(math.min(screenHeight * 0.86, 580))), nil, GUI.Anchor.Center), "GUIFrame")
-    root.RectTransform.ScreenSpaceOffset = Point(0, -25)
+    local width = math.floor(math.min(screenWidth * 0.92, math.max(800, Common.SafeIntScale(800))))
+    local height = math.floor(math.min(screenHeight * 0.92, math.max(580, Common.SafeIntScale(580))))
+    local root = GUI.Frame(GUI.RectTransform(Point(width, height), nil, GUI.Anchor.Center), "GUIFrame")
+    root.RectTransform.ScreenSpaceOffset = Point(0, -Common.SafeIntScale(25))
     UI.MenuRoot, UI.CurrentMenu, S.currentMenu, S.guiRoot = root, root, root, root
     local layout = P.CreateLayout(root, 0.965, 0.955, GUI.Anchor.Center, false)
     layout.RelativeSpacing = 0.007
@@ -194,8 +201,11 @@ function UI.Show(itemId, snapshot)
     local title = P.CreateText(heading, 0.87, 1, nil, snapshot.Text.Title, GUI.Alignment.Left, 1.15)
     title.Font = GUI.Style.SubHeadingFont
     local close = P.CreateButton(heading, 0.12, 1, nil, snapshot.Text.Close)
+    close.TextBlock.AutoScaleHorizontal = true
     close.OnClicked = function() UI.CloseMenu(true) return true end
-    UI.Budget = P.CreateText(layout, 1, 0.065, nil, "", GUI.Alignment.Left, 0.85)
+    UI.Budget = P.CreateText(layout, 1, 0.065, nil, "", GUI.Alignment.Left, 0.85, nil, false)
+    UI.Budget.AutoScaleHorizontal = true
+    UI.Budget.AutoScaleVertical = true
     local upper = P.CreateLayout(layout, 1, 0.58, nil, true)
     upper.RelativeSpacing = 0.015
     S.catalogHost = GUI.Frame(P.CreateRect(0.66, 1, upper), nil)
@@ -206,6 +216,8 @@ function UI.Show(itemId, snapshot)
     cart.RelativeSpacing = 0.007
     P.CreateText(cart, 1, 0.085, nil, snapshot.Text.Cart, GUI.Alignment.Left, 1.0)
     UI.Details = P.CreateText(cart, 1, 0.18, nil, "", GUI.Alignment.Left, 0.75)
+    UI.Details.AutoScaleHorizontal = true
+    UI.Details.AutoScaleVertical = true
     UI.CartList = GUI.ListBox(P.CreateRect(1, 0.30, cart), false)
     UI.Total = P.CreateText(cart, 1, 0.07, nil, "", GUI.Alignment.Left, 0.95)
     P.CreateText(cart, 1, 0.06, nil, snapshot.Text.Reason, GUI.Alignment.Left, 0.9)
@@ -213,6 +225,7 @@ function UI.Show(itemId, snapshot)
     UI.Reason.MaxTextLength = 300
     UI.Reason.OnTextChangedDelegate = function() P.RefreshCartOnly() return true end
     UI.Submit = P.CreateButton(cart, 1, 0.10, nil, snapshot.Text.Submit, false)
+    UI.Submit.TextBlock.AutoScaleHorizontal = true
     UI.Submit.OnClicked = function()
         if UI.SubmitPending or #S.cart == 0 or string.find(tostring(UI.Reason.Text), "%S") == nil then return true end
         local entries = {}

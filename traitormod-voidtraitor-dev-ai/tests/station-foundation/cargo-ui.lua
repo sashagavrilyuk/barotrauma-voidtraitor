@@ -61,7 +61,8 @@ local common={Language={Pointshop={Categories='categories',BuyTab='products',Tot
     CreateRect=function(w,h,p) return rect(Vector2(w,h),p and p.RectTransform) end,
     CreateText=function(p,w,h,anchor,text) return component(rect(Vector2(w,h),p and p.RectTransform),text) end,
     RemoveGuiComponent=function(c) if c then c.Visible=false end end,InstallPausePatch=function() end,
-    GetPrefabIconData=function() return 'sprite',Color(1,1,1) end,GetScreenSize=function() return 1600,900 end}
+    GetPrefabIconData=function() return 'sprite',Color(1,1,1) end,GetScreenSize=function() return 1600,900 end,
+    SafeIntScale=function(value) return value end}
 VoidTraitorPointshopGuiState={Marker='ordinary shop'}
 local ordinary=VoidTraitorPointshopGuiState
 assert(baseLoad(packpath..'/Lua/client/cargo.lua'))(packpath,common)
