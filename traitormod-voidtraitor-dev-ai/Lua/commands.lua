@@ -1,4 +1,7 @@
 ----- USER COMMANDS -----
+Traitormod.AddCommand("!y", function(client) return Traitormod.Cloning.Answer(client, true) end)
+Traitormod.AddCommand("!n", function(client) return Traitormod.Cloning.Answer(client, false) end)
+
 Traitormod.AddCommand("!help", function (client, args)
     Traitormod.SendMessage(client, Traitormod.Language.Help)
 

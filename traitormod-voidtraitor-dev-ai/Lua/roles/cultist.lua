@@ -128,6 +128,11 @@ function role:End(roundEnd)
     end
 end
 
+function role:Transfer(character)
+    Traitormod.RoleManager.Roles.Role.Transfer(self, character)
+    character.AddAbilityFlag(AbilityFlags.IgnoredByEnemyAI)
+end
+
 ---@return string mainPart, string subPart
 function role:ObjectivesToString()
     local primary = Traitormod.StringBuilder:new()

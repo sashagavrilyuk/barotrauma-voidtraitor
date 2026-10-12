@@ -7,7 +7,7 @@ UShort=function(value) return value end
 json={parse=function() return {} end,serialize=function() return '{}' end}
 GUI={}
 LuaUserData={CreateEnumTable=function() return {Deselect=1} end}
-local common={RemoveGuiComponent=function() end,InstallPausePatch=function() end}
+local common={RemoveGuiComponent=function() end,InstallPausePatch=function() end,UpdateMenuInteraction=function() end}
 assert(loadfile(modpath..'/../Void traitor pack/Lua/client/idconsole.lua'))('',common)
 local ui=VoidTraitorIdConsoleGuiState
 local think=hooks['VoidTraitor.IdConsole.Selection']

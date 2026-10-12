@@ -18,6 +18,7 @@ assert(loadfile(path .. "ghostroles.lua"))(language)
 assert(loadfile(path .. "pointshop.lua"))(language)
 assert(loadfile(path .. "idconsole.lua"))(language)
 assert(loadfile(path .. "cargo.lua"))(language)
+assert(loadfile(path .. "cloning.lua"))(language)
 
 -- Игровые режимы, итог раунда и голосования
 assert(loadfile(path .. "gamemodes.lua"))(language)

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="Russian" nowhitespace="false" translatedname="Русский">
+  <entityname.vt_cloning_scanner>Генетический сканер</entityname.vt_cloning_scanner>
+  <entityname.vt_cloning_pod>Клонирующая капсула</entityname.vt_cloning_pod>
+  <entityname.vt_cloning_console>Терминал клонирования</entityname.vt_cloning_console>
+  <entityname.vt_biomass>Биомасса</entityname.vt_biomass>
+  <CloneScannerConnection>Сканер</CloneScannerConnection>
+  <ClonePodConnection>Капсула</ClonePodConnection>
+  <CloneBiomass>Биомасса</CloneBiomass>
+  <CloneStart>Клонировать</CloneStart>
+</infotexts>

@@ -34,7 +34,7 @@ config.ExtensionConfig = {
 config.IdConsole = dofile(Traitormod.Path .. "/Lua/config/idconsole.lua")
 config.Cargo = {
     Budget = 10000,
-    Categories = { "medical", "materials", "maintenance", "wiring" },
+    Categories = { "medical", "materials", "maintenance", "wiring", "biomass" },
     AccessTag = "vt_access_cargo",
     MaxOrders = 100,
     MaxQuantity = 20,
@@ -43,6 +43,7 @@ config.Cargo = {
     LargeAreaSize = 200,
     DeliveredHistorySeconds = 150,
 }
+config.Cloning = { Time = 30, BiomassYield = 0.4 }
 
 ----- DISCORD -----
 
@@ -616,6 +617,10 @@ config.PointShopConfig = {
     DeathTimeoutTime = 60,
     DeathSpawnRefundAtEndRound = true,
     ItemCategories = {
+        { Identifier = "biomass", IconIdentifier = "vt_biomass", Products = {
+            { Identifier = "vt_biomass", Price = 100, Limit = 20,
+                Items = { "vt_biomass", "vt_biomass", "vt_biomass", "vt_biomass", "vt_biomass", "vt_biomass", "vt_biomass", "vt_biomass", "vt_biomass", "vt_biomass" } },
+        } },
         dofile(Traitormod.Path .. "/Lua/config/pointshop/security.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/maintenance.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/materials.lua"),

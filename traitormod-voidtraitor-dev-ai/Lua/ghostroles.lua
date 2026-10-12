@@ -12,6 +12,7 @@ local guiNet = {
 
 gr.Roles = {}
 gr.Characters = {}
+gr.ExcludedCharacters = setmetatable({}, { __mode = "k" })
 gr.Configs = {}
 gr.ConfigsBySpecies = {}
 gr.AutoRegisterBySpecies = {}
@@ -299,7 +300,7 @@ end
 
 function gr.Create(configIdentifier, character, options)
     if not config.Enabled or character == nil then return false end
-    if character.Removed or character.IsDead then return false end
+    if character.Removed or character.IsDead or gr.ExcludedCharacters[character] then return false end
 
     local roleConfig = gr.GetConfig(configIdentifier)
     if roleConfig == nil then
@@ -730,6 +731,7 @@ end)
 Hook.Add("roundEnd", "TraitorMod.GhostRoles.RoundEnd", function()
     gr.Roles = {}
     gr.Characters = {}
+    gr.ExcludedCharacters = setmetatable({}, { __mode = "k" })
     gr.NextRoleId = 1
     lastStateSignature = ""
     broadcastGuiSnapshots()

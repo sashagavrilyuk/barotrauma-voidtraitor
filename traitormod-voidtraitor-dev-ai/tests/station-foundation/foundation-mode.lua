@@ -13,7 +13,7 @@ Submarine={MainSub={SubBody={Body={BodyType=2}}}}
 local client={}
 client.PendingPositionUpdates={Contains=function() return queued~=nil end,Enqueue=function(sub) queued=sub end}
 Client={ClientList={client}}
-Traitormod={Path=modpath,Cargo={Start=function() calls.cargo=true end},Gamemodes={Gamemode={PreStart=function(self) calls.categories=self.PointshopCategories end}},Pointshop={CanUseShop=function() return false end},ClientMenu={SendSnapshot=function() calls.menu=(calls.menu or 0)+1 end}}
+Traitormod={Path=modpath,Cargo={Start=function() calls.cargo=true end},Cloning={Start=function() calls.cloning=true end},Gamemodes={Gamemode={PreStart=function(self) calls.categories=self.PointshopCategories end}},Pointshop={CanUseShop=function() return false end},ClientMenu={SendSnapshot=function() calls.menu=(calls.menu or 0)+1 end}}
 function Traitormod.Gamemodes.Gamemode:new(o) o=o or {} setmetatable(o,self) self.__index=self return o end
 local secret=dofile(modpath..'/Lua/gamemodes/secret.lua')
 Traitormod.Gamemodes.Secret=secret
@@ -29,7 +29,7 @@ assert(gm.UsesSecretRules and gm.RestrictShopToAccessibleCategories and not patc
 gm:PreStart()
 assert(Game.ServerSettings.MissionTypes=='VoidTraitorStation' and calls.categories==gm.PointshopCategories)
 gm:Start()
-assert(calls.started and calls.cargo and Submarine.MainSub.SubBody.Body.BodyType==0 and not Submarine.LockX and not Submarine.LockY)
+assert(calls.started and calls.cargo and calls.cloning and Submarine.MainSub.SubBody.Body.BodyType==0 and not Submarine.LockX and not Submarine.LockY)
 gm:Think() gm:Think()
 assert(queued==Submarine.MainSub and calls.menu==1,'position or crew shop state was not synchronized')
 local hook=assert(patches['Traitormod.Secret.EndGame.Before'])

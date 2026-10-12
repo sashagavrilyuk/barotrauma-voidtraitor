@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <Item identifier="vt_cloning_scanner" name="" category="Machine" scale="0.5" interactdistance="180" tags="vt_cloning_scanner">
+    <Sprite texture="Content/Items/Fabricators/FabricatorsAndDeconstructors.png" sourcerect="0,304,256,320" depth="0.8" />
+    <TriggerComponent radius="360" triggeredby="Character">
+      <StatusEffect type="Always" target="Character" IsContainable="true" LockHands="true" setvalue="true">
+        <Conditional IsDead="true" />
+      </StatusEffect>
+    </TriggerComponent>
+    <ItemContainer capacity="1" maxstacksize="1" canbeselected="true" hideitems="true" hudpos="0.5,0.8" slotsperrow="1">
+      <Containable items="unidentifiedbiologicalmaterial" />
+    </ItemContainer>
+    <Controller msg="ItemMsgPutInside" kickoutcharactermsg="ItemMsgTakeOut" putothercharactermsg="ItemMsgPutInside" canbeselectedbycharacters="false" hideallitemcomponenthuds="true" allowputtinginothercharacters="true" selectingkickscharacterout="true" spawnitemonselected="unidentifiedbiologicalmaterial" allowingameediting="false" userpos="0,0" canbeselected="true" selectkey="Use" drawuserbehind="true" forceusertostayattached="true">
+      <limbposition limb="Head" position="0,35" />
+      <limbposition limb="Torso" position="0,0" />
+    </Controller>
+    <ConnectionPanel canbeselected="true" selectkey="Action" msg="ItemMsgRewireScrewdriver">
+      <GuiFrame relativesize="0.2,0.25" anchor="Center" style="ConnectionPanel" />
+      <RequiredItem items="screwdriver" type="Equipped" />
+      <output name="scan" displayname="CloneScannerConnection" />
+    </ConnectionPanel>
+  </Item>
+  <Item identifier="vt_cloning_pod" name="" category="Machine" scale="0.5" interactdistance="180" health="150" tags="vt_cloning_pod">
+    <Sprite texture="Content/Items/Fabricators/FabricatorsAndDeconstructors.png" sourcerect="256,0,256,288" depth="0.8" color="120,170,200,255" />
+    <Powered powerconsumption="500" minvoltage="0.5" isactive="true" />
+    <Controller canbeselected="false" canbeselectedbycharacters="true" allowputtinginothercharacters="false" selectingkickscharacterout="false" forceusertostayattached="true" drawuserbehind="true" allowingameediting="false" userpos="0,0">
+      <limbposition limb="Head" position="0,35" />
+      <limbposition limb="Torso" position="0,0" />
+    </Controller>
+    <LightComponent ison="false" powerconsumption="0" range="140" lightcolor="80,210,240,210" pulsemagnitude="0.4" pulsefrequency="0.8" castshadows="false" />
+    <ItemContainer capacity="4" maxstacksize="64" canbeselected="true" hideitems="true" hudpos="0.5,0.8" slotsperrow="4" uilabel="CloneBiomass">
+      <Containable items="vt_biomass" />
+    </ItemContainer>
+    <ConnectionPanel canbeselected="true" selectkey="Action" msg="ItemMsgRewireScrewdriver">
+      <GuiFrame relativesize="0.2,0.25" anchor="Center" style="ConnectionPanel" />
+      <RequiredItem items="screwdriver" type="Equipped" />
+      <input name="power_in" displayname="connection.powerin" />
+      <output name="status" displayname="ClonePodConnection" />
+    </ConnectionPanel>
+  </Item>
+  <Item identifier="vt_cloning_console" name="" category="Electrical" scale="0.5" interactdistance="150" grabwhenselected="true" tags="vt_cloning_console">
+    <Sprite texture="Content/Items/Electricity/signalcomp.png" sourcerect="0,368,144,128" depth="0.8" origin="0.5,0.3" />
+    <Powered powerconsumption="50" minvoltage="0.5" isactive="true" />
+    <Terminal canbeselected="true" readonly="true" allowingameediting="false" msg="ItemMsgInteractSelect" allowuioverlap="true">
+      <GuiFrame relativesize="0.32,0.22" minsize="260,120" maxsize="440,180" anchor="Center" relativeoffset="0,-0.08" style="ItemUI" />
+    </Terminal>
+    <CustomInterface canbeselected="true" msg="ItemMsgInteractSelect" allowuioverlap="true">
+      <GuiFrame relativesize="0.32,0.08" minsize="260,40" maxsize="440,65" anchor="Center" relativeoffset="0,0.09" style="ItemUI" />
+      <Button text="CloneStart" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
+    </CustomInterface>
+    <ConnectionPanel canbeselected="true" selectkey="Action" msg="ItemMsgRewireScrewdriver">
+      <GuiFrame relativesize="0.2,0.25" anchor="Center" style="ConnectionPanel" />
+      <RequiredItem items="screwdriver" type="Equipped" />
+      <input name="power_in" displayname="connection.powerin" />
+      <input name="scanner" displayname="CloneScannerConnection" />
+      <input name="pod" displayname="ClonePodConnection" />
+    </ConnectionPanel>
+  </Item>
+  <Item identifier="vt_biomass_reclaimer" name="" nameidentifier="deconstructor" variantof="deconstructor">
+    <TriggerComponent radius="360" triggeredby="Character">
+      <StatusEffect type="Always" target="Character" IsContainable="true" LockHands="true" setvalue="true">
+        <Conditional IsDead="true" />
+      </StatusEffect>
+    </TriggerComponent>
+  </Item>
+  <Item identifier="vt_biomass" name="" category="Material" tags="smallitem,vt_biomass" maxstacksize="64" maxstacksizecharacterinventory="64" scale="0.5" cargocontaineridentifier="metalcrate">
+    <Sprite texture="Content/Items/InventoryIconAtlas2.png" sourcerect="576,64,64,64" origin="0.5,0.5" color="170,90,110,255" />
+    <Price baseprice="10" />
+    <Body width="32" height="24" density="1" />
+    <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
+  </Item>
+</Items>

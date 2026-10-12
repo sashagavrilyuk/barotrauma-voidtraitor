@@ -1,0 +1,191 @@
+local cloning = {}
+Traitormod.Cloning = cloning
+local config = Traitormod.Config.Cloning
+local prompts = require("textpromptutils")
+LuaUserData.RegisterType("Barotrauma.ContentXElement")
+local contentElement = LuaUserData.CreateStatic("Barotrauma.ContentXElement")
+local state
+
+function cloning.Start()
+    state = { Consoles = {}, Pods = {}, Jobs = {}, Owners = {}, Reclaimed = {}, Pending = {} }
+    for item in Item.ItemList do
+        if item.Prefab.Identifier == "vt_cloning_console" then state.Consoles[#state.Consoles + 1] = item end
+        if item.Prefab.Identifier == "vt_cloning_pod" then state.Pods[item] = { Biomass = 0, Consumed = {} } end
+    end
+end
+
+function cloning.Devices(console)
+    local scanner, pod
+    for connection in console.Connections do
+        for recipient in connection.Recipients do
+            local item = recipient.Item
+            if connection.Name == "scanner" and item.Prefab.Identifier == "vt_cloning_scanner" then scanner = item end
+            if connection.Name == "pod" and item.Prefab.Identifier == "vt_cloning_pod" then pod = item end
+        end
+    end
+    local material = scanner ~= nil and scanner.OwnInventory.GetItemAt(0) or nil
+    local linked = material ~= nil and material.GetComponentString("LinkedControllerCharacterComponent") or nil
+    return scanner, pod, linked ~= nil and linked.Character or nil
+end
+
+function cloning.Status(console)
+    local scanner, pod, corpse = cloning.Devices(console)
+    if scanner == nil or pod == nil or scanner.Removed or pod.Removed or pod.Condition <= 0 then return "CloneDisconnected", 0 end
+    if not console.GetComponentString("Powered").HasPower then return "CloneNoPower", 0 end
+    local job = state.Jobs[pod]
+    if job ~= nil then
+        return pod.GetComponentString("Powered").HasPower and "CloneGrowing" or "ClonePaused", math.floor(job.Progress / config.Time * 100)
+    end
+    if corpse == nil or corpse.Removed then return "CloneEmpty", 0 end
+    if not corpse.IsDead then return "CloneAlive", 0 end
+    if not pod.GetComponentString("Powered").HasPower then return "CloneNoPower", 0 end
+    local cost = math.max(1, math.ceil(corpse.Mass))
+    if state.Pods[pod].Biomass < cost then return "CloneNoBiomass", 0, cost end
+    return "CloneReady", 0
+end
+
+function cloning.Begin(client, console)
+    if state == nil or not Game.RoundStarted or Traitormod.IsRoundFinalizing() or console.Removed
+        or client.Character == nil or client.Character.IsDead or client.Character.IsIncapacitated
+        or client.Character.SelectedItem ~= console or not console.CanClientAccess(client) then return false end
+    local status = cloning.Status(console)
+    if status ~= "CloneReady" then return false end
+    local _, pod, corpse = cloning.Devices(console)
+    for _, job in pairs(state.Jobs) do if job.Corpse == corpse then return false end end
+    local info
+    if corpse.Info ~= nil then
+        info = CharacterInfo(contentElement.__new(nil, corpse.Info.Save(nil)))
+        info.PermanentlyDead, info.StartItemsGiven = false, true
+    end
+    local clone = Character.Create(corpse.SpeciesName.Value, pod.WorldPosition, tostring(math.random(1, 100000)), info,
+        UShort(0), false, true, true, nil, true, false)
+    local unkillable = clone.Unkillable
+    clone.TeamID, clone.Enabled, clone.Unkillable = corpse.TeamID, true, true
+    Traitormod.GhostRoles.ExcludedCharacters[clone] = true
+    if clone.AIController ~= nil then clone.AIController.Enabled = false end
+    if info ~= nil then clone.LoadTalents() end
+    clone.CharacterHealth.Stun = 2
+    pod.GetComponentString("Controller").Select(clone)
+    clone.SelectedItem = pod
+    pod.GetComponentString("LightComponent").IsOn = true
+    local previousOwner = state.Owners[corpse]
+    local job = { Pod = pod, Corpse = corpse, Clone = clone, Progress = 0, Account = previousOwner ~= nil and Traitormod.GetClientAccountKey(previousOwner) or nil, Unkillable = unkillable }
+    state.Jobs[pod] = job
+    state.Pods[pod].Biomass = state.Pods[pod].Biomass - math.max(1, math.ceil(corpse.Mass))
+    local ownerConnected = false
+    for _, client in pairs(Client.ClientList) do if client == previousOwner then ownerConnected = true break end end
+    for _, owner in pairs(Client.ClientList) do
+        if (owner == previousOwner or (not ownerConnected and Traitormod.GetClientAccountKey(owner) == job.Account))
+            and (owner.Character == nil or owner.Character.IsDead) then
+            state.Pending[owner] = job
+            if Traitormod.Pointshop.GuiClients[owner] then
+                prompts.Prompt(Traitormod.GetText("CloneConsent"), { Traitormod.GetText("CloneAccept"), Traitormod.GetText("CloneDecline") }, owner, function(index, response)
+                    if response == owner and state ~= nil and state.Pending[owner] == job then cloning.Answer(owner, index == 1) end
+                end, "InfoFrameTabButton.Mission")
+            else Traitormod.SendChatMessage(owner, Traitormod.GetText("CloneConsentChat")) end
+            break
+        end
+    end
+    return true
+end
+
+function cloning.Answer(client, accept)
+    local job = state ~= nil and state.Pending[client] or nil
+    if job == nil then return false end
+    state.Pending[client] = nil
+    if not accept then return true end
+    if not Game.RoundStarted or Traitormod.IsRoundFinalizing() or job.Clone.Removed or job.Clone.IsDead
+        or Traitormod.GetClientAccountKey(client) ~= job.Account
+        or (client.Character ~= nil and not client.Character.IsDead) then return false end
+    for _, owner in pairs(Client.ClientList) do if owner.Character == job.Clone then return false end end
+    local role = Traitormod.RoleManager.GetRole(job.Corpse)
+    if role ~= nil then Traitormod.RoleManager.TransferRole(job.Clone, role) end
+    client.SetClientCharacter(job.Clone)
+    if role ~= nil then
+        Traitormod.ObjectiveHud.SyncRole(role)
+        if role.SyncClientState ~= nil then role:SyncClientState(client) end
+        if role.IsAntagonist then Traitormod.UpdateVanillaTraitor(client, true, role:Greet()) end
+    end
+    Traitormod.MidRoundSpawn.SetSpawnedClient(client, job.Clone)
+    state.Owners[job.Clone] = client
+    return true
+end
+
+function cloning.Update(deltaTime)
+    if state == nil or not Game.RoundStarted or Traitormod.IsRoundFinalizing() then return end
+    for pod, data in pairs(state.Pods) do
+        if not pod.Removed then
+            for item in pairs(data.Consumed) do if item.Removed then data.Consumed[item] = nil end end
+            for item in pod.OwnInventory.AllItems do
+                if item.Prefab.Identifier == "vt_biomass" and not data.Consumed[item] then
+                    data.Consumed[item] = true
+                    data.Biomass = data.Biomass + 1
+                    Entity.Spawner.AddEntityToRemoveQueue(item)
+                end
+            end
+        end
+    end
+    for pod, job in pairs(state.Jobs) do
+        if pod.Removed or pod.Condition <= 0 or job.Clone.Removed or job.Clone.IsDead then
+            if not job.Clone.Removed then
+                job.Clone.Unkillable = false
+                job.Clone.Kill(CauseOfDeathType.Unknown, nil)
+                Entity.Spawner.AddEntityToRemoveQueue(job.Clone)
+            end
+            if not pod.Removed then pod.GetComponentString("LightComponent").IsOn = false end
+            state.Jobs[pod] = nil
+            for client, pending in pairs(state.Pending) do if pending == job then state.Pending[client] = nil end end
+        else
+            job.Clone.CharacterHealth.Stun = 2
+            if pod.GetComponentString("Powered").HasPower then job.Progress = job.Progress + deltaTime end
+            if job.Progress >= config.Time then
+                job.Clone.Unkillable = job.Unkillable
+                job.Clone.CharacterHealth.Stun = 0
+                job.Clone.SelectedItem = nil
+                job.Clone.TeleportTo(pod.WorldPosition + Vector2(pod.Rect.Width / 2 + 60, 0))
+                pod.GetComponentString("LightComponent").IsOn = false
+                state.Jobs[pod] = nil
+                for client, pending in pairs(state.Pending) do if pending == job then state.Pending[client] = nil end end
+            end
+        end
+    end
+    for _, console in ipairs(state.Consoles) do
+        if not console.Removed then
+            local status, percent, cost = cloning.Status(console)
+            local body = Traitormod.GetText(status) .. "\n" .. Traitormod.FormatText("CloneProgress", percent)
+            if cost ~= nil then body = Traitormod.FormatText(status, cost) .. "\n" .. Traitormod.FormatText("CloneProgress", percent) end
+            local terminal = console.GetComponentString("Terminal")
+            if terminal.ShowMessage ~= body then terminal.ShowMessage = body terminal.SyncHistory() end
+        end
+    end
+end
+
+Hook.Add("characterDeath", "Traitormod.Cloning.Owner", function(character)
+    if state == nil then return end
+    local client = Traitormod.FindClientCharacter(character)
+    if client ~= nil then state.Owners[character] = client end
+end)
+Hook.Patch("Traitormod.Cloning.Terminal", "Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, parameters)
+    if instance.Item.Prefab.Identifier ~= "vt_cloning_console" then return end
+    local clone = parameters["msg"].ReadBoolean()
+    parameters.PreventExecution = true
+    if clone then cloning.Begin(parameters["c"], instance.Item) end
+end, Hook.HookMethodType.Before)
+Hook.Patch("Traitormod.Cloning.Biomass", "Barotrauma.Items.Components.Deconstructor", "ApplyDeconstructionStatusEffects", function(instance, parameters)
+    if state == nil or parameters["type"] ~= ActionType.OnDeconstructed then return end
+    local linked = parameters["targetItem"].GetComponentString("LinkedControllerCharacterComponent")
+    local corpse = linked ~= nil and linked.Character or nil
+    if corpse == nil or corpse.Removed or not corpse.IsDead or state.Reclaimed[corpse] then return end
+    state.Reclaimed[corpse] = true
+    for _ = 1, math.max(1, math.floor(corpse.Mass * config.BiomassYield)) do
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("vt_biomass"), instance.OutputContainer.Inventory)
+    end
+end, Hook.HookMethodType.Before)
+Hook.Add("think", "Traitormod.Cloning.Update", cloning.Update)
+Hook.Add("roundEnd", "Traitormod.Cloning.End", function() state = nil end)
+Hook.Add("client.disconnected", "Traitormod.Cloning.Disconnect", function(client)
+    if state == nil then return end
+    if client.Character ~= nil then state.Owners[client.Character] = client end
+    state.Pending[client] = nil
+end)
+return cloning

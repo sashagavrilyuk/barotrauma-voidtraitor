@@ -13,7 +13,7 @@ function role:Transfer(character)
     self.Character = character
 
     for key, value in pairs(self.Objectives) do
-        value.Character = character
+        if value.Transfer ~= nil then value:Transfer(character) else value.Character = character end
     end
 end
 

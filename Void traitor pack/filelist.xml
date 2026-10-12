@@ -429,4 +429,6 @@
   <Item file="%ModDir%/the void traitor pack/items/cargo.xml" />
   <Text file="%ModDir%/the void traitor pack/CargoText.xml" />
   <Submarine file="%ModDir%/void traitor pack submarine/VoidTraitor Cargo Test.sub" />
+  <Item file="%ModDir%/the void traitor pack/items/cloning.xml" />
+  <Text file="%ModDir%/the void traitor pack/CloningText.xml" />
 </contentpackage>
