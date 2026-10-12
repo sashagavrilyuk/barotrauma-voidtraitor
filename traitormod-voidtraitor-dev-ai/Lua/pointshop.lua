@@ -1040,10 +1040,6 @@ local function getGuiMaxQuantity(client, product)
     return math.max(remaining, 1)
 end
 
-local function getSinglePurchaseMessage()
-    return Traitormod.Language.PointshopGuiSinglePurchase or Traitormod.Language.PointshopCannotBeUsed
-end
-
 local function canUseGuiShop(client)
     if not ps.GuiClients[client] then
         return false
@@ -1120,14 +1116,6 @@ local function getManualGuiIconIdentifier(config)
     end
 
     return ""
-end
-
-local function getCategoryIconIdentifier(category)
-    return getManualGuiIconIdentifier(category)
-end
-
-local function getSubcategoryIconIdentifier(subcategory)
-    return getManualGuiIconIdentifier(subcategory)
 end
 
 local function getAttackDefendClassJobIdentifier(product)
@@ -1276,7 +1264,7 @@ function ps.SendGuiSnapshot(client, message, purchaseCompleted, closeAfterPurcha
                     for _, pathEntry in ipairs(productPath) do
                         table.insert(pathNames, ps.GetSubcategoryName(pathEntry))
                         table.insert(pathIdentifiers, tostring(pathEntry.Identifier or pathEntry.Name or ""))
-                        table.insert(pathIcons, getSubcategoryIconIdentifier(pathEntry))
+                        table.insert(pathIcons, getManualGuiIconIdentifier(pathEntry))
                     end
 
                     local guiId = tostring(categoryIndex) .. ":" .. tostring(productConfigIndex) .. ":" .. tostring(productIndex)
@@ -1305,7 +1293,7 @@ function ps.SendGuiSnapshot(client, message, purchaseCompleted, closeAfterPurcha
                         AllowQuantity = canUseQuantityInGui(product),
                         DisabledReason = disabledReason,
                         CategoryIdentifier = tostring(category.Identifier or ""),
-                        CategoryIconIdentifier = getCategoryIconIdentifier(category),
+                        CategoryIconIdentifier = getManualGuiIconIdentifier(category),
                         PathIdentifiers = table.concat(pathIdentifiers, " > "),
                         PathIconIdentifiers = table.concat(pathIcons, "\31"),
                         MaxQuantity = getGuiMaxQuantity(client, product),
@@ -1566,7 +1554,7 @@ local function validateGuiCart(client, entries)
         local maxQuantity = getGuiMaxQuantity(client, product)
         if requestedQuantity > maxQuantity then
             if not canUseQuantityInGui(product) then
-                return false, getSinglePurchaseMessage()
+                return false, Traitormod.Language.PointshopGuiSinglePurchase or Traitormod.Language.PointshopCannotBeUsed
             end
             return false, Traitormod.Language.PointshopNoStock
         end
