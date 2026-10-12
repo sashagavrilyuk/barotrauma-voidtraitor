@@ -196,7 +196,7 @@ function UI.Show(itemId, snapshot)
     local close = P.CreateButton(heading, 0.12, 1, nil, snapshot.Text.Close)
     close.OnClicked = function() UI.CloseMenu(true) return true end
     UI.Budget = P.CreateText(layout, 1, 0.065, nil, "", GUI.Alignment.Left, 0.85)
-    local upper = P.CreateLayout(layout, 1, 0.59, nil, true
+    local upper = P.CreateLayout(layout, 1, 0.59, nil, true)
     upper.RelativeSpacing = 0.015
     S.catalogHost = GUI.Frame(P.CreateRect(0.66, 1, upper), nil)
     S.catalogHost.Color = Color(0, 0, 0, 0)
