@@ -119,9 +119,6 @@ local function SpawnCharacter(client, submarine)
     if Traitormod.Config.RespawnedPlayersDontLooseLives then
         Traitormod.LostLivesThisRound[Traitormod.GetClientAccountKey(client)] = true
     end
-
-    local mode = Traitormod.SelectedGamemode
-    if mode ~= nil and mode.OnShuttleSpawn ~= nil then mode:OnShuttleSpawn(client, character) end
 end
 
 local function ResetSubmarine(submarine)
@@ -248,7 +245,12 @@ Hook.Add("think", "RespawnShuttle.Think", function(deltaTime)
         local clients = GetRespawnClients()
 
         for key, client in pairs(clients) do
-            SpawnCharacter(client, submarine)
+            local mode = Traitormod.SelectedGamemode
+            if mode ~= nil and mode.SpawnNewcomerOnShuttle ~= nil then
+                mode:SpawnNewcomerOnShuttle(client, submarine)
+            else
+                SpawnCharacter(client, submarine)
+            end
         end
 
         transportTimer = Game.ServerSettings.MaxTransportTime
