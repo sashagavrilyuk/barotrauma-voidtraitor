@@ -11,15 +11,8 @@
       <Containable items="unidentifiedbiologicalmaterial" />
     </ItemContainer>
     <Controller msg="ItemMsgPutInside" kickoutcharactermsg="ItemMsgTakeOut" putothercharactermsg="ItemMsgPutInside" canbeselectedbycharacters="false" hideallitemcomponenthuds="true" allowputtinginothercharacters="true" selectingkickscharacterout="true" spawnitemonselected="unidentifiedbiologicalmaterial" allowingameediting="false" userpos="0,0" canbeselected="true" selectkey="Use" drawuserbehind="true" forceusertostayattached="true">
-      <limbposition limb="Head" position="128,-20" />
-      <limbposition limb="Torso" position="128,-65" />
-      <limbposition limb="Waist" position="128,-105" />
-      <limbposition limb="LeftHand" position="98,-85" />
-      <limbposition limb="RightHand" position="158,-85" />
-      <limbposition limb="RightLeg" position="116,-145" />
-      <limbposition limb="LeftLeg" position="140,-145" />
-      <limbposition limb="RightFoot" position="116,-200" />
-      <limbposition limb="LeftFoot" position="140,-200" />
+      <limbposition limb="Head" position="0,35" />
+      <limbposition limb="Torso" position="0,0" />
       <StatusEffect type="OnActive" targettype="Character" delay="0.1" stackable="true" indetectable="true" DisableFocusingOnEntities="true" invisibletimer="0.1" IgnoreMeleeWeapons="true" PressureProtection="6500.0" setvalue="true" />
     </Controller>
     <CustomInterface canbeselected="true" msg="ItemMsgInteractSelect" allowuioverlap="true">

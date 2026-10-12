@@ -6,17 +6,6 @@ LuaUserData.RegisterType("Barotrauma.ContentXElement")
 local contentElement = LuaUserData.CreateStatic("Barotrauma.ContentXElement")
 local state
 
-local function releaseScannerBody(entry)
-    if entry.Frozen and entry.Corpse ~= nil and not entry.Corpse.Removed then
-        local ragdoll = entry.Corpse.AnimController
-        ragdoll.Frozen = false
-        for limb in ragdoll.Limbs do
-            if limb.body ~= nil and not limb.Removed then limb.body.PhysEnabled = true end
-        end
-    end
-    entry.Corpse, entry.Elapsed, entry.Frozen = nil, 0, false
-end
-
 function cloning.Start()
     state = { Consoles = {}, Scanners = {}, Pods = {}, Jobs = {}, Owners = {}, Reclaimed = {}, Pending = {}, ReconnectCheck = 0 }
     for _, client in pairs(Client.ClientList) do
@@ -24,7 +13,7 @@ function cloning.Start()
     end
     for item in Item.ItemList do
         if item.Prefab.Identifier == "vt_cloning_console" then state.Consoles[#state.Consoles + 1] = item end
-        if item.Prefab.Identifier == "vt_cloning_scanner" then state.Scanners[item] = { Elapsed = 0 } end
+        if item.Prefab.Identifier == "vt_cloning_scanner" then state.Scanners[item] = true end
         if item.Prefab.Identifier == "vt_cloning_pod" then state.Pods[item] = { Biomass = 0, Consumed = {} } end
     end
 end
@@ -164,22 +153,11 @@ function cloning.Update(deltaTime)
             storeBiomass(pod, data)
         end
     end
-    for scanner, entry in pairs(state.Scanners) do
-        local controller = not scanner.Removed and scanner.GetComponentString("Controller") or nil
-        local corpse = controller ~= nil and controller.User or nil
-        if corpse ~= entry.Corpse or (corpse ~= nil and (corpse.Removed or not corpse.IsDead)) then
-            releaseScannerBody(entry)
-            if corpse ~= nil and not corpse.Removed and corpse.IsDead then entry.Corpse = corpse end
-        end
-        if entry.Corpse ~= nil and not entry.Frozen then
-            entry.Elapsed = entry.Elapsed + deltaTime
-            if entry.Elapsed >= 0.75 then
-                local ragdoll = entry.Corpse.AnimController
-                ragdoll.Frozen = true
-                for limb in ragdoll.Limbs do
-                    if limb.body ~= nil and not limb.Removed then limb.body.PhysEnabled = false end
-                end
-                entry.Frozen = true
+    for scanner in pairs(state.Scanners) do
+        if not scanner.Removed then
+            local controller = scanner.GetComponentString("Controller")
+            if controller ~= nil and controller.User ~= nil and not controller.User.IsDead then
+                controller.Select(controller.User)
             end
         end
     end
@@ -292,12 +270,7 @@ Hook.Patch("Traitormod.Cloning.DeadOnly", "Barotrauma.Items.Components.Controlle
     end
 end, Hook.HookMethodType.Before)
 Hook.Add("think", "Traitormod.Cloning.Update", cloning.Update)
-Hook.Add("roundEnd", "Traitormod.Cloning.End", function()
-    if state ~= nil then
-        for _, entry in pairs(state.Scanners) do releaseScannerBody(entry) end
-    end
-    state = nil
-end)
+Hook.Add("roundEnd", "Traitormod.Cloning.End", function() state = nil end)
 Hook.Add("client.disconnected", "Traitormod.Cloning.Disconnect", function(client)
     if state == nil then return end
     if client.Character ~= nil then state.Owners[client.Character] = client end
