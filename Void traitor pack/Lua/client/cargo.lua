@@ -257,8 +257,9 @@ Networking.Receive("VoidTraitor_CargoSnapshot", function(message)
     if UI.Disabled then return end
     local itemId, snapshot = message.ReadUInt16(), json.parse(message.ReadString())
     local character = Character.Controlled
-    if character ~= nil and character.SelectedItem ~= nil and character.SelectedItem.ID == itemId
-        and (UI.AwaitingOpen or UI.ItemId == itemId) then UI.Show(itemId, snapshot) end
+    if character ~= nil and UI.ItemId == itemId and (UI.AwaitingOpen or UI.MenuRoot ~= nil) then
+        UI.Show(itemId, snapshot)
+    end
 end)
 
 Hook.Patch("VoidTraitor.Cargo.Hud", "Barotrauma.GameSession", "AddToGUIUpdateList", function()
@@ -283,21 +284,33 @@ Hook.Add("think", "VoidTraitor.Cargo.Selection", function(deltaTime)
     end
     if not Networking.IsActive then UI.CloseMenu() UI.SelectedItem = nil return end
     local character = Character.Controlled
-    local item = character ~= nil and not character.IsDead and not character.IsIncapacitated and character.SelectedItem or nil
-    if item == nil or item.Prefab.Identifier ~= "vt_cargo_console" then
+    if character == nil or character.IsDead or character.IsIncapacitated then
         if UI.SelectedItem ~= nil then UI.CloseMenu() end
         UI.SelectedItem = nil
         return
     end
-    if UI.SelectedItem ~= item then
-        if UI.SelectedItem ~= nil then UI.CloseMenu() end
-        UI.SelectedItem, UI.ItemId, UI.AwaitingOpen, elapsed = item, item.ID, true, 0.05
+    local item = character.SelectedItem
+    if UI.SelectedItem ~= nil and (UI.AwaitingOpen or UI.MenuRoot ~= nil) then
+        if item ~= nil and item ~= UI.SelectedItem then
+            UI.CloseMenu()
+            UI.SelectedItem = nil
+        else
+            elapsed = elapsed + deltaTime
+            if UI.AwaitingOpen and elapsed >= 0.05 then
+                elapsed = 0
+                local message = Networking.Start("VoidTraitor_CargoOpen")
+                message.WriteUInt16(UShort(UI.SelectedItem.ID))
+                Networking.Send(message)
+            end
+        end
+        return
     end
-    elapsed = elapsed + deltaTime
-    if UI.AwaitingOpen and elapsed >= 0.05 then
-        elapsed = 0
-        local message = Networking.Start("VoidTraitor_CargoOpen")
-        message.WriteUInt16(UShort(item.ID))
-        Networking.Send(message)
+    if item == nil or item.Prefab.Identifier ~= "vt_cargo_console" then
+        UI.SelectedItem = nil
+        return
     end
+    UI.SelectedItem, UI.ItemId, UI.AwaitingOpen, elapsed = item, item.ID, true, 0
+    local message = Networking.Start("VoidTraitor_CargoOpen")
+    message.WriteUInt16(UShort(item.ID))
+    Networking.Send(message)
 end)

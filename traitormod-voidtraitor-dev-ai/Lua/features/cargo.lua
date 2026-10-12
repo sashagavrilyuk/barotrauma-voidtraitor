@@ -457,7 +457,7 @@ end
 
 function cargo.Action(client, item, action, payload)
     local session = sessions[client]
-    if session == nil or session.Item ~= item or not cargo.Validate(client, item) then return false end
+    if session == nil or session.Item ~= item or not cargo.Validate(client, item, session.Gui) then return false end
     local success, reason = true, nil
     if action == "close" then
         if session.Gui then sessions[client] = nil else session.Prompt = nil end
