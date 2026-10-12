@@ -9,8 +9,8 @@ local UI = {}
 _G.VoidTraitorCargoGuiState = UI
 local inputTypes = LuaUserData.CreateEnumTable("Barotrauma.InputType")
 
-local P = { Common = Common, State = {}, GUI_DRAW_ORDER = 120, PANEL_WIDTH = 1,
-    ITEM_ROW_HEIGHT = 0.27, ITEM_ICON_PIXELS = 56, ACTION_BUTTON_PIXELS = 56, NET_INT32_MAX = 2147483647 }
+local P = { Common = Common, State = {}, GUI_DRAW_ORDER = 120, PANEL_WIDTH = 1, CATEGORY_ROW_MIN_HEIGHT = 40,
+    ITEM_ROW_HEIGHT = 0.225, ITEM_ICON_PIXELS = 42, ACTION_BUTTON_PIXELS = 42, NET_INT32_MAX = 2147483647 }
 local S = P.State
 S.products, S.productById, S.cart, S.expandedFolders = {}, {}, {}, {}
 S.cooldownTextBlocks, S.classLimitTextBlocks = { shop = {}, cart = {} }, { shop = {}, cart = {} }
@@ -36,10 +36,10 @@ function UI.Send(action, payload)
     Networking.Send(message)
 end
 
-function UI.CloseMenu()
+function UI.CloseMenu(deselect)
     UI.Send("close")
     local character = Character.Controlled
-    if character ~= nil and character.SelectedItem ~= nil and character.SelectedItem.ID == UI.ItemId then
+    if deselect and character ~= nil and character.SelectedItem ~= nil and character.SelectedItem.ID == UI.ItemId then
         character.EmulateInput(inputTypes.Deselect)
         character.SelectedItem = nil
     end
@@ -90,7 +90,7 @@ function P.RefreshCartOnly()
         local product = S.productById[entry.Id]
         if product ~= nil then
             local row = P.CreateLayout(UI.CartList.Content, 1, 0.34, nil, true, GUI.Anchor.CenterLeft)
-            row.RectTransform.MinSize = Point(0, 46)
+            row.RectTransform.MinSize = Point(0, 38)
             local name = P.CreateText(row, 0.61, 1, nil, product.Name .. " ×" .. tostring(entry.Quantity) .. "\n" .. UI.Money(product.Price * entry.Quantity), GUI.Alignment.Left, 0.85)
             name.ToolTip = product.Name
             local remove = P.CreateButton(row, 0.18, 0.85, nil, "−", not UI.SubmitPending)
@@ -116,7 +116,7 @@ function UI.UpdateOrders()
     list.Content:ClearChildren()
     for _, order in ipairs(snapshot.Orders) do
         local row = P.CreateLayout(list.Content, 1, 0.40, nil, true, GUI.Anchor.CenterLeft)
-        row.RectTransform.MinSize = Point(0, 78)
+        row.RectTransform.MinSize = Point(0, 50)
         local icon = GUI.Frame(P.CreateRect(0.07, 1, row), nil)
         icon.Color = Color(0, 0, 0, 0)
         icon.CanBeFocused = false
@@ -183,7 +183,7 @@ function UI.Show(itemId, snapshot)
     if UI.MenuRoot ~= nil then UI.Update(snapshot) return end
     UI.ItemId = itemId
     local screenWidth, screenHeight = Common.GetScreenSize()
-    local root = GUI.Frame(GUI.RectTransform(Point(math.floor(math.min(screenWidth * 0.94, 1600)), math.floor(math.min(screenHeight * 0.88, 900))), nil, GUI.Anchor.Center), "GUIFrame")
+    local root = GUI.Frame(GUI.RectTransform(Point(math.floor(math.min(screenWidth * 0.78, 800)), math.floor(math.min(screenHeight * 0.8, 530))), nil, GUI.Anchor.Center), "GUIFrame")
     UI.MenuRoot, UI.CurrentMenu, S.currentMenu, S.guiRoot = root, root, root, root
     local layout = P.CreateLayout(root, 0.965, 0.955, GUI.Anchor.Center, false)
     layout.RelativeSpacing = 0.007
@@ -191,10 +191,10 @@ function UI.Show(itemId, snapshot)
     local title = P.CreateText(heading, 0.87, 1, nil, snapshot.Text.Title, GUI.Alignment.Left, 1.15)
     title.Font = GUI.Style.SubHeadingFont
     local close = P.CreateButton(heading, 0.12, 1, nil, snapshot.Text.Close)
-    close.OnClicked = function() UI.CloseMenu() return true end
+    close.OnClicked = function() UI.CloseMenu(true) return true end
     UI.Budget = P.CreateText(layout, 1, 0.035, nil, "", GUI.Alignment.Left, 0.95)
     UI.Ship = P.CreateText(layout, 1, 0.04, nil, "", GUI.Alignment.Left, 0.85)
-    local upper = P.CreateLayout(layout, 1, 0.51, nil, true)
+    local upper = P.CreateLayout(layout, 1, 0.56, nil, true)
     upper.RelativeSpacing = 0.015
     S.catalogHost = GUI.Frame(P.CreateRect(0.66, 1, upper), nil)
     S.catalogHost.Color = Color(0, 0, 0, 0)
@@ -222,7 +222,7 @@ function UI.Show(itemId, snapshot)
         return true
     end
     P.CreateText(layout, 1, 0.04, nil, snapshot.Text.Orders, GUI.Alignment.Left, 1.0)
-    UI.OrderList = GUI.ListBox(P.CreateRect(1, 0.275, layout), false)
+    UI.OrderList = GUI.ListBox(P.CreateRect(1, 0.225, layout), false)
     UI.Update(snapshot)
     if S.shopList == nil then P.ShowMenu() end
 end
@@ -251,17 +251,23 @@ Hook.Patch("VoidTraitor.Cargo.InventoryMouse", "Barotrauma.Inventory", "get_IsMo
     if not UI.Disabled and UI.CurrentMenu ~= nil then return false end
 end, Hook.HookMethodType.After)
 Hook.Add("roundEnd", "VoidTraitor.Cargo.End", function() UI.CloseMenu() UI.SelectedItem = nil end)
-local elapsed = 0
+local elapsed, unselectedTime = 0, 0
 Hook.Add("think", "VoidTraitor.Cargo.Selection", function(deltaTime)
     if UI.Disabled then return end
     if not Networking.IsActive then UI.CloseMenu() UI.SelectedItem = nil return end
     local character = Character.Controlled
     local item = character ~= nil and not character.IsDead and not character.IsIncapacitated and character.SelectedItem or nil
     if item == nil or item.Prefab.Identifier ~= "vt_cargo_console" then
-        if UI.SelectedItem ~= nil then UI.CloseMenu() end
-        UI.SelectedItem = nil
+        if UI.SelectedItem ~= nil then
+            unselectedTime = unselectedTime + deltaTime
+            if unselectedTime >= 0.35 then
+                UI.CloseMenu()
+                UI.SelectedItem = nil
+            end
+        end
         return
     end
+    unselectedTime = 0
     if UI.SelectedItem ~= item then
         if UI.SelectedItem ~= nil then UI.CloseMenu() end
         UI.SelectedItem, UI.ItemId, UI.AwaitingOpen, elapsed = item, item.ID, true, 0.05
@@ -272,8 +278,5 @@ Hook.Add("think", "VoidTraitor.Cargo.Selection", function(deltaTime)
         local message = Networking.Start("VoidTraitor_CargoOpen")
         message.WriteUInt16(UShort(item.ID))
         Networking.Send(message)
-    elseif UI.MenuRoot ~= nil and elapsed >= 1 then
-        elapsed = 0
-        UI.Send("refresh")
     end
 end)

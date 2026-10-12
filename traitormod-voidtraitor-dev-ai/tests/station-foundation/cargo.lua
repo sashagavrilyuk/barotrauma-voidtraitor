@@ -71,13 +71,13 @@ local categories = { { Identifier = 'medical', Products = {
         Action = function(_, _, items) items[1].Lit = true end },
     { Identifier = 'invalid', Items = { 'missing' }, Price = 1 },
 } } }
-Traitormod = { Config = { PointShopConfig = { ItemCategories = categories }, Cargo = dofile(modpath .. '/Lua/config/cargo.lua') },
+Traitormod = { Config = { PointShopConfig = { ItemCategories = categories }, Cargo = { Budget = 10000, Categories = { 'medical' }, AccessTag = 'vt_access_cargo', MaxOrders = 100,
+        MaxQuantity = 20, SaleMultiplier = 0.5, SaleExcluded = {}, LargeAreaSize = 200, DeliveredHistorySeconds = 150 } },
     Language = { PointshopCannotBeUsed = 'Denied' }, IsRoundFinalizing = function() return false end,
     GetClientAccountKey = function(c) return c.Name end, GetText = function(key) return key end,
     FormatText = function(_, text) return text end,
     SendChatMessage = function(_, text) messages[#messages + 1] = text end,
     SendMessage = function(_, text) messages[#messages + 1] = text end, Error = function() end }
-Traitormod.Config.Cargo.Categories = { 'medical' }
 local ps = dofile(modpath .. '/Lua/pointshop.lua')
 Traitormod.Pointshop = ps
 ps.GetGuiProduct = function(_, category, product, id)
@@ -209,4 +209,10 @@ for _ = 1, 120 do
 end
 assert(#state.Orders <= Traitormod.Config.Cargo.MaxOrders and state.NextOrderId == 125, 'terminal history disabled future requests or reused IDs')
 assert(submit(2) and cargo.Decide(manager, 'approve', state.NextOrderId), 'order after pruned history could not be approved')
+local deliveredId = state.NextOrderId + 1
+state.Orders[#state.Orders + 1] = { Id = deliveredId, Status = 'Delivered', DeliveredAt = state.Time }
+cargo.Think(149.5)
+assert(cargo.FindOrder(deliveredId) ~= nil, 'delivered history expired prematurely')
+cargo.Think(0.5)
+assert(cargo.FindOrder(deliveredId) == nil, 'delivered history persisted beyond 150 seconds')
 return 'PASS cargo: card authority, atomic cart, shared reservations/stock, real capacity, sale removal, physical arrival/return, large callback, native submit, original shop spawn'

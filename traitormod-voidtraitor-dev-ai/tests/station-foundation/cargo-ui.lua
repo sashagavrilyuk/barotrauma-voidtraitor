@@ -82,7 +82,7 @@ local snapshot={Products={product('hardware:1','Гаечный ключ'),produc
     Text={Title='cargo',Close='close',Budget='budget',Reserved='reserved',Reason='reason',Submit='submit',Approve='approve',Reject='reject',Orders='orders',Quantity='quantity',Pending='pending',Accepted='accepted',Outbound='outbound',Delivered='delivered',Rejected='rejected',Home='home',Capacity='capacity',Large='large',Ship='ship',Sales='sales',LastSale='lastsale',NoShip='noship',Empty='empty',Search='search',Cart='cart'}}
 local reply={ReadUInt16=function() return item.ID end,ReadString=function() return snapshot end}
 receivers.VoidTraitor_CargoSnapshot(reply)
-assert(ui.MenuRoot and not ui.AwaitingOpen,'first snapshot did not open')
+assert(ui.MenuRoot and ui.MenuRoot.RectTransform.Size.X == 800 and ui.MenuRoot.RectTransform.Size.Y == 530 and not ui.AwaitingOpen,'first snapshot did not open')
 assert(VoidTraitorPointshopGuiState==ordinary and ordinary.Marker=='ordinary shop','pointshop state mutated')
 local p,s=cargoP,cargoP.State
 assert(#p.BuildFolderList()==2,'folder hierarchy not reused')
@@ -146,9 +146,16 @@ snapshot.Orders[1].Status='accepted' ui.Update(snapshot) controls=buttons(ui.Ord
 assert(not controls.approve.Enabled and controls.reject.Enabled,'accepted rejection state')
 snapshot.Orders[1].Status='outbound' ui.Update(snapshot) controls=buttons(ui.OrderList.Content)
 assert(not controls.approve.Enabled and not controls.reject.Enabled,'outbound actions enabled')
+local messagesBefore = #sent
 think(1)
-assert(sent[#sent].Action=='refresh','one second refresh')
-ui.CloseMenu()
+assert(#sent == messagesBefore, 'idle catalog still requests a full refresh')
+Character.Controlled.SelectedItem = nil
+think(0.15)
+assert(ui.MenuRoot ~= nil, 'transient loss of selection closed the menu')
+Character.Controlled.SelectedItem = item
+think(0.1)
+assert(ui.MenuRoot ~= nil, 'selection recovery did not preserve the menu')
+ui.CloseMenu(true)
 assert(deselected==1 and not ui.MenuRoot and not Character.Controlled.SelectedItem,'close did not deselect')
 local count=#sent
 receivers.VoidTraitor_CargoSnapshot(reply)

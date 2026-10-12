@@ -32,7 +32,17 @@ config.ExtensionConfig = {
 }
 
 config.IdConsole = dofile(Traitormod.Path .. "/Lua/config/idconsole.lua")
-config.Cargo = dofile(Traitormod.Path .. "/Lua/config/cargo.lua")
+config.Cargo = {
+    Budget = 10000,
+    Categories = { "medical", "materials", "maintenance", "wiring" },
+    AccessTag = "vt_access_cargo",
+    MaxOrders = 100,
+    MaxQuantity = 20,
+    SaleMultiplier = 0.5,
+    SaleExcluded = {},
+    LargeAreaSize = 200,
+    DeliveredHistorySeconds = 150,
+}
 
 ----- DISCORD -----
 

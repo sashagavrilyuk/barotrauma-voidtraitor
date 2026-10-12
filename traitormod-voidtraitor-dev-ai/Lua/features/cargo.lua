@@ -22,7 +22,7 @@ end
 
 function cargo.Start()
     sessions = {}
-    local state = { Budget = config.Budget, Reserved = 0, Orders = {}, NextOrderId = 0, Products = {}, Used = {}, Packages = {}, Elapsed = 0 }
+    local state = { Budget = config.Budget, Reserved = 0, Orders = {}, NextOrderId = 0, Products = {}, Used = {}, Packages = {}, Elapsed = 0, Time = 0 }
     cargo.State = state
     for _, categoryId in ipairs(config.Categories) do
         local category = ps.AllCategories[categoryId]
@@ -207,7 +207,7 @@ function cargo.LoadNext()
     local state, ship = cargo.State, cargo.State.Ship
     if ship.Loading then return end
     local order = ship.Trip[ship.NextOrder]
-    if order == nil then ship.State, ship.Trading, ship.Trip = "Returning", false, nil return end
+    if order == nil then ship.State, ship.Trading, ship.Trip = "Returning", false, nil state.Dirty = true return end
     local product
     for _, entry in ipairs(state.Products) do if entry.Id == order.Product then product = entry.Product break end end
     local items = {}
@@ -220,9 +220,9 @@ function cargo.LoadNext()
     local destinations = {}
     for index, item in ipairs(items) do
         local prefab = ItemPrefab.GetItemPrefab(item.Identifier)
-        if prefab == nil then order.Status = "Accepted" ship.NextOrder = ship.NextOrder + 1 return end
+        if prefab == nil then order.Status = "Accepted" ship.NextOrder = ship.NextOrder + 1 state.Dirty = true return end
         if item.IsInstallation then
-            if #markers == 0 then order.Status = "Accepted" ship.NextOrder = ship.NextOrder + 1 return end
+            if #markers == 0 then order.Status = "Accepted" ship.NextOrder = ship.NextOrder + 1 state.Dirty = true return end
             destinations[index] = table.remove(markers, 1)
         else
             local found
@@ -231,7 +231,7 @@ function cargo.LoadNext()
             end
             if found ~= nil then destinations[index] = table.remove(slots, found)
             elseif #markers > 0 then destinations[index] = table.remove(markers, 1)
-            else order.Status = "Accepted" ship.NextOrder = ship.NextOrder + 1 return end
+            else order.Status = "Accepted" ship.NextOrder = ship.NextOrder + 1 state.Dirty = true return end
         end
     end
     ship.Loading = true
@@ -264,6 +264,7 @@ function cargo.LoadNext()
             for _, item in ipairs(spawned) do if not item.Removed then Entity.Spawner.AddEntityToRemoveQueue(item) end end
             order.Status = "Accepted"
         end
+        state.Dirty = true
         ship.Loading, ship.NextOrder = false, ship.NextOrder + 1
         if success then order.Manager = nil end
     end)
@@ -305,9 +306,23 @@ end
 function cargo.Think(deltaTime)
     local state = cargo.State
     if state == nil or not Game.RoundStarted or Traitormod.IsRoundFinalizing() then return end
+    state.Time = state.Time + deltaTime
     state.Elapsed = state.Elapsed + deltaTime
     if state.Elapsed < 0.5 then return end
     state.Elapsed = 0
+    for index = #state.Orders, 1, -1 do
+        local order = state.Orders[index]
+        if order.Status == "Delivered" and order.DeliveredAt ~= nil and state.Time - order.DeliveredAt >= config.DeliveredHistorySeconds then
+            table.remove(state.Orders, index)
+            state.Dirty = true
+        end
+    end
+    if state.Dirty then
+        state.Dirty = false
+        for client, session in pairs(sessions) do
+            if session.Gui then cargo.Send(client) end
+        end
+    end
     local lost = {}
     for item in pairs(state.Packages) do
         if item.Removed then lost[#lost + 1] = item end
@@ -319,14 +334,18 @@ function cargo.Think(deltaTime)
     if home then
         if ship.Loading then return end
         for _, order in ipairs(state.Orders) do
-            if order.Status == "Loaded" then order.Status = "Delivered"
-            elseif order.Status == "Outbound" then order.Status = "Accepted" end
+            if order.Status == "Loaded" then
+                order.Status, order.DeliveredAt = "Delivered", state.Time
+                state.Dirty = true
+            elseif order.Status == "Outbound" then order.Status = "Accepted" state.Dirty = true end
         end
+        if ship.State ~= "Home" then state.Dirty = true end
         ship.State, ship.Trip, ship.Trading, ship.Sales = "Home", nil, false, nil
         return
     end
     if ship.State == "Home" then
         ship.State, ship.Trip, ship.NextOrder = "Outbound", {}, 1
+        state.Dirty = true
         for _, order in ipairs(state.Orders) do
             if order.Status == "Accepted" then order.Status = "Outbound" ship.Trip[#ship.Trip + 1] = order end
         end
@@ -336,6 +355,7 @@ function cargo.Think(deltaTime)
         or (ship.Submarine.AtEndExit and math.abs(ship.Submarine.Velocity.X) + math.abs(ship.Submarine.Velocity.Y) < 1))
     if ship.State == "Outbound" and arrived then
         ship.State, ship.Trading, ship.Sales = "Trading", true, cargo.SaleGoods()
+        state.Dirty = true
         for _, sale in ipairs(ship.Sales) do Entity.Spawner.AddEntityToRemoveQueue(sale.Item) end
     end
     if ship.Trading then
@@ -347,6 +367,7 @@ function cargo.Think(deltaTime)
                 cargo.ResolvePackage(sale.Item)
             end
             state.Budget = state.Budget + ship.LastSale
+            state.Dirty = true
             ship.Sales = nil
         end
         if arrived then cargo.LoadNext() end
