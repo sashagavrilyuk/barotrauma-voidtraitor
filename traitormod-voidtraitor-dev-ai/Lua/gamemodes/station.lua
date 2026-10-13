@@ -23,6 +23,16 @@ local alertSounds = {
 local eventSet = LuaUserData.CreateStatic("Barotrauma.EventSet", true)
 LuaUserData.RegisterType("Barotrauma.EventPrefab")
 LuaUserData.RegisterType("Barotrauma.ScriptedEvent")
+local alertColors = {
+    green = Color(80, 220, 110, 255),
+    yellow = Color(255, 215, 60, 255),
+    blue = Color(85, 165, 255, 255),
+    red = Color(255, 80, 80, 255),
+    delta = Color(190, 55, 55, 255),
+    gamma = Color(219, 112, 147, 255),
+    epsilon = Color(180, 70, 230, 255),
+    biohazard = Color(200, 100, 225, 255)
+}
 local respawnModes = LuaUserData.CreateEnumTable("Barotrauma.Networking.RespawnMode")
 local serverSettings = Descriptors["Barotrauma.Networking.ServerSettings"] or LuaUserData.RegisterType("Barotrauma.Networking.ServerSettings")
 LuaUserData.MakePropertyAccessible(serverSettings, "UseRespawnShuttle")
@@ -82,7 +92,7 @@ function gm:Start()
             Traitormod.IdConsole.InitializeCard(character)
         end
     end
-    self:SetAlertCode("green")
+    self.AlertCode = "green"
 end
 
 function gm:PlayAlertSound(code)
@@ -102,10 +112,19 @@ function gm:PlayAlertSound(code)
     end
 end
 
+function gm:SendAlertMessage(text, color)
+    local stationName = Submarine.MainSub.Info.Name
+    for _, client in pairs(Client.ClientList) do
+        local message = ChatMessage.Create(stationName, text, ChatMessageType.Default, nil, nil)
+        message.Color = color
+        Game.SendDirectChatMessage(message, client)
+    end
+end
+
 function gm:SetAlertCode(code)
     if alertCodes[code] == nil or self.AlertCode == code then return false end
     self.AlertCode = code
-    Traitormod.RoundEvents.SendEventMessage(Traitormod.GetText(alertCodes[code]), "InfoFrameTabButton.Mission")
+    self:SendAlertMessage(Traitormod.GetText(alertCodes[code]), alertColors[code])
     if alertSounds[code] ~= nil then self:PlayAlertSound(code) end
     return true
 end
@@ -125,7 +144,7 @@ function gm:CheckHuskOutbreak()
 
     if infected * 2 > #self.StationCrew then
         self.BiohazardAnnounced = true
-        Traitormod.RoundEvents.SendEventMessage(Traitormod.GetText("StationBiohazard5"), "HuskMissionIcon")
+        self:SendAlertMessage(Traitormod.GetText("StationBiohazard5"), alertColors.biohazard)
         self:PlayAlertSound("biohazard")
     end
 end
