@@ -5,6 +5,8 @@ if previous ~= nil then previous.Disabled = true Common.RemoveGuiComponent(previ
 local UI = {}
 _G.VoidTraitorNuclearGuiState = UI
 local inputTypes = LuaUserData.CreateEnumTable("Barotrauma.InputType")
+local holdableDescriptor = Descriptors["Barotrauma.Items.Components.Holdable"] or LuaUserData.RegisterType("Barotrauma.Items.Components.Holdable")
+LuaUserData.MakePropertyAccessible(holdableDescriptor, "PickKey")
 
 function UI.Send(action, value)
     if UI.ItemId == nil or not Networking.IsActive then return end
@@ -88,6 +90,7 @@ function UI.Show(itemId, snapshot)
         for _, button in ipairs(digits) do button.Enabled = state.Status == "code" end
         eject.Text = state.Disk and text.Eject or text.Insert
         eject.Enabled = state.Status ~= "armed" and state.Status ~= "exploded" and state.Anchored
+        anchor.Text = state.Anchored and text.Detach or text.Anchor
         anchor.Enabled, anchor.Selected = state.Status ~= "armed" and state.Status ~= "exploded", state.Anchored
         arm.Text = state.Status == "armed" and text.Disarm or text.Arm
         arm.Enabled = state.Disk and state.Anchored and (state.Status == "ready" or state.Status == "armed") and state.Disarming < 0
@@ -102,6 +105,14 @@ Networking.Receive("VoidTraitor_NuclearSnapshot", function(message)
         UI.Show(itemId, snapshot)
     end
 end)
+Hook.Patch("VoidTraitor.Nuclear.Use", "Barotrauma.Items.Components.Holdable", "Use", function(instance, parameters)
+    if instance.Item.Prefab.Identifier ~= "vt_nuclear_bomb" then return end
+    parameters.PreventExecution = true
+    return false
+end, Hook.HookMethodType.Before)
+Hook.Patch("VoidTraitor.Nuclear.PickKey", "Barotrauma.Items.Components.Holdable", "DeattachFromWall", function(instance)
+    if instance.Item.Prefab.Identifier == "vt_nuclear_bomb" then instance.PickKey = inputTypes.Use end
+end, Hook.HookMethodType.After)
 Common.InstallHudPatch("VoidTraitor.Nuclear.Hud", "VoidTraitorNuclearGuiState", 98)
 Common.InstallPausePatch("VoidTraitor.Nuclear.Pause", "VoidTraitorNuclearGuiState")
 Hook.Patch("VoidTraitor.Nuclear.NativeHud", "Barotrauma.Item", "AddToGUIUpdateList", { "System.Int32" }, function(item, parameters)
