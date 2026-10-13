@@ -22,6 +22,7 @@ assert(loadfile(path .. "cloning.lua"))(language)
 
 -- Игровые режимы, итог раунда и голосования
 assert(loadfile(path .. "gamemodes.lua"))(language)
+assert(loadfile(path .. "station.lua"))(language)
 
 -- Discord/webhook сообщения
 assert(loadfile(path .. "discord.lua"))(language)
