@@ -4,14 +4,14 @@
     <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="576,128,64,64" origin="0.5,0.5" />
     <Sprite texture="Content/Items/Weapons/TurretsAndDepthCharges.png" sourcerect="130,1,129,88" depth="0.8" />
     <Body width="128" height="85" density="20" />
-    <Holdable slots="RightHand+LeftHand" holdpos="0,-50" handle1="-10,20" handle2="10,20" aimable="false" attachable="true" reattachable="true" attachedbydefault="false" allowingameediting="false" msg="NukeDisarmInteraction" pickkey="Use" pickingtime="0">
+    <Holdable slots="RightHand+LeftHand" holdpos="0,-50" handle1="-10,20" handle2="10,20" aimable="false" attachable="true" reattachable="true" attachedbydefault="false" allowingameediting="false" msg="NukeDisarmInteraction" pickkey="Select" pickingtime="0">
       <StatusEffect type="OnSpawn" target="This"><LuaHook name="vt_nuclear_spawn" /></StatusEffect>
       <StatusEffect type="OnActive" target="Character" speedmultiplier="0.35" />
     </Holdable>
-    <Terminal canbeselected="true" readonly="false" allowingameediting="false" msg="ItemMsgInteractSelect" allowuioverlap="true" welcomemessage="NukeNativeWelcome">
+    <Terminal canbeselected="true" selectkey="Use" readonly="false" allowingameediting="false" msg="NukeMenuInteraction" allowuioverlap="true" welcomemessage="NukeNativeWelcome">
       <GuiFrame relativesize="0.34,0.35" minsize="300,190" maxsize="520,380" anchor="Center" relativeoffset="0,-0.1" style="ItemUI" />
     </Terminal>
-    <CustomInterface canbeselected="true" msg="ItemMsgInteractSelect" allowuioverlap="true" allowingameediting="false">
+    <CustomInterface canbeselected="true" selectkey="Use" msg="NukeMenuInteraction" allowuioverlap="true" allowingameediting="false">
       <GuiFrame relativesize="0.34,0.24" minsize="300,130" maxsize="520,230" anchor="Center" relativeoffset="0,0.21" style="ItemUI" />
       <Button text="NukeInsert" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
       <Button text="NukeEject" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
