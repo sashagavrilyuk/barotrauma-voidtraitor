@@ -201,11 +201,6 @@ function nuclear.Think(deltaTime)
             -- OnSpawn runs inside the Item constructor, before its network spawn event. Initialize on the next Think.
             if not data.Initialized then
                 data.Initialized = true
-                local holdable = item.GetComponentString("Holdable")
-                if holdable.Attached then
-                    holdable.Drop(nil, false)
-                    Networking.CreateEntityEvent(item, componentEvent.__new(holdable, nil))
-                end
                 nuclear.Update(item, data)
             end
             local previous = data.Status .. ":" .. math.ceil(data.Remaining) .. ":" .. math.ceil(data.Cooldown)
