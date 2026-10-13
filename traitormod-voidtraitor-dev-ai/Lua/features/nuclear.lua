@@ -175,7 +175,7 @@ function nuclear.Action(client, item, action, value)
     elseif action == "arm" and data.Status == "ready" and disk ~= nil and holdable.Attached then
         data.Status = "armed"
         item.OwnInventory.Locked = true
-        Traitormod.SelectedGamemode:SetAlertCode("delta", false)
+        Traitormod.SelectedGamemode:SetAlertCode("delta")
         local hull = Hull.FindHull(item.WorldPosition, item.CurrentHull)
         local room = hull ~= nil and tostring(hull.DisplayName) or Traitormod.GetText("NukeUnknownRoom")
         local station = Submarine.MainSub
