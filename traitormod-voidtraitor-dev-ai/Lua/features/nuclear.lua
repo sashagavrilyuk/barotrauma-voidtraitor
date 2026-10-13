@@ -14,7 +14,7 @@ function nuclear.Start()
     active, bombs, sessions = true, {}, {}
     texts = {}
     for _, key in ipairs({ "Title", "Locked", "AwaitDisk", "AwaitCode", "Ready", "Armed", "Cooldown", "Exploded",
-        "Time", "Cooling", "Eject", "Insert", "Anchor", "Arm", "Disarm", "Close", "Disarming" }) do
+        "Time", "Cooling", "Eject", "Insert", "Anchor", "Detach", "Arm", "Disarm", "Close", "Disarming" }) do
         texts[key] = Traitormod.GetText("Nuke" .. key)
     end
     for item in Item.ItemList do
@@ -68,10 +68,10 @@ function nuclear.Update(item, data)
         Networking.CreateEntityEvent(item, componentEvent.__new(terminal, nil))
     end
     local holdable = item.GetComponentString("Holdable")
-    local canPick = data.Status ~= "exploded"
-    if holdable.CanBePicked ~= canPick then
-        holdable.CanBePicked = canPick
-        Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(holdable.SerializableProperties[Identifier("CanBePicked")], holdable))
+    local canPick = not holdable.Attached and data.Status ~= "exploded"
+    if data.Pickable.CanBePicked ~= canPick then
+        data.Pickable.CanBePicked = canPick
+        Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(data.Pickable.SerializableProperties[Identifier("CanBePicked")], data.Pickable))
     end
     local light = item.GetComponentString("LightComponent")
     local armed = data.Status == "armed"
@@ -144,7 +144,8 @@ function nuclear.Action(client, item, action, value)
         return nuclear.Action(client, item, "enter")
     elseif action == "anchor" and data.Status ~= "armed" and item.ParentInventory == nil then
         if holdable.Attached then
-            return false
+            holdable.Drop(nil, false)
+            Networking.CreateEntityEvent(item, componentEvent.__new(holdable, nil))
         else
             local position = item.WorldPosition
             local hull = Hull.FindHull(position, item.CurrentHull)
@@ -159,7 +160,6 @@ function nuclear.Action(client, item, action, value)
                 Traitormod.SendChatMessage(client, Traitormod.GetText("NukeUnsafePlacement"))
                 return false
             end
-            if not holdable.CanBeAttached(nil) then return false end
             holdable.AttachToWall()
             Networking.CreateEntityEvent(item, componentEvent.__new(holdable, nil))
         end
@@ -200,6 +200,9 @@ function nuclear.Think(deltaTime)
             -- OnSpawn runs inside the Item constructor, before its network spawn event. Initialize on the next Think.
             if not data.Initialized then
                 data.Initialized = true
+                for component in item.Components do
+                    if component.Name == "Pickable" then data.Pickable = component break end
+                end
                 nuclear.Update(item, data)
             end
             local previous = data.Status .. ":" .. math.ceil(data.Remaining) .. ":" .. math.ceil(data.Cooldown)
@@ -273,11 +276,11 @@ Hook.Patch("Traitormod.Nuclear.Interact", "Barotrauma.Items.Components.Holdable"
     if instance.Item.Prefab.Identifier ~= "vt_nuclear_bomb" then return end
     local data = bombs[instance.Item]
     if not active or data == nil or data.Status == "exploded" then parameters.PreventExecution = true return false end
-    if data.Status == "armed" then
+    if data.Status == "armed" and instance.Attached then
         nuclear.BeginDisarm(parameters["picker"], instance.Item)
-        parameters.PreventExecution = true
-        return false
     end
+    parameters.PreventExecution = true
+    return false
 end, Hook.HookMethodType.Before)
 Hook.Patch("Traitormod.Nuclear.DamageBefore", "Barotrauma.CharacterHealth", "ApplyDamage", function(instance)
     for _, data in pairs(bombs) do
