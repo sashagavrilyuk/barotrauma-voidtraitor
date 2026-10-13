@@ -23,6 +23,7 @@ local alertSounds = {
 local eventSet = LuaUserData.CreateStatic("Barotrauma.EventSet", true)
 LuaUserData.RegisterType("Barotrauma.EventPrefab")
 LuaUserData.RegisterType("Barotrauma.ScriptedEvent")
+local stationSuffixes = {"LV", "NX", "EV", "QT", "PR"}
 local alertColors = {
     green = Color(80, 220, 110, 255),
     yellow = Color(255, 215, 60, 255),
@@ -63,7 +64,7 @@ end
 
 function gm:Start()
     local submarine = Submarine.MainSub
-    self.StationAnnouncementName = string.format("%s №%03d", string.upper(submarine.Info.Name), math.random(0, 999))
+    self.StationAnnouncementName = string.format("%s %s-%03d", string.upper(submarine.Info.Name), stationSuffixes[math.random(#stationSuffixes)], math.random(0, 999))
     local borders = submarine.GetDockedBorders()
     submarine.SetPosition(Vector2(submarine.WorldPosition.X, Level.Loaded.Size.Y - borders.Y - 200))
     submarine.SubBody.Body.BodyType = bodyTypes.Static
@@ -114,8 +115,10 @@ function gm:PlayAlertSound(code)
 end
 
 function gm:SendAlertMessage(text, color)
-    local header = Traitormod.FormatText("StationAnnouncementHeader", self.StationAnnouncementName) .. ":"
-    local announcement = header .. "\n" .. text
+    local header = Traitormod.FormatText("StationAnnouncementHeader", self.StationAnnouncementName)
+    local headerColor = string.format("‖color:%d,%d,%d‖",
+        math.floor(color.R * 0.8 + 51), math.floor(color.G * 0.8 + 51), math.floor(color.B * 0.8 + 51))
+    local announcement = headerColor .. header .. "‖end‖\n" .. text
     for _, client in pairs(Client.ClientList) do
         local message = ChatMessage.Create("", announcement, ChatMessageType.Default, nil, nil)
         message.Color = color
