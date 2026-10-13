@@ -1,6 +1,15 @@
 local secret = Traitormod.Gamemodes.Secret
 local gm = secret:new()
 local bodyTypes = LuaUserData.CreateEnumTable("FarseerPhysics.BodyType")
+local alertCodes = {
+    green = "StationAlertGreen",
+    yellow = "StationAlertYellow",
+    blue = "StationAlertBlue",
+    red = "StationAlertRed",
+    delta = "StationAlertDelta",
+    gamma = "StationAlertGamma",
+    epsilon = "StationAlertEpsilon"
+}
 local respawnModes = LuaUserData.CreateEnumTable("Barotrauma.Networking.RespawnMode")
 local serverSettings = Descriptors["Barotrauma.Networking.ServerSettings"] or LuaUserData.RegisterType("Barotrauma.Networking.ServerSettings")
 LuaUserData.MakePropertyAccessible(serverSettings, "UseRespawnShuttle")
@@ -36,8 +45,16 @@ function gm:Start()
     submarine.SubBody.Body.BodyType = bodyTypes.Static
 
     self.SpawnedAccounts = {}
+    self.StationCrew = {}
+    self.BiohazardAnnounced = false
+    self.NextHuskCheck = 0
     for _, client in pairs(Client.ClientList) do
         self.SpawnedAccounts[Traitormod.GetClientAccountKey(client)] = true
+        local character = client.Character
+        if not client.SpectateOnly and character ~= nil and character.IsHuman
+            and not character.IsDead and character.Submarine == submarine then
+            table.insert(self.StationCrew, character)
+        end
     end
     Traitormod.DisableMidRoundSpawn = true
 
@@ -49,6 +66,33 @@ function gm:Start()
         if character.IsHuman and not character.IsDead and character.Submarine == Submarine.MainSub then
             Traitormod.IdConsole.InitializeCard(character)
         end
+    end
+    self:SetAlertCode("green")
+end
+
+function gm:SetAlertCode(code)
+    if alertCodes[code] == nil or self.AlertCode == code then return false end
+    self.AlertCode = code
+    Traitormod.RoundEvents.SendEventMessage(Traitormod.GetText(alertCodes[code]), "InfoFrameTabButton.Mission")
+    return true
+end
+
+function gm:CheckHuskOutbreak()
+    if self.BiohazardAnnounced or #self.StationCrew == 0 then return end
+
+    local infected = 0
+    for _, character in ipairs(self.StationCrew) do
+        if not character.Removed then
+            local infection = character.CharacterHealth.GetAffliction("huskinfection", true)
+            if (infection ~= nil and infection.Strength > 0) or character.IsHusk then
+                infected = infected + 1
+            end
+        end
+    end
+
+    if infected * 2 > #self.StationCrew then
+        self.BiohazardAnnounced = true
+        Traitormod.RoundEvents.SendEventMessage(Traitormod.GetText("StationBiohazard5"), "HuskMissionIcon")
     end
 end
 
@@ -70,6 +114,10 @@ end
 
 function gm:Think()
     if not Game.RoundStarted then return end
+    if not self.BiohazardAnnounced and Timer.GetTime() >= self.NextHuskCheck then
+        self.NextHuskCheck = Timer.GetTime() + 5
+        self:CheckHuskOutbreak()
+    end
     -- The native server omits static submarine positions from regular updates.
     for _, client in pairs(Client.ClientList) do
         local accountKey = Traitormod.GetClientAccountKey(client)
@@ -131,6 +179,33 @@ Hook.Patch("Barotrauma.Networking.RespawnManager", "GetBotsToRespawn", function(
         parameters.ReturnValue.Clear()
     end
 end, Hook.HookMethodType.After)
+
+Traitormod.AddCommand("!stationcode", function(client, args)
+    local selected = Traitormod.SelectedGamemode
+    if not Game.RoundStarted or selected == nil or selected.Name ~= "Station" then
+        Traitormod.SendChatMessage(client, Traitormod.GetText("StationAlertUnavailable"))
+        return true
+    end
+
+    if args[1] == nil then
+        Traitormod.SendChatMessage(client, Traitormod.FormatText("StationAlertCurrent", selected.AlertCode))
+        return true
+    end
+
+    if not client.HasPermission(ClientPermissions.ConsoleCommands)
+        and (client.Character == nil or client.Character.IsDead or not client.Character.HasJob("captain")) then
+        Traitormod.SendChatMessage(client, Traitormod.GetText("StationAlertDenied"))
+        return true
+    end
+
+    local code = string.lower(args[1])
+    if alertCodes[code] == nil then
+        Traitormod.SendChatMessage(client, Traitormod.GetText("StationAlertUsage"))
+    elseif not selected:SetAlertCode(code) then
+        Traitormod.SendChatMessage(client, Traitormod.GetText("StationAlertUnchanged"))
+    end
+    return true
+end)
 
 Hook.Add("client.connected", "Traitormod.Station.Reconnect", function(client)
     local selected = Traitormod.SelectedGamemode
