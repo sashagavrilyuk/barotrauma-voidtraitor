@@ -8,6 +8,7 @@
   <NukeInsert>Вставить диск</NukeInsert>
   <NukeEject>Извлечь диск</NukeEject>
   <NukeAnchor>Закрепить / открепить</NukeAnchor>
+  <NukeDetach>Открепить</NukeDetach>
   <NukeArm>Взвести</NukeArm>
   <NukeDisarmInteraction>[[use]] Разминировать</NukeDisarmInteraction>
 </infotexts>
