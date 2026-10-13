@@ -124,6 +124,14 @@ function gm:End()
     settings.ServerDetailsChanged = true
 end
 
+-- RespawnManager also respawns dead bots in Permadeath outside campaigns.
+LuaUserData.RegisterType("System.Collections.Generic.List`1[[Barotrauma.CharacterInfo]], System.Collections")
+Hook.Patch("Barotrauma.Networking.RespawnManager", "GetBotsToRespawn", function(_, parameters)
+    if Traitormod.SelectedGamemode ~= nil and Traitormod.SelectedGamemode.Name == "Station" then
+        parameters.ReturnValue.Clear()
+    end
+end, Hook.HookMethodType.After)
+
 Hook.Add("client.connected", "Traitormod.Station.Reconnect", function(client)
     local selected = Traitormod.SelectedGamemode
     if selected == nil or selected.Name ~= "Station" or selected.SpawnedAccounts == nil then return end
