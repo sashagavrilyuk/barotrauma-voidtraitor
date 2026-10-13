@@ -10,6 +10,8 @@ local statusLabels = { locked = "Locked", code = "AwaitCode", ready = "Ready", a
 local musicLengths = { 109.9977, 111.6000, 103.3606, 196.2902, 109.5756 }
 local activationLength = 14
 local componentEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateEventData", true)
+local holdableDescriptor = Descriptors["Barotrauma.Items.Components.Holdable"] or LuaUserData.RegisterType("Barotrauma.Items.Components.Holdable")
+LuaUserData.MakePropertyAccessible(holdableDescriptor, "PickingTime")
 local terminalDescriptor = Descriptors["Barotrauma.Items.Components.Terminal"] or LuaUserData.RegisterType("Barotrauma.Items.Components.Terminal")
 LuaUserData.MakePropertyAccessible(terminalDescriptor, "OutputValue")
 
@@ -17,7 +19,7 @@ function nuclear.Start()
     active, bombs, sessions = true, {}, {}
     texts = {}
     for _, key in ipairs({ "Title", "Locked", "AwaitDisk", "AwaitCode", "Ready", "Armed", "Cooldown", "Exploded",
-        "Time", "Cooling", "Eject", "Insert", "Anchor", "Detach", "Arm", "Disarm", "Close", "Disarming" }) do
+        "Time", "Cooling", "Eject", "Insert", "Anchor", "Detach", "Arm", "Close" }) do
         texts[key] = Traitormod.GetText("Nuke" .. key)
     end
     for item in Item.ItemList do
@@ -49,8 +51,7 @@ end
 function nuclear.Snapshot(item, data)
     return { Status = data.Status, Remaining = math.ceil(data.ActivationRemaining or data.Remaining), Cooldown = math.ceil(data.Cooldown),
         Entered = #data.Entered, Disk = item.OwnInventory.GetItemAt(0) ~= nil,
-        Anchored = item.GetComponentString("Holdable").Attached,
-        Disarming = data.Disarming ~= nil and math.floor(data.Disarming.Progress / config.DisarmTime * 100) or -1, Text = texts }
+        Anchored = item.GetComponentString("Holdable").Attached, Text = texts }
 end
 
 function nuclear.Send(client, item, payload)
@@ -68,7 +69,6 @@ function nuclear.Update(item, data)
     elseif data.Status == "code" then second = string.rep("*", #data.Entered) .. string.rep("_", 6 - #data.Entered)
     elseif data.Status == "cooldown" then second = Traitormod.FormatText("NukeCooling", snapshot.Cooldown) end
     local body = first .. "\n" .. second
-    if snapshot.Disarming >= 0 then body = body .. "\n" .. Traitormod.FormatText("NukeDisarming", snapshot.Disarming) end
     local terminal = item.GetComponentString("Terminal")
     if terminal.ShowMessage ~= body then
         terminal.ShowMessage = body
@@ -108,22 +108,12 @@ end
 
 function nuclear.Disarm(item, data)
     if data.Status ~= "armed" then return end
-    data.Status, data.Cooldown, data.Disarming = "cooldown", config.Cooldown, nil
+    data.Status, data.Cooldown = "cooldown", config.Cooldown
     data.MusicPlaying, data.MusicStarted, data.MusicElapsed = false, false, 0
     data.Remaining = math.max(data.Remaining, config.MinimumTime)
     item.OwnInventory.Locked = false
     Traitormod.SendMessageEveryone(Traitormod.GetText("NukeDisarmedAnnouncement"))
     Traitormod.SelectedGamemode:SetAlertCode("green")
-end
-
-function nuclear.BeginDisarm(character, item)
-    local data = bombs[item]
-    if not active or not Game.RoundStarted or Traitormod.IsRoundFinalizing() or data == nil or data.Status ~= "armed"
-        or data.Disarming ~= nil or character == nil or character.IsDead or character.IsIncapacitated
-        or not character.IsHuman or character.LockHands or not character.CanInteractWith(item) then return false end
-    data.Disarming = { Character = character, Position = character.WorldPosition, Progress = 0 }
-    nuclear.Update(item, data)
-    return true
 end
 
 function nuclear.Action(client, item, action, value)
@@ -166,7 +156,10 @@ function nuclear.Action(client, item, action, value)
             local hull = Hull.FindHull(position, item.CurrentHull)
             local safe = hull ~= nil and hull.Submarine == Submarine.MainSub
             if safe then
-                for _, offset in ipairs({ Vector2(80, 0), Vector2(-80, 0), Vector2(0, 80), Vector2(0, -80) }) do
+                local margin = config.PlacementMargin
+                local diagonal = margin / math.sqrt(2)
+                for _, offset in ipairs({ Vector2(margin, 0), Vector2(-margin, 0), Vector2(0, margin), Vector2(0, -margin),
+                    Vector2(diagonal, diagonal), Vector2(-diagonal, diagonal), Vector2(diagonal, -diagonal), Vector2(-diagonal, -diagonal) }) do
                     local nearby = Hull.FindHull(position + offset, hull)
                     if nearby == nil or nearby.Submarine ~= Submarine.MainSub then safe = false break end
                 end
@@ -182,7 +175,7 @@ function nuclear.Action(client, item, action, value)
     elseif action == "arm" and data.Status == "ready" and disk ~= nil and holdable.Attached then
         data.Status = "armed"
         item.OwnInventory.Locked = true
-        Traitormod.SelectedGamemode:SetAlertCode("delta")
+        Traitormod.SelectedGamemode:SetAlertCode("delta", false)
         local hull = Hull.FindHull(item.WorldPosition, item.CurrentHull)
         local room = hull ~= nil and tostring(hull.DisplayName) or Traitormod.GetText("NukeUnknownRoom")
         local station = Submarine.MainSub
@@ -201,7 +194,6 @@ function nuclear.Action(client, item, action, value)
             message.Color = Color(255, 0, 0, 255)
             Game.SendDirectChatMessage(message, player)
         end
-    elseif action == "disarm" then return nuclear.BeginDisarm(client.Character, item)
     else return false end
     if data.Status == "locked" and item.OwnInventory.GetItemAt(0) ~= nil then data.Status = "code" end
     nuclear.Update(item, data)
@@ -226,6 +218,11 @@ function nuclear.Think(deltaTime)
                         end
                     end
                 end
+                local holdable = item.GetComponentString("Holdable")
+                if holdable.PickingTime ~= config.DisarmTime then
+                    holdable.PickingTime = config.DisarmTime
+                    Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(holdable.SerializableProperties[Identifier("PickingTime")], holdable))
+                end
                 nuclear.Update(item, data)
             end
             local previous = data.Status .. ":" .. math.ceil(data.ActivationRemaining or data.Remaining) .. ":" .. math.ceil(data.Cooldown) .. ":" .. tostring(data.MusicPlaying)
@@ -245,22 +242,8 @@ function nuclear.Think(deltaTime)
                 end
                 if data.MusicPlaying then data.MusicElapsed = data.MusicElapsed + deltaTime end
                 if data.Remaining <= 1 then data.MusicPlaying = false end
-                local job = data.Disarming
-                if job ~= nil then
-                    local character = job.Character
-                    if character.Removed or character.IsDead or character.IsIncapacitated or character.LockHands
-                        or not character.CanInteractWith(item)
-                        or Vector2.DistanceSquared(character.WorldPosition, job.Position) > 100 then
-                        data.Disarming = nil
-                        nuclear.Update(item, data)
-                    else
-                        character.AnimController.UpdateUseItem(false, item.WorldPosition)
-                        job.Progress = job.Progress + deltaTime
-                        if job.Progress >= config.DisarmTime then nuclear.Disarm(item, data) end
-                    end
-                end
                 if data.Remaining == 0 and data.Status == "armed" then
-                    data.Status, data.Disarming = "exploded", nil
+                    data.Status = "exploded"
                     data.ActivationRemaining = activationLength
                 end
             elseif data.Status == "exploded" then
@@ -305,7 +288,7 @@ Hook.Patch("Traitormod.Nuclear.Buttons", "Barotrauma.Items.Components.CustomInte
     elseif anchor then nuclear.Action(parameters["c"], instance.Item, "anchor")
     elseif arm then nuclear.Action(parameters["c"], instance.Item, "arm") end
 end, Hook.HookMethodType.Before)
--- E picks up loose bombs and starts disarming anchored ones.
+-- A free bomb is picked up on LMB; an armed anchored bomb uses native timed picking to disarm.
 Hook.Patch("Traitormod.Nuclear.Use", "Barotrauma.Items.Components.Holdable", "Use", function(instance, parameters)
     if instance.Item.Prefab.Identifier ~= "vt_nuclear_bomb" then return end
     parameters.PreventExecution = true
@@ -322,30 +305,27 @@ Hook.Patch("Traitormod.Nuclear.Interact", "Barotrauma.Items.Components.Holdable"
     if instance.Item.Prefab.Identifier ~= "vt_nuclear_bomb" then return end
     local data = bombs[instance.Item]
     if not active or data == nil or data.Status == "exploded" then parameters.PreventExecution = true return false end
-    if instance.Attached then
-        if data.Status == "armed" then nuclear.BeginDisarm(parameters["picker"], instance.Item) end
+    if instance.Attached and data.Status ~= "armed" then
         parameters.PreventExecution = true
         return false
     end
 end, Hook.HookMethodType.Before)
-Hook.Patch("Traitormod.Nuclear.DamageBefore", "Barotrauma.CharacterHealth", "ApplyDamage", function(instance)
-    for _, data in pairs(bombs) do
-        local job = data.Disarming
-        if job ~= nil and job.Character == instance.Character then job.DamageVitality = instance.Vitality end
+Hook.Patch("Traitormod.Nuclear.Defuse", "Barotrauma.Items.Components.Holdable", "OnPicked", function(instance, parameters)
+    if instance.Item.Prefab.Identifier ~= "vt_nuclear_bomb" or not instance.Attached then return end
+    parameters.PreventExecution = true
+    local character = parameters["picker"]
+    local data = bombs[instance.Item]
+    if active and Game.RoundStarted and not Traitormod.IsRoundFinalizing() and data ~= nil and data.Status == "armed"
+        and character ~= nil and character.IsHuman and not character.IsDead and not character.IsIncapacitated
+        and not character.LockHands and character.CanInteractWith(instance.Item) then
+        nuclear.Disarm(instance.Item, data)
+        nuclear.Update(instance.Item, data)
     end
+    return false
 end, Hook.HookMethodType.Before)
-Hook.Patch("Traitormod.Nuclear.DamageAfter", "Barotrauma.CharacterHealth", "ApplyDamage", function(instance)
-    for item, data in pairs(bombs) do
-        local job = data.Disarming
-        if job ~= nil and job.Character == instance.Character and job.DamageVitality ~= nil then
-            if job.DamageVitality - instance.Vitality >= 1 then data.Disarming = nil nuclear.Update(item, data)
-            else job.DamageVitality = nil end
-        end
-    end
-end, Hook.HookMethodType.After)
 Hook.Patch("Traitormod.Nuclear.Detach", "Barotrauma.Items.Components.Holdable", "CanBeDeattached", function(instance, parameters)
     local data = bombs[instance.Item]
-    if data ~= nil and (data.Status == "armed" or data.Status == "exploded") then parameters.PreventExecution = true return false end
+    if data ~= nil and data.Status == "exploded" then parameters.PreventExecution = true return false end
 end, Hook.HookMethodType.Before)
 Hook.Add("vt_nuclear_spawn", "Traitormod.Nuclear.Spawn", function(effect, deltaTime, item)
     if active and item.Prefab.Identifier == "vt_nuclear_bomb" then nuclear.Register(item) end
