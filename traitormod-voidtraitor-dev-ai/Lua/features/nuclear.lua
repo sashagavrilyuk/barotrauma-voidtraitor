@@ -9,9 +9,6 @@ local statusLabels = { locked = "Locked", code = "AwaitCode", ready = "Ready", a
 -- Track order must match the six OnActive sounds in nuclear.xml.
 local musicLengths = { 109.9977, 111.6000, 103.3606, 196.2902, 109.5756 }
 local activationLength = 14
-local inputTypes = LuaUserData.CreateEnumTable("Barotrauma.InputType")
-local holdableDescriptor = Descriptors["Barotrauma.Items.Components.Holdable"] or LuaUserData.RegisterType("Barotrauma.Items.Components.Holdable")
-LuaUserData.MakePropertyAccessible(holdableDescriptor, "PickKey")
 local componentEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateEventData", true)
 local terminalDescriptor = Descriptors["Barotrauma.Items.Components.Terminal"] or LuaUserData.RegisterType("Barotrauma.Items.Components.Terminal")
 LuaUserData.MakePropertyAccessible(terminalDescriptor, "OutputValue")
@@ -321,9 +318,6 @@ Hook.Patch("Traitormod.Nuclear.NativeAttach", "Barotrauma.Items.Components.Holda
     message.ReadSingle()
     parameters.PreventExecution = true
 end, Hook.HookMethodType.Before)
-Hook.Patch("Traitormod.Nuclear.PickKey", "Barotrauma.Items.Components.Holdable", "DeattachFromWall", function(instance)
-    if instance.Item.Prefab.Identifier == "vt_nuclear_bomb" then instance.PickKey = inputTypes.Use end
-end, Hook.HookMethodType.After)
 Hook.Patch("Traitormod.Nuclear.Interact", "Barotrauma.Items.Components.Holdable", "Pick", function(instance, parameters)
     if instance.Item.Prefab.Identifier ~= "vt_nuclear_bomb" then return end
     local data = bombs[instance.Item]
