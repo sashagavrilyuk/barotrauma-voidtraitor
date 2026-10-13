@@ -74,7 +74,7 @@ function UI.Show(itemId, snapshot)
     anchor.OnClicked = function() UI.Send("anchor") return true end
     local arm = GUI.Button(Common.CreateRect(1, 0.23, actions), text.Arm, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
     arm.Color = Color(150, 45, 45, 255)
-    arm.OnClicked = function() UI.Send(UI.Snapshot.Status == "armed" and "disarm" or "arm") return true end
+    arm.OnClicked = function() UI.Send("arm") return true end
     UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides = {}, {}, { left = {}, right = {}, minimumWidth = 420 }
     Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
     UI.Update = function(state)
@@ -84,14 +84,13 @@ function UI.Show(itemId, snapshot)
         if state.Status == "locked" then second.Text = text.AwaitDisk
         elseif state.Status == "code" then second.Text = string.rep("*", state.Entered) .. string.rep("_", 6 - state.Entered)
         elseif state.Status == "cooldown" then second.Text = string.format(text.Cooling, state.Cooldown) end
-        if state.Disarming >= 0 then first.Text = string.format(text.Disarming, state.Disarming) end
         for _, button in ipairs(digits) do button.Enabled = state.Status == "code" end
         eject.Text = state.Disk and text.Eject or text.Insert
         eject.Enabled = state.Status ~= "armed" and state.Status ~= "exploded" and state.Anchored
         anchor.Text = state.Anchored and text.Detach or text.Anchor
         anchor.Enabled, anchor.Selected = state.Status ~= "armed" and state.Status ~= "exploded", state.Anchored
-        arm.Text = state.Status == "armed" and text.Disarm or text.Arm
-        arm.Enabled = state.Disk and state.Anchored and (state.Status == "ready" or state.Status == "armed") and state.Disarming < 0
+        arm.Text = text.Arm
+        arm.Enabled = state.Disk and state.Anchored and state.Status == "ready"
     end
     UI.Update(snapshot)
 end
