@@ -68,14 +68,15 @@ function nuclear.Update(item, data)
         Networking.CreateEntityEvent(item, componentEvent.__new(terminal, nil))
     end
     local holdable = item.GetComponentString("Holdable")
-    local canDisarm = data.Status == "armed"
-    if holdable.CanBePicked ~= canDisarm then
-        holdable.CanBePicked = canDisarm
+    local canPick = data.Status ~= "exploded"
+    if holdable.CanBePicked ~= canPick then
+        holdable.CanBePicked = canPick
         Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(holdable.SerializableProperties[Identifier("CanBePicked")], holdable))
     end
     local light = item.GetComponentString("LightComponent")
-    if light.IsOn ~= canDisarm then
-        light.IsOn = canDisarm
+    local armed = data.Status == "armed"
+    if light.IsOn ~= armed then
+        light.IsOn = armed
         Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(light.SerializableProperties[Identifier("IsOn")], light))
     end
     local payload
@@ -142,14 +143,49 @@ function nuclear.Action(client, item, action, value)
         data.Entered = value
         return nuclear.Action(client, item, "enter")
     elseif action == "anchor" and data.Status ~= "armed" and item.ParentInventory == nil then
-        if holdable.Attached then holdable.Drop(nil, false)
-        elseif holdable.CanBeAttached(client.Character) then holdable.AttachToWall() end
-        Networking.CreateEntityEvent(item, componentEvent.__new(holdable, nil))
+        if holdable.Attached then
+            holdable.Drop(nil, false)
+            Networking.CreateEntityEvent(item, componentEvent.__new(holdable, nil))
+        else
+            local position = item.WorldPosition
+            local hull = Hull.FindHull(position, item.CurrentHull)
+            local safe = hull ~= nil and hull.Submarine == Submarine.MainSub
+            if safe then
+                for _, offset in ipairs({ Vector2(80, 0), Vector2(-80, 0), Vector2(0, 80), Vector2(0, -80) }) do
+                    local nearby = Hull.FindHull(position + offset, hull)
+                    if nearby == nil or nearby.Submarine ~= Submarine.MainSub then safe = false break end
+                end
+            end
+            if not safe then
+                Traitormod.SendChatMessage(client, Traitormod.GetText("NukeUnsafePlacement"))
+                return false
+            end
+            if not holdable.CanBeAttached(nil) then return false end
+            holdable.AttachToWall()
+            Networking.CreateEntityEvent(item, componentEvent.__new(holdable, nil))
+        end
     elseif action == "arm" and data.Status == "ready" and disk ~= nil and holdable.Attached then
         data.Status = "armed"
         item.OwnInventory.Locked = true
-        Traitormod.SendMessageEveryone(Traitormod.FormatText("NukeArmedAnnouncement", math.ceil(data.Remaining)))
         Traitormod.SelectedGamemode:SetAlertCode("delta")
+        local hull = Hull.FindHull(item.WorldPosition, item.CurrentHull)
+        local room = hull ~= nil and tostring(hull.DisplayName) or Traitormod.GetText("NukeUnknownRoom")
+        local station = Submarine.MainSub
+        local borders = station.GetDockedBorders()
+        local middle = station.WorldPosition + Vector2(borders.X + borders.Width / 2, borders.Y - borders.Height / 2)
+        local offset = item.WorldPosition - middle
+        local vertical = offset.Y >= 0 and "North" or "South"
+        local horizontal = offset.X >= 0 and "East" or "West"
+        local direction = math.abs(offset.X) < 50 and math.abs(offset.Y) < 50 and "Center"
+            or math.abs(offset.X) > math.abs(offset.Y) * 2 and horizontal
+            or math.abs(offset.Y) > math.abs(offset.X) * 2 and vertical or vertical .. horizontal
+        local text = Traitormod.FormatText("NukeArmedAnnouncement", room,
+            Traitormod.GetText("NukeDirection" .. direction), math.ceil(data.Remaining))
+        for _, player in pairs(Client.ClientList) do
+            local message = ChatMessage.Create(Traitormod.GetText("NukeAnnouncementSender"), text, ChatMessageType.Default, nil, nil)
+            message.Color = Color(255, 80, 80, 255)
+            Game.SendDirectChatMessage(message, player)
+        end
     elseif action == "disarm" then return nuclear.BeginDisarm(client.Character, item)
     else return false end
     if data.Status == "locked" and item.OwnInventory.GetItemAt(0) ~= nil then data.Status = "code" end
@@ -163,7 +199,15 @@ function nuclear.Think(deltaTime)
         if item.Removed then bombs[item] = nil
         else
             -- OnSpawn runs inside the Item constructor, before its network spawn event. Initialize on the next Think.
-            if not data.Initialized then data.Initialized = true nuclear.Update(item, data) end
+            if not data.Initialized then
+                data.Initialized = true
+                local holdable = item.GetComponentString("Holdable")
+                if holdable.Attached then
+                    holdable.Drop(nil, false)
+                    Networking.CreateEntityEvent(item, componentEvent.__new(holdable, nil))
+                end
+                nuclear.Update(item, data)
+            end
             local previous = data.Status .. ":" .. math.ceil(data.Remaining) .. ":" .. math.ceil(data.Cooldown)
             local disk = item.OwnInventory.GetItemAt(0)
             if disk == nil then
@@ -184,6 +228,7 @@ function nuclear.Think(deltaTime)
                         data.Disarming = nil
                         nuclear.Update(item, data)
                     else
+                        character.AnimController.UpdateUseItem(false, item.WorldPosition)
                         job.Progress = job.Progress + deltaTime
                         if job.Progress >= config.DisarmTime then nuclear.Disarm(item, data) end
                     end
@@ -234,9 +279,11 @@ Hook.Patch("Traitormod.Nuclear.Interact", "Barotrauma.Items.Components.Holdable"
     if instance.Item.Prefab.Identifier ~= "vt_nuclear_bomb" then return end
     local data = bombs[instance.Item]
     if not active or data == nil or data.Status == "exploded" then parameters.PreventExecution = true return false end
-    if data.Status == "armed" then nuclear.BeginDisarm(parameters["picker"], instance.Item) end
-    parameters.PreventExecution = true
-    return false
+    if data.Status == "armed" then
+        nuclear.BeginDisarm(parameters["picker"], instance.Item)
+        parameters.PreventExecution = true
+        return false
+    end
 end, Hook.HookMethodType.Before)
 Hook.Patch("Traitormod.Nuclear.DamageBefore", "Barotrauma.CharacterHealth", "ApplyDamage", function(instance)
     for _, data in pairs(bombs) do

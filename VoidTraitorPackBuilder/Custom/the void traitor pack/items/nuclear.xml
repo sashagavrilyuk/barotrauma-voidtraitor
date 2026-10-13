@@ -4,7 +4,7 @@
     <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="576,128,64,64" origin="0.5,0.5" />
     <Sprite texture="Content/Items/Weapons/TurretsAndDepthCharges.png" sourcerect="130,1,129,88" depth="0.8" />
     <Body width="128" height="85" density="20" />
-    <Holdable slots="RightHand+LeftHand" holdpos="0,-50" handle1="-10,20" handle2="10,20" aimable="false" attachable="true" reattachable="true" attachedbydefault="true" allowingameediting="false" msg="NukeDisarmInteraction" pickkey="Use" pickingtime="0">
+    <Holdable slots="RightHand+LeftHand" holdpos="0,-50" handle1="-10,20" handle2="10,20" aimable="false" attachable="true" reattachable="true" attachedbydefault="false" allowingameediting="false" msg="NukeDisarmInteraction" pickkey="Use" pickingtime="0">
       <StatusEffect type="OnSpawn" target="This"><LuaHook name="vt_nuclear_spawn" /></StatusEffect>
     </Holdable>
     <Terminal canbeselected="true" readonly="false" allowingameediting="false" msg="ItemMsgInteractSelect" allowuioverlap="true" welcomemessage="NukeNativeWelcome">
