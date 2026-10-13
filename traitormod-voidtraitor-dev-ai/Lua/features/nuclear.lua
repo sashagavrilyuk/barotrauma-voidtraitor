@@ -310,7 +310,7 @@ Hook.Patch("Traitormod.Nuclear.Interact", "Barotrauma.Items.Components.Holdable"
         return false
     end
 end, Hook.HookMethodType.Before)
-Hook.Patch("Traitormod.Nuclear.Defuse", "Barotrauma.Items.Components.Holdable", "OnPicked", function(instance, parameters)
+Hook.Patch("Traitormod.Nuclear.Defuse", "Barotrauma.Items.Components.Holdable", "OnPicked", { "Barotrauma.Character" }, function(instance, parameters)
     if instance.Item.Prefab.Identifier ~= "vt_nuclear_bomb" or not instance.Attached then return end
     parameters.PreventExecution = true
     local character = parameters["picker"]
