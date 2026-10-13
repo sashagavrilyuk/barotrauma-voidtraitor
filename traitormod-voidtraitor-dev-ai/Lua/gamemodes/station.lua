@@ -46,6 +46,7 @@ function gm:Start()
 
     self.SpawnedAccounts = {}
     self.StationCrew = {}
+    self.PendingShuttleArrivals = {}
     self.BiohazardAnnounced = false
     self.NextHuskCheck = 0
     for _, client in pairs(Client.ClientList) do
@@ -108,7 +109,9 @@ end
 
 function gm:SpawnNewcomerOnShuttle(client, submarine)
     if Traitormod.MidRoundSpawn.SpawnClientCharacterOnSub(submarine, client) then
-        self.SpawnedAccounts[Traitormod.GetClientAccountKey(client)] = true
+        local accountKey = Traitormod.GetClientAccountKey(client)
+        self.SpawnedAccounts[accountKey] = true
+        self.PendingShuttleArrivals[accountKey] = true
     end
 end
 
@@ -205,6 +208,16 @@ Traitormod.AddCommand("!stationcode", function(client, args)
         Traitormod.SendChatMessage(client, Traitormod.GetText("StationAlertUnchanged"))
     end
     return true
+end)
+
+Hook.Add("traitormod.midroundspawn", "Traitormod.Station.ShuttleArrival", function(client, character)
+    local selected = Traitormod.SelectedGamemode
+    if selected == nil or selected.Name ~= "Station" then return end
+
+    local accountKey = Traitormod.GetClientAccountKey(client)
+    if not selected.PendingShuttleArrivals[accountKey] then return end
+    selected.PendingShuttleArrivals[accountKey] = nil
+    table.insert(selected.StationCrew, character)
 end)
 
 Hook.Add("client.connected", "Traitormod.Station.Reconnect", function(client)
