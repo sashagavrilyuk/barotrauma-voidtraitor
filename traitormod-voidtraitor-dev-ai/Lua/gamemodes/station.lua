@@ -63,7 +63,7 @@ end
 
 function gm:Start()
     local submarine = Submarine.MainSub
-    self.StationAnnouncementName = string.format("%s №%03d", submarine.Info.Name, math.random(0, 999))
+    self.StationAnnouncementName = string.format("%s №%03d", string.upper(submarine.Info.Name), math.random(0, 999))
     local borders = submarine.GetDockedBorders()
     submarine.SetPosition(Vector2(submarine.WorldPosition.X, Level.Loaded.Size.Y - borders.Y - 200))
     submarine.SubBody.Body.BodyType = bodyTypes.Static
@@ -114,7 +114,8 @@ function gm:PlayAlertSound(code)
 end
 
 function gm:SendAlertMessage(text, color)
-    local announcement = Traitormod.FormatText("StationAnnouncementHeader", self.StationAnnouncementName) .. "\n" .. text
+    local header = Traitormod.FormatText("StationAnnouncementHeader", self.StationAnnouncementName) .. ":"
+    local announcement = "‖color:#FFFFFF‖" .. header .. "‖end‖\n" .. text
     for _, client in pairs(Client.ClientList) do
         local message = ChatMessage.Create("", announcement, ChatMessageType.Default, nil, nil)
         message.Color = color
