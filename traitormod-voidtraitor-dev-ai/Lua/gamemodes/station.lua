@@ -126,11 +126,11 @@ function gm:SendAlertMessage(text, color)
     end
 end
 
-function gm:SetAlertCode(code)
+function gm:SetAlertCode(code, playSound)
     if alertCodes[code] == nil or self.AlertCode == code then return false end
     self.AlertCode = code
     self:SendAlertMessage(Traitormod.GetText(alertCodes[code]), alertColors[code])
-    if alertSounds[code] ~= nil then self:PlayAlertSound(code) end
+    if playSound ~= false and alertSounds[code] ~= nil then self:PlayAlertSound(code) end
     return true
 end
 
