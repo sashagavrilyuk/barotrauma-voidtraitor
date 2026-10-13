@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RandomEvents>
+  <EventPrefabs>
+    <ScriptedEvent identifier="vt_station_sound_green" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="station">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/green_announce.ogg" range="1000000" volume="0.75" dontmuffle="true" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_station_sound_yellow" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="station">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/notice1.ogg" range="1000000" volume="0.75" dontmuffle="true" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_station_sound_blue" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="station">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/bluealert.ogg" range="1000000" volume="0.75" dontmuffle="true" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_station_sound_red" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="station">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/redalert.ogg" range="1000000" volume="0.75" dontmuffle="true" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_station_sound_delta" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="station">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/delta.ogg" range="1000000" volume="0.75" dontmuffle="true" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_station_sound_gamma" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="station">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/siren.ogg" range="1000000" volume="0.75" dontmuffle="true" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_station_sound_epsilon" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="station">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/epsilon.ogg" range="1000000" volume="0.75" dontmuffle="true" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_station_sound_biohazard" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="station">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/outbreak7.ogg" range="1000000" volume="0.75" dontmuffle="true" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+  </EventPrefabs>
+</RandomEvents>

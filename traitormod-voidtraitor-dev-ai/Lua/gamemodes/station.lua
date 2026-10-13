@@ -10,6 +10,19 @@ local alertCodes = {
     gamma = "StationAlertGamma",
     epsilon = "StationAlertEpsilon"
 }
+local alertSounds = {
+    green = "vt_station_sound_green",
+    yellow = "vt_station_sound_yellow",
+    blue = "vt_station_sound_blue",
+    red = "vt_station_sound_red",
+    delta = "vt_station_sound_delta",
+    gamma = "vt_station_sound_gamma",
+    epsilon = "vt_station_sound_epsilon",
+    biohazard = "vt_station_sound_biohazard"
+}
+local eventSet = LuaUserData.CreateStatic("Barotrauma.EventSet", true)
+LuaUserData.RegisterType("Barotrauma.EventPrefab")
+LuaUserData.RegisterType("Barotrauma.ScriptedEvent")
 local respawnModes = LuaUserData.CreateEnumTable("Barotrauma.Networking.RespawnMode")
 local serverSettings = Descriptors["Barotrauma.Networking.ServerSettings"] or LuaUserData.RegisterType("Barotrauma.Networking.ServerSettings")
 LuaUserData.MakePropertyAccessible(serverSettings, "UseRespawnShuttle")
@@ -72,10 +85,28 @@ function gm:Start()
     self:SetAlertCode("green")
 end
 
+function gm:PlayAlertSound(code)
+    local eventPrefab = eventSet.GetEventPrefab(Identifier(alertSounds[code]))
+    if eventPrefab == nil then
+        Traitormod.Error("Station alert sound event not found: " .. alertSounds[code])
+        return
+    end
+
+    for hull in Hull.HullList do
+        if hull.Submarine == Submarine.MainSub then
+            local event = eventPrefab.CreateInstance(Game.GameSession.EventManager.RandomSeed)
+            event.AddTarget(Identifier("station"), hull)
+            Game.GameSession.EventManager.ActivateEvent(event)
+            return
+        end
+    end
+end
+
 function gm:SetAlertCode(code)
     if alertCodes[code] == nil or self.AlertCode == code then return false end
     self.AlertCode = code
     Traitormod.RoundEvents.SendEventMessage(Traitormod.GetText(alertCodes[code]), "InfoFrameTabButton.Mission")
+    if alertSounds[code] ~= nil then self:PlayAlertSound(code) end
     return true
 end
 
@@ -95,6 +126,7 @@ function gm:CheckHuskOutbreak()
     if infected * 2 > #self.StationCrew then
         self.BiohazardAnnounced = true
         Traitormod.RoundEvents.SendEventMessage(Traitormod.GetText("StationBiohazard5"), "HuskMissionIcon")
+        self:PlayAlertSound("biohazard")
     end
 end
 

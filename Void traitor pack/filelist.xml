@@ -433,4 +433,5 @@
   <Text file="%ModDir%/the void traitor pack/CloningText.xml" />
   <Item file="%ModDir%/the void traitor pack/items/nuclear.xml" />
   <Text file="%ModDir%/the void traitor pack/NuclearText.xml" />
+  <RandomEvents file="%ModDir%/Sounds/Station/Alerts.xml" />
 </contentpackage>
