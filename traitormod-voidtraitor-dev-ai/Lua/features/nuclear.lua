@@ -9,6 +9,9 @@ local statusLabels = { locked = "Locked", code = "AwaitCode", ready = "Ready", a
 -- Track order must match the six OnActive sounds in nuclear.xml.
 local musicLengths = { 109.9977, 111.6000, 103.3606, 196.2902, 109.5756 }
 local activationLength = 14
+local inputTypes = LuaUserData.CreateEnumTable("Barotrauma.InputType")
+local holdableDescriptor = Descriptors["Barotrauma.Items.Components.Holdable"] or LuaUserData.RegisterType("Barotrauma.Items.Components.Holdable")
+LuaUserData.MakePropertyAccessible(holdableDescriptor, "PickKey")
 local componentEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateEventData", true)
 local terminalDescriptor = Descriptors["Barotrauma.Items.Components.Terminal"] or LuaUserData.RegisterType("Barotrauma.Items.Components.Terminal")
 LuaUserData.MakePropertyAccessible(terminalDescriptor, "OutputValue")
@@ -17,7 +20,7 @@ function nuclear.Start()
     active, bombs, sessions = true, {}, {}
     texts = {}
     for _, key in ipairs({ "Title", "Locked", "AwaitDisk", "AwaitCode", "Ready", "Armed", "Cooldown", "Exploded",
-        "Time", "Cooling", "Eject", "Insert", "Anchor", "Arm", "Disarm", "Close", "Disarming" }) do
+        "Time", "Cooling", "Eject", "Insert", "Anchor", "Detach", "Arm", "Disarm", "Close", "Disarming" }) do
         texts[key] = Traitormod.GetText("Nuke" .. key)
     end
     for item in Item.ItemList do
@@ -29,8 +32,13 @@ function nuclear.Register(item)
     if not active or bombs[item] ~= nil then return end
     local code = ""
     for _ = 1, 6 do code = code .. tostring(math.random(0, 9)) end
+    local availableMusic = {}
+    for index, length in ipairs(musicLengths) do
+        if length + 1 < config.Time then availableMusic[#availableMusic + 1] = index end
+    end
     bombs[item] = { Code = code, Entered = "", Status = "locked", Remaining = config.Time, Cooldown = 0, LastAttempt = -1,
-        MusicIndex = math.random(#musicLengths), MusicElapsed = 0, MusicPlaying = false, MusicStarted = false }
+        MusicIndex = #availableMusic > 0 and availableMusic[math.random(#availableMusic)] or 0,
+        MusicElapsed = 0, MusicPlaying = false, MusicStarted = false }
 end
 
 function nuclear.Validate(client, item, readOnly)
@@ -104,7 +112,7 @@ end
 function nuclear.Disarm(item, data)
     if data.Status ~= "armed" then return end
     data.Status, data.Cooldown, data.Disarming = "cooldown", config.Cooldown, nil
-    data.MusicPlaying, data.MusicStarted = false, false
+    data.MusicPlaying, data.MusicStarted, data.MusicElapsed = false, false, 0
     data.Remaining = math.max(data.Remaining, config.MinimumTime)
     item.OwnInventory.Locked = false
     Traitormod.SendMessageEveryone(Traitormod.GetText("NukeDisarmedAnnouncement"))
@@ -154,7 +162,8 @@ function nuclear.Action(client, item, action, value)
         return nuclear.Action(client, item, "enter")
     elseif action == "anchor" and data.Status ~= "armed" and data.Status ~= "exploded" and item.ParentInventory == nil then
         if holdable.Attached then
-            return false
+            holdable.Drop(nil, false)
+            Networking.CreateEntityEvent(item, componentEvent.__new(holdable, nil))
         else
             local position = item.WorldPosition
             local hull = Hull.FindHull(position, item.CurrentHull)
@@ -233,7 +242,8 @@ function nuclear.Think(deltaTime)
                 if data.Cooldown == 0 then data.Status = disk ~= nil and "ready" or "locked" end
             elseif data.Status == "armed" then
                 data.Remaining = math.max(0, data.Remaining - deltaTime)
-                if not data.MusicStarted and data.Remaining <= musicLengths[data.MusicIndex] - data.MusicElapsed + 1 then
+                if data.MusicIndex > 0 and not data.MusicStarted
+                    and data.Remaining <= musicLengths[data.MusicIndex] - data.MusicElapsed + 1 then
                     data.MusicStarted, data.MusicPlaying = true, true
                 end
                 if data.MusicPlaying then data.MusicElapsed = data.MusicElapsed + deltaTime end
@@ -298,13 +308,28 @@ Hook.Patch("Traitormod.Nuclear.Buttons", "Barotrauma.Items.Components.CustomInte
     elseif anchor then nuclear.Action(parameters["c"], instance.Item, "anchor")
     elseif arm then nuclear.Action(parameters["c"], instance.Item, "arm") end
 end, Hook.HookMethodType.Before)
--- Native picking cancels as soon as a terminal on the same item is selected. Start the SS14 do-after on E instead.
+-- E picks up loose bombs and starts disarming anchored ones.
+Hook.Patch("Traitormod.Nuclear.Use", "Barotrauma.Items.Components.Holdable", "Use", function(instance, parameters)
+    if instance.Item.Prefab.Identifier ~= "vt_nuclear_bomb" then return end
+    parameters.PreventExecution = true
+    return false
+end, Hook.HookMethodType.Before)
+Hook.Patch("Traitormod.Nuclear.NativeAttach", "Barotrauma.Items.Components.Holdable", "ServerEventRead", function(instance, parameters)
+    if instance.Item.Prefab.Identifier ~= "vt_nuclear_bomb" then return end
+    local message = parameters["msg"]
+    message.ReadSingle()
+    message.ReadSingle()
+    parameters.PreventExecution = true
+end, Hook.HookMethodType.Before)
+Hook.Patch("Traitormod.Nuclear.PickKey", "Barotrauma.Items.Components.Holdable", "DeattachFromWall", function(instance)
+    if instance.Item.Prefab.Identifier == "vt_nuclear_bomb" then instance.PickKey = inputTypes.Use end
+end, Hook.HookMethodType.After)
 Hook.Patch("Traitormod.Nuclear.Interact", "Barotrauma.Items.Components.Holdable", "Pick", function(instance, parameters)
     if instance.Item.Prefab.Identifier ~= "vt_nuclear_bomb" then return end
     local data = bombs[instance.Item]
     if not active or data == nil or data.Status == "exploded" then parameters.PreventExecution = true return false end
-    if data.Status == "armed" then
-        nuclear.BeginDisarm(parameters["picker"], instance.Item)
+    if instance.Attached then
+        if data.Status == "armed" then nuclear.BeginDisarm(parameters["picker"], instance.Item) end
         parameters.PreventExecution = true
         return false
     end
