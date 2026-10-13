@@ -4,12 +4,19 @@ local config = Traitormod.Config.Nuclear
 local json = require("json")
 local bombs, sessions = {}, {}
 local active = false
+local texts
+local statusLabels = { locked = "Locked", code = "AwaitCode", ready = "Ready", armed = "Armed", cooldown = "Cooldown", exploded = "Exploded" }
 local componentEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateEventData", true)
 local terminalDescriptor = Descriptors["Barotrauma.Items.Components.Terminal"] or LuaUserData.RegisterType("Barotrauma.Items.Components.Terminal")
 LuaUserData.MakePropertyAccessible(terminalDescriptor, "OutputValue")
 
 function nuclear.Start()
     active, bombs, sessions = true, {}, {}
+    texts = {}
+    for _, key in ipairs({ "Title", "Locked", "AwaitDisk", "AwaitCode", "Ready", "Armed", "Cooldown", "Exploded",
+        "Time", "Cooling", "Eject", "Insert", "Anchor", "Arm", "Disarm", "Close", "Disarming" }) do
+        texts[key] = Traitormod.GetText("Nuke" .. key)
+    end
     for item in Item.ItemList do
         if item.Prefab.Identifier == "vt_nuclear_bomb" then nuclear.Register(item) end
     end
@@ -31,27 +38,22 @@ function nuclear.Validate(client, item, readOnly)
 end
 
 function nuclear.Snapshot(item, data)
-    local text = {}
-    for _, key in ipairs({ "Title", "Locked", "AwaitDisk", "AwaitCode", "Ready", "Armed", "Cooldown", "Exploded",
-        "Time", "Cooling", "Eject", "Insert", "Anchor", "Arm", "Disarm", "Close", "Disarming" }) do
-        text[key] = Traitormod.GetText("Nuke" .. key)
-    end
     return { Status = data.Status, Remaining = math.ceil(data.Remaining), Cooldown = math.ceil(data.Cooldown),
         Entered = #data.Entered, Disk = item.OwnInventory.GetItemAt(0) ~= nil,
         Anchored = item.GetComponentString("Holdable").Attached,
-        Disarming = data.Disarming ~= nil and math.floor(data.Disarming.Progress / config.DisarmTime * 100) or -1, Text = text }
+        Disarming = data.Disarming ~= nil and math.floor(data.Disarming.Progress / config.DisarmTime * 100) or -1, Text = texts }
 end
 
-function nuclear.Send(client, item)
+function nuclear.Send(client, item, payload)
     local message = Networking.Start("VoidTraitor_NuclearSnapshot")
     message.WriteUInt16(UShort(item.ID))
-    message.WriteString(json.encode(nuclear.Snapshot(item, bombs[item])))
+    message.WriteString(payload or json.encode(nuclear.Snapshot(item, bombs[item])))
     Networking.Send(message, client.Connection)
 end
 
 function nuclear.Update(item, data)
     local snapshot = nuclear.Snapshot(item, data)
-    local first = snapshot.Text[({ locked = "Locked", code = "AwaitCode", ready = "Ready", armed = "Armed", cooldown = "Cooldown", exploded = "Exploded" })[data.Status]]
+    local first = snapshot.Text[statusLabels[data.Status]]
     local second = Traitormod.FormatText("NukeTime", snapshot.Remaining)
     if data.Status == "locked" then second = snapshot.Text.AwaitDisk
     elseif data.Status == "code" then second = string.rep("*", #data.Entered) .. string.rep("_", 6 - #data.Entered)
@@ -71,9 +73,20 @@ function nuclear.Update(item, data)
         holdable.CanBePicked = canDisarm
         Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(holdable.SerializableProperties[Identifier("CanBePicked")], holdable))
     end
+    local light = item.GetComponentString("LightComponent")
+    if light.IsOn ~= canDisarm then
+        light.IsOn = canDisarm
+        Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(light.SerializableProperties[Identifier("IsOn")], light))
+    end
+    local payload
     for client, selected in pairs(sessions) do
         if selected == item then
-            if nuclear.Validate(client, item) then nuclear.Send(client, item) else sessions[client] = nil end
+            if nuclear.Validate(client, item) then
+                payload = payload or json.encode(snapshot)
+                nuclear.Send(client, item, payload)
+            else
+                sessions[client] = nil
+            end
         end
     end
 end
@@ -83,12 +96,8 @@ function nuclear.Disarm(item, data)
     data.Status, data.Cooldown, data.Disarming = "cooldown", config.Cooldown, nil
     data.Remaining = math.max(data.Remaining, config.MinimumTime)
     item.OwnInventory.Locked = false
-    item.GetComponentString("LightComponent").IsOn = false
-    local light = item.GetComponentString("LightComponent")
-    Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(light.SerializableProperties[Identifier("IsOn")], light))
     Traitormod.SendMessageEveryone(Traitormod.GetText("NukeDisarmedAnnouncement"))
     Traitormod.SelectedGamemode:SetAlertCode("green")
-    nuclear.Update(item, data)
 end
 
 function nuclear.BeginDisarm(character, item)
@@ -139,9 +148,6 @@ function nuclear.Action(client, item, action, value)
     elseif action == "arm" and data.Status == "ready" and disk ~= nil and holdable.Attached then
         data.Status = "armed"
         item.OwnInventory.Locked = true
-        item.GetComponentString("LightComponent").IsOn = true
-        local light = item.GetComponentString("LightComponent")
-        Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(light.SerializableProperties[Identifier("IsOn")], light))
         Traitormod.SendMessageEveryone(Traitormod.FormatText("NukeArmedAnnouncement", math.ceil(data.Remaining)))
         Traitormod.SelectedGamemode:SetAlertCode("delta")
     elseif action == "disarm" then return nuclear.BeginDisarm(client.Character, item)
