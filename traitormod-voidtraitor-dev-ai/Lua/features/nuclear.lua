@@ -171,7 +171,7 @@ function nuclear.Action(client, item, action, value)
     elseif action == "arm" and data.Status == "ready" and disk ~= nil and holdable.Attached then
         local availableMusic = {}
         for index, length in ipairs(musicLengths) do
-            if length + 1 < data.Remaining then availableMusic[#availableMusic + 1] = index end
+            if length + config.MusicStartDelay + 1 < data.Remaining then availableMusic[#availableMusic + 1] = index end
         end
         data.MusicIndex = #availableMusic > 0 and availableMusic[math.random(#availableMusic)] or 0
         data.Status = "armed"
