@@ -183,7 +183,7 @@ function nuclear.Action(client, item, action, value)
             Traitormod.GetText("NukeDirection" .. direction), math.ceil(data.Remaining))
         for _, player in pairs(Client.ClientList) do
             local message = ChatMessage.Create(Traitormod.GetText("NukeAnnouncementSender"), text, ChatMessageType.Default, nil, nil)
-            message.Color = Color(255, 80, 80, 255)
+            message.Color = Color(255, 0, 0, 255)
             Game.SendDirectChatMessage(message, player)
         end
     elseif action == "disarm" then return nuclear.BeginDisarm(client.Character, item)
