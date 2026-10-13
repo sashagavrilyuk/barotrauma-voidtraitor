@@ -144,8 +144,7 @@ function nuclear.Action(client, item, action, value)
         return nuclear.Action(client, item, "enter")
     elseif action == "anchor" and data.Status ~= "armed" and item.ParentInventory == nil then
         if holdable.Attached then
-            holdable.Drop(nil, false)
-            Networking.CreateEntityEvent(item, componentEvent.__new(holdable, nil))
+            return holdable.Pick(client.Character)
         else
             local position = item.WorldPosition
             local hull = Hull.FindHull(position, item.CurrentHull)
