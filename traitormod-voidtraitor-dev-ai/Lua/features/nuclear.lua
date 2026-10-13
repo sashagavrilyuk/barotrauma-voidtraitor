@@ -31,12 +31,8 @@ function nuclear.Register(item)
     if not active or bombs[item] ~= nil then return end
     local code = ""
     for _ = 1, 6 do code = code .. tostring(math.random(0, 9)) end
-    local availableMusic = {}
-    for index, length in ipairs(musicLengths) do
-        if length + 1 < config.Time then availableMusic[#availableMusic + 1] = index end
-    end
     bombs[item] = { Code = code, Entered = "", Status = "locked", Remaining = config.Time, Cooldown = 0, LastAttempt = -1,
-        MusicIndex = #availableMusic > 0 and availableMusic[math.random(#availableMusic)] or 0,
+        MusicIndex = 0,
         MusicElapsed = 0, MusicPlaying = false, MusicStarted = false }
 end
 
@@ -173,6 +169,11 @@ function nuclear.Action(client, item, action, value)
             Networking.CreateEntityEvent(item, componentEvent.__new(holdable, nil))
         end
     elseif action == "arm" and data.Status == "ready" and disk ~= nil and holdable.Attached then
+        local availableMusic = {}
+        for index, length in ipairs(musicLengths) do
+            if length + 1 < data.Remaining then availableMusic[#availableMusic + 1] = index end
+        end
+        data.MusicIndex = #availableMusic > 0 and availableMusic[math.random(#availableMusic)] or 0
         data.Status = "armed"
         item.OwnInventory.Locked = true
         Traitormod.SelectedGamemode:SetAlertCode("delta")
