@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <Item identifier="vt_nuclear_bomb" name="" category="Machine,Weapon" tags="vt_nuclear_bomb" scale="0.8" interactdistance="180" indestructible="true" health="100" cargocontaineridentifier="">
+    <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="576,128,64,64" origin="0.5,0.5" />
+    <Sprite texture="Content/Items/Weapons/TurretsAndDepthCharges.png" sourcerect="130,1,129,88" depth="0.8" />
+    <Body width="128" height="85" density="20" />
+    <Holdable slots="RightHand+LeftHand" holdpos="0,-50" handle1="-10,20" handle2="10,20" aimable="false" attachable="true" reattachable="true" attachedbydefault="true" allowingameediting="false" msg="NukeDisarmInteraction" pickkey="Use" pickingtime="0">
+      <StatusEffect type="OnSpawn" target="This"><LuaHook name="vt_nuclear_spawn" /></StatusEffect>
+    </Holdable>
+    <Terminal canbeselected="true" readonly="false" allowingameediting="false" msg="ItemMsgInteractSelect" allowuioverlap="true" welcomemessage="NukeNativeWelcome">
+      <GuiFrame relativesize="0.34,0.35" minsize="300,190" maxsize="520,380" anchor="Center" relativeoffset="0,-0.1" style="ItemUI" />
+    </Terminal>
+    <CustomInterface canbeselected="true" msg="ItemMsgInteractSelect" allowuioverlap="true" allowingameediting="false">
+      <GuiFrame relativesize="0.34,0.24" minsize="300,130" maxsize="520,230" anchor="Center" relativeoffset="0,0.21" style="ItemUI" />
+      <Button text="NukeInsert" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
+      <Button text="NukeEject" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
+      <Button text="NukeAnchor" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
+      <Button text="NukeArm" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
+    </CustomInterface>
+    <ItemContainer capacity="1" maxstacksize="1" canbeselected="false" hideitems="true" drawinventory="false" allowdraganddrop="false" quickusemovesitemsinside="false">
+      <Containable items="vt_nuclear_disk" />
+    </ItemContainer>
+    <LightComponent ison="false" powerconsumption="0" range="350" lightcolor="255,40,30,200" pulsemagnitude="0.8" pulsefrequency="1" castshadows="false" allowingameediting="false" />
+  </Item>
+  <Item identifier="vt_nuclear_disk" name="" category="Misc" tags="smallitem,vt_nuclear_disk" scale="0.5" maxstacksize="1" indestructible="true">
+    <Sprite texture="Content/Items/Electricity/signalcomp.png" sourcerect="0,320,32,32" origin="0.5,0.5" color="255,200,65,255" />
+    <Body width="24" height="24" density="1" />
+    <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
+  </Item>
+</Items>

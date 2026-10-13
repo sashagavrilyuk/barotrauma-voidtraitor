@@ -63,6 +63,7 @@ function gm:Start()
     secret.Start(self)
     Traitormod.Cargo.Start()
     Traitormod.Cloning.Start()
+    Traitormod.Nuclear.Start()
     for character in Character.CharacterList do
         if character.IsHuman and not character.IsDead and character.Submarine == Submarine.MainSub then
             Traitormod.IdConsole.InitializeCard(character)

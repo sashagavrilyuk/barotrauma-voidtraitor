@@ -44,6 +44,7 @@ config.Cargo = {
     DeliveredHistorySeconds = 150,
 }
 config.Cloning = { Time = 30, HumanBiomassCost = 50, HumanBiomassYield = 28 }
+config.Nuclear = { Time = 300, MinimumTime = 180, Cooldown = 30, DisarmTime = 30, ExplosionRange = 12000 }
 
 ----- DISCORD -----
 
