@@ -115,7 +115,7 @@ end
 
 function gm:SendAlertMessage(text, color)
     local header = Traitormod.FormatText("StationAnnouncementHeader", self.StationAnnouncementName) .. ":"
-    local announcement = "‖color:#FFFFFF‖" .. header .. "‖end‖\n" .. text
+    local announcement = header .. "\n" .. text
     for _, client in pairs(Client.ClientList) do
         local message = ChatMessage.Create("", announcement, ChatMessageType.Default, nil, nil)
         message.Color = color
