@@ -174,6 +174,9 @@ function nuclear.Action(client, item, action, value)
             if length + config.MusicStartDelay + 1 < data.Remaining then availableMusic[#availableMusic + 1] = index end
         end
         data.MusicIndex = #availableMusic > 0 and availableMusic[math.random(#availableMusic)] or 0
+        for _, audio in ipairs(data.Audio) do
+            Networking.CreateEntityEvent(item, componentEvent.__new(audio, nil))
+        end
         data.Status = "armed"
         item.OwnInventory.Locked = true
         Traitormod.SelectedGamemode:SetAlertCode("delta")
@@ -218,6 +221,9 @@ function nuclear.Think(deltaTime)
                             data.Light = component
                         end
                     end
+                end
+                for _, audio in ipairs(data.Audio) do
+                    Networking.CreateEntityEvent(item, componentEvent.__new(audio, nil))
                 end
                 local holdable = item.GetComponentString("Holdable")
                 if holdable.PickingTime ~= config.DisarmTime then
