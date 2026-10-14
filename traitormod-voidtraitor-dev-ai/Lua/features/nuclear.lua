@@ -127,8 +127,7 @@ function nuclear.Disarm(item, data)
     data.Status, data.Cooldown, data.Entered = "cooldown", config.Cooldown, ""
     data.MusicPlaying, data.MusicStarted, data.MusicElapsed = false, false, 0
     removeMusic(data)
-    data.Remaining = math.max(data.Remaining, config.MinimumTime,
-        data.MusicIndex > 0 and math.ceil(musicLengths[data.MusicIndex] + config.MusicStartDelay + 2) or 0)
+    data.Remaining = math.max(data.Remaining, config.MinimumTime)
     nuclear.PlaySound(item, "disarm")
     item.OwnInventory.Locked = false
     Traitormod.SelectedGamemode:OnNuclearDisarmed()
