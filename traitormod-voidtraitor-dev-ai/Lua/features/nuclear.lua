@@ -20,7 +20,7 @@ function nuclear.Start()
     active, bombs, sessions = true, {}, {}
     texts = {}
     for _, key in ipairs({ "Title", "Locked", "AwaitDisk", "AwaitCode", "Ready", "Armed", "Cooldown", "Exploded",
-        "Time", "Cooling", "Eject", "Insert", "Anchor", "Detach", "Close" }) do
+        "Time", "Cooling", "Eject", "Insert", "Anchor", "Detach", "Arm", "Close" }) do
         texts[key] = Traitormod.GetText("Nuke" .. key)
     end
     for item in Item.ItemList do
