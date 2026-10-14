@@ -223,12 +223,13 @@ end
 
 function console.Action(client, item, action, payload)
     local session = sessions[client]
-    if session == nil or session.Item ~= item or not console.Validate(client, item) then return false end
+    if session == nil or session.Item ~= item then return false end
     if action == "close" then
         -- Native users close the action dialog before editing the console's text fields.
         if session.Gui then sessions[client] = nil else session.Prompt = nil end
         return true
     end
+    if not console.Validate(client, item) then return false end
     local accepted, reason = true, nil
     if action == "choose" then
         if payload.Slot ~= 0 and payload.Slot ~= 1 then return false end
