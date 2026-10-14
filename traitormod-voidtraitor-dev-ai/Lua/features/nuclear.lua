@@ -9,6 +9,8 @@ local statusLabels = { locked = "Locked", code = "AwaitCode", ready = "Ready", a
 -- Track order must match the six OnActive sounds in nuclear.xml.
 local musicLengths = { 109.9977, 111.6000, 103.3606, 196.2902, 109.5756 }
 local activationLength = 14
+local finalAlarmTime = 10
+local musicBuffer = 1.5
 local componentEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateEventData", true)
 local eventSet = LuaUserData.CreateStatic("Barotrauma.EventSet", true)
 local holdableDescriptor = Descriptors["Barotrauma.Items.Components.Holdable"] or LuaUserData.RegisterType("Barotrauma.Items.Components.Holdable")
@@ -74,7 +76,7 @@ function nuclear.Update(item, data)
         Networking.CreateEntityEvent(item, componentEvent.__new(terminal, nil))
     end
     local holdable = item.GetComponentString("Holdable")
-    local canPick = data.Status ~= "exploded"
+    local canPick = data.Status ~= "exploded" and (data.Status ~= "armed" or data.Remaining > config.DisarmTime)
     if holdable.CanBePicked ~= canPick then
         holdable.CanBePicked = canPick
         Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(holdable.SerializableProperties[Identifier("CanBePicked")], holdable))
@@ -85,7 +87,7 @@ function nuclear.Update(item, data)
         light.IsOn = armed
         Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(light.SerializableProperties[Identifier("IsOn")], light))
     end
-    local playing = (data.Status == "exploded" or data.Status == "armed" and data.Remaining <= 10)
+    local playing = (data.Status == "exploded" or data.Status == "armed" and data.Remaining <= finalAlarmTime)
         and #musicLengths + 1 or data.MusicPlaying and data.MusicIndex or 0
     for index, audio in ipairs(data.Audio) do
         local enabled = index == playing
@@ -112,7 +114,7 @@ function nuclear.PlaySound(item, sound)
 end
 
 function nuclear.Disarm(item, data)
-    if data.Status ~= "armed" then return end
+    if data.Status ~= "armed" or data.Remaining <= 0 then return end
     data.Status, data.Cooldown = "cooldown", config.Cooldown
     data.MusicPlaying, data.MusicStarted, data.MusicElapsed = false, false, 0
     data.Remaining = math.max(data.Remaining, config.MinimumTime)
@@ -133,11 +135,15 @@ function nuclear.Action(client, item, action, value)
     if action == "insert" and disk == nil and data.Status ~= "armed" and data.Status ~= "exploded" then
         for held in client.Character.Inventory.AllItems do
             if held.Prefab.Identifier == "vt_nuclear_disk" then
-                if item.OwnInventory.TryPutItem(held, 0, false, false, client.Character, true) then break end
+                if item.OwnInventory.TryPutItem(held, 0, false, false, client.Character, true) then
+                    nuclear.PlaySound(item, "disk")
+                    break
+                end
             end
         end
     elseif action == "eject" and disk ~= nil and data.Status ~= "armed" and data.Status ~= "exploded" and holdable.Attached then
         if not client.Character.Inventory.TryPutItem(disk, client.Character, disk.GetComponentString("Pickable").AllowedSlots, true, false, true) then disk.Drop(client.Character, true) end
+        if item.OwnInventory.GetItemAt(0) ~= disk then nuclear.PlaySound(item, "disk") end
         if data.Status ~= "cooldown" then data.Status = "locked" end
         data.Entered = ""
     elseif action == "digit" and data.Status == "code" and type(value) == "string" and value:match("^%d$") and #data.Entered < 6 then
@@ -187,7 +193,7 @@ function nuclear.Action(client, item, action, value)
     elseif action == "arm" and data.Status == "ready" and disk ~= nil and holdable.Attached then
         local availableMusic = {}
         for index, length in ipairs(musicLengths) do
-            if length + config.MusicStartDelay + 1 < data.Remaining then availableMusic[#availableMusic + 1] = index end
+            if length + math.max(config.MusicStartDelay, finalAlarmTime + musicBuffer) + 1 < data.Remaining then availableMusic[#availableMusic + 1] = index end
         end
         data.MusicIndex = #availableMusic > 0 and availableMusic[math.random(#availableMusic)] or 0
         for _, audio in ipairs(data.Audio) do
@@ -195,7 +201,7 @@ function nuclear.Action(client, item, action, value)
         end
         data.Status = "armed"
         item.OwnInventory.Locked = true
-        nuclear.PlaySound(item, "confirm")
+        nuclear.PlaySound(item, "arm")
         Traitormod.SelectedGamemode:SetAlertCode("delta")
         local hull = Hull.FindHull(item.WorldPosition, item.CurrentHull)
         local room = hull ~= nil and tostring(hull.DisplayName) or Traitormod.GetText("NukeUnknownRoom")
@@ -261,11 +267,11 @@ function nuclear.Think(deltaTime)
             elseif data.Status == "armed" then
                 data.Remaining = math.max(0, data.Remaining - deltaTime)
                 if data.MusicIndex > 0 and not data.MusicStarted
-                    and data.Remaining <= musicLengths[data.MusicIndex] - data.MusicElapsed + 1 then
+                    and data.Remaining <= musicLengths[data.MusicIndex] - data.MusicElapsed + finalAlarmTime + musicBuffer then
                     data.MusicStarted, data.MusicPlaying = true, true
                 end
                 if data.MusicPlaying then data.MusicElapsed = data.MusicElapsed + deltaTime end
-                if data.Remaining <= 1 then data.MusicPlaying = false end
+                if data.Remaining <= finalAlarmTime + musicBuffer then data.MusicPlaying = false end
                 if data.Remaining == 0 and data.Status == "armed" then
                     data.Status = "exploded"
                     data.ActivationRemaining = activationLength
@@ -328,7 +334,7 @@ end, Hook.HookMethodType.Before)
 Hook.Patch("Traitormod.Nuclear.Interact", "Barotrauma.Items.Components.Holdable", "Pick", function(instance, parameters)
     if instance.Item.Prefab.Identifier ~= "vt_nuclear_bomb" then return end
     local data = bombs[instance.Item]
-    if not active or data == nil or data.Status == "exploded" then parameters.PreventExecution = true return false end
+    if not active or data == nil or data.Status == "exploded" or data.Status == "armed" and data.Remaining <= config.DisarmTime then parameters.PreventExecution = true return false end
     if instance.Attached and data.Status ~= "armed" then
         parameters.PreventExecution = true
         return false
@@ -340,7 +346,7 @@ Hook.Patch("Traitormod.Nuclear.Defuse", "Barotrauma.Items.Components.Holdable", 
     local character = parameters["picker"]
     local data = bombs[instance.Item]
     if active and Game.RoundStarted and not Traitormod.IsRoundFinalizing() and data ~= nil and data.Status == "armed"
-        and character ~= nil and character.IsHuman and not character.IsDead and not character.IsIncapacitated
+        and data.Remaining > 0 and character ~= nil and character.IsHuman and not character.IsDead and not character.IsIncapacitated
         and not character.LockHands and character.CanInteractWith(instance.Item) then
         nuclear.Disarm(instance.Item, data)
         nuclear.Update(instance.Item, data)

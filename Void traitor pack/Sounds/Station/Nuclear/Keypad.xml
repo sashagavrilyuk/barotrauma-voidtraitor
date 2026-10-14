@@ -92,5 +92,19 @@
         </StatusEffect>
       </StatusEffectAction>
     </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_disk" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/Nuclear/terminal_insert_disc.ogg" range="400" volume="0.7" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_arm" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/notice1.ogg" range="1000000" volume="0.75" dontmuffle="true" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
   </EventPrefabs>
 </RandomEvents>

@@ -6,6 +6,7 @@ https://github.com/space-wizards/space-station-14
 - general_beep.ogg: Resources/Audio/Machines/Nuke/general_beep.ogg
 - confirm_beep.ogg: Resources/Audio/Machines/Nuke/confirm_beep.ogg
 - angry_beep.ogg: Resources/Audio/Machines/Nuke/angry_beep.ogg
+- terminal_insert_disc.ogg: Resources/Audio/Machines/terminal_insert_disc.ogg
 
 Source tree: https://github.com/space-wizards/space-station-14/tree/master/Resources/Audio/Machines/Nuke
 The exact per-file license was not specified in the examined upstream attribution metadata; verify redistribution terms before public release.
