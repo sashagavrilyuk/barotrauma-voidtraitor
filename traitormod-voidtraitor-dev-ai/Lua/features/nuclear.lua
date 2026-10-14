@@ -20,7 +20,7 @@ function nuclear.Start()
     active, bombs, sessions = true, {}, {}
     texts = {}
     for _, key in ipairs({ "Title", "Locked", "AwaitDisk", "AwaitCode", "Ready", "Armed", "Cooldown", "Exploded",
-        "Time", "Cooling", "Eject", "Insert", "Anchor", "Detach", "Arm", "Close" }) do
+        "Time", "Cooling", "Eject", "Insert", "Anchor", "Detach", "Close" }) do
         texts[key] = Traitormod.GetText("Nuke" .. key)
     end
     for item in Item.ItemList do
@@ -114,6 +114,7 @@ function nuclear.Disarm(item, data)
     if data.Status ~= "armed" or data.Remaining <= 0 then return end
     data.Status, data.Cooldown, data.Entered = "cooldown", config.Cooldown, ""
     data.MusicPlaying, data.MusicStarted, data.MusicElapsed = false, false, 0
+    data.Remaining = math.max(data.Remaining, config.MinimumTime)
     item.OwnInventory.Locked = false
     Traitormod.SendMessageEveryone(Traitormod.GetText("NukeDisarmedAnnouncement"))
     Traitormod.SelectedGamemode:SetAlertCode("green")
