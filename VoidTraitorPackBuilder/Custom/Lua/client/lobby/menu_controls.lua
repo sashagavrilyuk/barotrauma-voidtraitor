@@ -53,23 +53,21 @@ function P.CreateTopButtons()
     local buttonWidth, buttonHeight = P.GetTopButtonSize()
     local padding = P.GetTopButtonSpacing()
 
-    local root = GUI.LayoutGroup(P.CreateButtonAreaRect(buttonWidth, buttonHeight, S.shopAvailable == false and 1 or 2, padding), true, GUI.Anchor.CenterLeft)
+    local root = GUI.LayoutGroup(P.CreateButtonAreaRect(buttonWidth, buttonHeight, 2, padding), true, GUI.Anchor.CenterLeft)
     root.AbsoluteSpacing = padding
     root.Stretch = false
     root.CanBeFocused = true
     S.buttonRoot = root
     S.sharedState.ButtonRoot = S.buttonRoot
 
-    if S.shopAvailable ~= false then
-        local shop = GUI.Button(GUI.RectTransform(Point(buttonWidth, buttonHeight), root.RectTransform), P.UiText.ShopButton, GUI.Alignment.Center, "GUIButtonSmall")
-        shop.CanBeFocused = true
-        shop.ToolTip = P.UiText.ShopTooltip
-        P.SetButtonTextScale(shop, 0.74)
-        shop.OnClicked = function(button, userData)
-            if S.currentMenu ~= nil then P.CloseMenu() end
-            P.SendNetMessage(P.NET_POINTSHOP_REQUEST)
-            return true
-        end
+    local shop = GUI.Button(GUI.RectTransform(Point(buttonWidth, buttonHeight), root.RectTransform), P.UiText.ShopButton, GUI.Alignment.Center, "GUIButtonSmall")
+    shop.CanBeFocused = true
+    shop.ToolTip = P.UiText.ShopTooltip
+    P.SetButtonTextScale(shop, 0.74)
+    shop.OnClicked = function(button, userData)
+        if S.currentMenu ~= nil then P.CloseMenu() end
+        P.SendNetMessage(P.NET_POINTSHOP_REQUEST)
+        return true
     end
 
     local vt = GUI.Button(GUI.RectTransform(Point(buttonWidth, buttonHeight), root.RectTransform), P.UiText.MainButton, GUI.Alignment.Center, "GUIButtonSmall")

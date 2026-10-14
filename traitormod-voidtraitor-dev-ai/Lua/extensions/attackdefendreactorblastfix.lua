@@ -40,6 +40,11 @@ local function buildLookup(values)
     return lookup
 end
 
+local function getCurrentGamemodeName()
+    if Traitormod == nil or Traitormod.SelectedGamemode == nil then return nil end
+    return Traitormod.SelectedGamemode.Name
+end
+
 local function getDamageSourceIdentifier(damageSource)
     if damageSource == nil then return nil end
 
@@ -62,8 +67,10 @@ end
 function extension:IsProtectedRound()
     if self.Enabled == false then return false end
 
-    if Traitormod == nil or Traitormod.SelectedGamemode == nil then return false end
-    return self.ProtectedGamemodeLookup[toIdentifierString(Traitormod.SelectedGamemode.Name)] == true
+    local gamemodeName = getCurrentGamemodeName()
+    if gamemodeName == nil then return false end
+
+    return self.ProtectedGamemodeLookup[toIdentifierString(gamemodeName)] == true
 end
 
 function extension:IsBlockedExplosive(damageSource)

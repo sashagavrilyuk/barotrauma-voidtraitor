@@ -24,6 +24,10 @@ local voteNet = {
     Cast = "VoidTraitor_LobbyVoteCast",
 }
 
+local function parseInput(input)
+    return Traitormod.ParseCommand(tostring(input or ""))
+end
+
 local function runCommand(commandName, client, input)
     local command = Traitormod.Commands[commandName]
     if command == nil or command.Callback == nil then
@@ -31,7 +35,7 @@ local function runCommand(commandName, client, input)
         return true
     end
 
-    local args = type(input) == "table" and input or Traitormod.ParseCommand(tostring(input or ""))
+    local args = type(input) == "table" and input or parseInput(input)
     return command.Callback(client, args)
 end
 
@@ -43,6 +47,15 @@ local function sendOClock(value)
     local oClock = math.floor(value / 30)
     if oClock == 0 then oClock = 12 end
     return Traitormod.FormatText("CMDOClock", oClock)
+end
+
+local function getGamemodeName()
+    if Traitormod.SelectedGamemode == nil then return "" end
+    return string.lower(tostring(Traitormod.SelectedGamemode.Name or ""))
+end
+
+local function isGamemode(name)
+    return getGamemodeName() == string.lower(tostring(name or ""))
 end
 
 local function isAdmin(client)
@@ -94,8 +107,7 @@ local function canUseFakeHandcuffs(client)
 end
 
 local function canLocatePlayers(client)
-    local selected = Traitormod.SelectedGamemode
-    if selected == nil or string.lower(tostring(selected.Name or "")) ~= "submarineroyale" then
+    if not isGamemode("SubmarineRoyale") then
         return false, Traitormod.GetText("CMDPlayersSubmarineRoyaleOnly")
     end
     if not isAlive(client) or not client.InGame then
@@ -281,8 +293,6 @@ function cm.SendSnapshot(client)
         netMessage.WriteString(entry.DisabledReason)
         netMessage.WriteString(entry.Action.InputType)
     end
-
-    netMessage.WriteBoolean(Traitormod.Pointshop.CanUseShop(client))
 
     Networking.Send(netMessage, client.Connection)
     return true
@@ -480,7 +490,6 @@ local function writeVoteSnapshot(netMessage, client)
 
     netMessage.WriteInt32(math.max(0, math.floor(tonumber(snapshot.GameCooldownRemaining or 0) or 0)))
     netMessage.WriteInt32(math.max(0, math.floor(tonumber(snapshot.MapCooldownRemaining or 0) or 0)))
-    netMessage.WriteBoolean(snapshot.StationMap == true)
 end
 
 function cm.SendVoteSnapshot(client)

@@ -46,10 +46,6 @@ Networking.Receive(P.NET_VOTE_SNAPSHOT, function(message)
     local now = P.GetTime()
     snapshot.GameCooldownEndTime = now + math.max(0, message.ReadInt32())
     snapshot.MapCooldownEndTime = now + math.max(0, message.ReadInt32())
-    snapshot.StationMap = message.BitPosition < message.LengthBits and message.ReadBoolean()
-    if snapshot.Active ~= nil and snapshot.Active.Type == "map" and snapshot.StationMap then
-        snapshot.Active.Title = P.VoteUiText.StationTitle
-    end
 
     S.voteSnapshot = snapshot
 

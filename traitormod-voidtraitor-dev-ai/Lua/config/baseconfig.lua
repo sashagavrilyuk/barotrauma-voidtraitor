@@ -31,8 +31,6 @@ config.ExtensionConfig = {
     }
 }
 
-config.IdConsole = dofile(Traitormod.Path .. "/Lua/config/idconsole.lua")
-
 ----- DISCORD -----
 
 config.Discord = {
@@ -91,11 +89,6 @@ config.GameVote = {
             Name = "Secret",
             LanguageKey = "GameVoteOptionSecret",
             Apply = "Secret"
-        },
-        {
-            Name = "Station",
-            LanguageKey = "GameVoteOptionStation",
-            Apply = "Station"
         },
         {
             Name = "AttackDefend",
@@ -316,19 +309,6 @@ config.GamemodeConfig = {
             if client.Character.HasJob("surgeon") then return 0.5 end
             return 1
         end
-    },
-
-    Station = {
-        PointshopCategories = {"traitor", "cultist", "saboteur", "clown"},
-        EndOnComplete = false,
-        EnableRandomEvents = false,
-        TraitorTypeSelectionMode = "Random",
-        TraitorTypeChance = {
-            Traitor = 50,
-            Cultist = 50,
-            Saboteur = 50,
-            Clown = 50,
-        },
     },
 
     PvP = {

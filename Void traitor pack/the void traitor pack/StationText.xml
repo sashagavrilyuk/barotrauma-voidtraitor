@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<infotexts language="Russian" translatedname="Русский">
-  <MissionType.VoidTraitorStation>Станция с предателями</MissionType.VoidTraitorStation>
-  <MissionTypeDescription.VoidTraitorStation>Отдельный станционный режим на обычном генерируемом уровне. Карта выбирается голосованием за станцию.</MissionTypeDescription.VoidTraitorStation>
-  <MissionName.vt_station>Станция с предателями</MissionName.vt_station>
-  <MissionDescription.vt_station>Работайте на неподвижной станции и выполняйте задания своей роли. Среди экипажа скрываются предатели. Достижение конечного аванпоста не завершает станционный раунд.</MissionDescription.vt_station>
-</infotexts>

@@ -1,0 +1,57 @@
+name: VoidTraitor checks
+
+on:
+  push:
+    branches: [Ai-temp, Ai]
+  pull_request:
+    branches: [Ai-temp, Ai]
+
+permissions:
+  contents: read
+
+jobs:
+  static-validation:
+    name: VoidTraitor static validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check Lua syntax
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq lua5.4
+          find "traitormod-voidtraitor-dev-ai/Lua" \
+               "Void traitor pack/Lua/client" \
+               "VoidTraitorPackBuilder/Custom/Lua/client" \
+               -type f -iname '*.lua' -print0 | xargs -0 -r -n1 luac5.4 -p
+
+      - name: Check XML and pack synchronization
+        run: |
+          python3 - <<'PYCODE'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          pack = Path("Void traitor pack")
+          builder = Path("VoidTraitorPackBuilder/Custom")
+          sources = (
+              pack / "filelist.xml",
+              Path("traitormod-voidtraitor-dev-ai/filelist.xml"),
+              builder / "filelist.xml",
+          )
+          for folder in (builder, pack / "the void traitor pack", pack / "Sounds/Station"):
+              sources += tuple(p for p in folder.rglob("*") if p.is_file() and p.suffix.lower() == ".xml")
+          for source in sources:
+              ET.parse(source)
+
+          checked = 0
+          for source in builder.rglob("*"):
+              if not source.is_file() or source == builder / "filelist.xml":
+                  continue
+              dest = pack / source.relative_to(builder)
+              if not dest.is_file() or source.read_bytes() != dest.read_bytes():
+                  raise SystemExit(f"PackBuilder and pack differ: {source.relative_to(builder)}")
+              checked += 1
+          if not checked:
+              raise SystemExit("No mirrored PackBuilder files were checked")
+          print(f"XML parsed: {len(sources)}; mirrored files: {checked}")
+          PYCODE

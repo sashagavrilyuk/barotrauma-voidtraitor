@@ -78,8 +78,12 @@ local function spawnCreature(species, position, giveGhostRole)
     end)
 end
 
-local function chooseHostileSpecies(available)
-    return available[math.random(#available)], math.random() <= 0.50
+local function chooseMonsterSpecies(availableMonsters)
+    return availableMonsters[math.random(#availableMonsters)], math.random() <= 0.50
+end
+
+local function chooseHuskSpecies(availableHusks)
+    return availableHusks[math.random(#availableHusks)], math.random() <= 0.50
 end
 
 local function choosePetSpecies(availablePets)
@@ -168,9 +172,9 @@ event.Start = function()
 
             local species, giveGhostRole
             if selectedPool == "monsters" then
-                species, giveGhostRole = chooseHostileSpecies(availableMonsters)
+                species, giveGhostRole = chooseMonsterSpecies(availableMonsters)
             elseif selectedPool == "husks" then
-                species, giveGhostRole = chooseHostileSpecies(availableHusks)
+                species, giveGhostRole = chooseHuskSpecies(availableHusks)
             else
                 species, giveGhostRole = choosePetSpecies(availablePets)
             end

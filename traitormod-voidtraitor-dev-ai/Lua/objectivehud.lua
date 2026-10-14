@@ -32,6 +32,16 @@ local function disableEventLog(message)
     hud.EventLogDisabled = true
 end
 
+local function nextRoleId()
+    hud.NextRoleId = hud.NextRoleId + 1
+    return hud.NextRoleId
+end
+
+local function nextObjectiveId()
+    hud.NextObjectiveId = hud.NextObjectiveId + 1
+    return hud.NextObjectiveId
+end
+
 local function getClient(role)
     if role == nil or role.Character == nil or role.Character.IsBot then return nil end
     return Traitormod.FindClientCharacter(role.Character)
@@ -40,8 +50,7 @@ end
 local function getRoleState(role)
     local state = hud.RoleStates[role]
     if state == nil then
-        hud.NextRoleId = hud.NextRoleId + 1
-        local id = tostring(Traitormod.RoundNumber) .. "_" .. tostring(hud.NextRoleId)
+        local id = tostring(Traitormod.RoundNumber) .. "_" .. tostring(nextRoleId())
         state = {
             Id = "voidtraitor_role_" .. id,
             LogId = "voidtraitor_log_" .. id,
@@ -56,9 +65,8 @@ end
 local function getObjectiveState(objective)
     local state = hud.ObjectiveStates[objective]
     if state == nil then
-        hud.NextObjectiveId = hud.NextObjectiveId + 1
         state = {
-            BaseId = "voidtraitor_objective_" .. tostring(Traitormod.RoundNumber) .. "_" .. tostring(hud.NextObjectiveId),
+            BaseId = "voidtraitor_objective_" .. tostring(Traitormod.RoundNumber) .. "_" .. tostring(nextObjectiveId()),
             Version = 0,
             Id = nil,
             Text = nil,

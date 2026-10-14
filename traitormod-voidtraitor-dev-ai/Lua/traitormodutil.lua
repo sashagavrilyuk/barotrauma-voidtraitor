@@ -1,13 +1,26 @@
 ---@module 'Lua.config.baseconfig'
 Traitormod.Config = dofile(Traitormod.Path .. "/Lua/config/baseconfig.lua")
 
-local configPath = Traitormod.Path .. "/Lua/config/config.lua"
-if not File.Exists(configPath) then
+local function ensureUserConfigExists()
+    local configPath = Traitormod.Path .. "/Lua/config/config.lua"
+    if File.Exists(configPath) then
+        return configPath
+    end
+
     File.Write(configPath, File.Read(Traitormod.Path .. "/Lua/config/config.lua.example"))
+    return configPath
 end
-local configChunk, configError = loadfile(configPath)
-if configChunk == nil then error("Failed to load config override: " .. tostring(configError)) end
-configChunk(Traitormod.Config)
+
+local function runConfigOverride(path, config)
+    local chunk, err = loadfile(path)
+    if chunk == nil then
+        error("Failed to load config override: " .. tostring(err))
+    end
+
+    return chunk(config)
+end
+
+runConfigOverride(ensureUserConfigExists(), Traitormod.Config)
 
 local function isSequentialArray(value)
     if type(value) ~= "table" then return false end
@@ -100,6 +113,19 @@ local function hasEntries(value)
     return type(value) == "table" and next(value) ~= nil
 end
 
+local function loadOptionalLuaTable(path)
+    if not File.Exists(path) then
+        return {}
+    end
+
+    local ok, result = pcall(dofile, path)
+    if ok and type(result) == "table" then
+        return result
+    end
+
+    error("Failed to load optional config table: " .. tostring(path))
+end
+
 local GAME_VOTE_LEGACY_KEYS = {
     "DurationSeconds",
     "Modes",
@@ -135,6 +161,10 @@ local DISCORD_INLINE_SECTION_KEYS = {
     "Status",
     "Logs",
 }
+
+local function normalizeLegacyInlineGameVoteConfig(source)
+    return copyPresentKeys(source, GAME_VOTE_LEGACY_KEYS)
+end
 
 local function normalizeLegacyDiscordWebhookConfig(value)
     if type(value) ~= "table" then
@@ -180,19 +210,17 @@ local function normalizeLegacyInlineDiscordConfig(source)
     return result
 end
 
-local gameVoteConfig = {}
-local gameVotePath = Traitormod.Path .. "/Lua/config/gamevote.lua"
-if File.Exists(gameVotePath) then
-    local ok, result = pcall(dofile, gameVotePath)
-    if not ok or type(result) ~= "table" then
-        error("Failed to load optional config table: " .. tostring(gameVotePath))
-    end
-    gameVoteConfig = result
+local function applyNamedConfig(defaultConfig, optionalFilePath, inlineOverrides)
+    return mergeConfig(
+        mergeConfig(defaultConfig, loadOptionalLuaTable(optionalFilePath)),
+        inlineOverrides
+    )
 end
 
-Traitormod.Config.GameVote = mergeConfig(
-    mergeConfig(Traitormod.Config.GameVote or {}, gameVoteConfig),
-    copyPresentKeys(Traitormod.Config, GAME_VOTE_LEGACY_KEYS)
+Traitormod.Config.GameVote = applyNamedConfig(
+    Traitormod.Config.GameVote or {},
+    Traitormod.Path .. "/Lua/config/gamevote.lua",
+    normalizeLegacyInlineGameVoteConfig(Traitormod.Config)
 )
 
 Traitormod.Config.Discord = mergeConfig(
@@ -404,13 +432,11 @@ Traitormod.GetMasterData = function (name)
     return Traitormod.ClientData[name]
 end
 
-Traitormod.IsRoundFinalizing = function ()
+Traitormod.IsSecretEnding = function ()
     return Traitormod.SelectedGamemode ~= nil
-        and Traitormod.SelectedGamemode.UsesSecretRules == true
+        and Traitormod.SelectedGamemode.Name == "Secret"
         and Traitormod.SelectedGamemode.Ending == true
 end
-
-Traitormod.IsSecretEnding = Traitormod.IsRoundFinalizing
 
 Traitormod.SetData = function (client, name, amount)
     local accountKey = getClientDataKey(client)
@@ -696,7 +722,7 @@ Traitormod.GiveExperience = function (character, amount, isMissionXP)
 end
 
 Traitormod.AwardPoints = function (client, amount, isMissionXP)
-    if Traitormod.IsRoundFinalizing() then return 0 end
+    if Traitormod.IsSecretEnding() then return 0 end
     if not Traitormod.Config.TestMode then
         Traitormod.AddData(client, "Points", amount)
         Traitormod.Stats.AddClientStat("PointsGained", client, amount)
@@ -711,7 +737,7 @@ Traitormod.AwardPoints = function (client, amount, isMissionXP)
 end
 
 Traitormod.AdjustLives = function (client, amount)
-    if Traitormod.IsRoundFinalizing() then return end
+    if Traitormod.IsSecretEnding() then return end
     if not amount or amount == 0 then
         return
     end

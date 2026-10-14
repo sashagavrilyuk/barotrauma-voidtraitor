@@ -180,8 +180,6 @@ language.Voting = {
     Votes = "голосов",
     GameTitle = "Голосование за режим",
     MapTitle = "Голосование за подлодку",
-    StartStation = "Голосование за станцию",
-    StationTitle = "Выбор станции",
 }
 
 return language

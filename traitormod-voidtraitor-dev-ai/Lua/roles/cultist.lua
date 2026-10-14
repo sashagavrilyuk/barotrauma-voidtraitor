@@ -33,7 +33,7 @@ function role:CultistLoop(first)
         husk.Fail = function(objective, silent)
             fail(objective, silent)
 
-            if Traitormod.IsRoundFinalizing() then return end
+            if Traitormod.IsSecretEnding() then return end
 
             local delay = math.random(this.NextObjectiveDelayMin, this.NextObjectiveDelayMax) * 1000
             Timer.Wait(function(...)
@@ -229,7 +229,7 @@ end)
 
 Hook.Patch("Traitormod.Cultist.PreventInfectedSurrender", "Barotrauma.Character", "ServerEventRead", function (character, ptable)
     if not Game.RoundStarted then return end
-    if Traitormod.SelectedGamemode == nil or not Traitormod.SelectedGamemode.UsesSecretRules then return end
+    if Traitormod.SelectedGamemode == nil or Traitormod.SelectedGamemode.Name ~= "Secret" then return end
     if #Traitormod.RoleManager.FindCharactersByRole("Cultist") == 0 then return end
     if not character.IsIncapacitated then return end
 
