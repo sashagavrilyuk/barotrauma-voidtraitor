@@ -117,8 +117,7 @@ function nuclear.Disarm(item, data)
     data.Remaining = math.max(data.Remaining, config.MinimumTime)
     nuclear.PlaySound(item, "disarm")
     item.OwnInventory.Locked = false
-    Traitormod.SendMessageEveryone(Traitormod.GetText("NukeDisarmedAnnouncement"))
-    Traitormod.SelectedGamemode:SetAlertCode("green")
+    Traitormod.SelectedGamemode:OnNuclearDisarmed()
 end
 
 function nuclear.Action(client, item, action, value)
@@ -204,25 +203,7 @@ function nuclear.Action(client, item, action, value)
         data.Status = "armed"
         item.OwnInventory.Locked = true
         nuclear.PlaySound(item, "confirm")
-        Traitormod.SelectedGamemode:SetAlertCode("delta")
-        local hull = Hull.FindHull(item.WorldPosition, item.CurrentHull)
-        local room = hull ~= nil and tostring(hull.DisplayName) or Traitormod.GetText("NukeUnknownRoom")
-        local station = Submarine.MainSub
-        local borders = station.GetDockedBorders()
-        local middle = station.WorldPosition + Vector2(borders.X + borders.Width / 2, borders.Y - borders.Height / 2)
-        local offset = item.WorldPosition - middle
-        local vertical = offset.Y >= 0 and "North" or "South"
-        local horizontal = offset.X >= 0 and "East" or "West"
-        local direction = math.abs(offset.X) < 50 and math.abs(offset.Y) < 50 and "Center"
-            or math.abs(offset.X) > math.abs(offset.Y) * 2 and horizontal
-            or math.abs(offset.Y) > math.abs(offset.X) * 2 and vertical or vertical .. horizontal
-        local text = Traitormod.FormatText("NukeArmedAnnouncement", room,
-            Traitormod.GetText("NukeDirection" .. direction), math.ceil(data.Remaining))
-        for _, player in pairs(Client.ClientList) do
-            local message = ChatMessage.Create(Traitormod.GetText("NukeAnnouncementSender"), text, ChatMessageType.Default, nil, nil)
-            message.Color = Color(255, 0, 0, 255)
-            Game.SendDirectChatMessage(message, player)
-        end
+        Traitormod.SelectedGamemode:OnNuclearArmed(item, data.Remaining)
     else return false end
     if data.Status == "locked" and item.OwnInventory.GetItemAt(0) ~= nil then data.Status = "code" end
     nuclear.Update(item, data)

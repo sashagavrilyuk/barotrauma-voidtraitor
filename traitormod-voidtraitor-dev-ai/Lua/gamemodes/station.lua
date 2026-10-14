@@ -141,6 +141,33 @@ function gm:SetAlertCode(code)
     return true
 end
 
+function gm:OnNuclearArmed(item, remaining)
+    self:SetAlertCode("delta")
+    local hull = Hull.FindHull(item.WorldPosition, item.CurrentHull)
+    local room = hull ~= nil and tostring(hull.DisplayName) or Traitormod.GetText("NukeUnknownRoom")
+    local station = Submarine.MainSub
+    local borders = station.GetDockedBorders()
+    local middle = station.WorldPosition + Vector2(borders.X + borders.Width / 2, borders.Y - borders.Height / 2)
+    local offset = item.WorldPosition - middle
+    local vertical = offset.Y >= 0 and "North" or "South"
+    local horizontal = offset.X >= 0 and "East" or "West"
+    local direction = math.abs(offset.X) < 50 and math.abs(offset.Y) < 50 and "Center"
+        or math.abs(offset.X) > math.abs(offset.Y) * 2 and horizontal
+        or math.abs(offset.Y) > math.abs(offset.X) * 2 and vertical or vertical .. horizontal
+    local text = Traitormod.FormatText("NukeArmedAnnouncement", room,
+        Traitormod.GetText("NukeDirection" .. direction), math.ceil(remaining))
+    for _, player in pairs(Client.ClientList) do
+        local message = ChatMessage.Create(Traitormod.GetText("NukeAnnouncementSender"), text, ChatMessageType.Default, nil, nil)
+        message.Color = Color(255, 0, 0, 255)
+        Game.SendDirectChatMessage(message, player)
+    end
+end
+
+function gm:OnNuclearDisarmed()
+    Traitormod.SendMessageEveryone(Traitormod.GetText("NukeDisarmedAnnouncement"))
+    self:SetAlertCode("green")
+end
+
 function gm:CheckHuskOutbreak()
     if self.BiohazardAnnounced or #self.StationCrew == 0 then return end
 
