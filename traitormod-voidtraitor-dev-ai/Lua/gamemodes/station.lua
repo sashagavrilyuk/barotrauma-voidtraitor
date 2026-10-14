@@ -104,13 +104,20 @@ function gm:PlayAlertSound(code)
         return
     end
 
+    local station = Submarine.MainSub
+    local borders = station.GetDockedBorders()
+    local center = station.WorldPosition + Vector2(borders.X + borders.Width / 2, borders.Y - borders.Height / 2)
+    local closest, distance
     for hull in Hull.HullList do
-        if hull.Submarine == Submarine.MainSub then
-            local event = eventPrefab.CreateInstance(Game.GameSession.EventManager.RandomSeed)
-            event.AddTarget(Identifier("station"), hull)
-            Game.GameSession.EventManager.ActivateEvent(event)
-            return
+        if hull.Submarine == station then
+            local current = Vector2.Distance(center, hull.WorldPosition)
+            if distance == nil or current < distance then closest, distance = hull, current end
         end
+    end
+    if closest ~= nil then
+        local event = eventPrefab.CreateInstance(Game.GameSession.EventManager.RandomSeed)
+        event.AddTarget(Identifier("station"), closest)
+        Game.GameSession.EventManager.ActivateEvent(event)
     end
 end
 

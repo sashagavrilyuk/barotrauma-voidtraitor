@@ -115,6 +115,7 @@ function nuclear.Disarm(item, data)
     data.Status, data.Cooldown, data.Entered = "cooldown", config.Cooldown, ""
     data.MusicPlaying, data.MusicStarted, data.MusicElapsed = false, false, 0
     data.Remaining = math.max(data.Remaining, config.MinimumTime)
+    nuclear.PlaySound(item, "disarm")
     item.OwnInventory.Locked = false
     Traitormod.SendMessageEveryone(Traitormod.GetText("NukeDisarmedAnnouncement"))
     Traitormod.SelectedGamemode:SetAlertCode("green")
@@ -167,6 +168,7 @@ function nuclear.Action(client, item, action, value)
         if holdable.Attached then
             holdable.Drop(nil, false)
             Networking.CreateEntityEvent(item, componentEvent.__new(holdable, nil))
+            nuclear.PlaySound(item, "detach")
         else
             local position = item.WorldPosition
             local hull = Hull.FindHull(position, item.CurrentHull)
@@ -187,6 +189,7 @@ function nuclear.Action(client, item, action, value)
             if not holdable.CanBeAttached(nil) then return false end
             holdable.AttachToWall()
             Networking.CreateEntityEvent(item, componentEvent.__new(holdable, nil))
+            nuclear.PlaySound(item, "anchor")
             if data.Status == "ready" and disk ~= nil then return nuclear.Action(client, item, "arm") end
         end
     elseif action == "arm" and data.Status == "ready" and disk ~= nil and holdable.Attached then

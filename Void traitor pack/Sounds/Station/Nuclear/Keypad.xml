@@ -99,5 +99,26 @@
         </StatusEffect>
       </StatusEffectAction>
     </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_anchor" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="Content/Items/Button/Switch1.ogg" range="400" volume="0.7" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_detach" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="Content/Items/Button/Switch2.ogg" range="400" volume="0.7" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_disarm" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/notice1.ogg" range="550" volume="0.75" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
   </EventPrefabs>
 </RandomEvents>
