@@ -266,7 +266,7 @@ function nuclear.Think(deltaTime)
                 if data.ActivationRemaining == 0 and not data.Detonated then
                     data.Detonated = true
                     local position = item.WorldPosition
-                    nuclear.PlaySound(item, "detonate")
+                    nuclear.PlaySound(item.CurrentHull or item, "detonate")
                     Explosion(config.ExplosionRange, 100, 10000, 10000, 10000, 1).Explode(position, item)
                     if Vector2.Distance(position, Submarine.MainSub.WorldPosition) <= config.ExplosionRange then
                         Traitormod.SelectedGamemode:BeginEnding("traitors")
