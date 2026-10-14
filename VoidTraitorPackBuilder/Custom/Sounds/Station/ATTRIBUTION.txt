@@ -21,10 +21,10 @@ Source: https://github.com/ParadiseSS13/Paradise/commit/a62233000443a5f57acfae68
 outbreak7.ogg — TG station audio, voiced by discord:Basia (437113799137427460).
 Sources: https://github.com/tgstation/tgstation/blob/40d89d11ea4a5cb81d61dc1018b46f4e7d32c62a/sound/ai/default/outbreak7.ogg
          https://github.com/TauCetiStation/TauCetiClassic/pull/10207
-green_announce.ogg — TauCeti Station (Corvax green/default station announcement sound).
-Source: https://github.com/TauCetiStation/TauCetiClassic/commit/92d2767dbb39f28540f78d5055e7be1eb7acee98
-unused/announce_generic.ogg — TG station (reserved for future announcements; not referenced by gameplay).
+green_announce.ogg — TG station (active GREEN announcement; former unused/announce_generic.ogg).
 Source: https://github.com/tgstation/tgstation/blob/40d89d11ea4a5cb81d61dc1018b46f4e7d32c62a/sound/ai/default/shuttlerecalled.ogg
+unused/announce_generic.ogg — TauCeti Station (former GREEN announcement; no longer referenced by gameplay).
+Source: https://github.com/TauCetiStation/TauCetiClassic/commit/92d2767dbb39f28540f78d5055e7be1eb7acee98
 
 All items above: CC BY-SA 3.0; preserve attribution and license when redistributing.
 Original individual attribution files from Corvax:

@@ -201,7 +201,7 @@ function nuclear.Action(client, item, action, value)
         end
         data.Status = "armed"
         item.OwnInventory.Locked = true
-        nuclear.PlaySound(item, "arm")
+        nuclear.PlaySound(item, "confirm")
         Traitormod.SelectedGamemode:SetAlertCode("delta")
         local hull = Hull.FindHull(item.WorldPosition, item.CurrentHull)
         local room = hull ~= nil and tostring(hull.DisplayName) or Traitormod.GetText("NukeUnknownRoom")
