@@ -19,7 +19,8 @@ vt.IsStationSub = function(sub)
 end
 
 vt.IsStationLobby = function()
-    if Game.ServerSettings.GameModeIdentifier ~= "mission" then return false end
+    if Game.ServerSettings.GameModeIdentifier ~= "mission"
+        or not vt.IsStationSub(Game.NetLobbyScreen.SelectedSub) then return false end
     for value in Game.ServerSettings.AllowedRandomMissionTypes do
         if value == "VoidTraitorStation" then return true end
     end
