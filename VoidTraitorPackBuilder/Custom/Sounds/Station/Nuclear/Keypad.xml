@@ -116,7 +116,7 @@
     <ScriptedEvent identifier="vt_nuke_disarm" commonness="0" triggereventcooldown="false">
       <StatusEffectAction targettag="nuke">
         <StatusEffect target="This">
-          <Sound file="%ModDir%/Sounds/Station/notice1.ogg" range="550" volume="0.75" />
+          <Sound file="%ModDir%/Sounds/Station/notice2.ogg" range="550" volume="0.75" />
         </StatusEffect>
       </StatusEffectAction>
     </ScriptedEvent>

@@ -8,6 +8,8 @@ https://creativecommons.org/licenses/by-sa/3.0/
 
 notice1.ogg — TG station.
 Source: https://github.com/phil235/-tg-station/blob/462ce9c87771c6fa4a0ac29270ef78ea47364d6a/sound/misc/notice1.ogg
+notice2.ogg — TG station.
+Source: https://github.com/phil235/-tg-station/blob/c80f22bf524a900ca484011f1bea55a2c182ac53/sound/misc/notice2.ogg
 bluealert.ogg — Citadel Station 13.
 Source: https://github.com/Skyrat-SS13/Skyrat13/commit/2d4f2d1b489590b559e4073f41b126cef56f4c50
 redalert.ogg — Citadel Station 13.
