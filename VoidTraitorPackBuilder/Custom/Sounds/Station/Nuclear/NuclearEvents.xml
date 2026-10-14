@@ -127,6 +127,7 @@
           <Sound file="Content/Items/Weapons/ExplosionLarge2.ogg" range="50000" />
           <Explosion range="750" force="0" structuredamage="0" itemdamage="0" camerashake="0" flashrange="10000" flashduration="5.0" debris="true" screencolor="255,255,255,255" screencolorrange="5000" screencolorduration="3.0" />
           <Explosion range="2000" force="0" camerashake="200" camerashakerange="50000" showeffects="false" />
+          <ParticleEmitter particle="underwaterexplosion" anglemin="0" anglemax="360" particleamount="3" velocitymin="0" velocitymax="0" scalemin="15" scalemax="15" />
         </StatusEffect>
       </StatusEffectAction>
     </ScriptedEvent>

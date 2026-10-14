@@ -6,9 +6,10 @@ local bombs, sessions = {}, {}
 local active = false
 local texts
 local statusLabels = { locked = "Locked", code = "AwaitCode", ready = "Ready", armed = "Armed", cooldown = "Cooldown", exploded = "Exploded" }
--- Track order must match the six OnActive sounds in nuclear.xml.
+-- Track order must match the five sounds in vt_nuclear_music.
 local musicLengths = { 109.9977, 111.6000, 103.3606, 196.2902, 109.5756 }
 local activationLength = 14
+local musicPrefab = ItemPrefab.GetItemPrefab("vt_nuclear_music")
 local componentEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateEventData", true)
 local eventSet = LuaUserData.CreateStatic("Barotrauma.EventSet", true)
 local holdableDescriptor = Descriptors["Barotrauma.Items.Components.Holdable"] or LuaUserData.RegisterType("Barotrauma.Items.Components.Holdable")
@@ -85,10 +86,14 @@ function nuclear.Update(item, data)
         light.IsOn = armed
         Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(light.SerializableProperties[Identifier("IsOn")], light))
     end
-    local playing = data.Status == "exploded" and #musicLengths + 1 or data.MusicPlaying and data.MusicIndex or 0
-    for index, audio in ipairs(data.Audio) do
+    local playing = data.MusicPlaying and data.MusicIndex or 0
+    for index, audio in ipairs(data.Audio or {}) do
         local enabled = index == playing
         if audio.IsOn ~= enabled then audio.IsOn = enabled end
+    end
+    if data.Alarm ~= nil then
+        local enabled = data.Status == "exploded"
+        if data.Alarm.IsOn ~= enabled then data.Alarm.IsOn = enabled end
     end
     local payload
     for client, selected in pairs(sessions) do
@@ -110,11 +115,20 @@ function nuclear.PlaySound(item, sound)
     Game.GameSession.EventManager.ActivateEvent(event)
 end
 
+local function removeMusic(data)
+    if data.MusicEmitter ~= nil and not data.MusicEmitter.Removed then
+        Entity.Spawner.AddEntityToRemoveQueue(data.MusicEmitter)
+    end
+    data.MusicEmitter, data.Audio = nil, nil
+end
+
 function nuclear.Disarm(item, data)
     if data.Status ~= "armed" or data.Remaining <= 0 then return end
     data.Status, data.Cooldown, data.Entered = "cooldown", config.Cooldown, ""
-    data.MusicPlaying, data.MusicStarted = false, false
-    data.Remaining = math.max(data.Remaining, config.MinimumTime)
+    data.MusicPlaying, data.MusicStarted, data.MusicElapsed = false, false, 0
+    removeMusic(data)
+    data.Remaining = math.max(data.Remaining, config.MinimumTime,
+        data.MusicIndex > 0 and math.ceil(musicLengths[data.MusicIndex] + config.MusicStartDelay + 2) or 0)
     nuclear.PlaySound(item, "disarm")
     item.OwnInventory.Locked = false
     Traitormod.SelectedGamemode:OnNuclearDisarmed()
@@ -199,8 +213,20 @@ function nuclear.Action(client, item, action, value)
             end
             data.MusicIndex = #availableMusic > 0 and availableMusic[math.random(#availableMusic)] or 0
         end
-        for _, audio in ipairs(data.Audio) do
-            Networking.CreateEntityEvent(item, componentEvent.__new(audio, nil))
+        if data.MusicIndex > 0 then
+            Entity.Spawner.AddItemToSpawnQueue(musicPrefab, item.WorldPosition - Submarine.MainSub.Position,
+                Submarine.MainSub, nil, nil, function(emitter)
+                    if not active or bombs[item] ~= data or data.Status ~= "armed" or item.Removed then
+                        Entity.Spawner.AddEntityToRemoveQueue(emitter)
+                        return
+                    end
+                    data.MusicEmitter = emitter
+                    data.Audio = {}
+                    for component in emitter.Components do
+                        if component.Name == "LightComponent" then table.insert(data.Audio, component) end
+                    end
+                    nuclear.Update(item, data)
+                end)
         end
         data.Status = "armed"
         item.OwnInventory.Locked = true
@@ -215,23 +241,18 @@ end
 function nuclear.Think(deltaTime)
     if not active or not Game.RoundStarted or Traitormod.IsRoundFinalizing() then return end
     for item, data in pairs(bombs) do
-        if item.Removed then bombs[item] = nil
+        if item.Removed then
+            removeMusic(data)
+            bombs[item] = nil
         else
             -- OnSpawn runs inside the Item constructor, before its network spawn event. Initialize on the next Think.
             if not data.Initialized then
                 data.Initialized = true
-                data.Audio = {}
                 for component in item.Components do
                     if component.Name == "LightComponent" then
-                        if component.Range == 0 then
-                            table.insert(data.Audio, component)
-                        else
-                            data.Light = component
-                        end
+                        if component.Range == 0 then data.Alarm = component
+                        else data.Light = component end
                     end
-                end
-                for _, audio in ipairs(data.Audio) do
-                    Networking.CreateEntityEvent(item, componentEvent.__new(audio, nil))
                 end
                 local holdable = item.GetComponentString("Holdable")
                 if holdable.PickingTime ~= config.DisarmTime then
@@ -258,6 +279,7 @@ function nuclear.Think(deltaTime)
                 if data.MusicPlaying then data.MusicElapsed = data.MusicElapsed + deltaTime end
                 if data.Remaining <= 1 then data.MusicPlaying = false end
                 if data.Remaining == 0 and data.Status == "armed" then
+                    removeMusic(data)
                     data.Status = "exploded"
                     data.ActivationRemaining = activationLength
                 end
@@ -346,7 +368,10 @@ Hook.Add("vt_nuclear_spawn", "Traitormod.Nuclear.Spawn", function(effect, deltaT
     if active and item.Prefab.Identifier == "vt_nuclear_bomb" then nuclear.Register(item) end
 end)
 Hook.Add("think", "Traitormod.Nuclear.Think", nuclear.Think)
-Hook.Add("roundEnd", "Traitormod.Nuclear.End", function() active, bombs, sessions = false, {}, {} end)
+Hook.Add("roundEnd", "Traitormod.Nuclear.End", function()
+    for _, data in pairs(bombs) do removeMusic(data) end
+    active, bombs, sessions = false, {}, {}
+end)
 Hook.Add("client.disconnected", "Traitormod.Nuclear.Disconnect", function(client) sessions[client] = nil end)
 
 Traitormod.AddCommand("!nukecode", function(client)
