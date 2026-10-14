@@ -99,5 +99,12 @@
         </StatusEffect>
       </StatusEffectAction>
     </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_explode" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/Nuclear/nuke_alarm.ogg" range="1000000" volume="0.75" dontmuffle="true" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
   </EventPrefabs>
 </RandomEvents>

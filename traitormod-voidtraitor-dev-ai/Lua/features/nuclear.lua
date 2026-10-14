@@ -6,11 +6,9 @@ local bombs, sessions = {}, {}
 local active = false
 local texts
 local statusLabels = { locked = "Locked", code = "AwaitCode", ready = "Ready", armed = "Armed", cooldown = "Cooldown", exploded = "Exploded" }
--- Track order must match the six OnActive sounds in nuclear.xml.
+-- Track order must match the five OnActive sounds in nuclear.xml.
 local musicLengths = { 109.9977, 111.6000, 103.3606, 196.2902, 109.5756 }
 local activationLength = 14
-local finalAlarmTime = 10
-local musicBuffer = 1.5
 local componentEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateEventData", true)
 local eventSet = LuaUserData.CreateStatic("Barotrauma.EventSet", true)
 local holdableDescriptor = Descriptors["Barotrauma.Items.Components.Holdable"] or LuaUserData.RegisterType("Barotrauma.Items.Components.Holdable")
@@ -87,8 +85,7 @@ function nuclear.Update(item, data)
         light.IsOn = armed
         Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(light.SerializableProperties[Identifier("IsOn")], light))
     end
-    local playing = (data.Status == "exploded" or data.Status == "armed" and data.Remaining <= finalAlarmTime)
-        and #musicLengths + 1 or data.MusicPlaying and data.MusicIndex or 0
+    local playing = data.MusicPlaying and data.MusicIndex or 0
     for index, audio in ipairs(data.Audio) do
         local enabled = index == playing
         if audio.IsOn ~= enabled then audio.IsOn = enabled end
@@ -193,7 +190,7 @@ function nuclear.Action(client, item, action, value)
     elseif action == "arm" and data.Status == "ready" and disk ~= nil and holdable.Attached then
         local availableMusic = {}
         for index, length in ipairs(musicLengths) do
-            if length + math.max(config.MusicStartDelay, finalAlarmTime + musicBuffer) + 1 < data.Remaining then availableMusic[#availableMusic + 1] = index end
+            if length + config.MusicStartDelay + 1 < data.Remaining then availableMusic[#availableMusic + 1] = index end
         end
         data.MusicIndex = #availableMusic > 0 and availableMusic[math.random(#availableMusic)] or 0
         for _, audio in ipairs(data.Audio) do
@@ -267,14 +264,15 @@ function nuclear.Think(deltaTime)
             elseif data.Status == "armed" then
                 data.Remaining = math.max(0, data.Remaining - deltaTime)
                 if data.MusicIndex > 0 and not data.MusicStarted
-                    and data.Remaining <= musicLengths[data.MusicIndex] - data.MusicElapsed + finalAlarmTime + musicBuffer then
+                    and data.Remaining <= musicLengths[data.MusicIndex] - data.MusicElapsed + 1 then
                     data.MusicStarted, data.MusicPlaying = true, true
                 end
                 if data.MusicPlaying then data.MusicElapsed = data.MusicElapsed + deltaTime end
-                if data.Remaining <= finalAlarmTime + musicBuffer then data.MusicPlaying = false end
+                if data.Remaining <= 1 then data.MusicPlaying = false end
                 if data.Remaining == 0 and data.Status == "armed" then
                     data.Status = "exploded"
                     data.ActivationRemaining = activationLength
+                    nuclear.PlaySound(item, "explode")
                 end
             elseif data.Status == "exploded" then
                 data.ActivationRemaining = math.max(0, data.ActivationRemaining - deltaTime)
