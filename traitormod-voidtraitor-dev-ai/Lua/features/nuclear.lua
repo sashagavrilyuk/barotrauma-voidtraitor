@@ -112,7 +112,7 @@ end
 
 function nuclear.Disarm(item, data)
     if data.Status ~= "armed" or data.Remaining <= 0 then return end
-    data.Status, data.Cooldown = "cooldown", config.Cooldown
+    data.Status, data.Cooldown, data.Entered = "cooldown", config.Cooldown, ""
     data.MusicPlaying, data.MusicStarted, data.MusicElapsed = false, false, 0
     data.Remaining = math.max(data.Remaining, config.MinimumTime)
     item.OwnInventory.Locked = false
@@ -152,7 +152,7 @@ function nuclear.Action(client, item, action, value)
     elseif action == "enter" and data.Status == "code" and Timer.GetTime() - data.LastAttempt >= 1 then
         data.LastAttempt = Timer.GetTime()
         if data.Entered == data.Code then
-            data.Status = "ready"
+            data.Status, data.Remaining = "ready", config.Time
             if disk ~= nil and holdable.Attached then return nuclear.Action(client, item, "arm") end
             nuclear.PlaySound(item, "confirm")
         else
