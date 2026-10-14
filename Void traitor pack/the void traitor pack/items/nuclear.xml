@@ -16,7 +16,6 @@
       <Button text="NukeInsert" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
       <Button text="NukeEject" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
       <Button text="NukeAnchor" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
-      <Button text="NukeArm" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
     </CustomInterface>
     <ItemContainer capacity="1" maxstacksize="1" canbeselected="false" hideitems="true" drawinventory="false" allowdraganddrop="false" quickusemovesitemsinside="false">
       <Containable items="vt_nuclear_disk" />

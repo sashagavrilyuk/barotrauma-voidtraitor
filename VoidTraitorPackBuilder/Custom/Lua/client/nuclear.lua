@@ -72,9 +72,6 @@ function UI.Show(itemId, snapshot)
     eject.OnClicked = function() UI.Send(UI.Snapshot.Disk and "eject" or "insert") return true end
     local anchor = GUI.Button(Common.CreateRect(1, 0.23, actions), text.Anchor, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
     anchor.OnClicked = function() UI.Send("anchor") return true end
-    local arm = GUI.Button(Common.CreateRect(1, 0.23, actions), text.Arm, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
-    arm.Color = Color(150, 45, 45, 255)
-    arm.OnClicked = function() UI.Send("arm") return true end
     UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides = {}, {}, { left = {}, right = {}, minimumWidth = 420 }
     Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
     UI.Update = function(state)
@@ -89,8 +86,6 @@ function UI.Show(itemId, snapshot)
         eject.Enabled = state.Status ~= "armed" and state.Status ~= "exploded" and state.Anchored
         anchor.Text = state.Anchored and text.Detach or text.Anchor
         anchor.Enabled, anchor.Selected = state.Status ~= "armed" and state.Status ~= "exploded", state.Anchored
-        arm.Text = text.Arm
-        arm.Enabled = state.Disk and state.Anchored and state.Status == "ready"
     end
     UI.Update(snapshot)
 end

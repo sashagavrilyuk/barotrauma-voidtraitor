@@ -9,7 +9,6 @@
   <NukeEject>Извлечь диск</NukeEject>
   <NukeAnchor>Закрепить / открепить</NukeAnchor>
   <NukeDetach>Открепить</NukeDetach>
-  <NukeArm>Взвести</NukeArm>
   <NukeDisarmInteraction>[[select]] Разминировать</NukeDisarmInteraction>
   <NukeDefusingProgress>Разминирование</NukeDefusingProgress>
   <NukeMenuInteraction>[[use]] Управление боеприпасом</NukeMenuInteraction>
