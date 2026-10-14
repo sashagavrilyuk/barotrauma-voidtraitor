@@ -74,7 +74,7 @@ function nuclear.Update(item, data)
         Networking.CreateEntityEvent(item, componentEvent.__new(terminal, nil))
     end
     local holdable = item.GetComponentString("Holdable")
-    local canPick = data.Status ~= "exploded" and (data.Status ~= "armed" or data.Remaining > config.DisarmTime)
+    local canPick = data.Status ~= "exploded" and (not holdable.Attached or data.Status == "armed" and data.Remaining > config.DisarmTime)
     if holdable.CanBePicked ~= canPick then
         holdable.CanBePicked = canPick
         Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(holdable.SerializableProperties[Identifier("CanBePicked")], holdable))
@@ -113,7 +113,7 @@ end
 function nuclear.Disarm(item, data)
     if data.Status ~= "armed" or data.Remaining <= 0 then return end
     data.Status, data.Cooldown, data.Entered = "cooldown", config.Cooldown, ""
-    data.MusicPlaying, data.MusicStarted, data.MusicElapsed = false, false, 0
+    data.MusicPlaying, data.MusicStarted = false, false
     data.Remaining = math.max(data.Remaining, config.MinimumTime)
     nuclear.PlaySound(item, "disarm")
     item.OwnInventory.Locked = false
@@ -192,11 +192,13 @@ function nuclear.Action(client, item, action, value)
             if data.Status == "ready" and disk ~= nil then return nuclear.Action(client, item, "arm") end
         end
     elseif action == "arm" and data.Status == "ready" and disk ~= nil and holdable.Attached then
-        local availableMusic = {}
-        for index, length in ipairs(musicLengths) do
-            if length + config.MusicStartDelay + 1 < data.Remaining then availableMusic[#availableMusic + 1] = index end
+        if data.MusicIndex == 0 then
+            local availableMusic = {}
+            for index, length in ipairs(musicLengths) do
+                if length + config.MusicStartDelay + 1 < data.Remaining then availableMusic[#availableMusic + 1] = index end
+            end
+            data.MusicIndex = #availableMusic > 0 and availableMusic[math.random(#availableMusic)] or 0
         end
-        data.MusicIndex = #availableMusic > 0 and availableMusic[math.random(#availableMusic)] or 0
         for _, audio in ipairs(data.Audio) do
             Networking.CreateEntityEvent(item, componentEvent.__new(audio, nil))
         end
@@ -264,6 +266,7 @@ function nuclear.Think(deltaTime)
                 if data.ActivationRemaining == 0 and not data.Detonated then
                     data.Detonated = true
                     local position = item.WorldPosition
+                    nuclear.PlaySound(item, "detonate")
                     Explosion(config.ExplosionRange, 100, 10000, 10000, 10000, 1).Explode(position, item)
                     if Vector2.Distance(position, Submarine.MainSub.WorldPosition) <= config.ExplosionRange then
                         Traitormod.SelectedGamemode:BeginEnding("traitors")

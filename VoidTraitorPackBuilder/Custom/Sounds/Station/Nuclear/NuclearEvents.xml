@@ -120,5 +120,15 @@
         </StatusEffect>
       </StatusEffectAction>
     </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_detonate" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="Content/Items/Weapons/ExplosionLarge1.ogg" range="50000" />
+          <Sound file="Content/Items/Weapons/ExplosionLarge2.ogg" range="50000" />
+          <Explosion range="750" force="0" structuredamage="0" itemdamage="0" camerashake="0" flashrange="10000" flashduration="5.0" debris="true" screencolor="255,255,255,255" screencolorrange="5000" screencolorduration="3.0" />
+          <Explosion range="2000" force="0" camerashake="200" camerashakerange="50000" showeffects="false" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
   </EventPrefabs>
 </RandomEvents>

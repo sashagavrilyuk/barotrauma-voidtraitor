@@ -21,6 +21,7 @@
       <Containable items="vt_nuclear_disk" />
     </ItemContainer>
     <LightComponent ison="false" powerconsumption="0" range="350" lightcolor="255,40,30,200" pulsemagnitude="0.8" pulsefrequency="1" castshadows="false" allowingameediting="false">
+      <Sound file="Content/Items/Reactor/Reactor.ogg" type="OnActive" loop="true" range="1000000" dontmuffle="true" volume="0.001" mutebackgroundmusic="true" />
       <LightComponent ison="false" inheritparentisactive="false" powerconsumption="0" range="0" castshadows="false" allowingameediting="false">
         <Sound file="%ModDir%/Sounds/Station/Nuclear/running_out.ogg" type="OnActive" loop="true" stream="true" range="1000000" dontmuffle="true" volume="0.75" />
       </LightComponent>
