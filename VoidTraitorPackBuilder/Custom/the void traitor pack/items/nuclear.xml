@@ -37,6 +37,9 @@
       <LightComponent ison="false" inheritparentisactive="false" powerconsumption="0" range="0" castshadows="false" allowingameediting="false">
         <Sound file="%ModDir%/Sounds/Station/Nuclear/level.ogg" type="OnActive" loop="true" stream="true" range="1000000" dontmuffle="true" volume="0.75" />
       </LightComponent>
+      <LightComponent ison="false" inheritparentisactive="false" powerconsumption="0" range="0" castshadows="false" allowingameediting="false">
+        <Sound file="%ModDir%/Sounds/Station/Nuclear/nuke_alarm.ogg" type="OnActive" loop="true" stream="true" range="1000000" dontmuffle="true" volume="0.75" />
+      </LightComponent>
     </LightComponent>
   </Item>
   <Item identifier="vt_nuclear_disk" name="" category="Misc" tags="smallitem,vt_nuclear_disk" scale="0.5" maxstacksize="1" indestructible="true">
