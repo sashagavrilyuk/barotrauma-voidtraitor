@@ -21,28 +21,25 @@
       <Containable items="vt_nuclear_disk" />
     </ItemContainer>
     <LightComponent ison="false" powerconsumption="0" range="350" lightcolor="255,40,30,200" pulsemagnitude="0.8" pulsefrequency="1" castshadows="false" allowingameediting="false">
-      <Sound file="%ModDir%/Sounds/Station/Nuclear/background_mute.ogg" type="OnActive" loop="true" range="1000000" dontmuffle="true" volume="0.001" mutebackgroundmusic="true" />
+      <Sound file="Content/Items/Reactor/Reactor.ogg" type="OnActive" loop="true" range="1000000" dontmuffle="true" volume="0.001" mutebackgroundmusic="true" />
+      <LightComponent ison="false" inheritparentisactive="false" powerconsumption="0" range="0" castshadows="false" allowingameediting="false">
+        <Sound file="%ModDir%/Sounds/Station/Nuclear/running_out.ogg" type="OnActive" loop="true" stream="true" range="1000000" dontmuffle="true" volume="0.75" />
+      </LightComponent>
+      <LightComponent ison="false" inheritparentisactive="false" powerconsumption="0" range="0" castshadows="false" allowingameediting="false">
+        <Sound file="%ModDir%/Sounds/Station/Nuclear/countdown.ogg" type="OnActive" loop="true" stream="true" range="1000000" dontmuffle="true" volume="0.75" />
+      </LightComponent>
+      <LightComponent ison="false" inheritparentisactive="false" powerconsumption="0" range="0" castshadows="false" allowingameediting="false">
+        <Sound file="%ModDir%/Sounds/Station/Nuclear/sound_station_14.ogg" type="OnActive" loop="true" stream="true" range="1000000" dontmuffle="true" volume="0.75" />
+      </LightComponent>
+      <LightComponent ison="false" inheritparentisactive="false" powerconsumption="0" range="0" castshadows="false" allowingameediting="false">
+        <Sound file="%ModDir%/Sounds/Station/Nuclear/blatantly_nuclear.ogg" type="OnActive" loop="true" stream="true" range="1000000" dontmuffle="true" volume="0.75" />
+      </LightComponent>
+      <LightComponent ison="false" inheritparentisactive="false" powerconsumption="0" range="0" castshadows="false" allowingameediting="false">
+        <Sound file="%ModDir%/Sounds/Station/Nuclear/level.ogg" type="OnActive" loop="true" stream="true" range="1000000" dontmuffle="true" volume="0.75" />
+      </LightComponent>
       <LightComponent ison="false" inheritparentisactive="false" powerconsumption="0" range="0" castshadows="false" allowingameediting="false">
         <Sound file="%ModDir%/Sounds/Station/Nuclear/nuke_alarm.ogg" type="OnActive" loop="true" stream="true" range="1000000" dontmuffle="true" volume="0.75" />
       </LightComponent>
-    </LightComponent>
-  </Item>
-  <Item identifier="vt_nuclear_music" category="Hidden" hideinmenus="true" indestructible="true" scale="0.01">
-    <Sprite texture="Content/Items/Electricity/signalcomp.png" sourcerect="0,320,32,32" color="255,255,255,0" />
-    <LightComponent ison="false" inheritparentisactive="false" powerconsumption="0" range="0" castshadows="false" allowingameediting="false">
-      <Sound file="%ModDir%/Sounds/Station/Nuclear/running_out.ogg" type="OnActive" loop="true" stream="true" range="1000000" dontmuffle="true" volume="0.75" />
-    </LightComponent>
-    <LightComponent ison="false" inheritparentisactive="false" powerconsumption="0" range="0" castshadows="false" allowingameediting="false">
-      <Sound file="%ModDir%/Sounds/Station/Nuclear/countdown.ogg" type="OnActive" loop="true" stream="true" range="1000000" dontmuffle="true" volume="0.75" />
-    </LightComponent>
-    <LightComponent ison="false" inheritparentisactive="false" powerconsumption="0" range="0" castshadows="false" allowingameediting="false">
-      <Sound file="%ModDir%/Sounds/Station/Nuclear/sound_station_14.ogg" type="OnActive" loop="true" stream="true" range="1000000" dontmuffle="true" volume="0.75" />
-    </LightComponent>
-    <LightComponent ison="false" inheritparentisactive="false" powerconsumption="0" range="0" castshadows="false" allowingameediting="false">
-      <Sound file="%ModDir%/Sounds/Station/Nuclear/blatantly_nuclear.ogg" type="OnActive" loop="true" stream="true" range="1000000" dontmuffle="true" volume="0.75" />
-    </LightComponent>
-    <LightComponent ison="false" inheritparentisactive="false" powerconsumption="0" range="0" castshadows="false" allowingameediting="false">
-      <Sound file="%ModDir%/Sounds/Station/Nuclear/level.ogg" type="OnActive" loop="true" stream="true" range="1000000" dontmuffle="true" volume="0.75" />
     </LightComponent>
   </Item>
   <Item identifier="vt_nuclear_disk" name="" category="Misc" tags="smallitem,vt_nuclear_disk" scale="0.5" maxstacksize="1" indestructible="true">
