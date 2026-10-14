@@ -38,7 +38,7 @@
         <Sound file="%ModDir%/Sounds/Station/Nuclear/level.ogg" type="OnActive" loop="true" stream="true" range="1000000" dontmuffle="true" volume="0.75" />
       </LightComponent>
       <LightComponent ison="false" inheritparentisactive="false" powerconsumption="0" range="0" castshadows="false" allowingameediting="false">
-        <Sound file="%ModDir%/Sounds/Station/Nuclear/nuke_alarm.ogg" type="OnActive" loop="true" stream="true" range="1000000" dontmuffle="true" volume="0.75" />
+        <Sound file="%ModDir%/Sounds/Station/Nuclear/nuke_alarm.ogg" type="OnActive" loop="true" stream="true" range="450" dontmuffle="true" volume="0.75" />
       </LightComponent>
     </LightComponent>
   </Item>

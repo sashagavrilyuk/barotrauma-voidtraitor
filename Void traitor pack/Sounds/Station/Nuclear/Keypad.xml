@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RandomEvents>
+  <EventPrefabs>
+    <ScriptedEvent identifier="vt_nuke_key_1" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/Nuclear/general_beep.ogg" range="400" volume="0.7" frequencymultiplier="1.000" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_key_2" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/Nuclear/general_beep.ogg" range="400" volume="0.7" frequencymultiplier="1.122" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_key_3" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/Nuclear/general_beep.ogg" range="400" volume="0.7" frequencymultiplier="1.189" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_key_4" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/Nuclear/general_beep.ogg" range="400" volume="0.7" frequencymultiplier="1.260" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_key_5" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/Nuclear/general_beep.ogg" range="400" volume="0.7" frequencymultiplier="1.335" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_key_6" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/Nuclear/general_beep.ogg" range="400" volume="0.7" frequencymultiplier="1.414" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_key_7" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/Nuclear/general_beep.ogg" range="400" volume="0.7" frequencymultiplier="1.498" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_key_8" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/Nuclear/general_beep.ogg" range="400" volume="0.7" frequencymultiplier="1.682" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_key_9" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/Nuclear/general_beep.ogg" range="400" volume="0.7" frequencymultiplier="1.782" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_key_0" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/Nuclear/general_beep.ogg" range="400" volume="0.7" frequencymultiplier="2.000" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_key_clear" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/Nuclear/general_beep.ogg" range="400" volume="0.7" frequencymultiplier="1" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_confirm" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/Nuclear/confirm_beep.ogg" range="400" volume="0.7" frequencymultiplier="1" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_reject" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/Nuclear/angry_beep.ogg" range="400" volume="0.7" frequencymultiplier="1" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+  </EventPrefabs>
+</RandomEvents>

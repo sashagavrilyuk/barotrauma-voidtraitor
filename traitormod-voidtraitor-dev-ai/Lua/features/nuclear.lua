@@ -10,6 +10,7 @@ local statusLabels = { locked = "Locked", code = "AwaitCode", ready = "Ready", a
 local musicLengths = { 109.9977, 111.6000, 103.3606, 196.2902, 109.5756 }
 local activationLength = 14
 local componentEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateEventData", true)
+local eventSet = LuaUserData.CreateStatic("Barotrauma.EventSet", true)
 local holdableDescriptor = Descriptors["Barotrauma.Items.Components.Holdable"] or LuaUserData.RegisterType("Barotrauma.Items.Components.Holdable")
 LuaUserData.MakePropertyAccessible(holdableDescriptor, "PickingTime")
 local terminalDescriptor = Descriptors["Barotrauma.Items.Components.Terminal"] or LuaUserData.RegisterType("Barotrauma.Items.Components.Terminal")
@@ -84,7 +85,8 @@ function nuclear.Update(item, data)
         light.IsOn = armed
         Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(light.SerializableProperties[Identifier("IsOn")], light))
     end
-    local playing = data.Status == "exploded" and #musicLengths + 1 or data.MusicPlaying and data.MusicIndex or 0
+    local playing = (data.Status == "exploded" or data.Status == "armed" and data.Remaining <= 10)
+        and #musicLengths + 1 or data.MusicPlaying and data.MusicIndex or 0
     for index, audio in ipairs(data.Audio) do
         local enabled = index == playing
         if audio.IsOn ~= enabled then audio.IsOn = enabled end
@@ -100,6 +102,13 @@ function nuclear.Update(item, data)
             end
         end
     end
+end
+
+function nuclear.PlaySound(item, sound)
+    local prefab = eventSet.GetEventPrefab(Identifier("vt_nuke_" .. sound))
+    local event = prefab.CreateInstance(Game.GameSession.EventManager.RandomSeed)
+    event.AddTarget(Identifier("nuke"), item)
+    Game.GameSession.EventManager.ActivateEvent(event)
 end
 
 function nuclear.Disarm(item, data)
@@ -133,12 +142,19 @@ function nuclear.Action(client, item, action, value)
         data.Entered = ""
     elseif action == "digit" and data.Status == "code" and type(value) == "string" and value:match("^%d$") and #data.Entered < 6 then
         data.Entered = data.Entered .. value
-    elseif action == "clear" and data.Status == "code" then data.Entered = ""
+        nuclear.PlaySound(item, "key_" .. value)
+    elseif action == "clear" and data.Status == "code" then
+        data.Entered = ""
+        nuclear.PlaySound(item, "key_clear")
     elseif action == "enter" and data.Status == "code" and Timer.GetTime() - data.LastAttempt >= 1 then
         data.LastAttempt = Timer.GetTime()
         if data.Entered == data.Code then
             data.Status, data.Remaining = "ready", config.Time
-        else data.Entered = "" end
+            nuclear.PlaySound(item, "confirm")
+        else
+            data.Entered = ""
+            nuclear.PlaySound(item, "reject")
+        end
     elseif action == "code" and data.Status == "code" and type(value) == "string" and value:match("^%d%d%d%d%d%d$") then
         if Timer.GetTime() - data.LastAttempt < 1 then return false end
         data.Entered = value
@@ -179,6 +195,7 @@ function nuclear.Action(client, item, action, value)
         end
         data.Status = "armed"
         item.OwnInventory.Locked = true
+        nuclear.PlaySound(item, "confirm")
         Traitormod.SelectedGamemode:SetAlertCode("delta")
         local hull = Hull.FindHull(item.WorldPosition, item.CurrentHull)
         local room = hull ~= nil and tostring(hull.DisplayName) or Traitormod.GetText("NukeUnknownRoom")
