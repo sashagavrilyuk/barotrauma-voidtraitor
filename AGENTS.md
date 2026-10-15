@@ -38,6 +38,12 @@ Before editing, give a **brief evidence-based diagnosis**, not a long plan: obse
 - **When a fix fails in the actual game, the preceding diagnosis must be reconsidered.** Confirm the changed code loaded and executed; compare predicted vs. observed behavior; discard unsupported premises, investigate remaining causes, and obtain new evidence **before writing another fix**. Do not keep patching the same spot or stacking workarounds.
 - Barotrauma itself may be responsible. Investigate the relevant game/LuaCs source before hiding an engine fault behind VoidTraitor-specific logic.
 
+### Two-phase research/implementation gate for high-risk bugs
+
+For crash-prone, GUI, multiplayer/network, physics, round-lifecycle, new LuaCs API, or repeatedly failing bugs, use **two separate phases**. The first response is **research-only**: inspect current code and engine source, reproduce or precisely describe the original failure, trace callers/state/client/server, test competing explanations and provide concrete evidence, unresolved questions, the minimal proposed fix, and regression cases. **Do not edit, commit, or release during this research phase.**
+
+Implementation starts **only after the user's subsequent explicit approval** of the research result. Re-check current `Ai-temp` files and HEAD before editing. If the cause remains uncertain, request focused diagnostic data or propose a diagnostic experiment, not a speculative production fix. A general request to "fix this bug" does not waive this checkpoint. The user may explicitly request a combined pass; even then finish the evidence-based diagnosis before writing. Small low-risk changes retain the proportionate one-pass workflow.
+
 ### Mandatory crash-prevention compatibility gate
 
 Before implementing or releasing any change that touches Barotrauma/LuaCs APIs, XML-defined objects, UI, physics or network behavior:
