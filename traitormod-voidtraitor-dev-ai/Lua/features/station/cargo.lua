@@ -122,7 +122,15 @@ function cargo.SaleGoods()
     return goods, value
 end
 
-function cargo.Snapshot(client)
+function cargo.ShipSnapshot()
+    local ship = cargo.State.Ship
+    local slots, markers, total = cargo.Capacity()
+    local _, sales = cargo.SaleGoods()
+    return { State = ship ~= nil and ship.State or "NoShip", SlotsFree = #slots, SlotsTotal = total,
+        LargeFree = #markers, LargeTotal = ship ~= nil and #ship.Markers or 0, SalesValue = sales, LastSale = ship ~= nil and ship.LastSale or 0 }
+end
+
+function cargo.Snapshot(client, shipSnapshot)
     local state = cargo.State
     local snapshot = { Products = {}, Orders = state.Orders, Budget = state.Budget, Reserved = state.Reserved, CanManage = cargo.CanManage(client), Text = {} }
     for _, key in ipairs({ "Title", "Close", "Budget", "Reserved", "Reason", "Submit", "Approve", "Reject", "Orders", "Quantity", "Pending", "Accepted", "Outbound", "Loaded", "Delivered", "Rejected", "Capacity", "Large", "LastSale", "Ship", "Sales", "NoShip", "Empty", "Search", "Cart", "Home", "Trading", "Returning", "Catalog", "Back", "Next", "Refresh", "NativeActions", "Choose", "Submitted", "Denied", "NoFunds", "NoStock", "LoadFailed" }) do
@@ -137,11 +145,7 @@ function cargo.Snapshot(client)
         record.AllowQuantity = true
         snapshot.Products[#snapshot.Products + 1] = record
     end
-    local ship = state.Ship
-    local slots, markers, total = cargo.Capacity()
-    local _, sales = cargo.SaleGoods()
-    snapshot.Ship = { State = ship ~= nil and ship.State or "NoShip", SlotsFree = #slots, SlotsTotal = total,
-        LargeFree = #markers, LargeTotal = ship ~= nil and #ship.Markers or 0, SalesValue = sales, LastSale = ship ~= nil and ship.LastSale or 0 }
+    snapshot.Ship = shipSnapshot or cargo.ShipSnapshot()
     return snapshot
 end
 
@@ -319,8 +323,12 @@ function cargo.Think(deltaTime)
     end
     if state.Dirty then
         state.Dirty = false
+        local shipSnapshot
         for client, session in pairs(sessions) do
-            if session.Gui then cargo.Send(client) end
+            if session.Gui then
+                shipSnapshot = shipSnapshot or cargo.ShipSnapshot()
+                cargo.Send(client, nil, shipSnapshot)
+            end
         end
     end
     local lost = {}
@@ -374,10 +382,10 @@ function cargo.Think(deltaTime)
     end
 end
 
-function cargo.Send(client, result)
+function cargo.Send(client, result, shipSnapshot)
     local session = sessions[client]
     if session == nil or not cargo.Validate(client, session.Item, session.Gui) then return end
-    local snapshot = cargo.Snapshot(client)
+    local snapshot = cargo.Snapshot(client, shipSnapshot)
     snapshot.Result = result
     if result ~= nil and result.Action == "submit" then snapshot.SubmitAccepted = result.Success end
     if session.Gui then
@@ -476,7 +484,13 @@ function cargo.Action(client, item, action, payload)
     if reason ~= nil then Traitormod.SendChatMessage(client, Traitormod.GetText(reason)) end
     cargo.Send(client, { Action = action, Success = success, Message = reason ~= nil and Traitormod.GetText(reason) or "" })
     if success and (action == "submit" or action == "approve" or action == "reject") then
-        for other, otherSession in pairs(sessions) do if other ~= client and otherSession.Gui then cargo.Send(other) end end
+        local shipSnapshot
+        for other, otherSession in pairs(sessions) do
+            if other ~= client and otherSession.Gui then
+                shipSnapshot = shipSnapshot or cargo.ShipSnapshot()
+                cargo.Send(other, nil, shipSnapshot)
+            end
+        end
     end
     return success
 end
