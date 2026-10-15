@@ -288,7 +288,7 @@ end, Hook.HookMethodType.After)
 Hook.Add("roundEnd", "VoidTraitor.Cargo.End", function() UI.CloseMenu() UI.SelectedItem = nil end)
 function UI.RequestOpen(item)
     UI.SelectedItem, UI.ItemId, UI.AwaitingOpen = item, item.ID, true
-    local message = Networking.Start("VoidTraitor_CargoOpen")
+    local message = Networking.Start("VoidTraitor_CargoOpenV2")
     message.WriteUInt16(UShort(item.ID))
     Networking.Send(message)
 end
