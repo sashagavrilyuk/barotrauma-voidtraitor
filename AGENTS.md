@@ -44,14 +44,7 @@ VoidTraitor:
 No category/event/Pointshop/roundevents editing helpers without real reuse.
 Prefer server-side Lua for small fixes/features. Use XML/client-side content only when server-side Lua cannot implement it correctly or would require excessive code/performance cost.
 
-## Sources
-- `LuaCsForBarotrauma` — LuaCs/C# source, engine API.
-- `traitormod-voidtraitor-ai` — main Lua mod.
-- `Void traitor pack` — XML/Lua, items, afflictions, assets, submarines/client.
-- `VoidTraitorPackBuilder` — builder.
-- `Content`, `Map` — vanilla XML/maps; inspect available local content.
-
-### Local paths (verify before use)
+### Local paths 
 - `C:\Users\shuri\Desktop\barotrauma-voidtraitor\LuaCsForBarotrauma\` — LuaCs and available Barotrauma C# source; verify APIs, hooks, and engine behavior here.
 - `D:\SteamLibrary\steamapps\common\Barotrauma\LocalMods\traitormod-voidtraitor-dev-ai` — main VoidTraitor Lua mod.
 - `D:\SteamLibrary\steamapps\common\Barotrauma\LocalMods\Void traitor pack\` — pack XML/Lua content, items, afflictions, submarines, and client content.
