@@ -154,18 +154,29 @@ function UI.Update(snapshot)
     for key, value in pairs(Common.Language.Pointshop) do P.Text[key] = value end
     for key, value in pairs(snapshot.Text) do P.Text[key] = value end
     S.currentPoints = math.max(snapshot.Budget - snapshot.Reserved, 0)
-    local products, productById, changed = {}, {}, #snapshot.Products ~= #S.products
-    for index, received in ipairs(snapshot.Products) do
-        local product = S.productById[received.Id]
-        if product == nil or S.products[index] ~= product or product.Name ~= received.Name or product.Category ~= received.Category or product.Path ~= received.Path then
-            changed = true
+    local changed = false
+    if snapshot.Products ~= nil then
+        local products, productById = {}, {}
+        changed = #snapshot.Products ~= #S.products
+        for index, received in ipairs(snapshot.Products) do
+            local product = S.productById[received.Id]
+            if product == nil or S.products[index] ~= product or product.Name ~= received.Name or product.Category ~= received.Category or product.Path ~= received.Path then
+                changed = true
+            end
+            product = product or {}
+            for key, value in pairs(received) do product[key] = value end
+            product.SearchText = P.NormalizeSearchText(table.concat({ product.Name or "", product.Description or "", product.Category or "", product.Path or "", product.IconIdentifier or "", product.Type or "" }, " "))
+            products[#products + 1], productById[product.Id] = product, product
         end
-        product = product or {}
-        for key, value in pairs(received) do product[key] = value end
-        product.SearchText = P.NormalizeSearchText(table.concat({ product.Name or "", product.Description or "", product.Category or "", product.Path or "", product.IconIdentifier or "", product.Type or "" }, " "))
-        products[#products + 1], productById[product.Id] = product, product
+        S.products, S.productById = products, productById
+    elseif snapshot.ProductStates ~= nil then
+        for _, state in ipairs(snapshot.ProductStates) do
+            local product = S.productById[state.Id]
+            if product ~= nil then
+                product.Price, product.Stock, product.MaxQuantity = state.Price, state.Stock, state.MaxQuantity
+            end
+        end
     end
-    S.products, S.productById = products, productById
     for index = #S.cart, 1, -1 do
         local entry = S.cart[index]
         local product = S.productById[entry.Id]
