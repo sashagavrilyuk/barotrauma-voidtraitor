@@ -2,17 +2,31 @@ local cloning = {}
 Traitormod.Cloning = cloning
 local config = Traitormod.Config.Cloning
 local prompts = require("textpromptutils")
+local componentEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateEventData", true)
 LuaUserData.RegisterType("Barotrauma.ContentXElement")
 local contentElement = LuaUserData.CreateStatic("Barotrauma.ContentXElement")
 local state
 
 function cloning.Start()
-    state = { Consoles = {}, Scanners = {}, Pods = {}, Jobs = {}, Owners = {}, Reclaimed = {}, Pending = {}, ReconnectCheck = 0 }
+    state = { Consoles = {}, Labels = {}, Scanners = {}, Pods = {}, Jobs = {}, Owners = {}, Reclaimed = {}, Pending = {}, ReconnectCheck = 0 }
     for _, client in pairs(Client.ClientList) do
         if client.Character ~= nil then state.Owners[client.Character] = client end
     end
     for item in Item.ItemList do
-        if item.Prefab.Identifier == "vt_cloning_console" then state.Consoles[#state.Consoles + 1] = item end
+        if item.Prefab.Identifier == "vt_cloning_console" then
+            state.Consoles[#state.Consoles + 1] = item
+            local labels = {}
+            for component in item.Components do
+                if LuaUserData.IsTargetType(component, "Barotrauma.Items.Components.ItemLabel") then
+                    labels[#labels + 1] = component
+                end
+            end
+            if #labels == 2 then
+                state.Labels[item] = labels
+            else
+                Traitormod.Error("Cloning console requires two ItemLabel components")
+            end
+        end
         if item.Prefab.Identifier == "vt_cloning_scanner" then state.Scanners[item] = true end
         if item.Prefab.Identifier == "vt_cloning_pod" then state.Pods[item] = { Biomass = 0, Consumed = {} } end
     end
@@ -202,10 +216,19 @@ function cloning.Update(deltaTime)
     for _, console in ipairs(state.Consoles) do
         if not console.Removed then
             local status, percent, cost = cloning.Status(console)
-            local body = Traitormod.GetText(status) .. "\n" .. Traitormod.FormatText("CloneProgress", percent)
-            if cost ~= nil then body = Traitormod.FormatText(status, cost) .. "\n" .. Traitormod.FormatText("CloneProgress", percent) end
-            local terminal = console.GetComponentString("Terminal")
-            if terminal.ShowMessage ~= body then terminal.ShowMessage = body terminal.SyncHistory() end
+            local labels = state.Labels[console]
+            if labels ~= nil then
+                local statusText = cost ~= nil and Traitormod.FormatText(status, cost) or Traitormod.GetText(status)
+                local progressText = Traitormod.FormatText("CloneProgress", percent)
+                if labels[1].Text ~= statusText then
+                    labels[1].Text = statusText
+                    Networking.CreateEntityEvent(console, componentEvent(labels[1], nil))
+                end
+                if labels[2].Text ~= progressText then
+                    labels[2].Text = progressText
+                    Networking.CreateEntityEvent(console, componentEvent(labels[2], nil))
+                end
+            end
         end
     end
 end
