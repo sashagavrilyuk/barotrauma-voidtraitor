@@ -55,3 +55,31 @@ jobs:
               raise SystemExit("No mirrored PackBuilder files were checked")
           print(f"XML parsed: {len(sources)}; mirrored files: {checked}")
           PYCODE
+
+  release-evidence:
+    name: Release evidence gate
+    if: github.event_name != 'pull_request' || github.base_ref == 'Ai'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Explain push-only validation
+        if: github.event_name == 'push'
+        run: echo "Release evidence is checked on pull requests to Ai."
+
+      - name: Require release evidence in PR description
+        if: github.event_name == 'pull_request'
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          python3 - <<'PYCODE'
+          import os
+          import re
+
+          body = re.sub(r'<!--.*?-->', '', os.environ.get('PR_BODY', ''), flags=re.S)
+          sections = re.split(r'(?m)^## (Scope|Evidence|Compatibility|Verification|Acceptance)[ \t]*$', body)
+          answers = dict(zip(sections[1::2], sections[2::2]))
+          required = ('Scope', 'Evidence', 'Compatibility', 'Verification', 'Acceptance')
+          missing = [name for name in required if len(answers.get(name, '').strip()) < 25]
+          if missing:
+              raise SystemExit('Missing release evidence in PR sections: ' + ', '.join(missing))
+          print('Release PR contains all required evidence sections (content not independently verified).')
+          PYCODE
