@@ -475,7 +475,9 @@ function cargo.Action(client, item, action, payload)
     elseif action ~= "refresh" then return false end
     if reason ~= nil then Traitormod.SendChatMessage(client, Traitormod.GetText(reason)) end
     cargo.Send(client, { Action = action, Success = success, Message = reason ~= nil and Traitormod.GetText(reason) or "" })
-    for other, otherSession in pairs(sessions) do if other ~= client and otherSession.Gui then cargo.Send(other) end end
+    if success and (action == "submit" or action == "approve" or action == "reject") then
+        for other, otherSession in pairs(sessions) do if other ~= client and otherSession.Gui then cargo.Send(other) end end
+    end
     return success
 end
 
