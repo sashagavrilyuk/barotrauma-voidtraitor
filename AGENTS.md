@@ -9,6 +9,7 @@ Maintain LuaCsForBarotrauma mods, primarily VoidTraitor. Correct, minimal, reada
 
 ## Simplicity
 Write the smallest clear solution. NO speculative features/flexibility, needless abstractions/wrappers or unjustified one-use helpers, impossible-case guards, redundant checks or symptom-masking “protection”. Search existing working patterns first. Share logic ONLY if semantics match and it truly simplifies; never merge superficially similar behavior.
+- Do not add a second event handler, UI manager, state machine, polling loop, or helper if the current system can correctly handle the feature.
 
 ## Surgical changes
 Change ONLY task-required lines; preserve style. NO unrelated refactor, reformat, rename, comment rewrite or adjacent improvement. Report unrelated defects without editing them.
@@ -22,11 +23,14 @@ Change ONLY task-required lines; preserve style. NO unrelated refactor, reformat
 - If game fix fails, verify changed path loaded/ran, discard unsupported diagnosis and obtain NEW evidence BEFORE another patch. Never mask faults with delays, retries, polling, caches, flags, hooks, extra guards or weaker authorization.
 - Crashes, GUI, networking, physics, round lifecycle, ANY newly used/changed Barotrauma/LuaCs API, mode/submarine mechanics or repeat failures: PHASE 1 = RESEARCH ONLY, NO edits/commits. PHASE 2 only after user's LATER explicit approval of diagnosis. “Fix it” does not waive this. Explicit combined-pass waiver still requires completed source-based diagnosis before edits. Low-risk tasks: one pass.
 - EVERY new/changed engine call/hook: cite exact C# declaration/overload, args/return, enums/static semantics, Lua exposure, client/server availability, nil/null, removed/disposed lifetime; trace delayed callbacks (Timer.Wait) and consumers. GUI: click/pathing, create/layout, Update/Draw, item insert/remove, cleanup/reopen. Network: serialization, server authority/role/distance/inventory, clients WITH/WITHOUT LuaCs. Verify XML IDs/assets and builder sync.
+- Do not arbitrarily close a window because of a transient engine selection change if interaction should remain active. Equally, do not keep a window or authorize actions after genuine loss of interaction rights. Verify the intended lifecycle from source and an existing working implementation.
+- Reuse established VoidTraitor UI primitives and layouts. Account for resolution and HUD scale; avoid fixed dimensions that clip controls. Use existing drag/resize behavior when asked for it, not a partial imitation.
 - Mode/PvP/spawn/sub/level claims: inspect relevant BarotraumaShared C# (SubmarineInfo, GameMode, LevelGenerationParams), vanilla Content/Map XML AND working modes before technical conclusions.
 - “Checked” without cited source evidence is invalid. Separately mark SOURCE VERIFIED / STATICALLY CHECKED / GAME TESTED / USER CONFIRMED / NOT TESTED. Syntax/CI/mocks ≠ game/crash safety. Never release unaccepted or unverified crash-prone changes to Ai.
 
 ## Structure
 Keep code, localization, roles, objectives, settings, assets and persistence with actual owners. Mode rules belong to their own game mode only.
+- Preserve existing mode-selection, generated-level, antagonist, role, objective and shop behavior unless the task explicitly changes it. Check every affected game mode for regressions, including those not directly modified.
 
 VoidTraitor:
 - `Lua/` — important/shared core logic.
@@ -78,3 +82,4 @@ Barotrauma itself may contain engine bugs; verify its source before masking faul
 - Before changing tracked files, inspect uncommitted work and compare current local and remote refs (`git fetch`/targeted `git ls-remote` where available). Keep unrelated local modifications untouched. Do not reset, stash, clean, switch branches, discard work, or modify the user's installed game outside the approved task just to make a patch convenient.
 - After edits, use `git diff --check`, `git diff`, `git diff --cached`, and precise checks suited to the modified files. Review all changed paths and lines, compare asset/build outputs, check cross-mode/network effects, and never mark unrun game tests as passed. Verify remote HEAD again before any authorized push; preserve remote and local concurrent changes.
 - Use local file editing and command execution capability when available. For GitHub releases, follow the branch/PR constraints above. If local access, source, privileges, or test executables are unavailable, state exactly what is missing instead of claiming local verification.
+- When context or limits require a checkpoint, keep **one concise current status**: task scope, current commit/branch, changed files, verified tests, outstanding defects, and next action.
