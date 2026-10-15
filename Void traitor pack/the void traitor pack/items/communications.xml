@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <Item identifier="vt_communications_console" name="" category="Electrical" tags="vt_communications_console" scale="0.5" isshootable="true" interactdistance="150" grabwhenselected="true">
+    <Sprite texture="Content/Items/Electricity/signalcomp.png" depth="0.8" sourcerect="0,368,144,128" origin="0.5,0.3" canflipx="false" />
+    <Powered powerconsumption="50" minvoltage="0.5" isactive="true" />
+    <Terminal canbeselected="true" readonly="false" allowingameediting="false" msg="ItemMsgInteractSelect" allowuioverlap="true">
+      <GuiFrame relativesize="0.35,0.35" anchor="Center" relativeoffset="0,-0.09" style="ItemUI" />
+    </Terminal>
+    <CustomInterface canbeselected="true" msg="ItemMsgInteractSelect" allowuioverlap="true" allowingameediting="false">
+      <GuiFrame relativesize="0.35,0.15" anchor="Center" relativeoffset="0,0.18" style="ItemUI" />
+      <Button text="CommsVoice" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
+      <Button text="CommsCodes" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
+    </CustomInterface>
+    <ConnectionPanel canbeselected="false" locked="true">
+      <RequiredItem items="screwdriver" type="Equipped" />
+      <input name="power_in" displayname="connection.powerin" />
+    </ConnectionPanel>
+  </Item>
+</Items>

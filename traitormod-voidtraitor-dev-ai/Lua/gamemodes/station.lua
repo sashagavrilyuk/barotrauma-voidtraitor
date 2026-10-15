@@ -5,6 +5,7 @@ local alertCodes = {
     green = "StationAlertGreen",
     yellow = "StationAlertYellow",
     blue = "StationAlertBlue",
+    violet = "StationAlertViolet",
     red = "StationAlertRed",
     delta = "StationAlertDelta",
     gamma = "StationAlertGamma",
@@ -14,6 +15,7 @@ local alertSounds = {
     green = "vt_station_sound_green",
     yellow = "vt_station_sound_yellow",
     blue = "vt_station_sound_blue",
+    violet = "vt_station_sound_violet",
     red = "vt_station_sound_red",
     delta = "vt_station_sound_delta",
     gamma = "vt_station_sound_gamma",
@@ -28,6 +30,7 @@ local alertColors = {
     green = Color(80, 220, 110, 255),
     yellow = Color(255, 215, 60, 255),
     blue = Color(85, 165, 255, 255),
+    violet = Color(200, 100, 225, 255),
     red = Color(255, 80, 80, 255),
     delta = Color(190, 55, 55, 255),
     gamma = Color(219, 112, 147, 255),
@@ -95,6 +98,7 @@ function gm:Start()
         end
     end
     self.AlertCode = "green"
+    Traitormod.Communications.Start()
 end
 
 function gm:PlayAlertSound(code)
@@ -208,6 +212,7 @@ end
 
 function gm:Think()
     if not Game.RoundStarted then return end
+    Traitormod.Communications.Think()
     if not self.BiohazardAnnounced and Timer.GetTime() >= self.NextHuskCheck then
         self.NextHuskCheck = Timer.GetTime() + 5
         self:CheckHuskOutbreak()
@@ -249,6 +254,7 @@ function gm:BeginEnding(reason, transitionType, viaCampaignTransition)
 end
 
 function gm:End()
+    Traitormod.Communications.End()
     secret.End(self)
     if Traitormod.OriginalGamemode ~= nil then
         Game.NetLobbyScreen.SelectedModeIdentifier = Traitormod.OriginalGamemode

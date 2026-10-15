@@ -29,6 +29,13 @@
         </StatusEffect>
       </StatusEffectAction>
     </ScriptedEvent>
+    <ScriptedEvent identifier="vt_station_sound_violet" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="station">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/notice1.ogg" range="1000000" volume="0.75" dontmuffle="true" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
     <ScriptedEvent identifier="vt_station_sound_delta" commonness="0" triggereventcooldown="false">
       <StatusEffectAction targettag="station">
         <StatusEffect target="This">
