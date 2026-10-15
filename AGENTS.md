@@ -119,12 +119,16 @@ Do not declare a task "fixed in-game" solely because code was written, syntax pa
 
 Repository: `https://github.com/sashagavrilyuk/barotrauma-voidtraitor`
 
-- Development branch: **`Ai-temp`**. All normal changes go here first, as small coherent verified commits when useful.
-- Final branch: **`Ai`**. Transfer a complete, verified and accepted batch as **ONE consolidated commit**, not individual development commits. Do not push an unaccepted work-in-progress to `Ai`.
-- Do not create additional branches, force-push over newer work, or overwrite independent changes. If either branch advances, re-check HEAD and reconcile before updating.
-- Compare complete accumulated `Ai-temp` diff with current `Ai` before finalizing. Preserve any newer independent `Ai` changes. Verify final GitHub commit and diff.
-- Do not commit temporary tests, lab artifacts, backups, or checkpoint files as production code unless specifically requested.
-- Provide an actual ZIP containing **only changed production files** in their original relative directories. Do not substitute a downloader or PowerShell script for the requested ZIP. Verify ZIP matches final submitted version. If a file cannot be committed/uploaded because of size or tool limitations, provide the modified files as a ZIP for the user to upload. Never split a file into fragments for GitHub upload.
+- **`Ai-temp`** is development/staging. Implement normal changes here first. Prefer small, coherent commits with truthful verification notes; do not mix unrelated features.
+- **`Ai`** is stable. Only complete, reviewed, verified and user-accepted changes may be released. Use one **or several meaningful commits** depending on feature boundaries. A single squash commit is **not** mandatory.
+- A release is a selected, self-contained set of accepted changes with all required dependencies, **not automatically the entire difference between `Ai-temp` and `Ai`**. Never merge unfinished development into `Ai` merely to release one feature.
+- Before any release or history reconciliation, re-check both HEADs, merge-base, actual file/tree differences, relevant commits and earlier reverts/restores/cherry-picks. Ahead/behind numbers alone do not prove missing functionality or identify safe changes. Check `Ai`-only work and preserve it.
+- Prepare the smallest complete release diff against **current `Ai`**. Review source/API contracts, pack-builder synchronization, compatibility and all affected modes; run available CI and real multiplayer tests when applicable. A green static check does **not** substitute for game testing or user acceptance.
+- Apply only selected changes using reviewed commits/patches or an appropriate PR. Preserve unrelated `Ai` changes. If dependencies or conflicts cannot be resolved safely, **do not release**; report the blocker instead of doing a broad merge.
+- After a stable release, reconcile the accepted stable changes into `Ai-temp` without losing ongoing development. If histories diverged, identify the reason first; a history-only merge is acceptable only after verifying that its omitted changes are intentionally preserved or superseded, and that no gameplay/content is accidentally altered.
+- Never rewrite shared history via reset/rebase/force-push, bypass protection, silently discard independent changes, or create branches without user approval. If a HEAD changes, re-evaluate the diff and apply on top of the new state.
+- Keep release commits narrowly scoped and traceable. Record the stable commit SHA and, where appropriate, a release tag. Do not commit temporary tests, diagnostic artifacts, backups or checkpoint files as production code.
+- Deliver an actual ZIP with **only modified production files**, retaining exact repository-relative paths; verify it matches the submitted code. If GitHub upload fails, supply the ZIP instead of splitting files or claiming the upload succeeded.
 
 ## 10. Continuity
 
