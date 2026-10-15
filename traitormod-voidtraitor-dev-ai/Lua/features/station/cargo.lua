@@ -130,20 +130,30 @@ function cargo.ShipSnapshot()
         LargeFree = #markers, LargeTotal = ship ~= nil and #ship.Markers or 0, SalesValue = sales, LastSale = ship ~= nil and ship.LastSale or 0 }
 end
 
-function cargo.Snapshot(client, shipSnapshot)
+function cargo.Snapshot(client, shipSnapshot, incremental)
     local state = cargo.State
-    local snapshot = { Products = {}, Orders = state.Orders, Budget = state.Budget, Reserved = state.Reserved, CanManage = cargo.CanManage(client), Text = {} }
+    local snapshot = { Orders = state.Orders, Budget = state.Budget, Reserved = state.Reserved, CanManage = cargo.CanManage(client), Text = {} }
     for _, key in ipairs({ "Title", "Close", "Budget", "Reserved", "Reason", "Submit", "Approve", "Reject", "Orders", "Quantity", "Pending", "Accepted", "Outbound", "Loaded", "Delivered", "Rejected", "Capacity", "Large", "LastSale", "Ship", "Sales", "NoShip", "Empty", "Search", "Cart", "Home", "Trading", "Returning", "Catalog", "Back", "Next", "Refresh", "NativeActions", "Choose", "Submitted", "Denied", "NoFunds", "NoStock", "LoadFailed" }) do
         snapshot.Text[key] = Traitormod.GetText("Cargo" .. key)
     end
-    for _, entry in ipairs(state.Products) do
-        local record = ps.GetGuiProduct(client, entry.Category, entry.Product, entry.Id)
-        record.Currency = "кр"
-        record.Stock = math.max(0, (entry.Product.Limit or 99999) - (state.Used[entry.Id] or 0))
-        record.Limit, record.MaxQuantity = entry.Product.Limit or 99999, math.min(record.Stock, config.MaxQuantity)
-        record.DisabledReason, record.CooldownRemaining, record.CloseAfterPurchase = "", 0, false
-        record.AllowQuantity = true
-        snapshot.Products[#snapshot.Products + 1] = record
+    if incremental then
+        snapshot.ProductStates = {}
+        for _, entry in ipairs(state.Products) do
+            local stock = math.max(0, (entry.Product.Limit or 99999) - (state.Used[entry.Id] or 0))
+            snapshot.ProductStates[#snapshot.ProductStates + 1] = { Id = entry.Id,
+                Price = ps.GetProductPrice(client, entry.Product), Stock = stock, MaxQuantity = math.min(stock, config.MaxQuantity) }
+        end
+    else
+        snapshot.Products = {}
+        for _, entry in ipairs(state.Products) do
+            local record = ps.GetGuiProduct(client, entry.Category, entry.Product, entry.Id)
+            record.Currency = "кр"
+            record.Stock = math.max(0, (entry.Product.Limit or 99999) - (state.Used[entry.Id] or 0))
+            record.Limit, record.MaxQuantity = entry.Product.Limit or 99999, math.min(record.Stock, config.MaxQuantity)
+            record.DisabledReason, record.CooldownRemaining, record.CloseAfterPurchase = "", 0, false
+            record.AllowQuantity = true
+            snapshot.Products[#snapshot.Products + 1] = record
+        end
     end
     snapshot.Ship = shipSnapshot or cargo.ShipSnapshot()
     return snapshot
@@ -385,7 +395,7 @@ end
 function cargo.Send(client, result, shipSnapshot)
     local session = sessions[client]
     if session == nil or not cargo.Validate(client, session.Item, session.Gui) then return end
-    local snapshot = cargo.Snapshot(client, shipSnapshot)
+    local snapshot = cargo.Snapshot(client, shipSnapshot, session.Gui and session.Incremental and session.CatalogSent)
     snapshot.Result = result
     if result ~= nil and result.Action == "submit" then snapshot.SubmitAccepted = result.Success end
     if session.Gui then
@@ -401,6 +411,7 @@ function cargo.Send(client, result, shipSnapshot)
         snapshot.Orders = orders
         message.WriteString(json.encode(snapshot))
         Networking.Send(message, client.Connection, DeliveryMethod.Reliable)
+        session.CatalogSent = true
         return
     end
     local text = snapshot.Text
@@ -456,9 +467,9 @@ function cargo.Send(client, result, shipSnapshot)
     end, "InfoFrameTabButton.Mission")
 end
 
-function cargo.Open(client, item, gui)
+function cargo.Open(client, item, gui, incremental)
     if not cargo.Validate(client, item, gui == true) then return false end
-    sessions[client] = { Item = item, Gui = gui == true, View = "main", Page = 1 }
+    sessions[client] = { Item = item, Gui = gui == true, Incremental = incremental == true, View = "main", Page = 1 }
     cargo.Send(client)
     return true
 end
@@ -496,6 +507,7 @@ function cargo.Action(client, item, action, payload)
 end
 
 Networking.Receive("VoidTraitor_CargoOpen", function(message, client) cargo.Open(client, Entity.FindEntityByID(message.ReadUInt16()), true) end)
+Networking.Receive("VoidTraitor_CargoOpenV2", function(message, client) cargo.Open(client, Entity.FindEntityByID(message.ReadUInt16()), true, true) end)
 Networking.Receive("VoidTraitor_CargoAction", function(message, client)
     local item, action, text = Entity.FindEntityByID(message.ReadUInt16()), message.ReadString(), message.ReadString()
     if #action > 24 or #text > 8192 then return end
