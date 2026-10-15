@@ -395,7 +395,7 @@ end
 function cargo.Send(client, result, shipSnapshot)
     local session = sessions[client]
     if session == nil or not cargo.Validate(client, session.Item, session.Gui) then return end
-    local snapshot = cargo.Snapshot(client, shipSnapshot, session.Gui and session.Incremental and session.CatalogSent)
+    local snapshot = cargo.Snapshot(client, shipSnapshot, session.Gui and session.CatalogSent)
     snapshot.Result = result
     if result ~= nil and result.Action == "submit" then snapshot.SubmitAccepted = result.Success end
     if session.Gui then
@@ -467,9 +467,9 @@ function cargo.Send(client, result, shipSnapshot)
     end, "InfoFrameTabButton.Mission")
 end
 
-function cargo.Open(client, item, gui, incremental)
+function cargo.Open(client, item, gui)
     if not cargo.Validate(client, item, gui == true) then return false end
-    sessions[client] = { Item = item, Gui = gui == true, Incremental = incremental == true, View = "main", Page = 1 }
+    sessions[client] = { Item = item, Gui = gui == true, View = "main", Page = 1 }
     cargo.Send(client)
     return true
 end
@@ -507,7 +507,6 @@ function cargo.Action(client, item, action, payload)
 end
 
 Networking.Receive("VoidTraitor_CargoOpen", function(message, client) cargo.Open(client, Entity.FindEntityByID(message.ReadUInt16()), true) end)
-Networking.Receive("VoidTraitor_CargoOpenV2", function(message, client) cargo.Open(client, Entity.FindEntityByID(message.ReadUInt16()), true, true) end)
 Networking.Receive("VoidTraitor_CargoAction", function(message, client)
     local item, action, text = Entity.FindEntityByID(message.ReadUInt16()), message.ReadString(), message.ReadString()
     if #action > 24 or #text > 8192 then return end
