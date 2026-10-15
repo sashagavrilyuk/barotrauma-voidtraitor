@@ -15,6 +15,7 @@ Your task is to maintain LuaCsForBarotrauma mods, primarily VoidTraitor. Correct
 - **Search for an existing working mechanism before designing a new one.** Trace how it opens, receives events, authorizes actions, updates state, and closes or cleans up. Reuse existing functions and conventions when their semantics match.
 - If one implementation works and a similar one fails, **compare both end to end before changing anything**. For example, compare cargo-console interaction with the working ID console, and use existing Pointshop or GhostRole GUI mechanisms where applicable.
 - Understand *why* the working implementation works. Do not copy just its appearance or one callback while retaining a different, faulty lifecycle.
+- **Do not rule out an approach without evidence.** Compare relevant working mechanics across affected modes, vanilla Barotrauma and LuaCs/engine source end to end before declaring a method impossible or unsuitable. Distinguish verified limitations from assumptions; if not established, report it as unknown and investigate rather than rejecting the approach.
 - Do not add a second event handler, UI manager, state machine, polling loop, or helper if the current system can correctly handle the feature.
 - Common code belongs in existing shared modules only when genuinely shared. Do not merge superficially similar but behaviorally different features.
 
@@ -62,6 +63,7 @@ Before implementing or releasing any change that touches Barotrauma/LuaCs APIs, 
 - Do not refactor, rename, reformat, rewrite comments, or clean up unrelated code. Mention unrelated defects without modifying them.
 - Do not duplicate existing logic or add redundant defensive conditions that hide incorrect state transitions.
 - Remove code only when the requested changes make it obsolete; preserve unrelated behavior, persistent data, and backward compatibility.
+- **Compatibility requires a real contract.** Preserve documented or deployed supported behavior, modes, settings, persistent data, network contracts and server authorization. The requirement to support clients **with and without client LuaCs** is not a requirement to support obsolete VoidTraitor client builds or historical network protocols. Do not invent versioned messages, parallel legacy handlers, fallback branches, migration code or compatibility flags for hypothetical old clients. Before adding such paths, identify actual affected deployments/consumers and prove the need from source or evidence; obtain user approval if scope changes. Do not remove a verified supported legacy path without approval either.
 - Prefer server-side Lua for small features and fixes. Add XML/client-side content only when required for correct behavior or substantially better performance.
 - Do not hardcode player-facing text where the project's localization system applies.
 
