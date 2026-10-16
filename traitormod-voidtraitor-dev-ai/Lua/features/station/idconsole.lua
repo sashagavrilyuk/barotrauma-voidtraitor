@@ -85,8 +85,10 @@ function console.Apply(client, item, payload)
         if desired[entry.Tag] then target.AddTag(entry.Tag) else target.RemoveTag(Identifier(entry.Tag)) end
     end
     local remove = {}
+    local storedTitle
     for tag in target.GetTags() do
         local value = tag.Value
+        if value:sub(1, 12) == "vt_jobtitle:" then storedTitle = value:sub(13) end
         if (name ~= nil and value:sub(1, 5) == "name:") or (title ~= nil and value:sub(1, 12) == "vt_jobtitle:")
             or (preset ~= nil and preset.JobId ~= nil and value:sub(1, 6) == "jobid:") then remove[#remove + 1] = tag end
     end
@@ -101,8 +103,7 @@ function console.Apply(client, item, payload)
         target.AddTag("jobid:" .. preset.JobId)
     end
     if replace and (name ~= nil or title ~= nil) then
-        local currentTitle = title or console.CardTitle(target)
-        target.Description = info.OwnerName .. " — " .. currentTitle
+        target.Description = title or storedTitle or ""
         info.Description = target.Description
     end
     if replace then
