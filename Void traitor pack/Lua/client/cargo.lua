@@ -93,8 +93,11 @@ function P.RefreshCartOnly()
         local product = S.productById[entry.Id]
         if product ~= nil then
             local row = P.CreateLayout(UI.CartList.Content, 1, 0.34, nil, true, GUI.Anchor.CenterLeft)
-            row.RectTransform.MinSize = Point(0, Common.SafeIntScale(38))
+            row.RectTransform.MinSize = Point(0, Common.SafeIntScale(50))
             local name = P.CreateText(row, 0.61, 1, nil, product.Name .. " ×" .. tostring(entry.Quantity) .. "\n" .. UI.Money(product.Price * entry.Quantity), GUI.Alignment.Left, 0.85)
+            name.Wrap = false
+            name.AutoScaleHorizontal = true
+            name.AutoScaleVertical = true
             name.ToolTip = product.Name
             local remove = P.CreateButton(row, 0.18, 0.85, nil, "−", not UI.SubmitPending)
             remove.OnClicked = function() P.RemoveFromCart(entry.Id) P.RefreshCartOnly() return true end
@@ -225,10 +228,10 @@ function UI.Show(itemId, snapshot)
     UI.Budget.AutoScaleVertical = true
     local upper = P.CreateLayout(layout, 1, 0.58, nil, true)
     upper.RelativeSpacing = 0.015
-    S.catalogHost = GUI.Frame(P.CreateRect(0.66, 1, upper), nil)
+    S.catalogHost = GUI.Frame(P.CreateRect(0.585, 1, upper), nil)
     S.catalogHost.Color = Color(0, 0, 0, 0)
     S.catalogHost.CanBeFocused = false
-    local cartFrame = GUI.Frame(P.CreateRect(0.325, 1, upper), "GUIFrameListBox")
+    local cartFrame = GUI.Frame(P.CreateRect(0.40, 1, upper), "GUIFrameListBox")
     local cart = P.CreateLayout(cartFrame, 0.95, 0.94, GUI.Anchor.Center, false)
     cart.RelativeSpacing = 0.007
     P.CreateText(cart, 1, 0.085, nil, snapshot.Text.Cart, GUI.Alignment.Left, 1.0)
