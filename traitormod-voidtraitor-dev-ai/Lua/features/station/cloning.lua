@@ -104,7 +104,12 @@ function cloning.Begin(client, console)
     state.Jobs[pod] = job
     state.Pods[pod].Biomass = state.Pods[pod].Biomass - (corpse.IsHuman and config.HumanBiomassCost or math.max(1, math.ceil(corpse.Mass * config.HumanBiomassCost / 80)))
     local ownerConnected = false
-    for _, client in pairs(Client.ClientList) do if client == previousOwner then ownerConnected = true break end end
+    for _, client in pairs(Client.ClientList) do
+        if client == previousOwner then
+            ownerConnected = true
+            break
+        end
+    end
     for _, owner in pairs(Client.ClientList) do
         if (owner == previousOwner or (not ownerConnected and Traitormod.GetClientAccountKey(owner) == job.Account))
             and (owner.Character == nil or owner.Character.IsDead) then
@@ -123,7 +128,9 @@ function cloning.Answer(client, accept)
     if not Game.RoundStarted or Traitormod.IsRoundFinalizing() or job.Clone.Removed or job.Clone.IsDead
         or Traitormod.GetClientAccountKey(client) ~= job.Account
         or (client.Character ~= nil and not client.Character.IsDead) then return false end
-    for _, owner in pairs(Client.ClientList) do if owner.Character == job.Clone then return false end end
+    for _, owner in pairs(Client.ClientList) do
+        if owner.Character == job.Clone then return false end
+    end
     local role = Traitormod.RoleManager.GetRole(job.Corpse)
     if role ~= nil and role.Name == "HuskServant" then
         Traitormod.RoleManager.RemoveRole(job.Corpse)
@@ -196,7 +203,9 @@ function cloning.Update(deltaTime)
             end
             if not pod.Removed then pod.GetComponentString("LightComponent").IsOn = false end
             state.Jobs[pod] = nil
-            for client, pending in pairs(state.Pending) do if pending == job then state.Pending[client] = nil end end
+            for client, pending in pairs(state.Pending) do
+                if pending == job then state.Pending[client] = nil end
+            end
         else
             job.Clone.CharacterHealth.Stun = 2
             if pod.GetComponentString("Powered").HasPower then job.Progress = job.Progress + deltaTime end
@@ -208,7 +217,9 @@ function cloning.Update(deltaTime)
                 if not job.Corpse.IsPlayer and job.Clone.AIController ~= nil then job.Clone.AIController.Enabled = true end
                 pod.GetComponentString("LightComponent").IsOn = false
                 state.Jobs[pod] = nil
-                for client, pending in pairs(state.Pending) do if pending == job then state.Pending[client] = nil end end
+                for client, pending in pairs(state.Pending) do
+                    if pending == job then state.Pending[client] = nil end
+                end
             end
         end
     end
