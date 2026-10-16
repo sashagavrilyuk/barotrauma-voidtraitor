@@ -141,6 +141,7 @@ Networking.Receive("VoidTraitor_CommunicationsAction", function(message, client)
     local item, action, value = Entity.FindEntityByID(message.ReadUInt16()), message.ReadString(), message.ReadString()
     if #action <= 16 and #value <= ChatMessage.MaxLength then console.Action(client, item, action, value) end
 end)
+Hook.Add("client.disconnected", "Traitormod.Communications.Disconnect", function(client) sessions[client] = nil end)
 Hook.Patch("Traitormod.Communications.Terminal", "Barotrauma.Items.Components.Terminal", "ServerEventRead", function(instance, parameters)
     if instance.Item.Prefab.Identifier ~= "vt_communications_console" then return end
     local value = parameters["msg"].ReadString()
