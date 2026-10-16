@@ -40,9 +40,14 @@ end
 
 function UI.CloseMenu()
     UI.Send("close")
+    local character = Character.Controlled
+    if character ~= nil and character.SelectedItem ~= nil and character.SelectedItem.ID == UI.ItemId then
+        character.EmulateInput(inputTypes.Deselect)
+        character.SelectedItem = nil
+    end
     P.CloseFilterPopup()
     Common.RemoveGuiComponent(UI.MenuRoot)
-    UI.MenuRoot, UI.CurrentMenu, UI.ItemId, UI.Data = nil, nil, nil, nil
+    UI.MenuRoot, UI.CurrentMenu, UI.ItemId, UI.Data, UI.SelectedItem = nil, nil, nil, nil, nil
     UI.AwaitingOpen, UI.SubmitPending, UI.ResizeState = false, false, nil
     UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides = nil, nil, nil
     S.currentMenu, S.guiRoot, S.catalogHost, S.shopList, S.rebuildProductList = nil, nil, nil, nil, nil
@@ -214,14 +219,7 @@ function UI.Show(itemId, snapshot)
     title.Font = GUI.Style.SubHeadingFont
     local close = P.CreateButton(heading, 0.12, 1, nil, snapshot.Text.Close)
     close.TextBlock.AutoScaleHorizontal = true
-    close.OnClicked = function()
-        UI.CloseMenu()
-        if Character.Controlled ~= nil then
-            Character.Controlled.EmulateInput(inputTypes.Deselect)
-            Character.Controlled.SelectedItem = nil
-        end
-        return true
-    end
+    close.OnClicked = function() UI.CloseMenu() return true end
     UI.Budget = P.CreateText(layout, 1, 0.065, nil, "", GUI.Alignment.Left, 0.85, nil, false)
     UI.Budget.AutoScaleHorizontal = true
     UI.Budget.AutoScaleVertical = true
@@ -293,39 +291,20 @@ function UI.RequestOpen(item)
     Networking.Send(message)
 end
 
-Hook.Add("item.interact", "VoidTraitor.Cargo.Interact", function(item, character)
-    if UI.Disabled or not Networking.IsActive or character ~= Character.Controlled
-        or item.Prefab.Identifier ~= "vt_cargo_console" or not character.CanInteractWith(item)
-        or UI.SelectedItem == item then return end
-    if UI.SelectedItem ~= nil then UI.CloseMenu() end
-    UI.RequestOpen(item)
-end)
-
-Hook.Add("think", "VoidTraitor.Cargo.Selection", function(deltaTime)
+Hook.Add("think", "VoidTraitor.Cargo.Selection", function()
     if UI.Disabled then return end
+    local character = Character.Controlled
+    local item = character ~= nil and not character.IsDead and not character.IsIncapacitated and character.SelectedItem or nil
+    if not Networking.IsActive or item == nil or item.Removed or item.Prefab.Identifier ~= "vt_cargo_console" or not character.CanInteractWith(item) then
+        if UI.SelectedItem ~= nil then UI.CloseMenu() end
+        return
+    end
+    if UI.SelectedItem ~= item then
+        if UI.SelectedItem ~= nil then UI.CloseMenu() end
+        UI.RequestOpen(item)
+    end
     if UI.MenuRoot ~= nil then
         UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom,
             480, UI.OrderList, nil, nil, nil, UI.ResizeSides)
     end
-    if not Networking.IsActive then UI.CloseMenu() UI.SelectedItem = nil return end
-    local character = Character.Controlled
-    if character == nil or character.IsDead or character.IsIncapacitated then
-        if UI.SelectedItem ~= nil then UI.CloseMenu() end
-        UI.SelectedItem = nil
-        return
-    end
-    local item = character.SelectedItem
-    if UI.SelectedItem ~= nil and (UI.AwaitingOpen or UI.MenuRoot ~= nil) then
-        if (item ~= nil and item ~= UI.SelectedItem) or UI.SelectedItem.Removed
-            or not character.CanInteractWith(UI.SelectedItem) then
-            UI.CloseMenu()
-            UI.SelectedItem = nil
-        end
-        return
-    end
-    if item == nil or item.Prefab.Identifier ~= "vt_cargo_console" then
-        UI.SelectedItem = nil
-        return
-    end
-    UI.RequestOpen(item)
 end)
