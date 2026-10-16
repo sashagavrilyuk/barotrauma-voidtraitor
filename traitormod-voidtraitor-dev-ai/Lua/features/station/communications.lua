@@ -45,10 +45,10 @@ function console.Snapshot(client, item, data)
         AnnouncementCooldown = math.max(0, math.ceil(data.NextAnnouncement - now)), MaxLength = ChatMessage.MaxLength }
 end
 
-function console.Send(client, item, payload)
+function console.Send(client, item)
     local message = Networking.Start("VoidTraitor_CommunicationsSnapshot")
     message.WriteUInt16(UShort(item.ID))
-    message.WriteString(payload or json.encode(console.Snapshot(client, item, terminals[item])))
+    message.WriteString(json.encode(console.Snapshot(client, item, terminals[item])))
     Networking.Send(message, client.Connection)
 end
 
