@@ -139,7 +139,9 @@ function nuclear.Action(client, item, action, value)
             end
         end
     elseif action == "eject" and disk ~= nil and data.Status ~= "armed" and data.Status ~= "exploded" and holdable.Attached then
-        if not client.Character.Inventory.TryPutItem(disk, client.Character, disk.GetComponentString("Pickable").AllowedSlots, true, false, true) then disk.Drop(client.Character, true) end
+        if not client.Character.Inventory.TryPutItem(disk, client.Character, disk.GetComponentString("Pickable").AllowedSlots, true, false, true) then
+            disk.Drop(client.Character, true)
+        end
         if item.OwnInventory.GetItemAt(0) ~= disk then nuclear.PlaySound(item, "disk") end
         if data.Status ~= "cooldown" then data.Status = "locked" end
         data.Entered = ""
@@ -243,7 +245,9 @@ function nuclear.Think(deltaTime)
             local previous = data.Status .. ":" .. math.ceil(data.ActivationRemaining or data.Remaining) .. ":" .. math.ceil(data.Cooldown) .. ":" .. tostring(data.MusicPlaying)
             local disk = item.OwnInventory.GetItemAt(0)
             if disk == nil then
-                if data.Status == "armed" then nuclear.Disarm(item, data) end
+                if data.Status == "armed" then
+                    nuclear.Disarm(item, data)
+                end
                 if data.Status ~= "cooldown" and data.Status ~= "exploded" then data.Status, data.Entered = "locked", "" end
             elseif data.Status == "locked" then data.Status = "code" end
             if data.Status == "cooldown" then
@@ -319,7 +323,10 @@ end, Hook.HookMethodType.Before)
 Hook.Patch("Traitormod.Nuclear.Interact", "Barotrauma.Items.Components.Holdable", "Pick", function(instance, parameters)
     if instance.Item.Prefab.Identifier ~= "vt_nuclear_bomb" then return end
     local data = bombs[instance.Item]
-    if not active or data == nil or data.Status == "exploded" or data.Status == "armed" and data.Remaining <= config.DisarmTime then parameters.PreventExecution = true return false end
+    if not active or data == nil or data.Status == "exploded" or data.Status == "armed" and data.Remaining <= config.DisarmTime then
+        parameters.PreventExecution = true
+        return false
+    end
     if instance.Attached and data.Status ~= "armed" then
         parameters.PreventExecution = true
         return false
