@@ -32,7 +32,10 @@ function cargo.Start()
                     local valid = true
                     for _, entry in ipairs(product.Items) do
                         local id = type(entry) == "string" and entry or entry.Identifier
-                        if ItemPrefab.GetItemPrefab(id) == nil then valid = false break end
+                        if ItemPrefab.GetItemPrefab(id) == nil then
+                            valid = false
+                            break
+                        end
                     end
                     if valid then state.Products[#state.Products + 1] = { Id = categoryId .. ":" .. index, Category = category, Product = product } end
                 end
@@ -116,7 +119,10 @@ function cargo.SaleGoods()
         if not item.Removed and not ship.Fixed[item] and empty and price ~= nil
             and not config.SaleExcluded[identifier] then
             local amount = math.floor(price.Price * config.SaleMultiplier * item.ConditionPercentage / 100)
-            if amount > 0 then goods[#goods + 1] = { Item = item, Price = amount } value = value + amount end
+            if amount > 0 then
+                goods[#goods + 1] = { Item = item, Price = amount }
+                value = value + amount
+            end
         end
     end
     return goods, value
@@ -162,14 +168,23 @@ end
 function cargo.Submit(client, payload)
     local state, entries = cargo.State, {}
     local active = 0
-    for _, order in ipairs(state.Orders) do if order.Status ~= "Delivered" and order.Status ~= "Rejected" then active = active + 1 end end
+    for _, order in ipairs(state.Orders) do
+        if order.Status ~= "Delivered" and order.Status ~= "Rejected" then
+            active = active + 1
+        end
+    end
     if type(payload.Entries) ~= "table" or #payload.Entries == 0 or #payload.Entries + active > config.MaxOrders
         or type(payload.Reason) ~= "string" or #payload.Reason > 384 or payload.Reason:find("%c") or not payload.Reason:find("%S") then return false, "CargoDenied" end
     local quantities = {}
     for _, request in ipairs(payload.Entries) do
         if type(request) ~= "table" then return false, "CargoDenied" end
         local entry
-        for _, product in ipairs(state.Products) do if product.Id == request.Id then entry = product break end end
+        for _, product in ipairs(state.Products) do
+            if product.Id == request.Id then
+                entry = product
+                break
+            end
+        end
         if entry == nil or type(request.Quantity) ~= "number" or request.Quantity < 1
             or request.Quantity ~= math.floor(request.Quantity) or request.Quantity > config.MaxQuantity then return false, "CargoDenied" end
         local product = entry.Product
@@ -221,7 +236,11 @@ function cargo.LoadNext()
     local state, ship = cargo.State, cargo.State.Ship
     if ship.Loading then return end
     local order = ship.Trip[ship.NextOrder]
-    if order == nil then ship.State, ship.Trading, ship.Trip = "Returning", false, nil state.Dirty = true return end
+    if order == nil then
+        ship.State, ship.Trading, ship.Trip = "Returning", false, nil
+        state.Dirty = true
+        return
+    end
     local product
     for _, entry in ipairs(state.Products) do if entry.Id == order.Product then product = entry.Product break end end
     local items = {}
@@ -234,14 +253,27 @@ function cargo.LoadNext()
     local destinations = {}
     for index, item in ipairs(items) do
         local prefab = ItemPrefab.GetItemPrefab(item.Identifier)
-        if prefab == nil then order.Status = "Accepted" ship.NextOrder = ship.NextOrder + 1 state.Dirty = true return end
+        if prefab == nil then
+            order.Status = "Accepted"
+            ship.NextOrder = ship.NextOrder + 1
+            state.Dirty = true
+            return
+        end
         if item.IsInstallation then
-            if #markers == 0 then order.Status = "Accepted" ship.NextOrder = ship.NextOrder + 1 state.Dirty = true return end
+            if #markers == 0 then
+                order.Status = "Accepted"
+                ship.NextOrder = ship.NextOrder + 1
+                state.Dirty = true
+                return
+            end
             destinations[index] = table.remove(markers, 1)
         else
             local found
             for slotIndex, destination in ipairs(slots) do
-                if destination.Inventory.CanBePutInSlot(prefab, destination.Slot, item.Condition or item.MaxCondition) then found = slotIndex break end
+                if destination.Inventory.CanBePutInSlot(prefab, destination.Slot, item.Condition or item.MaxCondition) then
+                    found = slotIndex
+                    break
+                end
             end
             if found ~= nil then destinations[index] = table.remove(slots, found)
             elseif #markers > 0 then destinations[index] = table.remove(markers, 1)
@@ -378,7 +410,9 @@ function cargo.Think(deltaTime)
     end
     if ship.Trading then
         if ship.Sales ~= nil then
-            for _, sale in ipairs(ship.Sales) do if not sale.Item.Removed then return end end
+            for _, sale in ipairs(ship.Sales) do
+                if not sale.Item.Removed then return end
+            end
             ship.LastSale = 0
             for _, sale in ipairs(ship.Sales) do
                 ship.LastSale = ship.LastSale + sale.Price
@@ -453,7 +487,10 @@ function cargo.Send(client, result, shipSnapshot)
     lines[#lines + 1] = text.NativeActions
     local terminal = session.Item.GetComponentString("Terminal")
     local body = table.concat(lines, "\n\n")
-    if terminal.ShowMessage ~= body then terminal.ShowMessage = body terminal.SyncHistory() end
+    if terminal.ShowMessage ~= body then
+        terminal.ShowMessage = body
+        terminal.SyncHistory()
+    end
     buttons[#buttons + 1] = { Label = text.Refresh, Action = "view", Payload = { View = "main" } }
     buttons[#buttons + 1] = { Label = text.Close, Action = "close", Payload = {} }
     local options = {}
