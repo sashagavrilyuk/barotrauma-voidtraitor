@@ -101,6 +101,7 @@ function cloning.Begin(client, console)
     clone.SelectedItem = pod
     pod.GetComponentString("LightComponent").IsOn = true
     local previousOwner = state.Owners[corpse]
+    if previousOwner ~= nil then Traitormod.SelectedGamemode:HidePlayerFromCrew(clone) end
     local job = { Pod = pod, Corpse = corpse, Clone = clone, Progress = 0, Account = previousOwner ~= nil and Traitormod.GetClientAccountKey(previousOwner) or nil, Unkillable = unkillable }
     state.Jobs[pod] = job
     state.Pods[pod].Biomass = state.Pods[pod].Biomass - (corpse.IsHuman and config.HumanBiomassCost or math.max(1, math.ceil(corpse.Mass * config.HumanBiomassCost / 80)))

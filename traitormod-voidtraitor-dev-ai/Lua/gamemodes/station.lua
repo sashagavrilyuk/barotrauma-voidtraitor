@@ -49,6 +49,12 @@ gm.RequiredGamemode = "mission"
 gm.EndOnComplete = false
 gm.RestrictShopToAccessibleCategories = true
 
+function gm:HidePlayerFromCrew(character)
+    if Traitormod.Config.HideCrewList then
+        Networking.CreateEntityEvent(character, Character.RemoveFromCrewEventData.__new(character.TeamID, {}))
+    end
+end
+
 function gm:PreStart()
     Traitormod.Gamemodes.Gamemode.PreStart(self)
     local settings = Game.ServerSettings
@@ -80,6 +86,7 @@ function gm:Start()
     for _, client in pairs(Client.ClientList) do
         self.SpawnedAccounts[Traitormod.GetClientAccountKey(client)] = true
         local character = client.Character
+        if character ~= nil and not character.IsDead then self:HidePlayerFromCrew(character) end
         if not client.SpectateOnly and character ~= nil and character.IsHuman
             and not character.IsDead and character.Submarine == submarine then
             table.insert(self.StationCrew, character)
@@ -333,12 +340,16 @@ Hook.Patch("Barotrauma.Networking.GameServer", "SetClientCharacter", function(in
     local selected = Traitormod.SelectedGamemode
     if selected == nil or selected.Name ~= "Station" then return end
     local client, character = parameters["client"], parameters["newCharacter"]
-    if client ~= nil and character ~= nil and not character.IsDead then client.SpectateOnly = false end
+    if client ~= nil and character ~= nil and not character.IsDead then
+        client.SpectateOnly = false
+        selected:HidePlayerFromCrew(character)
+    end
 end, Hook.HookMethodType.After)
 
 Hook.Patch("Barotrauma.Character", "Revive", function(character)
     local selected = Traitormod.SelectedGamemode
     if selected == nil or selected.Name ~= "Station" or character.IsDead then return end
+    if character.IsPlayer then selected:HidePlayerFromCrew(character) end
     for _, client in pairs(Client.ClientList) do
         if client.SpectateOnly and (client.Character == nil or client.Character == character)
             and character.IsClientOwner(client) then
