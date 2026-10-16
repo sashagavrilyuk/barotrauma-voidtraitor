@@ -1,4 +1,5 @@
 local cloning = {}
+local componentEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateEventData", true)
 Traitormod.Cloning = cloning
 local config = Traitormod.Config.Cloning
 local prompts = require("textpromptutils")
@@ -232,11 +233,11 @@ function cloning.Update(deltaTime)
                 local progressText = Traitormod.FormatText("CloneProgress", percent)
                 if labels[1].Text ~= statusText then
                     labels[1].Text = statusText
-                    console.CreateServerEvent(labels[1])
+                    Networking.CreateEntityEvent(console, componentEvent.__new(labels[1], nil))
                 end
                 if labels[2].Text ~= progressText then
                     labels[2].Text = progressText
-                    console.CreateServerEvent(labels[2])
+                    Networking.CreateEntityEvent(console, componentEvent.__new(labels[2], nil))
                 end
             end
         end
