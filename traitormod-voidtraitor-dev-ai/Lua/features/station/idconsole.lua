@@ -62,7 +62,12 @@ function console.Apply(client, item, payload)
     end
     local preset
     if payload.Job ~= nil then
-        for _, entry in ipairs(console.Config.Presets) do if entry.Id == payload.Job then preset = entry break end end
+        for _, entry in ipairs(console.Config.Presets) do
+            if entry.Id == payload.Job then
+                preset = entry
+                break
+            end
+        end
         if preset == nil or (preset.JobId ~= nil and not JobPrefab.Prefabs.ContainsKey(preset.JobId)) then return false end
     end
     local replace = (name ~= nil and name ~= info.OwnerName) or (title ~= nil and title ~= console.CardTitle(target))
@@ -162,7 +167,10 @@ function console.Send(client)
     lines[#lines + 1] = snapshot.CanEdit and snapshot.Text.Ready or snapshot.Text.Missing
     local body = table.concat(lines, "\n\n")
     if not session.Gui then body = body .. "\n" .. Traitormod.GetText("IdConsoleNativeIdentity") end
-    if terminal.ShowMessage ~= body then terminal.ShowMessage = body terminal.SyncHistory() end
+    if terminal.ShowMessage ~= body then
+        terminal.ShowMessage = body
+        terminal.SyncHistory()
+    end
     local interface = session.Item.GetComponentString("CustomInterface")
     local signals = snapshot.Slots[2].Name .. ";" .. snapshot.Slots[2].Title .. ";1;1"
     if not session.Gui and interface.Signals ~= signals then
@@ -259,7 +267,12 @@ function console.Action(client, item, action, payload)
         local snapshot = console.Snapshot(client, item)
         local desired, selected = {}, nil
         if action == "preset" then
-            for _, preset in ipairs(snapshot.Presets) do if preset.Id == payload.Job then selected = preset break end end
+            for _, preset in ipairs(snapshot.Presets) do
+                if preset.Id == payload.Job then
+                    selected = preset
+                    break
+                end
+            end
             if selected == nil then return false end
         end
         for _, entry in ipairs(snapshot.Access) do
@@ -269,7 +282,9 @@ function console.Action(client, item, action, payload)
                 elseif action == "toggle" and entry.Tag == payload.Tag then granted = payload.Granted == true
                 elseif selected ~= nil then
                     granted = false
-                    for _, tag in ipairs(selected.Tags) do if tag == entry.Tag then granted = true end end
+                    for _, tag in ipairs(selected.Tags) do
+                        if tag == entry.Tag then granted = true end
+                    end
                 end
             end
             if granted then desired[#desired + 1] = entry.Tag end
@@ -308,7 +323,9 @@ Hook.Patch("Traitormod.IdConsole.Native", "Barotrauma.Items.Components.CustomInt
     elseif save then
         local snapshot = console.Snapshot(client, item)
         local tags = {}
-        for _, entry in ipairs(snapshot.Access) do if entry.Granted then tags[#tags + 1] = entry.Tag end end
+        for _, entry in ipairs(snapshot.Access) do
+            if entry.Granted then tags[#tags + 1] = entry.Tag end
+        end
         local session = sessions[client]
         local accepted, reason
         if session ~= nil and session.Item == item then
