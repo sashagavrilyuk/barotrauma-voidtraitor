@@ -257,20 +257,29 @@ function evacuation.Think(mode)
         if arrived then
             arrive(mode, nearby)
         end
-    elseif state.Status == "Boarding" then
-        if Timer.GetTime() >= state.DepartAt then
+    elseif state.Status == "Boarding" or state.Status == "Departing" then
+        local remaining = state.DepartAt - Timer.GetTime()
+        if state.Status == "Boarding" and remaining <= 10 and remaining > 0 then
+            state.Status = "Departing"
+            mode:SendAlertMessage(Traitormod.FormatText("EvacLaunchSoon", math.ceil(remaining)),
+                announcementColor, announcementHeaderColor)
+            mode:PlayAlertSound("evacLaunching")
+        end
+        if remaining <= 0 then
             state.Status = "Outbound"
             if state.Port.Docked then
                 state.Port.Undock(false)
                 state.TargetPort, state.Approach, state.Berth = nil, nil, nil
                 state.Departure = position - Vector2(0, state.Ship.Borders.Height)
                 hold(state, state.Departure)
+                mode:SendAlertMessage(Traitormod.GetText("EvacUndocked"), announcementColor, announcementHeaderColor)
             else
                 state.TargetPort, state.Approach, state.Berth = nil, nil, nil
                 state.Helm.SetDestinationLevelEnd()
                 state.Helm.UnsentChanges = true
+                mode:SendAlertMessage(Traitormod.GetText("EvacDeparted"), announcementColor, announcementHeaderColor)
             end
-            mode:SendAlertMessage(Traitormod.GetText("EvacDeparted"), announcementColor, announcementHeaderColor)
+            mode:PlayAlertSound("evacDeparted")
         end
     elseif state.Status == "Returning" or state.Status == "Outbound" then
         if state.Departure ~= nil and Vector2.Distance(position, state.Departure) < 200 then
@@ -314,7 +323,7 @@ function evacuation.Snapshot(mode)
         if not enabled then
             action = Traitormod.FormatText("EvacRecallIn", remaining)
         end
-    elseif status == "Boarding" then
+    elseif status == "Boarding" or status == "Departing" then
         text = Traitormod.FormatText("EvacBoarding", math.max(0, math.ceil(state.DepartAt - now)))
     end
     if status == "Inbound" or status == "Returning" or status == "Outbound" then

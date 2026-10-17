@@ -25,7 +25,9 @@ local alertSounds = {
     announcement = "vt_station_sound_announcement",
     evacCalled = "vt_station_sound_evac_called",
     evacRecalled = "vt_station_sound_evac_recalled",
-    evacDocked = "vt_station_sound_evac_docked"
+    evacDocked = "vt_station_sound_evac_docked",
+    evacLaunching = "vt_station_sound_yellow",
+    evacDeparted = "vt_station_sound_evac_departed"
 }
 local eventSet = LuaUserData.CreateStatic("Barotrauma.EventSet", true)
 LuaUserData.RegisterType("Barotrauma.EventPrefab")
