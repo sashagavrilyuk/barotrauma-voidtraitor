@@ -42,13 +42,16 @@ function cargo.Start()
             end
         end
     end
-    local home, submarine, port
+    local home, submarine, port, helm
     for item in Item.ItemList do
-        if item.HasTag("vt_cargo_helm") then submarine = item.Submarine end
+        if item.HasTag("vt_cargo_helm") then
+            submarine = item.Submarine
+            helm = item.GetComponentString("Steering")
+        end
         if item.HasTag("vt_cargo_home") and item.Submarine == Submarine.MainSub then home = item.GetComponentString("DockingPort") end
     end
     if submarine == nil then return end
-    local ship = { Submarine = submarine, Home = home, Crates = {}, Markers = {}, Fixed = {}, State = "Home", LastSale = 0 }
+    local ship = { Submarine = submarine, Home = home, Helm = helm, Crates = {}, Markers = {}, Fixed = {}, State = "Home", LastSale = 0 }
     for item in Item.ItemList do
         if item.Submarine == submarine then
             if item.HasTag("vt_cargo_port") then port = item.GetComponentString("DockingPort") end
@@ -349,6 +352,37 @@ function cargo.Unpack(client, item)
     return true
 end
 
+local function navigateHome(ship)
+    local port, home, helm = ship.Port, ship.Home, ship.Helm
+    if home == nil or home.Item.Removed or home.Docked and home.DockingTarget ~= port then return end
+    if port.Docked then return end
+
+    local berth = home.Item.WorldPosition - (port.Item.WorldPosition - ship.Submarine.WorldPosition)
+        - Vector2(0, port.GetDir(home) * port.DockedDistance * port.Item.Scale)
+    local approach = berth - Vector2(0, ship.Submarine.Borders.Height)
+    local position = ship.Submarine.WorldPosition
+    if not ship.DockApproach then
+        if math.abs(position.X - approach.X) < ship.Submarine.Borders.Width * 4
+            and Vector2.Distance(position, approach) < ship.Submarine.Borders.Width * 4 then
+            ship.DockApproach = true
+            helm.PosToMaintain = approach
+            helm.MaintainPos = true
+            helm.UnsentChanges = true
+        end
+    elseif not ship.AtBerth and Vector2.Distance(position, approach) < 200 then
+        ship.AtBerth = true
+        helm.PosToMaintain = berth
+        helm.UnsentChanges = true
+    elseif ship.AtBerth then
+        local delta = home.Item.WorldPosition - port.Item.WorldPosition
+        local tolerance = port.DistanceTolerance
+        if math.abs(delta.X) <= tolerance.X and math.abs(delta.Y) <= tolerance.Y
+            and ship.Submarine.Velocity.Length() < 0.6 then
+            port.Dock(home)
+        end
+    end
+end
+
 function cargo.Think(deltaTime)
     local state = cargo.State
     if state == nil or not Game.RoundStarted or Traitormod.IsRoundFinalizing() then return end
@@ -380,7 +414,7 @@ function cargo.Think(deltaTime)
     for _, item in ipairs(lost) do cargo.ResolvePackage(item) end
     local ship = state.Ship
     if ship == nil or ship.Submarine.Removed or ship.Port == nil then return end
-    local home = ship.Port.Docked and ship.Port.DockingTarget == ship.Home
+    local home = ship.Port.Docked and ship.Port.IsLocked and ship.Port.DockingTarget == ship.Home
     if home then
         if ship.Loading then return end
         for _, order in ipairs(state.Orders) do
@@ -391,6 +425,7 @@ function cargo.Think(deltaTime)
         end
         if ship.State ~= "Home" then state.Dirty = true end
         ship.State, ship.Trip, ship.Trading, ship.Sales = "Home", nil, false, nil
+        ship.DockApproach, ship.AtBerth, ship.DockedAt = nil, nil, nil
         return
     end
     if ship.State == "Home" then
@@ -401,10 +436,11 @@ function cargo.Think(deltaTime)
         end
     end
     local outpost = Level.Loaded ~= nil and Level.Loaded.EndOutpost or nil
-    local arrived = outpost ~= nil and ((ship.Port.Docked and ship.Port.DockingTarget ~= nil and ship.Port.DockingTarget.Item.Submarine == outpost)
-        or (ship.Submarine.AtEndExit and math.abs(ship.Submarine.Velocity.X) + math.abs(ship.Submarine.Velocity.Y) < 1))
+    local arrived = outpost ~= nil and ship.Port.Docked and ship.Port.IsLocked
+        and ship.Port.DockingTarget ~= nil and ship.Port.DockingTarget.Item.Submarine == outpost
     if ship.State == "Outbound" and arrived then
         ship.State, ship.Trading, ship.Sales = "Trading", true, cargo.SaleGoods()
+        ship.DockedAt = state.Time
         state.Dirty = true
         for _, sale in ipairs(ship.Sales) do Entity.Spawner.AddEntityToRemoveQueue(sale.Item) end
     end
@@ -423,6 +459,17 @@ function cargo.Think(deltaTime)
             ship.Sales = nil
         end
         if arrived then cargo.LoadNext() end
+    end
+    if ship.State == "Returning" then
+        if arrived then
+            if state.Time - ship.DockedAt >= 10 then
+                ship.Port.Undock(false)
+                ship.Helm.SetDestinationLevelStart()
+                ship.Helm.UnsentChanges = true
+            end
+        else
+            navigateHome(ship)
+        end
     end
 end
 
