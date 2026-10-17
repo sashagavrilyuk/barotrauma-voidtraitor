@@ -334,6 +334,8 @@ config.GamemodeConfig = {
     },
 
     Station = {
+        OutpostEscapePercent = 60,
+        OutpostEscapeMinutes = 2,
         Evacuation = {
             InitialDelay = 600,
             RecallDelay = 60,

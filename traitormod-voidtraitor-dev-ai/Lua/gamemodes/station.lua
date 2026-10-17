@@ -33,6 +33,15 @@ local eventSet = LuaUserData.CreateStatic("Barotrauma.EventSet", true)
 LuaUserData.RegisterType("Barotrauma.EventPrefab")
 LuaUserData.RegisterType("Barotrauma.ScriptedEvent")
 local stationSuffixes = {"LV", "NX", "EV", "QT", "PR"}
+
+local function escapeMinutesText(minutes)
+    local rest = minutes % 100
+    local form = rest >= 11 and rest <= 14 and "OutpostEscapeMinutesMany"
+        or minutes % 10 == 1 and "OutpostEscapeMinutesOne"
+        or minutes % 10 >= 2 and minutes % 10 <= 4 and "OutpostEscapeMinutesFew"
+        or "OutpostEscapeMinutesMany"
+    return string.format("%d %s", minutes, Traitormod.GetText(form))
+end
 local alertColors = {
     green = Color(80, 220, 110, 255),
     yellow = Color(255, 215, 60, 255),
@@ -90,6 +99,7 @@ function gm:Start()
     self.PendingShuttleArrivals = {}
     self.BiohazardAnnounced = false
     self.NextHuskCheck = 0
+    self.OutpostEscapeAt = nil
     for _, client in pairs(Client.ClientList) do
         self.SpawnedAccounts[Traitormod.GetClientAccountKey(client)] = true
         local character = client.Character
@@ -228,6 +238,29 @@ end
 
 function gm:Think()
     if not Game.RoundStarted then return end
+    local endOutpost = Level.Loaded.EndOutpost
+    if endOutpost ~= nil and not self.Ending then
+        local inside, total = 0, 0
+        for _, client in pairs(Client.ClientList) do
+            local character = client.Character
+            if character ~= nil and not character.IsDead and not character.IsUnconscious then
+                total = total + 1
+                if character.Submarine == endOutpost then inside = inside + 1 end
+            end
+        end
+        if inside > 0 and inside * 100 >= total * self.OutpostEscapePercent then
+            if self.OutpostEscapeAt == nil then
+                self.OutpostEscapeAt = Timer.GetTime() + self.OutpostEscapeMinutes * 60
+                Traitormod.SendMessageEveryone(Traitormod.FormatText("OutpostEscapeCountdown",
+                    escapeMinutesText(self.OutpostEscapeMinutes)))
+            elseif Timer.GetTime() >= self.OutpostEscapeAt then
+                self:BeginEnding("outpost")
+            end
+        elseif self.OutpostEscapeAt ~= nil then
+            self.OutpostEscapeAt = nil
+            Traitormod.SendMessageEveryone(Traitormod.GetText("OutpostEscapeCancelled"))
+        end
+    end
     evacuation.Think(self)
     Traitormod.Communications.Think()
     if not self.BiohazardAnnounced and Timer.GetTime() >= self.NextHuskCheck then
@@ -279,7 +312,10 @@ function gm:BeginEnding(reason, transitionType, viaCampaignTransition)
             mission.State = reason == "crew" and 1 or -1
         end
     end
+    local previousDelay = self.EndGameDelaySeconds
+    if reason == "outpost" then self.EndGameDelaySeconds = 0 end
     secret.BeginEnding(self, reason, transitionType, viaCampaignTransition)
+    self.EndGameDelaySeconds = previousDelay
 end
 
 function gm:End()
@@ -301,6 +337,18 @@ function gm:End()
     settings.MinRespawnRatio = self.PreviousMinRespawnRatio
     settings.ServerDetailsChanged = true
 end
+
+-- Suppress the vanilla outpost countdown; Station handles its own evacuation threshold.
+Hook.Patch("Traitormod.Station.OutpostEscape", "Barotrauma.Networking.GameServer", "Update", { "System.Single" }, function(server)
+    local selected = Traitormod.SelectedGamemode
+    if selected == nil or selected.Name ~= "Station" or selected.Ending or not Game.RoundStarted then return end
+    for _, client in pairs(Client.ClientList) do
+        if client.UsingFreeCam or (client.Character ~= nil and not client.Character.IsDead and not client.Character.IsIncapacitated) then
+            server.EndRoundTimer = 0
+            return
+        end
+    end
+end, Hook.HookMethodType.Before)
 
 -- RespawnManager also respawns dead bots in Permadeath outside campaigns.
 LuaUserData.RegisterType("System.Collections.Generic.List`1[[Barotrauma.CharacterInfo]], System.Collections")
