@@ -5,6 +5,8 @@ local prompts = require("textpromptutils")
 local config = Traitormod.Config.Communications
 local terminals, sessions, broadcasters = {}, {}, {}
 local codes = { "green", "blue", "violet", "yellow", "red" }
+local announcementColor = Color(255, 215, 0, 255)
+local announcementHeaderColor = Color(255, 255, 170, 255)
 local active = false
 local texts
 local componentEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateEventData", true)
@@ -57,6 +59,8 @@ function console.Stop(data)
     broadcasters[data.Speaker] = nil
     data.Speaker, data.EndTime = nil, nil
     data.NextVoice = Timer.GetTime() + config.VoiceCooldown
+    Traitormod.SelectedGamemode:SendAlertMessage(Traitormod.GetText("CommsVoiceFinished"), announcementColor, announcementHeaderColor)
+    Traitormod.SelectedGamemode:PlayAlertSound("green")
 end
 
 function console.Action(client, item, action, value)
@@ -68,13 +72,23 @@ function console.Action(client, item, action, value)
     local now = Timer.GetTime()
     if action == "announce" then
         if #value > ChatMessage.MaxLength or #value == 0 or not value:find("%S") or now < data.NextAnnouncement then return end
-        Traitormod.SelectedGamemode:SendAlertMessage(value, Color(255, 215, 90, 255))
+        local speaker = client.Character
+        local job = speaker.Info ~= nil and speaker.Info.Job
+        local title = job ~= nil and job.Prefab.Name.Value or Traitormod.GetText("CommsVoiceUnknownTitle")
+        local announcement = value .. "\n" .. Traitormod.FormatText("CommsAnnouncementSentBy", speaker.Name, title)
+        Traitormod.SelectedGamemode:SendAlertMessage(announcement, announcementColor, announcementHeaderColor)
+        Traitormod.SelectedGamemode:PlayAlertSound("announcement")
         data.NextAnnouncement = now + config.AnnouncementCooldown
     elseif action == "voice" then
         if data.Speaker == client then console.Stop(data)
         elseif data.Speaker == nil and broadcasters[client] == nil and now >= data.NextVoice then
             data.Speaker, data.EndTime = client, now + config.VoiceDuration
             broadcasters[client] = item
+            local speaker = client.Character
+            local job = speaker.Info ~= nil and speaker.Info.Job
+            local title = job ~= nil and job.Prefab.Name.Value or Traitormod.GetText("CommsVoiceUnknownTitle")
+            Traitormod.SelectedGamemode:SendAlertMessage(Traitormod.FormatText("CommsVoiceStarted", speaker.Name, title), announcementColor, announcementHeaderColor)
+            Traitormod.SelectedGamemode:PlayAlertSound("green")
         end
     elseif action == "evacuation" then
         Traitormod.SelectedGamemode:ToggleEvacuation()

@@ -22,6 +22,7 @@ local alertSounds = {
     gamma = "vt_station_sound_gamma",
     epsilon = "vt_station_sound_epsilon",
     biohazard = "vt_station_sound_biohazard",
+    announcement = "vt_station_sound_announcement",
     evacCalled = "vt_station_sound_evac_called",
     evacRecalled = "vt_station_sound_evac_recalled"
 }

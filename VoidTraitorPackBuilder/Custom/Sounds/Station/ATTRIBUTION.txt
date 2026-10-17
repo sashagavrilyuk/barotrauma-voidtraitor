@@ -1,7 +1,8 @@
 Corvax SS14 — station alert sound assets
 
-All files are distributed unchanged from:
+Original recordings sourced from:
 https://github.com/space-syndicate/space-station-14
+notice1.ogg, green_announce.ogg and announce_generic.ogg are stereo conversions for non-positional playback.
 
 License: Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)
 https://creativecommons.org/licenses/by-sa/3.0/
@@ -25,7 +26,7 @@ Sources: https://github.com/tgstation/tgstation/blob/40d89d11ea4a5cb81d61dc1018b
          https://github.com/TauCetiStation/TauCetiClassic/pull/10207
 green_announce.ogg — TG station (active GREEN announcement; former unused/announce_generic.ogg).
 Source: https://github.com/tgstation/tgstation/blob/40d89d11ea4a5cb81d61dc1018b46f4e7d32c62a/sound/ai/default/shuttlerecalled.ogg
-unused/announce_generic.ogg — TauCeti Station (former GREEN announcement; no longer referenced by gameplay).
+announce_generic.ogg — TauCeti Station (formerly unused; station-wide communications announcements).
 Source: https://github.com/TauCetiStation/TauCetiClassic/commit/92d2767dbb39f28540f78d5055e7be1eb7acee98
 
 All items above: CC BY-SA 3.0; preserve attribution and license when redistributing.
