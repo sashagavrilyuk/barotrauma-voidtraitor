@@ -333,6 +333,15 @@ config.GamemodeConfig = {
     },
 
     Station = {
+        Evacuation = {
+            InitialDelay = 600,
+            RecallDelay = 60,
+            BoardingTime = 180,
+            OtherDockBoardingTime = 300,
+            NoDockBoardingTime = 360,
+            TravelTime = 300,
+            PumpFlowMultiplier = 1,
+        },
         PointshopCategories = {"traitor", "cultist", "saboteur", "clown"},
         EndOnComplete = false,
         EnableRandomEvents = false,

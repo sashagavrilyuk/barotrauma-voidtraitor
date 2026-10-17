@@ -1,5 +1,6 @@
 local secret = Traitormod.Gamemodes.Secret
 local gm = secret:new()
+local evacuation = dofile(Traitormod.Path .. "/Lua/gamemodes/station/evacuation.lua")
 local bodyTypes = LuaUserData.CreateEnumTable("FarseerPhysics.BodyType")
 local alertCodes = {
     green = "StationAlertGreen",
@@ -20,7 +21,9 @@ local alertSounds = {
     delta = "vt_station_sound_delta",
     gamma = "vt_station_sound_gamma",
     epsilon = "vt_station_sound_epsilon",
-    biohazard = "vt_station_sound_biohazard"
+    biohazard = "vt_station_sound_biohazard",
+    evacCalled = "vt_station_sound_evac_called",
+    evacRecalled = "vt_station_sound_evac_recalled"
 }
 local eventSet = LuaUserData.CreateStatic("Barotrauma.EventSet", true)
 LuaUserData.RegisterType("Barotrauma.EventPrefab")
@@ -105,6 +108,7 @@ function gm:Start()
         end
     end
     self.AlertCode = "green"
+    evacuation.Start(self)
     Traitormod.Communications.Start()
 end
 
@@ -220,6 +224,7 @@ end
 
 function gm:Think()
     if not Game.RoundStarted then return end
+    evacuation.Think(self)
     Traitormod.Communications.Think()
     if not self.BiohazardAnnounced and Timer.GetTime() >= self.NextHuskCheck then
         self.NextHuskCheck = Timer.GetTime() + 5
@@ -243,12 +248,24 @@ function gm:Think()
 
         local queue = client.PendingPositionUpdates
         if not queue.Contains(Submarine.MainSub) then queue.Enqueue(Submarine.MainSub) end
+        local evac = self.EvacuationState
+        if evac.Status == "Parked" and not queue.Contains(evac.Ship) then
+            queue.Enqueue(evac.Ship)
+        end
         local available = Traitormod.Pointshop.CanUseShop(client)
         if self.ShopAvailability[client] ~= available then
             self.ShopAvailability[client] = available
             Traitormod.ClientMenu.SendSnapshot(client)
         end
     end
+end
+
+function gm:GetEvacuationStatus()
+    return evacuation.Snapshot(self)
+end
+
+function gm:ToggleEvacuation()
+    evacuation.Action(self)
 end
 
 function gm:BeginEnding(reason, transitionType, viaCampaignTransition)
@@ -263,6 +280,7 @@ end
 
 function gm:End()
     Traitormod.Communications.End()
+    self.EvacuationState = nil
     secret.End(self)
     if Traitormod.OriginalGamemode ~= nil then
         Game.NetLobbyScreen.SelectedModeIdentifier = Traitormod.OriginalGamemode

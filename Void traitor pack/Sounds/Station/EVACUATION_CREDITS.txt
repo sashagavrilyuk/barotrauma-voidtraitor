@@ -1,0 +1,7 @@
+shuttlecalled.ogg, shuttlerecalled.ogg
+Author: discord:Basia (437113799137427460)
+License: CC-BY-SA-3.0 (https://creativecommons.org/licenses/by-sa/3.0/)
+Original: https://github.com/TauCetiStation/TauCetiClassic/pull/10207
+From Corvax: space-syndicate/space-station-14 @ 6a96bbb02f8b85daf1cf694b80af1c27873fc386
+Resources/Audio/Announcements/attributions.yml
+Files unchanged.

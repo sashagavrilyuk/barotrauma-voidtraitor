@@ -38,6 +38,7 @@ end
 function console.Snapshot(client, item, data)
     local now = Timer.GetTime()
     return { Text = texts, Alert = Traitormod.SelectedGamemode.AlertCode,
+        Evacuation = Traitormod.SelectedGamemode:GetEvacuationStatus(),
         Powered = item.Condition > 0 and item.GetComponentString("Powered").HasPower,
         Voice = data.Speaker ~= nil, Mine = data.Speaker ~= nil and data.Speaker == client,
         Remaining = math.max(0, math.ceil((data.EndTime or 0) - now)),
@@ -75,6 +76,8 @@ function console.Action(client, item, action, value)
             data.Speaker, data.EndTime = client, now + config.VoiceDuration
             broadcasters[client] = item
         end
+    elseif action == "evacuation" then
+        Traitormod.SelectedGamemode:ToggleEvacuation()
     elseif action == "code" then
         local selectable, currentSelectable = false, false
         for _, code in ipairs(codes) do
@@ -112,6 +115,7 @@ function console.Think()
                 local voice = snapshot.Voice and string.format(texts.Remaining, snapshot.Remaining)
                     or snapshot.VoiceCooldown > 0 and string.format(texts.Cooldown, snapshot.VoiceCooldown) or texts.Voice
                 local body = string.format(texts.Code, texts[snapshot.Alert]) .. "\n" .. voice
+                    .. "\n" .. snapshot.Evacuation.Status .. "\n" .. snapshot.Evacuation.Action
                 if not snapshot.Powered then body = texts.NoPower end
                 local terminal = item.GetComponentString("Terminal")
                 if terminal.ShowMessage ~= body then
@@ -151,10 +155,11 @@ end, Hook.HookMethodType.Before)
 Hook.Patch("Traitormod.Communications.Buttons", "Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, parameters)
     if instance.Item.Prefab.Identifier ~= "vt_communications_console" then return end
     local message = parameters["msg"]
-    local voice, code = message.ReadBoolean(), message.ReadBoolean()
+    local voice, code, evacuation = message.ReadBoolean(), message.ReadBoolean(), message.ReadBoolean()
     parameters.PreventExecution = true
     if voice then console.Action(parameters["c"], instance.Item, "voice")
-    elseif code then console.ChooseCode(parameters["c"], instance.Item) end
+    elseif code then console.ChooseCode(parameters["c"], instance.Item)
+    elseif evacuation then console.Action(parameters["c"], instance.Item, "evacuation") end
 end, Hook.HookMethodType.Before)
 Hook.Patch("Traitormod.Communications.Voice", "Barotrauma.Networking.VoipServer", "CanReceive", function(_, parameters)
     local sender, recipient = parameters["sender"], parameters["recipient"]

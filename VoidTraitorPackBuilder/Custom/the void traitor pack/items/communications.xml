@@ -7,9 +7,10 @@
       <GuiFrame relativesize="0.35,0.35" anchor="Center" relativeoffset="0,-0.09" style="ItemUI" />
     </Terminal>
     <CustomInterface canbeselected="true" msg="ItemMsgInteractSelect" allowuioverlap="true" allowingameediting="false">
-      <GuiFrame relativesize="0.35,0.15" anchor="Center" relativeoffset="0,0.18" style="ItemUI" />
+      <GuiFrame relativesize="0.35,0.20" anchor="Center" relativeoffset="0,0.20" style="ItemUI" />
       <Button text="CommsVoice" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
       <Button text="CommsCodes" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
+      <Button text="CommsEvacuation" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
     </CustomInterface>
     <ConnectionPanel canbeselected="false" locked="true">
       <RequiredItem items="screwdriver" type="Equipped" />

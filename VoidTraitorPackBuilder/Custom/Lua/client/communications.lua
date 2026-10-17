@@ -34,31 +34,38 @@ function UI.Show(itemId, snapshot)
     UI.ItemId = itemId
     local text = snapshot.Text
     local screenWidth, screenHeight = Common.GetScreenSize()
-    local width, height = math.min(Common.SafeIntScale(460), screenWidth * 0.9), math.min(Common.SafeIntScale(380), screenHeight * 0.9)
+    local width, height = math.min(Common.SafeIntScale(460), screenWidth * 0.9), math.min(Common.SafeIntScale(460), screenHeight * 0.9)
     local root = GUI.Frame(GUI.RectTransform(Point(math.floor(width), math.floor(height)), nil, GUI.Anchor.Center), "GUIFrame")
     UI.MenuRoot, UI.CurrentMenu = root, root
     local layout = GUI.LayoutGroup(Common.CreateRect(0.94, 0.94, root, GUI.Anchor.Center), false)
-    layout.RelativeSpacing = 0.014
-    local heading = GUI.LayoutGroup(Common.CreateRect(1, 0.11, layout), true)
+    layout.RelativeSpacing = 0.012
+    local heading = GUI.LayoutGroup(Common.CreateRect(1, 0.10, layout), true)
     local drag = GUI.DragHandle(Common.CreateRect(0.76, 1, heading), root.RectTransform, nil)
     local transparent = Color(0, 0, 0, 0)
     drag.Color, drag.HoverColor, drag.SelectedColor, drag.PressedColor = transparent, transparent, transparent, transparent
     Common.CreateText(drag, 1, 1, GUI.Anchor.Center, text.Title, GUI.Alignment.CenterLeft, 0.9)
     local close = GUI.Button(Common.CreateRect(0.24, 1, heading), text.Close, GUI.Alignment.Center, "GUIButtonSmall")
     close.OnClicked = function() UI.CloseMenu() return true end
-    local input = GUI.TextBox(Common.CreateRect(1, 0.52, layout), "", nil, nil, GUI.Alignment.TopLeft, true, "", nil, false, false)
+    local input = GUI.TextBox(Common.CreateRect(1, 0.36, layout), "", nil, nil, GUI.Alignment.TopLeft, true, "", nil, false, false)
     -- The vanilla textbox style fixes its height to one line, including the inner frame.
     input.RectTransform.MinSize, input.RectTransform.MaxSize = Point(0, 0), Point(100000, 100000)
     input.Frame.RectTransform.MinSize, input.Frame.RectTransform.MaxSize = Point(0, 0), Point(100000, 100000)
     input.MaxTextLength = snapshot.MaxLength
-    local announce = GUI.Button(Common.CreateRect(1, 0.10, layout), text.Announce, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
+    local announce = GUI.Button(Common.CreateRect(1, 0.09, layout), text.Announce, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
     announce.OnClicked = function() input.Deselect() UI.Send("announce", input.Text) return true end
-    local voice = GUI.Button(Common.CreateRect(1, 0.10, layout), text.Voice, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
+    local voice = GUI.Button(Common.CreateRect(1, 0.09, layout), text.Voice, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
     voice.OnClicked = function() input.Deselect() UI.Send("voice") return true end
-    local picker = GUI.DropDown(Common.CreateRect(1, 0.10, layout), "", 5)
+    local picker = GUI.DropDown(Common.CreateRect(1, 0.09, layout), "", 5)
     UI.Picker = picker
     for _, code in ipairs(codes) do picker.AddItem(text[code], code) end
     picker.OnSelected = function(_, code) UI.Send("code", code) return true end
+    local evacuationStatus = Common.CreateText(layout, 1, 0.10, GUI.Anchor.Center, "", GUI.Alignment.CenterLeft, 0.9)
+    local evacuation = GUI.Button(Common.CreateRect(1, 0.09, layout), "", GUI.Alignment.Center, "GUIButtonSmallFreeScale")
+    evacuation.OnClicked = function()
+        input.Deselect()
+        UI.Send("evacuation")
+        return true
+    end
     UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides = {}, {}, { left = {}, right = {}, minimumWidth = 380 }
     Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
     UI.Update = function(state)
@@ -74,6 +81,9 @@ function UI.Show(itemId, snapshot)
         for _, code in ipairs(codes) do if state.Alert == code then selectable = true end end
         picker.Enabled, picker.ButtonEnabled = state.Powered and selectable, state.Powered and selectable
         if not picker.Enabled then picker.Dropped = false end
+        evacuationStatus.Text = state.Evacuation.Status
+        evacuation.Text = state.Evacuation.Action
+        evacuation.Enabled = state.Powered and state.Evacuation.Enabled
         input.Enabled = state.Powered
     end
     UI.Update(snapshot)
@@ -113,6 +123,6 @@ Hook.Add("think", "VoidTraitor.Communications.Selection", function()
         Networking.Send(message)
     end
     if UI.MenuRoot ~= nil then
-        UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom, 310, nil, nil, nil, nil, UI.ResizeSides)
+        UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom, 380, nil, nil, nil, nil, UI.ResizeSides)
     end
 end)
