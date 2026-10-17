@@ -47,6 +47,13 @@ local function park(state)
     hold(state, state.Ship.WorldPosition)
     state.Status = "Parked"
     state.TargetPort, state.Approach, state.Berth, state.Departure = nil, nil, nil, nil
+    state.ParkedActive = {}
+    for item in Item.ItemList do
+        if item.Submarine == state.Ship then
+            state.ParkedActive[item] = item.IsActive
+            item.IsActive = false
+        end
+    end
 end
 
 function evacuation.Start(mode)
@@ -133,6 +140,17 @@ function evacuation.Action(mode)
     local state = mode.EvacuationState
     local now = Timer.GetTime()
     if state.Status == "Parked" and now >= state.AvailableAt then
+        for item, wasActive in pairs(state.ParkedActive) do
+            if not item.Removed then
+                item.Condition = item.MaxCondition
+                local battery = item.GetComponentString("PowerContainer")
+                if battery ~= nil then battery.Charge = battery.Capacity end
+                local reactor = item.GetComponentString("Reactor")
+                if reactor ~= nil then reactor.PowerOn, reactor.AutoTemp = true, true end
+                item.IsActive = wasActive
+            end
+        end
+        state.ParkedActive = nil
         state.Ship.PhysicsBody.BodyType = bodyTypes.Dynamic
         state.Ship.SetPosition(Game.Server.RespawnManager.FindSpawnPos(state.Ship, Level.Loaded.EndOutpost))
         state.Ship.Velocity = Vector2.Zero
