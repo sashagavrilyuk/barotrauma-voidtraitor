@@ -5,7 +5,8 @@ LuaUserData.RegisterType("FarseerPhysics.Dynamics.World")
 LuaUserData.RegisterType("Barotrauma.SteeringPath")
 local collisionMask = bit32.bor(Physics.CollisionLevel, Physics.CollisionWall,
     Physics.CollisionItem, Physics.CollisionItemBlocking, Physics.CollisionRepairableWall)
-local announcementColor = Color(255, 215, 90, 255)
+local announcementColor = Color(255, 215, 0, 255)
+local announcementHeaderColor = Color(255, 255, 170, 255)
 
 local function hold(state, position)
     state.Helm.AutoPilot = true
@@ -145,14 +146,14 @@ function evacuation.Action(mode)
                 Networking.CreateEntityEvent(engine.Item, Item.ChangePropertyEventData(engine.SerializableProperties[Identifier("MaxForce")], engine))
             end
         end
-        mode:SendAlertMessage(Traitormod.GetText("EvacCalled"), announcementColor)
+        mode:SendAlertMessage(Traitormod.GetText("EvacCalled"), announcementColor, announcementHeaderColor)
         mode:PlayAlertSound("evacCalled")
     elseif state.Status == "Inbound" and not state.Port.Docked and now >= state.RecallAt then
         state.Status = "Returning"
         state.TargetPort, state.Approach, state.Berth = nil, nil, nil
         state.Helm.SetDestinationLevelEnd()
         state.Helm.UnsentChanges = true
-        mode:SendAlertMessage(Traitormod.GetText("EvacRecalled"), announcementColor)
+        mode:SendAlertMessage(Traitormod.GetText("EvacRecalled"), announcementColor, announcementHeaderColor)
         mode:PlayAlertSound("evacRecalled")
     end
 end
@@ -166,7 +167,19 @@ local function arrive(mode, nearby)
         duration = mode.Evacuation.OtherDockBoardingTime
     end
     state.Status, state.DepartAt = "Boarding", Timer.GetTime() + duration
-    mode:SendAlertMessage(Traitormod.FormatText(nearby and "EvacNearby" or "EvacDocked", math.ceil(duration)), announcementColor)
+    local message
+    if nearby then
+        message = Traitormod.FormatText("EvacNearby", math.ceil(duration))
+    else
+        local station = Submarine.MainSub
+        local borders = station.Borders
+        local centerY = station.WorldPosition.Y + borders.Y - borders.Height / 2
+        local direction = state.TargetPort.Item.WorldPosition.Y >= centerY and "EvacNorth" or "EvacSouth"
+        message = Traitormod.FormatText("EvacDocked", mode.StationAnnouncementName,
+            Traitormod.GetText(direction), math.ceil(duration))
+    end
+    mode:SendAlertMessage(message, announcementColor, announcementHeaderColor)
+    if not nearby then mode:PlayAlertSound("evacDocked") end
 end
 
 local function navigate(state, ports)
@@ -257,7 +270,7 @@ function evacuation.Think(mode)
                 state.Helm.SetDestinationLevelEnd()
                 state.Helm.UnsentChanges = true
             end
-            mode:SendAlertMessage(Traitormod.GetText("EvacDeparted"), announcementColor)
+            mode:SendAlertMessage(Traitormod.GetText("EvacDeparted"), announcementColor, announcementHeaderColor)
         end
     elseif state.Status == "Returning" or state.Status == "Outbound" then
         if state.Departure ~= nil and Vector2.Distance(position, state.Departure) < 200 then

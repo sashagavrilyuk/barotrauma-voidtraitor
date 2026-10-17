@@ -85,5 +85,12 @@
         </StatusEffect>
       </StatusEffectAction>
     </ScriptedEvent>
+    <ScriptedEvent identifier="vt_station_sound_evac_docked" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="station">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/shuttle_dock.ogg" range="1000000" volume="0.75" dontmuffle="true" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
   </EventPrefabs>
 </RandomEvents>
