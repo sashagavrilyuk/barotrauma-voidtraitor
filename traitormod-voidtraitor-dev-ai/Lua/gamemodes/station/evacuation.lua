@@ -70,6 +70,7 @@ function evacuation.Start(mode)
         state.Status = "Unavailable"
         return
     end
+    state.Ship.ImmuneToBallastFlora = true
     table.sort(state.Ports, function(a, b)
         if a.Item.HasTag("vt_evac_home") ~= b.Item.HasTag("vt_evac_home") then
             return a.Item.HasTag("vt_evac_home")
