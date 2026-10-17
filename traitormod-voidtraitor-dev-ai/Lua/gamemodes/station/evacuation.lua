@@ -354,4 +354,15 @@ function evacuation.Snapshot(mode)
     return { Status = text, Action = action, Enabled = enabled }
 end
 
+Hook.Patch("Traitormod.Station.EvacuationBuoyancy", "Barotrauma.SubmarineBody", "CalculateBuoyancy", function(body, parameters)
+    local selected = Traitormod.SelectedGamemode
+    if selected == nil or selected.Name ~= "Station" then return end
+    local state = selected.EvacuationState
+    if state == nil or state.Status == "Parked" or state.Status == "Unavailable"
+        or body.Submarine ~= state.Ship or state.Port.Docked then return end
+    local desiredSpeed = state.Helm.TargetVelocity.Y * 0.05
+    local acceleration = math.max(-5, math.min(5, (desiredSpeed - state.Ship.Velocity.Y) * 1.5))
+    parameters.ReturnValue = Vector2(0, body.Body.Mass * acceleration)
+end, Hook.HookMethodType.After)
+
 return evacuation
