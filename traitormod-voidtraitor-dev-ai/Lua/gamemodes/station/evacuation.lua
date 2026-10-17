@@ -309,7 +309,7 @@ function evacuation.Snapshot(mode)
     local state = mode.EvacuationState
     local now = Timer.GetTime()
     local status, enabled = state.Status, false
-    local text = Traitormod.GetText("Evac" .. status)
+    local text = Traitormod.GetText("Evac" .. (status == "Departing" and "Boarding" or status))
     local action = Traitormod.GetText("EvacCall")
     if status == "Parked" then
         local remaining = math.max(0, math.ceil(state.AvailableAt - now))
