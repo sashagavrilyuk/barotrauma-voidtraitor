@@ -363,6 +363,16 @@ config.GamemodeConfig = {
     Station = {
         OutpostEscapePercent = 60,
         OutpostEscapeMinutes = 2,
+        JobSlots = {
+            captain = 1,
+            mechanic = 5,
+            assistant = 5,
+            securityofficer = 6,
+            medicaldoctor = 3,
+            surgeon = 2,
+            engineer = 5,
+            scientist = 5,
+        },
         WavesEnabled = true,
         SuppressOutdoorWaves = true,
         WaveMinPlayers = 20,

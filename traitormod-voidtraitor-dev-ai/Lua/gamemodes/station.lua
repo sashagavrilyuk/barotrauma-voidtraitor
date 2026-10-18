@@ -74,6 +74,8 @@ end
 
 function gm:PreStart()
     Traitormod.Gamemodes.Gamemode.PreStart(self)
+    self.Passengers = {}
+    self.PendingJobs = {}
     local settings = Game.ServerSettings
     self.PreviousMissionTypes = settings.MissionTypes
     self.PreviousRespawnMode = settings.RespawnMode
@@ -119,7 +121,7 @@ function gm:Start()
     Traitormod.Nuclear.Start()
     for character in Character.CharacterList do
         if character.IsHuman and not character.IsDead and character.Submarine == Submarine.MainSub then
-            Traitormod.IdConsole.InitializeCard(character)
+            self:InitializeIdCard(character)
         end
     end
     self.AlertCode = "green"
@@ -219,6 +221,94 @@ function gm:CheckHuskOutbreak()
     end
 end
 
+function gm:CountJobSlots()
+    local counts = {}
+    for _, client in pairs(Client.ClientList) do
+        local account = Traitormod.GetClientAccountKey(client)
+        local job = self.PendingJobs[account]
+        local character = client.Character
+        if job == nil and not self.Passengers[account] and character ~= nil
+            and not character.IsDead and character.IsHuman
+            and character.TeamID == CharacterTeamType.Team1 and character.Info.Job ~= nil then
+            job = character.Info.Job.Prefab.Identifier.Value
+        end
+        if job ~= nil then
+            counts[job] = (counts[job] or 0) + 1
+        end
+    end
+    return counts
+end
+
+function gm:HasJobSlot(client, job, counts)
+    if job == nil or job.Prefab.HiddenJob or client.Karma < job.Prefab.MinKarma then
+        return false
+    end
+    local id = job.Prefab.Identifier.Value
+    return (counts[id] or 0) < (self.JobSlots[id] or 0)
+end
+
+function gm:ReserveJobSlot(client, job, counts, passenger)
+    local account = Traitormod.GetClientAccountKey(client)
+    local id = job.Prefab.Identifier.Value
+    self.Passengers[account] = passenger or nil
+    self.PendingJobs[account] = not passenger and id or nil
+    if not passenger then
+        counts[id] = (counts[id] or 0) + 1
+    end
+    return job
+end
+
+function gm:ChooseStationJob(client, counts)
+    for _, job in ipairs(client.JobPreferences) do
+        if self:HasJobSlot(client, job, counts) then
+            return self:ReserveJobSlot(client, job, counts)
+        end
+    end
+    local available = {}
+    for id, limit in pairs(self.JobSlots) do
+        if limit > 0 and JobPrefab.Prefabs.ContainsKey(id) then
+            local job = Traitormod.MidRoundSpawn.GetJobVariant(id)
+            if self:HasJobSlot(client, job, counts) then
+                available[#available + 1] = job
+            end
+        end
+    end
+    if #available > 0 then
+        return self:ReserveJobSlot(client, available[math.random(#available)], counts)
+    end
+    for _, job in ipairs(client.JobPreferences) do
+        if job.Prefab.Identifier == "assistant" then
+            return self:ReserveJobSlot(client, job, counts, true)
+        end
+    end
+    return self:ReserveJobSlot(client, Traitormod.MidRoundSpawn.GetJobVariant("assistant"), counts, true)
+end
+
+function gm:ApplyJobSlots(clients)
+    local counts, overflow = self:CountJobSlots(), {}
+    for _, client in pairs(clients) do
+        if self:HasJobSlot(client, client.AssignedJob, counts) then
+            self:ReserveJobSlot(client, client.AssignedJob, counts)
+        else
+            overflow[#overflow + 1] = client
+        end
+    end
+    for _, client in ipairs(overflow) do
+        client.AssignedJob = self:ChooseStationJob(client, counts)
+    end
+end
+
+function gm:InitializeIdCard(character)
+    local client = Traitormod.FindClientCharacter(character)
+    local passenger = false
+    if client ~= nil then
+        local account = Traitormod.GetClientAccountKey(client)
+        self.PendingJobs[account] = nil
+        passenger = self.Passengers[account] == true
+    end
+    Traitormod.IdConsole.InitializeCard(character, passenger)
+end
+
 function gm:CanShuttleRespawn(client)
     return not self.SpawnedAccounts[Traitormod.GetClientAccountKey(client)]
         and client.InGame and not client.SpectateOnly
@@ -230,10 +320,13 @@ function gm:ShouldStartShuttleRespawn(pending)
 end
 
 function gm:SpawnNewcomerOnShuttle(client, submarine)
-    if Traitormod.MidRoundSpawn.SpawnClientCharacterOnSub(submarine, client) then
-        local accountKey = Traitormod.GetClientAccountKey(client)
+    local accountKey = Traitormod.GetClientAccountKey(client)
+    local job = self:ChooseStationJob(client, self:CountJobSlots())
+    if Traitormod.MidRoundSpawn.SpawnClientCharacterOnSub(submarine, client, job) then
         self.SpawnedAccounts[accountKey] = true
         self.PendingShuttleArrivals[accountKey] = true
+    else
+        self.PendingJobs[accountKey] = nil
     end
 end
 
@@ -322,6 +415,8 @@ end
 function gm:End()
     Traitormod.Communications.End()
     self.EvacuationState = nil
+    self.PendingJobs = nil
+    self.Passengers = nil
     secret.End(self)
     if Traitormod.OriginalGamemode ~= nil then
         Game.NetLobbyScreen.SelectedModeIdentifier = Traitormod.OriginalGamemode
@@ -429,10 +524,20 @@ Hook.Patch("Barotrauma.Character", "Revive", function(character)
     end
 end, Hook.HookMethodType.After)
 
+Hook.Add("jobsAssigned", "Traitormod.Station.JobSlots", function(clients)
+    local selected = Traitormod.SelectedGamemode
+    if selected ~= nil and selected.Name == "Station" then
+        selected:ApplyJobSlots(clients)
+    end
+end)
+
 Hook.Add("character.giveJobItems", "Traitormod.Station.IdCardAccess", function(character)
-    if Traitormod.SelectedGamemode == nil or Traitormod.SelectedGamemode.Name ~= "Station" then return end
+    local selected = Traitormod.SelectedGamemode
+    if selected == nil or selected.Name ~= "Station" then return end
     Timer.Wait(function()
-        if not character.Removed and character.Submarine == Submarine.MainSub then Traitormod.IdConsole.InitializeCard(character) end
+        if not character.Removed and Traitormod.SelectedGamemode == selected then
+            selected:InitializeIdCard(character)
+        end
     end, 0)
 end)
 

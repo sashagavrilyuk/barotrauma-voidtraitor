@@ -337,14 +337,27 @@ Hook.Patch("Traitormod.IdConsole.Native", "Barotrauma.Items.Components.CustomInt
     end
 end, Hook.HookMethodType.Before)
 
-function console.InitializeCard(character)
+function console.InitializeCard(character, passenger)
     if character.Inventory == nil or character.Info == nil or character.Info.Job == nil then return end
     local card = character.Inventory.GetItemInLimbSlot(InvSlotType.Card)
     if card == nil or card.HasTag("vt_station_card_initialized") then return end
-    for _, preset in ipairs(console.Config.Presets) do
-        if preset.Id == character.Info.Job.Prefab.Identifier.Value then
-            for _, tag in ipairs(preset.Tags) do card.AddTag(tag) end
-            break
+    if passenger then
+        local remove = {}
+        for tag in card.GetTags() do
+            if tag.Value:sub(1, 5) ~= "name:"
+                and tag.Value:sub(1, 6) ~= "jobid:" then
+                remove[#remove + 1] = tag
+            end
+        end
+        for _, tag in ipairs(remove) do
+            card.RemoveTag(tag)
+        end
+    else
+        for _, preset in ipairs(console.Config.Presets) do
+            if preset.Id == character.Info.Job.Prefab.Identifier.Value then
+                for _, tag in ipairs(preset.Tags) do card.AddTag(tag) end
+                break
+            end
         end
     end
     if character.Info.Job.Prefab.Identifier.Value == "captain" then

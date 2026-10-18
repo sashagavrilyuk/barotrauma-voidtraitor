@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dormant Station job template. Not registered in filelist.xml. -->
+<Jobs>
+  <Job identifier="scientist" minnumber="0" maxnumber="5" allowalways="false" minkarma="0">
+    <!-- Assistant icons and clothing are placeholders. -->
+    <Jobicon>
+      <sprite texture="Content/UI/MainIconsAtlas.png" sourcerect="640,256,128,128" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="Content/UI/CommandUIAtlas.png" sourcerect="641,669,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills />
+    <ItemSet>
+      <Item identifier="idcard" equip="true" showpreview="false" />
+      <Item identifier="assistantclothes" equip="true" outfit="true" />
+      <Item identifier="headset" equip="true" showpreview="false" />
+    </ItemSet>
+  </Job>
+</Jobs>
