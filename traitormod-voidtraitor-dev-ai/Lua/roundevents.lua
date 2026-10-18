@@ -168,6 +168,10 @@ local lastRandomEventCheck = 0
 Hook.Add("think", "TraitorMod.RoundEvents.Think", function ()
     if not Game.RoundStarted then return end
 
+    for _, event in pairs(re.OnGoingEvents) do
+        if event.Think then event.Think() end
+    end
+
     if Timer.GetTime() > lastRandomEventCheck then
         for _, event in pairs(re.EventConfigs.Events) do
             if re.OnGoingEvents[event.Name] == nil and re.AllowedEvents[event.Name] then
@@ -199,6 +203,10 @@ re.Initialize = function (allowedEvents, modeName)
         for key, value in pairs(allowedEvents) do
             re.AllowedEvents[value] = true
         end
+    end
+
+    for _, event in pairs(re.EventConfigs.Events) do
+        if re.AllowedEvents[event.Name] and event.RoundStart then event.RoundStart() end
     end
 end
 

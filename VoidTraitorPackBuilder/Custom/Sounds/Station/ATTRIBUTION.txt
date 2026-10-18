@@ -30,6 +30,9 @@ announce_generic.ogg — TauCeti Station (formerly unused; station-wide communic
 Source: https://github.com/TauCetiStation/TauCetiClassic/commit/92d2767dbb39f28540f78d5055e7be1eb7acee98
 
 All items above: CC BY-SA 3.0; preserve attribution and license when redistributing.
+aliens.ogg — TG station; copied from GoobStation Resources/Audio/Announcements/aliens.ogg.
+Source: https://github.com/tgstation/tgstation/blob/95731342b97167d7883ff091d389f79c36442ee6/sound/ai/default/aliens.ogg
+License: CC-BY-SA-3.0 (https://creativecommons.org/licenses/by-sa/3.0/).
 Original individual attribution files from Corvax:
 https://github.com/space-syndicate/space-station-14/blob/master/Resources/Audio/Misc/attributions.yml
 https://github.com/space-syndicate/space-station-14/blob/master/Resources/Audio/Announcements/attributions.yml

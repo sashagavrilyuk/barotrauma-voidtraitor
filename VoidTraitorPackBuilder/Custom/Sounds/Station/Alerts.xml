@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RandomEvents>
   <EventPrefabs>
+    <ScriptedEvent identifier="vt_station_sound_attack" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="station">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/aliens.ogg" range="1000000" volume="0.75" dontmuffle="true" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
     <ScriptedEvent identifier="vt_station_sound_green" commonness="0" triggereventcooldown="false">
       <StatusEffectAction targettag="station">
         <StatusEffect target="This">
