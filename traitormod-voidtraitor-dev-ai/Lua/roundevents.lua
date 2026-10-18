@@ -180,10 +180,18 @@ Hook.Add("think", "TraitorMod.RoundEvents.Think", function ()
     end
 end)
 
-re.Initialize = function (allowedEvents)
+re.Initialize = function (allowedEvents, modeName)
     re.AllowedEvents = {}
 
-    if allowedEvents == nil then
+    local groups = re.EventConfigs.ModeEvents
+    if allowedEvents == nil and groups[modeName] ~= nil then
+        for _, name in ipairs(groups.Shared) do
+            re.AllowedEvents[name] = true
+        end
+        for _, name in ipairs(groups[modeName]) do
+            re.AllowedEvents[name] = true
+        end
+    elseif allowedEvents == nil then
         for key, value in pairs(re.EventConfigs.Events) do
             re.AllowedEvents[value.Name] = true
         end

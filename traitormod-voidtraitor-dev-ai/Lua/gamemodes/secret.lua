@@ -148,7 +148,7 @@ function gm:Start()
     lobbySummaryPending = nil
 
     if self.EnableRandomEvents then
-        Traitormod.RoundEvents.Initialize()
+        Traitormod.RoundEvents.Initialize(nil, self.Name)
     end
 
     Hook.Add("characterDeath", "Traitormod.Secret.CharacterDeath", function(character, affliction)

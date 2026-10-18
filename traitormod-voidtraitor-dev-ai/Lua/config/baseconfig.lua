@@ -568,6 +568,28 @@ config.ObjectiveConfig = {
 
 ----- EVENTS -----
 config.RandomEventConfig = {
+    ModeEvents = {
+        Shared = {
+            "MaintenanceToolsDelivery", "MedicalDelivery", "AmmoDelivery", "EmergencyTeam",
+            "VentCreatures", "ClownCrateSurprise", "OxygenGeneratorHusk", "RandomLights",
+            "ClownMagic", "LightsOff", "CommunicationsOffline", "ReactorShutdown",
+            "SupercapacitorFailure", "JunctionBoxOverload", "OxygenGeneratorPoison",
+            "OxygenSufforin", "OxygenParalyzant", "OxygenMorbusine", "OxygenCyanide",
+            "SecurityMindSense", "SecurityTurretCoilgun", "SecurityTurretChaingun",
+            "SecurityTurretFlakcannon", "SecurityTurretPulseLaser", "SecurityTurretDoubleCoilgun",
+            "SecurityTurretRailgun", "MechanicMechanicalRepair", "MechanicHullRepair",
+            "MechanicSkillBoost", "EngineerElectricalRepair", "EngineerSkillBoost",
+            "MedicSkillBoost", "SurgeonSkillBoost", "ElectricalFixDischarge", "FixHull",
+            "FullFixHull", "FullElectricalFixDischarge",
+        },
+        Secret = {
+            "SuperBallastFlora", "WeakBallastFlora", "AbyssHelp", "ShadyMission", "Prisoner",
+            "WreckRescue", "BeaconRescue", "CaptainHelmBoost", "OutpostPirateAttack",
+            "PirateCrew", "HiddenPirate", "WreckPirate", "BeaconPirate",
+            "BreackElectrical", "BreackHull", "KillElectrical", "KillHull",
+        },
+        Station = {},
+    },
     Events = {
         dofile(Traitormod.Path .. "/Lua/config/randomevents/superballastflora.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/maintenancetoolsdelivery.lua"),
