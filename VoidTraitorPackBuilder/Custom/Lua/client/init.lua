@@ -4,6 +4,7 @@ local packPath = table.pack(...)[1]
 local clientCommon = assert(loadfile(packPath .. "/Lua/client/common.lua"))(packPath)
 clientCommon.Language = assert(loadfile(packPath .. "/Lua/language/russian.lua"))()
 
+assert(loadfile(packPath .. "/Lua/client/submarine_description.lua"))()
 assert(loadfile(packPath .. "/Lua/client/welcome.lua"))(packPath, clientCommon)
 assert(loadfile(packPath .. "/Lua/client/roundsummary.lua"))(packPath, clientCommon)
 assert(loadfile(packPath .. "/Lua/client/killfeed.lua"))(packPath, clientCommon)
