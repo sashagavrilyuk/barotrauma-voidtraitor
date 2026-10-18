@@ -1,3 +1,7 @@
+VOIDTRAITOR STATION — AUDIO ATTRIBUTION
+
+Station announcements and alert sounds
+======================================
 Corvax SS14 — station alert sound assets
 
 Original recordings sourced from:
@@ -38,3 +42,58 @@ https://github.com/space-syndicate/space-station-14/blob/master/Resources/Audio/
 https://github.com/space-syndicate/space-station-14/blob/master/Resources/Audio/Announcements/attributions.yml
 https://github.com/space-syndicate/space-station-14/blob/master/Resources/Audio/Corvax/Misc/attributions.yml
 https://github.com/space-syndicate/space-station-14/blob/master/Resources/Audio/Corvax/Announcements/licenses.txt
+
+Evacuation announcements
+========================
+shuttlecalled.ogg, shuttlerecalled.ogg
+Author: discord:Basia (437113799137427460)
+License: CC-BY-SA-3.0 (https://creativecommons.org/licenses/by-sa/3.0/)
+Original: https://github.com/TauCetiStation/TauCetiClassic/pull/10207
+From Corvax: space-syndicate/space-station-14 @ 6a96bbb02f8b85daf1cf694b80af1c27873fc386
+Resources/Audio/Announcements/attributions.yml
+Files unchanged.
+
+shuttle_dock.ogg
+License: CC-BY-SA-3.0 (https://creativecommons.org/licenses/by-sa/3.0/)
+Copyright: Taken from tgstation
+Original: https://github.com/tgstation/tgstation/blob/b327cb667c1ca5d1aa14e6368e66cbfa7b343b9c/sound/ai/default/shuttledock.ogg
+From Corvax: Ertanic/Corvax @ 2b3f061209a9eb26c5fb9dff7e157fa95a4271f8
+Resources/Audio/Announcements/shuttle_dock.ogg
+
+evac_departed.ogg (originally announce.ogg)
+License: CC-BY-SA-3.0 (https://creativecommons.org/licenses/by-sa/3.0/)
+Source: https://github.com/TauCetiStation/TauCetiClassic/commit/92d2767dbb39f28540f78d5055e7be1eb7acee98
+From Corvax: Ertanic/Corvax @ 2b3f061209a9eb26c5fb9dff7e157fa95a4271f8
+Resources/Audio/Corvax/Announcements/announce.ogg
+
+Nuclear countdown and alarm
+===========================
+Music for VoidTraitor nuclear countdown (original OGG files, unmodified).
+
+Source: Corvax SS14 (https://github.com/space-syndicate/space-station-14)
+
+running_out.ogg - Bolgarich, CC BY 3.0; https://www.youtube.com/watch?v=SzEp2nv6oZ4
+countdown.ogg - qwertyquerty, CC BY-SA 3.0; https://github.com/BeeStation/BeeStation-Hornet/commit/7f48971438492805af286023a72e7609a729234a
+sound_station_14.ogg - Donchan, CC BY 3.0; https://www.youtube.com/watch?v=4nUpeYLKUns
+blatantly_nuclear.ogg - mrjajkes, CC BY 3.0; https://www.youtube.com/watch?v=f5URIS00IIc
+level.ogg - Dapper Husky, CC BY 3.0; https://www.youtube.com/watch?v=Lyj-MZSAA9o
+nuke_alarm.ogg - Corvax SS14 /Audio/Machines/Nuke/nuke_alarm.ogg. Original author/license not explicitly identified in consulted Corvax source; verify before redistribution.
+
+Attributions: Resources/Audio/StationEvents/attributions.yml and Resources/Audio/Corvax/StationEvents/attributions.yml in upstream source.
+CC BY 3.0: https://creativecommons.org/licenses/by/3.0/
+CC BY-SA 3.0: https://creativecommons.org/licenses/by-sa/3.0/
+
+Nuclear keypad and disk sounds
+==============================
+Sounds for VoidTraitor nuclear keypad (original SS14 OGG files, unmodified).
+
+Source: Space Wizards, Space Station 14
+https://github.com/space-wizards/space-station-14
+
+- general_beep.ogg: Resources/Audio/Machines/Nuke/general_beep.ogg
+- confirm_beep.ogg: Resources/Audio/Machines/Nuke/confirm_beep.ogg
+- angry_beep.ogg: Resources/Audio/Machines/Nuke/angry_beep.ogg
+- terminal_insert_disc.ogg: Resources/Audio/Machines/terminal_insert_disc.ogg
+
+Source tree: https://github.com/space-wizards/space-station-14/tree/master/Resources/Audio/Machines/Nuke
+The exact per-file license was not specified in the examined upstream attribution metadata; verify redistribution terms before public release.
