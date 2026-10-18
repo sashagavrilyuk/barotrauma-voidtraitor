@@ -23,7 +23,7 @@ local config = ...
 -- config.GamemodeConfig.HideAndSeekV2.WinningPointsBlue = 2000
 -- config.GamemodeConfig.HideAndSeekV2.WinningPointsRed = 2000
 
--- ID console: edit defaults in config.IdConsole, not in config/idconsole.lua.
+-- ID console defaults are in baseconfig.lua; override config.IdConsole here.
 -- Add access and a cross-department preset (doors must use matching RequiredItem tags):
 -- table.insert(config.IdConsole.Access, { Tag = "vt_access_laboratory", Name = "Лаборатория" })
 -- table.insert(config.IdConsole.Presets, {

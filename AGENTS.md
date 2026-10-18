@@ -31,6 +31,8 @@ Change ONLY task-required lines; preserve style. NO unrelated refactor, reformat
 ## Structure
 Keep code, localization, roles, objectives, settings, assets and persistence with actual owners. Mode rules belong to their own game mode only.
 - Preserve existing mode-selection, generated-level, antagonist, role, objective and shop behavior unless the task explicitly changes it. Check every affected game mode for regressions, including those not directly modified.
+- Put configurable defaults in `config/baseconfig.lua`; use `config/config.lua` for user overrides. Do not create a separate file just for one feature's settings.
+- `extensions/` is for independently switchable game fixes or modifications. A patch required by a particular feature belongs with that feature's implementation, not in a separate extension.
 
 VoidTraitor:
 - `Lua/` — important/shared core logic.

@@ -1,6 +1,6 @@
 local secret = Traitormod.Gamemodes.Secret
 local gm = secret:new()
-local evacuation = dofile(Traitormod.Path .. "/Lua/gamemodes/station/evacuation.lua")
+local evacuation = dofile(Traitormod.Path .. "/Lua/features/station/evacuation.lua")
 local bodyTypes = LuaUserData.CreateEnumTable("FarseerPhysics.BodyType")
 local alertCodes = {
     green = "StationAlertGreen",
