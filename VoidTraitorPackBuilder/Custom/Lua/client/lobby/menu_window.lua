@@ -40,7 +40,6 @@ P.ShowVoidTraitorMenu = function()
     panel.CanBeFocused = false
 
     local content = GUI.LayoutGroup(P.CreateRect(0.965, 0.965, panel, GUI.Anchor.Center), false, GUI.Anchor.TopLeft)
-    content.Stretch = true
     content.RelativeSpacing = 0.003
 
     P.Common.CreateWindowHeader(content, root, P.UiText.Title, P.UiText.Cancel, function()

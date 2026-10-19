@@ -41,7 +41,6 @@ function P.CreateTextInputRow(parent, label, placeholder, action, enabled, toolt
 
     local row = GUI.LayoutGroup(P.CreateRect(1, 0.09, parent, nil), true, GUI.Anchor.CenterLeft)
     P.SetFixedHeight(row, P.VT_INPUT_ROW_HEIGHT_PIXELS)
-    row.Stretch = true
     row.RelativeSpacing = 0.010
 
     local input = GUI.TextBox(P.CreateRect(0.66, 1, row, nil), placeholder or "")

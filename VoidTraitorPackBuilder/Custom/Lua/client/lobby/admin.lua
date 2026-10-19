@@ -276,7 +276,6 @@ function Admin.Build(parent)
 
     local playerActions = GUI.LayoutGroup(CreateRect(1, 0.09, parent, nil), true, GUI.Anchor.CenterLeft)
     SetFixedHeight(playerActions, INPUT_ROW_HEIGHT)
-    playerActions.Stretch = true
     playerActions.RelativeSpacing = 0.008
 
     for _, actionId in ipairs({ "revive", "void", "unvoid" }) do
