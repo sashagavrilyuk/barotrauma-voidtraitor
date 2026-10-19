@@ -112,20 +112,12 @@ Hook.Patch("VoidTraitor.Nuclear.Inventory", "Barotrauma.CharacterHUD", "LockInve
 end, Hook.HookMethodType.After)
 Hook.Add("roundEnd", "VoidTraitor.Nuclear.End", function() UI.CloseMenu() UI.SelectedItem = nil end)
 Hook.Add("think", "VoidTraitor.Nuclear.Selection", function()
-    if UI.Disabled then return end
-    local character = Character.Controlled
-    local item = character ~= nil and not character.IsDead and not character.IsIncapacitated and character.SelectedItem or nil
-    if not Networking.IsActive or item == nil or item.Removed or item.Prefab.Identifier ~= "vt_nuclear_bomb" or not character.CanInteractWith(item) then
-        if UI.SelectedItem ~= nil then UI.CloseMenu() end
-        UI.SelectedItem = nil
-        return
-    end
-    if UI.SelectedItem ~= item then
-        UI.SelectedItem = item
+    local item = Common.UpdateSelectedItemMenu(UI, "vt_nuclear_bomb", function(selected)
         local message = Networking.Start("VoidTraitor_NuclearOpen")
-        message.WriteUInt16(UShort(item.ID))
+        message.WriteUInt16(UShort(selected.ID))
         Networking.Send(message)
-    end
+    end)
+    if item == nil then return end
     if UI.MenuRoot ~= nil then
         UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom, 340, nil, nil, nil, nil, UI.ResizeSides)
     end

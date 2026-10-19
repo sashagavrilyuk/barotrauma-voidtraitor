@@ -295,17 +295,8 @@ function UI.RequestOpen(item)
 end
 
 Hook.Add("think", "VoidTraitor.Cargo.Selection", function()
-    if UI.Disabled then return end
-    local character = Character.Controlled
-    local item = character ~= nil and not character.IsDead and not character.IsIncapacitated and character.SelectedItem or nil
-    if not Networking.IsActive or item == nil or item.Removed or item.Prefab.Identifier ~= "vt_cargo_console" or not character.CanInteractWith(item) then
-        if UI.SelectedItem ~= nil then UI.CloseMenu() end
-        return
-    end
-    if UI.SelectedItem ~= item then
-        if UI.SelectedItem ~= nil then UI.CloseMenu() end
-        UI.RequestOpen(item)
-    end
+    local item = Common.UpdateSelectedItemMenu(UI, "vt_cargo_console", UI.RequestOpen)
+    if item == nil then return end
     if UI.MenuRoot ~= nil then
         UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom,
             480, UI.OrderList, nil, nil, nil, UI.ResizeSides)

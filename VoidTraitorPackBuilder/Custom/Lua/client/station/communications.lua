@@ -109,19 +109,12 @@ Hook.Patch("VoidTraitor.Communications.Inventory", "Barotrauma.CharacterHUD", "L
 end, Hook.HookMethodType.After)
 Hook.Add("roundEnd", "VoidTraitor.Communications.End", function() UI.CloseMenu() end)
 Hook.Add("think", "VoidTraitor.Communications.Selection", function()
-    if UI.Disabled then return end
-    local character = Character.Controlled
-    local item = character ~= nil and not character.IsDead and not character.IsIncapacitated and character.SelectedItem or nil
-    if not Networking.IsActive or item == nil or item.Removed or item.Prefab.Identifier ~= "vt_communications_console" or not character.CanInteractWith(item) then
-        if UI.SelectedItem ~= nil then UI.CloseMenu() end
-        return
-    end
-    if UI.SelectedItem ~= item then
-        UI.SelectedItem = item
+    local item = Common.UpdateSelectedItemMenu(UI, "vt_communications_console", function(selected)
         local message = Networking.Start("VoidTraitor_CommunicationsOpen")
-        message.WriteUInt16(UShort(item.ID))
+        message.WriteUInt16(UShort(selected.ID))
         Networking.Send(message)
-    end
+    end)
+    if item == nil then return end
     if UI.MenuRoot ~= nil then
         UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom, 380, nil, nil, nil, nil, UI.ResizeSides)
     end

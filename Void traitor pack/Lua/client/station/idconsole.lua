@@ -61,7 +61,7 @@ function UI.Show(itemId, snapshot)
     local cards = GUI.LayoutGroup(Common.CreateRect(1, 0.21, layout), true)
     cards.RelativeSpacing = 0.02
     local slots = {}
-    local current, revision, confirming, pending = snapshot, nil, false, false
+    local current, revision, confirming, pending, savedField = snapshot, nil, false, false, nil
     for index = 1, 2 do
         local frame = GUI.Frame(Common.CreateRect(0.49, 1, cards), "GUIFrameListBox")
         local content = GUI.LayoutGroup(Common.CreateRect(0.94, 0.92, frame, GUI.Anchor.Center), false)
@@ -145,6 +145,7 @@ function UI.Show(itemId, snapshot)
         if pending then return true end
         payload.Tags, payload.Revision = tags(), revision
         pending = true
+        savedField = payload.Name ~= nil and "name" or payload.Title ~= nil and "job" or nil
         UI.Send("apply", payload)
         return true
     end
@@ -188,6 +189,7 @@ function UI.Show(itemId, snapshot)
     reset.OnClicked = function() resetDraft() return true end
     local heldSignature
     UI.Update = function(updated)
+        local previousId, previousName, previousJob = current.Slots[2].Id, tostring(name.Text), tostring(job.Text)
         current, pending = updated, false
         local ids = {}
         for _, card in ipairs(updated.HeldCards) do ids[#ids + 1] = tostring(card.Id) .. ":" .. card.Name end
@@ -213,7 +215,15 @@ function UI.Show(itemId, snapshot)
             controls.Transfer.Enabled = slot.Id ~= 0 or #updated.HeldCards > 0
         end
         heldSignature = signature
-        if revision ~= updated.Revision then revision = updated.Revision resetDraft() end
+        if revision ~= updated.Revision then
+            revision = updated.Revision
+            resetDraft()
+            if previousId ~= 0 and previousId == updated.Slots[2].Id then
+                if savedField ~= "name" then name.Text = previousName end
+                if savedField ~= "job" then job.Text = previousJob end
+            end
+        end
+        savedField = nil
         for _, control in ipairs({ name, job, saveName, saveJob, all, clear, reset, apply, preset }) do control.Enabled = updated.CanEdit end
         preset.ButtonEnabled = updated.CanEdit
     end
@@ -248,18 +258,10 @@ Hook.Add("think", "VoidTraitor.IdConsole.Selection", function(deltaTime)
         UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom,
             510, UI.Rights, nil, nil, nil, UI.ResizeSides)
     end
-    if not Networking.IsActive then UI.CloseMenu() UI.SelectedItem = nil return end
-    local character = Character.Controlled
-    local item = character ~= nil and not character.IsDead and not character.IsIncapacitated and character.SelectedItem or nil
-    if item == nil or item.Prefab.Identifier ~= "vt_station_access" then
-        if UI.SelectedItem ~= nil then UI.CloseMenu() end
-        UI.SelectedItem = nil
-        return
-    end
-    if UI.SelectedItem ~= item then
-        UI.SelectedItem = item
+    local item = Common.UpdateSelectedItemMenu(UI, "vt_station_access", function()
         UI.AwaitingOpen, elapsed = true, 0.05
-    end
+    end)
+    if item == nil then return end
     elapsed = elapsed + deltaTime
     if UI.AwaitingOpen and elapsed >= 0.05 then
         elapsed = 0

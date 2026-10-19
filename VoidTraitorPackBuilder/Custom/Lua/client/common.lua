@@ -302,6 +302,24 @@ function Common.ShouldShowBottomButton()
     return Common.IsConnected() and Common.IsRoundStarted() and Common.IsLocalCandidate()
 end
 
+function Common.UpdateSelectedItemMenu(state, identifier, onSelected)
+    if state.Disabled then return nil end
+    local character = Character.Controlled
+    local item = character ~= nil and not character.IsDead and not character.IsIncapacitated and character.SelectedItem or nil
+    if not Networking.IsActive or item == nil or item.Removed or item.Prefab.Identifier ~= identifier
+        or not character.CanInteractWith(item) then
+        if state.SelectedItem ~= nil then state.CloseMenu() end
+        state.SelectedItem = nil
+        return nil
+    end
+    if state.SelectedItem ~= item then
+        if state.SelectedItem ~= nil then state.CloseMenu() end
+        state.SelectedItem = item
+        onSelected(item)
+    end
+    return item
+end
+
 function Common.InstallHudPatch(patchIdentifier, stateKey, menuDrawOrder, buttonDrawOrder)
     Hook.Patch(patchIdentifier, "Barotrauma.GameSession", "AddToGUIUpdateList", function()
         local state = rawget(_G, stateKey)
