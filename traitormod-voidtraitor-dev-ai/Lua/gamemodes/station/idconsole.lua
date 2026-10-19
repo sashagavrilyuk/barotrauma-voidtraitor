@@ -15,6 +15,16 @@ local sessions = {}
 local removeEvent = LuaUserData.CreateStatic("Barotrauma.EntitySpawner+RemoveEntity", true)
 local spawnEvent = LuaUserData.CreateStatic("Barotrauma.EntitySpawner+SpawnEntity", true)
 local interfaceEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateEventData", true)
+local eventSet = LuaUserData.CreateStatic("Barotrauma.EventSet", true)
+
+local function playCardSound(item, action)
+    local prefab = eventSet.GetEventPrefab(Identifier(action == "insert" and "vt_idcard_insert" or "vt_idcard_eject"))
+    if prefab == nil then return end
+    local event = prefab.CreateInstance(Game.GameSession.EventManager.RandomSeed)
+    event.AddTarget(Identifier("idconsole"), item)
+    Game.GameSession.EventManager.ActivateEvent(event)
+end
+
 local known = {}
 for _, entry in ipairs(console.Config.Access) do known[entry.Tag] = true end
 
@@ -261,6 +271,7 @@ function console.Action(client, item, action, payload)
             accepted = card ~= nil and card.ID == payload.Card
             if accepted and not character.Inventory.TryPutItem(card, character, { InvSlotType.Any }, true) then card.Drop(character, true) end
         end
+        if accepted then playCardSound(item, action) end
         session.View = "main"
     elseif action == "apply" then
         accepted, reason = console.Apply(client, item, payload)

@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RandomEvents>
   <EventPrefabs>
+    <ScriptedEvent identifier="vt_idcard_insert" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="idconsole">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/IdConsole/batrifle_magin.ogg" range="500" volume="0.7" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="vt_idcard_eject" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="idconsole">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/IdConsole/id_swipe.ogg" range="500" volume="0.7" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
     <ScriptedEvent identifier="vt_station_sound_attack" commonness="0" triggereventcooldown="false">
       <StatusEffectAction targettag="station">
         <StatusEffect target="This">

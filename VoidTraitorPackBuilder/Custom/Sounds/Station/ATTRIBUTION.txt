@@ -91,3 +91,11 @@ https://github.com/space-wizards/space-station-14
 
 Source tree: https://github.com/space-wizards/space-station-14/tree/master/Resources/Audio/Machines/Nuke
 The exact per-file license was not specified in the examined upstream attribution metadata; verify redistribution terms before public release.
+
+ID-card console sounds (unmodified Corvax SS14 assets)
+=======================================================
+batrifle_magin.ogg — Corvax SS14, Resources/Audio/Weapons/Guns/MagIn/batrifle_magin.ogg
+Source attribution (CEV Eris): https://github.com/space-syndicate/space-station-14/blob/master/Resources/Audio/Weapons/Guns/sources.json
+id_swipe.ogg — Corvax SS14, Resources/Audio/Machines/id_swipe.ogg
+Source: https://github.com/space-syndicate/space-station-14/blob/master/Resources/Prototypes/Entities/Structures/Machines/Computers/computers.yml
+Per-file licensing for these two sound assets has not been independently confirmed; verify before distribution.
