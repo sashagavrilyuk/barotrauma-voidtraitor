@@ -212,17 +212,10 @@ function UI.Show(itemId, snapshot)
     UI.MenuRoot, UI.CurrentMenu, S.currentMenu, S.guiRoot = root, root, root, root
     local layout = P.CreateLayout(root, 0.965, 0.955, GUI.Anchor.Center, false)
     layout.RelativeSpacing = 0.007
-    local heading = P.CreateLayout(layout, 1, 0.055, nil, true)
-    local drag = GUI.DragHandle(P.CreateRect(0.87, 1, heading, GUI.Anchor.TopLeft), root.RectTransform, nil)
-    local transparent = Color(0, 0, 0, 0)
-    drag.Color, drag.HoverColor, drag.SelectedColor, drag.PressedColor = transparent, transparent, transparent, transparent
-    local indicator = GUI.Image(P.CreateRect(0.07, 0.72, drag, GUI.Anchor.CenterLeft), "GUIDragIndicator")
-    indicator.CanBeFocused = false
-    local title = P.CreateText(drag, 0.90, 1, GUI.Anchor.CenterRight, snapshot.Text.Title, GUI.Alignment.Left, 1.15)
-    title.Font = GUI.Style.SubHeadingFont
-    local close = GUI.Button(Common.CreateRect(0.12, 0.82, heading), "", GUI.Alignment.Center, "GUICancelButton")
-    close.ToolTip = snapshot.Text.Close
-    close.OnClicked = function() UI.CloseMenu() return true end
+    Common.CreateWindowHeader(layout, root, snapshot.Text.Title, snapshot.Text.Close, function()
+        UI.CloseMenu()
+        return true
+    end, { height = 0.055, titleScale = 1.15 })
     UI.Budget = P.CreateText(layout, 1, 0.065, nil, "", GUI.Alignment.Left, 0.85, nil, false)
     UI.Budget.AutoScaleHorizontal = true
     UI.Budget.AutoScaleVertical = true

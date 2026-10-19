@@ -39,25 +39,14 @@ function UI.Show(itemId, snapshot)
     UI.MenuRoot, UI.CurrentMenu, UI.Popups = root, root, {}
     local layout = GUI.LayoutGroup(Common.CreateRect(0.95, 0.98, root, GUI.Anchor.Center), false)
     layout.RelativeSpacing = 0.008
-    local heading = GUI.LayoutGroup(Common.CreateRect(1, 0.08, layout), true)
-    local drag = GUI.DragHandle(Common.CreateRect(0.87, 1, heading, GUI.Anchor.TopLeft), root.RectTransform, nil)
-    local transparent = Color(0, 0, 0, 0)
-    drag.Color, drag.HoverColor, drag.SelectedColor, drag.PressedColor = transparent, transparent, transparent, transparent
-    local indicator = GUI.Image(Common.CreateRect(0.07, 0.72, drag, GUI.Anchor.CenterLeft), "GUIDragIndicator")
-    indicator.CanBeFocused = false
-    local title = GUI.TextBlock(Common.CreateRect(0.90, 1, drag, GUI.Anchor.CenterRight), text.Title)
-    title.Font = GUI.Style.SubHeadingFont
-    title.AutoScaleHorizontal = true
-    local close = GUI.Button(Common.CreateRect(0.12, 0.82, heading), "", GUI.Alignment.Center, "GUICancelButton")
-    close.ToolTip = text.Close
-    close.OnClicked = function()
+    Common.CreateWindowHeader(layout, root, text.Title, text.Close, function()
         UI.CloseMenu()
         if Character.Controlled ~= nil then
             Character.Controlled.EmulateInput(inputTypes.Deselect)
             Character.Controlled.SelectedItem = nil
         end
         return true
-    end
+    end, { height = 0.08 })
     local cards = GUI.LayoutGroup(Common.CreateRect(1, 0.23, layout), true)
     cards.RelativeSpacing = 0.02
     local slots = {}
@@ -74,7 +63,7 @@ function UI.Show(itemId, snapshot)
         row.RelativeSpacing = 0.02
         local picker = GUI.DropDown(Common.CreateRect(0.60, 1, row), text.Choose, 5)
         UI.Popups[#UI.Popups + 1] = picker
-        local transfer = GUI.Button(Common.CreateRect(0.38, 1, row), text.Insert)
+        local transfer = Common.CreateFlexibleButton(Common.CreateRect(0.38, 1, row), text.Insert)
         transfer.TextBlock.AutoScaleHorizontal = true
         transfer.OnClicked = function()
             local slot = current.Slots[index]
@@ -91,13 +80,13 @@ function UI.Show(itemId, snapshot)
     nameLabel.AutoScaleHorizontal = true
     local name = GUI.TextBox(Common.CreateRect(0.54, 1, nameRow), "")
     name.MaxTextLength = 64
-    local saveName = GUI.Button(Common.CreateRect(0.21, 1, nameRow), text.Save)
+    local saveName = Common.CreateFlexibleButton(Common.CreateRect(0.21, 1, nameRow), text.Save)
     local jobRow = GUI.LayoutGroup(Common.CreateRect(1, 0.48, identity), true)
     local jobLabel = GUI.TextBlock(Common.CreateRect(0.24, 1, jobRow), text.Job)
     jobLabel.AutoScaleHorizontal = true
     local job = GUI.TextBox(Common.CreateRect(0.54, 1, jobRow), "")
     job.MaxTextLength = 64
-    local saveJob = GUI.Button(Common.CreateRect(0.21, 1, jobRow), text.Save)
+    local saveJob = Common.CreateFlexibleButton(Common.CreateRect(0.21, 1, jobRow), text.Save)
     saveName.TextBlock.AutoScaleHorizontal = true
     saveJob.TextBlock.AutoScaleHorizontal = true
     local presetRow = GUI.LayoutGroup(Common.CreateRect(1, 0.075, layout), true)
@@ -129,10 +118,10 @@ function UI.Show(itemId, snapshot)
     Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
     local actions = GUI.LayoutGroup(Common.CreateRect(1, 0.085, layout), true)
     actions.RelativeSpacing = 0.01
-    local all = GUI.Button(Common.CreateRect(0.2425, 1, actions), text.All)
-    local clear = GUI.Button(Common.CreateRect(0.2425, 1, actions), text.Clear)
-    local reset = GUI.Button(Common.CreateRect(0.2425, 1, actions), text.Reset)
-    local apply = GUI.Button(Common.CreateRect(0.2425, 1, actions), text.Apply)
+    local all = Common.CreateFlexibleButton(Common.CreateRect(0.2425, 1, actions), text.All)
+    local clear = Common.CreateFlexibleButton(Common.CreateRect(0.2425, 1, actions), text.Clear)
+    local reset = Common.CreateFlexibleButton(Common.CreateRect(0.2425, 1, actions), text.Reset)
+    local apply = Common.CreateFlexibleButton(Common.CreateRect(0.2425, 1, actions), text.Apply)
     for _, button in ipairs({ all, clear, reset, apply }) do button.TextBlock.AutoScaleHorizontal = true end
     local selectedJob
     local function tags()

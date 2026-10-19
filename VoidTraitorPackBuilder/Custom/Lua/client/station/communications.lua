@@ -39,14 +39,10 @@ function UI.Show(itemId, snapshot)
     UI.MenuRoot, UI.CurrentMenu = root, root
     local layout = GUI.LayoutGroup(Common.CreateRect(0.94, 0.94, root, GUI.Anchor.Center), false)
     layout.RelativeSpacing = 0.012
-    local heading = GUI.LayoutGroup(Common.CreateRect(1, 0.10, layout), true)
-    local drag = GUI.DragHandle(Common.CreateRect(0.88, 1, heading), root.RectTransform, nil)
-    local transparent = Color(0, 0, 0, 0)
-    drag.Color, drag.HoverColor, drag.SelectedColor, drag.PressedColor = transparent, transparent, transparent, transparent
-    Common.CreateText(drag, 1, 1, GUI.Anchor.Center, text.Title, GUI.Alignment.CenterLeft, 0.9)
-    local close = GUI.Button(Common.CreateRect(0.12, 0.82, heading), "", GUI.Alignment.Center, "GUICancelButton")
-    close.ToolTip = text.Close
-    close.OnClicked = function() UI.CloseMenu() return true end
+    Common.CreateWindowHeader(layout, root, text.Title, text.Close, function()
+        UI.CloseMenu()
+        return true
+    end, { height = 0.10, titleScale = 0.9 })
     local input = GUI.TextBox(Common.CreateRect(1, 0.36, layout), "", nil, nil, GUI.Alignment.TopLeft, true, "", nil, false, false)
     -- The vanilla textbox style fixes its height to one line, including the inner frame.
     input.RectTransform.MinSize, input.RectTransform.MaxSize = Point(0, 0), Point(100000, 100000)

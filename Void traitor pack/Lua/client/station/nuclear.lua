@@ -38,14 +38,10 @@ function UI.Show(itemId, snapshot)
     UI.MenuRoot, UI.CurrentMenu = root, root
     local layout = GUI.LayoutGroup(Common.CreateRect(0.94, 0.94, root, GUI.Anchor.Center), false)
     layout.RelativeSpacing = 0.012
-    local heading = GUI.LayoutGroup(Common.CreateRect(1, 0.12, layout), true)
-    local drag = GUI.DragHandle(Common.CreateRect(0.88, 1, heading), root.RectTransform, nil)
-    local transparent = Color(0, 0, 0, 0)
-    drag.Color, drag.HoverColor, drag.SelectedColor, drag.PressedColor = transparent, transparent, transparent, transparent
-    Common.CreateText(drag, 1, 1, GUI.Anchor.Center, text.Title, GUI.Alignment.CenterLeft, 0.9)
-    local close = GUI.Button(Common.CreateRect(0.12, 0.82, heading), "", GUI.Alignment.Center, "GUICancelButton")
-    close.ToolTip = text.Close
-    close.OnClicked = function() UI.CloseMenu() return true end
+    Common.CreateWindowHeader(layout, root, text.Title, text.Close, function()
+        UI.CloseMenu()
+        return true
+    end, { height = 0.12, titleScale = 0.9 })
     local firstPanel = GUI.Frame(Common.CreateRect(1, 0.12, layout), "GUIFrameListBox")
     local first = Common.CreateText(firstPanel, 0.94, 1, GUI.Anchor.Center, "", GUI.Alignment.CenterLeft, 1, Color(120, 230, 120, 255))
     local secondPanel = GUI.Frame(Common.CreateRect(1, 0.12, layout), "GUIFrameListBox")
