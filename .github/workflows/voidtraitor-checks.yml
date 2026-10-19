@@ -22,8 +22,8 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y -qq lua5.4
           find "traitormod-voidtraitor-dev-ai/Lua" \
-               "Void traitor pack/Lua/client" \
-               "VoidTraitorPackBuilder/Custom/Lua/client" \
+               "Void traitor pack/Lua" \
+               "VoidTraitorPackBuilder/Custom/Lua" \
                -type f -iname '*.lua' -print0 | xargs -0 -r -n1 luac5.4 -p
 
       - name: Check XML and pack synchronization
@@ -39,7 +39,7 @@ jobs:
               Path("traitormod-voidtraitor-dev-ai/filelist.xml"),
               builder / "filelist.xml",
           )
-          for folder in (builder, pack / "the void traitor pack", pack / "Sounds/Station"):
+          for folder in (builder, pack):
               sources += tuple(p for p in folder.rglob("*") if p.is_file() and p.suffix.lower() == ".xml")
           for source in sources:
               ET.parse(source)
