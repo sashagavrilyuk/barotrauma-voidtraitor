@@ -121,13 +121,16 @@ Hook.Add("think", "VoidTraitor.Nuclear.Selection", function()
 end)
 
 -- Temporary diagnostics: set _G.VoidTraitorNukeDebug = true in the client Lua console.
-local lastDebugAudio
+local lastDebugAudio, debugItem
 Hook.Add("think", "VoidTraitor.Nuclear.AudioDebug", function()
     if UI.Disabled or not rawget(_G, "VoidTraitorNukeDebug") then
-        lastDebugAudio = nil
+        lastDebugAudio, debugItem = nil, nil
         return
     end
-    local item = UI.SelectedItem
+    if UI.SelectedItem ~= nil and not UI.SelectedItem.Removed then
+        debugItem = UI.SelectedItem
+    end
+    local item = debugItem
     if item == nil or item.Removed then return end
     local states = {}
     for component in item.Components do
@@ -136,7 +139,7 @@ Hook.Add("think", "VoidTraitor.Nuclear.AudioDebug", function()
         end
     end
     local status = UI.Snapshot ~= nil and UI.Snapshot.Status or "unknown"
-    local state = status .. ":" .. table.concat(states, ",")
+    local state = tostring(item.ID) .. ":" .. status .. ":" .. table.concat(states, ",")
     if state ~= lastDebugAudio then
         print("[VoidTraitor/NukeDebug/client] item=" .. tostring(item.ID) .. " status=" .. state)
         lastDebugAudio = state
