@@ -466,7 +466,9 @@ Hook.Patch("Traitormod.Station.OutpostEscape", "Barotrauma.Networking.GameServer
     end
     if not selected.EndWhenCrewDown then
         server.EndRoundTimer = 0
-    elseif selected.CrewDownEndDelaySeconds > 0 then
+    elseif selected.CrewDownEndDelaySeconds <= 0 then
+        server.EndRoundTimer = 120
+    else
         server.EndRoundTimer = math.max(0, server.EndRoundTimer
             + parameters["deltaTime"] * (120 / selected.CrewDownEndDelaySeconds - 1))
     end
