@@ -48,8 +48,8 @@ function UI.Show(itemId, snapshot)
     local title = GUI.TextBlock(Common.CreateRect(0.90, 1, drag, GUI.Anchor.CenterRight), text.Title)
     title.Font = GUI.Style.SubHeadingFont
     title.AutoScaleHorizontal = true
-    local close = GUI.Button(Common.CreateRect(0.12, 1, heading), text.Close)
-    close.TextBlock.AutoScaleHorizontal = true
+    local close = GUI.Button(Common.CreateRect(0.12, 0.82, heading), "", GUI.Alignment.Center, "GUICancelButton")
+    close.ToolTip = text.Close
     close.OnClicked = function()
         UI.CloseMenu()
         if Character.Controlled ~= nil then

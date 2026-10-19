@@ -220,8 +220,8 @@ function UI.Show(itemId, snapshot)
     indicator.CanBeFocused = false
     local title = P.CreateText(drag, 0.90, 1, GUI.Anchor.CenterRight, snapshot.Text.Title, GUI.Alignment.Left, 1.15)
     title.Font = GUI.Style.SubHeadingFont
-    local close = P.CreateButton(heading, 0.12, 1, nil, snapshot.Text.Close)
-    close.TextBlock.AutoScaleHorizontal = true
+    local close = GUI.Button(Common.CreateRect(0.12, 0.82, heading), "", GUI.Alignment.Center, "GUICancelButton")
+    close.ToolTip = snapshot.Text.Close
     close.OnClicked = function() UI.CloseMenu() return true end
     UI.Budget = P.CreateText(layout, 1, 0.065, nil, "", GUI.Alignment.Left, 0.85, nil, false)
     UI.Budget.AutoScaleHorizontal = true
