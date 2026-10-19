@@ -1,6 +1,26 @@
 if SERVER then return {} end
 
 local Common = {}
+local originalTextScales = setmetatable({}, { __mode = "k" })
+
+function Common.SetAutoScaleText(block, scale)
+    if block == nil then return end
+    originalTextScales[block] = scale
+    block.TextScale = scale
+    block.AutoScaleHorizontal = true
+end
+
+function Common.RestoreAutoScaledText(root)
+    for component in root.GetAllChildren() do
+        if LuaUserData.IsTargetType(component, "Barotrauma.GUITextBlock") and component.AutoScaleHorizontal then
+            component.TextScale = originalTextScales[component] or 1
+        end
+    end
+end
+
+function Common.CreateFlexibleButton(rect, label, alignment)
+    return GUI.Button(rect, label, alignment or GUI.Alignment.Center, "GUIButtonFreeScale")
+end
 
 function Common.SafeIntScale(value)
     return GUI.IntScale(value)
@@ -138,6 +158,7 @@ function Common.CreateText(parent, width, height, anchor, value, alignment, scal
     if wrap == nil then wrap = true end
     local block = GUI.TextBlock(Common.CreateRect(width, height, parent, anchor), value or "", nil, nil, alignment or GUI.Alignment.Left, wrap)
     block.TextScale = scale or 1
+    originalTextScales[block] = scale or 1
     block.TextColor = color or Color(230, 230, 220, 255)
     return block
 end
@@ -303,6 +324,10 @@ function Common.UpdateMenuInteraction(currentMenu, resizeState, topTargets, bott
     if list ~= nil then
         list:RecalculateChildren()
         list:UpdateScrollBarSize()
+    end
+
+    if newWidth ~= resizeState.Width or newHeight ~= resizeState.Height then
+        Common.RestoreAutoScaledText(currentMenu)
     end
 
     return resizeState, menuX, menuY, menuHeight

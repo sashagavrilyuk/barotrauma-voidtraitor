@@ -163,7 +163,7 @@ local function createPlayerValueAction(parent, actionId)
     if input.TextBlock ~= nil then input.TextBlock.TextScale = 0.86 end
     input.ToolTip = tostring(entry.Hint or "")
 
-    local button = GUI.Button(CreateRect(0.30, 1, row, GUI.Anchor.CenterRight), UI.GetOkText(), GUI.Alignment.Center, "GUIButton")
+    local button = Common.CreateFlexibleButton(CreateRect(0.30, 1, row, GUI.Anchor.CenterRight), UI.GetOkText())
     SetButtonTextScale(button, 0.90)
     button.ToolTip = tostring(entry.Hint or "")
     button.Enabled = playerByKey[selectedPlayerKey] ~= nil
@@ -282,7 +282,7 @@ function Admin.Build(parent)
     for _, actionId in ipairs({ "revive", "void", "unvoid" }) do
         local entry = entryById[actionId]
         if entry ~= nil then
-            local button = GUI.Button(CreateRect(0.325, 1, playerActions, nil), entry.Label, GUI.Alignment.Center, "GUIButton")
+            local button = Common.CreateFlexibleButton(CreateRect(0.325, 1, playerActions, nil), entry.Label)
             button.ToolTip = tostring(entry.Hint or "")
             SetButtonTextScale(button, 0.72)
             table.insert(playerDependentButtons, button)
@@ -386,7 +386,7 @@ function Admin.Build(parent)
         if input.TextBlock ~= nil then input.TextBlock.TextScale = 0.86 end
         input.ToolTip = tostring(ghostEntry.Hint or "")
 
-        ghostRoleButton = GUI.Button(CreateRect(0.30, 1, row, GUI.Anchor.CenterRight), UI.GetOkText(), GUI.Alignment.Center, "GUIButton")
+        ghostRoleButton = Common.CreateFlexibleButton(CreateRect(0.30, 1, row, GUI.Anchor.CenterRight), UI.GetOkText())
         SetButtonTextScale(ghostRoleButton, 0.90)
         ghostRoleButton.ToolTip = tostring(ghostEntry.Hint or "")
         ghostRoleButton.OnClicked = function()

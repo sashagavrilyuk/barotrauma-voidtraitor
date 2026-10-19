@@ -3,13 +3,12 @@ local S = P.State
 
 function P.SetButtonTextScale(button, scale)
     if button == nil or button.TextBlock == nil then return end
-    button.TextBlock.TextScale = scale
-    button.TextBlock.AutoScaleHorizontal = true
+    P.Common.SetAutoScaleText(button.TextBlock, scale)
 end
 
 
 function P.CreateMenuButton(parent, label, enabled)
-    local button = GUI.Button(P.CreateRect(1, 0.10, parent, nil), label or "", GUI.Alignment.Center, "GUIButton")
+    local button = P.Common.CreateFlexibleButton(P.CreateRect(1, 0.10, parent, nil), label or "")
     P.SetFixedHeight(button, P.VT_BUTTON_HEIGHT_PIXELS)
     button.Enabled = enabled ~= false
     P.SetButtonTextScale(button, 0.92)
@@ -50,7 +49,7 @@ function P.CreateTextInputRow(parent, label, placeholder, action, enabled, toolt
     input.ToolTip = tooltip or ""
     if input.TextBlock ~= nil then input.TextBlock.TextScale = 0.86 end
 
-    local sendButton = GUI.Button(P.CreateRect(0.32, 1, row, nil), P.UiText.Ok, GUI.Alignment.Center, "GUIButton")
+    local sendButton = P.Common.CreateFlexibleButton(P.CreateRect(0.32, 1, row, nil), P.UiText.Ok)
     sendButton.Enabled = isEnabled
     sendButton.ToolTip = tooltip or ""
     P.SetButtonTextScale(sendButton, 0.90)
