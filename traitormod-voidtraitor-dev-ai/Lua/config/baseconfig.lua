@@ -333,14 +333,15 @@ config.GamemodeConfig = {
         },
 
         AmountTraitors = function (amountPlayers)
-            config.TestMode = false
+            local station = Traitormod.SelectedGamemode ~= nil and Traitormod.SelectedGamemode.Name == "Station"
+            if not station then config.TestMode = false end
             if amountPlayers > 18 and math.random() < 0.25 then return 4 end
             if amountPlayers > 12 then return 3 end
             if amountPlayers > 7 then return 2 end            
             if amountPlayers > 3 then return 1 end
             if amountPlayers == 1 then 
                 Traitormod.SendMessageEveryone(Traitormod.Language.TestingMode)
-                config.TestMode = true
+                if not station then config.TestMode = true end
                 return 1
             end
             print("Not enough players to start traitor mode.")
@@ -361,6 +362,8 @@ config.GamemodeConfig = {
     },
 
     Station = {
+        EndWhenCrewDown = true,
+        CrewDownEndDelaySeconds = 120,
         OutpostEscapePercent = 60,
         OutpostEscapeMinutes = 2,
         JobSlots = {

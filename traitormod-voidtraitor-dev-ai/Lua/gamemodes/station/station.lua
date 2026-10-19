@@ -96,6 +96,16 @@ function gm:PreStart()
 end
 
 function gm:Start()
+    local onlyClient
+    for _, client in pairs(Client.ClientList) do
+        if onlyClient ~= nil then
+            onlyClient = false
+            break
+        end
+        onlyClient = client
+    end
+    Traitormod.Config.TestMode = onlyClient ~= nil and onlyClient ~= false
+        and onlyClient.HasPermission(ClientPermissions.ConsoleCommands)
     local submarine = Submarine.MainSub
     self.StationAnnouncementName = string.format("%s %s-%03d", string.upper(submarine.Info.Name), stationSuffixes[math.random(#stationSuffixes)], math.random(0, 999))
     local borders = submarine.GetDockedBorders()
@@ -132,6 +142,10 @@ function gm:Start()
     self.AlertCode = "green"
     evacuation.Start(self)
     Traitormod.Communications.Start()
+end
+
+function gm:CharacterDeath(character)
+    if not Traitormod.Config.TestMode then secret.CharacterDeath(self, character) end
 end
 
 function gm:PlayAlertSound(code)
@@ -418,6 +432,7 @@ function gm:BeginEnding(reason, transitionType, viaCampaignTransition)
 end
 
 function gm:End()
+    Traitormod.Config.TestMode = false
     Traitormod.Communications.End()
     self.EvacuationState = nil
     self.PendingJobs = nil
@@ -439,8 +454,8 @@ function gm:End()
     settings.ServerDetailsChanged = true
 end
 
--- Suppress the vanilla outpost countdown; Station handles its own evacuation threshold.
-Hook.Patch("Traitormod.Station.OutpostEscape", "Barotrauma.Networking.GameServer", "Update", { "System.Single" }, function(server)
+-- Station handles outpost completion independently of the native end-of-level timer.
+Hook.Patch("Traitormod.Station.OutpostEscape", "Barotrauma.Networking.GameServer", "Update", { "System.Single" }, function(server, parameters)
     local selected = Traitormod.SelectedGamemode
     if selected == nil or selected.Name ~= "Station" or selected.Ending or not Game.RoundStarted then return end
     for _, client in pairs(Client.ClientList) do
@@ -448,6 +463,12 @@ Hook.Patch("Traitormod.Station.OutpostEscape", "Barotrauma.Networking.GameServer
             server.EndRoundTimer = 0
             return
         end
+    end
+    if not selected.EndWhenCrewDown then
+        server.EndRoundTimer = 0
+    elseif selected.CrewDownEndDelaySeconds > 0 then
+        server.EndRoundTimer = math.max(0, server.EndRoundTimer
+            + parameters["deltaTime"] * (120 / selected.CrewDownEndDelaySeconds - 1))
     end
 end, Hook.HookMethodType.Before)
 
@@ -458,6 +479,19 @@ Hook.Patch("Barotrauma.Networking.RespawnManager", "GetBotsToRespawn", function(
         parameters.ReturnValue.Clear()
     end
 end, Hook.HookMethodType.After)
+
+Traitormod.AddCommand("!stationtest", function(client)
+    if not client.HasPermission(ClientPermissions.ConsoleCommands) then return true end
+    local selected = Traitormod.SelectedGamemode
+    if not Game.RoundStarted or selected == nil or selected.Name ~= "Station" then
+        Traitormod.SendChatMessage(client, Traitormod.GetText("StationTestUnavailable"))
+        return true
+    end
+    Traitormod.Config.TestMode = not Traitormod.Config.TestMode
+    Traitormod.SendChatMessage(client, Traitormod.GetText(Traitormod.Config.TestMode
+        and "StationTestEnabled" or "StationTestDisabled"))
+    return true
+end)
 
 Traitormod.AddCommand("!stationcode", function(client, args)
     local selected = Traitormod.SelectedGamemode

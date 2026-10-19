@@ -6,7 +6,7 @@
     <Body width="128" height="85" density="20" />
     <Holdable slots="RightHand+LeftHand" holdpos="0,-50" handle1="-10,20" handle2="10,20" aimable="false" attachable="true" reattachable="true" attachedbydefault="false" allowingameediting="false" msg="NukeDisarmInteraction" pickkey="Select" pickingtime="30" pickingmsg="NukeDefusingProgress">
       <StatusEffect type="OnSpawn" target="This"><LuaHook name="vt_nuclear_spawn" /></StatusEffect>
-      <StatusEffect type="OnActive" target="Character" speedmultiplier="0.35" />
+      <StatusEffect type="OnActive" target="Character" speedmultiplier="0.35" setvalue="true" />
     </Holdable>
     <Terminal canbeselected="true" selectkey="Use" readonly="false" allowingameediting="false" msg="NukeMenuInteraction" allowuioverlap="true" welcomemessage="NukeNativeWelcome">
       <GuiFrame relativesize="0.34,0.35" minsize="300,190" maxsize="520,380" anchor="Center" relativeoffset="0,-0.1" style="ItemUI" />

@@ -250,7 +250,7 @@ Hook.Add("characterDeath", "Traitormod.RoleManager.CharacterDeath", function(dea
     rm.CallObjectiveFunction("CharacterDeath", deadCharacter)
 
     local role = rm.GetRole(deadCharacter)
-    if role then
+    if role and (Traitormod.SelectedGamemode == nil or Traitormod.SelectedGamemode.Name ~= "Station") then
         if Traitormod.ObjectiveHud ~= nil then
             Traitormod.ObjectiveHud.ClearRole(role)
         end

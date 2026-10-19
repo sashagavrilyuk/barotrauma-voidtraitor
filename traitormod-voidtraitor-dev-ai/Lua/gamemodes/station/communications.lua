@@ -33,7 +33,7 @@ function console.Validate(client, item, readOnly)
         and not client.Character.IsDead and not client.Character.IsIncapacitated
         and item ~= nil and not item.Removed and terminals[item] ~= nil
         and item.Submarine == Submarine.MainSub and client.Character.Submarine == item.Submarine
-        and Vector2.Distance(client.Character.WorldPosition, item.WorldPosition) <= item.InteractDistance
+        and client.Character.CanInteractWith(item)
         and item.CanClientAccess(client) and (readOnly == true or client.Character.SelectedItem == item)
 end
 
