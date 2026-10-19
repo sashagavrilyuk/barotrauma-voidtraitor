@@ -1,5 +1,10 @@
 local secret = Traitormod.Gamemodes.Secret
 local gm = secret:new()
+dofile(Traitormod.Path .. "/Lua/gamemodes/station/idconsole.lua")
+dofile(Traitormod.Path .. "/Lua/gamemodes/station/cargo.lua")
+dofile(Traitormod.Path .. "/Lua/gamemodes/station/cloning.lua")
+dofile(Traitormod.Path .. "/Lua/gamemodes/station/nuclear.lua")
+dofile(Traitormod.Path .. "/Lua/gamemodes/station/communications.lua")
 local evacuation = dofile(Traitormod.Path .. "/Lua/gamemodes/station/evacuation.lua")
 local bodyTypes = LuaUserData.CreateEnumTable("FarseerPhysics.BodyType")
 local alertCodes = {
