@@ -114,7 +114,7 @@ end
 
 function P.GetVoteStartOptionMetrics()
     local width, height, gap = P.GetVoteButtonMetrics()
-    local optionHeight = math.max(P.SafeIntScale(18), math.floor(height * 0.48))
+    local optionHeight = math.max(P.SafeIntScale(26), math.floor(height * 0.48))
     return width, optionHeight, P.SafeIntScale(1), gap
 end
 
