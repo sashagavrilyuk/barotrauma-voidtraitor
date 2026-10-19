@@ -11,7 +11,7 @@ local inputTypes = LuaUserData.CreateEnumTable("Barotrauma.InputType")
 
 local P = { Common = Common, State = {}, GUI_DRAW_ORDER = 120, PANEL_WIDTH = 1, CATEGORY_ROW_MIN_HEIGHT = Common.SafeIntScale(40), FILTER_BAR_HEIGHT = 0.18,
     FILTER_BAR_MIN_HEIGHT = Common.SafeIntScale(48), PRODUCT_ROW_MIN_HEIGHT = Common.SafeIntScale(54),
-    FILTER_LABEL_SCALE = 0.95, PRODUCT_LIST_HEIGHT = 0.68,
+    FILTER_LABEL_SCALE = 0.95, PRODUCT_LIST_HEIGHT = 0.68, HideShopHint = true,
     ITEM_ROW_HEIGHT = 0.27, ITEM_ICON_PIXELS = Common.SafeIntScale(40), ACTION_BUTTON_PIXELS = Common.SafeIntScale(42), NET_INT32_MAX = 2147483647 }
 local S = P.State
 S.products, S.productById, S.cart, S.expandedFolders = {}, {}, {}, {}
@@ -205,8 +205,8 @@ function UI.Show(itemId, snapshot)
     if UI.MenuRoot ~= nil then UI.Update(snapshot) return end
     UI.ItemId = itemId
     local screenWidth, screenHeight = Common.GetScreenSize()
-    local width = math.floor(Common.FitWindowWidth(screenWidth * 0.55, Common.SafeIntScale(1150), screenWidth * 0.04))
-    local height = math.floor(math.min(screenHeight * 0.92, math.max(Common.SafeIntScale(580), screenHeight * 0.65)))
+    local width = math.floor(Common.FitWindowWidth(screenWidth * 0.55, 1100, screenWidth * 0.04))
+    local height = math.floor(Common.FitWindowHeight(screenHeight * 0.65, 650, screenHeight * 0.04))
     local root = GUI.Frame(GUI.RectTransform(Point(width, height), nil, GUI.Anchor.Center), "GUIFrame")
     root.RectTransform.ScreenSpaceOffset = Point(0, -Common.SafeIntScale(25))
     UI.MenuRoot, UI.CurrentMenu, S.currentMenu, S.guiRoot = root, root, root, root
@@ -217,7 +217,7 @@ function UI.Show(itemId, snapshot)
         return true
     end, { titleScale = 1.15 })
     UI.Budget = P.CreateText(layout, 1, 0.065, nil, "", GUI.Alignment.Left, 0.85, nil, false)
-    UI.Budget.AutoScaleHorizontal = true
+    Common.SetAutoScaleText(UI.Budget, 0.85)
     UI.Budget.AutoScaleVertical = true
     local upper = P.CreateLayout(layout, 1, 0.58, nil, true)
     upper.RelativeSpacing = 0.015
@@ -229,7 +229,7 @@ function UI.Show(itemId, snapshot)
     cart.RelativeSpacing = 0.007
     P.CreateText(cart, 1, 0.085, nil, snapshot.Text.Cart, GUI.Alignment.Left, 1.0)
     UI.Details = P.CreateText(cart, 1, 0.18, nil, "", GUI.Alignment.Left, 0.75)
-    UI.Details.AutoScaleHorizontal = true
+    Common.SetAutoScaleText(UI.Details, 0.75)
     UI.Details.AutoScaleVertical = true
     UI.CartList = GUI.ListBox(P.CreateRect(1, 0.30, cart), false)
     UI.Total = P.CreateText(cart, 1, 0.07, nil, "", GUI.Alignment.Left, 0.95)
@@ -238,7 +238,7 @@ function UI.Show(itemId, snapshot)
     UI.Reason.MaxTextLength = 300
     UI.Reason.OnTextChangedDelegate = function() P.RefreshCartOnly() return true end
     UI.Submit = P.CreateButton(cart, 1, 0.10, nil, snapshot.Text.Submit, false)
-    UI.Submit.TextBlock.AutoScaleHorizontal = true
+    Common.SetAutoScaleText(UI.Submit.TextBlock, 1)
     UI.Submit.OnClicked = function()
         if UI.SubmitPending or #S.cart == 0 or string.find(tostring(UI.Reason.Text), "%S") == nil then return true end
         local entries = {}
@@ -252,7 +252,7 @@ function UI.Show(itemId, snapshot)
     P.CreateText(layout, 1, 0.04, nil, snapshot.Text.Orders, GUI.Alignment.Left, 1.0)
     UI.OrderList = GUI.ListBox(P.CreateRect(1, 0.225, layout), false)
     UI.ResizeTop, UI.ResizeBottom = {}, {}
-    UI.ResizeSides = { left = {}, right = {}, minimumWidth = 1150 }
+    UI.ResizeSides = { left = {}, right = {}, minimumWidthPixels = 1100, minimumHeightPixels = 650 }
     Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
     UI.Update(snapshot)
     if S.shopList == nil then P.ShowMenu() end

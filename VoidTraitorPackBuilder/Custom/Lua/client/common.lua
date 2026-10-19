@@ -28,6 +28,7 @@ end
 
 function Common.CreateFlexibleButton(rect, label, alignment)
     local button = GUI.Button(rect, label, alignment or GUI.Alignment.Center, "GUIButtonFreeScale")
+    button.RectTransform.MaxSize = Point(2147483647, Common.SafeIntScale(37))
     Common.SetAutoScaleText(button.TextBlock, 1)
     return button
 end
@@ -39,6 +40,11 @@ end
 function Common.FitWindowWidth(preferredWidth, minimumWidth, margin)
     local screenWidth = Common.GetScreenSize()
     return math.min(math.max(1, screenWidth - (margin or 0) * 2), math.max(preferredWidth, minimumWidth))
+end
+
+function Common.FitWindowHeight(preferredHeight, minimumHeight, margin)
+    local _, screenHeight = Common.GetScreenSize()
+    return math.min(math.max(1, screenHeight - (margin or 0) * 2), math.max(preferredHeight, minimumHeight))
 end
 
 function Common.GetScreenSize()
@@ -130,7 +136,7 @@ function Common.CreateWindowHeader(content, root, label, tooltip, onClose, optio
     header.Color = Color(0, 0, 0, 0)
     header.CanBeFocused = false
 
-    local drag = GUI.DragHandle(Common.CreateRect(0.84, 1, header, GUI.Anchor.TopLeft), root.RectTransform, nil)
+    local drag = GUI.DragHandle(Common.CreateRect(0.92, 1, header, GUI.Anchor.TopLeft), root.RectTransform, nil)
     local transparent = Color(0, 0, 0, 0)
     drag.Color = transparent
     drag.HoverColor = transparent
@@ -290,8 +296,10 @@ function Common.UpdateMenuInteraction(currentMenu, resizeState, topTargets, bott
 
     local screenWidth, screenHeight = Common.GetScreenSize()
     local margin = Common.SafeIntScale(10)
-    local minimumHeight = Common.SafeIntScale(minimumHeightPixels)
-    local minimumWidth = sideTargets ~= nil and math.min(Common.SafeIntScale(sideTargets.minimumWidth), screenWidth - 2 * margin) or 0
+    local minimumHeight = math.min(sideTargets ~= nil and sideTargets.minimumHeightPixels
+        or Common.SafeIntScale(minimumHeightPixels), screenHeight - 2 * margin)
+    local minimumWidth = sideTargets ~= nil and math.min(
+        sideTargets.minimumWidthPixels or Common.SafeIntScale(sideTargets.minimumWidth), screenWidth - 2 * margin) or 0
     local dy = PlayerInput.MousePosition.Y - resizeState.MouseY
     local dx = PlayerInput.MousePosition.X - resizeState.MouseX
     local newHeight, newWidth = resizeState.Height, resizeState.Width

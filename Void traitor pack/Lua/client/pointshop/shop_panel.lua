@@ -95,6 +95,8 @@ function P.BuildShopPanel(overlay)
         end
     end
 
-    local hint = P.CreateText(menuContent, 1, 0.070, nil, hintText, GUI.Alignment.Left, 0.78, Color(210, 210, 190, 185))
-    hint.AutoScaleVertical = true
+    if not P.HideShopHint then
+        local hint = P.CreateText(menuContent, 1, 0.070, nil, hintText, GUI.Alignment.Left, 0.78, Color(210, 210, 190, 185))
+        hint.AutoScaleVertical = true
+    end
 end
