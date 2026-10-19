@@ -205,7 +205,7 @@ function UI.Show(itemId, snapshot)
     if UI.MenuRoot ~= nil then UI.Update(snapshot) return end
     UI.ItemId = itemId
     local screenWidth, screenHeight = Common.GetScreenSize()
-    local width = math.floor(math.min(screenWidth * 0.92, math.max(Common.SafeIntScale(800), screenWidth * 0.55)))
+    local width = math.floor(Common.FitWindowWidth(screenWidth * 0.55, Common.SafeIntScale(1150), screenWidth * 0.04))
     local height = math.floor(math.min(screenHeight * 0.92, math.max(Common.SafeIntScale(580), screenHeight * 0.65)))
     local root = GUI.Frame(GUI.RectTransform(Point(width, height), nil, GUI.Anchor.Center), "GUIFrame")
     root.RectTransform.ScreenSpaceOffset = Point(0, -Common.SafeIntScale(25))
@@ -215,7 +215,7 @@ function UI.Show(itemId, snapshot)
     Common.CreateWindowHeader(layout, root, snapshot.Text.Title, snapshot.Text.Close, function()
         UI.CloseMenu()
         return true
-    end, { height = 0.055, titleScale = 1.15 })
+    end, { titleScale = 1.15 })
     UI.Budget = P.CreateText(layout, 1, 0.065, nil, "", GUI.Alignment.Left, 0.85, nil, false)
     UI.Budget.AutoScaleHorizontal = true
     UI.Budget.AutoScaleVertical = true
@@ -252,7 +252,7 @@ function UI.Show(itemId, snapshot)
     P.CreateText(layout, 1, 0.04, nil, snapshot.Text.Orders, GUI.Alignment.Left, 1.0)
     UI.OrderList = GUI.ListBox(P.CreateRect(1, 0.225, layout), false)
     UI.ResizeTop, UI.ResizeBottom = {}, {}
-    UI.ResizeSides = { left = {}, right = {}, minimumWidth = 720 }
+    UI.ResizeSides = { left = {}, right = {}, minimumWidth = 1150 }
     Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
     UI.Update(snapshot)
     if S.shopList == nil then P.ShowMenu() end
@@ -292,6 +292,6 @@ Hook.Add("think", "VoidTraitor.Cargo.Selection", function()
     if item == nil then return end
     if UI.MenuRoot ~= nil then
         UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom,
-            480, UI.OrderList, nil, nil, nil, UI.ResizeSides)
+            680, UI.OrderList, nil, nil, nil, UI.ResizeSides)
     end
 end)

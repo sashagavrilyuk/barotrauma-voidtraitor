@@ -41,7 +41,7 @@ function UI.Show(itemId, snapshot)
     Common.CreateWindowHeader(layout, root, text.Title, text.Close, function()
         UI.CloseMenu()
         return true
-    end, { height = 0.12, titleScale = 0.9 })
+    end, { titleScale = 0.9 })
     local firstPanel = GUI.Frame(Common.CreateRect(1, 0.12, layout), "GUIFrameListBox")
     local first = Common.CreateText(firstPanel, 0.94, 1, GUI.Anchor.Center, "", GUI.Alignment.CenterLeft, 1, Color(120, 230, 120, 255))
     local secondPanel = GUI.Frame(Common.CreateRect(1, 0.12, layout), "GUIFrameListBox")

@@ -42,7 +42,7 @@ function UI.Show(itemId, snapshot)
     Common.CreateWindowHeader(layout, root, text.Title, text.Close, function()
         UI.CloseMenu()
         return true
-    end, { height = 0.10, titleScale = 0.9 })
+    end, { titleScale = 0.9 })
     local input = GUI.TextBox(Common.CreateRect(1, 0.36, layout), "", nil, nil, GUI.Alignment.TopLeft, true, "", nil, false, false)
     -- The vanilla textbox style fixes its height to one line, including the inner frame.
     input.RectTransform.MinSize, input.RectTransform.MaxSize = Point(0, 0), Point(100000, 100000)

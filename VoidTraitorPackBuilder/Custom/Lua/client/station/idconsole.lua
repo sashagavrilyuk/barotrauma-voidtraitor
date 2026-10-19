@@ -33,7 +33,7 @@ function UI.Show(itemId, snapshot)
     UI.ItemId = itemId
     local text = snapshot.Text
     local screenWidth, screenHeight = Common.GetScreenSize()
-    local width = math.floor(math.min(screenWidth * 0.92, math.max(Common.SafeIntScale(900), screenWidth * 0.58)))
+    local width = math.floor(Common.FitWindowWidth(screenWidth * 0.58, Common.SafeIntScale(1050), screenWidth * 0.04))
     local height = math.floor(math.min(screenHeight * 0.92, math.max(Common.SafeIntScale(590), screenHeight * 0.70)))
     local root = GUI.Frame(GUI.RectTransform(Point(width, height), nil, GUI.Anchor.Center), "GUIFrame")
     UI.MenuRoot, UI.CurrentMenu, UI.Popups = root, root, {}
@@ -46,7 +46,7 @@ function UI.Show(itemId, snapshot)
             Character.Controlled.SelectedItem = nil
         end
         return true
-    end, { height = 0.08 })
+    end)
     local cards = GUI.LayoutGroup(Common.CreateRect(1, 0.23, layout), true)
     cards.RelativeSpacing = 0.02
     local slots = {}
@@ -77,13 +77,13 @@ function UI.Show(itemId, snapshot)
     identity.RelativeSpacing = 0.02
     local nameRow = GUI.LayoutGroup(Common.CreateRect(1, 0.48, identity), true)
     local nameLabel = GUI.TextBlock(Common.CreateRect(0.24, 1, nameRow), text.Name)
-    nameLabel.AutoScaleHorizontal = true
+    Common.SetAutoScaleText(nameLabel, 1)
     local name = GUI.TextBox(Common.CreateRect(0.54, 1, nameRow), "")
     name.MaxTextLength = 64
     local saveName = Common.CreateFlexibleButton(Common.CreateRect(0.21, 1, nameRow), text.Save)
     local jobRow = GUI.LayoutGroup(Common.CreateRect(1, 0.48, identity), true)
     local jobLabel = GUI.TextBlock(Common.CreateRect(0.24, 1, jobRow), text.Job)
-    jobLabel.AutoScaleHorizontal = true
+    Common.SetAutoScaleText(jobLabel, 1)
     local job = GUI.TextBox(Common.CreateRect(0.54, 1, jobRow), "")
     job.MaxTextLength = 64
     local saveJob = Common.CreateFlexibleButton(Common.CreateRect(0.21, 1, jobRow), text.Save)
@@ -91,7 +91,7 @@ function UI.Show(itemId, snapshot)
     saveJob.TextBlock.AutoScaleHorizontal = true
     local presetRow = GUI.LayoutGroup(Common.CreateRect(1, 0.075, layout), true)
     local presetLabel = GUI.TextBlock(Common.CreateRect(0.24, 1, presetRow), text.Preset)
-    presetLabel.AutoScaleHorizontal = true
+    Common.SetAutoScaleText(presetLabel, 1)
     local preset = GUI.DropDown(Common.CreateRect(0.54, 1, presetRow), text.Preset, 6)
     UI.Popups[#UI.Popups + 1] = preset
     for _, entry in ipairs(snapshot.Presets) do preset.AddItem(entry.Name, entry.Id) end
@@ -106,7 +106,7 @@ function UI.Show(itemId, snapshot)
             local entry = snapshot.Access[index + offset]
             if entry ~= nil then
                 local checkbox = GUI.TickBox(Common.CreateRect(0.235, 1, row), entry.Name)
-                checkbox.TextBlock.AutoScaleHorizontal = true
+                Common.SetAutoScaleText(checkbox.TextBlock, 1)
                 checks[entry.Tag] = checkbox
             end
         end
@@ -114,7 +114,7 @@ function UI.Show(itemId, snapshot)
     rights:RecalculateChildren()
     rights:UpdateScrollBarSize()
     UI.ResizeTop, UI.ResizeBottom = {}, {}
-    UI.ResizeSides = { left = {}, right = {}, minimumWidth = 520 }
+    UI.ResizeSides = { left = {}, right = {}, minimumWidth = 1050 }
     Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
     local actions = GUI.LayoutGroup(Common.CreateRect(1, 0.085, layout), true)
     actions.RelativeSpacing = 0.01
@@ -245,7 +245,7 @@ Hook.Add("think", "VoidTraitor.IdConsole.Selection", function(deltaTime)
     if UI.Disabled then return end
     if UI.MenuRoot ~= nil then
         UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom,
-            510, UI.Rights, nil, nil, nil, UI.ResizeSides)
+            650, UI.Rights, nil, nil, nil, UI.ResizeSides)
     end
     local item = Common.UpdateSelectedItemMenu(UI, "vt_station_access", function()
         UI.AwaitingOpen, elapsed = true, 0.05
