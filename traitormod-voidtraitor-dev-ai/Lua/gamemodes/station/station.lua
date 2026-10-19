@@ -1,6 +1,6 @@
 local secret = Traitormod.Gamemodes.Secret
 local gm = secret:new()
-local evacuation = dofile(Traitormod.Path .. "/Lua/features/station/evacuation.lua")
+local evacuation = dofile(Traitormod.Path .. "/Lua/gamemodes/station/evacuation.lua")
 local bodyTypes = LuaUserData.CreateEnumTable("FarseerPhysics.BodyType")
 local alertCodes = {
     green = "StationAlertGreen",
@@ -27,7 +27,7 @@ local alertSounds = {
     evacRecalled = "vt_station_sound_evac_recalled",
     evacDocked = "vt_station_sound_evac_docked",
     evacLaunching = "vt_station_sound_yellow",
-    evacDeparted = "vt_station_sound_evac_departed",
+    evacDeparted = "vt_station_sound_green",
     attack = "vt_station_sound_attack"
 }
 local eventSet = LuaUserData.CreateStatic("Barotrauma.EventSet", true)

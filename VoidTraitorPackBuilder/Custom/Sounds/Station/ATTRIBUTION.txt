@@ -60,12 +60,6 @@ Original: https://github.com/tgstation/tgstation/blob/b327cb667c1ca5d1aa14e6368e
 From Corvax: Ertanic/Corvax @ 2b3f061209a9eb26c5fb9dff7e157fa95a4271f8
 Resources/Audio/Announcements/shuttle_dock.ogg
 
-evac_departed.ogg (originally announce.ogg)
-License: CC-BY-SA-3.0 (https://creativecommons.org/licenses/by-sa/3.0/)
-Source: https://github.com/TauCetiStation/TauCetiClassic/commit/92d2767dbb39f28540f78d5055e7be1eb7acee98
-From Corvax: Ertanic/Corvax @ 2b3f061209a9eb26c5fb9dff7e157fa95a4271f8
-Resources/Audio/Corvax/Announcements/announce.ogg
-
 Nuclear countdown and alarm
 ===========================
 Music for VoidTraitor nuclear countdown (original OGG files, unmodified).

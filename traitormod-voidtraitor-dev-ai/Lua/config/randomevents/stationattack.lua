@@ -283,7 +283,7 @@ local function start(mode)
     end
     event.Monsters = spawned
     event.AttackNumber = event.AttackNumber + 1
-    mode:SendAlertMessage(Traitormod.GetText("StationAttackWarning"), Color(255, 190, 70))
+    mode:SendAlertMessage(Traitormod.GetText("StationAttackWarning"), Color(255, 215, 0, 255), Color(255, 255, 170, 255))
     mode:PlayAlertSound("attack")
     Traitormod.Log(string.format("Station attack %d: %d players, %.1f difficulty, %d creatures",
         event.AttackNumber, players, difficulty, #spawned))
