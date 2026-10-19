@@ -39,40 +39,33 @@ function P.ShowVoteStartMenu()
     P.SafeSetAsLastChild(panel)
 
     local width, optionHeight, spacing = P.GetVoteStartOptionMetrics()
-    local buttonWidth = math.floor(width * 0.82)
-    local timerWidth = width - buttonWidth
-
     local modeRect = GUI.RectTransform(Point(width, optionHeight), panel.RectTransform, GUI.Anchor.TopCenter)
     modeRect.AbsoluteOffset = Point(0, 0)
     local modeRow = GUI.Frame(modeRect, nil)
     modeRow.Color = Color(0, 0, 0, 0)
-    local modeButton = GUI.Button(P.CreateRect(buttonWidth / width, 1, modeRow, GUI.Anchor.CenterLeft), P.VoteUiText.StartMode, GUI.Alignment.Center, "GUIButtonSmall")
+    local modeButton = GUI.Button(P.CreateRect(1, 1, modeRow, GUI.Anchor.CenterLeft), P.VoteUiText.StartMode, GUI.Alignment.Center, "GUIButtonSmall")
     P.SetButtonTextScale(modeButton, 0.70)
     modeButton.OnClicked = function()
         P.SendVoteStart("game")
         P.CloseMenu()
         return true
     end
-    local modeTimer = P.CreateText(modeRow, timerWidth / width, 1, GUI.Anchor.CenterRight, "", GUI.Alignment.CenterRight, 0.9, Color(210, 220, 200, 255), false)
 
     local mapRect = GUI.RectTransform(Point(width, optionHeight), panel.RectTransform, GUI.Anchor.TopCenter)
     mapRect.AbsoluteOffset = Point(0, optionHeight + spacing)
     local mapRow = GUI.Frame(mapRect, nil)
     mapRow.Color = Color(0, 0, 0, 0)
-    local mapButton = GUI.Button(P.CreateRect(buttonWidth / width, 1, mapRow, GUI.Anchor.CenterLeft), P.VoteUiText.StartMap, GUI.Alignment.Center, "GUIButtonSmall")
+    local mapButton = GUI.Button(P.CreateRect(1, 1, mapRow, GUI.Anchor.CenterLeft), P.VoteUiText.StartMap, GUI.Alignment.Center, "GUIButtonSmall")
     P.SetButtonTextScale(mapButton, 0.70)
     mapButton.OnClicked = function()
         P.SendVoteStart("map")
         P.CloseMenu()
         return true
     end
-    local mapTimer = P.CreateText(mapRow, timerWidth / width, 1, GUI.Anchor.CenterRight, "", GUI.Alignment.CenterRight, 0.9, Color(210, 220, 200, 255), false)
 
     S.voteStartUi = {
         ModeButton = modeButton,
-        ModeTimer = modeTimer,
         MapButton = mapButton,
-        MapTimer = mapTimer,
     }
     P.RefreshActiveVoteUi()
 end
@@ -163,9 +156,11 @@ function P.RefreshActiveVoteUi()
 
         S.voteStartUi.ModeButton.Enabled = canStart and gameRemaining <= 0
         S.voteStartUi.MapButton.Enabled = canStart and mapRemaining <= 0
-        S.voteStartUi.MapButton.Text = snapshot.StationMap and P.VoteUiText.StartStation or P.VoteUiText.StartMap
-        S.voteStartUi.ModeTimer.Text = gameRemaining > 0 and formatStartCooldown(gameRemaining) or ""
-        S.voteStartUi.MapTimer.Text = mapRemaining > 0 and formatStartCooldown(mapRemaining) or ""
+        local mapText = snapshot.StationMap and P.VoteUiText.StartStation or P.VoteUiText.StartMap
+        S.voteStartUi.ModeButton.Text = P.VoteUiText.StartMode
+            .. (gameRemaining > 0 and " (" .. formatStartCooldown(gameRemaining) .. ")" or "")
+        S.voteStartUi.MapButton.Text = mapText
+            .. (mapRemaining > 0 and " (" .. formatStartCooldown(mapRemaining) .. ")" or "")
         return
     end
 

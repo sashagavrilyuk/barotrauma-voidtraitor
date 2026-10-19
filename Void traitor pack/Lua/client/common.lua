@@ -6,6 +6,11 @@ function Common.SafeIntScale(value)
     return GUI.IntScale(value)
 end
 
+function Common.FitWindowWidth(preferredWidth, minimumWidth, margin)
+    local screenWidth = Common.GetScreenSize()
+    return math.min(math.max(1, screenWidth - (margin or 0) * 2), math.max(preferredWidth, minimumWidth))
+end
+
 function Common.GetScreenSize()
     local width, height = 1920, 1080
     local gameScreen = Game.GameScreen
