@@ -21,10 +21,12 @@ P.NET_CLASS_LIMITS = "VoidTraitor_PointshopClassLimits"
 P.NET_CLOSE_LOCK = "VoidTraitor_PointshopCloseLock"
 
 P.GUI_DRAW_ORDER = 120
-P.PANEL_WIDTH = 0.290
+local screenWidth = Common.GetScreenSize()
+local panelWidth = Common.FitWindowWidth(screenWidth * 0.290, 480, Common.SafeIntScale(10))
+P.PANEL_WIDTH = math.min(0.48, panelWidth / screenWidth)
 P.ITEM_ROW_HEIGHT = 0.124
-P.ITEM_ICON_PIXELS = 86
-P.ACTION_BUTTON_PIXELS = 102
+P.ITEM_ICON_PIXELS = math.min(86, math.floor(panelWidth * 0.145))
+P.ACTION_BUTTON_PIXELS = math.min(102, math.floor(panelWidth * 0.145))
 P.NET_INT32_MAX = 2147483647
 
 S.currentMenu = nil

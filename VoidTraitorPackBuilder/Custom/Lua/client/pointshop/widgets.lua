@@ -17,13 +17,8 @@ function P.CreateButton(parent, width, height, anchor, label, enabled, selected,
     P.SetButtonStyle(button, enabled ~= false, selected == true)
 
     if button.TextBlock ~= nil then
-        if label ~= nil and string.len(label) > 54 then
-            button.TextBlock.TextScale = 0.76
-        elseif label ~= nil and string.len(label) > 38 then
-            button.TextBlock.TextScale = 0.86
-        else
-            button.TextBlock.TextScale = 0.98
-        end
+        button.TextBlock.TextScale = 0.98
+        button.TextBlock.AutoScaleHorizontal = true
     end
 
     return button

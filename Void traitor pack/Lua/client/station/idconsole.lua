@@ -109,7 +109,7 @@ function UI.Show(itemId, snapshot)
     local rights = GUI.ListBox(Common.CreateRect(1, 0.395, layout), false)
     UI.Rights = rights
     local checks = {}
-    local columns = screenWidth >= Common.SafeIntScale(1024) and 4 or 2
+    local columns = width >= 1050 and 4 or 2
     for index = 1, #snapshot.Access, columns do
         local row = GUI.LayoutGroup(Common.CreateRect(1, 0.16, rights.Content), true)
         row.RectTransform.MinSize = Point(0, Common.SafeIntScale(38))

@@ -40,7 +40,7 @@ function P.AddProductButton(list, product)
 
     -- Give the name back the price column when the original PointShop would
     -- hide a zero price (notably Attack Defend classes).
-    local textGroup = GUI.Frame(P.CreateRect(showPrice and 0.500 or 0.625, 0.90, inner, nil), nil)
+    local textGroup = GUI.Frame(P.CreateRect(showPrice and 0.470 or 0.625, 0.90, inner, nil), nil)
     textGroup.Color = Color(0, 0, 0, 0)
     textGroup.CanBeFocused = false
 
@@ -68,8 +68,8 @@ function P.AddProductButton(list, product)
 
     local price = nil
     if showPrice then
-        price = P.CreateText(inner, 0.125, 0.72, nil, tostring(product.Price or 0) .. " " .. tostring(product.Currency or "pt"), GUI.Alignment.Right, 0.96, enabled and Color(255, 245, 210, 255) or Color(125, 125, 125, 255), false)
-        price.Font = GUI.Style.SubHeadingFont
+        price = P.CreateText(inner, 0.155, 0.72, nil, tostring(product.Price or 0) .. " " .. tostring(product.Currency or "pt"), GUI.Alignment.Right, 0.96, enabled and Color(255, 245, 210, 255) or Color(125, 125, 125, 255), false)
+        price.Font = GUI.Style.Font
         price.AutoScaleHorizontal = true
     end
 

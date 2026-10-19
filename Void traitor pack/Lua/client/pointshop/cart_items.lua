@@ -24,7 +24,7 @@ function P.AddCartButton(list, entry)
 
     local qty = entry.Quantity or 1
 
-    local textGroup = GUI.Frame(P.CreateRect(showPrice and 0.500 or 0.625, 0.90, inner, nil), nil)
+    local textGroup = GUI.Frame(P.CreateRect(showPrice and 0.470 or 0.625, 0.90, inner, nil), nil)
     textGroup.Color = Color(0, 0, 0, 0)
     textGroup.CanBeFocused = false
 
@@ -38,8 +38,8 @@ function P.AddCartButton(list, entry)
     quantity.AutoScaleHorizontal = true
 
     if showPrice then
-        local price = P.CreateText(inner, 0.125, 0.72, nil, tostring((product.Price or 0) * qty) .. " pt", GUI.Alignment.Right, 0.96, Color(255, 245, 210, 255), false)
-        price.Font = GUI.Style.SubHeadingFont
+        local price = P.CreateText(inner, 0.155, 0.72, nil, tostring((product.Price or 0) * qty) .. " pt", GUI.Alignment.Right, 0.96, Color(255, 245, 210, 255), false)
+        price.Font = GUI.Style.Font
         price.AutoScaleHorizontal = true
     end
 
