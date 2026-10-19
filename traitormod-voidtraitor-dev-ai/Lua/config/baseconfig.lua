@@ -339,8 +339,10 @@ config.GamemodeConfig = {
             if amountPlayers > 12 then return 3 end
             if amountPlayers > 7 then return 2 end            
             if amountPlayers > 3 then return 1 end
-            if amountPlayers == 1 then 
-                Traitormod.SendMessageEveryone(Traitormod.Language.TestingMode)
+            if amountPlayers == 1 then
+                if not station or config.TestMode then
+                    Traitormod.SendMessageEveryone(Traitormod.Language.TestingMode)
+                end
                 if not station then config.TestMode = true end
                 return 1
             end

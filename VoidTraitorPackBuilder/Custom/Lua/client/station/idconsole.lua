@@ -216,9 +216,10 @@ function UI.Show(itemId, snapshot)
         end
         heldSignature = signature
         if revision ~= updated.Revision then
+            local hadRevision = revision ~= nil
             revision = updated.Revision
             resetDraft()
-            if previousId ~= 0 and previousId == updated.Slots[2].Id then
+            if hadRevision and previousId ~= 0 and previousId == updated.Slots[2].Id then
                 if savedField ~= "name" then name.Text = previousName end
                 if savedField ~= "job" then job.Text = previousJob end
             end
