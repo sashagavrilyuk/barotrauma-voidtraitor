@@ -315,4 +315,7 @@ Hook.Add("client.disconnected", "Traitormod.Cloning.Disconnect", function(client
     if client.Character ~= nil then state.Owners[client.Character] = client end
     state.Pending[client] = nil
 end)
+Traitormod.AddCommand("!y", function(client) Traitormod.Cloning.Answer(client, true) return true end)
+Traitormod.AddCommand("!n", function(client) Traitormod.Cloning.Answer(client, false) return true end)
+
 return cloning
