@@ -39,7 +39,7 @@ function UI.Show(itemId, snapshot)
     UI.MenuRoot, UI.CurrentMenu, UI.Popups = root, root, {}
     local layout = GUI.LayoutGroup(Common.CreateRect(0.95, 0.98, root, GUI.Anchor.Center), false)
     layout.RelativeSpacing = 0.008
-    local heading = GUI.LayoutGroup(Common.CreateRect(1, 0.065, layout), true)
+    local heading = GUI.LayoutGroup(Common.CreateRect(1, 0.08, layout), true)
     local drag = GUI.DragHandle(Common.CreateRect(0.87, 1, heading, GUI.Anchor.TopLeft), root.RectTransform, nil)
     local transparent = Color(0, 0, 0, 0)
     drag.Color, drag.HoverColor, drag.SelectedColor, drag.PressedColor = transparent, transparent, transparent, transparent
@@ -58,7 +58,7 @@ function UI.Show(itemId, snapshot)
         end
         return true
     end
-    local cards = GUI.LayoutGroup(Common.CreateRect(1, 0.21, layout), true)
+    local cards = GUI.LayoutGroup(Common.CreateRect(1, 0.23, layout), true)
     cards.RelativeSpacing = 0.02
     local slots = {}
     local current, revision, confirming, pending, savedField = snapshot, nil, false, false, nil
@@ -66,11 +66,11 @@ function UI.Show(itemId, snapshot)
         local frame = GUI.Frame(Common.CreateRect(0.49, 1, cards), "GUIFrameListBox")
         local content = GUI.LayoutGroup(Common.CreateRect(0.94, 0.92, frame, GUI.Anchor.Center), false)
         content.RelativeSpacing = 0.02
-        GUI.TextBlock(Common.CreateRect(1, 0.16, content), index == 1 and text.Auth or text.Target)
-        local details = GUI.TextBlock(Common.CreateRect(1, 0.42, content), "")
+        GUI.TextBlock(Common.CreateRect(1, 0.19, content), index == 1 and text.Auth or text.Target)
+        local details = GUI.TextBlock(Common.CreateRect(1, 0.31, content), "")
         details.Wrap = true
         details.AutoScaleVertical = true
-        local row = GUI.LayoutGroup(Common.CreateRect(1, 0.32, content), true)
+        local row = GUI.LayoutGroup(Common.CreateRect(1, 0.40, content), true)
         row.RelativeSpacing = 0.02
         local picker = GUI.DropDown(Common.CreateRect(0.60, 1, row), text.Choose, 5)
         UI.Popups[#UI.Popups + 1] = picker
@@ -84,8 +84,8 @@ function UI.Show(itemId, snapshot)
         end
         slots[index] = { Details = details, Picker = picker, Transfer = transfer }
     end
-    local identity = GUI.LayoutGroup(Common.CreateRect(1, 0.14, layout), false)
-    identity.RelativeSpacing = 0.05
+    local identity = GUI.LayoutGroup(Common.CreateRect(1, 0.17, layout), false)
+    identity.RelativeSpacing = 0.02
     local nameRow = GUI.LayoutGroup(Common.CreateRect(1, 0.48, identity), true)
     local nameLabel = GUI.TextBlock(Common.CreateRect(0.24, 1, nameRow), text.Name)
     nameLabel.AutoScaleHorizontal = true
@@ -100,24 +100,23 @@ function UI.Show(itemId, snapshot)
     local saveJob = GUI.Button(Common.CreateRect(0.21, 1, jobRow), text.Save)
     saveName.TextBlock.AutoScaleHorizontal = true
     saveJob.TextBlock.AutoScaleHorizontal = true
-    local presetRow = GUI.LayoutGroup(Common.CreateRect(1, 0.065, layout), true)
+    local presetRow = GUI.LayoutGroup(Common.CreateRect(1, 0.075, layout), true)
     local presetLabel = GUI.TextBlock(Common.CreateRect(0.24, 1, presetRow), text.Preset)
     presetLabel.AutoScaleHorizontal = true
     local preset = GUI.DropDown(Common.CreateRect(0.54, 1, presetRow), text.Preset, 6)
     UI.Popups[#UI.Popups + 1] = preset
     for _, entry in ipairs(snapshot.Presets) do preset.AddItem(entry.Name, entry.Id) end
-    local rights = GUI.ListBox(Common.CreateRect(1, 0.395, layout), false)
+    local rights = GUI.ListBox(Common.CreateRect(1, 0.295, layout), false)
     UI.Rights = rights
     local checks = {}
-    local columns = width >= 1050 and 4 or 2
-    for index = 1, #snapshot.Access, columns do
+    for index = 1, #snapshot.Access, 4 do
         local row = GUI.LayoutGroup(Common.CreateRect(1, 0.16, rights.Content), true)
         row.RectTransform.MinSize = Point(0, Common.SafeIntScale(38))
         row.RelativeSpacing = 0.02
-        for offset = 0, columns - 1 do
+        for offset = 0, 3 do
             local entry = snapshot.Access[index + offset]
             if entry ~= nil then
-                local checkbox = GUI.TickBox(Common.CreateRect(columns == 4 and 0.235 or 0.49, 1, row), entry.Name)
+                local checkbox = GUI.TickBox(Common.CreateRect(0.235, 1, row), entry.Name)
                 checkbox.TextBlock.AutoScaleHorizontal = true
                 checks[entry.Tag] = checkbox
             end
@@ -126,9 +125,9 @@ function UI.Show(itemId, snapshot)
     rights:RecalculateChildren()
     rights:UpdateScrollBarSize()
     UI.ResizeTop, UI.ResizeBottom = {}, {}
-    UI.ResizeSides = { left = {}, right = {}, minimumWidth = columns == 4 and 850 or 520 }
+    UI.ResizeSides = { left = {}, right = {}, minimumWidth = 520 }
     Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
-    local actions = GUI.LayoutGroup(Common.CreateRect(1, 0.07, layout), true)
+    local actions = GUI.LayoutGroup(Common.CreateRect(1, 0.085, layout), true)
     actions.RelativeSpacing = 0.01
     local all = GUI.Button(Common.CreateRect(0.2425, 1, actions), text.All)
     local clear = GUI.Button(Common.CreateRect(0.2425, 1, actions), text.Clear)
