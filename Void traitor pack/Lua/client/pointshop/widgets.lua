@@ -125,12 +125,7 @@ function P.CreateStoreActionButton(parent, width, style, enabled)
     return button
 end
 
-function P.CreateLayout(parent, width, height, anchor, isHorizontal, childAnchor)
-    local layout = GUI.LayoutGroup(P.CreateRect(width, height, parent, anchor), isHorizontal == true, childAnchor or GUI.Anchor.TopLeft)
-    layout.Stretch = true
-    layout.RelativeSpacing = 0.006
-    return layout
-end
+P.CreateLayout = P.Common.CreateLayout
 
 function P.CreateDivider(parent, height)
     local frame = GUI.Frame(P.CreateRect(1, height or 0.02, parent), nil)

@@ -12,14 +12,24 @@ end
 
 function Common.RestoreAutoScaledText(root)
     for component in root.GetAllChildren() do
-        if LuaUserData.IsTargetType(component, "Barotrauma.GUITextBlock") and component.AutoScaleHorizontal then
-            component.TextScale = originalTextScales[component] or 1
+        local original = originalTextScales[component]
+        if original ~= nil and (component.AutoScaleHorizontal or component.AutoScaleVertical) then
+            component.TextScale = original
         end
     end
 end
 
+function Common.CreateLayout(parent, width, height, anchor, isHorizontal, childAnchor)
+    local layout = GUI.LayoutGroup(Common.CreateRect(width, height, parent, anchor),
+        isHorizontal == true, childAnchor or GUI.Anchor.TopLeft)
+    layout.RelativeSpacing = 0.006
+    return layout
+end
+
 function Common.CreateFlexibleButton(rect, label, alignment)
-    return GUI.Button(rect, label, alignment or GUI.Alignment.Center, "GUIButtonFreeScale")
+    local button = GUI.Button(rect, label, alignment or GUI.Alignment.Center, "GUIButtonFreeScale")
+    Common.SetAutoScaleText(button.TextBlock, 1)
+    return button
 end
 
 function Common.SafeIntScale(value)
@@ -115,26 +125,31 @@ end
 
 function Common.CreateWindowHeader(content, root, label, tooltip, onClose, options)
     options = options or {}
-    local header = GUI.Frame(Common.CreateRect(1, options.height or 0.062, content, nil), nil)
+    local header = GUI.Frame(Common.CreateRect(1, 0.062, content, nil), nil)
+    header.RectTransform.MinSize = Point(0, Common.SafeIntScale(38))
     header.Color = Color(0, 0, 0, 0)
     header.CanBeFocused = false
 
-    local drag = GUI.DragHandle(Common.CreateRect(options.dragWidth or 0.84, 1, header, GUI.Anchor.TopLeft), root.RectTransform, nil)
+    local drag = GUI.DragHandle(Common.CreateRect(0.84, 1, header, GUI.Anchor.TopLeft), root.RectTransform, nil)
     local transparent = Color(0, 0, 0, 0)
     drag.Color = transparent
     drag.HoverColor = transparent
     drag.SelectedColor = transparent
     drag.PressedColor = transparent
 
-    local indicator = GUI.Image(Common.CreateRect(options.indicatorWidth or 0.07, options.indicatorHeight or 0.72, drag, GUI.Anchor.CenterLeft), "GUIDragIndicator")
+    local indicator = GUI.Image(Common.CreateRect(0.07, 0.72, drag, GUI.Anchor.CenterLeft), "GUIDragIndicator")
     indicator.CanBeFocused = false
-    local title = Common.CreateText(drag, options.titleWidth or 0.90, 1, GUI.Anchor.CenterRight,
+    local title = Common.CreateText(drag, 0.90, 1, GUI.Anchor.CenterRight,
         label, GUI.Alignment.Left, options.titleScale or 1.00, Color(235, 205, 145, 255), options.wrap == true)
     title.Font = GUI.Style.SubHeadingFont
+    Common.SetAutoScaleText(title, options.titleScale or 1.00)
     if options.titleNoFocus then title.CanBeFocused = false end
 
-    local close = GUI.Button(Common.CreateRect(options.closeWidth or 0.10, 0.82, header, GUI.Anchor.TopRight),
-        "", GUI.Alignment.Center, "GUICancelButton")
+    local size = Common.SafeIntScale(30)
+    local closeRect = GUI.RectTransform(Point(size, size), header.RectTransform, GUI.Anchor.CenterRight)
+    closeRect.RelativeOffset = Vector2(0.045, 0)
+    closeRect.AbsoluteOffset = Point(Common.SafeIntScale(4), 0)
+    local close = GUI.Button(closeRect, "", GUI.Alignment.Center, "GUICancelButton")
     close.ToolTip = tooltip
     close.OnClicked = onClose
 end

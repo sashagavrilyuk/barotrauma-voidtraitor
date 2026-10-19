@@ -391,8 +391,7 @@ local function BuildDetailsPanel(root, role, groupWidth, listWidth, gapWidth, de
         selectedRoleId = nil
         ShowMenu()
         return true
-    end, { dragWidth = 0.82, indicatorWidth = 0.09, titleWidth = 0.88,
-        titleScale = 0.96, wrap = true, closeWidth = 0.12 })
+    end, { titleScale = 0.96, wrap = true })
 
     GUI.Image(CreateRect(1, 0.006, content, nil), "HorizontalLine")
 

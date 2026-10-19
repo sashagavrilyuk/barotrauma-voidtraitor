@@ -28,7 +28,6 @@ function P.AddProductButton(list, product)
 
     local inner = P.CreateRowInner(row, 0.968, 0.90)
     inner.RelativeSpacing = 0.003
-    inner.Stretch = true
 
     local iconHolder = GUI.Frame(P.CreateRect(0.168, 1, inner, nil), nil)
     iconHolder.Color = Color(0, 0, 0, 0)

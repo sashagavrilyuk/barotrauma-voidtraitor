@@ -35,7 +35,6 @@ function P.AddCategoryButton(list, folder)
     if P.CATEGORY_ROW_MIN_HEIGHT ~= nil then row.RectTransform.MinSize = Point(0, P.CATEGORY_ROW_MIN_HEIGHT) end
 
     local inner = GUI.LayoutGroup(P.CreateRect(0.94, 0.92, row, GUI.Anchor.Center), true, GUI.Anchor.CenterLeft)
-    inner.Stretch = true
     inner.RelativeSpacing = 0.004
 
     local indentWidth = math.min(0.035 * folder.Depth, 0.12)

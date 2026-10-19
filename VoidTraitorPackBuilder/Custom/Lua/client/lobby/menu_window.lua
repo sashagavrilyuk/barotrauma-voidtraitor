@@ -49,7 +49,7 @@ P.ShowVoidTraitorMenu = function()
             P.Common.RemoveGuiComponent(root)
         end
         return true
-    end, { dragWidth = 0.86 })
+    end)
 
     GUI.Image(P.CreateRect(1, 0.006, content, nil), "HorizontalLine")
 

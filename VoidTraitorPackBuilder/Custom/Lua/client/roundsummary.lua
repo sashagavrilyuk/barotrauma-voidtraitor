@@ -156,9 +156,7 @@ local function showSummary(summary, closeText)
     Common.CreateWindowHeader(content, currentMenu, title, closeText or "Close", function()
         closeSummary()
         return true
-    end, { height = 0.07, dragWidth = 0.90, indicatorWidth = 0.045,
-        indicatorHeight = 0.70, titleWidth = 0.94, titleScale = 1.15,
-        titleNoFocus = true, closeWidth = 0.075 })
+    end, { titleScale = 1.15, titleNoFocus = true })
 
     GUI.Image(CreateRect(1, 0.006, content, nil), "HorizontalLine")
 
