@@ -482,19 +482,6 @@ Hook.Patch("Barotrauma.Networking.RespawnManager", "GetBotsToRespawn", function(
     end
 end, Hook.HookMethodType.After)
 
-Traitormod.AddCommand("!stationtest", function(client)
-    if not client.HasPermission(ClientPermissions.ConsoleCommands) then return true end
-    local selected = Traitormod.SelectedGamemode
-    if not Game.RoundStarted or selected == nil or selected.Name ~= "Station" then
-        Traitormod.SendChatMessage(client, Traitormod.GetText("StationTestUnavailable"))
-        return true
-    end
-    Traitormod.Config.TestMode = not Traitormod.Config.TestMode
-    Traitormod.SendChatMessage(client, Traitormod.GetText(Traitormod.Config.TestMode
-        and "StationTestEnabled" or "StationTestDisabled"))
-    return true
-end)
-
 Traitormod.AddCommand("!stationcode", function(client, args)
     local selected = Traitormod.SelectedGamemode
     if not Game.RoundStarted or selected == nil or selected.Name ~= "Station" then

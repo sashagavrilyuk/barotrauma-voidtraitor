@@ -121,6 +121,20 @@ Traitormod.AddCommand({"!point", "!points"}, function (client, args)
     return true
 end)
 
+Traitormod.AddCommand("!testmode", function(client)
+    if not client.HasPermission(ClientPermissions.ConsoleCommands) then return true end
+    if not Game.RoundStarted or Traitormod.SelectedGamemode == nil then
+        Traitormod.SendMessage(client, Traitormod.GetText("CMDTestModeUnavailable"))
+        return true
+    end
+
+    Traitormod.Config.TestMode = not Traitormod.Config.TestMode
+    Traitormod.TestModeOverride = Traitormod.Config.TestMode
+    Traitormod.SendMessage(client, Traitormod.GetText(Traitormod.Config.TestMode
+        and "CMDTestModeEnabled" or "CMDTestModeDisabled"))
+    return true
+end)
+
 Traitormod.AddCommand("!switchtest", function (client, args)
     local activePlayers = 0
     for player in Client.ClientList do
