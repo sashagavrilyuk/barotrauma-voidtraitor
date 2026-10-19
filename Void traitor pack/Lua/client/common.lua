@@ -88,6 +88,32 @@ function Common.GetIconData(entry)
     return nil, nil
 end
 
+function Common.CreateWindowHeader(content, root, label, tooltip, onClose, options)
+    options = options or {}
+    local header = GUI.Frame(Common.CreateRect(1, options.height or 0.062, content, nil), nil)
+    header.Color = Color(0, 0, 0, 0)
+    header.CanBeFocused = false
+
+    local drag = GUI.DragHandle(Common.CreateRect(options.dragWidth or 0.84, 1, header, GUI.Anchor.TopLeft), root.RectTransform, nil)
+    local transparent = Color(0, 0, 0, 0)
+    drag.Color = transparent
+    drag.HoverColor = transparent
+    drag.SelectedColor = transparent
+    drag.PressedColor = transparent
+
+    local indicator = GUI.Image(Common.CreateRect(options.indicatorWidth or 0.07, options.indicatorHeight or 0.72, drag, GUI.Anchor.CenterLeft), "GUIDragIndicator")
+    indicator.CanBeFocused = false
+    local title = Common.CreateText(drag, options.titleWidth or 0.90, 1, GUI.Anchor.CenterRight,
+        label, GUI.Alignment.Left, options.titleScale or 1.00, Color(235, 205, 145, 255), options.wrap == true)
+    title.Font = GUI.Style.SubHeadingFont
+    if options.titleNoFocus then title.CanBeFocused = false end
+
+    local close = GUI.Button(Common.CreateRect(options.closeWidth or 0.10, 0.82, header, GUI.Anchor.TopRight),
+        "", GUI.Alignment.Center, "GUICancelButton")
+    close.ToolTip = tooltip
+    close.OnClicked = onClose
+end
+
 function Common.CreateIcon(parent, entry, pixelSize)
     local box = GUI.Frame(Common.CreateRect(1, 1, parent, GUI.Anchor.Center), "GUIFrameListBox")
     box.CanBeFocused = false

@@ -344,29 +344,11 @@ local function BuildListPanel(root, groupWidth, listWidth)
     content.Stretch = true
     content.RelativeSpacing = 0.003
 
-    local header = GUI.Frame(CreateRect(1, 0.062, content, nil), nil)
-    header.Color = Color(0, 0, 0, 0)
-    header.CanBeFocused = false
-
-    local dragArea = GUI.DragHandle(CreateRect(0.84, 1, header, GUI.Anchor.TopLeft), root.RectTransform, nil)
-    local transparent = Color(0, 0, 0, 0)
-    dragArea.Color = transparent
-    dragArea.HoverColor = transparent
-    dragArea.SelectedColor = transparent
-    dragArea.PressedColor = transparent
-
-    local dragIndicator = GUI.Image(CreateRect(0.07, 0.72, dragArea, GUI.Anchor.CenterLeft), "GUIDragIndicator")
-    dragIndicator.CanBeFocused = false
-    local title = CreateText(dragArea, 0.90, 1, GUI.Anchor.CenterRight, text.Title, GUI.Alignment.Left, 1.00, Color(235, 205, 145, 255), false)
-    title.Font = GUI.Style.SubHeadingFont
-
-    local close = GUI.Button(CreateRect(0.10, 0.82, header, GUI.Anchor.TopRight), "", GUI.Alignment.Center, "GUICancelButton")
-    close.OnClicked = function()
+    Common.CreateWindowHeader(content, root, text.Title, text.Close, function()
         CloseMenu()
         UpdateBottomButton()
         return true
-    end
-    close.ToolTip = text.Close
+    end)
 
     CreateText(content, 1, 0.034, nil, text.Points .. ": " .. tostring(currentPoints), GUI.Alignment.Left, 0.76, Color(225, 220, 195, 255), false)
     GUI.Image(CreateRect(1, 0.006, content, nil), "HorizontalLine")
@@ -405,29 +387,12 @@ local function BuildDetailsPanel(root, role, groupWidth, listWidth, gapWidth, de
     content.Stretch = true
     content.RelativeSpacing = 0.004
 
-    local header = GUI.Frame(CreateRect(1, 0.062, content, nil), nil)
-    header.Color = Color(0, 0, 0, 0)
-    header.CanBeFocused = false
-
-    local dragArea = GUI.DragHandle(CreateRect(0.82, 1, header, GUI.Anchor.TopLeft), root.RectTransform, nil)
-    local transparent = Color(0, 0, 0, 0)
-    dragArea.Color = transparent
-    dragArea.HoverColor = transparent
-    dragArea.SelectedColor = transparent
-    dragArea.PressedColor = transparent
-
-    local dragIndicator = GUI.Image(CreateRect(0.09, 0.72, dragArea, GUI.Anchor.CenterLeft), "GUIDragIndicator")
-    dragIndicator.CanBeFocused = false
-    local title = CreateText(dragArea, 0.88, 1, GUI.Anchor.CenterRight, tostring(role.Name or ""), GUI.Alignment.Left, 0.96, Color(235, 205, 145, 255), true)
-    title.Font = GUI.Style.SubHeadingFont
-
-    local close = GUI.Button(CreateRect(0.12, 0.82, header, GUI.Anchor.TopRight), "", GUI.Alignment.Center, "GUICancelButton")
-    close.ToolTip = text.Close
-    close.OnClicked = function()
+    Common.CreateWindowHeader(content, root, tostring(role.Name or ""), text.Close, function()
         selectedRoleId = nil
         ShowMenu()
         return true
-    end
+    end, { dragWidth = 0.82, indicatorWidth = 0.09, titleWidth = 0.88,
+        titleScale = 0.96, wrap = true, closeWidth = 0.12 })
 
     GUI.Image(CreateRect(1, 0.006, content, nil), "HorizontalLine")
 

@@ -225,30 +225,12 @@ local function showSummary(summary, closeText)
     content.Stretch = true
     content.RelativeSpacing = 0.004
 
-    local header = GUI.Frame(CreateRect(1, 0.07, content, nil), nil)
-    header.Color = Color(0, 0, 0, 0)
-    header.CanBeFocused = false
-
-    local dragArea = GUI.DragHandle(CreateRect(0.90, 1, header, GUI.Anchor.TopLeft), currentMenu.RectTransform, nil)
-    local transparent = Color(0, 0, 0, 0)
-    dragArea.Color = transparent
-    dragArea.HoverColor = transparent
-    dragArea.SelectedColor = transparent
-    dragArea.PressedColor = transparent
-
-    local dragIndicator = GUI.Image(CreateRect(0.045, 0.70, dragArea, GUI.Anchor.CenterLeft), "GUIDragIndicator")
-    dragIndicator.CanBeFocused = false
-
-    local headerText = Common.CreateText(dragArea, 0.94, 1, GUI.Anchor.CenterRight, title, GUI.Alignment.Left, 1.15, Color(235, 205, 145, 255), false)
-    headerText.Font = GUI.Style.SubHeadingFont
-    headerText.CanBeFocused = false
-
-    local close = GUI.Button(CreateRect(0.075, 0.82, header, GUI.Anchor.TopRight), "", GUI.Alignment.Center, "GUICancelButton")
-    close.ToolTip = closeText or "Close"
-    close.OnClicked = function()
+    Common.CreateWindowHeader(content, currentMenu, title, closeText or "Close", function()
         closeSummary()
         return true
-    end
+    end, { height = 0.07, dragWidth = 0.90, indicatorWidth = 0.045,
+        indicatorHeight = 0.70, titleWidth = 0.94, titleScale = 1.15,
+        titleNoFocus = true, closeWidth = 0.075 })
 
     GUI.Image(CreateRect(1, 0.006, content, nil), "HorizontalLine")
 
