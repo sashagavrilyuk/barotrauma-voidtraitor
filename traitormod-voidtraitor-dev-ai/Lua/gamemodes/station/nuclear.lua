@@ -9,6 +9,29 @@ local statusLabels = { locked = "Locked", code = "AwaitCode", ready = "Ready", a
 -- Track order must match the six OnActive sounds in nuclear.xml.
 local musicLengths = { 109.9977, 111.6000, 103.3606, 196.2902, 109.5756 }
 local activationLength = 14
+-- TEMPORARY AUDIO DIAGNOSTICS: remove this block and its three calls after verification.
+local audioDebugNames = { "running_out", "countdown", "sound_station_14", "blatantly_nuclear", "level", "nuke_alarm" }
+local function logNuclearAudio(item, data, reason)
+    if data.Audio == nil then return end
+    local states = {}
+    for index, component in ipairs(data.Audio) do
+        states[#states + 1] = index .. "=" .. tostring(component.IsOn) .. "/" .. tostring(component.IsActive)
+    end
+    local state = data.Status .. ":" .. tostring(data.MusicIndex) .. ":" .. tostring(data.MusicStarted)
+        .. ":" .. tostring(data.MusicPlaying) .. ":" .. table.concat(states, ",")
+    local remaining = data.ActivationRemaining or data.Remaining
+    local second = math.ceil(remaining)
+    local checkpoint = (data.Status == "armed" or data.Status == "exploded")
+        and (second <= 17 or second % 10 == 0) and second or nil
+    if reason == nil and data.DebugAudioState == state and data.DebugAudioCheckpoint == checkpoint then return end
+    data.DebugAudioState, data.DebugAudioCheckpoint = state, checkpoint
+    print(string.format("[VT/NukeAudio/server] t=%.3f id=%s cause=%s status=%s remaining=%.3f cooldown=%.3f track=%s(%s) elapsed=%.3f started=%s playing=%s isOn/isActive=[%s]",
+        Timer.GetTime(), tostring(item.ID), reason or "state", data.Status, remaining, data.Cooldown,
+        tostring(data.MusicIndex), audioDebugNames[data.MusicIndex] or "none", data.MusicElapsed,
+        tostring(data.MusicStarted), tostring(data.MusicPlaying), table.concat(states, ",")))
+end
+-- END TEMPORARY AUDIO DIAGNOSTICS.
+
 local componentEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateEventData", true)
 local eventSet = LuaUserData.CreateStatic("Barotrauma.EventSet", true)
 local holdableDescriptor = Descriptors["Barotrauma.Items.Components.Holdable"] or LuaUserData.RegisterType("Barotrauma.Items.Components.Holdable")
@@ -201,6 +224,7 @@ function nuclear.Action(client, item, action, value)
             end
             data.MusicIndex = #availableMusic > 0 and availableMusic[math.random(#availableMusic)] or 0
         end
+        logNuclearAudio(item, data, "before-arm-events")
         for _, audio in ipairs(data.Audio) do
             Networking.CreateEntityEvent(item, componentEvent.__new(audio, nil))
         end
@@ -211,6 +235,7 @@ function nuclear.Action(client, item, action, value)
     else return false end
     if data.Status == "locked" and item.OwnInventory.GetItemAt(0) ~= nil then data.Status = "code" end
     nuclear.Update(item, data)
+    if action == "arm" then logNuclearAudio(item, data, "after-arm-update") end
     return true
 end
 
@@ -279,6 +304,7 @@ function nuclear.Think(deltaTime)
                 end
             end
             if not item.Removed and previous ~= data.Status .. ":" .. math.ceil(data.ActivationRemaining or data.Remaining) .. ":" .. math.ceil(data.Cooldown) .. ":" .. tostring(data.MusicPlaying) then nuclear.Update(item, data) end
+            logNuclearAudio(item, data)
         end
     end
 end
