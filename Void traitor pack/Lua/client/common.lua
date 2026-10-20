@@ -28,7 +28,7 @@ end
 
 function Common.CreateFlexibleButton(rect, label, alignment)
     local button = GUI.Button(rect, label, alignment or GUI.Alignment.Center, "GUIButtonFreeScale")
-    button.RectTransform.MaxSize = Point(2147483647, Common.SafeIntScale(37))
+    button.RectTransform.MaxSize = Point(2147483647, math.min(Common.SafeIntScale(52), 46))
     Common.SetAutoScaleText(button.TextBlock, 1)
     return button
 end
@@ -132,7 +132,7 @@ end
 function Common.CreateWindowHeader(content, root, label, tooltip, onClose, options)
     options = options or {}
     local header = GUI.Frame(Common.CreateRect(1, 0.062, content, nil), nil)
-    header.RectTransform.MinSize = Point(0, Common.SafeIntScale(38))
+    header.RectTransform.MinSize = Point(0, math.min(Common.SafeIntScale(62), 52))
     header.Color = Color(0, 0, 0, 0)
     header.CanBeFocused = false
 
@@ -151,7 +151,7 @@ function Common.CreateWindowHeader(content, root, label, tooltip, onClose, optio
     Common.SetAutoScaleText(title, options.titleScale or 1.00)
     if options.titleNoFocus then title.CanBeFocused = false end
 
-    local size = Common.SafeIntScale(30)
+    local size = math.min(Common.SafeIntScale(54), 46)
     local closeRect = GUI.RectTransform(Point(size, size), header.RectTransform, GUI.Anchor.CenterRight)
     closeRect.RelativeOffset = Vector2(0.045, 0)
     closeRect.AbsoluteOffset = Point(Common.SafeIntScale(4), 0)

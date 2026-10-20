@@ -142,7 +142,7 @@ local function logNuclearAudio(item, source)
         Timer.GetTime(), tostring(item.ID), source, index, state))
 end
 Hook.Patch("VoidTraitor.Nuclear.AudioDebug.Receive", "Barotrauma.Items.Components.LightComponent", "ClientEventRead",
-    { "Barotrauma.Networking.IReadMessage", "System.Single" }, function(component)
+    function(component)
         if not UI.Disabled and component.Item.Prefab.Identifier == "vt_nuclear_bomb" then
             logNuclearAudio(component.Item, "received LightComponent.ClientEventRead")
         end

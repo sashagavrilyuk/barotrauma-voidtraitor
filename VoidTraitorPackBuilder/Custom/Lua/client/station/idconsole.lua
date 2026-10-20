@@ -33,8 +33,8 @@ function UI.Show(itemId, snapshot)
     UI.ItemId = itemId
     local text = snapshot.Text
     local screenWidth, screenHeight = Common.GetScreenSize()
-    local width = math.floor(Common.FitWindowWidth(screenWidth * 0.58, 1050, screenWidth * 0.04))
-    local height = math.floor(Common.FitWindowHeight(screenHeight * 0.70, 620, screenHeight * 0.04))
+    local width = math.floor(Common.FitWindowWidth(screenWidth * 0.58, 940, screenWidth * 0.04))
+    local height = math.floor(Common.FitWindowHeight(screenHeight * 0.70, 560, screenHeight * 0.04))
     local root = GUI.Frame(GUI.RectTransform(Point(width, height), nil, GUI.Anchor.Center), "GUIFrame")
     UI.MenuRoot, UI.CurrentMenu, UI.Popups = root, root, {}
     local layout = GUI.LayoutGroup(Common.CreateRect(0.95, 0.98, root, GUI.Anchor.Center), false)
@@ -114,7 +114,7 @@ function UI.Show(itemId, snapshot)
     rights:RecalculateChildren()
     rights:UpdateScrollBarSize()
     UI.ResizeTop, UI.ResizeBottom = {}, {}
-    UI.ResizeSides = { left = {}, right = {}, minimumWidthPixels = 1050, minimumHeightPixels = 620 }
+    UI.ResizeSides = { left = {}, right = {}, minimumWidthPixels = 940, minimumHeightPixels = 560 }
     Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
     local actions = GUI.LayoutGroup(Common.CreateRect(1, 0.085, layout), true)
     actions.RelativeSpacing = 0.01

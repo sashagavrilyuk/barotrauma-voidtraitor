@@ -205,8 +205,8 @@ function UI.Show(itemId, snapshot)
     if UI.MenuRoot ~= nil then UI.Update(snapshot) return end
     UI.ItemId = itemId
     local screenWidth, screenHeight = Common.GetScreenSize()
-    local width = math.floor(Common.FitWindowWidth(screenWidth * 0.55, 1100, screenWidth * 0.04))
-    local height = math.floor(Common.FitWindowHeight(screenHeight * 0.65, 650, screenHeight * 0.04))
+    local width = math.floor(Common.FitWindowWidth(screenWidth * 0.55, 940, screenWidth * 0.04))
+    local height = math.floor(Common.FitWindowHeight(screenHeight * 0.65, 560, screenHeight * 0.04))
     local root = GUI.Frame(GUI.RectTransform(Point(width, height), nil, GUI.Anchor.Center), "GUIFrame")
     root.RectTransform.ScreenSpaceOffset = Point(0, -Common.SafeIntScale(25))
     UI.MenuRoot, UI.CurrentMenu, S.currentMenu, S.guiRoot = root, root, root, root
@@ -217,9 +217,8 @@ function UI.Show(itemId, snapshot)
         return true
     end, { titleScale = 1.15 })
     UI.Budget = P.CreateText(layout, 1, 0.065, nil, "", GUI.Alignment.Left, 0.85, nil, false)
-    Common.SetAutoScaleText(UI.Budget, 0.85)
-    UI.Budget.AutoScaleVertical = true
-    local upper = P.CreateLayout(layout, 1, 0.58, nil, true)
+    UI.Budget.TextScale = 0.85
+    local upper = P.CreateLayout(layout, 1, 0.53, nil, true)
     upper.RelativeSpacing = 0.015
     S.catalogHost = GUI.Frame(P.CreateRect(0.585, 1, upper), nil)
     S.catalogHost.Color = Color(0, 0, 0, 0)
@@ -229,8 +228,7 @@ function UI.Show(itemId, snapshot)
     cart.RelativeSpacing = 0.007
     P.CreateText(cart, 1, 0.085, nil, snapshot.Text.Cart, GUI.Alignment.Left, 1.0)
     UI.Details = P.CreateText(cart, 1, 0.18, nil, "", GUI.Alignment.Left, 0.75)
-    Common.SetAutoScaleText(UI.Details, 0.75)
-    UI.Details.AutoScaleVertical = true
+    UI.Details.TextScale = 0.75
     UI.CartList = GUI.ListBox(P.CreateRect(1, 0.30, cart), false)
     UI.Total = P.CreateText(cart, 1, 0.07, nil, "", GUI.Alignment.Left, 0.95)
     P.CreateText(cart, 1, 0.06, nil, snapshot.Text.Reason, GUI.Alignment.Left, 0.9)
@@ -250,9 +248,9 @@ function UI.Show(itemId, snapshot)
         return true
     end
     P.CreateText(layout, 1, 0.04, nil, snapshot.Text.Orders, GUI.Alignment.Left, 1.0)
-    UI.OrderList = GUI.ListBox(P.CreateRect(1, 0.225, layout), false)
+    UI.OrderList = GUI.ListBox(P.CreateRect(1, 0.20, layout), false)
     UI.ResizeTop, UI.ResizeBottom = {}, {}
-    UI.ResizeSides = { left = {}, right = {}, minimumWidthPixels = 1100, minimumHeightPixels = 650 }
+    UI.ResizeSides = { left = {}, right = {}, minimumWidthPixels = 940, minimumHeightPixels = 560 }
     Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
     UI.Update(snapshot)
     if S.shopList == nil then P.ShowMenu() end
