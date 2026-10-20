@@ -136,7 +136,7 @@ function Common.CreateWindowHeader(content, root, label, tooltip, onClose, optio
     header.Color = Color(0, 0, 0, 0)
     header.CanBeFocused = false
 
-    local drag = GUI.DragHandle(Common.CreateRect(0.92, 1, header, GUI.Anchor.TopLeft), root.RectTransform, nil)
+    local drag = GUI.DragHandle(Common.CreateRect(options.rightLabel ~= nil and 0.60 or 0.92, 1, header, GUI.Anchor.TopLeft), root.RectTransform, nil)
     local transparent = Color(0, 0, 0, 0)
     drag.Color = transparent
     drag.HoverColor = transparent
@@ -149,6 +149,11 @@ function Common.CreateWindowHeader(content, root, label, tooltip, onClose, optio
         label, GUI.Alignment.Left, options.titleScale or 1.00, Color(235, 205, 145, 255), options.wrap == true)
     title.Font = GUI.Style.SubHeadingFont
     Common.SetAutoScaleText(title, options.titleScale or 1.00)
+    if options.rightLabel ~= nil then
+        local rightLabel = Common.CreateText(header, 0.32, 1, GUI.Anchor.CenterRight, options.rightLabel, GUI.Alignment.Left, 1.0, nil, false)
+        rightLabel.RectTransform.RelativeOffset = Vector2(0.05, 0)
+        rightLabel.CanBeFocused = false
+    end
     if options.titleNoFocus then title.CanBeFocused = false end
 
     local size = math.min(Common.SafeIntScale(62), 48)

@@ -215,7 +215,7 @@ function UI.Show(itemId, snapshot)
     Common.CreateWindowHeader(layout, root, snapshot.Text.Title, snapshot.Text.Close, function()
         UI.CloseMenu()
         return true
-    end, { titleScale = 1.15 })
+    end, { titleScale = 1.15, rightLabel = snapshot.Text.Cart })
     local body = P.CreateLayout(layout, 1, 0.86, nil, true)
     body.RelativeSpacing = 0.015
     local left = P.CreateLayout(body, 0.585, 1, nil, false)
@@ -230,7 +230,6 @@ function UI.Show(itemId, snapshot)
     local cartFrame = GUI.Frame(P.CreateRect(0.40, 1, body), "GUIFrameListBox")
     local cart = P.CreateLayout(cartFrame, 0.95, 0.94, GUI.Anchor.Center, false)
     cart.RelativeSpacing = 0.007
-    P.CreateText(cart, 1, 0.065, nil, snapshot.Text.Cart, GUI.Alignment.Left, 1.0)
     UI.Details = P.CreateText(cart, 1, 0.18, nil, "", GUI.Alignment.Left, 0.75)
     UI.Details.TextScale = 0.75
     UI.CartList = GUI.ListBox(P.CreateRect(1, 0.30, cart), false)
