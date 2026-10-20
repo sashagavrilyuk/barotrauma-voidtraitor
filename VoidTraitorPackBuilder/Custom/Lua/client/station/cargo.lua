@@ -220,9 +220,9 @@ function UI.Show(itemId, snapshot)
     body.RelativeSpacing = 0.015
     local left = P.CreateLayout(body, 0.585, 1, nil, false)
     left.RelativeSpacing = 0.007
-    UI.Budget = P.CreateText(left, 1, 0.12, nil, "", GUI.Alignment.Left, 0.85, nil, true)
-    UI.Budget.TextScale = 0.85
-    S.catalogHost = GUI.Frame(P.CreateRect(1, 0.61, left), nil)
+    UI.Budget = P.CreateText(left, 1, 0.13, nil, "", GUI.Alignment.Left, 0.8, nil, true)
+    UI.Budget.TextScale = 0.8
+    S.catalogHost = GUI.Frame(P.CreateRect(1, 0.60, left), nil)
     S.catalogHost.Color = Color(0, 0, 0, 0)
     S.catalogHost.CanBeFocused = false
     P.CreateText(left, 1, 0.04, nil, snapshot.Text.Orders, GUI.Alignment.Left, 1.0)
