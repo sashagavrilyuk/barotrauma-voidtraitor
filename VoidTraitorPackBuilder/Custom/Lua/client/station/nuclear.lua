@@ -119,29 +119,3 @@ Hook.Add("think", "VoidTraitor.Nuclear.Selection", function()
         UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom, 340, nil, nil, nil, nil, UI.ResizeSides)
     end
 end)
-
--- Temporary diagnostics: set _G.VoidTraitorNukeDebug = true in the client Lua console.
-local lastDebugAudio, debugItem
-Hook.Add("think", "VoidTraitor.Nuclear.AudioDebug", function()
-    if UI.Disabled or not rawget(_G, "VoidTraitorNukeDebug") then
-        lastDebugAudio, debugItem = nil, nil
-        return
-    end
-    if UI.SelectedItem ~= nil and not UI.SelectedItem.Removed then
-        debugItem = UI.SelectedItem
-    end
-    local item = debugItem
-    if item == nil or item.Removed then return end
-    local states = {}
-    for component in item.Components do
-        if component.Name == "LightComponent" and component.Range == 0 then
-            states[#states + 1] = tostring(#states + 1) .. "=" .. tostring(component.IsOn)
-        end
-    end
-    local status = UI.Snapshot ~= nil and UI.Snapshot.Status or "unknown"
-    local state = tostring(item.ID) .. ":" .. status .. ":" .. table.concat(states, ",")
-    if state ~= lastDebugAudio then
-        print("[VoidTraitor/NukeDebug/client] item=" .. tostring(item.ID) .. " status=" .. state)
-        lastDebugAudio = state
-    end
-end)

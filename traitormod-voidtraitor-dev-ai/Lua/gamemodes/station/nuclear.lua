@@ -1,4 +1,4 @@
-local nuclear = { DebugEnabled = false }
+local nuclear = {}
 Traitormod.Nuclear = nuclear
 local config = Traitormod.Config.Nuclear
 local json = require("json")
@@ -89,15 +89,6 @@ function nuclear.Update(item, data)
     for index, audio in ipairs(data.Audio) do
         local enabled = index == playing
         if audio.IsOn ~= enabled then audio.IsOn = enabled end
-    end
-    if nuclear.DebugEnabled and (data.LastDebugStatus ~= data.Status or data.LastDebugSound ~= playing) then
-        local states = {}
-        for index, audio in ipairs(data.Audio) do
-            states[#states + 1] = tostring(index) .. "=" .. tostring(audio.IsOn)
-        end
-        print("[VoidTraitor/NukeDebug/server] item=" .. tostring(item.ID) .. " status=" .. data.Status
-            .. " sound=" .. tostring(playing) .. " audio=[" .. table.concat(states, ",") .. "]")
-        data.LastDebugStatus, data.LastDebugSound = data.Status, playing
     end
     local payload
     for client, selected in pairs(sessions) do
@@ -364,20 +355,6 @@ end)
 Hook.Add("think", "Traitormod.Nuclear.Think", nuclear.Think)
 Hook.Add("roundEnd", "Traitormod.Nuclear.End", function() active, bombs, sessions = false, {}, {} end)
 Hook.Add("client.disconnected", "Traitormod.Nuclear.Disconnect", function(client) sessions[client] = nil end)
-
-Traitormod.AddCommand("!nukedebug", function(client)
-    if not client.HasPermission(ClientPermissions.ConsoleCommands) then return true end
-    nuclear.DebugEnabled = not nuclear.DebugEnabled
-    Traitormod.SendChatMessage(client, "Nuclear audio diagnostics: " .. (nuclear.DebugEnabled and "ON" or "OFF"))
-    if nuclear.DebugEnabled then
-        for item, data in pairs(bombs) do
-            if not item.Removed and data.Audio ~= nil then
-                data.LastDebugStatus, data.LastDebugSound = nil, nil
-            end
-        end
-    end
-    return true
-end)
 
 Traitormod.AddCommand("!nukecode", function(client)
     if not client.HasPermission(ClientPermissions.ConsoleCommands) then return true end
