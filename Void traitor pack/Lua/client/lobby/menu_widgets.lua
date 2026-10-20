@@ -121,4 +121,34 @@ function P.UpdateVoidTraitorMenuInteraction()
         S.vtMenuY,
         S.vtMenuHeight
     )
+    P.UpdateVoidTraitorMenuLayout()
+end
+
+function P.UpdateVoidTraitorMenuLayout()
+    if S.currentMenu == nil or S.currentMenuKind ~= "vt" then return end
+
+    local content, listHost = S.vtContent, S.vtListHost
+    if content == nil or listHost == nil then return end
+
+    local height = content.Rect.Height
+    if height <= 0 then return end
+
+    local fixedHeight = S.vtHeader.Rect.Height + S.vtDivider.Rect.Height
+    if S.vtTabs ~= nil then fixedHeight = fixedHeight + S.vtTabs.Rect.Height end
+    local childCount = S.vtHasAdmin and 4 or 3
+    local spacing = (childCount - 1) * (content.AbsoluteSpacing + content.RelativeSpacing * height)
+    local availableHeight = height - fixedHeight - spacing
+    local relativeHeight = P.Clamp(availableHeight / height, 0.1, 1)
+    local currentSize = listHost.RectTransform.RelativeSize
+    if math.abs(currentSize.Y - relativeHeight) > 0.001 then
+        listHost.RectTransform.RelativeSize = Vector2(currentSize.X, relativeHeight)
+        if S.vtMainList ~= nil then
+            S.vtMainList:RecalculateChildren()
+            S.vtMainList:UpdateScrollBarSize()
+        end
+        if S.vtAdminList ~= nil then
+            S.vtAdminList:RecalculateChildren()
+            S.vtAdminList:UpdateScrollBarSize()
+        end
+    end
 end

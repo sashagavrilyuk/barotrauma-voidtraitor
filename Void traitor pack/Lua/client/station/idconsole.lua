@@ -33,12 +33,12 @@ function UI.Show(itemId, snapshot)
     UI.ItemId = itemId
     local text = snapshot.Text
     local screenWidth, screenHeight = Common.GetScreenSize()
-    local width = math.floor(Common.FitWindowWidth(screenWidth * 0.58, 940, screenWidth * 0.04))
-    local height = math.floor(Common.FitWindowHeight(screenHeight * 0.70, 560, screenHeight * 0.04))
+    local width = math.floor(Common.FitWindowWidth(screenWidth * 0.58, 760, screenWidth * 0.04))
+    local height = math.floor(Common.FitWindowHeight(screenHeight * 0.70, 460, screenHeight * 0.04))
     local root = GUI.Frame(GUI.RectTransform(Point(width, height), nil, GUI.Anchor.Center), "GUIFrame")
     UI.MenuRoot, UI.CurrentMenu, UI.Popups = root, root, {}
-    local layout = GUI.LayoutGroup(Common.CreateRect(0.95, 0.98, root, GUI.Anchor.Center), false)
-    layout.RelativeSpacing = 0.008
+    local layout = GUI.LayoutGroup(Common.CreateRect(0.95, 0.92, root, GUI.Anchor.Center), false)
+    layout.RelativeSpacing = 0.006
     Common.CreateWindowHeader(layout, root, text.Title, text.Close, function()
         UI.CloseMenu()
         if Character.Controlled ~= nil then
@@ -114,7 +114,7 @@ function UI.Show(itemId, snapshot)
     rights:RecalculateChildren()
     rights:UpdateScrollBarSize()
     UI.ResizeTop, UI.ResizeBottom = {}, {}
-    UI.ResizeSides = { left = {}, right = {}, minimumWidthPixels = 940, minimumHeightPixels = 560 }
+    UI.ResizeSides = { left = {}, right = {}, minimumWidthPixels = 650, minimumHeightPixels = 460 }
     Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
     local actions = GUI.LayoutGroup(Common.CreateRect(1, 0.085, layout), true)
     actions.RelativeSpacing = 0.01
@@ -245,7 +245,7 @@ Hook.Add("think", "VoidTraitor.IdConsole.Selection", function(deltaTime)
     if UI.Disabled then return end
     if UI.MenuRoot ~= nil then
         UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom,
-            650, UI.Rights, nil, nil, nil, UI.ResizeSides)
+            460, UI.Rights, nil, nil, nil, UI.ResizeSides)
     end
     local item = Common.UpdateSelectedItemMenu(UI, "vt_station_access", function()
         UI.AwaitingOpen, elapsed = true, 0.05

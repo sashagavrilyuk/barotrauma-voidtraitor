@@ -36,17 +36,17 @@ function UI.Show(itemId, snapshot)
     local width, height = math.min(Common.SafeIntScale(460), screenWidth * 0.9), math.min(Common.SafeIntScale(370), screenHeight * 0.9)
     local root = GUI.Frame(GUI.RectTransform(Point(math.floor(width), math.floor(height)), nil, GUI.Anchor.Center), "GUIFrame")
     UI.MenuRoot, UI.CurrentMenu = root, root
-    local layout = GUI.LayoutGroup(Common.CreateRect(0.94, 0.94, root, GUI.Anchor.Center), false)
+    local layout = GUI.LayoutGroup(Common.CreateRect(0.94, 0.92, root, GUI.Anchor.Center), false)
     layout.RelativeSpacing = 0.012
     Common.CreateWindowHeader(layout, root, text.Title, text.Close, function()
         UI.CloseMenu()
         return true
     end, { titleScale = 0.9 })
-    local firstPanel = GUI.Frame(Common.CreateRect(1, 0.12, layout), "GUIFrameListBox")
+    local firstPanel = GUI.Frame(Common.CreateRect(1, 0.10, layout), "GUIFrameListBox")
     local first = Common.CreateText(firstPanel, 0.94, 1, GUI.Anchor.Center, "", GUI.Alignment.CenterLeft, 1, Color(120, 230, 120, 255))
-    local secondPanel = GUI.Frame(Common.CreateRect(1, 0.12, layout), "GUIFrameListBox")
+    local secondPanel = GUI.Frame(Common.CreateRect(1, 0.10, layout), "GUIFrameListBox")
     local second = Common.CreateText(secondPanel, 0.94, 1, GUI.Anchor.Center, "", GUI.Alignment.CenterLeft, 1, Color(120, 230, 120, 255))
-    local body = GUI.LayoutGroup(Common.CreateRect(1, 0.59, layout), true)
+    local body = GUI.LayoutGroup(Common.CreateRect(1, 0.55, layout), true)
     body.RelativeSpacing = 0.02
     local keypad = GUI.LayoutGroup(Common.CreateRect(0.49, 1, body), false)
     keypad.RelativeSpacing = 0.025
@@ -69,7 +69,7 @@ function UI.Show(itemId, snapshot)
     eject.OnClicked = function() UI.Send(UI.Snapshot.Disk and "eject" or "insert") return true end
     local anchor = GUI.Button(Common.CreateRect(1, 0.23, actions), text.Anchor, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
     anchor.OnClicked = function() UI.Send("anchor") return true end
-    UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides = {}, {}, { left = {}, right = {}, minimumWidth = 420 }
+    UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides = {}, {}, { left = {}, right = {}, minimumWidthPixels = 280, minimumHeightPixels = 225 }
     Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
     UI.Update = function(state)
         UI.Snapshot = state
@@ -116,7 +116,7 @@ Hook.Add("think", "VoidTraitor.Nuclear.Selection", function()
     end)
     if item == nil then return end
     if UI.MenuRoot ~= nil then
-        UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom, 340, nil, nil, nil, nil, UI.ResizeSides)
+        UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom, 225, nil, nil, nil, nil, UI.ResizeSides)
     end
 end)
 

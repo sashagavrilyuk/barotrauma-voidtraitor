@@ -28,7 +28,7 @@ end
 
 function Common.CreateFlexibleButton(rect, label, alignment)
     local button = GUI.Button(rect, label, alignment or GUI.Alignment.Center, "GUIButtonFreeScale")
-    button.RectTransform.MaxSize = Point(2147483647, math.min(Common.SafeIntScale(52), 46))
+    button.RectTransform.MaxSize = Point(2147483647, math.min(Common.SafeIntScale(60), 48))
     Common.SetAutoScaleText(button.TextBlock, 1)
     return button
 end
@@ -151,13 +151,13 @@ function Common.CreateWindowHeader(content, root, label, tooltip, onClose, optio
     Common.SetAutoScaleText(title, options.titleScale or 1.00)
     if options.titleNoFocus then title.CanBeFocused = false end
 
-    local size = math.min(Common.SafeIntScale(54), 46)
-    local closeRect = GUI.RectTransform(Point(size, size), header.RectTransform, GUI.Anchor.CenterRight)
-    closeRect.RelativeOffset = Vector2(0.045, 0)
-    closeRect.AbsoluteOffset = Point(Common.SafeIntScale(4), 0)
+    local size = math.min(Common.SafeIntScale(62), 48)
+    local closeRect = GUI.RectTransform(Point(size, size), root.RectTransform, GUI.Anchor.TopRight)
+    closeRect.AbsoluteOffset = Point(Common.SafeIntScale(2), Common.SafeIntScale(2))
     local close = GUI.Button(closeRect, "", GUI.Alignment.Center, "GUICancelButton")
     close.ToolTip = tooltip
     close.OnClicked = onClose
+    return header
 end
 
 function Common.CreateIcon(parent, entry, pixelSize)
@@ -219,7 +219,6 @@ function Common.AddResizeHandles(panel, topTargets, bottomTargets, sideTargets)
         sideTargets.corners = {}
         for _, corner in ipairs({
             { "top-left", GUI.Anchor.TopLeft, 0.785398 },
-            { "top-right", GUI.Anchor.TopRight, -0.785398 },
             { "bottom-left", GUI.Anchor.BottomLeft, -0.785398 },
             { "bottom-right", GUI.Anchor.BottomRight, 0.785398 },
         }) do
