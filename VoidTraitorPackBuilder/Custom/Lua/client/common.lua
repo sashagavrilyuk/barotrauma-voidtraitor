@@ -43,6 +43,80 @@ function Common.SafeIntScale(value)
     return math.floor(value * math.max(GUI.Scale, GUI.Style.Font.LineHeight / DESIGN_LINE_HEIGHT))
 end
 
+-- Window layout follows Space Station 14 (RobustToolbox BoxContainer): rows keep their natural
+-- height, taken from the vanilla style or the font, and only rows without a fixed height (lists,
+-- text areas) share the space left when a window is resized. GUILayoutGroup.Stretch does the same:
+-- children with MinSize = MaxSize keep their height and the others are stretched.
+-- Vanilla style heights and fonts step with the resolution together (Content/UI/style.xml).
+
+function Common.GetGap()
+    return math.floor(GUI.Style.Font.LineHeight * 0.35)
+end
+
+-- The window frame border scales with GUI.Scale (GUI.SlicedSpriteScale), so its margin does too.
+function Common.GetWindowPadding()
+    return GUI.IntScale(12)
+end
+
+function Common.GetStyleHeight(styleName)
+    return GUI.Style.GetComponentStyle(styleName).Height
+end
+
+function Common.GetTextHeight(font, scale)
+    return math.ceil(font.LineHeight * (scale or 1))
+end
+
+function Common.SetFixedHeight(component, height)
+    component.RectTransform.MinSize = Point(0, height)
+    component.RectTransform.MaxSize = Point(2147483647, height)
+end
+
+function Common.SetFixedWidth(component, width)
+    component.RectTransform.MinSize = Point(width, 0)
+    component.RectTransform.MaxSize = Point(width, 2147483647)
+end
+
+-- One line of the block's font and scale.
+function Common.FitHeightToText(block)
+    Common.SetFixedHeight(block, Common.GetTextHeight(block.Font, block.TextScale))
+end
+
+-- Space between stacked buttons keeps the 2560x1440 proportion (12 px for 45 px buttons).
+function Common.GetButtonSpacing()
+    return math.floor(Common.GetStyleHeight("GUIButton") * 12 / 45 + 0.5)
+end
+
+-- The vanilla GUIButton style locks the height for this resolution.
+function Common.CreateButton(parent, width, label, anchor)
+    local button = GUI.Button(Common.CreateRect(width, 1, parent, anchor), label or "", GUI.Alignment.Center, "GUIButton")
+    Common.SetAutoScaleText(button.TextBlock, 1)
+    return button
+end
+
+-- Rows go into the returned layout; it keeps a fixed margin from the window frame.
+function Common.CreateWindowContent(panel)
+    local padding = Common.GetWindowPadding()
+    local function spacer(parent, isHorizontal)
+        local frame = GUI.Frame(Common.CreateRect(1, 1, parent), nil)
+        frame.Color = Color(0, 0, 0, 0)
+        frame.CanBeFocused = false
+        if isHorizontal then Common.SetFixedWidth(frame, padding) else Common.SetFixedHeight(frame, padding) end
+    end
+
+    local outer = GUI.LayoutGroup(Common.CreateRect(1, 1, panel, GUI.Anchor.Center), false)
+    outer.Stretch = true
+    spacer(outer, false)
+    local middle = GUI.LayoutGroup(Common.CreateRect(1, 1, outer), true)
+    middle.Stretch = true
+    spacer(middle, true)
+    local content = GUI.LayoutGroup(Common.CreateRect(1, 1, middle), false)
+    content.Stretch = true
+    content.AbsoluteSpacing = Common.GetGap()
+    spacer(middle, true)
+    spacer(outer, false)
+    return content
+end
+
 function Common.FitWindowWidth(preferredWidth, minimumWidth, margin)
     local screenWidth = Common.GetScreenSize()
     return math.min(math.max(1, screenWidth - (margin or 0) * 2), math.max(preferredWidth, Common.SafeIntScale(minimumWidth)))
@@ -135,37 +209,44 @@ function Common.GetIconData(entry)
     return nil, nil
 end
 
+-- One row like the SS14 FancyWindow header: drag handle with the title, then the close button
+-- vertically centred in the same row. The row height follows the title font.
 function Common.CreateWindowHeader(content, root, label, tooltip, onClose, options)
     options = options or {}
-    local header = GUI.Frame(Common.CreateRect(1, 0.062, content, nil), nil)
-    header.RectTransform.MinSize = Point(0, Common.SafeIntScale(52))
-    header.Color = Color(0, 0, 0, 0)
+    local height = Common.GetTextHeight(GUI.Style.SubHeadingFont, 1.5)
+    local header = GUI.LayoutGroup(Common.CreateRect(1, 1, content), true, GUI.Anchor.CenterLeft)
+    Common.SetFixedHeight(header, height)
+    header.Stretch = true
+    header.AbsoluteSpacing = Common.GetGap()
     header.CanBeFocused = false
 
-    local drag = GUI.DragHandle(Common.CreateRect(options.rightLabel ~= nil and 0.60 or 0.92, 1, header, GUI.Anchor.TopLeft), root.RectTransform, nil)
+    local drag = GUI.DragHandle(Common.CreateRect(options.rightLabel ~= nil and 0.60 or 1, 1, header), root.RectTransform, nil)
     local transparent = Color(0, 0, 0, 0)
     drag.Color = transparent
     drag.HoverColor = transparent
     drag.SelectedColor = transparent
     drag.PressedColor = transparent
 
-    local indicator = GUI.Image(Common.CreateRect(0.07, 0.72, drag, GUI.Anchor.CenterLeft), "GUIDragIndicator")
+    local dragRow = GUI.LayoutGroup(Common.CreateRect(1, 1, drag), true, GUI.Anchor.CenterLeft)
+    dragRow.Stretch = true
+    dragRow.AbsoluteSpacing = Common.GetGap()
+    dragRow.CanBeFocused = false
+    local indicatorSize = math.floor(height * 0.6)
+    local indicator = GUI.Image(GUI.RectTransform(Point(indicatorSize, indicatorSize), dragRow.RectTransform), "GUIDragIndicator")
+    indicator.RectTransform.IsFixedSize = true
     indicator.CanBeFocused = false
-    local title = Common.CreateText(drag, 0.90, 1, GUI.Anchor.CenterRight,
+    local title = Common.CreateText(dragRow, 1, 1, nil,
         label, GUI.Alignment.Left, options.titleScale or 1.00, Color(235, 205, 145, 255), options.wrap == true)
     title.Font = GUI.Style.SubHeadingFont
     Common.SetAutoScaleText(title, options.titleScale or 1.00)
     if options.rightLabel ~= nil then
-        local rightLabel = Common.CreateText(header, 0.32, 1, GUI.Anchor.CenterRight, options.rightLabel, GUI.Alignment.Left, 1.0, nil, false)
-        rightLabel.RectTransform.RelativeOffset = Vector2(0.05, 0)
+        local rightLabel = Common.CreateText(header, 0.40, 1, nil, options.rightLabel, GUI.Alignment.Left, 1.0, nil, false)
         rightLabel.CanBeFocused = false
     end
     if options.titleNoFocus then title.CanBeFocused = false end
 
-    local size = Common.SafeIntScale(48)
-    local closeRect = GUI.RectTransform(Point(size, size), root.RectTransform, GUI.Anchor.TopRight)
-    closeRect.AbsoluteOffset = Point(Common.SafeIntScale(2), Common.SafeIntScale(2))
-    local close = GUI.Button(closeRect, "", GUI.Alignment.Center, "GUICancelButton")
+    local close = GUI.Button(GUI.RectTransform(Point(height, height), header.RectTransform), "", GUI.Alignment.Center, "GUICancelButton")
+    close.RectTransform.IsFixedSize = true
     close.ToolTip = tooltip
     close.OnClicked = onClose
     return header
@@ -202,15 +283,19 @@ function Common.RemoveGuiComponent(component)
     if component.RectTransform ~= nil then component.RectTransform.Parent = nil end
 end
 
+-- Handles fill the window margin (Common.GetWindowPadding), so they never cover the content.
 function Common.AddResizeHandles(panel, topTargets, bottomTargets, sideTargets)
-    local topHandle = GUI.Frame(Common.CreateRect(0.50, 0.024, panel, GUI.Anchor.TopCenter), nil)
+    local thickness = Common.GetWindowPadding()
+    local topHandle = GUI.Frame(Common.CreateRect(0.50, 1, panel, GUI.Anchor.TopCenter), nil)
+    Common.SetFixedHeight(topHandle, thickness)
     topHandle.Color = Color(0, 0, 0, 0)
     topHandle.CanBeFocused = true
     local topIndicator = GUI.Image(Common.CreateRect(0.24, 0.80, topHandle, GUI.Anchor.Center), "GUIDragIndicatorHorizontal")
     topIndicator.CanBeFocused = false
     table.insert(topTargets, topHandle)
 
-    local bottomHandle = GUI.Frame(Common.CreateRect(0.50, 0.024, panel, GUI.Anchor.BottomCenter), nil)
+    local bottomHandle = GUI.Frame(Common.CreateRect(0.50, 1, panel, GUI.Anchor.BottomCenter), nil)
+    Common.SetFixedHeight(bottomHandle, thickness)
     bottomHandle.Color = Color(0, 0, 0, 0)
     bottomHandle.CanBeFocused = true
     local bottomIndicator = GUI.Image(Common.CreateRect(0.24, 0.80, bottomHandle, GUI.Anchor.Center), "GUIDragIndicatorHorizontal")
@@ -220,7 +305,8 @@ function Common.AddResizeHandles(panel, topTargets, bottomTargets, sideTargets)
     if sideTargets ~= nil then
         for _, side in ipairs({ "left", "right" }) do
             local anchor = side == "left" and GUI.Anchor.CenterLeft or GUI.Anchor.CenterRight
-            local handle = GUI.Frame(Common.CreateRect(0.025, 0.38, panel, anchor), nil)
+            local handle = GUI.Frame(Common.CreateRect(1, 0.38, panel, anchor), nil)
+            Common.SetFixedWidth(handle, thickness)
             handle.Color = Color(0, 0, 0, 0)
             handle.CanBeFocused = true
             local indicator = GUI.Image(Common.CreateRect(0.70, 0.35, handle, GUI.Anchor.Center), "GUIDragIndicator")
@@ -233,7 +319,8 @@ function Common.AddResizeHandles(panel, topTargets, bottomTargets, sideTargets)
             { "bottom-left", GUI.Anchor.BottomLeft, -0.785398 },
             { "bottom-right", GUI.Anchor.BottomRight, 0.785398 },
         }) do
-            local handle = GUI.Frame(Common.CreateRect(0.045, 0.07, panel, corner[2]), nil)
+            local handle = GUI.Frame(GUI.RectTransform(Point(thickness * 2, thickness * 2), panel.RectTransform, corner[2]), nil)
+            handle.RectTransform.IsFixedSize = true
             handle.Color = Color(0, 0, 0, 0)
             handle.CanBeFocused = true
             local indicator = GUI.Image(Common.CreateRect(0.7, 0.7, handle, GUI.Anchor.Center), "GUIDragIndicatorHorizontal")
@@ -366,12 +453,17 @@ function Common.UpdateMenuInteraction(currentMenu, resizeState, topTargets, bott
     return resizeState, menuX, menuY, menuHeight
 end
 
-function Common.ResizeButtonToText(button, horizontalPaddingPixels, heightPixels)
+-- Spectator bottom buttons stand on the row of the vanilla chat input (ChatBox.InputBox) with its
+-- height, so they line up with the chat at every resolution; the width follows the label.
+function Common.FitBottomButton(button, horizontalPaddingPixels)
     if button == nil or button.TextBlock == nil then return end
 
+    local input = Game.Client.ChatBox.InputBox.Rect
     local textWidth = button.TextBlock.TextSize.X * button.TextBlock.TextScale
     local width = math.max(1, math.ceil(textWidth + Common.SafeIntScale(horizontalPaddingPixels)))
-    button.RectTransform:Resize(Point(width, Common.SafeIntScale(heightPixels)), true)
+    button.RectTransform:Resize(Point(width, input.Height), true)
+    local _, screenHeight = Common.GetScreenSize()
+    button.RectTransform.AbsoluteOffset = Point(button.RectTransform.AbsoluteOffset.X, screenHeight - input.Bottom)
 end
 
 function Common.IsLocalCandidate()

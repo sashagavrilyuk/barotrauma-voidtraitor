@@ -13,8 +13,6 @@ local NET_RUN = "VoidTraitor_ClientMenuAdminRunV2"
 local PLAYER_LIST_HEIGHT = 120
 local OPTION_LIST_HEIGHT = 100
 local ROW_HEIGHT = 32
-local INPUT_LABEL_HEIGHT = 24
-local INPUT_ROW_HEIGHT = 40
 
 local language = Common.Language.AdminMenu
 local available = false
@@ -149,13 +147,13 @@ local function createPlayerValueAction(parent, actionId)
     local entry = entryById[actionId]
     if entry == nil then return end
 
-    local label = CreateText(parent, 1, 0.05, nil, entry.Label, GUI.Alignment.Left, 0.86, Color(210, 220, 200, 255), false)
-    SetFixedHeight(label, INPUT_LABEL_HEIGHT)
+    local label = CreateText(parent, 1, 1, nil, entry.Label, GUI.Alignment.Left, 0.86, Color(210, 220, 200, 255), false)
     label.Font = GUI.Style.SubHeadingFont
+    Common.FitHeightToText(label)
     label.ToolTip = tostring(entry.Hint or "")
 
-    local row = GUI.Frame(CreateRect(1, 0.09, parent, nil), nil)
-    SetFixedHeight(row, INPUT_ROW_HEIGHT)
+    local row = GUI.Frame(CreateRect(1, 1, parent, nil), nil)
+    Common.SetFixedHeight(row, Common.GetStyleHeight("GUIButton"))
     row.Color = Color(0, 0, 0, 0)
     row.CanBeFocused = false
 
@@ -163,8 +161,7 @@ local function createPlayerValueAction(parent, actionId)
     if input.TextBlock ~= nil then input.TextBlock.TextScale = 0.86 end
     input.ToolTip = tostring(entry.Hint or "")
 
-    local button = Common.CreateFlexibleButton(CreateRect(0.30, 1, row, GUI.Anchor.CenterRight), UI.GetOkText())
-    SetButtonTextScale(button, 0.90)
+    local button = Common.CreateButton(row, 0.30, UI.GetOkText(), GUI.Anchor.CenterRight)
     button.ToolTip = tostring(entry.Hint or "")
     button.Enabled = playerByKey[selectedPlayerKey] ~= nil
     button.OnClicked = function()
@@ -271,19 +268,19 @@ function Admin.Build(parent)
         playerList:UpdateScrollBarSize()
     end
 
-    selectedPlayerText = CreateText(parent, 1, 0.05, nil, "", GUI.Alignment.Left, 0.82, Color(225, 220, 195, 255), false)
-    SetFixedHeight(selectedPlayerText, INPUT_LABEL_HEIGHT)
+    selectedPlayerText = CreateText(parent, 1, 1, nil, "", GUI.Alignment.Left, 0.82, Color(225, 220, 195, 255), false)
+    Common.FitHeightToText(selectedPlayerText)
 
-    local playerActions = GUI.LayoutGroup(CreateRect(1, 0.09, parent, nil), true, GUI.Anchor.CenterLeft)
-    SetFixedHeight(playerActions, INPUT_ROW_HEIGHT)
-    playerActions.RelativeSpacing = 0.008
+    local playerActions = GUI.LayoutGroup(CreateRect(1, 1, parent, nil), true, GUI.Anchor.CenterLeft)
+    Common.SetFixedHeight(playerActions, Common.GetStyleHeight("GUIButton"))
+    playerActions.Stretch = true
+    playerActions.AbsoluteSpacing = Common.GetGap()
 
     for _, actionId in ipairs({ "revive", "void", "unvoid" }) do
         local entry = entryById[actionId]
         if entry ~= nil then
-            local button = Common.CreateFlexibleButton(CreateRect(0.325, 1, playerActions, nil), entry.Label)
+            local button = Common.CreateButton(playerActions, 0.325, entry.Label)
             button.ToolTip = tostring(entry.Hint or "")
-            SetButtonTextScale(button, 0.72)
             table.insert(playerDependentButtons, button)
             button.OnClicked = function()
                 if selectedPlayerKey ~= nil then sendAction(actionId, selectedPlayerKey, "") end
@@ -299,8 +296,8 @@ function Admin.Build(parent)
     if assignEntry ~= nil then
         CreateDivider(parent)
         CreateCategoryHeader(parent, assignEntry.Category)
-        local roleLabel = CreateText(parent, 1, 0.05, nil, text.SelectRole, GUI.Alignment.Left, 0.82, Color(210, 220, 200, 255), false)
-        SetFixedHeight(roleLabel, INPUT_LABEL_HEIGHT)
+        local roleLabel = CreateText(parent, 1, 1, nil, text.SelectRole, GUI.Alignment.Left, 0.82, Color(210, 220, 200, 255), false)
+        Common.FitHeightToText(roleLabel)
 
         local roleList = createFixedList(parent, OPTION_LIST_HEIGHT)
         if #roles == 0 then
@@ -352,8 +349,8 @@ function Admin.Build(parent)
         end
         if not selectedFound then selectedGhostCharacterName = ghostCharacters[1] end
 
-        local characterLabel = CreateText(parent, 1, 0.05, nil, text.SelectCharacter, GUI.Alignment.Left, 0.82, Color(210, 220, 200, 255), false)
-        SetFixedHeight(characterLabel, INPUT_LABEL_HEIGHT)
+        local characterLabel = CreateText(parent, 1, 1, nil, text.SelectCharacter, GUI.Alignment.Left, 0.82, Color(210, 220, 200, 255), false)
+        Common.FitHeightToText(characterLabel)
 
         local characterList = createFixedList(parent, OPTION_LIST_HEIGHT)
         if #ghostCharacters == 0 then
@@ -376,8 +373,8 @@ function Admin.Build(parent)
             characterList:UpdateScrollBarSize()
         end
 
-        local row = GUI.Frame(CreateRect(1, 0.09, parent, nil), nil)
-        SetFixedHeight(row, INPUT_ROW_HEIGHT)
+        local row = GUI.Frame(CreateRect(1, 1, parent, nil), nil)
+        Common.SetFixedHeight(row, Common.GetStyleHeight("GUIButton"))
         row.Color = Color(0, 0, 0, 0)
         row.CanBeFocused = false
 
@@ -385,8 +382,7 @@ function Admin.Build(parent)
         if input.TextBlock ~= nil then input.TextBlock.TextScale = 0.86 end
         input.ToolTip = tostring(ghostEntry.Hint or "")
 
-        ghostRoleButton = Common.CreateFlexibleButton(CreateRect(0.30, 1, row, GUI.Anchor.CenterRight), UI.GetOkText())
-        SetButtonTextScale(ghostRoleButton, 0.90)
+        ghostRoleButton = Common.CreateButton(row, 0.30, UI.GetOkText(), GUI.Anchor.CenterRight)
         ghostRoleButton.ToolTip = tostring(ghostEntry.Hint or "")
         ghostRoleButton.OnClicked = function()
             if selectedGhostCharacterName ~= nil then
@@ -400,8 +396,8 @@ function Admin.Build(parent)
     if eventEntry ~= nil then
         CreateDivider(parent)
         CreateCategoryHeader(parent, eventEntry.Category)
-        local eventLabel = CreateText(parent, 1, 0.05, nil, text.SelectEvent, GUI.Alignment.Left, 0.82, Color(210, 220, 200, 255), false)
-        SetFixedHeight(eventLabel, INPUT_LABEL_HEIGHT)
+        local eventLabel = CreateText(parent, 1, 1, nil, text.SelectEvent, GUI.Alignment.Left, 0.82, Color(210, 220, 200, 255), false)
+        Common.FitHeightToText(eventLabel)
 
         local eventList = createFixedList(parent, OPTION_LIST_HEIGHT)
         if #events == 0 then

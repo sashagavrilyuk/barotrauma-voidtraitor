@@ -161,7 +161,7 @@ end
 local ShouldShowBottomButton = Common.ShouldShowBottomButton
 
 local function ResizeBottomButtonToText()
-    Common.ResizeButtonToText(bottomButton, BOTTOM_BUTTON_HORIZONTAL_PADDING_PIXELS, 32)
+    Common.FitBottomButton(bottomButton, BOTTOM_BUTTON_HORIZONTAL_PADDING_PIXELS)
 end
 
 local function ApplyBottomButtonAlertStyle(flash)
@@ -192,10 +192,8 @@ end
 local function CreateBottomButton()
     DestroyBottomButton()
 
-    local height = SafeIntScale(32)
     local canvas = GUI.Canvas.Instance
-    local rectTransform = GUI.RectTransform(Point(SafeIntScale(190), height), canvas, GUI.Anchor.BottomCenter)
-    rectTransform.AbsoluteOffset = Point(0, SafeIntScale(18))
+    local rectTransform = GUI.RectTransform(Point(SafeIntScale(190), SafeIntScale(32)), canvas, GUI.Anchor.BottomCenter)
 
     bottomButton = GUI.Button(rectTransform, Format(text.Button, freeCount), GUI.Alignment.Center, "GUIButtonSmallFreeScale")
     bottomButton.CanBeFocused = true

@@ -8,50 +8,45 @@ end
 
 
 function P.CreateMenuButton(parent, label, enabled)
-    local button = P.Common.CreateFlexibleButton(P.CreateRect(1, 0.10, parent, nil), label or "")
-    P.SetFixedHeight(button, P.VT_BUTTON_HEIGHT_PIXELS)
+    local button = P.Common.CreateButton(parent, 1, label)
     button.Enabled = enabled ~= false
-    P.SetButtonTextScale(button, 0.92)
     return button
 end
 
 function P.CreateDivider(parent)
-    local frame = GUI.Frame(P.CreateRect(1, 0.02, parent, nil), nil)
-    P.SetFixedHeight(frame, P.VT_DIVIDER_HEIGHT_PIXELS)
+    local frame = GUI.Frame(P.CreateRect(1, 1, parent, nil), nil)
+    P.Common.SetFixedHeight(frame, P.Common.GetGap())
     frame.Color = Color(0, 0, 0, 0)
-    GUI.Image(P.CreateRect(1, 0.50, frame, GUI.Anchor.Center), "HorizontalLine")
+    GUI.Image(P.CreateRect(1, 1, frame, GUI.Anchor.Center), "HorizontalLine")
 end
 
 function P.CreateCategoryHeader(parent, label)
-    local frame = GUI.Frame(P.CreateRect(1, 0.06, parent, nil), nil)
-    P.SetFixedHeight(frame, P.VT_CATEGORY_HEIGHT_PIXELS)
-    frame.Color = Color(0, 0, 0, 0)
-
-    local text = P.CreateText(frame, 1, 0.82, GUI.Anchor.BottomLeft, string.upper(tostring(label or "")), GUI.Alignment.Left, 0.88, Color(205, 220, 200, 255), false)
+    local text = P.CreateText(parent, 1, 1, nil, string.upper(tostring(label or "")), GUI.Alignment.BottomLeft, 0.88, Color(205, 220, 200, 255), false)
     text.Font = GUI.Style.SubHeadingFont
-    return frame
+    P.Common.FitHeightToText(text)
+    return text
 end
 
 function P.CreateTextInputRow(parent, label, placeholder, action, enabled, tooltip)
     local isEnabled = enabled ~= false
-    local labelBlock = P.CreateText(parent, 1, 0.05, nil, label, GUI.Alignment.Left, 0.86, Color(210, 220, 200, 255), false)
-    P.SetFixedHeight(labelBlock, P.VT_INPUT_LABEL_HEIGHT_PIXELS)
+    local labelBlock = P.CreateText(parent, 1, 1, nil, label, GUI.Alignment.Left, 0.86, Color(210, 220, 200, 255), false)
     labelBlock.Font = GUI.Style.SubHeadingFont
+    P.Common.FitHeightToText(labelBlock)
     labelBlock.ToolTip = tooltip or ""
 
-    local row = GUI.LayoutGroup(P.CreateRect(1, 0.09, parent, nil), true, GUI.Anchor.CenterLeft)
-    P.SetFixedHeight(row, P.VT_INPUT_ROW_HEIGHT_PIXELS)
-    row.RelativeSpacing = 0.010
+    local row = GUI.LayoutGroup(P.CreateRect(1, 1, parent, nil), true, GUI.Anchor.CenterLeft)
+    P.Common.SetFixedHeight(row, P.Common.GetStyleHeight("GUIButton"))
+    row.Stretch = true
+    row.AbsoluteSpacing = P.Common.GetGap()
 
     local input = GUI.TextBox(P.CreateRect(0.66, 1, row, nil), placeholder or "")
     input.Enabled = isEnabled
     input.ToolTip = tooltip or ""
     if input.TextBlock ~= nil then input.TextBlock.TextScale = 0.86 end
 
-    local sendButton = P.Common.CreateFlexibleButton(P.CreateRect(0.32, 1, row, nil), P.UiText.Ok)
+    local sendButton = P.Common.CreateButton(row, 0.32, P.UiText.Ok)
     sendButton.Enabled = isEnabled
     sendButton.ToolTip = tooltip or ""
-    P.SetButtonTextScale(sendButton, 0.90)
     sendButton.OnClicked = function()
         local value = input.Text or ""
         P.SendCommand(action, value)
@@ -70,6 +65,7 @@ function P.CreateMenuList(parent)
     list.Color = Color(0, 0, 0, 0)
     if list.ContentBackground ~= nil then list.ContentBackground.Color = Color(0, 0, 0, 0) end
     list.KeepSpaceForScrollBar = true
+    list.Spacing = P.Common.GetButtonSpacing()
     local sidePadding = P.SafeIntScale(P.VT_LIST_SIDE_PADDING_PIXELS)
     local scrollBarWidth = math.max(0, list.ScrollBar.Rect.Width)
     list.Padding = Vector4(scrollBarWidth + sidePadding, 0, sidePadding, 0)
@@ -121,34 +117,4 @@ function P.UpdateVoidTraitorMenuInteraction()
         S.vtMenuY,
         S.vtMenuHeight
     )
-    P.UpdateVoidTraitorMenuLayout()
-end
-
-function P.UpdateVoidTraitorMenuLayout()
-    if S.currentMenu == nil or S.currentMenuKind ~= "vt" then return end
-
-    local content, listHost = S.vtContent, S.vtListHost
-    if content == nil or listHost == nil then return end
-
-    local height = content.Rect.Height
-    if height <= 0 then return end
-
-    local fixedHeight = S.vtHeader.Rect.Height + S.vtDivider.Rect.Height
-    if S.vtTabs ~= nil then fixedHeight = fixedHeight + S.vtTabs.Rect.Height end
-    local childCount = S.vtHasAdmin and 4 or 3
-    local spacing = (childCount - 1) * (content.AbsoluteSpacing + content.RelativeSpacing * height)
-    local availableHeight = height - fixedHeight - spacing
-    local relativeHeight = P.Clamp(availableHeight / height, 0.1, 1)
-    local currentSize = listHost.RectTransform.RelativeSize
-    if math.abs(currentSize.Y - relativeHeight) > 0.001 then
-        listHost.RectTransform.RelativeSize = Vector2(currentSize.X, relativeHeight)
-        if S.vtMainList ~= nil then
-            S.vtMainList:RecalculateChildren()
-            S.vtMainList:UpdateScrollBarSize()
-        end
-        if S.vtAdminList ~= nil then
-            S.vtAdminList:RecalculateChildren()
-            S.vtAdminList:UpdateScrollBarSize()
-        end
-    end
 end

@@ -79,11 +79,6 @@ P.VT_MENU_WIDTH_PIXELS = 370
 P.VT_MENU_DEFAULT_HEIGHT_PIXELS = 580
 P.VT_MENU_MIN_HEIGHT_PIXELS = 340
 P.VT_MENU_MARGIN_PIXELS = 0
-P.VT_BUTTON_HEIGHT_PIXELS = 40
-P.VT_CATEGORY_HEIGHT_PIXELS = 30
-P.VT_DIVIDER_HEIGHT_PIXELS = 10
-P.VT_INPUT_LABEL_HEIGHT_PIXELS = 24
-P.VT_INPUT_ROW_HEIGHT_PIXELS = 40
 P.VT_LIST_SIDE_PADDING_PIXELS = 6
 
 P.SafeIntScale = Common.SafeIntScale
@@ -102,9 +97,7 @@ end
 
 function P.SetFixedHeight(component, pixels)
     if component == nil or component.RectTransform == nil then return end
-    local height = P.SafeIntScale(pixels)
-    component.RectTransform.MinSize = Point(0, height)
-    component.RectTransform.MaxSize = Point(100000, height)
+    Common.SetFixedHeight(component, P.SafeIntScale(pixels))
 end
 
 S.guiRoot = GUI.Frame(P.CreateRect(1, 1, nil, GUI.Anchor.Center), nil)
@@ -114,19 +107,19 @@ S.guiRoot.IgnoreLayoutGroups = true
 S.sharedState.GuiRoot = S.guiRoot
 S.guiRoot:AddToGUIUpdateList(false, P.MENU_DRAW_ORDER)
 
--- The top buttons continue the row of three vanilla HUD buttons, so they use the vanilla GUI.Scale.
-function P.CreateButtonAreaRect(buttonWidth, buttonHeight, buttonCount, padding)
-    buttonCount = buttonCount or 2
-    padding = padding or GUI.IntScale(11)
-
-    local rectTransform = GUI.RectTransform(Point((buttonWidth * buttonCount) + padding, buttonHeight), nil, GUI.Anchor.TopLeft)
-    rectTransform.AbsoluteOffset = Point(GUI.IntScale(11) + ((buttonWidth + padding) * 3), GUI.IntScale(11))
+-- The top buttons continue the row of three vanilla HUD buttons with the same geometry
+-- (GameSession.CreateTopLeftButtons): HUDLayoutSettings.Padding spacing, buttons vertically
+-- centred in ButtonAreaTop, sized from the CrewListToggleButton sprite.
+function P.CreateButtonAreaRect(buttonWidth, buttonCount, padding)
+    local rectTransform = GUI.RectTransform(Point((buttonWidth + padding) * buttonCount - padding, GUI.IntScale(50)), nil, GUI.Anchor.TopLeft)
+    rectTransform.AbsoluteOffset = Point(padding + (buttonWidth + padding) * 3, padding)
     return rectTransform
 end
 
 function P.GetTopButtonSize()
     local buttonHeight = GUI.IntScale(40)
-    return math.floor(buttonHeight * 1.72), buttonHeight
+    local spriteSize = GUI.Style.GetComponentStyle("CrewListToggleButton").GetDefaultSprite().size
+    return math.floor(buttonHeight / spriteSize.Y * spriteSize.X), buttonHeight
 end
 
 function P.GetTopButtonSpacing()

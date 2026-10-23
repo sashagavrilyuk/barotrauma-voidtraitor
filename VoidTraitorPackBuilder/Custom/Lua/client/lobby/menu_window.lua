@@ -39,10 +39,9 @@ P.ShowVoidTraitorMenu = function()
     local panel = GUI.Frame(P.CreateRect(1, 1, root, GUI.Anchor.TopLeft), "GUIFrame")
     panel.CanBeFocused = false
 
-    local content = GUI.LayoutGroup(P.CreateRect(0.965, 0.92, panel, GUI.Anchor.Center), false, GUI.Anchor.TopLeft)
-    content.RelativeSpacing = 0.003
+    local content = P.Common.CreateWindowContent(panel)
 
-    local header = P.Common.CreateWindowHeader(content, root, P.UiText.Title, P.UiText.Cancel, function()
+    P.Common.CreateWindowHeader(content, root, P.UiText.Title, P.UiText.Cancel, function()
         if S.currentMenu == root then
             P.CloseMenu()
         else
@@ -51,16 +50,15 @@ P.ShowVoidTraitorMenu = function()
         return true
     end)
 
-    local divider = GUI.Image(P.CreateRect(1, 0.006, content, nil), "HorizontalLine")
+    GUI.Image(P.CreateRect(1, 1, content, nil), "HorizontalLine")
 
     local hasAdmin = P.Admin.IsAvailable()
-    local listHeight = 0.70
     local mainTab = nil
     local adminTab = nil
-    local tabs = nil
 
     if hasAdmin then
-        tabs = GUI.Frame(P.CreateRect(1, 0.06, content, nil), nil)
+        local tabs = GUI.Frame(P.CreateRect(1, 1, content, nil), nil)
+        P.Common.SetFixedHeight(tabs, P.Common.GetStyleHeight("GUIButton"))
         tabs.Color = Color(0, 0, 0, 0)
         tabs.CanBeFocused = false
         mainTab = GUI.Button(P.CreateRect(0.5, 1, tabs, GUI.Anchor.CenterLeft), P.Admin.GetMainTabText(), GUI.Alignment.Center, "GUITabButton")
@@ -69,8 +67,8 @@ P.ShowVoidTraitorMenu = function()
         P.SetButtonTextScale(adminTab, 0.82)
     end
 
-    local listHost = GUI.Frame(P.CreateRect(1, listHeight, content, nil), nil)
-    S.vtContent, S.vtHeader, S.vtDivider, S.vtTabs, S.vtListHost, S.vtHasAdmin = content, header, divider, tabs, listHost, hasAdmin
+    -- The only row without a fixed height: it takes the space left when the window is resized.
+    local listHost = GUI.Frame(P.CreateRect(1, 1, content, nil), nil)
     listHost.Color = Color(0, 0, 0, 0)
     listHost.CanBeFocused = false
 

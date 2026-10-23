@@ -59,7 +59,6 @@ local ICON_PIXELS = 40
 local BOTTOM_BUTTON_TEXT_SCALE = 0.90
 local BOTTOM_BUTTON_HORIZONTAL_PADDING_PIXELS = 22
 local BOTTOM_BUTTON_GAP_PIXELS = 6
-local BOTTOM_BUTTON_Y_PIXELS = 18
 
 local SafeIntScale = Common.SafeIntScale
 local GetScreenSize = Common.GetScreenSize
@@ -115,7 +114,7 @@ end
 local ShouldShowBottomButton = Common.ShouldShowBottomButton
 
 local function ResizeBottomButtonToText()
-    Common.ResizeButtonToText(bottomButton, BOTTOM_BUTTON_HORIZONTAL_PADDING_PIXELS, 32)
+    Common.FitBottomButton(bottomButton, BOTTOM_BUTTON_HORIZONTAL_PADDING_PIXELS)
 end
 
 local function UpdateBottomButtonPosition()
@@ -129,7 +128,7 @@ local function UpdateBottomButtonPosition()
 
     local width = bottomButton.Rect.Width
     local offsetX = -math.floor((ghostWidth + width) / 2 + SafeIntScale(BOTTOM_BUTTON_GAP_PIXELS))
-    bottomButton.RectTransform.AbsoluteOffset = Point(offsetX, SafeIntScale(BOTTOM_BUTTON_Y_PIXELS))
+    bottomButton.RectTransform.AbsoluteOffset = Point(offsetX, bottomButton.RectTransform.AbsoluteOffset.Y)
 end
 
 local function CreateBottomButton()
