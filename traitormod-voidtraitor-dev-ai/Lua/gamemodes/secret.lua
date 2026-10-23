@@ -262,6 +262,13 @@ function gm:AssignAntagonists(antagonists)
     end
 end
 
+-- A single player tests the round; the admin !testmode override wins.
+function gm:UpdateTestMode(playerCount)
+    if Traitormod.TestModeOverride == nil then
+        Traitormod.Config.TestMode = playerCount == 1
+    end
+end
+
 function gm:SelectAntagonists()
     local this = self
     local thisRoundNumber = Traitormod.RoundNumber
@@ -293,6 +300,11 @@ function gm:SelectAntagonists()
             this:AssignAntagonists({})
             Traitormod.Log("No players to assign traitors")
             return
+        end
+
+        this:UpdateTestMode(playerInGame)
+        if playerInGame == 1 and Traitormod.Config.TestMode then
+            Traitormod.SendMessageEveryone(Traitormod.Language.TestingMode)
         end
 
         local amountTraitors = this.AmountTraitors(playerInGame)

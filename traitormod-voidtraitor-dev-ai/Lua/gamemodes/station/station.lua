@@ -70,6 +70,12 @@ gm.Name = "Station"
 gm.RequiredGamemode = "mission"
 gm.EndOnComplete = false
 gm.RestrictShopToAccessibleCategories = true
+-- Station hides only player characters from the crew list (HidePlayerFromCrew); bots stay listed.
+gm.HandlesCrewListHiding = true
+-- Dead antagonists keep their role so a clone can inherit it.
+gm.KeepRolesOnDeath = true
+-- The ID console can rewrite job IDs, so only the round-start captain card counts.
+gm.CaptainCardTag = "vt_station_original_captain_id"
 
 function gm:HidePlayerFromCrew(character)
     if Traitormod.Config.HideCrewList then
@@ -138,6 +144,9 @@ function gm:Start()
     evacuation.Start(self)
     Traitormod.Communications.Start()
 end
+
+-- Test mode is decided in Start (a single admin), not by the player count.
+function gm:UpdateTestMode() end
 
 function gm:CharacterDeath(character)
     if not Traitormod.Config.TestMode then secret.CharacterDeath(self, character) end

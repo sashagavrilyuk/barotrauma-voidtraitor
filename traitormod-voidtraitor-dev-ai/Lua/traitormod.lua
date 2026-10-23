@@ -177,7 +177,7 @@ Traitormod.RoundStart = function()
     end
 
     if Traitormod.Config.HideCrewList
-        and (Traitormod.SelectedGamemode == nil or Traitormod.SelectedGamemode.Name ~= "Station") then
+        and (Traitormod.SelectedGamemode == nil or not Traitormod.SelectedGamemode.HandlesCrewListHiding) then
         for key, value in pairs(Character.CharacterList) do
             Networking.CreateEntityEvent(value, Character.RemoveFromCrewEventData.__new(value.TeamID, {}))
         end
