@@ -410,8 +410,6 @@ Traitormod.IsRoundFinalizing = function ()
         and Traitormod.SelectedGamemode.Ending == true
 end
 
-Traitormod.IsSecretEnding = Traitormod.IsRoundFinalizing
-
 Traitormod.SetData = function (client, name, amount)
     local accountKey = getClientDataKey(client)
     if Traitormod.ClientData[accountKey] == nil then
