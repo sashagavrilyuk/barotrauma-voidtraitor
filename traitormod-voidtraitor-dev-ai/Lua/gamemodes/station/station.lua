@@ -82,11 +82,6 @@ function gm:PreStart()
     self.Passengers = {}
     self.PendingJobs = {}
     local settings = Game.ServerSettings
-    self.PreviousMissionTypes = settings.MissionTypes
-    self.PreviousRespawnMode = settings.RespawnMode
-    self.PreviousUseRespawnShuttle = settings.UseRespawnShuttle
-    self.PreviousAllowSpectating = settings.AllowSpectating
-    self.PreviousMinRespawnRatio = settings.MinRespawnRatio
     settings.MissionTypes = "VoidTraitorStation"
     settings.RespawnMode = respawnModes.Permadeath
     settings.UseRespawnShuttle = true
@@ -442,16 +437,6 @@ function gm:End()
         Game.NetLobbyScreen.SelectedModeIdentifier = Traitormod.OriginalGamemode
         Traitormod.OriginalGamemode = nil
     end
-    local settings = Game.ServerSettings
-    settings.MissionTypes = self.PreviousMissionTypes
-    local previousRespawnMode = self.PreviousRespawnMode
-    Timer.Wait(function()
-        settings.RespawnMode = previousRespawnMode
-    end, 0)
-    settings.UseRespawnShuttle = self.PreviousUseRespawnShuttle
-    settings.AllowSpectating = self.PreviousAllowSpectating
-    settings.MinRespawnRatio = self.PreviousMinRespawnRatio
-    settings.ServerDetailsChanged = true
 end
 
 -- Station handles outpost completion independently of the native end-of-level timer.

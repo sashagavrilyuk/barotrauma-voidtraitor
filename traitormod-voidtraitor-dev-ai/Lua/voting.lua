@@ -13,6 +13,7 @@ LuaUserData.MakePropertyAccessible(serverSettingsDescriptor, "SelectedOutpostNam
 LuaUserData.MakePropertyAccessible(serverSettingsDescriptor, "HiddenSubs")
 
 local SubmarineTags = LuaUserData.CreateEnumTable("Barotrauma.SubmarineTag")
+local RespawnModes = LuaUserData.CreateEnumTable("Barotrauma.Networking.RespawnMode")
 
 vt.IsStationSub = function(sub)
     return sub ~= nil and Traitormod.ParseSubmarineConfig(sub.Description.Value).Gamemode == "Station"
@@ -436,6 +437,7 @@ local function applySecretSelection(playerCount)
     Game.ServerSettings.SelectedSubmarine = tostring(submarine.Name)
     Game.ServerSettings.TraitorProbability = tonumber(cfg.SecretTraitorProbability) or 1
     Game.ServerSettings.SelectedLevelDifficulty = tonumber(cfg.SecretDifficulty) or 50
+    Game.ServerSettings.RespawnMode = RespawnModes[cfg.SecretRespawnMode or "MidRound"]
 
     setMissionTypeList(cfg.SecretMissionTypes)
     applyCommonLobbySync()
@@ -472,6 +474,7 @@ local function applyHideSelection(playerCount)
     Game.ServerSettings.GameModeIdentifier = cfg.HideModeIdentifier or "pvp"
     Game.ServerSettings.SelectedSubmarine = tostring(submarine.Name)
     Game.ServerSettings.TraitorProbability = tonumber(cfg.HideTraitorProbability) or 0
+    Game.ServerSettings.RespawnMode = RespawnModes[cfg.HideRespawnMode or "MidRound"]
 
     local missionTypes = cfg.HideMissionTypes or {}
     if cfg.HideKeepSecretMissionTypes ~= false then
@@ -507,6 +510,7 @@ local function applyAttackDefendSelection(playerCount)
     Game.ServerSettings.GameModeIdentifier = cfg.AttackDefendModeIdentifier or "pvp"
     Game.ServerSettings.SelectedSubmarine = tostring(submarine.Name)
     Game.ServerSettings.TraitorProbability = tonumber(cfg.AttackDefendTraitorProbability) or 0
+    Game.ServerSettings.RespawnMode = RespawnModes[cfg.AttackDefendRespawnMode or "MidRound"]
 
     local missionTypes = cfg.AttackDefendMissionTypes or {}
     if cfg.AttackDefendKeepSecretMissionTypes ~= false then
