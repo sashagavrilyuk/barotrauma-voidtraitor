@@ -67,7 +67,9 @@ Traitormod.DropPointItem = function(client, amount)
             end
 
             setupPointItem(item, amount, "", nil)
-            Traitormod.SetData(client, "Points", latestPoints - amount)
+            if not Traitormod.Config.TestMode then
+                Traitormod.SetData(client, "Points", latestPoints - amount)
+            end
             Traitormod.SendMessage(client, Traitormod.FormatText("CMDDropPointsDropped", amount))
         end)
     end)
@@ -81,6 +83,11 @@ Hook.Add("traitormod.terminalWrite", "Traitormod.PointItem", function (item, cli
     local data = Traitormod.PointItems[item]
 
     if data == nil then return end
+
+    if Traitormod.IsRoundFinalizing() then
+        Traitormod.SendMessage(client, Traitormod.GetText("PointItemClaimUnavailable"))
+        return
+    end
 
     Traitormod.AwardPoints(client, data.Amount)
     Traitormod.SendMessage(client, Traitormod.FormatText("ReceivedPoints", data.Amount), "InfoFrameTabButton.Mission")
