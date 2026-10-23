@@ -57,7 +57,7 @@ function P.BuildShopPanel(overlay)
             S.classLimitTextBlocks.shop = {}
 
             local breadcrumb = P.CreateText(list.Content, 0.96, 0.075, GUI.Anchor.TopLeft, P.GetSelectedFolderLabel(), GUI.Alignment.Left, 1.08, Color(180, 220, 190, 255))
-            breadcrumb.RectTransform.MinSize = Point(0, 28)
+            breadcrumb.RectTransform.MinSize = Point(0, P.Common.SafeIntScale(28))
 
             local hasProducts = false
             for _, product in ipairs(S.products) do

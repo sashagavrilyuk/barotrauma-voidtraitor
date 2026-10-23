@@ -28,23 +28,29 @@ end
 
 function Common.CreateFlexibleButton(rect, label, alignment)
     local button = GUI.Button(rect, label, alignment or GUI.Alignment.Center, "GUIButtonFreeScale")
-    button.RectTransform.MaxSize = Point(2147483647, math.min(Common.SafeIntScale(60), 48))
+    button.RectTransform.MaxSize = Point(2147483647, Common.SafeIntScale(48))
     Common.SetAutoScaleText(button.TextBlock, 1)
     return button
 end
 
+-- VoidTraitor sizes are designed in 1920x1080 pixels. Barotrauma scales layouts with GUI.Scale,
+-- but picks font sizes in resolution steps (Content/UI/style.xml), so below 1080p the text keeps
+-- its 1080p size. Sizes follow whichever is larger: GUI.Scale or the default font line height
+-- relative to its 1080p value. Use GUI.IntScale only to line up with vanilla HUD elements.
+local DESIGN_LINE_HEIGHT = 18
+
 function Common.SafeIntScale(value)
-    return GUI.IntScale(value)
+    return math.floor(value * math.max(GUI.Scale, GUI.Style.Font.LineHeight / DESIGN_LINE_HEIGHT))
 end
 
 function Common.FitWindowWidth(preferredWidth, minimumWidth, margin)
     local screenWidth = Common.GetScreenSize()
-    return math.min(math.max(1, screenWidth - (margin or 0) * 2), math.max(preferredWidth, minimumWidth))
+    return math.min(math.max(1, screenWidth - (margin or 0) * 2), math.max(preferredWidth, Common.SafeIntScale(minimumWidth)))
 end
 
 function Common.FitWindowHeight(preferredHeight, minimumHeight, margin)
     local _, screenHeight = Common.GetScreenSize()
-    return math.min(math.max(1, screenHeight - (margin or 0) * 2), math.max(preferredHeight, minimumHeight))
+    return math.min(math.max(1, screenHeight - (margin or 0) * 2), math.max(preferredHeight, Common.SafeIntScale(minimumHeight)))
 end
 
 function Common.GetScreenSize()
@@ -132,7 +138,7 @@ end
 function Common.CreateWindowHeader(content, root, label, tooltip, onClose, options)
     options = options or {}
     local header = GUI.Frame(Common.CreateRect(1, 0.062, content, nil), nil)
-    header.RectTransform.MinSize = Point(0, math.min(Common.SafeIntScale(62), 52))
+    header.RectTransform.MinSize = Point(0, Common.SafeIntScale(52))
     header.Color = Color(0, 0, 0, 0)
     header.CanBeFocused = false
 
@@ -156,7 +162,7 @@ function Common.CreateWindowHeader(content, root, label, tooltip, onClose, optio
     end
     if options.titleNoFocus then title.CanBeFocused = false end
 
-    local size = math.min(Common.SafeIntScale(62), 48)
+    local size = Common.SafeIntScale(48)
     local closeRect = GUI.RectTransform(Point(size, size), root.RectTransform, GUI.Anchor.TopRight)
     closeRect.AbsoluteOffset = Point(Common.SafeIntScale(2), Common.SafeIntScale(2))
     local close = GUI.Button(closeRect, "", GUI.Alignment.Center, "GUICancelButton")
@@ -300,10 +306,10 @@ function Common.UpdateMenuInteraction(currentMenu, resizeState, topTargets, bott
 
     local screenWidth, screenHeight = Common.GetScreenSize()
     local margin = Common.SafeIntScale(10)
-    local minimumHeight = math.min(sideTargets ~= nil and sideTargets.minimumHeightPixels
-        or Common.SafeIntScale(minimumHeightPixels), screenHeight - 2 * margin)
+    local minimumHeight = math.min(Common.SafeIntScale(sideTargets ~= nil and sideTargets.minimumHeightPixels
+        or minimumHeightPixels), screenHeight - 2 * margin)
     local minimumWidth = sideTargets ~= nil and math.min(
-        sideTargets.minimumWidthPixels or Common.SafeIntScale(sideTargets.minimumWidth), screenWidth - 2 * margin) or 0
+        Common.SafeIntScale(sideTargets.minimumWidthPixels or sideTargets.minimumWidth), screenWidth - 2 * margin) or 0
     local dy = PlayerInput.MousePosition.Y - resizeState.MouseY
     local dx = PlayerInput.MousePosition.X - resizeState.MouseX
     local newHeight, newWidth = resizeState.Height, resizeState.Width

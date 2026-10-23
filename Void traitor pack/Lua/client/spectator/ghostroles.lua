@@ -197,7 +197,7 @@ local function CreateBottomButton()
     local rectTransform = GUI.RectTransform(Point(SafeIntScale(190), height), canvas, GUI.Anchor.BottomCenter)
     rectTransform.AbsoluteOffset = Point(0, SafeIntScale(18))
 
-    bottomButton = GUI.Button(rectTransform, Format(text.Button, freeCount), GUI.Alignment.Center, "GUIButtonSmall")
+    bottomButton = GUI.Button(rectTransform, Format(text.Button, freeCount), GUI.Alignment.Center, "GUIButtonSmallFreeScale")
     bottomButton.CanBeFocused = true
     bottomButtonBaseColors = {
         Color = bottomButton.Color,

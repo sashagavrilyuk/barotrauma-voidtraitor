@@ -61,7 +61,7 @@ function P.CreateTopButtons()
     S.sharedState.ButtonRoot = S.buttonRoot
 
     if S.shopAvailable ~= false then
-        local shop = GUI.Button(GUI.RectTransform(Point(buttonWidth, buttonHeight), root.RectTransform), P.UiText.ShopButton, GUI.Alignment.Center, "GUIButtonSmall")
+        local shop = GUI.Button(GUI.RectTransform(Point(buttonWidth, buttonHeight), root.RectTransform), P.UiText.ShopButton, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
         shop.CanBeFocused = true
         shop.ToolTip = P.UiText.ShopTooltip
         P.SetButtonTextScale(shop, 0.74)
@@ -72,7 +72,7 @@ function P.CreateTopButtons()
         end
     end
 
-    local vt = GUI.Button(GUI.RectTransform(Point(buttonWidth, buttonHeight), root.RectTransform), P.UiText.MainButton, GUI.Alignment.Center, "GUIButtonSmall")
+    local vt = GUI.Button(GUI.RectTransform(Point(buttonWidth, buttonHeight), root.RectTransform), P.UiText.MainButton, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
     vt.CanBeFocused = true
     vt.ToolTip = P.UiText.MainTooltip
     P.SetButtonTextScale(vt, 0.88)

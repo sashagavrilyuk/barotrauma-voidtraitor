@@ -137,7 +137,7 @@ local function CreateBottomButton()
 
     local canvas = GUI.Canvas.Instance
     local rectTransform = GUI.RectTransform(Point(SafeIntScale(180), SafeIntScale(32)), canvas, GUI.Anchor.BottomCenter)
-    bottomButton = GUI.Button(rectTransform, text.Button, GUI.Alignment.Center, "GUIButtonSmall")
+    bottomButton = GUI.Button(rectTransform, text.Button, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
     bottomButton.CanBeFocused = true
 
     if bottomButton.TextBlock ~= nil then

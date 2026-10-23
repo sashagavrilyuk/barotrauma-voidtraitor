@@ -114,22 +114,23 @@ S.guiRoot.IgnoreLayoutGroups = true
 S.sharedState.GuiRoot = S.guiRoot
 S.guiRoot:AddToGUIUpdateList(false, P.MENU_DRAW_ORDER)
 
+-- The top buttons continue the row of three vanilla HUD buttons, so they use the vanilla GUI.Scale.
 function P.CreateButtonAreaRect(buttonWidth, buttonHeight, buttonCount, padding)
     buttonCount = buttonCount or 2
-    padding = padding or P.SafeIntScale(11)
+    padding = padding or GUI.IntScale(11)
 
     local rectTransform = GUI.RectTransform(Point((buttonWidth * buttonCount) + padding, buttonHeight), nil, GUI.Anchor.TopLeft)
-    rectTransform.AbsoluteOffset = Point(P.SafeIntScale(11) + ((buttonWidth + padding) * 3), P.SafeIntScale(11))
+    rectTransform.AbsoluteOffset = Point(GUI.IntScale(11) + ((buttonWidth + padding) * 3), GUI.IntScale(11))
     return rectTransform
 end
 
 function P.GetTopButtonSize()
-    local buttonHeight = P.SafeIntScale(40)
+    local buttonHeight = GUI.IntScale(40)
     return math.floor(buttonHeight * 1.72), buttonHeight
 end
 
 function P.GetTopButtonSpacing()
-    return P.SafeIntScale(11)
+    return GUI.IntScale(11)
 end
 
 function P.SendNetMessage(identifier, writer)

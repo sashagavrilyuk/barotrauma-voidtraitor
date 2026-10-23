@@ -123,8 +123,8 @@ P.ShowMenu = function()
     local screenWidth = Common.GetScreenSize()
     local panelWidth = Common.FitWindowWidth(screenWidth * 0.290, 480, Common.SafeIntScale(10))
     P.PANEL_WIDTH = math.min(0.48, panelWidth / screenWidth)
-    P.ITEM_ICON_PIXELS = math.min(86, math.floor(panelWidth * 0.145))
-    P.ACTION_BUTTON_PIXELS = math.min(102, math.floor(panelWidth * 0.145))
+    P.ITEM_ICON_PIXELS = math.min(Common.SafeIntScale(86), math.floor(panelWidth * 0.145))
+    P.ACTION_BUTTON_PIXELS = math.min(Common.SafeIntScale(102), math.floor(panelWidth * 0.145))
     P.CloseMenu(true)
     S.cooldownTextBlocks.shop = {}
     S.cooldownTextBlocks.cart = {}
