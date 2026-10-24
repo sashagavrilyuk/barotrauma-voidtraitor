@@ -391,8 +391,6 @@ local function BuildDetailsPanel(root, role, groupWidth, listWidth, gapWidth, de
         return true
     end, { titleScale = 0.96, wrap = true })
 
-    GUI.Image(CreateRect(1, 0.006, content, nil), "HorizontalLine")
-
     local summary = GUI.LayoutGroup(CreateRect(1, 0.175, content, nil), true, GUI.Anchor.CenterLeft)
     summary.Stretch = true
     summary.RelativeSpacing = 0.012
@@ -620,7 +618,7 @@ end
 local function UpdateMenuInteraction()
     resizeState, menuX, menuY, menuHeight = Common.UpdateMenuInteraction(
         currentMenu, resizeState, resizeTopTargets, resizeBottomTargets,
-        MIN_HEIGHT_PIXELS, roleList, menuX, menuY, menuHeight
+        SafeIntScale(MIN_HEIGHT_PIXELS), roleList, menuX, menuY, menuHeight
     )
 end
 

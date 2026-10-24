@@ -81,7 +81,7 @@ end
 local function addResizeHandles(panel)
     resizeTopTargets = {}
     resizeBottomTargets = {}
-    resizeSideTargets = { left = {}, right = {}, corners = {}, minimumWidth = MIN_WIDTH_PIXELS }
+    resizeSideTargets = { left = {}, right = {}, corners = {}, minimumWidth = SafeIntScale(MIN_WIDTH_PIXELS) }
 
     addResizeTarget(panel, "top-left", 0.05, 0.05, GUI.Anchor.TopLeft)
     addResizeTarget(panel, "top-right", 0.05, 0.05, GUI.Anchor.TopRight)
@@ -105,7 +105,7 @@ end
 
 local function updateResize()
     resizeState, menuX, menuY, menuHeight = Common.UpdateMenuInteraction(currentMenu,
-        resizeState, resizeTopTargets, resizeBottomTargets, MIN_HEIGHT_PIXELS,
+        resizeState, resizeTopTargets, resizeBottomTargets, SafeIntScale(MIN_HEIGHT_PIXELS),
         summaryList, menuX, menuY, menuHeight, resizeSideTargets)
     if currentMenu ~= nil then menuWidth = currentMenu.Rect.Width end
 end
@@ -157,8 +157,6 @@ local function showSummary(summary, closeText)
         closeSummary()
         return true
     end, { titleScale = 1.15, titleNoFocus = true })
-
-    GUI.Image(CreateRect(1, 0.006, content, nil), "HorizontalLine")
 
     local listFrame = GUI.Frame(CreateRect(1, 0.90, content, nil), "GUIFrameListBox")
     listFrame.CanBeFocused = false

@@ -242,8 +242,6 @@ local function BuildPanel(root)
         return true
     end)
 
-    GUI.Image(CreateRect(1, 0.006, content, nil), "HorizontalLine")
-
     local listFrame = GUI.Frame(CreateRect(1, 0.91, content, nil), "GUIFrameListBox")
     listFrame.CanBeFocused = false
 
@@ -354,7 +352,7 @@ local IsConnected = Common.IsConnected
 local function UpdateMenuInteraction()
     resizeState, menuX, menuY, menuHeight = Common.UpdateMenuInteraction(
         currentMenu, resizeState, resizeTopTargets, resizeBottomTargets,
-        MIN_HEIGHT_PIXELS, targetList, menuX, menuY, menuHeight
+        SafeIntScale(MIN_HEIGHT_PIXELS), targetList, menuX, menuY, menuHeight
     )
 end
 

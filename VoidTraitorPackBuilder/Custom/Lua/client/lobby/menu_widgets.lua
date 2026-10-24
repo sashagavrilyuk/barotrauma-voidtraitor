@@ -13,12 +13,7 @@ function P.CreateMenuButton(parent, label, enabled)
     return button
 end
 
-function P.CreateDivider(parent)
-    local frame = GUI.Frame(P.CreateRect(1, 1, parent, nil), nil)
-    P.Common.SetFixedHeight(frame, P.Common.GetGap())
-    frame.Color = Color(0, 0, 0, 0)
-    GUI.Image(P.CreateRect(1, 1, frame, GUI.Anchor.Center), "HorizontalLine")
-end
+P.CreateDivider = P.Common.CreateDivider
 
 function P.CreateCategoryHeader(parent, label)
     local text = P.CreateText(parent, 1, 1, nil, string.upper(tostring(label or "")), GUI.Alignment.BottomLeft, 0.88, Color(205, 220, 200, 255), false)
@@ -111,7 +106,7 @@ function P.UpdateVoidTraitorMenuInteraction()
         S.vtResizeState,
         S.vtResizeTopTargets,
         S.vtResizeBottomTargets,
-        P.VT_MENU_MIN_HEIGHT_PIXELS,
+        P.SafeIntScale(P.VT_MENU_MIN_HEIGHT_PIXELS),
         S.vtMenuList,
         S.vtMenuX,
         S.vtMenuY,

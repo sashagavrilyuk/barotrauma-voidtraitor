@@ -85,18 +85,30 @@ function P.ToggleFilterPopup(button)
     popup:AddToGUIUpdateList(false, P.GUI_DRAW_ORDER + 60)
 end
 
+-- Natural height: a heading line above the vanilla-height drop-down and text box.
+function P.GetFilterBarHeight()
+    return P.Common.GetTextHeight(GUI.Style.SubHeadingFont) + P.Common.GetGap()
+        + math.max(P.Common.GetStyleHeight("GUIDropDown"), P.Common.GetStyleHeight("GUITextBox"))
+end
+
+local function CreateFilterGroup(bar, width, label)
+    local group = P.CreateLayout(bar, width, 1, nil, false, GUI.Anchor.TopLeft)
+    group.RelativeSpacing = 0
+    group.AbsoluteSpacing = P.Common.GetGap()
+    local text = P.CreateText(group, 1, 1, nil, label, GUI.Alignment.BottomLeft, 1, Color(235, 225, 180, 255), false)
+    text.Font = GUI.Style.SubHeadingFont
+    text.AutoScaleHorizontal = true
+    P.Common.FitHeightToText(text)
+    return group
+end
+
 function P.BuildFilterBar(parent)
-    local bar = P.CreateLayout(parent, 1, P.FILTER_BAR_HEIGHT or 0.082, nil, true, GUI.Anchor.TopLeft)
-    if P.FILTER_BAR_MIN_HEIGHT ~= nil then bar.RectTransform.MinSize = Point(0, P.FILTER_BAR_MIN_HEIGHT) end
+    local bar = P.CreateLayout(parent, 1, 1, nil, true, GUI.Anchor.TopLeft)
+    P.Common.SetFixedHeight(bar, P.GetFilterBarHeight())
     bar.RelativeSpacing = 0.018
 
-    local filterGroup = P.CreateLayout(bar, 0.40, 1, nil, false, GUI.Anchor.TopLeft)
-    filterGroup.RelativeSpacing = 0.002
-    local filterLabel = P.CreateText(filterGroup, 1, 0.38, nil, P.GetText("Filter"), GUI.Alignment.BottomLeft, P.FILTER_LABEL_SCALE or 1.70, Color(235, 225, 180, 255), false)
-    filterLabel.TextOffset = Vector2(0, -P.Common.SafeIntScale(2))
-    filterLabel.AutoScaleHorizontal = true
-    filterLabel.AutoScaleVertical = true
-    S.filterButton = GUI.Button(P.CreateRect(1, 0.60, filterGroup, nil), P.GetSelectedFilterLabel(), GUI.Alignment.CenterLeft, "GUIDropDown")
+    local filterGroup = CreateFilterGroup(bar, 0.40, P.GetText("Filter"))
+    S.filterButton = GUI.Button(P.CreateRect(1, 1, filterGroup, nil), P.GetSelectedFilterLabel(), GUI.Alignment.CenterLeft, "GUIDropDown")
     P.SetButtonStyle(S.filterButton, true, false)
     S.filterButton.ForceUpperCase = P.ForceUpperCase.No
     S.filterButton.TextBlock.TextScale = 0.98
@@ -112,13 +124,8 @@ function P.BuildFilterBar(parent)
         return true
     end
 
-    local searchGroup = P.CreateLayout(bar, 0.60, 1, nil, false, GUI.Anchor.TopLeft)
-    searchGroup.RelativeSpacing = 0.002
-    local searchLabel = P.CreateText(searchGroup, 1, 0.38, nil, P.GetText("Search"), GUI.Alignment.BottomLeft, P.FILTER_LABEL_SCALE or 1.70, Color(235, 225, 180, 255), false)
-    searchLabel.TextOffset = Vector2(0, -P.Common.SafeIntScale(2))
-    searchLabel.AutoScaleHorizontal = true
-    searchLabel.AutoScaleVertical = true
-    local searchBox = GUI.TextBox(P.CreateRect(1, 0.60, searchGroup, nil), S.searchText)
+    local searchGroup = CreateFilterGroup(bar, 0.60, P.GetText("Search"))
+    local searchBox = GUI.TextBox(P.CreateRect(1, 1, searchGroup, nil), S.searchText)
     searchBox.OnTextChangedDelegate = function(_, value)
         P.CloseFilterPopup()
         S.searchText = tostring(value or "")

@@ -37,34 +37,44 @@ function UI.Show(itemId, snapshot)
     local width, height = math.min(Common.SafeIntScale(460), screenWidth * 0.9), math.min(Common.SafeIntScale(460), screenHeight * 0.9)
     local root = GUI.Frame(GUI.RectTransform(Point(math.floor(width), math.floor(height)), nil, GUI.Anchor.Center), "GUIFrame")
     UI.MenuRoot, UI.CurrentMenu = root, root
-    local layout = GUI.LayoutGroup(Common.CreateRect(0.94, 0.92, root, GUI.Anchor.Center), false)
-    layout.RelativeSpacing = 0.01
+    local layout, frame = Common.CreateWindowContent(root)
     Common.CreateWindowHeader(layout, root, text.Title, text.Close, function()
         UI.CloseMenu()
         return true
-    end, { titleScale = 0.9 })
-    local input = GUI.TextBox(Common.CreateRect(1, 0.30, layout), "", nil, nil, GUI.Alignment.TopLeft, true, "", nil, false, false)
+    end)
+    -- The message is the only row that grows with the window, like the SS14 console.
+    local input = GUI.TextBox(Common.CreateRect(1, 1, layout), "", nil, nil, GUI.Alignment.TopLeft, true, "", nil, false, false)
     -- The vanilla textbox style fixes its height to one line, including the inner frame.
     input.RectTransform.MinSize, input.RectTransform.MaxSize = Point(0, 0), Point(100000, 100000)
+    Common.SetMinimumHeight(input, Common.GetTextHeight(GUI.Style.Font) * 3)
     input.Frame.RectTransform.MinSize, input.Frame.RectTransform.MaxSize = Point(0, 0), Point(100000, 100000)
     input.MaxTextLength = snapshot.MaxLength
-    local announce = GUI.Button(Common.CreateRect(1, 0.08, layout), text.Announce, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
+    local announce = Common.CreateButton(layout, 1, text.Announce)
     announce.OnClicked = function() input.Deselect() UI.Send("announce", input.Text) return true end
-    local voice = GUI.Button(Common.CreateRect(1, 0.08, layout), text.Voice, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
+    local voice = Common.CreateButton(layout, 1, text.Voice)
     voice.OnClicked = function() input.Deselect() UI.Send("voice") return true end
-    local picker = GUI.DropDown(Common.CreateRect(1, 0.08, layout), "", 5)
+    Common.CreateDivider(layout)
+    local picker = GUI.DropDown(Common.CreateRect(1, 1, layout), "", 5)
+    Common.SetFixedHeight(picker, Common.GetStyleHeight("GUIDropDown"))
     UI.Picker = picker
     for _, code in ipairs(codes) do picker.AddItem(text[code], code) end
     picker.OnSelected = function(_, code) UI.Send("code", code) return true end
-    local evacuationStatus = Common.CreateText(layout, 1, 0.10, GUI.Anchor.Center, "", GUI.Alignment.CenterLeft, 0.9)
-    local evacuation = GUI.Button(Common.CreateRect(1, 0.08, layout), "", GUI.Alignment.Center, "GUIButtonSmallFreeScale")
+    Common.CreateDivider(layout)
+    local evacuationStatus = Common.CreateText(layout, 1, 1, nil, "", GUI.Alignment.Left, 1, nil, false)
+    Common.SetAutoScaleText(evacuationStatus, 1)
+    Common.FitHeightToText(evacuationStatus)
+    local evacuation = Common.CreateButton(layout, 1, "")
     evacuation.OnClicked = function()
         input.Deselect()
         UI.Send("evacuation")
         return true
     end
-    UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides = {}, {}, { left = {}, right = {}, minimumWidthPixels = 280, minimumHeightPixels = 270 }
+    UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides = {}, {}, { left = {}, right = {}, minimumWidth = Common.SafeIntScale(280) }
     Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
+    UI.MinimumHeight = Common.GetMinimumHeight(frame)
+    if root.Rect.Height < UI.MinimumHeight then
+        root.RectTransform:Resize(Point(root.Rect.Width, math.min(UI.MinimumHeight, screenHeight)), true)
+    end
     UI.Update = function(state)
         announce.Enabled = state.Powered and state.AnnouncementCooldown == 0
         announce.Text = text.Announce .. (state.AnnouncementCooldown > 0 and " (" .. state.AnnouncementCooldown .. ")" or "")
@@ -94,8 +104,8 @@ Networking.Receive("VoidTraitor_CommunicationsSnapshot", function(message)
 end)
 Hook.Patch("VoidTraitor.Communications.Hud", "Barotrauma.GameSession", "AddToGUIUpdateList", function()
     if UI.Disabled or UI.MenuRoot == nil or GUI.DisableHUD then return end
-    UI.MenuRoot:AddToGUIUpdateList(false, 98)
-    if UI.Picker.Dropped then UI.Picker.ListBox:AddToGUIUpdateList(false, 99) end
+    UI.MenuRoot:AddToGUIUpdateList(false, 120)
+    if UI.Picker.Dropped then UI.Picker.ListBox:AddToGUIUpdateList(false, 121) end
 end)
 Common.InstallPausePatch("VoidTraitor.Communications.Pause", "VoidTraitorCommunicationsGuiState")
 Hook.Patch("VoidTraitor.Communications.NativeHud", "Barotrauma.Item", "AddToGUIUpdateList", { "System.Int32" }, function(item, parameters)
@@ -113,6 +123,6 @@ Hook.Add("think", "VoidTraitor.Communications.Selection", function()
     end)
     if item == nil then return end
     if UI.MenuRoot ~= nil then
-        UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom, 270, nil, nil, nil, nil, UI.ResizeSides)
+        UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom, UI.MinimumHeight, nil, nil, nil, nil, UI.ResizeSides)
     end
 end)

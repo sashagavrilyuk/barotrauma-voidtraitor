@@ -2,6 +2,7 @@ if SERVER then return {} end
 
 local Common = {}
 local originalTextScales = setmetatable({}, { __mode = "k" })
+local growingRowMinimums = setmetatable({}, { __mode = "k" })
 
 function Common.SetAutoScaleText(block, scale)
     if block == nil then return end
@@ -94,6 +95,7 @@ function Common.CreateButton(parent, width, label, anchor)
 end
 
 -- Rows go into the returned layout; it keeps a fixed margin from the window frame.
+-- The second result is the outer layout, for Common.GetMinimumHeight.
 function Common.CreateWindowContent(panel)
     local padding = Common.GetWindowPadding()
     local function spacer(parent, isHorizontal)
@@ -114,7 +116,40 @@ function Common.CreateWindowContent(panel)
     content.AbsoluteSpacing = Common.GetGap()
     spacer(middle, true)
     spacer(outer, false)
-    return content
+    return content, outer
+end
+
+-- GUILayoutGroup.Stretch scales rows as size * factor, which fills the layout exactly only while the
+-- rows that grow have no MinSize. Their minimum is kept here and counted by Common.GetMinimumHeight,
+-- so the window itself cannot be resized below it.
+function Common.SetMinimumHeight(component, height)
+    growingRowMinimums[component] = height
+end
+
+-- Natural minimum height, like the SS14 measured DesiredSize: a vertical layout adds up its rows
+-- and spacing, a horizontal one takes its tallest child, anything else its own minimum.
+function Common.GetMinimumHeight(component)
+    local own = math.max(component.RectTransform.MinSize.Y, growingRowMinimums[component] or 0)
+    if not LuaUserData.IsTargetType(component, "Barotrauma.GUILayoutGroup") then return own end
+
+    local total, count = 0, 0
+    for child in component.RectTransform.Children do
+        local childComponent = child.GUIComponent
+        if not childComponent.IgnoreLayoutGroups then
+            local height = Common.GetMinimumHeight(childComponent)
+            count = count + 1
+            total = component.IsHorizontal and math.max(total, height) or total + height
+        end
+    end
+    if not component.IsHorizontal and count > 1 then total = total + (count - 1) * component.AbsoluteSpacing end
+    return math.max(own, total)
+end
+
+function Common.CreateDivider(parent)
+    local frame = GUI.Frame(Common.CreateRect(1, 1, parent), nil)
+    Common.SetFixedHeight(frame, Common.GetGap())
+    frame.Color = Color(0, 0, 0, 0)
+    GUI.Image(Common.CreateRect(1, 1, frame, GUI.Anchor.Center), "HorizontalLine")
 end
 
 function Common.FitWindowWidth(preferredWidth, minimumWidth, margin)
@@ -220,7 +255,7 @@ function Common.CreateWindowHeader(content, root, label, tooltip, onClose, optio
     header.AbsoluteSpacing = Common.GetGap()
     header.CanBeFocused = false
 
-    local drag = GUI.DragHandle(Common.CreateRect(options.rightLabel ~= nil and 0.60 or 1, 1, header), root.RectTransform, nil)
+    local drag = GUI.DragHandle(Common.CreateRect(1, 1, header), root.RectTransform, nil)
     local transparent = Color(0, 0, 0, 0)
     drag.Color = transparent
     drag.HoverColor = transparent
@@ -239,16 +274,13 @@ function Common.CreateWindowHeader(content, root, label, tooltip, onClose, optio
         label, GUI.Alignment.Left, options.titleScale or 1.00, Color(235, 205, 145, 255), options.wrap == true)
     title.Font = GUI.Style.SubHeadingFont
     Common.SetAutoScaleText(title, options.titleScale or 1.00)
-    if options.rightLabel ~= nil then
-        local rightLabel = Common.CreateText(header, 0.40, 1, nil, options.rightLabel, GUI.Alignment.Left, 1.0, nil, false)
-        rightLabel.CanBeFocused = false
-    end
     if options.titleNoFocus then title.CanBeFocused = false end
 
     local close = GUI.Button(GUI.RectTransform(Point(height, height), header.RectTransform), "", GUI.Alignment.Center, "GUICancelButton")
     close.RectTransform.IsFixedSize = true
     close.ToolTip = tooltip
     close.OnClicked = onClose
+    Common.CreateDivider(content)
     return header
 end
 
@@ -354,7 +386,8 @@ function Common.GetResizeEdge(topTargets, bottomTargets, sideTargets)
     return nil
 end
 
-function Common.UpdateMenuInteraction(currentMenu, resizeState, topTargets, bottomTargets, minimumHeightPixels, list, menuX, menuY, menuHeight, sideTargets)
+-- minimumHeight and sideTargets.minimumWidth are in screen pixels.
+function Common.UpdateMenuInteraction(currentMenu, resizeState, topTargets, bottomTargets, minimumHeight, list, menuX, menuY, menuHeight, sideTargets)
     if currentMenu == nil then
         return nil, menuX, menuY, menuHeight
     end
@@ -393,10 +426,8 @@ function Common.UpdateMenuInteraction(currentMenu, resizeState, topTargets, bott
 
     local screenWidth, screenHeight = Common.GetScreenSize()
     local margin = Common.SafeIntScale(10)
-    local minimumHeight = math.min(Common.SafeIntScale(sideTargets ~= nil and sideTargets.minimumHeightPixels
-        or minimumHeightPixels), screenHeight - 2 * margin)
-    local minimumWidth = sideTargets ~= nil and math.min(
-        Common.SafeIntScale(sideTargets.minimumWidthPixels or sideTargets.minimumWidth), screenWidth - 2 * margin) or 0
+    minimumHeight = math.min(minimumHeight, screenHeight - 2 * margin)
+    local minimumWidth = sideTargets ~= nil and math.min(sideTargets.minimumWidth, screenWidth - 2 * margin) or 0
     local dy = PlayerInput.MousePosition.Y - resizeState.MouseY
     local dx = PlayerInput.MousePosition.X - resizeState.MouseX
     local newHeight, newWidth = resizeState.Height, resizeState.Width

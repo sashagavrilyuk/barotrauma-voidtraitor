@@ -32,7 +32,7 @@ function P.AddCategoryButton(list, folder)
     local selected = folder.Category == S.selectedCategory and folder.Path == (S.selectedPath or "")
     local rowHeight = folder.Depth == 0 and 0.073 or 0.061
     local row = P.CreateButton(list.Content, 1, rowHeight, GUI.Anchor.TopLeft, "", true, selected, "ListBoxElement")
-    if P.CATEGORY_ROW_MIN_HEIGHT ~= nil then row.RectTransform.MinSize = Point(0, P.CATEGORY_ROW_MIN_HEIGHT) end
+    if P.CATEGORY_ROW_HEIGHT ~= nil then P.Common.SetFixedHeight(row, P.CATEGORY_ROW_HEIGHT) end
 
     local inner = GUI.LayoutGroup(P.CreateRect(0.94, 0.92, row, GUI.Anchor.Center), true, GUI.Anchor.CenterLeft)
     inner.RelativeSpacing = 0.004

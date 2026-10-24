@@ -69,7 +69,7 @@ function UI.Show(itemId, snapshot)
     eject.OnClicked = function() UI.Send(UI.Snapshot.Disk and "eject" or "insert") return true end
     local anchor = GUI.Button(Common.CreateRect(1, 0.23, actions), text.Anchor, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
     anchor.OnClicked = function() UI.Send("anchor") return true end
-    UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides = {}, {}, { left = {}, right = {}, minimumWidthPixels = 280, minimumHeightPixels = 225 }
+    UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides = {}, {}, { left = {}, right = {}, minimumWidth = Common.SafeIntScale(280) }
     Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
     UI.Update = function(state)
         UI.Snapshot = state
@@ -99,7 +99,7 @@ Hook.Patch("VoidTraitor.Nuclear.Use", "Barotrauma.Items.Components.Holdable", "U
     parameters.PreventExecution = true
     return false
 end, Hook.HookMethodType.Before)
-Common.InstallHudPatch("VoidTraitor.Nuclear.Hud", "VoidTraitorNuclearGuiState", 98)
+Common.InstallHudPatch("VoidTraitor.Nuclear.Hud", "VoidTraitorNuclearGuiState", 120)
 Common.InstallPausePatch("VoidTraitor.Nuclear.Pause", "VoidTraitorNuclearGuiState")
 Hook.Patch("VoidTraitor.Nuclear.NativeHud", "Barotrauma.Item", "AddToGUIUpdateList", { "System.Int32" }, function(item, parameters)
     if not UI.Disabled and Game.RoundStarted and item.Prefab.Identifier == "vt_nuclear_bomb" then parameters.PreventExecution = true end
@@ -116,7 +116,7 @@ Hook.Add("think", "VoidTraitor.Nuclear.Selection", function()
     end)
     if item == nil then return end
     if UI.MenuRoot ~= nil then
-        UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom, 225, nil, nil, nil, nil, UI.ResizeSides)
+        UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom, Common.SafeIntScale(225), nil, nil, nil, nil, UI.ResizeSides)
     end
 end)
 

@@ -50,8 +50,6 @@ P.ShowVoidTraitorMenu = function()
         return true
     end)
 
-    GUI.Image(P.CreateRect(1, 1, content, nil), "HorizontalLine")
-
     local hasAdmin = P.Admin.IsAvailable()
     local mainTab = nil
     local adminTab = nil

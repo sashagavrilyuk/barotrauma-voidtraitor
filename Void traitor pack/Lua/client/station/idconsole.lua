@@ -37,8 +37,21 @@ function UI.Show(itemId, snapshot)
     local height = math.floor(Common.FitWindowHeight(screenHeight * 0.70, 460, screenHeight * 0.04))
     local root = GUI.Frame(GUI.RectTransform(Point(width, height), nil, GUI.Anchor.Center), "GUIFrame")
     UI.MenuRoot, UI.CurrentMenu, UI.Popups = root, root, {}
-    local layout = GUI.LayoutGroup(Common.CreateRect(0.95, 0.92, root, GUI.Anchor.Center), false)
-    layout.RelativeSpacing = 0.006
+    local layout, frame = Common.CreateWindowContent(root)
+    local gap, buttonHeight = Common.GetGap(), Common.GetStyleHeight("GUIButton")
+    -- Rows with the vanilla button height: labels stay centred on their text boxes.
+    local function createRow(parent)
+        local row = GUI.LayoutGroup(Common.CreateRect(1, 1, parent), true, GUI.Anchor.CenterLeft)
+        Common.SetFixedHeight(row, buttonHeight)
+        row.Stretch = true
+        row.AbsoluteSpacing = gap
+        return row
+    end
+    local function createSpacer(parent, width)
+        local spacer = GUI.Frame(Common.CreateRect(width, 1, parent), nil)
+        spacer.Color = Color(0, 0, 0, 0)
+        spacer.CanBeFocused = false
+    end
     Common.CreateWindowHeader(layout, root, text.Title, text.Close, function()
         UI.CloseMenu()
         if Character.Controlled ~= nil then
@@ -47,24 +60,26 @@ function UI.Show(itemId, snapshot)
         end
         return true
     end)
-    local cards = GUI.LayoutGroup(Common.CreateRect(1, 0.23, layout), true)
-    cards.RelativeSpacing = 0.02
+    local cards = GUI.LayoutGroup(Common.CreateRect(1, 1, layout), true)
+    cards.Stretch = true
+    cards.AbsoluteSpacing = gap
+    local cardHeight = 0
     local slots = {}
     local current, revision, confirming, pending, savedField = snapshot, nil, false, false, nil
     for index = 1, 2 do
-        local frame = GUI.Frame(Common.CreateRect(0.49, 1, cards), "GUIFrameListBox")
-        local content = GUI.LayoutGroup(Common.CreateRect(0.94, 0.92, frame, GUI.Anchor.Center), false)
-        content.RelativeSpacing = 0.02
-        GUI.TextBlock(Common.CreateRect(1, 0.19, content), index == 1 and text.Auth or text.Target)
-        local details = GUI.TextBlock(Common.CreateRect(1, 0.31, content), "")
+        local card = GUI.Frame(Common.CreateRect(0.5, 1, cards), "GUIFrameListBox")
+        local content, cardLayout = Common.CreateWindowContent(card)
+        Common.FitHeightToText(GUI.TextBlock(Common.CreateRect(1, 1, content), index == 1 and text.Auth or text.Target))
+        local details = GUI.TextBlock(Common.CreateRect(1, 1, content), "")
         details.Wrap = true
         details.AutoScaleVertical = true
-        local row = GUI.LayoutGroup(Common.CreateRect(1, 0.40, content), true)
-        row.RelativeSpacing = 0.02
+        Common.SetFixedHeight(details, Common.GetTextHeight(details.Font) * 2)
+        local row = createRow(content)
         local picker = GUI.DropDown(Common.CreateRect(0.60, 1, row), text.Choose, 5)
+        Common.SetFixedHeight(picker, Common.GetStyleHeight("GUIDropDown"))
         UI.Popups[#UI.Popups + 1] = picker
-        local transfer = Common.CreateFlexibleButton(Common.CreateRect(0.38, 1, row), text.Insert)
-        transfer.TextBlock.AutoScaleHorizontal = true
+        local transfer = Common.CreateButton(row, 0.38, text.Insert)
+        cardHeight = math.max(cardHeight, Common.GetMinimumHeight(cardLayout))
         transfer.OnClicked = function()
             local slot = current.Slots[index]
             if slot.Id ~= 0 then UI.Send("eject", { Slot = slot.Slot, Card = slot.Id })
@@ -73,56 +88,96 @@ function UI.Show(itemId, snapshot)
         end
         slots[index] = { Details = details, Picker = picker, Transfer = transfer }
     end
-    local identity = GUI.LayoutGroup(Common.CreateRect(1, 0.17, layout), false)
-    identity.RelativeSpacing = 0.02
-    local nameRow = GUI.LayoutGroup(Common.CreateRect(1, 0.48, identity), true)
-    local nameLabel = GUI.TextBlock(Common.CreateRect(0.24, 1, nameRow), text.Name)
-    Common.SetAutoScaleText(nameLabel, 1)
+    Common.SetFixedHeight(cards, cardHeight)
+    local function createLabel(row, value)
+        Common.SetAutoScaleText(GUI.TextBlock(Common.CreateRect(0.24, 1, row), value), 1)
+    end
+    local nameRow = createRow(layout)
+    createLabel(nameRow, text.Name)
     local name = GUI.TextBox(Common.CreateRect(0.54, 1, nameRow), "")
     name.MaxTextLength = 64
-    local saveName = Common.CreateFlexibleButton(Common.CreateRect(0.21, 1, nameRow), text.Save)
-    local jobRow = GUI.LayoutGroup(Common.CreateRect(1, 0.48, identity), true)
-    local jobLabel = GUI.TextBlock(Common.CreateRect(0.24, 1, jobRow), text.Job)
-    Common.SetAutoScaleText(jobLabel, 1)
+    local saveName = Common.CreateButton(nameRow, 0.21, text.Save)
+    local jobRow = createRow(layout)
+    createLabel(jobRow, text.Job)
     local job = GUI.TextBox(Common.CreateRect(0.54, 1, jobRow), "")
     job.MaxTextLength = 64
-    local saveJob = Common.CreateFlexibleButton(Common.CreateRect(0.21, 1, jobRow), text.Save)
-    saveName.TextBlock.AutoScaleHorizontal = true
-    saveJob.TextBlock.AutoScaleHorizontal = true
-    local presetRow = GUI.LayoutGroup(Common.CreateRect(1, 0.075, layout), true)
-    local presetLabel = GUI.TextBlock(Common.CreateRect(0.24, 1, presetRow), text.Preset)
-    Common.SetAutoScaleText(presetLabel, 1)
+    local saveJob = Common.CreateButton(jobRow, 0.21, text.Save)
+    local presetRow = createRow(layout)
+    createLabel(presetRow, text.Preset)
     local preset = GUI.DropDown(Common.CreateRect(0.54, 1, presetRow), text.Preset, 6)
+    Common.SetFixedHeight(preset, Common.GetStyleHeight("GUIDropDown"))
+    createSpacer(presetRow, 0.21)
     UI.Popups[#UI.Popups + 1] = preset
     for _, entry in ipairs(snapshot.Presets) do preset.AddItem(entry.Name, entry.Id) end
-    local rights = GUI.ListBox(Common.CreateRect(1, 0.295, layout), false)
+    -- The access list is the only row that grows. Columns are as wide as the longest label needs,
+    -- so labels keep full size, and as many fit as the window width allows.
+    local rights = GUI.ListBox(Common.CreateRect(1, 1, layout), false)
+    rights.Spacing = gap
     UI.Rights = rights
-    local checks = {}
-    for index = 1, #snapshot.Access, 4 do
-        local row = GUI.LayoutGroup(Common.CreateRect(1, 0.16, rights.Content), true)
-        row.RectTransform.MinSize = Point(0, Common.SafeIntScale(38))
-        row.RelativeSpacing = 0.02
-        for offset = 0, 3 do
-            local entry = snapshot.Access[index + offset]
-            if entry ~= nil then
-                local checkbox = GUI.TickBox(Common.CreateRect(0.235, 1, row), entry.Name)
-                Common.SetAutoScaleText(checkbox.TextBlock, 1)
-                checks[entry.Tag] = checkbox
-            end
-        end
+    local checks, cells, rows, columns = {}, {}, {}, 0
+    local tickHeight, widestLabel = Common.GetStyleHeight("GUITickBox"), 0
+    for _, entry in ipairs(snapshot.Access) do
+        local checkbox = GUI.TickBox(Common.CreateRect(1, 1, rights.Content), entry.Name)
+        local label = checkbox.TextBlock
+        Common.SetAutoScaleText(label, 1)
+        widestLabel = math.max(widestLabel, label.TextSize.X + label.Padding.X + label.Padding.Z)
+        checks[entry.Tag] = checkbox
+        cells[#cells + 1] = checkbox
     end
-    rights:RecalculateChildren()
-    rights:UpdateScrollBarSize()
+    local columnWidth = tickHeight + widestLabel
+    local listExtras = rights.ScrollBar.Rect.Width + rights.Padding.X + rights.Padding.Z
+    local function GetColumns(listWidth)
+        return math.max(1, math.floor((listWidth - listExtras + gap) / (columnWidth + gap)))
+    end
+    -- Moves the same tickboxes into new rows, so their state is kept.
+    local function ArrangeRights(count)
+        if count == columns then return end
+        columns = count
+        local previous = rows
+        rows = {}
+        for index = 1, #cells, columns do
+            local row = GUI.LayoutGroup(Common.CreateRect(1, 1, rights.Content), true, GUI.Anchor.CenterLeft)
+            Common.SetFixedHeight(row, tickHeight)
+            row.Stretch = true
+            row.AbsoluteSpacing = gap
+            -- Equal starting widths: the stretch pass then gives every column the same width.
+            for offset = 0, columns - 1 do
+                local cell = cells[index + offset]
+                if cell ~= nil then
+                    cell.RectTransform.Parent = row.RectTransform
+                    cell.RectTransform.RelativeSize = Vector2(1 / columns, 1)
+                else
+                    createSpacer(row, 1 / columns)
+                end
+            end
+            rows[#rows + 1] = row
+        end
+        for _, row in ipairs(previous) do Common.RemoveGuiComponent(row) end
+        -- Labels shrunk while their columns were too narrow get their full size back.
+        Common.RestoreAutoScaledText(rights)
+        rights:RecalculateChildren()
+        rights:UpdateScrollBarSize()
+    end
+    UI.UpdateRights = function() ArrangeRights(GetColumns(rights.Rect.Width)) end
+    local minimumWidth = math.max(Common.SafeIntScale(650), columnWidth + listExtras + Common.GetWindowPadding() * 2)
+    width = math.min(math.max(width, minimumWidth), screenWidth)
+    ArrangeRights(GetColumns(width - Common.GetWindowPadding() * 2))
+    local rowCount = #rows
+    local listPadding = rights.Padding.Y + rights.Padding.W
+    local minimumRows = math.min(rowCount, 2)
+    Common.SetMinimumHeight(rights, minimumRows * tickHeight + (minimumRows - 1) * gap + listPadding)
     UI.ResizeTop, UI.ResizeBottom = {}, {}
-    UI.ResizeSides = { left = {}, right = {}, minimumWidthPixels = 650, minimumHeightPixels = 460 }
+    UI.ResizeSides = { left = {}, right = {}, minimumWidth = minimumWidth }
     Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
-    local actions = GUI.LayoutGroup(Common.CreateRect(1, 0.085, layout), true)
-    actions.RelativeSpacing = 0.01
-    local all = Common.CreateFlexibleButton(Common.CreateRect(0.2425, 1, actions), text.All)
-    local clear = Common.CreateFlexibleButton(Common.CreateRect(0.2425, 1, actions), text.Clear)
-    local reset = Common.CreateFlexibleButton(Common.CreateRect(0.2425, 1, actions), text.Reset)
-    local apply = Common.CreateFlexibleButton(Common.CreateRect(0.2425, 1, actions), text.Apply)
-    for _, button in ipairs({ all, clear, reset, apply }) do button.TextBlock.AutoScaleHorizontal = true end
+    local actions = createRow(layout)
+    local all = Common.CreateButton(actions, 0.25, text.All)
+    local clear = Common.CreateButton(actions, 0.25, text.Clear)
+    local reset = Common.CreateButton(actions, 0.25, text.Reset)
+    local apply = Common.CreateButton(actions, 0.25, text.Apply)
+    -- Opens with every access row visible, like an SS14 window sized to its content.
+    UI.MinimumHeight = Common.GetMinimumHeight(frame)
+    local contentHeight = UI.MinimumHeight + math.max(0, rowCount - 2) * (tickHeight + gap)
+    root.RectTransform:Resize(Point(width, math.min(contentHeight, screenHeight)), true)
     local selectedJob
     local function tags()
         local result = {}
@@ -229,8 +284,8 @@ end)
 -- The stock drop-down adds its popup at order 1. Our modal is higher; add popups after it.
 Hook.Patch("VoidTraitor.IdConsole.Hud", "Barotrauma.GameSession", "AddToGUIUpdateList", function()
     if UI.Disabled or UI.MenuRoot == nil or GUI.DisableHUD then return end
-    UI.MenuRoot:AddToGUIUpdateList(false, 98)
-    for _, popup in ipairs(UI.Popups) do if popup.Visible and popup.Dropped then popup.ListBox:AddToGUIUpdateList(false, 99) end end
+    UI.MenuRoot:AddToGUIUpdateList(false, 120)
+    for _, popup in ipairs(UI.Popups) do if popup.Visible and popup.Dropped then popup.ListBox:AddToGUIUpdateList(false, 121) end end
 end)
 Common.InstallPausePatch("VoidTraitor.IdConsole.Pause", "VoidTraitorIdConsoleGuiState")
 Hook.Patch("VoidTraitor.IdConsole.NativeHud", "Barotrauma.Item", "AddToGUIUpdateList", { "System.Int32" }, function(item, parameters)
@@ -245,7 +300,8 @@ Hook.Add("think", "VoidTraitor.IdConsole.Selection", function(deltaTime)
     if UI.Disabled then return end
     if UI.MenuRoot ~= nil then
         UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom,
-            460, UI.Rights, nil, nil, nil, UI.ResizeSides)
+            UI.MinimumHeight, UI.Rights, nil, nil, nil, UI.ResizeSides)
+        UI.UpdateRights()
     end
     local item = Common.UpdateSelectedItemMenu(UI, "vt_station_access", function()
         UI.AwaitingOpen, elapsed = true, 0.05
