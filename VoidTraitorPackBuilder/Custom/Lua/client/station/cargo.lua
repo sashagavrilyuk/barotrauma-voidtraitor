@@ -55,9 +55,29 @@ function UI.CloseMenu()
     S.searchText, S.normalizedSearchText, S.lastMessage, S.shopListScroll = "", "", "", 0
 end
 
--- Cart and order rows: two text lines, the vanilla button or the item icon, whichever is taller.
+-- Cart and order rows: two text lines, a button or the item icon, whichever is taller.
 local function GetRowHeight()
-    return math.max(Common.GetTextHeight(GUI.Style.Font) * 2, Common.GetStyleHeight("GUIButton"), P.ITEM_ICON_PIXELS)
+    return math.max(Common.GetTextHeight(GUI.Style.Font) * 2, Common.GetStyleHeight("GUIButton"), P.ITEM_ICON_PIXELS, P.ACTION_BUTTON_PIXELS)
+end
+
+-- The window never gets shorter than its rows need (Common.GetMinimumHeight).
+function UI.FitMinimumHeight()
+    UI.MinimumHeight = Common.GetMinimumHeight(UI.WindowLayout)
+    local root, _, screenHeight = UI.MenuRoot, Common.GetScreenSize()
+    if root.Rect.Height < UI.MinimumHeight then
+        root.RectTransform:Resize(Point(root.Rect.Width, math.min(UI.MinimumHeight, screenHeight)), true)
+    end
+end
+
+-- The description is as tall as its wrapped text in the normal font, so it is never shrunk;
+-- the cart list takes the rest of the column.
+function UI.FitDetails()
+    local height = math.ceil(UI.Details.TextSize.Y) + Common.GetGap()
+    if UI.Details.RectTransform.MinSize.Y == height then return end
+    Common.SetFixedHeight(UI.Details, height)
+    UI.CartRows.NeedsToRecalculate = true
+    Common.SetMinimumHeight(UI.CartFrame, Common.GetMinimumHeight(UI.CartLayout))
+    UI.FitMinimumHeight()
 end
 
 function UI.Money(value)
@@ -97,17 +117,17 @@ function P.RefreshCartOnly()
     for _, entry in ipairs(S.cart) do
         local product = S.productById[entry.Id]
         if product ~= nil then
+            -- Like the point shop cart: the cart-minus button removes one unit, the catalog adds them.
             local row = P.CreateLayout(UI.CartList.Content, 1, 1, nil, true, GUI.Anchor.CenterLeft)
             Common.SetFixedHeight(row, GetRowHeight())
-            local name = P.CreateText(row, 0.61, 1, nil, product.Name .. " ×" .. tostring(entry.Quantity) .. "\n" .. UI.Money(product.Price * entry.Quantity), GUI.Alignment.Left, 1)
+            row.Stretch = true
+            local name = P.CreateText(row, 1, 1, nil, product.Name .. " ×" .. tostring(entry.Quantity) .. "\n" .. UI.Money(product.Price * entry.Quantity), GUI.Alignment.Left, 1)
             name.Wrap = false
             name.AutoScaleHorizontal = true
             name.AutoScaleVertical = true
             name.ToolTip = product.Name
-            local remove = P.CreateButton(row, 0.18, 1, nil, "−", not UI.SubmitPending)
+            local remove = P.CreateStoreActionButton(row, "StoreRemoveFromCrateButton", not UI.SubmitPending)
             remove.OnClicked = function() P.RemoveFromCart(entry.Id) P.RefreshCartOnly() return true end
-            local add = P.CreateButton(row, 0.18, 1, nil, "+", P.GetProductDisabledReason(product) == "")
-            add.OnClicked = function() P.AddToCart(product) P.RefreshCartOnly() return true end
         end
     end
     UI.CartList:RecalculateChildren()
@@ -115,9 +135,9 @@ function P.RefreshCartOnly()
     UI.CartList.BarScroll = scroll
     UI.Total.Text = P.GetText("Total") .. ": " .. UI.Money(P.GetCartTotal())
     local selected = P.GetSelectedProduct()
-    UI.Details.TextScale = 1
     UI.Details.Text = S.lastMessage ~= "" and S.lastMessage or (selected ~= nil and P.Utf8Truncate(selected.Name .. "\n" .. P.GetProductDescriptionText(selected), 58) or "")
     UI.Details.ToolTip = selected ~= nil and P.GetProductDescriptionText(selected) or ""
+    UI.FitDetails()
     UI.Reason.Enabled = not UI.SubmitPending
     UI.Submit.Enabled = not UI.SubmitPending and #S.cart > 0 and string.find(tostring(UI.Reason.Text), "%S") ~= nil
 end
@@ -246,12 +266,9 @@ function UI.Show(itemId, snapshot)
     local cartTitle = P.CreateText(cart, 1, 1, nil, snapshot.Text.Cart, GUI.Alignment.Left, 1, nil, false)
     cartTitle.Font = GUI.Style.SubHeadingFont
     Common.FitHeightToText(cartTitle)
-    -- A long description shrinks to its four lines instead of running over the cart list.
-    UI.Details = P.CreateText(cart, 1, 1, nil, "", GUI.Alignment.TopLeft, 1)
-    UI.Details.Font = GUI.Style.SmallFont
-    UI.Details.AutoScaleVertical = true
-    Common.SetFixedHeight(UI.Details, Common.GetTextHeight(UI.Details.Font) * 4)
     Common.CreateDivider(cart)
+    UI.Details = P.CreateText(cart, 1, 1, nil, "", GUI.Alignment.TopLeft, 1)
+    UI.WindowLayout, UI.CartFrame, UI.CartLayout, UI.CartRows = frame, cartFrame, cartLayout, cart
     UI.CartList = GUI.ListBox(P.CreateRect(1, 1, cart), false)
     UI.CartList.Spacing = gap
     Common.SetMinimumHeight(UI.CartList, rowHeight + UI.CartList.Padding.Y + UI.CartList.Padding.W)
@@ -277,10 +294,7 @@ function UI.Show(itemId, snapshot)
     UI.ResizeTop, UI.ResizeBottom = {}, {}
     UI.ResizeSides = { left = {}, right = {}, minimumWidth = Common.SafeIntScale(650) }
     Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
-    UI.MinimumHeight = Common.GetMinimumHeight(frame)
-    if root.Rect.Height < UI.MinimumHeight then
-        root.RectTransform:Resize(Point(root.Rect.Width, math.min(UI.MinimumHeight, screenHeight)), true)
-    end
+    UI.FitMinimumHeight()
     UI.Update(snapshot)
     if S.shopList == nil then P.ShowMenu() end
 end
@@ -320,5 +334,6 @@ Hook.Add("think", "VoidTraitor.Cargo.Selection", function()
     if UI.MenuRoot ~= nil then
         UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom,
             UI.MinimumHeight, UI.OrderList, nil, nil, nil, UI.ResizeSides)
+        UI.FitDetails()
     end
 end)
