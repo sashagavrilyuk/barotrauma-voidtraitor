@@ -115,6 +115,7 @@ function P.RefreshCartOnly()
     UI.CartList.BarScroll = scroll
     UI.Total.Text = P.GetText("Total") .. ": " .. UI.Money(P.GetCartTotal())
     local selected = P.GetSelectedProduct()
+    UI.Details.TextScale = 1
     UI.Details.Text = S.lastMessage ~= "" and S.lastMessage or (selected ~= nil and P.Utf8Truncate(selected.Name .. "\n" .. P.GetProductDescriptionText(selected), 58) or "")
     UI.Details.ToolTip = selected ~= nil and P.GetProductDescriptionText(selected) or ""
     UI.Reason.Enabled = not UI.SubmitPending
@@ -245,8 +246,12 @@ function UI.Show(itemId, snapshot)
     local cartTitle = P.CreateText(cart, 1, 1, nil, snapshot.Text.Cart, GUI.Alignment.Left, 1, nil, false)
     cartTitle.Font = GUI.Style.SubHeadingFont
     Common.FitHeightToText(cartTitle)
+    -- A long description shrinks to its four lines instead of running over the cart list.
     UI.Details = P.CreateText(cart, 1, 1, nil, "", GUI.Alignment.TopLeft, 1)
-    Common.SetFixedHeight(UI.Details, Common.GetTextHeight(UI.Details.Font) * 3)
+    UI.Details.Font = GUI.Style.SmallFont
+    UI.Details.AutoScaleVertical = true
+    Common.SetFixedHeight(UI.Details, Common.GetTextHeight(UI.Details.Font) * 4)
+    Common.CreateDivider(cart)
     UI.CartList = GUI.ListBox(P.CreateRect(1, 1, cart), false)
     UI.CartList.Spacing = gap
     Common.SetMinimumHeight(UI.CartList, rowHeight + UI.CartList.Padding.Y + UI.CartList.Padding.W)

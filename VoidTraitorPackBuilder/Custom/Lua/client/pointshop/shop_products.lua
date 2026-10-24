@@ -26,8 +26,10 @@ function P.AddProductButton(list, product)
     if P.PRODUCT_ROW_HEIGHT ~= nil then P.Common.SetFixedHeight(row, P.PRODUCT_ROW_HEIGHT) end
     if row.TextBlock ~= nil then row.TextBlock.Text = "" end
 
+    -- The name takes the free width, so the price and the cart button stand at the right edge.
     local inner = P.CreateRowInner(row, 0.968, 0.90)
     inner.RelativeSpacing = 0.003
+    inner.Stretch = true
 
     local iconHolder = GUI.Frame(P.CreateRect(0.168, 1, inner, nil), nil)
     iconHolder.Color = Color(0, 0, 0, 0)
@@ -70,9 +72,10 @@ function P.AddProductButton(list, product)
         price = P.CreateText(inner, 0.155, 0.72, nil, tostring(product.Price or 0) .. " " .. tostring(product.Currency or "pt"), GUI.Alignment.Right, 0.96, enabled and Color(255, 245, 210, 255) or Color(125, 125, 125, 255), false)
         price.Font = GUI.Style.Font
         price.AutoScaleHorizontal = true
+        P.Common.SetFixedWidth(price, math.ceil(price.TextSize.X * price.TextScale + price.Padding.X + price.Padding.Z))
     end
 
-    local cartButton = P.CreateStoreActionButton(inner, 0.165, "StoreAddToCrateButton", enabled)
+    local cartButton = P.CreateStoreActionButton(inner, "StoreAddToCrateButton", enabled)
     table.insert(S.productRows, {
         Row = row,
         Product = product,

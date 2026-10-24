@@ -24,7 +24,6 @@ function UI.CloseMenu()
     end
     Common.RemoveGuiComponent(UI.MenuRoot)
     UI.MenuRoot, UI.CurrentMenu, UI.ItemId, UI.Update, UI.Snapshot = nil, nil, nil, nil, nil
-    UI.ResizeState = nil
 end
 
 function UI.Show(itemId, snapshot)
@@ -69,8 +68,6 @@ function UI.Show(itemId, snapshot)
     eject.OnClicked = function() UI.Send(UI.Snapshot.Disk and "eject" or "insert") return true end
     local anchor = GUI.Button(Common.CreateRect(1, 0.23, actions), text.Anchor, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
     anchor.OnClicked = function() UI.Send("anchor") return true end
-    UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides = {}, {}, { left = {}, right = {}, minimumWidth = Common.SafeIntScale(280) }
-    Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
     UI.Update = function(state)
         UI.Snapshot = state
         first.Text = text[({ locked = "Locked", code = "AwaitCode", ready = "Ready", armed = "Armed", cooldown = "Cooldown", exploded = "Exploded" })[state.Status]]
@@ -109,15 +106,11 @@ Hook.Patch("VoidTraitor.Nuclear.Inventory", "Barotrauma.CharacterHUD", "LockInve
 end, Hook.HookMethodType.After)
 Hook.Add("roundEnd", "VoidTraitor.Nuclear.End", function() UI.CloseMenu() UI.SelectedItem = nil end)
 Hook.Add("think", "VoidTraitor.Nuclear.Selection", function()
-    local item = Common.UpdateSelectedItemMenu(UI, "vt_nuclear_bomb", function(selected)
+    Common.UpdateSelectedItemMenu(UI, "vt_nuclear_bomb", function(selected)
         local message = Networking.Start("VoidTraitor_NuclearOpen")
         message.WriteUInt16(UShort(selected.ID))
         Networking.Send(message)
     end)
-    if item == nil then return end
-    if UI.MenuRoot ~= nil then
-        UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom, Common.SafeIntScale(225), nil, nil, nil, nil, UI.ResizeSides)
-    end
 end)
 
 -- TEMPORARY AUDIO DIAGNOSTICS: automatically logs network state and actual sound-channel ownership.

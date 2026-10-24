@@ -43,7 +43,7 @@ function P.AddCartButton(list, entry)
         price.AutoScaleHorizontal = true
     end
 
-    local removeButton = P.CreateStoreActionButton(inner, 0.165, "StoreRemoveFromCrateButton", true)
+    local removeButton = P.CreateStoreActionButton(inner, "StoreRemoveFromCrateButton", true)
     local removeProduct = function()
         P.RemoveFromCart(entry.Id)
         P.RefreshCartOnly()
@@ -107,7 +107,7 @@ function P.CreateProductDetails(parent, product, height)
     local name = P.CreateText(heading, 1, 0.30, nil, string.upper(tostring(product.Name or "")), GUI.Alignment.Left, 1.00, Color(255, 245, 210, 255), true)
     name.Font = GUI.Style.SubHeadingFont
     local description = P.GetProductDescriptionText(product)
-    local descriptionBlock = P.CreateText(heading, 1, 0.70, nil, description, GUI.Alignment.Left, 0.84, Color(210, 220, 205, 230), true)
+    local descriptionBlock = P.CreateText(heading, 1, 0.70, nil, description, GUI.Alignment.Left, 1, Color(210, 220, 205, 230), true)
     if P.IsClassProduct(product) then
         P.RegisterClassLimitText("cart", descriptionBlock, function() return P.GetProductDescriptionText(product) end)
     end
@@ -121,7 +121,7 @@ function P.CreateProductDetails(parent, product, height)
     end
     table.insert(infoLines, P.GetText("Category") .. ":  " .. tostring(product.Category or ""))
     local info = table.concat(infoLines, "\n")
-    P.CreateText(details, 1, 0.29, nil, info, GUI.Alignment.Left, 0.88, Color(225, 225, 205, 255), true)
+    P.CreateText(details, 1, 0.29, nil, info, GUI.Alignment.Left, 1, Color(225, 225, 205, 255), true)
 
     local cooldown = P.GetCooldownRemaining(product)
     local reason = P.GetProductDisabledReason(product)

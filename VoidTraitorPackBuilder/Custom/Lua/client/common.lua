@@ -316,38 +316,42 @@ function Common.RemoveGuiComponent(component)
 end
 
 -- Handles fill the window margin (Common.GetWindowPadding), so they never cover the content.
+-- Edges run along the whole side and stop at the corner handles, which resize diagonally.
 function Common.AddResizeHandles(panel, topTargets, bottomTargets, sideTargets)
     local thickness = Common.GetWindowPadding()
-    local topHandle = GUI.Frame(Common.CreateRect(0.50, 1, panel, GUI.Anchor.TopCenter), nil)
-    Common.SetFixedHeight(topHandle, thickness)
-    topHandle.Color = Color(0, 0, 0, 0)
-    topHandle.CanBeFocused = true
-    local topIndicator = GUI.Image(Common.CreateRect(0.24, 0.80, topHandle, GUI.Anchor.Center), "GUIDragIndicatorHorizontal")
-    topIndicator.CanBeFocused = false
-    table.insert(topTargets, topHandle)
-
-    local bottomHandle = GUI.Frame(Common.CreateRect(0.50, 1, panel, GUI.Anchor.BottomCenter), nil)
-    Common.SetFixedHeight(bottomHandle, thickness)
-    bottomHandle.Color = Color(0, 0, 0, 0)
-    bottomHandle.CanBeFocused = true
-    local bottomIndicator = GUI.Image(Common.CreateRect(0.24, 0.80, bottomHandle, GUI.Anchor.Center), "GUIDragIndicatorHorizontal")
-    bottomIndicator.CanBeFocused = false
-    table.insert(bottomTargets, bottomHandle)
+    local cornerSize = sideTargets ~= nil and thickness * 2 or 0
+    local function addEdge(anchor, isHorizontal, indicatorStyle, targets)
+        local strip = GUI.LayoutGroup(Common.CreateRect(1, 1, panel, anchor), isHorizontal)
+        strip.Stretch = true
+        strip.CanBeFocused = false
+        local setThickness = isHorizontal and Common.SetFixedHeight or Common.SetFixedWidth
+        local setLength = isHorizontal and Common.SetFixedWidth or Common.SetFixedHeight
+        setThickness(strip, thickness)
+        local function addCornerGap()
+            local gap = GUI.Frame(Common.CreateRect(1, 1, strip), nil)
+            gap.Color = Color(0, 0, 0, 0)
+            gap.CanBeFocused = false
+            setLength(gap, cornerSize)
+        end
+        if cornerSize > 0 then addCornerGap() end
+        local handle = GUI.Frame(Common.CreateRect(1, 1, strip), nil)
+        handle.Color = Color(0, 0, 0, 0)
+        handle.CanBeFocused = true
+        local indicator = GUI.Image(Common.CreateRect(isHorizontal and 0.24 or 0.70, isHorizontal and 0.80 or 0.35, handle, GUI.Anchor.Center), indicatorStyle)
+        indicator.CanBeFocused = false
+        if cornerSize > 0 then addCornerGap() end
+        table.insert(targets, handle)
+    end
+    addEdge(GUI.Anchor.TopCenter, true, "GUIDragIndicatorHorizontal", topTargets)
+    addEdge(GUI.Anchor.BottomCenter, true, "GUIDragIndicatorHorizontal", bottomTargets)
 
     if sideTargets ~= nil then
-        for _, side in ipairs({ "left", "right" }) do
-            local anchor = side == "left" and GUI.Anchor.CenterLeft or GUI.Anchor.CenterRight
-            local handle = GUI.Frame(Common.CreateRect(1, 0.38, panel, anchor), nil)
-            Common.SetFixedWidth(handle, thickness)
-            handle.Color = Color(0, 0, 0, 0)
-            handle.CanBeFocused = true
-            local indicator = GUI.Image(Common.CreateRect(0.70, 0.35, handle, GUI.Anchor.Center), "GUIDragIndicator")
-            indicator.CanBeFocused = false
-            table.insert(sideTargets[side], handle)
-        end
+        addEdge(GUI.Anchor.CenterLeft, false, "GUIDragIndicator", sideTargets.left)
+        addEdge(GUI.Anchor.CenterRight, false, "GUIDragIndicator", sideTargets.right)
         sideTargets.corners = {}
         for _, corner in ipairs({
             { "top-left", GUI.Anchor.TopLeft, 0.785398 },
+            { "top-right", GUI.Anchor.TopRight, -0.785398 },
             { "bottom-left", GUI.Anchor.BottomLeft, -0.785398 },
             { "bottom-right", GUI.Anchor.BottomRight, 0.785398 },
         }) do

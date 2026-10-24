@@ -25,7 +25,7 @@ function UI.CloseMenu()
     end
     Common.RemoveGuiComponent(UI.MenuRoot)
     UI.MenuRoot, UI.CurrentMenu, UI.ItemId, UI.Update, UI.Picker = nil, nil, nil, nil, nil
-    UI.ResizeState, UI.SelectedItem = nil, nil
+    UI.SelectedItem = nil
 end
 
 function UI.Show(itemId, snapshot)
@@ -69,11 +69,9 @@ function UI.Show(itemId, snapshot)
         UI.Send("evacuation")
         return true
     end
-    UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides = {}, {}, { left = {}, right = {}, minimumWidth = Common.SafeIntScale(280) }
-    Common.AddResizeHandles(root, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides)
-    UI.MinimumHeight = Common.GetMinimumHeight(frame)
-    if root.Rect.Height < UI.MinimumHeight then
-        root.RectTransform:Resize(Point(root.Rect.Width, math.min(UI.MinimumHeight, screenHeight)), true)
+    local minimumHeight = Common.GetMinimumHeight(frame)
+    if root.Rect.Height < minimumHeight then
+        root.RectTransform:Resize(Point(root.Rect.Width, math.min(minimumHeight, screenHeight)), true)
     end
     UI.Update = function(state)
         announce.Enabled = state.Powered and state.AnnouncementCooldown == 0
@@ -116,13 +114,9 @@ Hook.Patch("VoidTraitor.Communications.Inventory", "Barotrauma.CharacterHUD", "L
 end, Hook.HookMethodType.After)
 Hook.Add("roundEnd", "VoidTraitor.Communications.End", function() UI.CloseMenu() end)
 Hook.Add("think", "VoidTraitor.Communications.Selection", function()
-    local item = Common.UpdateSelectedItemMenu(UI, "vt_communications_console", function(selected)
+    Common.UpdateSelectedItemMenu(UI, "vt_communications_console", function(selected)
         local message = Networking.Start("VoidTraitor_CommunicationsOpen")
         message.WriteUInt16(UShort(selected.ID))
         Networking.Send(message)
     end)
-    if item == nil then return end
-    if UI.MenuRoot ~= nil then
-        UI.ResizeState = Common.UpdateMenuInteraction(UI.MenuRoot, UI.ResizeState, UI.ResizeTop, UI.ResizeBottom, UI.MinimumHeight, nil, nil, nil, nil, UI.ResizeSides)
-    end
 end)
