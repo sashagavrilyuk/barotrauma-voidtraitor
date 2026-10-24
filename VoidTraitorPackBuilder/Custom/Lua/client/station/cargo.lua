@@ -69,12 +69,17 @@ function UI.FitMinimumHeight()
     end
 end
 
--- The description is as tall as its wrapped text in the normal font, so it is never shrunk;
--- the cart list takes the rest of the column.
+-- The description is never shrunk: its list is as tall as the text, at most four small-font lines,
+-- and longer text scrolls with the mouse wheel. The cart list takes the rest of the column.
 function UI.FitDetails()
-    local height = math.ceil(UI.Details.TextSize.Y) + Common.GetGap()
-    if UI.Details.RectTransform.MinSize.Y == height then return end
-    Common.SetFixedHeight(UI.Details, height)
+    local text, list = UI.Details, UI.DetailsList
+    local textHeight = math.ceil(text.TextSize.Y)
+    local height = math.max(1, math.min(textHeight, Common.GetTextHeight(text.Font) * 4) + list.Padding.Y + list.Padding.W)
+    if text.RectTransform.MinSize.Y == textHeight and list.RectTransform.MinSize.Y == height then return end
+    Common.SetFixedHeight(text, textHeight)
+    Common.SetFixedHeight(list, height)
+    list:RecalculateChildren()
+    list:UpdateScrollBarSize()
     UI.CartRows.NeedsToRecalculate = true
     Common.SetMinimumHeight(UI.CartFrame, Common.GetMinimumHeight(UI.CartLayout))
     UI.FitMinimumHeight()
@@ -135,8 +140,7 @@ function P.RefreshCartOnly()
     UI.CartList.BarScroll = scroll
     UI.Total.Text = P.GetText("Total") .. ": " .. UI.Money(P.GetCartTotal())
     local selected = P.GetSelectedProduct()
-    UI.Details.Text = S.lastMessage ~= "" and S.lastMessage or (selected ~= nil and P.Utf8Truncate(selected.Name .. "\n" .. P.GetProductDescriptionText(selected), 58) or "")
-    UI.Details.ToolTip = selected ~= nil and P.GetProductDescriptionText(selected) or ""
+    UI.Details.Text = S.lastMessage ~= "" and S.lastMessage or (selected ~= nil and selected.Name .. "\n" .. P.GetProductDescriptionText(selected) or "")
     UI.FitDetails()
     UI.Reason.Enabled = not UI.SubmitPending
     UI.Submit.Enabled = not UI.SubmitPending and #S.cart > 0 and string.find(tostring(UI.Reason.Text), "%S") ~= nil
@@ -267,7 +271,14 @@ function UI.Show(itemId, snapshot)
     cartTitle.Font = GUI.Style.SubHeadingFont
     Common.FitHeightToText(cartTitle)
     Common.CreateDivider(cart)
-    UI.Details = P.CreateText(cart, 1, 1, nil, "", GUI.Alignment.TopLeft, 1)
+    UI.DetailsList = GUI.ListBox(P.CreateRect(1, 1, cart), false, nil, "GUIListBoxNoBorder")
+    UI.DetailsList.KeepSpaceForScrollBar = true
+    UI.DetailsList.Color = Color(0, 0, 0, 0)
+    UI.DetailsList.ContentBackground.Color = Color(0, 0, 0, 0)
+    UI.Details = P.CreateText(UI.DetailsList.Content, 1, 1, nil, "", GUI.Alignment.TopLeft, 1)
+    UI.Details.Font = GUI.Style.SmallFont
+    -- Plain text, not a list entry the player can select.
+    UI.Details.CanBeFocused = false
     UI.WindowLayout, UI.CartFrame, UI.CartLayout, UI.CartRows = frame, cartFrame, cartLayout, cart
     UI.CartList = GUI.ListBox(P.CreateRect(1, 1, cart), false)
     UI.CartList.Spacing = gap
