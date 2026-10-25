@@ -46,9 +46,17 @@ function UI.Show(itemId, snapshot)
     local input = GUI.TextBox(Common.CreateRect(1, 1, layout), "", nil, nil, GUI.Alignment.TopLeft, true, "", nil, false, false)
     -- The vanilla textbox style fixes its height to one line, including the inner frame.
     input.RectTransform.MinSize, input.RectTransform.MaxSize = Point(0, 0), Point(100000, 100000)
-    Common.SetMinimumHeight(input, Common.GetTextHeight(GUI.Style.Font) * 3)
+    -- The style pads only the sides of its one centred line (Content/UI/Style.xml), so text at the top would touch the frame.
+    local gap = Common.GetGap()
+    input.Padding = Vector4(input.Padding.X, gap, input.Padding.Z, gap)
+    Common.SetMinimumHeight(input, Common.GetTextHeight(GUI.Style.Font) * 3 + 2 * gap)
     input.Frame.RectTransform.MinSize, input.Frame.RectTransform.MaxSize = Point(0, 0), Point(100000, 100000)
     input.MaxTextLength = snapshot.MaxLength
+    -- GUITextBox ignores Enter as text input (ReceiveCommandInput has no case for it), so Shift+Enter adds the line break.
+    input.OnEnterPressed = function(box)
+        if PlayerInput.IsShiftDown() then box.ReceiveTextInput("\n") end
+        return true
+    end
     local announce = Common.CreateButton(layout, 1, text.Announce)
     announce.OnClicked = function() input.Deselect() UI.Send("announce", input.Text) return true end
     local voice = Common.CreateButton(layout, 1, text.Voice)

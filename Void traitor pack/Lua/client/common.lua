@@ -82,9 +82,9 @@ function Common.FitHeightToText(block)
     Common.SetFixedHeight(block, Common.GetTextHeight(block.Font, block.TextScale))
 end
 
--- Space between stacked buttons keeps the 2560x1440 proportion (12 px for 45 px buttons).
+-- Space between stacked buttons keeps the 2560x1440 proportion (6 px for 45 px buttons).
 function Common.GetButtonSpacing()
-    return math.floor(Common.GetStyleHeight("GUIButton") * 12 / 45 + 0.5)
+    return math.floor(Common.GetStyleHeight("GUIButton") * 6 / 45 + 0.5)
 end
 
 -- The vanilla GUIButton style locks the height for this resolution.
