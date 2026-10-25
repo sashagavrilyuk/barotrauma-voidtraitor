@@ -9,6 +9,7 @@ local announcementColor = Color(255, 215, 0, 255)
 local announcementHeaderColor = Color(255, 255, 170, 255)
 local active = false
 local texts
+local patchVoice
 local componentEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateEventData", true)
 local terminalDescriptor = Descriptors["Barotrauma.Items.Components.Terminal"] or LuaUserData.RegisterType("Barotrauma.Items.Components.Terminal")
 LuaUserData.MakePropertyAccessible(terminalDescriptor, "OutputValue")
@@ -84,6 +85,7 @@ function console.Action(client, item, action, value)
         elseif data.Speaker == nil and broadcasters[client] == nil and now >= data.NextVoice then
             data.Speaker, data.EndTime = client, now + config.VoiceDuration
             broadcasters[client] = item
+            patchVoice()
             local speaker = client.Character
             local job = speaker.Info ~= nil and speaker.Info.Job
             local title = job ~= nil and job.Prefab.Name.Value or Traitormod.GetText("CommsVoiceUnknownTitle")
@@ -175,14 +177,20 @@ Hook.Patch("Traitormod.Communications.Buttons", "Barotrauma.Items.Components.Cus
     elseif code then console.ChooseCode(parameters["c"], instance.Item)
     elseif evacuation then console.Action(parameters["c"], instance.Item, "evacuation") end
 end, Hook.HookMethodType.Before)
-Hook.Patch("Traitormod.Communications.Voice", "Barotrauma.Networking.VoipServer", "CanReceive", function(_, parameters)
-    local sender, recipient = parameters["sender"], parameters["recipient"]
-    local item = broadcasters[sender]
-    if item == nil or not console.Validate(sender, item, true) or sender.Muted or sender.Character.SpeechImpediment >= 100 then return end
-    local data = terminals[item]
-    if Timer.GetTime() >= data.EndTime or item.Condition <= 0 or not item.GetComponentString("Powered").HasPower then return end
-    if recipient.Character == nil or recipient.Character.IsDead or recipient.Character.Submarine ~= item.Submarine then return end
-    parameters["distanceFactor"], parameters["isRadio"] = Single(0), true
-    return true
-end, Hook.HookMethodType.After)
+-- Patched on the first broadcast: LuaCs keeps a patch for the whole session and runs it for every speaker and listener.
+local voicePatched = false
+function patchVoice()
+    if voicePatched then return end
+    voicePatched = true
+    Hook.Patch("Traitormod.Communications.Voice", "Barotrauma.Networking.VoipServer", "CanReceive", function(_, parameters)
+        local sender, recipient = parameters["sender"], parameters["recipient"]
+        local item = broadcasters[sender]
+        if item == nil or not console.Validate(sender, item, true) or sender.Muted or sender.Character.SpeechImpediment >= 100 then return end
+        local data = terminals[item]
+        if Timer.GetTime() >= data.EndTime or item.Condition <= 0 or not item.GetComponentString("Powered").HasPower then return end
+        if recipient.Character == nil or recipient.Character.IsDead or recipient.Character.Submarine ~= item.Submarine then return end
+        parameters["distanceFactor"], parameters["isRadio"] = Single(0), true
+        return true
+    end, Hook.HookMethodType.After)
+end
 return console
