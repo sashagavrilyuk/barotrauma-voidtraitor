@@ -80,43 +80,11 @@ local function resolveApi()
     hud.ApiChecked = true
 
     local ok, apiOrError = pcall(function()
-        local segmentActionType = nil
-        local okEnum, enumTable = pcall(function()
-            return LuaUserData.CreateEnumTable("Barotrauma.EventObjectiveAction+SegmentActionType")
-        end)
-        if okEnum then segmentActionType = enumTable end
-        if segmentActionType == nil and EventObjectiveAction ~= nil then
-            segmentActionType = EventObjectiveAction.SegmentActionType
-        end
-
-        local eventManager = EventManager
-        if eventManager == nil then
-            local okManager, manager = pcall(function()
-                return LuaUserData.CreateStatic("Barotrauma.EventManager", true)
-            end)
-            if okManager then eventManager = manager end
-        end
-
-        local netObjective = nil
-        local okObjective, objectiveCtor = pcall(function()
-            return LuaUserData.CreateStatic("Barotrauma.EventManager+NetEventObjective", true)
-        end)
-        if okObjective then netObjective = objectiveCtor end
-
-        local netEventLogEntry = nil
-        local okLog, logCtor = pcall(function()
-            return LuaUserData.CreateStatic("Barotrauma.EventManager+NetEventLogEntry", true)
-        end)
-        if okLog then netEventLogEntry = logCtor end
-
-        if segmentActionType == nil then error("SegmentActionType is nil") end
-        if eventManager == nil then error("EventManager is nil") end
-
         return {
-            SegmentActionType = segmentActionType,
-            EventManager = eventManager,
-            NetEventObjective = netObjective,
-            NetEventLogEntry = netEventLogEntry,
+            SegmentActionType = LuaUserData.CreateEnumTable("Barotrauma.EventObjectiveAction+SegmentActionType"),
+            EventManager = LuaUserData.CreateStatic("Barotrauma.EventManager", true),
+            NetEventObjective = LuaUserData.CreateStatic("Barotrauma.EventManager+NetEventObjective", true),
+            NetEventLogEntry = LuaUserData.CreateStatic("Barotrauma.EventManager+NetEventLogEntry", true),
         }
     end)
 
@@ -147,27 +115,8 @@ function hud.SendObjectiveAction(client, actionName, identifier, text, parentIde
     end
 
     local ok, err = pcall(function()
-        local args = {
-            actionType,
-            asIdentifier(identifier),
-            asIdentifier(text),
-            asIdentifier(""),
-            asIdentifier(parentIdentifier or ""),
-            canBeCompleted == true
-        }
-
-        local entry = nil
-        if api.NetEventObjective ~= nil then
-            local okCtor, result = pcall(function()
-                return api.NetEventObjective(args[1], args[2], args[3], args[4], args[5], args[6])
-            end)
-            if okCtor then entry = result end
-        end
-        if entry == nil and api.EventManager.NetEventObjective ~= nil then
-            entry = api.EventManager.NetEventObjective(args[1], args[2], args[3], args[4], args[5], args[6])
-        end
-        if entry == nil then error("NetEventObjective constructor is nil") end
-
+        local entry = api.NetEventObjective(actionType, asIdentifier(identifier), asIdentifier(text),
+            asIdentifier(""), asIdentifier(parentIdentifier or ""), canBeCompleted == true)
         api.EventManager.ServerWriteObjective(client, entry)
     end)
 
@@ -186,24 +135,7 @@ function hud.SendEventLog(client, logId, text)
     if api == nil then return false end
 
     local ok, err = pcall(function()
-        local entry = nil
-        if api.NetEventLogEntry ~= nil then
-            local okCtor, result = pcall(function()
-                return api.NetEventLogEntry(
-                    asIdentifier("voidtraitor_objectives"),
-                    asIdentifier(logId),
-                    tostring(text))
-            end)
-            if okCtor then entry = result end
-        end
-        if entry == nil and api.EventManager.NetEventLogEntry ~= nil then
-            entry = api.EventManager.NetEventLogEntry(
-                asIdentifier("voidtraitor_objectives"),
-                asIdentifier(logId),
-                tostring(text))
-        end
-        if entry == nil then error("NetEventLogEntry constructor is nil") end
-
+        local entry = api.NetEventLogEntry(asIdentifier("voidtraitor_objectives"), asIdentifier(logId), tostring(text))
         api.EventManager.ServerWriteEventLog(client, entry)
     end)
 

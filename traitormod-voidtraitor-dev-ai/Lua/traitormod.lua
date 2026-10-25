@@ -95,7 +95,6 @@ end
 LuaUserData.RegisterType("Barotrauma.GameModePreset")
 LuaUserData.RegisterType("Barotrauma.Voting")
 
-Voting = LuaUserData.CreateStatic("Barotrauma.Voting") --[[@as Barotrauma.Voting]]
 ---//TODO
 ---@param submarineInfo Barotrauma.SubmarineInfo
 ---@param chooseGamemode unknown
