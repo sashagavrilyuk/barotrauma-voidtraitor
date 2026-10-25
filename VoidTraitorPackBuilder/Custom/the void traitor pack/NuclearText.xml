@@ -4,11 +4,12 @@
   <entitydescription.vt_nuclear_bomb>Для взведения необходимы диск ядерной авторизации и шестизначный код.</entitydescription.vt_nuclear_bomb>
   <entityname.vt_nuclear_disk>Диск ядерной авторизации</entityname.vt_nuclear_disk>
   <entitydescription.vt_nuclear_disk>Диск авторизации ядерного боеприпаса.</entitydescription.vt_nuclear_disk>
-  <NukeNativeWelcome>Ядерный боеприпас. Вставьте диск авторизации, затем введите шестизначный код в строке терминала.</NukeNativeWelcome>
+  <NukeNativeWelcome>Ядерный боеприпас. Вставьте диск авторизации и закрепите боеприпас, введите шестизначный код в строке терминала и нажмите «Взвести».</NukeNativeWelcome>
   <NukeInsert>Вставить диск</NukeInsert>
   <NukeEject>Извлечь диск</NukeEject>
   <NukeAnchor>Закрепить / открепить</NukeAnchor>
   <NukeDetach>Открепить</NukeDetach>
+  <NukeArm>Взвести</NukeArm>
   <NukeDisarmInteraction>[[select]] Разминировать</NukeDisarmInteraction>
   <NukeDefusingProgress>Разминирование</NukeDefusingProgress>
   <NukeMenuInteraction>[[use]] Управление боеприпасом</NukeMenuInteraction>

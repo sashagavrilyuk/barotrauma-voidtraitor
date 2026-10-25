@@ -21,7 +21,7 @@ function nuclear.Start()
     active, bombs, sessions = true, {}, {}
     texts = {}
     for _, key in ipairs({ "Title", "Locked", "AwaitDisk", "AwaitCode", "Ready", "Armed", "Cooldown", "Exploded",
-        "Time", "Cooling", "Eject", "Insert", "Anchor", "Detach", "Close" }) do
+        "Time", "Cooling", "Code", "Eject", "Insert", "Anchor", "Detach", "Arm", "Close" }) do
         texts[key] = Traitormod.GetText("Nuke" .. key)
     end
     for item in Item.ItemList do
@@ -64,7 +64,7 @@ function nuclear.Update(item, data)
     local first = snapshot.Text[statusLabels[data.Status]]
     local second = Traitormod.FormatText("NukeTime", snapshot.Remaining)
     if data.Status == "locked" then second = snapshot.Text.AwaitDisk
-    elseif data.Status == "code" then second = string.rep("*", #data.Entered) .. string.rep("_", 6 - #data.Entered)
+    elseif data.Status == "code" then second = Traitormod.FormatText("NukeCode", string.rep("*", #data.Entered) .. string.rep("_", 6 - #data.Entered))
     elseif data.Status == "cooldown" then second = Traitormod.FormatText("NukeCooling", snapshot.Cooldown) end
     local body = first .. "\n" .. second
     local terminal = item.GetComponentString("Terminal")
@@ -146,8 +146,8 @@ function nuclear.Action(client, item, action, value)
             disk.Drop(client.Character, true)
         end
         if item.OwnInventory.GetItemAt(0) ~= disk then nuclear.PlaySound(item, "disk") end
-        if data.Status ~= "cooldown" then data.Status = "locked" end
-        data.Entered = ""
+        -- As in SS14, only an unfinished code needs the disk again; a bomb that accepted it stays ready.
+        if data.Status == "code" then data.Status, data.Entered = "locked", "" end
     elseif action == "digit" and data.Status == "code" and type(value) == "string" and value:match("^%d$") and #data.Entered < 6 then
         data.Entered = data.Entered .. value
         nuclear.PlaySound(item, "key_" .. value)
@@ -158,7 +158,6 @@ function nuclear.Action(client, item, action, value)
         data.LastAttempt = Timer.GetTime()
         if data.Entered == data.Code then
             data.Status = "ready"
-            if disk ~= nil and holdable.Attached then return nuclear.Action(client, item, "arm") end
             nuclear.PlaySound(item, "confirm")
         else
             data.Entered = ""
@@ -169,6 +168,10 @@ function nuclear.Action(client, item, action, value)
         data.Entered = value
         return nuclear.Action(client, item, "enter")
     elseif action == "anchor" and data.Status ~= "armed" and data.Status ~= "exploded" and item.ParentInventory == nil then
+        if disk == nil then
+            Traitormod.SendChatMessage(client, Traitormod.GetText("NukeAnchorNeedsDisk"))
+            return false
+        end
         if holdable.Attached then
             holdable.Drop(nil, false)
             Networking.CreateEntityEvent(item, componentEvent.__new(holdable, nil))
@@ -194,7 +197,6 @@ function nuclear.Action(client, item, action, value)
             holdable.AttachToWall()
             Networking.CreateEntityEvent(item, componentEvent.__new(holdable, nil))
             nuclear.PlaySound(item, "anchor")
-            if data.Status == "ready" and disk ~= nil then return nuclear.Action(client, item, "arm") end
         end
     elseif action == "arm" and data.Status == "ready" and disk ~= nil and holdable.Attached then
         if data.MusicIndex == 0 then
@@ -251,11 +253,11 @@ function nuclear.Think(deltaTime)
                 if data.Status == "armed" then
                     nuclear.Disarm(item, data)
                 end
-                if data.Status ~= "cooldown" and data.Status ~= "exploded" then data.Status, data.Entered = "locked", "" end
+                if data.Status == "code" then data.Status, data.Entered = "locked", "" end
             elseif data.Status == "locked" then data.Status = "code" end
             if data.Status == "cooldown" then
                 data.Cooldown = math.max(0, data.Cooldown - deltaTime)
-                if data.Cooldown == 0 then data.Status, data.Entered = disk ~= nil and "code" or "locked", "" end
+                if data.Cooldown == 0 then data.Status = "ready" end
             elseif data.Status == "armed" then
                 data.Remaining = math.max(0, data.Remaining - deltaTime)
                 if data.MusicIndex > 0 and not data.MusicStarted
@@ -304,11 +306,12 @@ end, Hook.HookMethodType.Before)
 Hook.Patch("Traitormod.Nuclear.Buttons", "Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, parameters)
     if instance.Item.Prefab.Identifier ~= "vt_nuclear_bomb" then return end
     local message = parameters["msg"]
-    local insert, eject, anchor = message.ReadBoolean(), message.ReadBoolean(), message.ReadBoolean()
+    local insert, eject, anchor, arm = message.ReadBoolean(), message.ReadBoolean(), message.ReadBoolean(), message.ReadBoolean()
     parameters.PreventExecution = true
     if insert then nuclear.Action(parameters["c"], instance.Item, "insert")
     elseif eject then nuclear.Action(parameters["c"], instance.Item, "eject")
-    elseif anchor then nuclear.Action(parameters["c"], instance.Item, "anchor") end
+    elseif anchor then nuclear.Action(parameters["c"], instance.Item, "anchor")
+    elseif arm then nuclear.Action(parameters["c"], instance.Item, "arm") end
 end, Hook.HookMethodType.Before)
 -- A free bomb is picked up on LMB; an armed anchored bomb uses native timed picking to disarm.
 Hook.Patch("Traitormod.Nuclear.Use", "Barotrauma.Items.Components.Holdable", "Use", function(instance, parameters)

@@ -12,10 +12,11 @@
       <GuiFrame relativesize="0.34,0.35" minsize="300,190" maxsize="520,380" anchor="Center" relativeoffset="0,-0.1" style="ItemUI" />
     </Terminal>
     <CustomInterface canbeselected="true" selectkey="Use" msg="NukeMenuInteraction" allowuioverlap="true" allowingameediting="false">
-      <GuiFrame relativesize="0.34,0.24" minsize="300,130" maxsize="520,230" anchor="Center" relativeoffset="0,0.21" style="ItemUI" />
+      <GuiFrame relativesize="0.34,0.32" minsize="300,173" maxsize="520,307" anchor="Center" relativeoffset="0,0.25" style="ItemUI" />
       <Button text="NukeInsert" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
       <Button text="NukeEject" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
       <Button text="NukeAnchor" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
+      <Button text="NukeArm" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
     </CustomInterface>
     <ItemContainer capacity="1" maxstacksize="1" canbeselected="false" hideitems="true" drawinventory="false" allowdraganddrop="false" quickusemovesitemsinside="false">
       <Containable items="vt_nuclear_disk" />
