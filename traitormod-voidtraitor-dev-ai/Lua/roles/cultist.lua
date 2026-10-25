@@ -235,8 +235,8 @@ end)
 Hook.Patch("Traitormod.Cultist.PreventInfectedSurrender", "Barotrauma.Character", "ServerEventRead", function (character, ptable)
     if not Game.RoundStarted then return end
     if Traitormod.SelectedGamemode == nil or not Traitormod.SelectedGamemode.UsesSecretRules then return end
-    if #Traitormod.RoleManager.FindCharactersByRole("Cultist") == 0 then return end
     if not character.IsIncapacitated then return end
+    if #Traitormod.RoleManager.FindCharactersByRole("Cultist") == 0 then return end
 
     local client = ptable["c"]
     if client.Character ~= character then return end

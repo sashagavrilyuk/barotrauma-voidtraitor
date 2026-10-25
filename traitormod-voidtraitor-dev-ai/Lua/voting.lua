@@ -549,7 +549,7 @@ local function getConfiguredGameVoteModes()
                 Name = entry.Name or modeId,
                 LanguageKey = entry.LanguageKey,
                 Text = function()
-                    return getVoteText(entry.LanguageKey, entry.Name or modeId)
+                    return getVoteText(entry.LanguageKey) or entry.Name or modeId
                 end,
                 Apply = applyHandler
             })
@@ -827,9 +827,17 @@ vt.StartVote = function(text, options, time, completed, clients)
     end
 end
 
+local nextLobbyCheck = 0
+
 Hook.Add("think", "Traitormod.Voting.Think", function()
-    if isLobbyState() and ((vt.IsStationLobby() and Game.ServerSettings.AllowSubVoting)
-        or (not vt.IsStationLobby() and vt.SubVotingBeforeStation ~= nil)) then applyCommonLobbySync() end
+    -- IsStationLobby decodes the selected submarine's [traitormod] JSON, so check the lobby twice a second.
+    local stationLobby
+    if isLobbyState() and Timer.GetTime() >= nextLobbyCheck then
+        nextLobbyCheck = Timer.GetTime() + 0.5
+        stationLobby = vt.IsStationLobby()
+        if (stationLobby and Game.ServerSettings.AllowSubVoting)
+            or (not stationLobby and vt.SubVotingBeforeStation ~= nil) then applyCommonLobbySync() end
+    end
     for key, voteData in pairs(vt.Votes) do
         if Timer.GetTime() > voteData.Time then
             voteData.Completed = true
@@ -850,7 +858,7 @@ Hook.Add("think", "Traitormod.Voting.Think", function()
     if vt.MapVote ~= nil then
         if Game.RoundStarted then
             finishMapVote(getVoteText("MapVoteCancelledRoundStarted"))
-        elseif vt.MapVote.StationMap ~= vt.IsStationLobby() then
+        elseif stationLobby ~= nil and vt.MapVote.StationMap ~= stationLobby then
             finishMapVote(getVoteText("LobbyVoteCancelledMissionChanged"))
         elseif Timer.GetTime() > vt.MapVote.Time then
             finishMapVote()

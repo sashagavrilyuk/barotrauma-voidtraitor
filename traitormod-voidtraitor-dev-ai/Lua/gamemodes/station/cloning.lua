@@ -8,7 +8,7 @@ local contentElement = LuaUserData.CreateStatic("Barotrauma.ContentXElement")
 local state
 
 function cloning.Start()
-    state = { Consoles = {}, Labels = {}, Scanners = {}, Pods = {}, Jobs = {}, Owners = {}, Reclaimed = {}, Pending = {}, ReconnectCheck = 0 }
+    state = { Consoles = {}, Labels = {}, Scanners = {}, Pods = {}, Jobs = {}, Owners = {}, Reclaimed = {}, Pending = {}, ReconnectCheck = 0, Elapsed = 0 }
     for _, client in pairs(Client.ClientList) do
         if client.Character ~= nil then state.Owners[client.Character] = client end
     end
@@ -169,6 +169,9 @@ end
 
 function cloning.Update(deltaTime)
     if state == nil or not Game.RoundStarted then return end
+    state.Elapsed = state.Elapsed + deltaTime
+    if state.Elapsed < 0.5 then return end
+    deltaTime, state.Elapsed = state.Elapsed, 0
     for pod, data in pairs(state.Pods) do
         if not pod.Removed then
             for item in pairs(data.Consumed) do if item.Removed then data.Consumed[item] = nil end end
