@@ -28,7 +28,7 @@ function console.Start()
 end
 
 function console.Validate(client, item, readOnly)
-    return active and Game.RoundStarted and not Traitormod.IsRoundFinalizing()
+    return active and Game.RoundStarted
         and client ~= nil and client.InGame and client.Character ~= nil and client.Character.IsHuman
         and not client.Character.IsDead and not client.Character.IsIncapacitated
         and item ~= nil and not item.Removed and terminals[item] ~= nil

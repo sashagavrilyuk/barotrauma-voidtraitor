@@ -39,7 +39,7 @@ function nuclear.Register(item)
 end
 
 function nuclear.Validate(client, item, readOnly)
-    return active and Game.RoundStarted and not Traitormod.IsRoundFinalizing()
+    return active and Game.RoundStarted
         and client ~= nil and client.Character ~= nil and client.Character.IsHuman
         and not client.Character.IsDead and not client.Character.IsIncapacitated
         and item ~= nil and not item.Removed and bombs[item] ~= nil and item.CanClientAccess(client)
@@ -220,7 +220,7 @@ function nuclear.Action(client, item, action, value)
 end
 
 function nuclear.Think(deltaTime)
-    if not active or not Game.RoundStarted or Traitormod.IsRoundFinalizing() then return end
+    if not active or not Game.RoundStarted then return end
     for item, data in pairs(bombs) do
         if item.Removed then bombs[item] = nil
         else
@@ -343,7 +343,7 @@ Hook.Patch("Traitormod.Nuclear.Defuse", "Barotrauma.Items.Components.Holdable", 
     parameters.PreventExecution = true
     local character = parameters["picker"]
     local data = bombs[instance.Item]
-    if active and Game.RoundStarted and not Traitormod.IsRoundFinalizing() and data ~= nil and data.Status == "armed"
+    if active and Game.RoundStarted and data ~= nil and data.Status == "armed"
         and data.Remaining > 0 and character ~= nil and character.IsHuman and not character.IsDead and not character.IsIncapacitated
         and not character.LockHands and character.CanInteractWith(instance.Item) then
         nuclear.Disarm(instance.Item, data)

@@ -29,7 +29,7 @@ local known = {}
 for _, entry in ipairs(console.Config.Access) do known[entry.Tag] = true end
 
 function console.Validate(client, item, allowUnselected)
-    return Game.RoundStarted and not Traitormod.IsRoundFinalizing()
+    return Game.RoundStarted
         and client ~= nil and client.Character ~= nil and not client.Character.IsDead
         and not client.Character.IsIncapacitated and client.Character.IsHuman
         and item ~= nil and (client.Character.SelectedItem == item or allowUnselected == true) and not item.Removed

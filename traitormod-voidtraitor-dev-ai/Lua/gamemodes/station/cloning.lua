@@ -77,7 +77,7 @@ local function offerClone(client, job)
 end
 
 function cloning.Begin(client, console)
-    if state == nil or not Game.RoundStarted or Traitormod.IsRoundFinalizing() or console.Removed
+    if state == nil or not Game.RoundStarted or console.Removed
         or client.Character == nil or client.Character.IsDead or client.Character.IsIncapacitated
         or client.Character.SelectedItem ~= console or not console.CanClientAccess(client) then return false end
     local status = cloning.Status(console)
@@ -127,7 +127,7 @@ function cloning.Answer(client, accept)
     if job == nil then return false end
     state.Pending[client] = nil
     if not accept then job.Declined = true return true end
-    if not Game.RoundStarted or Traitormod.IsRoundFinalizing() or job.Clone.Removed or job.Clone.IsDead
+    if not Game.RoundStarted or job.Clone.Removed or job.Clone.IsDead
         or Traitormod.GetClientAccountKey(client) ~= job.Account
         or (client.Character ~= nil and not client.Character.IsDead) then return false end
     for _, owner in pairs(Client.ClientList) do
@@ -168,7 +168,7 @@ local function storeBiomass(pod, data)
 end
 
 function cloning.Update(deltaTime)
-    if state == nil or not Game.RoundStarted or Traitormod.IsRoundFinalizing() then return end
+    if state == nil or not Game.RoundStarted then return end
     for pod, data in pairs(state.Pods) do
         if not pod.Removed then
             for item in pairs(data.Consumed) do if item.Removed then data.Consumed[item] = nil end end
@@ -258,7 +258,7 @@ Hook.Patch("Traitormod.Cloning.Terminal", "Barotrauma.Items.Components.CustomInt
     parameters.PreventExecution = true
     if identifier == "vt_cloning_pod" then
         local client = parameters["c"]
-        if not pressed or state == nil or not Game.RoundStarted or Traitormod.IsRoundFinalizing()
+        if not pressed or state == nil or not Game.RoundStarted
             or client == nil or client.Character == nil or client.Character.IsDead
             or client.Character.SelectedItem ~= item or not item.CanClientAccess(client) then return end
         local data = state.Pods[item]

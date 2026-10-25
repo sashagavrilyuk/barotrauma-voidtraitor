@@ -5,7 +5,7 @@ local json, prompts = require("json"), require("textpromptutils")
 local sessions = {}
 
 function cargo.Validate(client, item, allowUnselected)
-    return cargo.State ~= nil and Game.RoundStarted and not Traitormod.IsRoundFinalizing()
+    return cargo.State ~= nil and Game.RoundStarted
         and client ~= nil and client.Character ~= nil and client.Character.IsHuman
         and not client.Character.IsDead and not client.Character.IsIncapacitated
         and item ~= nil and not item.Removed and item.Prefab.Identifier == "vt_cargo_console"
@@ -338,7 +338,7 @@ end
 function cargo.Unpack(client, item)
     local state = cargo.State
     local package = state ~= nil and state.Packages[item] or nil
-    if package == nil or package.Unpacking or not Game.RoundStarted or Traitormod.IsRoundFinalizing()
+    if package == nil or package.Unpacking or not Game.RoundStarted
         or item.Removed or client.Character == nil or not client.Character.IsHuman or client.Character.IsDead
         or client.Character.IsIncapacitated or client.Character.SelectedItem ~= item or not item.CanClientAccess(client)
         or client.Character.Submarine ~= Submarine.MainSub then return false end
@@ -385,7 +385,7 @@ end
 
 function cargo.Think(deltaTime)
     local state = cargo.State
-    if state == nil or not Game.RoundStarted or Traitormod.IsRoundFinalizing() then return end
+    if state == nil or not Game.RoundStarted then return end
     state.Time = state.Time + deltaTime
     state.Elapsed = state.Elapsed + deltaTime
     if state.Elapsed < 0.5 then return end
