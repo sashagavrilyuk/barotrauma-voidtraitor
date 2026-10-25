@@ -519,7 +519,8 @@ Networking.Receive(voteNet.Cast, function(message, client)
     if Traitormod.Voting ~= nil and Traitormod.Voting.CastGuiVote ~= nil then
         Traitormod.Voting.CastGuiVote(client, optionId)
     end
-    return cm.SendVoteSnapshotEveryone()
+    -- An accepted vote already reaches everyone through Voting's change notification.
+    return cm.SendVoteSnapshot(client)
 end)
 
 local pointshopNet = Traitormod.Pointshop and Traitormod.Pointshop.GuiNet or nil
