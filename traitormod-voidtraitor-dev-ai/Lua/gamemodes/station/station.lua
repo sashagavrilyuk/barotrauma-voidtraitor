@@ -355,6 +355,7 @@ end
 
 function gm:Think()
     if not Game.RoundStarted then return end
+    self:UpdateCrewDown()
     local endOutpost = Level.Loaded.EndOutpost
     if endOutpost ~= nil and not self.Ending then
         local inside, total = 0, 0
@@ -447,26 +448,6 @@ function gm:End()
         Traitormod.OriginalGamemode = nil
     end
 end
-
--- Station handles outpost completion independently of the native end-of-level timer.
-Hook.Patch("Traitormod.Station.OutpostEscape", "Barotrauma.Networking.GameServer", "Update", { "System.Single" }, function(server, parameters)
-    local selected = Traitormod.SelectedGamemode
-    if selected == nil or selected.Name ~= "Station" or selected.Ending or not Game.RoundStarted then return end
-    for _, client in pairs(Client.ClientList) do
-        if client.UsingFreeCam or (client.Character ~= nil and not client.Character.IsDead and not client.Character.IsIncapacitated) then
-            server.EndRoundTimer = 0
-            return
-        end
-    end
-    if not selected.EndWhenCrewDown then
-        server.EndRoundTimer = 0
-    elseif selected.CrewDownEndDelaySeconds <= 0 then
-        server.EndRoundTimer = 120
-    else
-        server.EndRoundTimer = math.max(0, server.EndRoundTimer
-            + parameters["deltaTime"] * (120 / selected.CrewDownEndDelaySeconds - 1))
-    end
-end, Hook.HookMethodType.Before)
 
 -- RespawnManager also respawns dead bots in Permadeath outside campaigns.
 LuaUserData.RegisterType("System.Collections.Generic.List`1[[Barotrauma.CharacterInfo]], System.Collections")

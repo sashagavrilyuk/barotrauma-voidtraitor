@@ -76,6 +76,26 @@ local function reachedLevelEnd()
         or charactersInsideOutpost > charactersOutsideOutpost
 end
 
+-- Unlike the native check, which counts every client's character (GameServer.cs:484-485), ghost-role creatures,
+-- free cameras and admin ghosts do not keep the crew up.
+local function crewDown()
+    for _, client in pairs(Client.ClientList) do
+        local character = client.Character
+        if character ~= nil and character.IsHuman and character.TeamID == CharacterTeamType.Team1
+            and not character.IsDead and not character.IsIncapacitated
+        then
+            return false
+        end
+    end
+    return true
+end
+
+-- The respawn manager counts down while it is about to respawn the dead (RespawnManager.UpdateWaiting, RespawnManager.cs:209-232).
+local function respawnPending()
+    local respawnManager = Game.RespawnManager
+    return respawnManager ~= nil and respawnManager.GetTeamSpecificState(CharacterTeamType.Team1).RespawnCountdownStarted
+end
+
 
 local function sendSummaryPopup(client, summary)
     if Traitormod.ClientHasLua ~= nil and Traitormod.ClientHasLua(client) then
@@ -131,6 +151,7 @@ function gm:Start()
     self.EndTransitionType = transitionTypes.None
     self.EndViaCampaignTransition = false
     self.EndTransitionStarted = false
+    self.CrewDownEndsAt = nil
     self.FinalSummary = nil
     self.AwardedPoints = {}
     self.InitialCrew = {}
@@ -680,8 +701,26 @@ function gm:End()
     Hook.Remove("traitormod.midroundspawn", "Traitormod.Secret.MidRoundSpawn")
 end
 
+function gm:UpdateCrewDown()
+    if self.Ending or not self.EndWhenCrewDown then
+        self.CrewDownEndsAt = nil
+    elseif Traitormod.Config.TestMode or not crewDown() or respawnPending() then
+        if self.CrewDownEndsAt ~= nil then
+            self.CrewDownEndsAt = nil
+            Traitormod.SendMessageEveryone(Traitormod.Language.SecretCrewDownCancelled)
+        end
+    elseif self.CrewDownEndsAt == nil then
+        self.CrewDownEndsAt = Timer.GetTime() + self.CrewDownEndDelaySeconds
+        Traitormod.SendMessageEveryone(string.format(Traitormod.Language.SecretCrewDownCountdown, self.CrewDownEndDelaySeconds))
+    elseif Timer.GetTime() >= self.CrewDownEndsAt then
+        self:BeginEnding("crewdown")
+    end
+end
+
 function gm:Think()
     if not Game.RoundStarted then return end
+
+    self:UpdateCrewDown()
 
     if self.Ending then return end
 
@@ -766,6 +805,18 @@ Hook.Patch("Traitormod.Secret.EndGame.Before", "Barotrauma.Networking.GameServer
 
     selected:BeginEnding("manual", ptable["transitionType"] or transitionTypes.None, false)
     ptable.PreventExecution = true
+end, Hook.HookMethodType.Before)
+
+-- Secret rules end a round themselves (gm:UpdateCrewDown, reachedLevelEnd). The native timer is kept above zero, where it
+-- would announce a crew death or refresh respawns (GameServer.cs:519-522, 540-543), and below its delay, where it would end
+-- the round (:560). Dead players see its remaining time (GameClient.cs:3566), so it follows the crew-down countdown.
+Hook.Patch("Traitormod.Secret.EndRoundTimer", "Barotrauma.Networking.GameServer", "Update", { "System.Single" }, function (instance)
+    local selected = Traitormod.SelectedGamemode
+    if selected == nil or not selected.UsesSecretRules or not Game.RoundStarted then return end
+
+    local delay = instance.EndRoundDelay
+    local remaining = selected.CrewDownEndsAt ~= nil and selected.CrewDownEndsAt - Timer.GetTime() or delay
+    instance.EndRoundTimer = math.max(delay - math.max(remaining, 1), 0.01)
 end, Hook.HookMethodType.Before)
 
 Hook.Patch("Traitormod.Secret.EndGame.After", "Barotrauma.Networking.GameServer", "EndGame", function ()

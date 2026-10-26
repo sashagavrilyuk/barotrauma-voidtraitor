@@ -31,6 +31,8 @@ language.SecretCrewSummary = "Очки получены: %s\n"
 language.SecretRoundObjectivesSummary = "Задачи выполнены: %s\n"
 language.SecretRoundEndingCountdown = "Раунд завершится через %s секунд."
 language.SecretCrewReachedStation = "Экипаж достиг конечной станции."
+language.SecretCrewDownCountdown = "Весь экипаж выведен из строя. Раунд завершится через %s секунд, если никто не вернётся в строй."
+language.SecretCrewDownCancelled = "Экипаж снова в строю или скоро возродится. Раунд продолжается."
 language.SecretTraitorAssigned = "Вы выбраны на роль антагониста. Проголосуйте, какую роль хотите получить."
 
 -- Submarine Royale
