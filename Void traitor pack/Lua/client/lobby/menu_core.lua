@@ -16,6 +16,7 @@ P.NET_POINTSHOP_REQUEST = "VoidTraitor_PointshopRequest"
 P.GLOBAL_STATE_KEY = "VoidTraitorClientMenuState"
 P.HUD_PATCH_ID = "VoidTraitor.ClientMenu.Hud"
 P.PAUSE_PATCH_ID = "VoidTraitor.ClientMenu.Pause"
+P.RESPAWN_TEXT_PATCH_ID = "VoidTraitor.ClientMenu.RespawnText"
 
 local previousState = rawget(_G, P.GLOBAL_STATE_KEY)
 if previousState ~= nil then
@@ -72,9 +73,11 @@ P.MenuText = menuText
 
 
 
-P.BUTTON_DRAW_ORDER = 100
+-- the order of the vanilla top-left buttons, drawn under the debug console (order 1, DebugConsole.AddToGUIUpdateList)
+P.BUTTON_DRAW_ORDER = 0
 P.MENU_DRAW_ORDER = 125
 LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.NetLobbyScreen"], "respawnTabButton")
+LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.GameSession"], "deathChoiceInfoFrame")
 P.VT_MENU_WIDTH_PIXELS = 370
 P.VT_MENU_DEFAULT_HEIGHT_PIXELS = 580
 P.VT_MENU_MIN_HEIGHT_PIXELS = 340

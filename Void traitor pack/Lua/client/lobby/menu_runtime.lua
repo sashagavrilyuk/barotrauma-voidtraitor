@@ -62,6 +62,23 @@ Hook.Patch(P.HUD_PATCH_ID, "Barotrauma.GameSession", "AddToGUIUpdateList", funct
     end
 end)
 
+-- The respawn text is the fourth element of the vanilla top-left row (GameSession.CreateTopLeftButtons,
+-- GameSession.cs:108-118), where the SHOP and VT buttons stand. It goes into the gap between the buttons and the
+-- crew list, which starts one HUD padding below the row (HUDLayoutSettings.CrewArea); its frame is as tall as the row
+-- and centres the text vertically.
+Hook.Patch(P.RESPAWN_TEXT_PATCH_ID, "Barotrauma.GameSession", "CreateTopLeftButtons", function(instance)
+    local state = rawget(_G, P.GLOBAL_STATE_KEY)
+    if state == nil or state.Disabled then return end
+
+    local frame = instance.deathChoiceInfoFrame
+    local rowHeight = frame.RectTransform.Parent.Rect.Height
+    local _, buttonHeight = P.GetTopButtonSize()
+    local buttonsBottom = (rowHeight + buttonHeight) / 2
+    local crewListTop = rowHeight + P.GetTopButtonSpacing()
+    frame.IgnoreLayoutGroups = true
+    frame.RectTransform.AbsoluteOffset = Point(0, math.floor((buttonsBottom + crewListTop - rowHeight) / 2))
+end, Hook.HookMethodType.After)
+
 Hook.Patch(P.PAUSE_PATCH_ID, "Barotrauma.GUI", "TogglePauseMenu", {}, function(instance, params)
     local state = rawget(_G, P.GLOBAL_STATE_KEY)
     if state ~= nil and not state.Disabled and (state.CurrentMenu ~= nil or state.BlockPauseMenu == true) then
