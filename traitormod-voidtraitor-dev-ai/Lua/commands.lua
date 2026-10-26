@@ -484,6 +484,19 @@ Traitormod.AddCommand("!unvoid", function (client, args)
     return true
 end)
 
+Traitormod.AddCommand("!aghost", function (client, args)
+    if not client.HasPermission(ClientPermissions.ConsoleCommands) then return end
+
+    if not Game.RoundStarted then
+        Traitormod.SendMessage(client, Traitormod.Language.RoundNotStarted)
+        return true
+    end
+
+    Traitormod.AdminGhost.Toggle(client)
+
+    return true
+end)
+
 Traitormod.AddCommand("!revive", function (client, args)
     if not client.HasPermission(ClientPermissions.ConsoleCommands) then return end
 

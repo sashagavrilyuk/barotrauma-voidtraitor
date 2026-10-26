@@ -31,7 +31,7 @@ end
 m.CrewHasJob = function(job)
     if #Client.ClientList > 1 then
         for key, value in pairs(Client.ClientList) do
-            if value.Character and value.Character.HasJob(job) then return true end
+            if value.Character and value.Character.HasJob(job) and not Traitormod.AdminGhost.IsGhost(value.Character) then return true end
         end
     end
     return false

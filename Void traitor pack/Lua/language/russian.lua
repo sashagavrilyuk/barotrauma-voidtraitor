@@ -64,6 +64,7 @@ language.AdminMenu = {
         allpoints = { Label = "Очки всех игроков", Hint = "Аналог !allpoints", Category = "Info" },
         ongoingevents = { Label = "Активные события", Hint = "Аналог !ongoingevents", Category = "Info" },
         endroundnow = { Label = "Закончить раунд сейчас", Hint = "Немедленно завершает раунд во время финального отсчёта Secret.", Category = "Info" },
+        aghost = { Label = "Админ-призрак", Hint = "Аналог !aghost: войти в режим админ-призрака или выйти из него", Category = "Info" },
         revive = { Label = "Оживить игрока", Hint = "Аналог !revive", Category = "Players" },
         void = { Label = "Отправить в пустоту", Hint = "Аналог !void", Category = "Players" },
         unvoid = { Label = "Вернуть из пустоты", Hint = "Аналог !unvoid", Category = "Players" },

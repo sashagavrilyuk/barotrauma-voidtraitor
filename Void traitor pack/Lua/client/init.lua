@@ -10,6 +10,7 @@ assert(loadfile(packPath .. "/Lua/client/roundsummary.lua"))(packPath, clientCom
 assert(loadfile(packPath .. "/Lua/client/killfeed.lua"))(packPath, clientCommon)
 assert(loadfile(packPath .. "/Lua/client/spectator/camera_teleport.lua"))(packPath, clientCommon)
 assert(loadfile(packPath .. "/Lua/client/spectator/ghostroles.lua"))(packPath, clientCommon)
+assert(loadfile(packPath .. "/Lua/client/spectator/adminghost.lua"))()
 assert(loadfile(packPath .. "/Lua/client/pointshop/gui.lua"))(packPath, clientCommon)
 assert(loadfile(packPath .. "/Lua/client/pointshop/input.lua"))(packPath)
 assert(loadfile(packPath .. "/Lua/client/lobby/menu.lua"))(packPath, clientCommon)

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Afflictions>
+  <!-- Admin ghost (VoidTraitor Lua/features/adminghost.lua): hidden from everyone except the client controlling it,
+       since Character.IsLocalPlayer (Controlled == this) is false on the server and on other clients.
+       A buff, so it still applies and updates while the ghost is Unkillable (CharacterHealth.ApplyAffliction).
+       Pressure protection stops the pressure camera shake (Character.ControlLocalPlayer), and oxygen without the hull's air
+       keeps the ghost from using up a room and from drowning on the admin's client, where Unkillable is unknown
+       (Character.UpdateOxygen, CharacterHealth.OxygenAmount), like a diving suit does. -->
+  <Affliction identifier="vt_adminghost" type="vt_adminghost" isbuff="true" limbspecific="false" maxstrength="1"
+    showiconthreshold="1000" showinhealthscannerthreshold="1000" healableinmedicalclinic="false">
+    <Effect minstrength="0" maxstrength="1" strengthchange="0">
+      <StatusEffect target="Character" indetectable="true" PressureProtection="100000" OxygenAvailable="100" UseHullOxygen="false" setvalue="true" />
+      <StatusEffect target="Character" invisibletimer="1" setvalue="true">
+        <Conditional IsLocalPlayer="false" />
+      </StatusEffect>
+    </Effect>
+    <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="0,0,128,128" color="255,255,255,255" origin="0,0" />
+  </Affliction>
+</Afflictions>

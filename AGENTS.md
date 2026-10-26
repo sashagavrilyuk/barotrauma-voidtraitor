@@ -47,7 +47,7 @@ Keep code, localization, roles, objectives, settings, assets and persistence wit
 - `Lua/objectives/` — traitor/crew objectives and completion logic (`objective.lua`, antagonist objectives, and crew objectives in `Lua/objectives/crew/`).
 - `Lua/roles/` — role definitions/logic (`role.lua`, `antagonist.lua`, `clown.lua`, `crew.lua`, `cultist.lua`, `huskservant.lua`, `saboteur.lua`, `traitor.lua`).
 - `Lua/extensions/` — fixes, patches, auxiliary game-related extensions (`attackdefendreactorblastfix.lua`, `brokenhandcuffs.lua`, `deathswarm.lua`, `paralysisnerf.lua`, `pressuremidjoin.lua`, `servermessageutf8fix.lua`, `spectatorjobfix.lua`, `stationragdollplatforms.lua`, `weaponnerfs.lua`).
-- `Lua/features/` — standalone runtime functions of VoidTraitor that are not related to core, gamemodes, roles, objectives, pointshop, or extensions (`camerateleport.lua`, `deathlogbook.lua`, `discordwebhooks.lua`, `killfeed.lua`, `midroundspawn.lua`, `piratemissionghostroles.lua`, `pointitems.lua`, `respawnshuttle.lua`, `serverlogs.lua`, `skillbuffs.lua`, `welcome.lua`).
+- `Lua/features/` — standalone runtime functions of VoidTraitor that are not related to core, gamemodes, roles, objectives, pointshop, or extensions (`adminghost.lua`, `camerateleport.lua`, `deathlogbook.lua`, `discordwebhooks.lua`, `killfeed.lua`, `midroundspawn.lua`, `piratemissionghostroles.lua`, `pointitems.lua`, `respawnshuttle.lua`, `serverlogs.lua`, `skillbuffs.lua`, `welcome.lua`).
 - `Lua/data/` — permanent saved data (`data.json`, `discordstate.json`, `roundcounter.json`, `stats.json`).
 - `types/` & `definitions/` — type definitions (`Traitormod.lua`, `event.lua`, `gamemodes.lua`, `team.lua`, `definitions/main.lua`).
 
@@ -63,7 +63,7 @@ Client-side GUI is strictly modular. Never dump everything into a single file or
   - GUI core & widgets: `gui.lua`, `gui_core.lua`, `widgets.lua`, `input.lua`.
   - Data/state/network models: `model_state.lua`, `model_folders.lua`, `model_text.lua`, `model_network.lua`, `network.lua`.
   - Panels: `shop_panel.lua`, `shop_categories.lua`, `shop_filters.lua`, `shop_products.lua`, `cart_panel.lua`, `cart_items.lua`.
-- `Lua/client/spectator/` — spectator UI (`camera_teleport.lua`, `ghostroles.lua`), paired with server `camerateleport.lua` and `ghostroles.lua`.
+- `Lua/client/spectator/` — spectator UI (`camera_teleport.lua`, `ghostroles.lua`) and the admin ghost's client movement (`adminghost.lua`), paired with server `camerateleport.lua`, `ghostroles.lua` and `features/adminghost.lua`.
 - `Lua/client/station/` — station console client UI (`cargo.lua`, `communications.lua`, `idconsole.lua`, `nuclear.lua`), paired with `Lua/gamemodes/station/` on the server.
 - `Lua/extensions/` — client/pack extensions (`enhanced_husks_optimization.lua`, `headset_stun.lua`, `nt_surgery_access_fix.lua`).
 - `Lua/language/` — client localization (`russian.lua`, `welcome_russian.lua`).

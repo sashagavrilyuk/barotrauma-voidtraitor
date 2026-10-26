@@ -360,7 +360,7 @@ function gm:Think()
         local inside, total = 0, 0
         for _, client in pairs(Client.ClientList) do
             local character = client.Character
-            if character ~= nil and not character.IsDead and not character.IsUnconscious then
+            if character ~= nil and not character.IsDead and not character.IsUnconscious and not Traitormod.AdminGhost.IsGhost(character) then
                 total = total + 1
                 if character.Submarine == endOutpost then inside = inside + 1 end
             end
@@ -387,7 +387,7 @@ function gm:Think()
     -- The native server omits static submarine positions from regular updates.
     for _, client in pairs(Client.ClientList) do
         local accountKey = Traitormod.GetClientAccountKey(client)
-        if client.Character ~= nil and not client.Character.IsDead then
+        if client.Character ~= nil and not client.Character.IsDead and not Traitormod.AdminGhost.IsGhost(client.Character) then
             self.SpawnedAccounts[accountKey] = true
         elseif self.SpawnedAccounts[accountKey] and client.Character == nil and not client.SpectateOnly then
             local reclaimable = false
@@ -528,7 +528,7 @@ Hook.Patch("Barotrauma.Networking.GameServer", "SetClientCharacter", function(in
     local selected = Traitormod.SelectedGamemode
     if selected == nil or selected.Name ~= "Station" then return end
     local client, character = parameters["client"], parameters["newCharacter"]
-    if client ~= nil and character ~= nil and not character.IsDead then
+    if client ~= nil and character ~= nil and not character.IsDead and not Traitormod.AdminGhost.IsGhost(character) then
         client.SpectateOnly = false
         selected:HidePlayerFromCrew(character)
     end

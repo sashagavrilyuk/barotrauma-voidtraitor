@@ -492,6 +492,7 @@ Traitormod.MidRoundSpawn = dofile(Traitormod.Path .. "/Lua/features/midroundspaw
 Traitormod.GhostRoles = dofile(Traitormod.Path .. "/Lua/ghostroles.lua")
 Traitormod.RoundStats = dofile(Traitormod.Path .. "/Lua/roundstats.lua")
 Traitormod.CameraTeleport = dofile(Traitormod.Path .. "/Lua/features/camerateleport.lua")
+Traitormod.AdminGhost = dofile(Traitormod.Path .. "/Lua/features/adminghost.lua")
 
 Traitormod.Stats = dofile(Traitormod.Path .. "/Lua/statistics.lua")
 dofile(Traitormod.Path .. "/Lua/features/pointitems.lua")

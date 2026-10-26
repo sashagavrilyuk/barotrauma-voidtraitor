@@ -59,7 +59,7 @@ local function reachedLevelEnd()
     local charactersOutsideOutpost = 0
     for _, client in pairs(Client.ClientList) do
         local character = client.Character
-        if character ~= nil and not character.IsDead and not character.IsUnconscious then
+        if character ~= nil and not character.IsDead and not character.IsUnconscious and not Traitormod.AdminGhost.IsGhost(character) then
             if character.Submarine == endOutpost then
                 charactersInsideOutpost = charactersInsideOutpost + 1
             else
@@ -283,7 +283,7 @@ function gm:SelectAntagonists()
         local playerInGame = 0
         for key, value in pairs(Client.ClientList) do
             -- valid traitor choices must be ingame, player was spawned before (has a character), is no spectator
-            if value.InGame and value.Character and not value.SpectateOnly then
+            if value.InGame and value.Character and not value.SpectateOnly and not Traitormod.AdminGhost.IsGhost(value.Character) then
                 -- filter by config
                 if this.TraitorFilter(value) > 0 and Traitormod.GetData(value, "NonTraitor") ~= true then
                     -- players are alive or if respawning is on and config allows dead traitors (not supported yet)
