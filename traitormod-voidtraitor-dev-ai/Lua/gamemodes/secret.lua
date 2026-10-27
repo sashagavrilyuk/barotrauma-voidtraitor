@@ -156,6 +156,7 @@ function gm:Start()
     self.AwardedPoints = {}
     self.InitialCrew = {}
     self.InitialCrewDeaths = {}
+    local crewCount = 0
     for _, client in pairs(Client.ClientList) do
         local character = client.Character
         if character ~= nil
@@ -164,8 +165,11 @@ function gm:Start()
             and character.TeamID == CharacterTeamType.Team1
         then
             self.InitialCrew[Traitormod.GetClientAccountKey(client)] = true
+            crewCount = crewCount + 1
         end
     end
+    -- decided now as well, so a lone tester is not ended by the crew-down check before antagonists are chosen
+    self:UpdateTestMode(crewCount)
     lobbySummaryPending = nil
 
     if self.EnableRandomEvents then
@@ -304,9 +308,11 @@ function gm:SelectAntagonists()
         local playerInGame = 0
         for key, value in pairs(Client.ClientList) do
             -- valid traitor choices must be ingame, player was spawned before (has a character), is no spectator
-            if value.InGame and value.Character and not value.SpectateOnly and not Traitormod.AdminGhost.IsGhost(value.Character) then
+            if value.InGame and value.Character and not value.SpectateOnly then
                 -- filter by config
-                if this.TraitorFilter(value) > 0 and Traitormod.GetData(value, "NonTraitor") ~= true then
+                if this.TraitorFilter(value) > 0 and Traitormod.GetData(value, "NonTraitor") ~= true
+                    and not Traitormod.AdminGhost.IsGhost(value.Character)
+                then
                     -- players are alive or if respawning is on and config allows dead traitors (not supported yet)
                     if not value.Character.IsDead and Traitormod.RoleManager.GetRole(value.Character) == nil then
                         clientWeight[value] = (Traitormod.GetData(value, "Weight") or 0) * this.TraitorFilter(value)
