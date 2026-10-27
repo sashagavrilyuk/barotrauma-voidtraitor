@@ -270,9 +270,9 @@ Hook.Patch("Barotrauma.HumanAIController", "StructureDamaged", function (instanc
     local damage = ptable["damageAmount"]
 
     if damage > 0 then return end
-    if ptable["character"] == nil then return end
+    if ptable["attacker"] == nil then return end
 
-    rm.CallObjectiveFunction("HullRepaired", ptable["character"], damage)
+    rm.CallObjectiveFunction("HullRepaired", ptable["attacker"], damage)
 end, Hook.HookMethodType.After)
 
 Hook.Patch("Barotrauma.Character", "TryAdjustHealerSkill", function (character, ptable)

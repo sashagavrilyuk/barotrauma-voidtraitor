@@ -6,6 +6,9 @@ local gameServerDescriptor = Descriptors["Barotrauma.Networking.GameServer"] or 
 local transitionTypes = LuaUserData.CreateEnumTable("Barotrauma.CampaignMode+TransitionType")
 local voteTypes = LuaUserData.CreateEnumTable("Barotrauma.Networking.VoteType")
 LuaUserData.MakePropertyAccessible(gameServerDescriptor, "EndRoundTimer")
+local respawnManagerDescriptor = Descriptors["Barotrauma.Networking.RespawnManager"] or LuaUserData.RegisterType("Barotrauma.Networking.RespawnManager")
+LuaUserData.MakeFieldAccessible(respawnManagerDescriptor, "teamSpecificStates")
+LuaUserData.RegisterType("System.Collections.Generic.Dictionary`2[[Barotrauma.CharacterTeamType],[Barotrauma.Networking.RespawnManager+TeamSpecificState]], System.Collections")
 
 local summaryNetMessage = "VoidTraitor_RoundSummary"
 local lobbySummaryPending = nil
@@ -93,7 +96,7 @@ end
 -- The respawn manager counts down while it is about to respawn the dead (RespawnManager.UpdateWaiting, RespawnManager.cs:209-232).
 local function respawnPending()
     local respawnManager = Game.RespawnManager
-    return respawnManager ~= nil and respawnManager.GetTeamSpecificState(CharacterTeamType.Team1).RespawnCountdownStarted
+    return respawnManager ~= nil and respawnManager.teamSpecificStates[CharacterTeamType.Team1].RespawnCountdownStarted
 end
 
 

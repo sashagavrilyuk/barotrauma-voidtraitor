@@ -9,6 +9,7 @@ local idleDescriptor = LuaUserData.RegisterType("Barotrauma.AIObjectiveIdle")
 LuaUserData.MakeFieldAccessible(idleDescriptor, "targetHulls")
 LuaUserData.MakeFieldAccessible(idleDescriptor, "hullWeights")
 LuaUserData.MakeFieldAccessible(LuaUserData.RegisterType("Barotrauma.HumanAIController"), "steeringManager")
+LuaUserData.RegisterType("System.Collections.Generic.HashSet`1[[Barotrauma.WayPoint]], System.Collections")
 
 local function getSpawnPoints(submarine)
     local waypoints = submarine.GetWaypoints(false)
@@ -42,7 +43,7 @@ local function getSpawnPoints(submarine)
     for _, waypoint in pairs(waypoints) do
         local hull = waypoint.CurrentHull
         if hull ~= nil and hull.Submarine == submarine and not hull.AvoidStaying
-            and not waypoint.IsObstructed and waypoint.Ladders == nil and waypoint.ConnectedDoor == nil then
+            and waypoint.Ladders == nil and waypoint.ConnectedDoor == nil then
             local danger = hull.FireCount
             local distance = math.huge
             for _, threat in ipairs(threats) do
@@ -193,7 +194,7 @@ function patchAI()
             if target == nil then
                 -- If every entry is blocked, approach a reachable exterior point and retry.
                 for _, waypoint in pairs(home.GetWaypoints(false)) do
-                    if waypoint.CurrentHull == nil and not waypoint.IsObstructed then
+                    if waypoint.CurrentHull == nil and waypoint.ObstructedConnections.Count == 0 then
                         local d = Vector2.DistanceSquared(waypoint.WorldPosition, entrance and entrance.WorldPosition or home.WorldPosition)
                         if target == nil or d < distance then
                             local route = steering.PathFinder.FindPath(character.SimPosition, character.GetRelativeSimPosition(waypoint), character.Submarine, nil, 0, nil, nil, nil, false)
@@ -204,7 +205,7 @@ function patchAI()
             end
             if target == nil then
                 for _, waypoint in pairs(home.GetWaypoints(false)) do
-                    if waypoint.CurrentHull == nil and not waypoint.IsObstructed then
+                    if waypoint.CurrentHull == nil and waypoint.ObstructedConnections.Count == 0 then
                         local d = Vector2.DistanceSquared(character.WorldPosition, waypoint.WorldPosition)
                         if target == nil or d < distance then target = waypoint; distance = d end
                     end

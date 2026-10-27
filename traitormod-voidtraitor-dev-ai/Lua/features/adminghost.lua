@@ -12,7 +12,7 @@ local NET_STATE = "VoidTraitor_AdminGhostState"
 local NET_LIST = "VoidTraitor_AdminGhostList"
 local NET_LIST_REQUEST = "VoidTraitor_AdminGhostListRequest"
 local PATCH_ID = "Traitormod.AdminGhost"
-local REACH_ARGS = { "Barotrauma.Item", "out System.Single", "System.Boolean" }
+local REACH_ARGS = { "Barotrauma.Item", "out System.Single", "System.Boolean", "System.Boolean" }
 local UPDATE_ANIM_ARGS = { "System.Single" }
 local UPDATE_RAGDOLL_ARGS = { "System.Single", "Barotrauma.Camera" }
 local VOIP_ARGS = { "Barotrauma.Networking.Client", "Barotrauma.Networking.Client", "out System.Single", "out System.Boolean" }
@@ -152,14 +152,15 @@ local function clearCollisions()
     end
 end
 
--- Same gates as Character.CanInteractWith(Item, out float, bool) (Character.cs:2887) without the distance check.
+-- Same gates as Character.CanInteractWith(Item, out float, bool, bool) without the distance check.
 local function reach(instance, ptable)
     if ghosts[instance] == nil then return end
     ptable.PreventExecution = true
     local item = ptable["item"]
+    local allowHidden = ptable["allowHiddenItems"]
     -- a flying ghost never climbs: pressing up or down grabs the first ladder accepted here (Character.cs:3222-3260)
     if item.GetComponentString("Ladder") ~= nil then return false end
-    if not instance.CanInteract or item.IsHidden or not item.IsInteractable(instance) then return false end
+    if not instance.CanInteract or (item.IsHidden and not allowHidden) or not item.IsInteractable(instance, allowHidden) then return false end
     if item.ParentInventory ~= nil then return instance.CanAccessInventory(item.ParentInventory) end
     return item.InteractDistance > 0 or #item.Prefab.Triggers > 0
 end

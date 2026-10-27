@@ -613,7 +613,7 @@ Hook.Add("traitormod.healingTracked", "Traitormod.RoundStats.HealingTracked", fu
 end)
 
 Hook.Patch("Traitormod.RoundStats.HullRepaired", "Barotrauma.HumanAIController", "StructureDamaged", function(instance, ptable)
-    local character = ptable["character"]
+    local character = ptable["attacker"]
     local structure = ptable["structure"]
     local damage = tonumber(ptable["damageAmount"]) or 0
     if damage >= 0 or not isOwnSubmarine(structure ~= nil and structure.Submarine or nil, character) then return end
