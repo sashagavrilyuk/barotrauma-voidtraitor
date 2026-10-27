@@ -11,6 +11,7 @@ local NET_LIST_REQUEST = "VoidTraitor_AdminGhostListRequest"
 local SHOW_ID = "VoidTraitor.AdminGhost.Show"
 local PATCH_ID = "VoidTraitor.AdminGhost"
 local REACH_ARGS = { "Barotrauma.Item", "out System.Single", "System.Boolean" }
+local REACH_CHARACTER_ARGS = { "Barotrauma.Character", "System.Single", "System.Boolean", "System.Boolean" }
 local UPDATE_ANIM_ARGS = { "System.Single" }
 local UPDATE_RAGDOLL_ARGS = { "System.Single", "Barotrauma.Camera" }
 local BODY_KINEMATIC = 1 -- FarseerPhysics.BodyType.Kinematic
@@ -19,11 +20,41 @@ local gameMain = LuaUserData.CreateStatic("Barotrauma.GameMain")
 local ghostId, walkSpeed, runSpeed
 local ghost
 local patched = false
+-- the selected character was picked with the health key: inspected, not carried
+local inspecting = false
+-- the character the server carries for this client's ghost
+local carried
+local cameraZoom, cameraTargetZoom
 -- entity IDs of every ghost in the round
 local listed = {}
 
--- while it is set, Ragdoll.UpdateRagdoll pulls the collider to a floor or ragdolls it (Ragdoll.cs:1469-1508)
-LuaUserData.MakeFieldAccessible(LuaUserData.RegisterType("Barotrauma.HumanoidAnimController"), "levitatingCollider")
+-- while levitatingCollider is set, Ragdoll.UpdateRagdoll pulls the collider to a floor or ragdolls it
+-- (Ragdoll.cs:1469-1508); prevCollisionCategory gives a carried character its collisions back
+for _, animType in ipairs({ "Barotrauma.HumanoidAnimController", "Barotrauma.FishAnimController" }) do
+    local descriptor = LuaUserData.RegisterType(animType)
+    for _, field in ipairs({ "levitatingCollider", "prevCollisionCategory" }) do
+        LuaUserData.MakeFieldAccessible(descriptor, field)
+    end
+end
+
+local function release(target)
+    if target == nil or target.Removed then return end
+    for limb in target.AnimController.Limbs do limb.body.FarseerBody.IgnoreGravity = false end
+    target.AnimController.prevCollisionCategory = 0 -- FarseerPhysics.Dynamics.Category.None
+end
+
+-- The server carries the character; this client only lets its own copy of it pass through walls, so the server's
+-- corrections can move it there (a remote ragdoll is teleported only beyond about 3 m, ClientSource Ragdoll.cs:109-150).
+local function updateCarried()
+    local target = ghost.SelectedCharacter
+    if inspecting or (target ~= nil and target.Removed) then target = nil end
+    if carried == target then return end
+    release(carried)
+    carried = target
+    if target ~= nil then
+        for limb in target.AnimController.Limbs do limb.body.FarseerBody.IgnoreGravity = true end
+    end
+end
 
 local function setVelocity()
     if ghost == nil or ghost.Removed then return end
@@ -42,14 +73,22 @@ local function setVelocity()
     anim.levitatingCollider = false
     anim.MainLimb.PullJointWorldAnchorB = anim.Collider.SimPosition
     anim.MainLimb.PullJointEnabled = true
+    updateCarried()
+end
+
+local function disableCollisions(anim)
+    if anim.Collider.CollidesWith == 0 then return end
+    anim.Collider.CollidesWith = 0
+    -- the limbs the ragdoll leaves alone itself (Ragdoll.UpdateCollisionCategories)
+    for limb in anim.Limbs do
+        if not limb.IgnoreCollisions and not limb.IsSevered then limb.body.CollidesWith = 0 end
+    end
 end
 
 local function clearCollisions()
     if ghost == nil or ghost.Removed then return end
-    local anim = ghost.AnimController
-    if anim.Collider.CollidesWith == 0 then return end
-    anim.Collider.CollidesWith = 0
-    for limb in anim.Limbs do limb.body.CollidesWith = 0 end
+    disableCollisions(ghost.AnimController)
+    if carried ~= nil and not carried.Removed then disableCollisions(carried.AnimController) end
 end
 
 local function reach(instance, ptable)
@@ -61,6 +100,27 @@ local function reach(instance, ptable)
     if not instance.CanInteract or item.IsHidden or not item.IsInteractable(instance) then return false end
     if item.ParentInventory ~= nil then return instance.CanAccessInventory(item.ParentInventory) end
     return item.InteractDistance > 0 or #item.Prefab.Triggers > 0
+end
+
+local function reachCharacter(instance, ptable)
+    if instance ~= ghost then return end
+    ptable.PreventExecution = true
+    local c = ptable["c"]
+    return c ~= instance and c.Enabled and c.CanBeSelected and c.InvisibleTimer <= 0
+end
+
+local function keepSelectedInReach(instance, ptable)
+    if ghost == nil or instance.SelectedBy ~= ghost then return end
+    ptable.PreventExecution = true
+    return 0
+end
+
+-- Focusing on a character needs line of sight (Character.cs:3174-3175); the ghost sees through walls like a spectator,
+-- which also shows it the names of characters behind walls (hudInfoVisible, ClientSource Character.cs:879-890).
+local function seeThroughWalls(instance, ptable)
+    if instance ~= ghost then return end
+    ptable.PreventExecution = true
+    return true
 end
 
 local function canBeDragged(instance, ptable)
@@ -75,9 +135,26 @@ local function inventoryAccessible(instance, ptable)
     return not instance.Removed and instance.Inventory ~= nil
 end
 
+local function rememberSelection(instance)
+    if instance == ghost then inspecting = instance.IsKeyHit(InputType.Health) end
+end
+
 -- the server carries what the ghost grabbed instead of dragging it
 local function skipDrag(instance, ptable)
     if instance.Character == ghost then ptable.PreventExecution = true end
+end
+
+-- The camera following a character zooms with the cursor's distance from it (Camera.MoveCamera, Camera.cs:338-366);
+-- the ghost's camera zooms with the wheel within the free camera's limits (:303-320). With Alt held the wheel is left
+-- to the items that read it while aiming (a sprayer's spray size, Sprayer.cs:56-82).
+local function zoomCamera(instance, ptable)
+    if ghost == nil or instance ~= gameMain.GameScreen.Cam then return end
+    if ptable["allowZoom"] and not PlayerInput.KeyDown(Keys.LeftAlt) and not PlayerInput.KeyDown(Keys.RightAlt) then
+        cameraTargetZoom = math.max(instance.MinZoom, math.min(instance.MaxZoom,
+            cameraTargetZoom + PlayerInput.ScrollWheelSpeed / 1000 * cameraZoom))
+    end
+    cameraZoom = cameraZoom + (cameraTargetZoom - cameraZoom) * math.min(ptable["deltaTime"] * 10, 1)
+    instance.Zoom = cameraZoom
 end
 
 -- Installed on first use and kept: Hook.RemovePatch cannot remove them, because LuaCs passes the class name as the
@@ -91,6 +168,11 @@ local function ensurePatches()
     Hook.Patch(PATCH_ID, "Barotrauma.Character", "CanBeDraggedBy", canBeDragged, Hook.HookMethodType.Before)
     Hook.Patch(PATCH_ID, "Barotrauma.Character", "IsInventoryAccessibleTo", inventoryAccessible, Hook.HookMethodType.Before)
     Hook.Patch(PATCH_ID, "Barotrauma.HumanoidAnimController", "DragCharacter", skipDrag, Hook.HookMethodType.Before)
+    Hook.Patch(PATCH_ID, "Barotrauma.Character", "CanInteractWith", REACH_CHARACTER_ARGS, reachCharacter, Hook.HookMethodType.Before)
+    Hook.Patch(PATCH_ID, "Barotrauma.Character", "GetDistanceToClosestLimb", keepSelectedInReach, Hook.HookMethodType.Before)
+    Hook.Patch(PATCH_ID, "Barotrauma.Character", "CanSeeTarget", seeThroughWalls, Hook.HookMethodType.Before)
+    Hook.Patch(PATCH_ID, "Barotrauma.Character", "SelectCharacter", rememberSelection, Hook.HookMethodType.Before)
+    Hook.Patch(PATCH_ID, "Barotrauma.Camera", "MoveCamera", zoomCamera, Hook.HookMethodType.After)
 end
 
 -- Runs after the characters' updates, where the affliction sets InvisibleTimer, and before drawing (GameMain.Update).
@@ -104,6 +186,9 @@ local function showGhosts()
 end
 
 local function stop()
+    release(carried)
+    carried = nil
+    inspecting = false
     ghostId = nil
     ghost = nil
     Hook.Remove("think", PATCH_ID)
@@ -115,9 +200,13 @@ local function watchControl()
     if controlled == nil or controlled.ID ~= ghostId then return end
     Hook.Remove("think", PATCH_ID)
     ghost = controlled
+    -- the server's Unkillable is not synced, so local damage would knock the ghost down until the server corrects it
+    ghost.Unkillable = true
     for limb in ghost.AnimController.Limbs do limb.body.FarseerBody.IgnoreGravity = true end
     -- taking control turns line of sight back on (CharacterNetworking.cs:386 in ClientSource)
     gameMain.LightManager.LosEnabled = false
+    cameraZoom = gameMain.GameScreen.Cam.Zoom
+    cameraTargetZoom = cameraZoom
     ensurePatches()
 end
 

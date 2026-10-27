@@ -13,6 +13,7 @@ local NET_LIST = "VoidTraitor_AdminGhostList"
 local NET_LIST_REQUEST = "VoidTraitor_AdminGhostListRequest"
 local PATCH_ID = "Traitormod.AdminGhost"
 local REACH_ARGS = { "Barotrauma.Item", "out System.Single", "System.Boolean" }
+local REACH_CHARACTER_ARGS = { "Barotrauma.Character", "System.Single", "System.Boolean", "System.Boolean" }
 local UPDATE_ANIM_ARGS = { "System.Single" }
 local UPDATE_RAGDOLL_ARGS = { "System.Single", "Barotrauma.Camera" }
 local VOIP_ARGS = { "Barotrauma.Networking.Client", "Barotrauma.Networking.Client", "out System.Single", "out System.Boolean" }
@@ -46,6 +47,7 @@ for _, animType in ipairs({ "Barotrauma.HumanoidAnimController", "Barotrauma.Fis
         LuaUserData.MakeFieldAccessible(descriptor, field)
     end
 end
+LuaUserData.MakeFieldAccessible(LuaUserData.RegisterType("Barotrauma.HumanAIController"), "draggedTimer")
 
 function adminGhost.IsGhost(character)
     return ghosts[character] ~= nil
@@ -112,6 +114,13 @@ local function updateCarried(ghost, velocity)
     if target ~= nil then carry(ghost, target, velocity) end
 end
 
+-- A bot breaks free from a player of another team after 10 seconds, and within half a second for the next 30
+-- (HumanAIController.UpdateDragged, HumanAIController.cs:979-1014); it stays held while a ghost holds it.
+local function keepBotHeld(target)
+    local ai = target.AIController
+    if ai ~= nil and LuaUserData.IsTargetType(ai, "Barotrauma.HumanAIController") then ai.draggedTimer = 0 end
+end
+
 -- Runs after the animations, which set the collider velocity and levitatingCollider (GameScreen.cs:274),
 -- and before Ragdoll.UpdateAll uses them.
 local function setVelocities()
@@ -128,6 +137,7 @@ local function setVelocities()
             end
             fly(ghost.AnimController, velocity)
             updateCarried(ghost, velocity)
+            if ghost.SelectedCharacter ~= nil then keepBotHeld(ghost.SelectedCharacter) end
         end
     end
 end
@@ -162,6 +172,29 @@ local function reach(instance, ptable)
     if not instance.CanInteract or item.IsHidden or not item.IsInteractable(instance) then return false end
     if item.ParentInventory ~= nil then return instance.CanAccessInventory(item.ParentInventory) end
     return item.InteractDistance > 0 or #item.Prefab.Triggers > 0
+end
+
+-- Same gates as Character.CanInteractWith(Character, float, bool, bool) (Character.cs:2864-2879) without the distance and
+-- visibility checks, so a ghost grabs (G) and inspects (H) anyone it points at. IsDraggable holds for anyone not removed.
+local function reachCharacter(instance, ptable)
+    if ghosts[instance] == nil then return end
+    ptable.PreventExecution = true
+    local c = ptable["c"]
+    return c ~= instance and c.Enabled and c.CanBeSelected and c.InvisibleTimer <= 0
+end
+
+-- A selected character further than MaxDragDistance is let go (Character.cs:2548-2556); a ghost keeps what it holds,
+-- a carried character on its way to the ghost or an inspected one wherever it is.
+local function keepSelectedInReach(instance, ptable)
+    if ghosts[instance.SelectedBy] == nil then return end
+    ptable.PreventExecution = true
+    return 0
+end
+
+-- SetStun checks GodMode but not Unkillable (Character.cs:4891-4903): explosions would stun the ghost, which lets go
+-- of what it holds (:4920-4933) and turns it into a ragdoll that the blast drags away.
+local function refuseStun(instance, ptable)
+    if ghosts[instance] ~= nil and ptable["newStun"] > 0 then ptable.PreventExecution = true end
 end
 
 -- Dead and spectating players are heard only by each other (VoipServer.CanReceive, VoipServer.cs:87-94); ghosts
@@ -227,6 +260,9 @@ local function ensurePatches()
     Hook.Patch(PATCH_ID, "Barotrauma.Character", "SelectCharacter", rememberSelection, Hook.HookMethodType.Before)
     Hook.Patch(PATCH_ID, "Barotrauma.HumanoidAnimController", "DragCharacter", skipDrag, Hook.HookMethodType.Before)
     Hook.Patch(PATCH_ID, "Barotrauma.EntitySpawner", "AddEntityToRemoveQueue", keepGhost, Hook.HookMethodType.Before)
+    Hook.Patch(PATCH_ID, "Barotrauma.Character", "CanInteractWith", REACH_CHARACTER_ARGS, reachCharacter, Hook.HookMethodType.Before)
+    Hook.Patch(PATCH_ID, "Barotrauma.Character", "GetDistanceToClosestLimb", keepSelectedInReach, Hook.HookMethodType.Before)
+    Hook.Patch(PATCH_ID, "Barotrauma.Character", "SetStun", refuseStun, Hook.HookMethodType.Before)
 end
 
 local function sendList(connection)
