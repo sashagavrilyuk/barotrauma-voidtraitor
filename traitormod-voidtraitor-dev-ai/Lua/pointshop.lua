@@ -890,7 +890,7 @@ end
 
 -- GUI pointshop for clients with the pack's Lua. Everyone else, and special shops the GUI
 -- doesn't support, use the text prompt shop above.
-ps.GuiNet = ps.GuiNet or {
+ps.GuiNet = {
     Ready = "VoidTraitor_PointshopGuiReady",
     Request = "VoidTraitor_PointshopRequest",
     Snapshot = "VoidTraitor_PointshopSnapshot",
@@ -902,17 +902,6 @@ ps.GuiNet = ps.GuiNet or {
     PurchaseSound = "VoidTraitor_PointshopPurchaseSound",
     ClassLimits = "VoidTraitor_PointshopClassLimits",
 }
--- ps.GuiNet survives a Lua reload, so the names are set again in case they changed.
-ps.GuiNet.Ready = "VoidTraitor_PointshopGuiReady"
-ps.GuiNet.Request = "VoidTraitor_PointshopRequest"
-ps.GuiNet.Snapshot = "VoidTraitor_PointshopSnapshot"
-ps.GuiNet.State = "VoidTraitor_PointshopState"
-ps.GuiNet.Balance = "VoidTraitor_PointshopBalance"
-ps.GuiNet.ProductState = "VoidTraitor_PointshopProductState"
-ps.GuiNet.BuyCart = "VoidTraitor_PointshopBuyCart"
-ps.GuiNet.Probe = "VoidTraitor_PointshopProbe"
-ps.GuiNet.PurchaseSound = "VoidTraitor_PointshopPurchaseSound"
-ps.GuiNet.ClassLimits = "VoidTraitor_PointshopClassLimits"
 local guiNet = ps.GuiNet
 
 
