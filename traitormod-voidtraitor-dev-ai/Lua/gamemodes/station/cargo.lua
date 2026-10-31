@@ -114,7 +114,7 @@ function cargo.SaleGoods()
     end
     local value = 0
     for item in pairs(candidates) do
-        -- Containers are sold only if empty: selling one must never delete unpriced contents.
+        -- containers are sold only when empty, so unpriced contents are never deleted
         local empty = item.OwnInventory == nil or item.OwnInventory.IsEmpty()
         local package = cargo.State.Packages[item]
         local price = package ~= nil and ItemPrefab.GetItemPrefab(package.Definition.Identifier).DefaultPrice or item.Prefab.DefaultPrice
@@ -482,7 +482,7 @@ function cargo.Send(client, result, shipSnapshot)
     if session.Gui then
         local message = Networking.Start("VoidTraitor_CargoSnapshot")
         message.WriteUInt16(UShort(session.Item.ID))
-        -- Manager is a server-only reference for the original product callback.
+        -- Manager is a server-side reference, it is not sent
         local orders = {}
         for _, order in ipairs(snapshot.Orders) do
             local entry = {}

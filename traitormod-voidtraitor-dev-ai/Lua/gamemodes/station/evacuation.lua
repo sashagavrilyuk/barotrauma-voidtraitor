@@ -15,7 +15,7 @@ local function hold(state, position)
     state.Helm.UnsentChanges = true
 end
 
--- A conservative swept box: short direct approaches must have room for the entire hull.
+-- Whether the whole hull fits along the way from 'from' to 'position' (one box around both, with a margin).
 local function clear(state, position, from)
     from = from or position
     local bounds = state.Ship.Borders
@@ -111,7 +111,7 @@ function evacuation.Estimate(mode)
     if force <= 0 then
         return nil
     end
-    -- Estimate steady cruise at 50% command, engine multiplier .1 and native quadratic hull drag .01.
+    -- rough cruise speed: half throttle, engine force multiplier 0.1, hull drag 0.01 * v^2
     local speed = math.sqrt(5 * force / (0.01 * state.Ship.PhysicsBody.Mass)) * 100
     local position, distance = state.Ship.WorldPosition, 0
     if state.Helm.MaintainPos then

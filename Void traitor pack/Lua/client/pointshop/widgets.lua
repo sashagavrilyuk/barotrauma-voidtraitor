@@ -85,8 +85,8 @@ function P.UpdateCooldownTextBlocks()
 end
 
 function P.CreateProductIcon(parent, iconIdentifier, enabled)
-    -- Square vanilla-framed icon slot. The row height is sized around this slot,
-    -- otherwise Barotrauma compresses the inventory sprite into a wide rectangle.
+    -- Square icon slot with the vanilla frame. The row height is sized around it,
+    -- otherwise the item sprite gets squashed into a wide rectangle.
     local box = GUI.Frame(P.CreateRect(1, 1, parent, GUI.Anchor.Center), "GUIFrameListBox")
     box.CanBeFocused = false
 
@@ -146,9 +146,8 @@ function P.CreatePanelTitle(parent, titleText, iconStyle, alignRight)
         return title
     end
 
-    -- Right-anchored horizontal layout fills children from right to left.
-    -- Create the icon first, then the title: visually the text goes first,
-    -- the icon follows it, and the whole group stays in the right corner.
+    -- A right-anchored layout fills from right to left, so the icon is added first
+    -- to end up after the title.
     local layout = GUI.LayoutGroup(P.CreateRect(0.82, 1, header, GUI.Anchor.TopRight), true, GUI.Anchor.CenterRight)
     layout.Stretch = true
     layout.RelativeSpacing = 0.012

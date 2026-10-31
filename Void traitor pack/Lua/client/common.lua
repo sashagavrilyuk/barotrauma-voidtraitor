@@ -34,27 +34,24 @@ function Common.CreateFlexibleButton(rect, label, alignment)
     return button
 end
 
--- VoidTraitor sizes are designed in 1920x1080 pixels. Barotrauma scales layouts with GUI.Scale,
--- but picks font sizes in resolution steps (Content/UI/style.xml), so below 1080p the text keeps
--- its 1080p size. Sizes follow whichever is larger: GUI.Scale or the default font line height
--- relative to its 1080p value. Use GUI.IntScale only to line up with vanilla HUD elements.
+-- VoidTraitor sizes are in 1920x1080 pixels. Below 1080p GUI.Scale shrinks but fonts don't
+-- (they change in resolution steps), so scale by whichever is larger to keep text from overflowing.
+-- Use GUI.IntScale only to line up with vanilla HUD elements.
 local DESIGN_LINE_HEIGHT = 18
 
 function Common.SafeIntScale(value)
     return math.floor(value * math.max(GUI.Scale, GUI.Style.Font.LineHeight / DESIGN_LINE_HEIGHT))
 end
 
--- Window layout follows Space Station 14 (RobustToolbox BoxContainer): rows keep their natural
--- height, taken from the vanilla style or the font, and only rows without a fixed height (lists,
--- text areas) share the space left when a window is resized. GUILayoutGroup.Stretch does the same:
+-- Window layout: rows keep their natural height (from the vanilla style or the font) and only rows
+-- without a fixed height (lists, text areas) share the space left over. With GUILayoutGroup.Stretch,
 -- children with MinSize = MaxSize keep their height and the others are stretched.
--- Vanilla style heights and fonts step with the resolution together (Content/UI/style.xml).
 
 function Common.GetGap()
     return math.floor(GUI.Style.Font.LineHeight * 0.35)
 end
 
--- The window frame border scales with GUI.Scale (GUI.SlicedSpriteScale), so its margin does too.
+-- The window frame border scales with GUI.Scale, so its margin does too.
 function Common.GetWindowPadding()
     return GUI.IntScale(12)
 end
@@ -77,7 +74,7 @@ function Common.SetFixedWidth(component, width)
     component.RectTransform.MaxSize = Point(width, 2147483647)
 end
 
--- One line of the block's font and scale.
+-- Sets the height to one line of the block's text.
 function Common.FitHeightToText(block)
     Common.SetFixedHeight(block, Common.GetTextHeight(block.Font, block.TextScale))
 end
@@ -87,7 +84,7 @@ function Common.GetButtonSpacing()
     return math.floor(Common.GetStyleHeight("GUIButton") * 6 / 45 + 0.5)
 end
 
--- The vanilla GUIButton style locks the height for this resolution.
+-- The height comes from the vanilla GUIButton style.
 function Common.CreateButton(parent, width, label, anchor)
     local button = GUI.Button(Common.CreateRect(width, 1, parent, anchor), label or "", GUI.Alignment.Center, "GUIButton")
     Common.SetAutoScaleText(button.TextBlock, 1)
@@ -119,15 +116,14 @@ function Common.CreateWindowContent(panel)
     return content, outer
 end
 
--- GUILayoutGroup.Stretch scales rows as size * factor, which fills the layout exactly only while the
--- rows that grow have no MinSize. Their minimum is kept here and counted by Common.GetMinimumHeight,
--- so the window itself cannot be resized below it.
+-- Stretch fills the layout exactly only while growing rows have no MinSize, so their minimum is kept
+-- here instead. Common.GetMinimumHeight counts it, so the window can't be resized below it.
 function Common.SetMinimumHeight(component, height)
     growingRowMinimums[component] = height
 end
 
--- Natural minimum height, like the SS14 measured DesiredSize: a vertical layout adds up its rows
--- and spacing, a horizontal one takes its tallest child, anything else its own minimum.
+-- Minimum height: a vertical layout adds up its rows and spacing, a horizontal one takes
+-- its tallest child, anything else its own minimum.
 function Common.GetMinimumHeight(component)
     local own = math.max(component.RectTransform.MinSize.Y, growingRowMinimums[component] or 0)
     if not LuaUserData.IsTargetType(component, "Barotrauma.GUILayoutGroup") then return own end
@@ -244,8 +240,7 @@ function Common.GetIconData(entry)
     return nil, nil
 end
 
--- One row like the SS14 FancyWindow header: drag handle with the title, then the close button
--- vertically centred in the same row. The row height follows the title font.
+-- Header row: drag handle with the title, then the close button. The row height follows the title font.
 function Common.CreateWindowHeader(content, root, label, tooltip, onClose, options)
     options = options or {}
     local height = Common.GetTextHeight(GUI.Style.SubHeadingFont, 1.5)
@@ -315,8 +310,8 @@ function Common.RemoveGuiComponent(component)
     if component.RectTransform ~= nil then component.RectTransform.Parent = nil end
 end
 
--- Handles fill the window margin (Common.GetWindowPadding), so they never cover the content.
--- Edges run along the whole side and stop at the corner handles, which resize diagonally.
+-- Handles sit in the window margin, so they never cover the content.
+-- Edges run along the whole side up to the corner handles, which resize diagonally.
 function Common.AddResizeHandles(panel, topTargets, bottomTargets, sideTargets)
     local thickness = Common.GetWindowPadding()
     local cornerSize = sideTargets ~= nil and thickness * 2 or 0
@@ -488,8 +483,8 @@ function Common.UpdateMenuInteraction(currentMenu, resizeState, topTargets, bott
     return resizeState, menuX, menuY, menuHeight
 end
 
--- Spectator bottom buttons stand on the row of the vanilla chat input (ChatBox.InputBox) with its
--- height, so they line up with the chat at every resolution; the width follows the label.
+-- Spectator buttons at the bottom take the row and height of the chat input, so they line up
+-- with it at every resolution; the width follows the label.
 function Common.FitBottomButton(button, horizontalPaddingPixels)
     if button == nil or button.TextBlock == nil then return end
 

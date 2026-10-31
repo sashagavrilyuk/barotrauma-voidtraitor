@@ -70,7 +70,7 @@ function nuclear.Update(item, data)
     local terminal = item.GetComponentString("Terminal")
     if terminal.ShowMessage ~= body then
         terminal.ShowMessage = body
-        -- The native Terminal packet is a single OutputValue string; SyncHistory would resend all previous countdown lines.
+        -- the Terminal event only carries OutputValue; SyncHistory would resend every previous countdown line
         terminal.OutputValue = body
         Networking.CreateEntityEvent(item, componentEvent.__new(terminal, nil))
     end
@@ -84,8 +84,8 @@ function nuclear.Update(item, data)
     local armed = data.Status == "armed" or data.Status == "exploded"
     if light.IsOn ~= armed then
         light.IsOn = armed
-        -- A property event names only "IsOn", and clients apply it to the first LightComponent (Item.ReadPropertyChange),
-        -- which is the first music track: the child components are added before their parent.
+        -- A property event would only say "IsOn" and clients would apply it to the first light component,
+        -- which is the first music track (child components are added before the parent).
         Networking.CreateEntityEvent(item, componentEvent.__new(light, nil))
     end
     local playing = data.Status == "exploded" and #musicLengths + 1 or data.MusicPlaying and data.MusicIndex or 0
@@ -224,7 +224,7 @@ function nuclear.Think(deltaTime)
     for item, data in pairs(bombs) do
         if item.Removed then bombs[item] = nil
         else
-            -- OnSpawn runs inside the Item constructor, before its network spawn event. Initialize on the next Think.
+            -- OnSpawn runs before the item's spawn is sent to clients, so the rest is set up here
             if not data.Initialized then
                 data.Initialized = true
                 data.Audio = {}
@@ -313,7 +313,7 @@ Hook.Patch("Traitormod.Nuclear.Buttons", "Barotrauma.Items.Components.CustomInte
     elseif anchor then nuclear.Action(parameters["c"], instance.Item, "anchor")
     elseif arm then nuclear.Action(parameters["c"], instance.Item, "arm") end
 end, Hook.HookMethodType.Before)
--- A free bomb is picked up on LMB; an armed anchored bomb uses native timed picking to disarm.
+-- LMB picks up a loose bomb; an armed anchored bomb is disarmed with the game's timed pick action.
 Hook.Patch("Traitormod.Nuclear.Use", "Barotrauma.Items.Components.Holdable", "Use", function(instance, parameters)
     if instance.Item.Prefab.Identifier ~= "vt_nuclear_bomb" then return end
     parameters.PreventExecution = true

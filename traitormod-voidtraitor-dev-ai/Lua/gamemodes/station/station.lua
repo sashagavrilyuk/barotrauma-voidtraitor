@@ -145,7 +145,7 @@ function gm:Start()
     Traitormod.Communications.Start()
 end
 
--- Test mode is decided in Start (a single admin), not by the player count.
+-- Test mode is set in Start (a single admin), not by the player count.
 function gm:UpdateTestMode() end
 
 function gm:CharacterDeath(character)
@@ -385,7 +385,6 @@ function gm:Think()
         self.NextHuskCheck = Timer.GetTime() + 5
         self:CheckHuskOutbreak()
     end
-    -- The native server omits static submarine positions from regular updates.
     for _, client in pairs(Client.ClientList) do
         local accountKey = Traitormod.GetClientAccountKey(client)
         if client.Character ~= nil and not client.Character.IsDead and not Traitormod.AdminGhost.IsGhost(client.Character) then
@@ -401,6 +400,7 @@ function gm:Think()
             if not reclaimable then client.SpectateOnly = true end
         end
 
+        -- the game doesn't send positions of submarines that don't move, so queue the station and a parked ship here
         local queue = client.PendingPositionUpdates
         if not queue.Contains(Submarine.MainSub) then queue.Enqueue(Submarine.MainSub) end
         local evac = self.EvacuationState

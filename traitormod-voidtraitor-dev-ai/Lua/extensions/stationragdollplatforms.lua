@@ -15,7 +15,7 @@ function extension.Init()
     LuaUserData.RegisterType("FarseerPhysics.ConvertUnits")
     local units = LuaUserData.CreateStatic("FarseerPhysics.ConvertUnits")
 
-    -- Patched in the first Station round: LuaCs keeps a patch for the whole session and runs it for every character each frame.
+    -- Patched only once a Station round starts: the patch then runs for every character each frame for the rest of the session.
     Hook.Add("roundStart", "VoidTraitor.StationRagdollPlatforms", function()
         local selected = Traitormod.SelectedGamemode
         if patched or selected == nil or selected.Name ~= "Station" then return end

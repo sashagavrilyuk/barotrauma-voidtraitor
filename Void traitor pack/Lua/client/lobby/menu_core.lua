@@ -4,8 +4,7 @@ local packPath, Common = ...
 local P = { PackPath = packPath, Common = Common, State = {} }
 local S = P.State
 
--- Void Traitor quick menu.
--- Client-side buttons only. Every action is validated and executed on the server.
+-- Void Traitor quick menu. Only the buttons are on the client; the server checks and runs every action.
 
 P.NET_READY = "VoidTraitor_ClientMenuGuiReady"
 P.NET_REQUEST = "VoidTraitor_ClientMenuRequest"
@@ -73,7 +72,7 @@ P.MenuText = menuText
 
 
 
--- the order of the vanilla top-left buttons, drawn under the debug console (order 1, DebugConsole.AddToGUIUpdateList)
+-- same draw order as the vanilla top-left buttons, so the debug console stays on top
 P.BUTTON_DRAW_ORDER = 0
 P.MENU_DRAW_ORDER = 125
 LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.NetLobbyScreen"], "respawnTabButton")
@@ -110,9 +109,8 @@ S.guiRoot.IgnoreLayoutGroups = true
 S.sharedState.GuiRoot = S.guiRoot
 S.guiRoot:AddToGUIUpdateList(false, P.MENU_DRAW_ORDER)
 
--- The top buttons continue the row of three vanilla HUD buttons with the same geometry
--- (GameSession.CreateTopLeftButtons): HUDLayoutSettings.Padding spacing, buttons vertically
--- centred in ButtonAreaTop, sized from the CrewListToggleButton sprite.
+-- The top buttons continue the row of three vanilla HUD buttons (GameSession.CreateTopLeftButtons)
+-- with the same size and spacing.
 function P.CreateButtonAreaRect(buttonWidth, buttonCount, padding)
     local rectTransform = GUI.RectTransform(Point((buttonWidth + padding) * buttonCount - padding, GUI.IntScale(50)), nil, GUI.Anchor.TopLeft)
     rectTransform.AbsoluteOffset = Point(padding + (buttonWidth + padding) * 3, padding)

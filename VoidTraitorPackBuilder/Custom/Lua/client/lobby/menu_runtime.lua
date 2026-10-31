@@ -62,10 +62,8 @@ Hook.Patch(P.HUD_PATCH_ID, "Barotrauma.GameSession", "AddToGUIUpdateList", funct
     end
 end)
 
--- The respawn text is the fourth element of the vanilla top-left row (GameSession.CreateTopLeftButtons,
--- GameSession.cs:108-118), where the SHOP and VT buttons stand. It goes into the gap between the buttons and the
--- crew list, which starts one HUD padding below the row (HUDLayoutSettings.CrewArea); its frame is as tall as the row
--- and centres the text vertically.
+-- The respawn text normally sits in the top-left button row, where the SHOP and VT buttons are.
+-- Move it down into the gap between those buttons and the crew list.
 Hook.Patch(P.RESPAWN_TEXT_PATCH_ID, "Barotrauma.GameSession", "CreateTopLeftButtons", function(instance)
     local state = rawget(_G, P.GLOBAL_STATE_KEY)
     if state == nil or state.Disabled then return end

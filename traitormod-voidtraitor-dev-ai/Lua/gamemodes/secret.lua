@@ -79,8 +79,8 @@ local function reachedLevelEnd()
         or charactersInsideOutpost > charactersOutsideOutpost
 end
 
--- Unlike the native check, which counts every client's character (GameServer.cs:484-485), ghost-role creatures,
--- free cameras and admin ghosts do not keep the crew up.
+-- The game's own check counts every client's character; here ghost-role creatures,
+-- free cameras and admin ghosts don't count as living crew.
 local function crewDown()
     for _, client in pairs(Client.ClientList) do
         local character = client.Character
@@ -93,7 +93,7 @@ local function crewDown()
     return true
 end
 
--- The respawn manager counts down while it is about to respawn the dead (RespawnManager.UpdateWaiting, RespawnManager.cs:209-232).
+-- true while the crew's respawn countdown is running
 local function respawnPending()
     local respawnManager = Game.RespawnManager
     return respawnManager ~= nil and respawnManager.teamSpecificStates[CharacterTeamType.Team1].RespawnCountdownStarted
@@ -171,7 +171,7 @@ function gm:Start()
             crewCount = crewCount + 1
         end
     end
-    -- decided now as well, so a lone tester is not ended by the crew-down check before antagonists are chosen
+    -- set it here too, otherwise the crew-down check could end a solo test round before antagonists are picked
     self:UpdateTestMode(crewCount)
     lobbySummaryPending = nil
 
@@ -290,7 +290,7 @@ function gm:AssignAntagonists(antagonists)
     end
 end
 
--- A single player tests the round; the admin !testmode override wins.
+-- Test mode is on when only one player is in the round, unless an admin set it with !testmode.
 function gm:UpdateTestMode(playerCount)
     if Traitormod.TestModeOverride == nil then
         Traitormod.Config.TestMode = playerCount == 1
@@ -816,9 +816,9 @@ Hook.Patch("Traitormod.Secret.EndGame.Before", "Barotrauma.Networking.GameServer
     ptable.PreventExecution = true
 end, Hook.HookMethodType.Before)
 
--- Secret rules end a round themselves (gm:UpdateCrewDown, reachedLevelEnd). The native timer is kept above zero, where it
--- would announce a crew death or refresh respawns (GameServer.cs:519-522, 540-543), and below its delay, where it would end
--- the round (:560). Dead players see its remaining time (GameClient.cs:3566), so it follows the crew-down countdown.
+-- Secret ends rounds by its own rules (UpdateCrewDown, reaching the level end). The game's end-round timer is kept
+-- between zero and its delay, so it never announces a crew death or ends the round by itself.
+-- Dead players see this timer, so it shows the crew-down countdown.
 Hook.Patch("Traitormod.Secret.EndRoundTimer", "Barotrauma.Networking.GameServer", "Update", { "System.Single" }, function (instance)
     local selected = Traitormod.SelectedGamemode
     if selected == nil or not selected.UsesSecretRules or not Game.RoundStarted then return end

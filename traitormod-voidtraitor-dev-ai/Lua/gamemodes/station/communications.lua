@@ -177,7 +177,7 @@ Hook.Patch("Traitormod.Communications.Buttons", "Barotrauma.Items.Components.Cus
     elseif code then console.ChooseCode(parameters["c"], instance.Item)
     elseif evacuation then console.Action(parameters["c"], instance.Item, "evacuation") end
 end, Hook.HookMethodType.Before)
--- Patched on the first broadcast: LuaCs keeps a patch for the whole session and runs it for every speaker and listener.
+-- Patched only on the first broadcast: the patch then runs for every speaker and listener for the rest of the session.
 local voicePatched = false
 function patchVoice()
     if voicePatched then return end

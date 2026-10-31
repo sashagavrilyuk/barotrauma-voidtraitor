@@ -1,8 +1,8 @@
 if SERVER then return end
 
--- Movement and reach of the admin ghost this client controls. The server runs the same code
--- (traitormod-voidtraitor-dev-ai: Lua/features/adminghost.lua), so the client's movement prediction matches it.
--- While spectating (or being a ghost), this client also shows the ghosts that the vt_adminghost affliction hides.
+-- Client side of the admin ghost: the same movement and reach code as the server
+-- (traitormod-voidtraitor-dev-ai: Lua/features/adminghost.lua), so prediction matches it.
+-- Spectators and ghosts also see the ghosts that the vt_adminghost affliction hides.
 local NET_PROBE = "VoidTraitor_AdminGhostProbe"
 local NET_READY = "VoidTraitor_AdminGhostReady"
 local NET_STATE = "VoidTraitor_AdminGhostState"
@@ -30,8 +30,8 @@ local cameraZoom, cameraTargetZoom
 -- entity IDs of every ghost in the round
 local listed = {}
 
--- while levitatingCollider is set, Ragdoll.UpdateRagdoll pulls the collider to a floor or ragdolls it
--- (Ragdoll.cs:1469-1508); prevCollisionCategory gives a carried character its collisions back
+-- levitatingCollider makes the ragdoll stand a character up on the floor or ragdoll it in the air;
+-- prevCollisionCategory gives a carried character its collisions back
 for _, animType in ipairs({ "Barotrauma.HumanoidAnimController", "Barotrauma.FishAnimController" }) do
     local descriptor = LuaUserData.RegisterType(animType)
     for _, field in ipairs({ "levitatingCollider", "prevCollisionCategory" }) do
@@ -45,10 +45,9 @@ local function release(target)
     target.AnimController.prevCollisionCategory = 0 -- FarseerPhysics.Dynamics.Category.None
 end
 
--- The server carries the character; this client only lets its own copy of it pass through walls, so the server's
--- corrections can move it there (a remote ragdoll is teleported only beyond about 3 m, ClientSource Ragdoll.cs:109-150).
--- An inspected (H) character has its health window open; the selection alone does not tell, because the client also
--- selects again without a key when it follows the server's state (ClientSource Ragdoll.cs:205-215).
+-- The server carries the character; the client only lets its copy pass through walls so the server's position
+-- updates can move it there. A character inspected with H is told apart by the open health window, because the
+-- client also re-selects characters on its own when it syncs with the server.
 local function updateCarried()
     local target = ghost.SelectedCharacter
     local window = CharacterHealth.OpenHealthWindow
@@ -78,8 +77,8 @@ local function setVelocity()
     anim.levitatingCollider = false
     anim.MainLimb.PullJointWorldAnchorB = anim.Collider.SimPosition
     anim.MainLimb.PullJointEnabled = true
-    -- Facing follows the cursor only on the ground and out of water (Character.cs:2289-2312), so a flying ghost could
-    -- not turn to throw; the server takes the facing from this client's input (:2322-2331).
+    -- The game turns a character to the cursor only while it stands on the ground, so a flying ghost couldn't
+    -- turn around to throw. The server takes the facing from this client.
     if not anim.OnGround and not anim.InWater and ghost.FollowCursor and not anim.IsUsingItem then
         local cursorOffset = ghost.CursorPosition.X - anim.Collider.Position.X
         if cursorOffset < -CURSOR_FOLLOW_MARGIN then
@@ -94,7 +93,7 @@ end
 local function disableCollisions(anim)
     if anim.Collider.CollidesWith == 0 then return end
     anim.Collider.CollidesWith = 0
-    -- the limbs the ragdoll leaves alone itself (Ragdoll.UpdateCollisionCategories)
+    -- the same limbs the game updates in Ragdoll.UpdateCollisionCategories
     for limb in anim.Limbs do
         if not limb.IgnoreCollisions and not limb.IsSevered then limb.body.CollidesWith = 0 end
     end
@@ -111,7 +110,7 @@ local function reach(instance, ptable)
     ptable.PreventExecution = true
     local item = ptable["item"]
     local allowHidden = ptable["allowHiddenItems"]
-    -- a flying ghost never climbs: pressing up or down grabs the first ladder accepted here (Character.cs:3222-3260)
+    -- skip ladders: pressing up or down would grab the first one in reach and the ghost would start climbing
     if item.GetComponentString("Ladder") ~= nil then return false end
     if not instance.CanInteract or (item.IsHidden and not allowHidden) or not item.IsInteractable(instance, allowHidden) then return false end
     if item.ParentInventory ~= nil then return instance.CanAccessInventory(item.ParentInventory) end
@@ -125,10 +124,9 @@ local function reachCharacter(instance, ptable)
     return c ~= instance and c.Enabled and c.CanBeSelected and c.InvisibleTimer <= 0
 end
 
--- The focus search measures from the cursor, kept relative to the controlled character's submarine (UpdateLocalCursor,
--- ClientSource Character.cs:524-531), to limbs relative to each character's own submarine (Character.cs:3914-3925),
--- so a ghost outside a character's submarine missed it; while the ghost searches, each character gets the cursor in its
--- own frame. Outside the search this only runs to let go of a selection beyond MaxDragDistance (Character.cs:2548-2556).
+-- The focus search compares the cursor (relative to the ghost's submarine) with limbs relative to each character's
+-- own submarine, so a ghost outside that submarine could not focus on the character. While the ghost searches, give
+-- each character the cursor in its own coordinates. Otherwise keep a selected character at any distance.
 local function measureLimbDistance(instance, ptable)
     if ghost == nil then return end
     if searchingFocus then
@@ -149,8 +147,8 @@ local function endFocusSearch()
     searchingFocus = false
 end
 
--- Focusing on a character needs line of sight (Character.cs:3174-3175); the ghost sees through walls like a spectator,
--- which also shows it the names of characters behind walls (hudInfoVisible, ClientSource Character.cs:879-890).
+-- Focusing on a character needs line of sight; the ghost sees through walls like a spectator,
+-- which also shows the names of characters behind walls.
 local function seeThroughWalls(instance, ptable)
     if instance ~= ghost then return end
     ptable.PreventExecution = true
@@ -174,9 +172,8 @@ local function skipDrag(instance, ptable)
     if instance.Character == ghost then ptable.PreventExecution = true end
 end
 
--- The camera following a character zooms with the cursor's distance from it (Camera.MoveCamera, Camera.cs:338-366);
--- the ghost's camera zooms with the wheel within the free camera's limits (:303-320). With Alt held the wheel is left
--- to the items that read it while aiming (a sprayer's spray size, Sprayer.cs:56-82).
+-- A camera that follows a character zooms by cursor distance; the ghost's camera zooms with the mouse wheel
+-- like the free camera. With Alt held the wheel is left to items that use it (e.g. sprayer spray size).
 local function zoomCamera(instance, ptable)
     if ghost == nil or instance ~= gameMain.GameScreen.Cam then return end
     if ptable["allowZoom"] and not PlayerInput.KeyDown(Keys.LeftAlt) and not PlayerInput.KeyDown(Keys.RightAlt) then
@@ -187,8 +184,8 @@ local function zoomCamera(instance, ptable)
     instance.Zoom = cameraZoom
 end
 
--- Installed on first use and kept: Hook.RemovePatch cannot remove them, because LuaCs passes the class name as the
--- patch identifier (EventService.RemovePatch, EventService.cs:391-399). Without a ghost they return at once.
+-- Added on first use and never removed: Hook.RemovePatch can't remove them because LuaCs uses the class name
+-- as the patch id. Without a ghost they return right away.
 local function ensurePatches()
     if patched then return end
     patched = true
@@ -206,7 +203,7 @@ local function ensurePatches()
     Hook.Patch(PATCH_ID, "Barotrauma.Camera", "MoveCamera", zoomCamera, Hook.HookMethodType.After)
 end
 
--- Runs after the characters' updates, where the affliction sets InvisibleTimer, and before drawing (GameMain.Update).
+-- Runs after the affliction sets InvisibleTimer and before the frame is drawn.
 local function showGhosts()
     local controlled = Character.Controlled
     if controlled ~= nil and not controlled.IsDead and controlled ~= ghost then return end
@@ -230,10 +227,10 @@ local function watchControl()
     if controlled == nil or controlled.ID ~= ghostId then return end
     Hook.Remove("think", PATCH_ID)
     ghost = controlled
-    -- the server's Unkillable is not synced, so local damage would knock the ghost down until the server corrects it
+    -- Unkillable isn't synced, so local damage would knock the ghost down until the server corrects it
     ghost.Unkillable = true
     for limb in ghost.AnimController.Limbs do limb.body.FarseerBody.IgnoreGravity = true end
-    -- taking control turns line of sight back on (CharacterNetworking.cs:386 in ClientSource)
+    -- taking control of a character turns line of sight back on
     gameMain.LightManager.LosEnabled = false
     cameraZoom = gameMain.GameScreen.Cam.Zoom
     cameraTargetZoom = cameraZoom

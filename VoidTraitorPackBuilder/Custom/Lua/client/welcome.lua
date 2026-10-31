@@ -1,6 +1,6 @@
 if SERVER then return end 
 
--- === СИГНАЛЫ СЕРВЕРУ ===
+-- сообщаем серверу, что у клиента есть Lua пака
 local handshakeTimer = 0
 local function SendHandshake()
     if not Game.IsMultiplayer or not Networking.IsActive then return end
@@ -17,20 +17,12 @@ Hook.Add("think", "VoidTraitor.LuaCheck", function(deltaTime)
 end)
 Hook.Add("roundStart", "VoidTraitor.LuaCheck.RoundStart", SendHandshake)
 
--- =========================================================
--- ТЕКСТЫ И ГАЙДЫ
--- =========================================================
-
 local packPath, Common = ...
 local language = dofile(packPath .. "/Lua/language/welcome_russian.lua")
 local menuText = language.MenuText
 local GuideContent = language.GuideContent
 local GuideOrder = language.GuideOrder
 local CreateRect = Common.CreateRect
-
--- =========================================================
--- СИСТЕМНЫЙ КОД
--- =========================================================
 
 local previousWelcomeRoot = rawget(_G, "VoidTraitorWelcomeMenuRoot")
 if previousWelcomeRoot ~= nil and previousWelcomeRoot.RectTransform ~= nil then
@@ -139,7 +131,7 @@ local function CreateBaseWindow()
     return frame, overlay
 end
 
--- === СТРАНИЦА ГАЙДА ===
+-- Страница гайда
 ShowGuidePage = function(title, text)
     local frame = CreateBaseWindow()
     
@@ -169,7 +161,7 @@ ShowGuidePage = function(title, text)
     btnBack.OnClicked = function() ShowGuidesMenu() end
 end
 
--- === МЕНЮ ГАЙДОВ ===
+-- Меню гайдов
 ShowGuidesMenu = function()
     local frame = CreateBaseWindow()
     
@@ -203,7 +195,7 @@ ShowGuidesMenu = function()
     btnBack.OnClicked = function() ShowCustomWelcomeMenu() end
 end
 
--- === ГЛАВНОЕ МЕНЮ ===
+-- Главное меню
 ShowCustomWelcomeMenu = function()
     local frame = CreateBaseWindow()
 
@@ -224,7 +216,7 @@ ShowCustomWelcomeMenu = function()
     textBlock.TextColor = Color(220, 220, 220, 255)
     textBlock.CalculateHeightFromText() 
 
-    -- ПАНЕЛЬ КНОПОК
+    -- Панель кнопок
     local btnGroupRect = CreateRect(0.95, 0.12, frame, GUI.Anchor.BottomCenter)
     btnGroupRect.AbsoluteOffset = Point(0, 10)
     local btnContainer = GUI.Frame(btnGroupRect, nil)
@@ -258,5 +250,4 @@ Networking.Receive("VoidTraitor_WelcomeMenuOpen", function()
     ShowCustomWelcomeMenu()
 end)
 
--- === АВТОМАТИЗАЦИЯ ===
 Timer.Wait(ShowCustomWelcomeMenu, 1500)

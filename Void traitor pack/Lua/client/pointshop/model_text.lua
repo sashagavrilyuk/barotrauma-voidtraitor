@@ -33,10 +33,8 @@ P.Utf8Lower = {
 }
 
 function P.NormalizeSearchText(value)
-    -- Lua patterns are byte-based: iterating UTF-8 characters with a pattern
-    -- silently produced an empty string for Cyrillic input on some LuaCs
-    -- builds. Keep the UTF-8 bytes intact and replace only known uppercase
-    -- Russian letters, then apply the regular ASCII lowercase conversion.
+    -- Lua patterns work on bytes, so Cyrillic is lowercased by replacing the known
+    -- uppercase letters, then ASCII is lowercased as usual.
     local result = tostring(value or "")
     for upper, lower in pairs(P.Utf8Lower) do
         result = string.gsub(result, upper, lower)
