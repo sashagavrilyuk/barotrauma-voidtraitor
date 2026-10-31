@@ -18,7 +18,7 @@ P.ShowVoidTraitorMenu = function()
     local margin = P.SafeIntScale(P.VT_MENU_MARGIN_PIXELS)
     local minHeight = P.SafeIntScale(P.VT_MENU_MIN_HEIGHT_PIXELS)
     local maxHeight = math.max(minHeight, screenHeight - margin * 2)
-    local width = math.min(P.SafeIntScale(P.VT_MENU_WIDTH_PIXELS), math.max(1, screenWidth - margin * 2))
+    local width = P.Common.FitWindowWidth(P.SafeIntScale(P.VT_MENU_WIDTH_PIXELS), 440, margin)
     local height = P.Clamp(S.vtMenuHeight or P.SafeIntScale(P.VT_MENU_DEFAULT_HEIGHT_PIXELS), minHeight, maxHeight)
     local x = S.vtMenuX or math.floor((screenWidth - width) / 2)
     local y = S.vtMenuY or math.floor((screenHeight - height) / 2)
@@ -39,46 +39,24 @@ P.ShowVoidTraitorMenu = function()
     local panel = GUI.Frame(P.CreateRect(1, 1, root, GUI.Anchor.TopLeft), "GUIFrame")
     panel.CanBeFocused = false
 
-    local content = GUI.LayoutGroup(P.CreateRect(0.965, 0.965, panel, GUI.Anchor.Center), false, GUI.Anchor.TopLeft)
-    content.Stretch = true
-    content.RelativeSpacing = 0.003
+    local content = P.Common.CreateWindowContent(panel)
 
-    local header = GUI.Frame(P.CreateRect(1, 0.062, content, nil), nil)
-    header.Color = Color(0, 0, 0, 0)
-    header.CanBeFocused = false
-
-    local dragArea = GUI.DragHandle(P.CreateRect(0.86, 1, header, GUI.Anchor.TopLeft), root.RectTransform, nil)
-    local transparent = Color(0, 0, 0, 0)
-    dragArea.Color = transparent
-    dragArea.HoverColor = transparent
-    dragArea.SelectedColor = transparent
-    dragArea.PressedColor = transparent
-
-    local dragIndicator = GUI.Image(P.CreateRect(0.07, 0.72, dragArea, GUI.Anchor.CenterLeft), "GUIDragIndicator")
-    dragIndicator.CanBeFocused = false
-    local title = P.CreateText(dragArea, 0.90, 1, GUI.Anchor.CenterRight, P.UiText.Title, GUI.Alignment.Left, 1.00, Color(235, 205, 145, 255), false)
-    title.Font = GUI.Style.SubHeadingFont
-
-    local close = GUI.Button(P.CreateRect(0.10, 0.82, header, GUI.Anchor.TopRight), "", GUI.Alignment.Center, "GUICancelButton")
-    close.ToolTip = P.UiText.Cancel
-    close.OnClicked = function()
+    P.Common.CreateWindowHeader(content, root, P.UiText.Title, P.UiText.Cancel, function()
         if S.currentMenu == root then
             P.CloseMenu()
         else
             P.Common.RemoveGuiComponent(root)
         end
         return true
-    end
-
-    GUI.Image(P.CreateRect(1, 0.006, content, nil), "HorizontalLine")
+    end)
 
     local hasAdmin = P.Admin.IsAvailable()
-    local listHeight = hasAdmin and 0.845 or 0.91
     local mainTab = nil
     local adminTab = nil
 
     if hasAdmin then
-        local tabs = GUI.Frame(P.CreateRect(1, 0.06, content, nil), nil)
+        local tabs = GUI.Frame(P.CreateRect(1, 1, content, nil), nil)
+        P.Common.SetFixedHeight(tabs, P.Common.GetStyleHeight("GUIButton"))
         tabs.Color = Color(0, 0, 0, 0)
         tabs.CanBeFocused = false
         mainTab = GUI.Button(P.CreateRect(0.5, 1, tabs, GUI.Anchor.CenterLeft), P.Admin.GetMainTabText(), GUI.Alignment.Center, "GUITabButton")
@@ -87,7 +65,8 @@ P.ShowVoidTraitorMenu = function()
         P.SetButtonTextScale(adminTab, 0.82)
     end
 
-    local listHost = GUI.Frame(P.CreateRect(1, listHeight, content, nil), nil)
+    -- The only row without a fixed height: it takes the space left when the window is resized.
+    local listHost = GUI.Frame(P.CreateRect(1, 1, content, nil), nil)
     listHost.Color = Color(0, 0, 0, 0)
     listHost.CanBeFocused = false
 

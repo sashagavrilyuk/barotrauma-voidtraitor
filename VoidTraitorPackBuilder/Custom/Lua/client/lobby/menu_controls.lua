@@ -53,27 +53,29 @@ function P.CreateTopButtons()
     local buttonWidth, buttonHeight = P.GetTopButtonSize()
     local padding = P.GetTopButtonSpacing()
 
-    local root = GUI.LayoutGroup(P.CreateButtonAreaRect(buttonWidth, buttonHeight, 2, padding), true, GUI.Anchor.CenterLeft)
+    -- Labels take the same share of the button height at every resolution.
+    local labelScale = buttonHeight * 0.5 / GUI.Style.Font.LineHeight
+    local root = GUI.LayoutGroup(P.CreateButtonAreaRect(buttonWidth, 2, padding), true, GUI.Anchor.CenterLeft)
     root.AbsoluteSpacing = padding
     root.Stretch = false
     root.CanBeFocused = true
     S.buttonRoot = root
     S.sharedState.ButtonRoot = S.buttonRoot
 
-    local shop = GUI.Button(GUI.RectTransform(Point(buttonWidth, buttonHeight), root.RectTransform), P.UiText.ShopButton, GUI.Alignment.Center, "GUIButtonSmall")
+    local shop = GUI.Button(GUI.RectTransform(Point(buttonWidth, buttonHeight), root.RectTransform), P.UiText.ShopButton, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
     shop.CanBeFocused = true
     shop.ToolTip = P.UiText.ShopTooltip
-    P.SetButtonTextScale(shop, 0.74)
+    P.SetButtonTextScale(shop, labelScale)
     shop.OnClicked = function(button, userData)
         if S.currentMenu ~= nil then P.CloseMenu() end
         P.SendNetMessage(P.NET_POINTSHOP_REQUEST)
         return true
     end
 
-    local vt = GUI.Button(GUI.RectTransform(Point(buttonWidth, buttonHeight), root.RectTransform), P.UiText.MainButton, GUI.Alignment.Center, "GUIButtonSmall")
+    local vt = GUI.Button(GUI.RectTransform(Point(buttonWidth, buttonHeight), root.RectTransform), P.UiText.MainButton, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
     vt.CanBeFocused = true
     vt.ToolTip = P.UiText.MainTooltip
-    P.SetButtonTextScale(vt, 0.88)
+    P.SetButtonTextScale(vt, labelScale)
     vt.OnClicked = function(button, userData)
         if S.currentMenu ~= nil then
             P.CloseMenu()

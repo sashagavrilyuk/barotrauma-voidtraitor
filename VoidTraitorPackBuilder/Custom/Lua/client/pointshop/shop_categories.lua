@@ -34,7 +34,6 @@ function P.AddCategoryButton(list, folder)
     local row = P.CreateButton(list.Content, 1, rowHeight, GUI.Anchor.TopLeft, "", true, selected, "ListBoxElement")
 
     local inner = GUI.LayoutGroup(P.CreateRect(0.94, 0.92, row, GUI.Anchor.Center), true, GUI.Anchor.CenterLeft)
-    inner.Stretch = true
     inner.RelativeSpacing = 0.004
 
     local indentWidth = math.min(0.035 * folder.Depth, 0.12)

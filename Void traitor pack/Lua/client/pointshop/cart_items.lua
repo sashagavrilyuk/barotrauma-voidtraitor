@@ -24,7 +24,7 @@ function P.AddCartButton(list, entry)
 
     local qty = entry.Quantity or 1
 
-    local textGroup = GUI.Frame(P.CreateRect(showPrice and 0.500 or 0.625, 0.90, inner, nil), nil)
+    local textGroup = GUI.Frame(P.CreateRect(showPrice and 0.470 or 0.625, 0.90, inner, nil), nil)
     textGroup.Color = Color(0, 0, 0, 0)
     textGroup.CanBeFocused = false
 
@@ -38,12 +38,12 @@ function P.AddCartButton(list, entry)
     quantity.AutoScaleHorizontal = true
 
     if showPrice then
-        local price = P.CreateText(inner, 0.125, 0.72, nil, tostring((product.Price or 0) * qty) .. " pt", GUI.Alignment.Right, 0.96, Color(255, 245, 210, 255), false)
-        price.Font = GUI.Style.SubHeadingFont
+        local price = P.CreateText(inner, 0.155, 0.72, nil, tostring((product.Price or 0) * qty) .. " pt", GUI.Alignment.Right, 0.96, Color(255, 245, 210, 255), false)
+        price.Font = GUI.Style.Font
         price.AutoScaleHorizontal = true
     end
 
-    local removeButton = P.CreateStoreActionButton(inner, 0.165, "StoreRemoveFromCrateButton", true)
+    local removeButton = P.CreateStoreActionButton(inner, "StoreRemoveFromCrateButton", true)
     local removeProduct = function()
         P.RemoveFromCart(entry.Id)
         P.RefreshCartOnly()
@@ -106,7 +106,7 @@ function P.CreateProductDetails(parent, product, height)
     local name = P.CreateText(heading, 1, 0.30, nil, string.upper(tostring(product.Name or "")), GUI.Alignment.Left, 1.00, Color(255, 245, 210, 255), true)
     name.Font = GUI.Style.SubHeadingFont
     local description = P.GetProductDescriptionText(product)
-    local descriptionBlock = P.CreateText(heading, 1, 0.70, nil, description, GUI.Alignment.Left, 0.84, Color(210, 220, 205, 230), true)
+    local descriptionBlock = P.CreateText(heading, 1, 0.70, nil, description, GUI.Alignment.Left, 1, Color(210, 220, 205, 230), true)
     if P.IsClassProduct(product) then
         P.RegisterClassLimitText("cart", descriptionBlock, function() return P.GetProductDescriptionText(product) end)
     end
@@ -120,7 +120,7 @@ function P.CreateProductDetails(parent, product, height)
     end
     table.insert(infoLines, P.GetText("Category") .. ":  " .. tostring(product.Category or ""))
     local info = table.concat(infoLines, "\n")
-    P.CreateText(details, 1, 0.29, nil, info, GUI.Alignment.Left, 0.88, Color(225, 225, 205, 255), true)
+    P.CreateText(details, 1, 0.29, nil, info, GUI.Alignment.Left, 1, Color(225, 225, 205, 255), true)
 
     local cooldown = P.GetCooldownRemaining(product)
     local reason = P.GetProductDisabledReason(product)

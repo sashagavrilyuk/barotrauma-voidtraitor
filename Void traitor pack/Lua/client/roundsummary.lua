@@ -16,7 +16,9 @@ _G[STATE_KEY] = state
 
 local currentMenu = nil
 local summaryList = nil
-local resizeTargets = {}
+local resizeTopTargets = {}
+local resizeBottomTargets = {}
+local resizeSideTargets = {}
 local resizeState = nil
 local menuX = nil
 local menuY = nil
@@ -45,7 +47,9 @@ end
 
 local function closeSummary()
     saveGeometry()
-    resizeTargets = {}
+    resizeTopTargets = {}
+    resizeBottomTargets = {}
+    resizeSideTargets = {}
     resizeState = nil
     summaryList = nil
 
@@ -63,11 +67,21 @@ local function addResizeTarget(panel, edge, width, height, anchor)
     local target = GUI.Frame(CreateRect(width, height, panel, anchor), nil)
     target.Color = Color(0, 0, 0, 0)
     target.CanBeFocused = false
-    table.insert(resizeTargets, { Component = target, Edge = edge })
+    if edge == "top" then
+        table.insert(resizeTopTargets, target)
+    elseif edge == "bottom" then
+        table.insert(resizeBottomTargets, target)
+    elseif edge == "left" or edge == "right" then
+        table.insert(resizeSideTargets[edge], target)
+    else
+        table.insert(resizeSideTargets.corners, { Handle = target, Edge = edge })
+    end
 end
 
 local function addResizeHandles(panel)
-    resizeTargets = {}
+    resizeTopTargets = {}
+    resizeBottomTargets = {}
+    resizeSideTargets = { left = {}, right = {}, corners = {}, minimumWidth = SafeIntScale(MIN_WIDTH_PIXELS) }
 
     addResizeTarget(panel, "top-left", 0.05, 0.05, GUI.Anchor.TopLeft)
     addResizeTarget(panel, "top-right", 0.05, 0.05, GUI.Anchor.TopRight)
@@ -89,97 +103,11 @@ local function addResizeHandles(panel)
     rightIndicator.CanBeFocused = false
 end
 
-local function getResizeEdge()
-    local mousePosition = PlayerInput.MousePosition
-    for _, target in ipairs(resizeTargets) do
-        if target.Component ~= nil and target.Component.Rect.Contains(mousePosition) then
-            return target.Edge
-        end
-    end
-    return nil
-end
-
 local function updateResize()
-    if currentMenu == nil then
-        resizeState = nil
-        return
-    end
-
-    local mouseDown = PlayerInput.PrimaryMouseButtonDown()
-    local mouseHeld = PlayerInput.PrimaryMouseButtonHeld()
-
-    if mouseDown and resizeState == nil then
-        local edge = getResizeEdge()
-        if edge ~= nil then
-            local rectTransform = currentMenu.RectTransform
-            resizeState = {
-                Edge = edge,
-                MouseX = PlayerInput.MousePosition.X,
-                MouseY = PlayerInput.MousePosition.Y,
-                Left = currentMenu.Rect.X,
-                Top = currentMenu.Rect.Y,
-                Right = currentMenu.Rect.Right,
-                Bottom = currentMenu.Rect.Bottom,
-                ScreenOffsetX = rectTransform.ScreenSpaceOffset.X,
-                ScreenOffsetY = rectTransform.ScreenSpaceOffset.Y,
-            }
-        end
-    end
-
-    if not mouseHeld then
-        resizeState = nil
-        return
-    end
-    if resizeState == nil then return end
-
-    local screenWidth, screenHeight = GetScreenSize()
-    local margin = SafeIntScale(10)
-    local minimumWidth = SafeIntScale(MIN_WIDTH_PIXELS)
-    local minimumHeight = SafeIntScale(MIN_HEIGHT_PIXELS)
-    local dx = PlayerInput.MousePosition.X - resizeState.MouseX
-    local dy = PlayerInput.MousePosition.Y - resizeState.MouseY
-
-    local left = resizeState.Left
-    local right = resizeState.Right
-    local top = resizeState.Top
-    local bottom = resizeState.Bottom
-    local edge = resizeState.Edge
-
-    if string.find(edge, "left", 1, true) ~= nil then
-        left = Clamp(resizeState.Left + dx, margin, resizeState.Right - minimumWidth)
-    elseif string.find(edge, "right", 1, true) ~= nil then
-        right = Clamp(resizeState.Right + dx, resizeState.Left + minimumWidth, screenWidth - margin)
-    end
-
-    if string.find(edge, "top", 1, true) ~= nil then
-        top = Clamp(resizeState.Top + dy, margin, resizeState.Bottom - minimumHeight)
-    elseif string.find(edge, "bottom", 1, true) ~= nil then
-        bottom = Clamp(resizeState.Bottom + dy, resizeState.Top + minimumHeight, screenHeight - margin)
-    end
-
-    local rectTransform = currentMenu.RectTransform
-    local scaleX = rectTransform.Scale.X
-    local scaleY = rectTransform.Scale.Y
-    local width = right - left
-    local height = bottom - top
-    rectTransform:Resize(Point(
-        math.max(1, math.floor(width / scaleX + 0.5)),
-        math.max(1, math.floor(height / scaleY + 0.5))
-    ), true)
-    rectTransform.ScreenSpaceOffset = Point(
-        resizeState.ScreenOffsetX + (left - resizeState.Left),
-        resizeState.ScreenOffsetY + (top - resizeState.Top)
-    )
-
-    menuX = currentMenu.Rect.X
-    menuY = currentMenu.Rect.Y
-    menuWidth = currentMenu.Rect.Width
-    menuHeight = currentMenu.Rect.Height
-
-    if summaryList ~= nil then
-        summaryList:RecalculateChildren()
-        summaryList:UpdateScrollBarSize()
-    end
+    resizeState, menuX, menuY, menuHeight = Common.UpdateMenuInteraction(currentMenu,
+        resizeState, resizeTopTargets, resizeBottomTargets, SafeIntScale(MIN_HEIGHT_PIXELS),
+        summaryList, menuX, menuY, menuHeight, resizeSideTargets)
+    if currentMenu ~= nil then menuWidth = currentMenu.Rect.Width end
 end
 
 local function showSummary(summary, closeText)
@@ -225,32 +153,10 @@ local function showSummary(summary, closeText)
     content.Stretch = true
     content.RelativeSpacing = 0.004
 
-    local header = GUI.Frame(CreateRect(1, 0.07, content, nil), nil)
-    header.Color = Color(0, 0, 0, 0)
-    header.CanBeFocused = false
-
-    local dragArea = GUI.DragHandle(CreateRect(0.90, 1, header, GUI.Anchor.TopLeft), currentMenu.RectTransform, nil)
-    local transparent = Color(0, 0, 0, 0)
-    dragArea.Color = transparent
-    dragArea.HoverColor = transparent
-    dragArea.SelectedColor = transparent
-    dragArea.PressedColor = transparent
-
-    local dragIndicator = GUI.Image(CreateRect(0.045, 0.70, dragArea, GUI.Anchor.CenterLeft), "GUIDragIndicator")
-    dragIndicator.CanBeFocused = false
-
-    local headerText = Common.CreateText(dragArea, 0.94, 1, GUI.Anchor.CenterRight, title, GUI.Alignment.Left, 1.15, Color(235, 205, 145, 255), false)
-    headerText.Font = GUI.Style.SubHeadingFont
-    headerText.CanBeFocused = false
-
-    local close = GUI.Button(CreateRect(0.075, 0.82, header, GUI.Anchor.TopRight), "", GUI.Alignment.Center, "GUICancelButton")
-    close.ToolTip = closeText or "Close"
-    close.OnClicked = function()
+    Common.CreateWindowHeader(content, currentMenu, title, closeText or "Close", function()
         closeSummary()
         return true
-    end
-
-    GUI.Image(CreateRect(1, 0.006, content, nil), "HorizontalLine")
+    end, { titleScale = 1.15, titleNoFocus = true })
 
     local listFrame = GUI.Frame(CreateRect(1, 0.90, content, nil), "GUIFrameListBox")
     listFrame.CanBeFocused = false

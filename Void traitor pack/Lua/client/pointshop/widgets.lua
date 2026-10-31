@@ -17,13 +17,7 @@ function P.CreateButton(parent, width, height, anchor, label, enabled, selected,
     P.SetButtonStyle(button, enabled ~= false, selected == true)
 
     if button.TextBlock ~= nil then
-        if label ~= nil and string.len(label) > 54 then
-            button.TextBlock.TextScale = 0.76
-        elseif label ~= nil and string.len(label) > 38 then
-            button.TextBlock.TextScale = 0.86
-        else
-            button.TextBlock.TextScale = 0.98
-        end
+        P.Common.SetAutoScaleText(button.TextBlock, 0.98)
     end
 
     return button
@@ -114,29 +108,19 @@ function P.CreateRowInner(row, width, height)
     return GUI.LayoutGroup(P.CreateRect(1, 1, inner, GUI.Anchor.Center), true, GUI.Anchor.CenterLeft)
 end
 
-function P.CreateStoreActionButton(parent, width, style, enabled)
-    local holder = GUI.Frame(P.CreateRect(width or 0.155, 1, parent, nil), nil)
-    holder.Color = Color(0, 0, 0, 0)
-    holder.CanBeFocused = false
-
-    local button = GUI.Button(P.CreateRect(0.92, 0.92, holder, GUI.Anchor.Center), "", GUI.Alignment.Center, style)
+-- ACTION_BUTTON_PIXELS is the button height; the width follows the vanilla sprite, so the
+-- clickable area is exactly the drawn button.
+function P.CreateStoreActionButton(parent, style, enabled)
+    local spriteSize = GUI.Style.GetComponentStyle(style).GetDefaultSprite().size
+    local height = P.ACTION_BUTTON_PIXELS
+    local rect = GUI.RectTransform(Point(math.floor(height * spriteSize.X / spriteSize.Y), height), parent.RectTransform)
+    rect.IsFixedSize = true
+    local button = GUI.Button(rect, "", GUI.Alignment.Center, style)
     button.Enabled = enabled ~= false
-    button.RectTransform.IsFixedSize = true
-    button.RectTransform.MinSize = Point(P.ACTION_BUTTON_PIXELS, P.ACTION_BUTTON_PIXELS)
-    button.RectTransform.MaxSize = Point(math.floor(P.ACTION_BUTTON_PIXELS * 1.12), math.floor(P.ACTION_BUTTON_PIXELS * 1.12))
-    if button.TextBlock ~= nil then
-        button.TextBlock.Text = ""
-    end
-
     return button
 end
 
-function P.CreateLayout(parent, width, height, anchor, isHorizontal, childAnchor)
-    local layout = GUI.LayoutGroup(P.CreateRect(width, height, parent, anchor), isHorizontal == true, childAnchor or GUI.Anchor.TopLeft)
-    layout.Stretch = true
-    layout.RelativeSpacing = 0.006
-    return layout
-end
+P.CreateLayout = P.Common.CreateLayout
 
 function P.CreateDivider(parent, height)
     local frame = GUI.Frame(P.CreateRect(1, height or 0.02, parent), nil)
