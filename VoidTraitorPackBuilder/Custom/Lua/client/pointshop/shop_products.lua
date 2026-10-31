@@ -20,8 +20,7 @@ function P.AddProductButton(list, product)
     local disabledReason = P.GetProductDisabledReason(product)
     local enabled = disabledReason == ""
     local showPrice = P.ShouldShowProductPrice(product)
-    -- The entire vanilla-style list row is the details button. This restores
-    -- the original large hit area and removes the visible text-only overlay.
+    -- The whole row is the button that opens the product details.
     local row = P.CreateButton(list.Content, 1, P.ITEM_ROW_HEIGHT, GUI.Anchor.TopLeft, "", true, S.selectedProductId == product.Id, "ListBoxElement")
     if P.PRODUCT_ROW_HEIGHT ~= nil then P.Common.SetFixedHeight(row, P.PRODUCT_ROW_HEIGHT) end
     if row.TextBlock ~= nil then row.TextBlock.Text = "" end
@@ -39,8 +38,7 @@ function P.AddProductButton(list, product)
     iconHolder.RectTransform.MaxSize = Point(P.ITEM_ICON_PIXELS, P.ITEM_ICON_PIXELS)
     local icon, iconColor = P.CreateProductIcon(iconHolder, product.IconIdentifier, enabled)
 
-    -- Give the name back the price column when the original PointShop would
-    -- hide a zero price (notably Attack Defend classes).
+    -- products without a shown price (e.g. Attack & Defend classes) give that space to the name
     local textGroup = GUI.Frame(P.CreateRect(showPrice and 0.470 or 0.625, 0.90, inner, nil), nil)
     textGroup.Color = Color(0, 0, 0, 0)
     textGroup.CanBeFocused = false

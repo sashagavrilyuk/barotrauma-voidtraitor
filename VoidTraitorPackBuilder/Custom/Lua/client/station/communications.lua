@@ -42,17 +42,17 @@ function UI.Show(itemId, snapshot)
         UI.CloseMenu()
         return true
     end)
-    -- The message is the only row that grows with the window, like the SS14 console.
+    -- The message is the only row that grows with the window.
     local input = GUI.TextBox(Common.CreateRect(1, 1, layout), "", nil, nil, GUI.Alignment.TopLeft, true, "", nil, false, false)
-    -- The vanilla textbox style fixes its height to one line, including the inner frame.
+    -- the textbox style limits its height (and its inner frame's) to one line
     input.RectTransform.MinSize, input.RectTransform.MaxSize = Point(0, 0), Point(100000, 100000)
-    -- The style pads only the sides of its one centred line (Content/UI/Style.xml), so text at the top would touch the frame.
+    -- the style pads only the sides, so text at the top would touch the frame
     local gap = Common.GetGap()
     input.Padding = Vector4(input.Padding.X, gap, input.Padding.Z, gap)
     Common.SetMinimumHeight(input, Common.GetTextHeight(GUI.Style.Font) * 3 + 2 * gap)
     input.Frame.RectTransform.MinSize, input.Frame.RectTransform.MaxSize = Point(0, 0), Point(100000, 100000)
     input.MaxTextLength = snapshot.MaxLength
-    -- GUITextBox ignores Enter as text input (ReceiveCommandInput has no case for it), so Shift+Enter adds the line break.
+    -- GUITextBox doesn't type a line break on Enter, so Shift+Enter adds it here
     input.OnEnterPressed = function(box)
         if PlayerInput.IsShiftDown() then box.ReceiveTextInput("\n") end
         return true

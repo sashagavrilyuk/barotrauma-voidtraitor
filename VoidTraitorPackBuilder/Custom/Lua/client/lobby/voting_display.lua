@@ -101,10 +101,7 @@ function P.CreateVoteOverlayOnComponent(target)
     local height = P.ReadRectValue(overlayRect, "Height", 0)
     if width <= 0 or height <= 0 then return nil end
 
-    -- В NetLobbyScreen верхние блоки режима/подлодки создаются как одинаковые
-    -- Stretch-панели внутри mainPanelTopLayout, поэтому активное голосование
-    -- выравниваем по фактическим границам этих соседних lobby-блоков, а не по
-    -- ручному большому запасу вниз.
+    -- Панель голосования выравниваем по границам соседних блоков лобби (выбор режима и подлодки).
     local topY = y
     local bottomY = y + height
 
@@ -132,9 +129,7 @@ function P.CreateVoteOverlayOnComponent(target)
     y = topY + 1
     height = math.max(1, bottomY - topY)
 
-    -- Ванильный NetLobbyScreen использует PanelSpacing = 0.005f. Берём такой же
-    -- масштабируемый небольшой нахлёст только на нижний шов, чтобы не было видно
-    -- нижнюю линию родного блока, но без прежнего завышенного SafeIntScale(6).
+    -- Небольшой нахлёст снизу (как PanelSpacing = 0.005 в лобби), чтобы не было видно нижнюю линию блока под панелью.
     local seamCover = math.max(P.SafeIntScale(2), math.floor(height * 0.005 + 0.5))
     height = height + seamCover
 

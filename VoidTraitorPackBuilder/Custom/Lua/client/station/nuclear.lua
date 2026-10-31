@@ -5,8 +5,8 @@ if previous ~= nil then previous.Disabled = true Common.RemoveGuiComponent(previ
 local UI = {}
 _G.VoidTraitorNuclearGuiState = UI
 local inputTypes = LuaUserData.CreateEnumTable("Barotrauma.InputType")
--- The window repeats the SS14 nuke menu (Content.Client/Nuke/NukeMenu.xaml, 256x256 at UI scale 1).
--- Its sizes are measured in SS14 buttons (29 px), and one SS14 button is the vanilla GUIButton height.
+-- Layout copied from the SS14 nuke menu (NukeMenu.xaml, 256x256). Sizes are in SS14 button heights (29 px);
+-- one SS14 button is drawn as one vanilla GUIButton height.
 local SS14_BUTTON, SS14_WINDOW, SS14_LABEL, SS14_KEY_WIDTH, SS14_GRID_GAP, SS14_MARGIN = 29, 256, 23, 40, 4, 5
 
 function UI.Send(action, value)
@@ -42,7 +42,7 @@ function UI.Show(itemId, snapshot)
     local root = GUI.Frame(GUI.RectTransform(Point(side, side), nil, GUI.Anchor.Center), "GUIFrame")
     UI.MenuRoot, UI.CurrentMenu = root, root
     local layout = Common.CreateWindowContent(root)
-    -- No row grows, so the space left below them stays empty, as in SS14.
+    -- no row grows, the space left below stays empty
     layout.Stretch = false
     layout.AbsoluteSpacing = margin
     Common.CreateWindowHeader(layout, root, text.Title, text.Close, function()
@@ -77,7 +77,7 @@ function UI.Show(itemId, snapshot)
             digits[#digits + 1] = button
         end
     end
-    -- The SS14 button column keeps a margin on both sides.
+    -- the button column keeps a margin on both sides
     local actions = GUI.LayoutGroup(Common.CreateRect(1, 1, body), false)
     Common.SetFixedWidth(actions, side - 2 * Common.GetWindowPadding() - keypadWidth - 2 * margin)
     actions.AbsoluteSpacing = margin
@@ -86,7 +86,7 @@ function UI.Show(itemId, snapshot)
     local anchor = Common.CreateButton(actions, 1, text.Anchor)
     anchor.OnClicked = function() UI.Send("anchor") return true end
     local arm = Common.CreateButton(actions, 1, text.Arm)
-    -- SS14 draws the arm button in its red "negative" style.
+    -- red arm button, as in SS14
     arm.Color, arm.HoverColor, arm.PressedColor = Color(200, 70, 70, 255), Color(235, 100, 100, 255), Color(160, 50, 50, 255)
     arm.OnClicked = function() UI.Send("arm") return true end
     UI.Update = function(state)
@@ -98,7 +98,7 @@ function UI.Show(itemId, snapshot)
         elseif state.Status == "cooldown" then second.Text = string.format(text.Cooling, state.Cooldown) end
         for _, button in ipairs(digits) do button.Enabled = state.Status == "code" end
         eject.Text = state.Disk and text.Eject or text.Insert
-        -- Like the SS14 disk slot, the disk is locked in while the bomb is not anchored.
+        -- as in SS14, the disk can't be ejected while the bomb is not anchored
         eject.Enabled = state.Status ~= "armed" and state.Status ~= "exploded" and (state.Anchored or not state.Disk)
         anchor.Text = state.Anchored and text.Detach or text.Anchor
         anchor.Enabled, anchor.Selected = state.Status ~= "armed" and state.Status ~= "exploded", state.Anchored

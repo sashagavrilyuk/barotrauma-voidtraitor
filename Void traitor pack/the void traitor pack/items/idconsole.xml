@@ -7,7 +7,7 @@
     </Terminal>
     <CustomInterface canbeselected="true" msg="ItemMsgInteractSelect" allowuioverlap="true">
       <GuiFrame relativesize="0.35,0.26" anchor="CenterRight" style="ItemUI" />
-      <!-- Native CustomInterface hides unwired elements without properties/effects. -->
+      <!-- CustomInterface hides elements without a signal, property or status effect, hence the empty OnUse effects. -->
       <TextBox text="IdConsoleName" signal="" maxtextlength="64">
         <StatusEffect type="OnUse" target="This" />
       </TextBox>

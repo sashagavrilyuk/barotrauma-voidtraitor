@@ -888,8 +888,8 @@ ps.ShowCategory = function(client, resend)
 end
 
 
--- Client-side GUI pointshop support. The old textPrompt shop remains the fallback
--- for players without client Lua and for unsupported special shops.
+-- GUI pointshop for clients with the pack's Lua. Everyone else, and special shops the GUI
+-- doesn't support, use the text prompt shop above.
 ps.GuiNet = ps.GuiNet or {
     Ready = "VoidTraitor_PointshopGuiReady",
     Request = "VoidTraitor_PointshopRequest",
@@ -902,7 +902,7 @@ ps.GuiNet = ps.GuiNet or {
     PurchaseSound = "VoidTraitor_PointshopPurchaseSound",
     ClassLimits = "VoidTraitor_PointshopClassLimits",
 }
--- Also repair the table on a Lua hot reload from an older GUI protocol.
+-- ps.GuiNet survives a Lua reload, so the names are set again in case they changed.
 ps.GuiNet.Ready = "VoidTraitor_PointshopGuiReady"
 ps.GuiNet.Request = "VoidTraitor_PointshopRequest"
 ps.GuiNet.Snapshot = "VoidTraitor_PointshopSnapshot"
@@ -1239,8 +1239,7 @@ local function getProductIconIdentifier(product)
         end
     end
 
-    -- Default icon: if the product gives one or more items, use the first item's identifier.
-    -- If the product gives several items of the same type, this still chooses that same item.
+    -- default icon: the first item the product gives
     if product.Items ~= nil then
         for _, item in pairs(product.Items) do
             if type(item) == "string" then
@@ -1384,8 +1383,7 @@ local function writeGuiProductState(netMessage, state)
     netMessage.WriteInt32(toNetInt32(state.CooldownRemaining, 0))
 end
 
--- Lightweight refresh: static catalog fields stay on the client after the
--- initial, backwards-compatible Snapshot message.
+-- Sends only the fields that change (price, stock, cooldown...); the catalog itself is sent once in the snapshot.
 function ps.SendGuiState(client, message, purchaseCompleted, closeAfterPurchase)
     if not canUseGuiShop(client) then
         return false

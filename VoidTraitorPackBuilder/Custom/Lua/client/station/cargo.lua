@@ -22,7 +22,7 @@ local modulePath = packPath .. "/Lua/client/pointshop/"
 for _, name in ipairs({ "model_text", "model_state", "model_folders", "widgets", "shop_categories", "shop_products", "shop_filters", "shop_panel" }) do
     assert(loadfile(modulePath .. name .. ".lua"))(P)
 end
--- Requests may be drafted before the station can afford their approval.
+-- A request can be drafted even if the station can't afford it yet.
 P.GetProductDisabledReason = function(product)
     if UI.SubmitPending then return UI.Data.Text.Pending end
     return P.GetProductStateDisabledReason(product)
@@ -60,7 +60,7 @@ local function GetRowHeight()
     return math.max(Common.GetTextHeight(GUI.Style.Font) * 2, Common.GetStyleHeight("GUIButton"), P.ITEM_ICON_PIXELS, P.ACTION_BUTTON_PIXELS)
 end
 
--- The window never gets shorter than its rows need (Common.GetMinimumHeight).
+-- The window never gets shorter than its rows need.
 function UI.FitMinimumHeight()
     UI.MinimumHeight = Common.GetMinimumHeight(UI.WindowLayout)
     local root, _, screenHeight = UI.MenuRoot, Common.GetScreenSize()
@@ -69,8 +69,8 @@ function UI.FitMinimumHeight()
     end
 end
 
--- The description is never shrunk: its list is as tall as the text, at most four small-font lines,
--- and longer text scrolls with the mouse wheel. The cart list takes the rest of the column.
+-- The description is as tall as its text, up to four small-font lines (longer text scrolls).
+-- The cart list takes the rest of the column.
 function UI.FitDetails()
     local text, list = UI.Details, UI.DetailsList
     local textHeight = math.ceil(text.TextSize.Y)

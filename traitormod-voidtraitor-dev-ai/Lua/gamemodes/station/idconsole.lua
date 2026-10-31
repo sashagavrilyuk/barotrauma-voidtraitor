@@ -83,8 +83,8 @@ function console.Apply(client, item, payload)
     local replace = (name ~= nil and name ~= info.OwnerName) or (title ~= nil and title ~= console.CardTitle(target))
         or (preset ~= nil and preset.JobId ~= nil and preset.JobId ~= info.OwnerJobId.Value)
     if replace then
-        -- A pending refresh/status event must reach clients before another refresh.
-        -- Otherwise the native event queue can merge away the new condition event.
+        -- An unsent refresh for this card has to go out first, otherwise the event queue
+        -- can merge the events and drop the new state.
         for event in Game.Server.EntityEventManager.Events do
             if not event.Sent and (event.Entity == target or (event.Entity == Entity.Spawner
                 and LuaUserData.IsTargetType(event.Data, "Barotrauma.EntitySpawner+SpawnEntity")
@@ -117,8 +117,8 @@ function console.Apply(client, item, payload)
         info.Description = target.Description
     end
     if replace then
-        -- Native clients receive identity/appearance only in spawn data. Refresh their
-        -- copy while keeping the server item/ID and objective references intact.
+        -- Clients get the card's name and look only in its spawn data, so respawn it on their side.
+        -- The server item, its ID and objective references stay the same.
         Entity.Spawner.CreateNetworkEvent(removeEvent(target))
         Entity.Spawner.CreateNetworkEvent(spawnEvent(target))
         target.CreateStatusEvent(true)
@@ -233,7 +233,8 @@ function console.Send(client)
 end
 
 function console.Open(client, item, gui)
-    -- The Lua request can precede native selection; only its read-only snapshot may do so.
+    -- The GUI request can arrive before the server sees the console selected, so opening doesn't
+    -- require the selection; actions are validated again with it.
     if not console.Validate(client, item, gui == true) then return false end
     sessions[client] = { Item = item, View = "main", Gui = gui == true }
     console.Send(client)
@@ -244,7 +245,7 @@ function console.Action(client, item, action, payload)
     local session = sessions[client]
     if session == nil or session.Item ~= item then return false end
     if action == "close" then
-        -- Native users close the action dialog before editing the console's text fields.
+        -- players without the GUI close the dialog to type into the console's text fields, so keep their session
         if session.Gui then sessions[client] = nil else session.Prompt = nil end
         return true
     end
@@ -322,8 +323,8 @@ Networking.Receive("VoidTraitor_IdConsoleAction", function(message, client)
     if ok and type(payload) == "table" then console.Action(client, item, action, payload) end
 end)
 
--- This component's native packet supplies two text fields and two buttons in XML order.
--- No properties/signals from the generic component are applied to an ID card.
+-- The console's packet carries two text fields and two buttons, in XML order.
+-- None of the generic CustomInterface handling is applied to the ID card.
 Hook.Patch("Traitormod.IdConsole.Native", "Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, parameters)
     local item, client = instance.Item, parameters["c"]
     if item.Prefab.Identifier ~= "vt_station_access" then return end

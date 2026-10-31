@@ -33,8 +33,8 @@ config.ExtensionConfig = {
 }
 
 config.IdConsole = {
-    -- Doors use these tags in RequiredItem (type="Picked", characterinventoryslottype="Card").
-    -- Keep editable access tags on item instances, never in the ID prefab's Tags.
+    -- Doors check these tags on the ID card in the card slot.
+    -- They are set on card instances, never in the ID card prefab's Tags.
     Access = {
         { Tag = "vt_access_maintenance", Name = "IdConsoleMaintenance" },
         { Tag = "vt_access_engineering", Name = "IdConsoleEngineering" },
@@ -120,7 +120,7 @@ config.Discord = {
     },
 }
 
-config.DiscordWebhookConfig = nil -- legacy compatibility for old webhook-only configs
+config.DiscordWebhookConfig = nil -- old webhook-only setting, still read if set
 
 ----- GAMEVOTE -----
 
@@ -281,7 +281,7 @@ config.GamemodeConfig = {
     Secret = {
         PointshopCategories = {"clown", "traitor", "saboteur", "cultist", "deathspawn", "deathspawnhusk", "deathspawnfriend", "deathtrigerevent", "deathtrigereventevil", "deathtrigereventrandom", "abilities", "surgery", "medical", "security", "wiring", "maintenance", "materials", "ores", "otherresources", "other", "randomize", "ships"},
         EndOnComplete = true,           -- end round everyone but traitors are dead
-        EndWhenCrewDown = true,         -- end round when no player controls a living, conscious Team1 human, no respawn is pending and test mode is off
+        EndWhenCrewDown = true,         -- end round when every crew player is dead or unconscious (not in test mode or while a respawn is pending)
         CrewDownEndDelaySeconds = 120,
         EnableRandomEvents = true,
         EndGameDelaySeconds = 60,

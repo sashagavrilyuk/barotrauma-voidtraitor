@@ -1,8 +1,7 @@
--- Admin ghost: an admin swaps spectating (or their body) for a hidden, unkillable body that flies through walls and
--- reaches items at any distance. The admin's client runs the same movement and reach code
--- (Void traitor pack: Lua/client/spectator/adminghost.lua) so its movement prediction matches the server.
--- Clients without client LuaCs only need the vt_adminghost affliction from the pack to keep the ghost invisible;
--- spectators with the pack's client script are told which characters are ghosts so they can still see them.
+-- Admin ghost: an invisible, unkillable body that flies through walls and reaches items at any distance.
+-- The admin's client runs the same movement code (Void traitor pack: Lua/client/spectator/adminghost.lua)
+-- so prediction matches the server. The vt_adminghost affliction hides the ghost from everyone else;
+-- spectators with the client script get a list of ghosts so they can still see them.
 local adminGhost = {}
 
 local AFFLICTION = "vt_adminghost"
@@ -19,7 +18,7 @@ local UPDATE_RAGDOLL_ARGS = { "System.Single", "Barotrauma.Camera" }
 local VOIP_ARGS = { "Barotrauma.Networking.Client", "Barotrauma.Networking.Client", "out System.Single", "out System.Boolean" }
 local BODY_KINEMATIC, BODY_DYNAMIC = 1, 2 -- FarseerPhysics.BodyType
 local WALK_SPEED, RUN_SPEED = 5, 15 -- sim units per second (100 display units each)
--- a carried character closes the gap to the ghost within about 1 / CATCH_UP seconds
+-- how fast a carried character catches up with the ghost
 local CATCH_UP = 10
 local PROBE_TIMEOUT_MS = 2000
 
@@ -28,19 +27,18 @@ local contentElement = LuaUserData.CreateStatic("Barotrauma.ContentXElement")
 
 -- ghost character -> { Client, Body, Info }
 local ghosts = {}
--- clients asked whether their client mod can run the ghost
+-- clients we are waiting on to confirm they have the client script
 local probing = {}
--- clients whose pack script asked for the ghost list this round
+-- clients that get the ghost list (spectators with the client script)
 local listeners = {}
--- ghost -> true while its selected character was picked with the health key: inspected, not carried
+-- ghost -> true if it selected the character with H (health window) instead of grabbing it
 local inspecting = {}
 -- ghost -> the character it carries
 local carried = {}
 local patched = false
 
--- While levitatingCollider is set, Ragdoll.UpdateRagdoll pulls a collider above a floor to standing height and
--- ragdolls an idle airborne one (Ragdoll.cs:1469-1508); the animation sets it every frame (HumanoidAnimController.cs:258,
--- FishAnimController.cs:146). collider and prevCollisionCategory are needed to give a carried character back its physics.
+-- levitatingCollider makes the ragdoll stand a character up on the floor and turns it into a ragdoll in the air;
+-- collider and prevCollisionCategory are needed to give a carried character its physics back.
 for _, animType in ipairs({ "Barotrauma.HumanoidAnimController", "Barotrauma.FishAnimController" }) do
     local descriptor = LuaUserData.RegisterType(animType)
     for _, field in ipairs({ "levitatingCollider", "collider", "prevCollisionCategory" }) do
@@ -57,21 +55,18 @@ local function isGhostClient(client)
     return client.Character ~= nil and ghosts[client.Character] ~= nil
 end
 
--- Moves a character whose collider controls its movement (Ragdoll.ColliderControlsMovement), as the ghost does.
+-- Moves a character by its collider, ignoring gravity and floors.
 local function fly(anim, velocity)
-    -- a kinematic body ignores gravity, buoyancy, animation forces and the damping of a frozen remote player
-    -- (Island.cs:121-129 in Farseer, Ragdoll.Frozen); set every frame because crouching switches to another collider
-    -- (Ragdoll.ColliderIndex)
+    -- a kinematic body ignores gravity, water and animation forces; set every frame because crouching swaps the collider
     anim.Collider.BodyType = BODY_KINEMATIC
     anim.Collider.LinearVelocity = velocity
     anim.levitatingCollider = false
-    -- away from a floor the walking animation stops pulling the limbs to the collider
+    -- in the air the walk animation no longer pulls the limbs along, so pull the main limb here
     anim.MainLimb.PullJointWorldAnchorB = anim.Collider.SimPosition
     anim.MainLimb.PullJointEnabled = true
 end
 
--- A character that cannot move (unconscious, dead, a fish on dry land) is moved by its main limb, which its disabled
--- collider follows (Ragdoll.UpdateRagdollControlsMovement).
+-- A character that can't move on its own (unconscious, dead) is moved by its main limb; the collider follows it.
 local function carry(ghost, target, ghostVelocity)
     local anim = target.AnimController
     local velocity = ghostVelocity + (ghost.WorldPosition - target.WorldPosition) * (CATCH_UP / 100)
@@ -82,8 +77,8 @@ local function carry(ghost, target, ghostVelocity)
     end
 end
 
--- Gives a carried character its own physics back: dynamic colliders, gravity, no leftover speed (a fast body that hits
--- a wall gets hurt) and the collisions the ragdoll restores once its category is reset (Ragdoll.cs:1227-1240, 2170-2177).
+-- Gives a carried character its normal physics back. Speed is reset because a fast body hitting a wall gets hurt;
+-- resetting prevCollisionCategory makes the ragdoll restore its collisions.
 local function release(target)
     local anim = target.AnimController
     for body in anim.collider do
@@ -97,8 +92,8 @@ local function release(target)
     anim.prevCollisionCategory = 0 -- FarseerPhysics.Dynamics.Category.None
 end
 
--- The ghost carries what it grabbed with G instead of dragging it, so nothing makes it let go
--- (see skipDrag) and the carried character passes through walls with it.
+-- The ghost carries what it grabbed with G instead of dragging it (see skipDrag),
+-- so it never lets go and the carried character goes through walls with it.
 local function updateCarried(ghost, velocity)
     local target = ghost.SelectedCharacter
     if inspecting[ghost] or (target ~= nil and target.Removed) then target = nil end
@@ -106,7 +101,7 @@ local function updateCarried(ghost, velocity)
     if previous ~= target then
         if previous ~= nil and not previous.Removed then release(previous) end
         carried[ghost] = target
-        -- limbs pulled along by a flying body lag far behind it under gravity
+        -- otherwise the limbs hang far behind under gravity
         if target ~= nil then
             for limb in target.AnimController.Limbs do limb.body.FarseerBody.IgnoreGravity = true end
         end
@@ -114,15 +109,13 @@ local function updateCarried(ghost, velocity)
     if target ~= nil then carry(ghost, target, velocity) end
 end
 
--- A bot breaks free from a player of another team after 10 seconds, and within half a second for the next 30
--- (HumanAIController.UpdateDragged, HumanAIController.cs:979-1014); it stays held while a ghost holds it.
+-- Bots break free from a player of another team after a few seconds; keep resetting the timer while a ghost holds one.
 local function keepBotHeld(target)
     local ai = target.AIController
     if ai ~= nil and LuaUserData.IsTargetType(ai, "Barotrauma.HumanAIController") then ai.draggedTimer = 0 end
 end
 
--- Runs after the animations, which set the collider velocity and levitatingCollider (GameScreen.cs:274),
--- and before Ragdoll.UpdateAll uses them.
+-- Runs after the animations set the collider velocity and before the ragdolls use it, so our values win.
 local function setVelocities()
     for ghost in pairs(ghosts) do
         if not ghost.Removed then
@@ -145,14 +138,14 @@ end
 local function disableCollisions(anim)
     if anim.Collider.CollidesWith == 0 then return end
     anim.Collider.CollidesWith = 0
-    -- the limbs the ragdoll leaves alone itself (Ragdoll.UpdateCollisionCategories)
+    -- the same limbs the game updates in Ragdoll.UpdateCollisionCategories
     for limb in anim.Limbs do
         if not limb.IgnoreCollisions and not limb.IsSevered then limb.body.CollidesWith = 0 end
     end
 end
 
--- Runs right before the physics step (GameScreen.cs:277-302). Ragdoll.UpdateCollisionCategories restores
--- collisions whenever the category changes, e.g. on leaving a submarine (Ragdoll.cs:1227-1240).
+-- Runs right before the physics step. The ragdoll restores collisions whenever its category changes
+-- (e.g. when leaving a submarine), so they are cleared every frame.
 local function clearCollisions()
     for ghost in pairs(ghosts) do
         if not ghost.Removed then disableCollisions(ghost.AnimController) end
@@ -162,20 +155,20 @@ local function clearCollisions()
     end
 end
 
--- Same gates as Character.CanInteractWith(Item, out float, bool) (Character.cs:2887) without the distance check.
+-- Same checks as Character.CanInteractWith(Item), minus the distance.
 local function reach(instance, ptable)
     if ghosts[instance] == nil then return end
     ptable.PreventExecution = true
     local item = ptable["item"]
-    -- a flying ghost never climbs: pressing up or down grabs the first ladder accepted here (Character.cs:3222-3260)
+    -- skip ladders: pressing up or down would grab the first one in reach and the ghost would start climbing
     if item.GetComponentString("Ladder") ~= nil then return false end
     if not instance.CanInteract or item.IsHidden or not item.IsInteractable(instance) then return false end
     if item.ParentInventory ~= nil then return instance.CanAccessInventory(item.ParentInventory) end
     return item.InteractDistance > 0 or #item.Prefab.Triggers > 0
 end
 
--- Same gates as Character.CanInteractWith(Character, float, bool, bool) (Character.cs:2864-2879) without the distance and
--- visibility checks, so a ghost grabs (G) and inspects (H) anyone it points at. IsDraggable holds for anyone not removed.
+-- Same checks as Character.CanInteractWith(Character), minus distance and line of sight,
+-- so the ghost can grab (G) and inspect (H) anyone it points at.
 local function reachCharacter(instance, ptable)
     if ghosts[instance] == nil then return end
     ptable.PreventExecution = true
@@ -183,71 +176,67 @@ local function reachCharacter(instance, ptable)
     return c ~= instance and c.Enabled and c.CanBeSelected and c.InvisibleTimer <= 0
 end
 
--- A selected character further than MaxDragDistance is let go (Character.cs:2548-2556); a ghost keeps what it holds,
--- a carried character on its way to the ghost or an inspected one wherever it is.
+-- The game lets go of a selected character that is too far away; a ghost keeps it at any distance.
 local function keepSelectedInReach(instance, ptable)
     if ghosts[instance.SelectedBy] == nil then return end
     ptable.PreventExecution = true
     return 0
 end
 
--- SetStun checks GodMode but not Unkillable (Character.cs:4891-4903): explosions would stun the ghost, which lets go
--- of what it holds (:4920-4933) and turns it into a ragdoll that the blast drags away.
+-- SetStun checks GodMode but not Unkillable, so an explosion would stun the ghost,
+-- make it drop what it holds and throw its ragdoll around.
 local function refuseStun(instance, ptable)
     if ghosts[instance] ~= nil and ptable["newStun"] > 0 then ptable.PreventExecution = true end
 end
 
--- Dead and spectating players are heard only by each other (VoipServer.CanReceive, VoipServer.cs:87-94); ghosts
--- hear them too. Such a sender has no living character, so the ghost's client plays it without distance (VoipClient.cs:114).
+-- Lets ghosts hear dead and spectating players. The sender has no living character,
+-- so the ghost's client plays the voice at full volume.
 local function hearSpectators(instance, ptable)
     local recipient = ptable["recipient"]
     if not isGhostClient(recipient) then return end
     local sender = ptable["sender"]
     if sender.Muted or (sender.Character ~= nil and not sender.Character.IsDead) then return end
     ptable.PreventExecution = true
-    -- out parameters are not set when the original is skipped; Single converts to float (LuaTypes.cs:191)
+    -- the original is skipped, so the out parameters have to be set here
     ptable["distanceFactor"] = Single(0)
     ptable["isRadio"] = false
     return true
 end
 
--- Grabbing (G) and the health window (H) need an incapacitated or cuffed target, a pet or a bot of the same team
--- (Character.CanBeDraggedBy, Character.cs:2746-2750); a ghost may take anyone.
+-- Normally only incapacitated or cuffed characters, pets and bots of the same team can be grabbed (G)
+-- or inspected (H); a ghost may take anyone.
 local function canBeDragged(instance, ptable)
     if ghosts[ptable["character"]] == nil then return end
     ptable.PreventExecution = true
     return instance.IsDraggable
 end
 
--- Another character's inventory opens under the same conditions (Character.IsInventoryAccessibleTo, Character.cs:2755);
--- a ghost opens any.
+-- Same rule for opening another character's inventory; a ghost opens any.
 local function inventoryAccessible(instance, ptable)
     if ghosts[ptable["character"]] == nil then return end
     ptable.PreventExecution = true
     return not instance.Removed and instance.Inventory ~= nil
 end
 
--- G and H both select the character (Character.cs:3276-3310); a ghost carries only what it grabbed with G.
+-- G and H both select the character; remember which one it was, since a ghost carries only what it grabbed with G.
 local function rememberSelection(instance)
     if ghosts[instance] == nil then return end
     inspecting[instance] = instance.IsKeyHit(InputType.Health)
 end
 
--- A selected character is dragged every frame (HumanoidAnimController.UpdateAnim), and dragging lets go of it behind a wall
--- or when it is conscious and walks away (HumanoidAnimController.cs:1458-1478, 1569-1576); a ghost carries it instead.
+-- Normal dragging lets go behind a wall or when the target walks away; a ghost carries it instead (see updateCarried).
 local function skipDrag(instance, ptable)
     if ghosts[instance.Character] ~= nil then ptable.PreventExecution = true end
 end
 
--- Status effects with RemoveCharacter (e.g. a singularity), deconstructors and console commands remove characters
--- through the spawner, which also takes the client off the character at once (EntitySpawner.cs:358-376).
--- removeGhost forgets the ghost before removing it.
+-- Singularities, deconstructors and console commands remove characters through the spawner, which also takes
+-- the client off the character. Ghosts are only removed by removeGhost, which forgets them first.
 local function keepGhost(instance, ptable)
     if ghosts[ptable["entity"]] ~= nil then ptable.PreventExecution = true end
 end
 
--- Installed on first use and kept: Hook.RemovePatch cannot remove them, because LuaCs passes the class name as the
--- patch identifier (EventService.RemovePatch, EventService.cs:391-399). Without ghosts they return at once.
+-- Added on first use and never removed: Hook.RemovePatch can't remove them because LuaCs uses the class name
+-- as the patch id. While there are no ghosts they return right away.
 local function ensurePatches()
     if patched then return end
     patched = true
@@ -292,8 +281,7 @@ end
 local function enable(client)
     local body = client.Character
     local position = body ~= nil and not body.IsDead and body.WorldPosition or client.SpectatePos
-    -- the ghost copies the appearance, name and job of the admin's character, the way station cloning copies a body
-    -- (gamemodes/station/cloning.lua)
+    -- copy the look, name and job of the admin's character, same as station cloning does
     local source = body ~= nil and body.IsHuman and body.Info or client.CharacterInfo
     local info
     if source ~= nil then
@@ -304,13 +292,13 @@ local function enable(client)
     end
     info.Name = string.format(Traitormod.Language.AdminGhostName, info.Name)
     local ghost = Character.Create(info, position, info.Name, 0, true, true)
-    -- friendly to every team (Character.IsOnFriendlyTeam, Character.cs:6183-6196): bots do not treat the ghost as an
-    -- intruder (team None made every bot's AI update several times slower), and clients leave it out of the crew list
+    -- friendly to every team: bots ignore it and clients leave it out of the crew list
+    -- (team None also made every bot's AI several times slower)
     ghost.TeamID = CharacterTeamType.FriendlyNPC
-    -- unlike GodMode, Unkillable still updates afflictions (CharacterHealth.cs:919) and lets buffs through (:479)
+    -- unlike GodMode, Unkillable still lets afflictions and buffs work
     ghost.Unkillable = true
     ghost.CharacterHealth.ApplyAffliction(nil, AfflictionPrefab.Prefabs[AFFLICTION].Instantiate(1))
-    -- nothing in the game resets IgnoreGravity on limbs; the collider is kept kinematic in setVelocities
+    -- the game never resets IgnoreGravity on limbs; the collider is kept kinematic in setVelocities
     for limb in ghost.AnimController.Limbs do limb.body.FarseerBody.IgnoreGravity = true end
 
     ghosts[ghost] = { Client = client, Body = body, Info = client.CharacterInfo }
@@ -328,7 +316,7 @@ local function removeGhost(ghost, returnControl)
     if carried[ghost] ~= nil and not carried[ghost].Removed then release(carried[ghost]) end
     carried[ghost] = nil
 
-    -- Character.Remove drops held items into the world (Character.cs:5401-5404); the ghost's items go with it
+    -- Character.Remove would drop the ghost's items into the world, so remove them too
     for item in ghost.Inventory.AllItems do
         Entity.Spawner.AddItemToRemoveQueue(item)
     end
@@ -339,7 +327,7 @@ local function removeGhost(ghost, returnControl)
         client.SetClientCharacter(body ~= nil and not body.Removed and not body.IsDead and body or nil)
         sendState(client, ghost, false)
     end
-    -- SetClientCharacter gave the client the ghost's CharacterInfo, which would otherwise be used for the next spawn
+    -- SetClientCharacter gave the client the ghost's CharacterInfo; put the real one back for the next spawn
     client.CharacterInfo = state.Info
     Entity.Spawner.AddEntityToRemoveQueue(ghost)
     sendListToListeners()
@@ -354,7 +342,7 @@ function adminGhost.Toggle(client)
     end
     if probing[client] then return end
 
-    -- the movement prediction needs the pack's client script, which answers this probe
+    -- movement prediction needs the client script; wait for it to answer the probe
     probing[client] = true
     Networking.Send(Networking.Start(NET_PROBE), client.Connection)
     Timer.Wait(function()
@@ -375,8 +363,8 @@ Networking.Receive(NET_READY, function(message, client)
     if Game.RoundStarted then enable(client) end
 end)
 
--- A ghost's "d;" message: the server drops dead chat from a living character (GameServer.cs:3963-3968) and resolves the
--- sender's character from its client (:3904-3906), so it is delivered here to everyone who reads dead chat.
+-- Dead chat from a ghost: the server would drop it because the ghost is alive,
+-- so send it to everyone who can read dead chat here.
 Hook.Add("chatMessage", "Traitormod.AdminGhost.DeadChat", function(message, client)
     if client == nil or not isGhostClient(client) then return end
     local command, text = ChatMessage.GetChatMessageCommand(message)
@@ -392,7 +380,7 @@ Hook.Add("chatMessage", "Traitormod.AdminGhost.DeadChat", function(message, clie
     return true
 end)
 
--- Dead chat goes only to clients without a living character (GameServer.cs:4013-4015); ghosts get a copy.
+-- Dead chat only reaches clients without a living character; send ghosts a copy.
 Hook.Add("modifyChatMessage", "Traitormod.AdminGhost.DeadChatCopy", function(message)
     if message.Type ~= ChatMessageType.Dead then return end
     for _, state in pairs(ghosts) do

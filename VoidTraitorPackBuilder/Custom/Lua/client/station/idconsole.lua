@@ -109,8 +109,8 @@ function UI.Show(itemId, snapshot)
     createSpacer(presetRow, 0.21)
     UI.Popups[#UI.Popups + 1] = preset
     for _, entry in ipairs(snapshot.Presets) do preset.AddItem(entry.Name, entry.Id) end
-    -- The access list is the only row that grows. Columns are as wide as the longest label needs,
-    -- so labels keep full size, and as many fit as the window width allows.
+    -- The access list is the only row that grows. Columns are as wide as the longest label,
+    -- and as many fit as the window width allows.
     local rights = GUI.ListBox(Common.CreateRect(1, 1, layout), false)
     rights.Spacing = gap
     UI.Rights = rights
@@ -174,7 +174,7 @@ function UI.Show(itemId, snapshot)
     local clear = Common.CreateButton(actions, 0.25, text.Clear)
     local reset = Common.CreateButton(actions, 0.25, text.Reset)
     local apply = Common.CreateButton(actions, 0.25, text.Apply)
-    -- Opens with every access row visible, like an SS14 window sized to its content.
+    -- Opens tall enough to show every access row.
     UI.MinimumHeight = Common.GetMinimumHeight(frame)
     local contentHeight = UI.MinimumHeight + math.max(0, rowCount - 2) * (tickHeight + gap)
     root.RectTransform:Resize(Point(width, math.min(contentHeight, screenHeight)), true)
@@ -281,7 +281,7 @@ Networking.Receive("VoidTraitor_IdConsoleSnapshot", function(message)
         and (UI.AwaitingOpen or UI.ItemId == itemId) then UI.Show(itemId, snapshot) end
 end)
 
--- The stock drop-down adds its popup at order 1. Our modal is higher; add popups after it.
+-- Vanilla drop-downs draw their popup at order 1, under this window, so open popups are added again above it.
 Hook.Patch("VoidTraitor.IdConsole.Hud", "Barotrauma.GameSession", "AddToGUIUpdateList", function()
     if UI.Disabled or UI.MenuRoot == nil or GUI.DisableHUD then return end
     UI.MenuRoot:AddToGUIUpdateList(false, 120)

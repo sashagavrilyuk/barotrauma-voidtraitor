@@ -830,7 +830,7 @@ end
 local nextLobbyCheck = 0
 
 Hook.Add("think", "Traitormod.Voting.Think", function()
-    -- IsStationLobby decodes the selected submarine's [traitormod] JSON, so check the lobby twice a second.
+    -- IsStationLobby parses the submarine's JSON, so check the lobby only twice a second.
     local stationLobby
     if isLobbyState() and Timer.GetTime() >= nextLobbyCheck then
         nextLobbyCheck = Timer.GetTime() + 0.5
@@ -1163,11 +1163,10 @@ end
 
 vt.StartGuiVote = function(client, voteType)
     voteType = string.lower(tostring(voteType or ""))
+    -- votes started from the GUI are still announced in chat, so players without the pack can use !vote
     if voteType == "game" then
-        -- GUI start must still announce the vote in chat so players without the client Lua pack can vote with !vote.
         return vt.StartGameVote(client, false)
     elseif voteType == "map" then
-        -- GUI start must still announce the vote in chat so players without the client Lua pack can vote with !vote.
         return vt.StartMapVote(client, false)
     end
 

@@ -52,9 +52,7 @@ function P.ShowActiveVoteMenu()
     listArea.Color = Color(0, 0, 0, 0)
     listArea.CanBeFocused = false
 
-    -- Слои списка не должны перекрашивать ванильную рамку.
-    -- Чёрный фон лежит под GUIFrameListBox, сама зелёная рамка остаётся родной,
-    -- а ListBox внутри прозрачный и только держит кнопки вариантов.
+    -- Чёрный фон под ванильной рамкой списка; сам ListBox прозрачный и только держит кнопки вариантов.
     local listBackground = GUI.Frame(P.CreateRect(0.984, 0.944, listArea, GUI.Anchor.Center), nil)
     listBackground.Color = Color(0, 0, 0, 255)
     listBackground.CanBeFocused = false

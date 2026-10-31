@@ -1,5 +1,3 @@
--- SERVER ONLY: этот файл используется только серверной локализацией VoidTraitor.
--- Клиентские статические подписи GUI находятся в Void traitor pack/Lua/language/russian.lua.
 local language = ...
 
 -- Серверные ответы и fallback-меню PointShop для игроков без client Lua

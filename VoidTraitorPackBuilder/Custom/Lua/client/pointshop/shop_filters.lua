@@ -21,17 +21,15 @@ function P.ToggleFilterPopup(button)
     end
     if S.currentMenu == nil or button == nil then return end
 
-    -- Keep the exact screen geometry of the button, but make the popup the last
-    -- child of the menu overlay. If it stays inside the filter button's layout
-    -- branch, the product list is added later and gets drawn over the options.
+    -- The popup goes into the menu itself, not the filter button's layout,
+    -- otherwise the product list (added later) is drawn over it.
     local menuWidth = math.max(S.currentMenu.Rect.Width, 1)
     local menuHeight = math.max(S.currentMenu.Rect.Height, 1)
     local popupWidth = math.max(button.Rect.Width, 1)
     local popupHeight = math.max(button.Rect.Height * 3, 3)
     local popupRect = GUI.RectTransform(
-        -- RectTransform truncates relative sizes to whole pixels. The small
-        -- subpixel guard prevents an exact button width from becoming 1 px
-        -- narrower after the screen-space reparenting.
+        -- RectTransform rounds relative sizes down to whole pixels; the extra 0.25
+        -- keeps the popup from ending up 1 px narrower than the button.
         Vector2((popupWidth + 0.25) / menuWidth, (popupHeight + 0.25) / menuHeight),
         S.currentMenu.RectTransform,
         GUI.Anchor.TopLeft,
@@ -42,9 +40,8 @@ function P.ToggleFilterPopup(button)
         button.Rect.Bottom - S.currentMenu.Rect.Y + 1
     )
 
-    -- Draw the same single frame as the vanilla GUIDropDown list, but keep the
-    -- three choices in a plain layout. A GUIListBox would reserve/restore its
-    -- scrollbar on the next update even when all three entries fit.
+    -- Same frame as the vanilla drop-down list, but a plain layout instead of a GUIListBox,
+    -- which would reserve space for a scrollbar even when all three entries fit.
     local popup = GUI.Frame(popupRect, "GUIFrameListBox")
     popup.IgnoreLayoutGroups = true
     popup.CanBeFocused = true
@@ -66,8 +63,7 @@ function P.ToggleFilterPopup(button)
         local optionLabel = entry.Label
         local option = GUI.Button(P.CreateRect(1, 0.333, options, nil), "", GUI.Alignment.CenterLeft, "ListBoxElement")
         P.SetButtonStyle(option, true, S.selectedFilter == optionValue)
-        -- The vanilla GUITextBlock style already provides a 10 px padding.
-        -- Do not combine it with an additional percentage-based inset.
+        -- the GUITextBlock style already has a 10 px padding, so no extra inset here
         local optionText = P.CreateText(option, 1, 1, GUI.Anchor.Center, optionLabel, GUI.Alignment.CenterLeft, 0.96, Color(235, 225, 180, 255), false)
         optionText.CanBeFocused = false
         option.OnClicked = function()
@@ -85,7 +81,7 @@ function P.ToggleFilterPopup(button)
     popup:AddToGUIUpdateList(false, P.GUI_DRAW_ORDER + 60)
 end
 
--- Natural height: a heading line above the vanilla-height drop-down and text box.
+-- A heading line above the drop-down and the text box.
 function P.GetFilterBarHeight()
     return P.Common.GetTextHeight(GUI.Style.SubHeadingFont) + P.Common.GetGap()
         + math.max(P.Common.GetStyleHeight("GUIDropDown"), P.Common.GetStyleHeight("GUITextBox"))
@@ -112,8 +108,8 @@ function P.BuildFilterBar(parent)
     P.SetButtonStyle(S.filterButton, true, false)
     S.filterButton.ForceUpperCase = P.ForceUpperCase.No
     S.filterButton.TextBlock.TextScale = 0.98
-    -- DropDownIcon is a child style of GUIDropDown, not a global GUI style.
-    -- Constructing GUI.Image with the string "DropDownIcon" logs an error.
+    -- DropDownIcon is a child style of GUIDropDown: passing its name to GUI.Image logs an error,
+    -- so it is applied through GUI.Style.Apply instead.
     local dropDownIcon = GUI.Image(P.CreateRect(0.12, 0.58, S.filterButton, GUI.Anchor.CenterRight), nil, true)
     GUI.Style.Apply(dropDownIcon, "DropDownIcon", S.filterButton)
     dropDownIcon.CanBeFocused = false
