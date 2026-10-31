@@ -1099,11 +1099,10 @@ end
 
 vt.StartGuiVote = function(client, voteType)
     voteType = string.lower(tostring(voteType or ""))
+    -- votes started from the GUI are still announced in chat, so players without the pack can use !vote
     if voteType == "game" then
-        -- GUI start must still announce the vote in chat so players without the client Lua pack can vote with !vote.
         return vt.StartGameVote(client, false)
     elseif voteType == "map" then
-        -- GUI start must still announce the vote in chat so players without the client Lua pack can vote with !vote.
         return vt.StartMapVote(client, false)
     end
 

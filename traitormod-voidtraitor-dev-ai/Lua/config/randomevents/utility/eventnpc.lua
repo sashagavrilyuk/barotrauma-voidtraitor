@@ -124,7 +124,7 @@ local function distanceToSubmarine(character, submarine)
     return dx * dx + dy * dy
 end
 
--- Use a native order so exterior pathfinding also sees the home destination.
+-- NPCs away from home are sent back with a forced GoTo order, which also paths from outside.
 Hook.Patch("Barotrauma.AIObjectiveManager", "UpdateObjectives", function(instance, ptable)
     local character = instance.HumanAIController.Character
     local home = getHome(character)
@@ -133,10 +133,10 @@ Hook.Patch("Barotrauma.AIObjectiveManager", "UpdateObjectives", function(instanc
         return
     end
 
-    -- Combat owns the shared steering until it finishes.
+    -- don't interrupt combat, it uses the same steering
     if instance.CurrentObjective ~= nil and instance.CurrentObjective.Identifier == "combat" then return end
 
-    -- Beyond 50 metres from the object's bounds, use the nearest allowed shelter.
+    -- more than 50 m from home: go to the nearest allowed submarine instead
     if distanceToSubmarine(character, home) > 5000 ^ 2 then
         local nearest, distance = home, distanceToSubmarine(character, home)
         for _, submarine in pairs(Submarine.Loaded) do
@@ -198,7 +198,7 @@ Hook.Patch("Barotrauma.AIObjectiveManager", "UpdateObjectives", function(instanc
         if target == nil then return end
         local objective = AIObjectiveGoTo(target, character, instance, exterior)
         objective.AllowGoingOutside = true
-        -- Keep combat and urgent treatment above ordinary navigation.
+        -- above ordinary tasks, below combat and urgent treatment
         objective.OverridePriority = 89
         returnObjectives[character] = { Objective = objective, PreviousOrder = instance.ForcedOrder, Exterior = exterior, RetryAt = Timer.GetTime() + 5 }
         instance.SetForcedOrder(objective)
@@ -216,7 +216,8 @@ Hook.Patch("Barotrauma.AIObjectiveFindSafety", "GetPriority", function(instance,
     end
 end, Hook.HookMethodType.After)
 
--- Read the original lists without changing other mods' normal List-to-table conversion.
+-- With the list type registered we get the C# list instead of a table copy; it is unregistered again
+-- so other mods still get tables.
 local function getList(instance, field, typeName)
     local registered = LuaUserData.IsRegistered(typeName)
     if not registered then LuaUserData.RegisterType(typeName) end
@@ -225,7 +226,7 @@ local function getList(instance, field, typeName)
     return list
 end
 
--- The normal idle search excludes wrecks; these event NPCs must be able to patrol them.
+-- idle wandering normally skips wrecks, but event NPCs should patrol them too
 Hook.Patch("Barotrauma.AIObjectiveIdle", "FindTargetHulls", function(instance, ptable)
     local home = getHome(instance.character)
     if home == nil then return end

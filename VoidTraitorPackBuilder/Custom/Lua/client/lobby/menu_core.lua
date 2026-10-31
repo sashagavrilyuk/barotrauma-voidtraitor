@@ -4,8 +4,7 @@ local packPath, Common = ...
 local P = { PackPath = packPath, Common = Common, State = {} }
 local S = P.State
 
--- Void Traitor quick menu.
--- Client-side buttons only. Every action is validated and executed on the server.
+-- Void Traitor quick menu. Only the buttons are on the client; the server checks and runs every action.
 
 P.NET_READY = "VoidTraitor_ClientMenuGuiReady"
 P.NET_REQUEST = "VoidTraitor_ClientMenuRequest"

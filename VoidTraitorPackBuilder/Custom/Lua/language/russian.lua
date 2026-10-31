@@ -1,5 +1,4 @@
--- CLIENT ONLY: статические тексты интерфейса Void Traitor Pack.
--- Динамические серверные сообщения, причины отказа и fallback для игроков без client Lua здесь не дублируются.
+-- Тексты клиентского интерфейса. Сообщения сервера лежат в traitormod-voidtraitor-dev-ai/Lua/language/russian/.
 
 local language = {}
 

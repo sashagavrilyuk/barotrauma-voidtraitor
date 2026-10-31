@@ -1,5 +1,3 @@
--- SERVER ONLY: этот файл используется только серверной локализацией VoidTraitor.
--- Клиентские статические подписи GUI находятся в Void traitor pack/Lua/language/russian.lua.
 local language = ...
 
 -- Состояние предателя и основные сообщения роли

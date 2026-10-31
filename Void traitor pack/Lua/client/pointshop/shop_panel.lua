@@ -2,8 +2,8 @@ local P = ...
 local S = P.State
 
 function P.BuildShopPanel(overlay)
-    -- Keep the outer panel transparent; only the item/category selection area
-    -- uses the vanilla list frame, closer to the vanilla store layout.
+    -- The outer panel is transparent; only the item/category list gets the vanilla list frame,
+    -- like the vanilla store.
     local root = GUI.Frame(P.CreateRect(P.PANEL_WIDTH, 0.985, overlay, GUI.Anchor.BottomLeft), nil)
     root.Color = Color(0, 0, 0, 0)
     root.CanBeFocused = false
@@ -27,8 +27,7 @@ function P.BuildShopPanel(overlay)
     if S.currentView == "products" then P.BuildFilterBar(menuContent) end
 
     local listHeight = S.currentView == "products" and 0.768 or 0.855
-    -- One vanilla green list frame. The list's own background below is kept
-    -- transparent so a second nested outline is not drawn.
+    -- The list inside has no border, so only this one green frame is drawn.
     local listFrame = GUI.Frame(P.CreateRect(1, listHeight, menuContent, nil), "GUIFrameListBox")
     listFrame.CanBeFocused = false
 

@@ -54,9 +54,8 @@ function P.AddCartButton(list, entry)
 end
 
 function P.BuildPurchaseSummary(parent, total)
-    -- The outer holder occupies the normal layout row. The actual summary is
-    -- a compact right-aligned group, so GUILayout cannot stretch the three
-    -- columns over the whole cart width.
+    -- The holder takes a normal layout row; the summary inside is a small right-aligned
+    -- group, so the three columns aren't stretched over the whole cart width.
     local holder = GUI.Frame(P.CreateRect(1, 0.054, parent, nil), nil)
     holder.Color = Color(0, 0, 0, 0)
     holder.CanBeFocused = false
@@ -78,7 +77,7 @@ function P.BuildPurchaseSummary(parent, total)
         valueBlock.CanBeFocused = false
     end
 
-    -- A TopRight GUILayoutGroup fills from right to left, like vanilla.
+    -- a TopRight layout group fills from right to left
     addColumn(P.GetText("After"), S.currentPoints - total)
     addColumn(P.GetText("Total"), total)
     addColumn(P.GetText("Points"), S.currentPoints)

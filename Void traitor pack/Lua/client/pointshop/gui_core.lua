@@ -4,9 +4,8 @@ local packPath, Common = ...
 local P = { PackPath = packPath, Common = Common, State = {} }
 local S = P.State
 
--- Void Traitor Pointshop GUI.
--- Client-side visual shell only. The server is still authoritative for prices,
--- limits, stock, cooldowns and actual purchases.
+-- Void Traitor Pointshop GUI. Only the visuals are on the client;
+-- prices, limits, stock, cooldowns and purchases are checked by the server.
 
 P.NET_READY = "VoidTraitor_PointshopGuiReady"
 P.NET_REQUEST = "VoidTraitor_PointshopRequest"
@@ -170,7 +169,7 @@ Hook.Patch(P.HUD_PATCH_ID, "Barotrauma.GameSession", "AddToGUIUpdateList", funct
     end
 end)
 
--- ESC guard: close the shop instead of opening the vanilla pause menu.
+-- ESC closes the shop instead of opening the pause menu.
 Hook.Patch(P.PAUSE_PATCH_ID, "Barotrauma.GUI", "TogglePauseMenu", {}, function(instance, params)
     local state = rawget(_G, P.GLOBAL_STATE_KEY)
     if state ~= nil and not state.Disabled and (state.CurrentMenu ~= nil or state.BlockPauseMenu == true) then

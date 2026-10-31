@@ -1,5 +1,4 @@
--- SERVER ONLY: локализация серверной логики VoidTraitor.
--- Здесь остаются чат/команды, динамические сообщения и fallback для игроков без client Lua.
+-- Серверные строки. Подписи клиентского GUI лежат в Void traitor pack/Lua/language/russian.lua.
 local language = {}
 language.Name = "Russian"
 
@@ -11,16 +10,16 @@ assert(loadfile(path .. "core.lua"))(language)
 -- Роли антагонистов и цели
 assert(loadfile(path .. "roles_objectives.lua"))(language)
 
--- Гост-роли и их серверный fallback
+-- Гост-роли
 assert(loadfile(path .. "ghostroles.lua"))(language)
 
--- PointShop: серверные товары, категории, проверки и fallback
+-- PointShop
 assert(loadfile(path .. "pointshop.lua"))(language)
 
 -- Игровые режимы, итог раунда и голосования
 assert(loadfile(path .. "gamemodes.lua"))(language)
 
--- Discord/webhook сообщения
+-- Discord
 assert(loadfile(path .. "discord.lua"))(language)
 
 return language

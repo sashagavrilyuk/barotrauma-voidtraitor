@@ -76,7 +76,7 @@ config.Discord = {
     },
 }
 
-config.DiscordWebhookConfig = nil -- legacy compatibility for old webhook-only configs
+config.DiscordWebhookConfig = nil -- old webhook-only setting, still read if set
 
 ----- GAMEVOTE -----
 
