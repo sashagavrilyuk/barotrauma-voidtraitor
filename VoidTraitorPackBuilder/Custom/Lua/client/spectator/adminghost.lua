@@ -15,15 +15,17 @@ local REACH_CHARACTER_ARGS = { "Barotrauma.Character", "System.Single", "System.
 local UPDATE_ANIM_ARGS = { "System.Single" }
 local UPDATE_RAGDOLL_ARGS = { "System.Single", "Barotrauma.Camera" }
 local BODY_KINEMATIC = 1 -- FarseerPhysics.BodyType.Kinematic
+local CURSOR_FOLLOW_MARGIN = 40 -- Character.cursorFollowMargin
 
 local gameMain = LuaUserData.CreateStatic("Barotrauma.GameMain")
+local direction = LuaUserData.CreateEnumTable("Barotrauma.Direction")
 local ghostId, walkSpeed, runSpeed
 local ghost
 local patched = false
--- the selected character was picked with the health key: inspected, not carried
-local inspecting = false
 -- the character the server carries for this client's ghost
 local carried
+-- set while the ghost's focus search runs (see measureLimbDistance)
+local searchingFocus = false
 local cameraZoom, cameraTargetZoom
 -- entity IDs of every ghost in the round
 local listed = {}
@@ -45,9 +47,12 @@ end
 
 -- The server carries the character; this client only lets its own copy of it pass through walls, so the server's
 -- corrections can move it there (a remote ragdoll is teleported only beyond about 3 m, ClientSource Ragdoll.cs:109-150).
+-- An inspected (H) character has its health window open; the selection alone does not tell, because the client also
+-- selects again without a key when it follows the server's state (ClientSource Ragdoll.cs:205-215).
 local function updateCarried()
     local target = ghost.SelectedCharacter
-    if inspecting or (target ~= nil and target.Removed) then target = nil end
+    local window = CharacterHealth.OpenHealthWindow
+    if (target ~= nil and target.Removed) or (window ~= nil and window.Character == target) then target = nil end
     if carried == target then return end
     release(carried)
     carried = target
@@ -73,6 +78,16 @@ local function setVelocity()
     anim.levitatingCollider = false
     anim.MainLimb.PullJointWorldAnchorB = anim.Collider.SimPosition
     anim.MainLimb.PullJointEnabled = true
+    -- Facing follows the cursor only on the ground and out of water (Character.cs:2289-2312), so a flying ghost could
+    -- not turn to throw; the server takes the facing from this client's input (:2322-2331).
+    if not anim.OnGround and not anim.InWater and ghost.FollowCursor and not anim.IsUsingItem then
+        local cursorOffset = ghost.CursorPosition.X - anim.Collider.Position.X
+        if cursorOffset < -CURSOR_FOLLOW_MARGIN then
+            anim.TargetDir = direction.Left
+        elseif cursorOffset > CURSOR_FOLLOW_MARGIN then
+            anim.TargetDir = direction.Right
+        end
+    end
     updateCarried()
 end
 
@@ -109,10 +124,28 @@ local function reachCharacter(instance, ptable)
     return c ~= instance and c.Enabled and c.CanBeSelected and c.InvisibleTimer <= 0
 end
 
-local function keepSelectedInReach(instance, ptable)
-    if ghost == nil or instance.SelectedBy ~= ghost then return end
-    ptable.PreventExecution = true
-    return 0
+-- The focus search measures from the cursor, kept relative to the controlled character's submarine (UpdateLocalCursor,
+-- ClientSource Character.cs:524-531), to limbs relative to each character's own submarine (Character.cs:3914-3925),
+-- so a ghost outside a character's submarine missed it; while the ghost searches, each character gets the cursor in its
+-- own frame. Outside the search this only runs to let go of a selection beyond MaxDragDistance (Character.cs:2548-2556).
+local function measureLimbDistance(instance, ptable)
+    if ghost == nil then return end
+    if searchingFocus then
+        local cursor = ghost.CursorWorldPosition
+        if instance.Submarine ~= nil then cursor = cursor - instance.Submarine.Position end
+        ptable["simPos"] = cursor / 100
+    elseif instance.SelectedBy == ghost then
+        ptable.PreventExecution = true
+        return 0
+    end
+end
+
+local function startFocusSearch(instance)
+    searchingFocus = instance == ghost
+end
+
+local function endFocusSearch()
+    searchingFocus = false
 end
 
 -- Focusing on a character needs line of sight (Character.cs:3174-3175); the ghost sees through walls like a spectator,
@@ -133,10 +166,6 @@ local function inventoryAccessible(instance, ptable)
     if ptable["character"] ~= ghost then return end
     ptable.PreventExecution = true
     return not instance.Removed and instance.Inventory ~= nil
-end
-
-local function rememberSelection(instance)
-    if instance == ghost then inspecting = instance.IsKeyHit(InputType.Health) end
 end
 
 -- the server carries what the ghost grabbed instead of dragging it
@@ -169,9 +198,10 @@ local function ensurePatches()
     Hook.Patch(PATCH_ID, "Barotrauma.Character", "IsInventoryAccessibleTo", inventoryAccessible, Hook.HookMethodType.Before)
     Hook.Patch(PATCH_ID, "Barotrauma.HumanoidAnimController", "DragCharacter", skipDrag, Hook.HookMethodType.Before)
     Hook.Patch(PATCH_ID, "Barotrauma.Character", "CanInteractWith", REACH_CHARACTER_ARGS, reachCharacter, Hook.HookMethodType.Before)
-    Hook.Patch(PATCH_ID, "Barotrauma.Character", "GetDistanceToClosestLimb", keepSelectedInReach, Hook.HookMethodType.Before)
+    Hook.Patch(PATCH_ID, "Barotrauma.Character", "GetDistanceToClosestLimb", measureLimbDistance, Hook.HookMethodType.Before)
+    Hook.Patch(PATCH_ID, "Barotrauma.Character", "FindCharacterAtPosition", startFocusSearch, Hook.HookMethodType.Before)
+    Hook.Patch(PATCH_ID, "Barotrauma.Character", "FindCharacterAtPosition", endFocusSearch, Hook.HookMethodType.After)
     Hook.Patch(PATCH_ID, "Barotrauma.Character", "CanSeeTarget", seeThroughWalls, Hook.HookMethodType.Before)
-    Hook.Patch(PATCH_ID, "Barotrauma.Character", "SelectCharacter", rememberSelection, Hook.HookMethodType.Before)
     Hook.Patch(PATCH_ID, "Barotrauma.Camera", "MoveCamera", zoomCamera, Hook.HookMethodType.After)
 end
 
@@ -188,7 +218,6 @@ end
 local function stop()
     release(carried)
     carried = nil
-    inspecting = false
     ghostId = nil
     ghost = nil
     Hook.Remove("think", PATCH_ID)
