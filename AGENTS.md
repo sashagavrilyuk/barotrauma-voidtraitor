@@ -1,4 +1,4 @@
-Maintain LuaCsForBarotrauma mods, primarily VoidTraitor (`traitormod-voidtraitor-dev-ai`) and its client/content pack (`Void traitor pack`). Correct, minimal, readable code outranks speed.
+Maintain LuaCsForBarotrauma mods, primarily VoidTraitor (`traitormod-voidtraitor-1.15`) and its client/content pack (`Void traitor pack-1.15`). Correct, minimal, readable code outranks speed.
 
 ## Core
 - Never invent APIs, causes, facts, tests, commits or game success. Declare impossibility/unsuitability ONLY with cited source proof; distinguish facts from hypotheses.
@@ -34,7 +34,7 @@ Keep code, localization, roles, objectives, settings, assets and persistence wit
 - Put configurable defaults in `config/baseconfig.lua`; use `config/config.lua` for user overrides. Do not create a separate file just for one feature's settings.
 - `extensions/` is for independently switchable game fixes or modifications. A patch required by a particular feature belongs with that feature's implementation, not in a separate extension.
 
-### 1. Server & Shared Mod (`traitormod-voidtraitor-dev-ai`)
+### 1. Server & Shared Mod (`traitormod-voidtraitor-1.15`)
 - `Lua/Autorun/init.lua` — entry point.
 - `Lua/` — important/shared core logic ONLY (`traitormod.lua`, `traitormodutil.lua`, `clientmenu.lua`, `commands.lua`, `ghostroles.lua`, `json.lua`, `objectivehud.lua`, `pointshop.lua`, `rolemanager.lua`, `roundevents.lua`, `roundstats.lua`, `statistics.lua`, `stringbuilder.lua`, `submarinebuilder.lua`, `textpromptutils.lua`, `voting.lua`, `weightedrandom.lua`, `xmlpatching.lua`).
 - `Lua/config/` — settings, categories, events, and logic local to them (`baseconfig.lua`, `config.lua`, `config.lua.example`).
@@ -51,7 +51,7 @@ Keep code, localization, roles, objectives, settings, assets and persistence wit
 - `Lua/data/` — permanent saved data (`data.json`, `discordstate.json`, `roundcounter.json`, `stats.json`).
 - `types/` & `definitions/` — type definitions (`Traitormod.lua`, `event.lua`, `gamemodes.lua`, `team.lua`, `definitions/main.lua`).
 
-### 2. Client GUI & Content Pack (`Void traitor pack/Lua`)
+### 2. Client GUI & Content Pack (`Void traitor pack-1.15/Lua`)
 Client-side GUI is strictly modular. Never dump everything into a single file or duplicate shared UI primitives:
 - `Lua/Autorun/` — `init.lua` and `__vtpack_bundled_loader.lua` (must stay synchronized with `VoidTraitorPackBuilder` when files are added/renamed).
 - `Lua/client/init.lua` & `Lua/client/common.lua` — client bootstrap and shared GUI core helpers (`common.lua`). Shared UI primitives/layout helpers belong in `common.lua`.
@@ -73,8 +73,8 @@ Prefer server-side Lua for small fixes/features. Use XML/client-side content onl
 
 ### Local paths 
 - `C:\Users\shuri\Desktop\barotrauma-voidtraitor\LuaCsForBarotrauma\` — LuaCs and available Barotrauma C# source; verify APIs, hooks, and engine behavior here.
-- `D:\SteamLibrary\steamapps\common\Barotrauma\LocalMods\traitormod-voidtraitor-dev-ai` — main VoidTraitor Lua mod.
-- `D:\SteamLibrary\steamapps\common\Barotrauma\LocalMods\Void traitor pack\` — pack XML/Lua content, items, afflictions, submarines, and client content.
+- `D:\SteamLibrary\steamapps\common\Barotrauma\LocalMods\traitormod-voidtraitor-1.15` — main VoidTraitor Lua mod.
+- `D:\SteamLibrary\steamapps\common\Barotrauma\LocalMods\Void traitor pack-1.15\` — pack XML/Lua content, items, afflictions, submarines, and client content.
 - `C:\Users\shuri\Desktop\barotrauma-voidtraitor\VoidTraitorPackBuilder\` — pack builder.
 - `D:\SteamLibrary\steamapps\common\Barotrauma\Content` — vanilla content/maps.
 - `D:\SteamLibrary\steamapps\common\Barotrauma\DedicatedServer.exe` — local dedicated server.

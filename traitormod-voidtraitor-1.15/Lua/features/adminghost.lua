@@ -1,5 +1,5 @@
 -- Admin ghost: an invisible, unkillable body that flies through walls and reaches items at any distance.
--- The admin's client runs the same movement code (Void traitor pack: Lua/client/spectator/adminghost.lua)
+-- The admin's client runs the same movement code (Void traitor pack-1.15: Lua/client/spectator/adminghost.lua)
 -- so prediction matches the server. The vt_adminghost affliction hides the ghost from everyone else;
 -- spectators with the client script get a list of ghosts so they can still see them.
 local adminGhost = {}

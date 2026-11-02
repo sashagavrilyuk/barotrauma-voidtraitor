@@ -1,4 +1,4 @@
--- Серверные строки. Подписи клиентского GUI лежат в Void traitor pack/Lua/language/russian.lua.
+-- Серверные строки. Подписи клиентского GUI лежат в Void traitor pack-1.15/Lua/language/russian.lua.
 local language = {}
 language.Name = "Russian"
 
