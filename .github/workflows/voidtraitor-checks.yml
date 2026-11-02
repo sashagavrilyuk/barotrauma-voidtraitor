@@ -21,8 +21,8 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq lua5.4
-          find "traitormod-voidtraitor-dev-ai/Lua" \
-               "Void traitor pack/Lua" \
+          find "traitormod-voidtraitor-1.15/Lua" \
+               "Void traitor pack-1.15/Lua" \
                "VoidTraitorPackBuilder/Custom/Lua" \
                -type f -iname '*.lua' -print0 | xargs -0 -r -n1 luac5.4 -p
 
@@ -32,11 +32,11 @@ jobs:
           from pathlib import Path
           import xml.etree.ElementTree as ET
 
-          pack = Path("Void traitor pack")
+          pack = Path("Void traitor pack-1.15")
           builder = Path("VoidTraitorPackBuilder/Custom")
           sources = (
               pack / "filelist.xml",
-              Path("traitormod-voidtraitor-dev-ai/filelist.xml"),
+              Path("traitormod-voidtraitor-1.15/filelist.xml"),
               builder / "filelist.xml",
           )
           for folder in (builder, pack):

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<contentpackage name="the void traitor pack" modversion="1.1.1.0" corepackage="False" steamworkshopid="3466169195" gameversion="1.13.4.0">
+<contentpackage name="the void traitor pack-1.15" modversion="1.1.1.1" corepackage="False" steamworkshopid="3466169195" gameversion="1.15.24.0" AccentColor="{R:255 G:255 B:255 A:255}">
   <Afflictions file="%ModDir%/NT Surgery Plus/Afflictions/Afflictions.xml" />
   <Item file="%ModDir%/NT Surgery Plus/Items/BodyParts/Organs.xml" />
   <Item file="%ModDir%/NT Surgery Plus/Items/Jobgear/Surgeon/surgeon_gear.xml" />
@@ -262,7 +262,7 @@
   <Character file="%ModDir%/Enhanced Husks/Characters/Huskmutantcontainer/Huskmutantcontainer.xml" />
   <Character file="%ModDir%/Enhanced Husks/Characters/Huskmutantslipold/Huskmutantslipold.xml" />
   <Submarine file="%ModDir%/Enhanced Husks/Wrecks/Wrecktraps.sub" />
-  <EnemySubmarine file="%ModDir%/Enhanced Husks/Wrecks/DugongThalamus_Carrier.sub" />
+  <NonPlayerSubmarine file="%ModDir%/Enhanced Husks/Wrecks/DugongThalamus_Carrier.sub" />
   <Item file="%ModDir%/More Arts (AOCS)/Artifacts/artifacts.xml" />
   <Item file="%ModDir%/More Arts (AOCS)/medItems/Modexplos.xml" />
   <Particles file="%ModDir%/More Arts (AOCS)/Particles/ParticlePrefabs.xml" />
@@ -324,9 +324,9 @@
   <OutpostModule file="%ModDir%/More Arts (AOCS)/modules/Artmod_Alien_MaintenanceTunn1.sub" />
   <OutpostModule file="%ModDir%/More Arts (AOCS)/modules/Artmod_Alien_MaintenanceTunn3.sub" />
   <OutpostModule file="%ModDir%/More Arts (AOCS)/modules/Artmod_Alien_MaintenanceTunn2.sub" />
-  <EnemySubmarine file="%ModDir%/More Arts (AOCS)/Submarines/PirateBarsuk.sub" />
-  <EnemySubmarine file="%ModDir%/More Arts (AOCS)/Submarines/PirateKastrull.sub" />
-  <EnemySubmarine file="%ModDir%/More Arts (AOCS)/Submarines/PirateBerilia.sub" />
+  <NonPlayerSubmarine file="%ModDir%/More Arts (AOCS)/Submarines/PirateBarsuk.sub" />
+  <NonPlayerSubmarine file="%ModDir%/More Arts (AOCS)/Submarines/PirateKastrull.sub" />
+  <NonPlayerSubmarine file="%ModDir%/More Arts (AOCS)/Submarines/PirateBerilia.sub" />
   <OutpostModule file="%ModDir%/More Arts (AOCS)/modules/Alien_Artmod_ElectroWaterRoom.sub" />
   <OutpostModule file="%ModDir%/More Arts (AOCS)/modules/Artmod_Alien_BigRoom1.sub" />
   <OutpostModule file="%ModDir%/More Arts (AOCS)/modules/Artmod_Alien_BigRoom2.sub" />
@@ -422,7 +422,6 @@
   <Sounds file="%ModDir%/Sounds/Sound.xml" />
   <Outpost file="%ModDir%/void traitor pack submarine/attack-defends/Attack&amp;Defend I Shipbuilding.sub" />
   <Outpost file="%ModDir%/void traitor pack submarine/fun boat/Hide and seek I in Residence.sub" />
-  <Submarine file="%ModDir%/void traitor pack submarine/VoidTraitor Station Test.sub" />
   <Missions file="%ModDir%/the void traitor pack/MissionsStation.xml" />
   <Text file="%ModDir%/the void traitor pack/StationText.xml" />
   <Item file="%ModDir%/the void traitor pack/items/idconsole.xml" />
@@ -439,4 +438,5 @@
   <Text file="%ModDir%/the void traitor pack/CommunicationsText.xml" />
   <RandomEvents file="%ModDir%/Sounds/Station/Alerts.xml" />
   <RandomEvents file="%ModDir%/Sounds/Station/Nuclear/NuclearEvents.xml" />
+  <Submarine file="%ModDir%/void traitor pack submarine/VoidTraitor Station Test.sub" />
 </contentpackage>
