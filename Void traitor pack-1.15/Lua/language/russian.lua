@@ -1,4 +1,4 @@
--- Тексты клиентского интерфейса. Сообщения сервера лежат в traitormod-voidtraitor-dev-ai/Lua/language/russian/.
+-- Тексты клиентского интерфейса. Сообщения сервера лежат в traitormod-voidtraitor-1.15/Lua/language/russian/.
 
 local language = {}
 

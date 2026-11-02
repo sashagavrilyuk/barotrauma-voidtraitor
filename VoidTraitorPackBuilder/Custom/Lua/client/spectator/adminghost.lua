@@ -1,7 +1,7 @@
 if SERVER then return end
 
 -- Client side of the admin ghost: the same movement and reach code as the server
--- (traitormod-voidtraitor-dev-ai: Lua/features/adminghost.lua), so prediction matches it.
+-- (traitormod-voidtraitor-1.15: Lua/features/adminghost.lua), so prediction matches it.
 -- Spectators and ghosts also see the ghosts that the vt_adminghost affliction hides.
 local NET_PROBE = "VoidTraitor_AdminGhostProbe"
 local NET_READY = "VoidTraitor_AdminGhostReady"
