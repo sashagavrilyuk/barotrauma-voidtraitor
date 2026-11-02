@@ -1,6 +1,8 @@
 if not Game.IsMultiplayer or (Game.IsMultiplayer and CLIENT) then return end
 
 LuaUserData.RegisterType("Barotrauma.Networking.FileSender")
+-- the server's file sender is internal since barotrauma 1.15
+LuaUserData.MakePropertyAccessible(LuaUserData.RegisterType("Barotrauma.Networking.GameServer"), "FileSender")
 
 local luaConfirmed = {}
 local clientTrackers = {}
