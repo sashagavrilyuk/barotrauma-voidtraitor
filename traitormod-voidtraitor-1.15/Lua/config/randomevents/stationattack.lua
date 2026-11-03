@@ -198,7 +198,7 @@ local function scaleEncounter(encounter, multiplier)
         local monster = table.remove(original, index)
         result[#result + 1] = monster
     end
-    local capped, counts, included = {}, {}, {}
+    local capped, counts = {}, {}
     for _, monster in ipairs(result) do
         local species = monster.SpeciesName.Value
         if counts[species] == nil then
@@ -210,11 +210,7 @@ local function scaleEncounter(encounter, multiplier)
         if counts[species] < monster.MaxAmountPerLevel then
             capped[#capped + 1] = monster
             counts[species] = counts[species] + 1
-            included[monster] = true
         end
-    end
-    for _, monster in ipairs(encounter) do
-        if monster.MinAmount > 0 and not included[monster] then return {} end
     end
     return capped
 end
@@ -263,7 +259,8 @@ end
 local function start(mode)
     local players = playerCount()
     local difficulty = difficulty(mode, players)
-    local monsters = scaleEncounter(selectPool(mode, difficulty), amountMultiplier(mode, players))
+    local encounter = selectPool(mode, difficulty)
+    local monsters = scaleEncounter(encounter, amountMultiplier(mode, players))
     local positions = spawnPositions(mode)
     local spawned = {}
     event.NextAttackTime = Traitormod.RoundTime + intervalMinutes(mode, players) * 60
@@ -278,6 +275,8 @@ local function start(mode)
         end
     end
     if #spawned == 0 then
+        Traitormod.Log(string.format("Station attack skipped: %d players, %.1f difficulty, %d monster types chosen, %d creatures after scaling, %d spawn points",
+            players, difficulty, #encounter, #monsters, #positions))
         event.End()
         return
     end
@@ -291,6 +290,11 @@ end
 
 local function think(mode)
     if event.Monsters == nil then return end
+    -- a stuck or passive creature must not hold back the next wave
+    if Traitormod.RoundTime >= event.NextAttackTime then
+        event.End()
+        return
+    end
     for _, character in ipairs(event.Monsters) do
         if not character.Removed and not character.IsDead
             and Vector2.Distance(character.WorldPosition, Submarine.MainSub.WorldPosition)
