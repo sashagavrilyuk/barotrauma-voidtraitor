@@ -5540,7 +5540,7 @@
 	<LightComponent LightColor="111,111,111,255" Flicker="0" range="800" powerconsumption="0" IsOn="true"><LightTexture texture="Content/Lights/lightcone.png" origin="0.025, 0.5" size="1.0,1.0" /></LightComponent><aitarget sightrange="2000" soundrange="4000" fadeouttime="5" /><Upgrade gameversion="0.10.0.0" scale="0.5" /><SkillRequirementHint identifier="weapons" level="75" /></Item>
   <Item name="" identifier="onlypiratealienminigun" category="hidden" hideinmenus="true" nonplayerteaminteractable="True" cargocontaineridentifier="metalcrate" tags="weapon,gun,mediumitem" Scale="0.3" impactsoundtag="impact_metal_heavy">
     <!--<InventoryIcon texture="Mods/BGN/Minigun/IA.png" sourcerect="0,0,64,64" origin="0.5,0.5" />-->
-    <Sprite texture="%ModDir%/More Arts (AOCS)/Weapons/EW-P3Arzipirate.png" sourcerect="0,0,430,147" depth="0.55" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/More Arts (AOCS)/Weapons/PirateArzi.png" sourcerect="237,208,430,147" depth="0.55" origin="0.5,0.5" />
     <Body width="140" height="125" density="50" />
     <Holdable slots="RightHand+LeftHand,Any" controlpose="true" holdpos="48,-44" aimpos="45,-35" handle1="-125,-12" handle2="-7,30" holdangle="-13" msg="ItemMsgPickUpSelect" />
     <RangedWeapon reload="0.15" barrelpos="190,20" spread="0" unskilledspread="4" combatPriority="80" drawhudwhenequipped="true" crosshairscale="0.2">
