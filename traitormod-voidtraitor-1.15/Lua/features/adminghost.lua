@@ -220,9 +220,14 @@ local function inventoryAccessible(instance, ptable)
 end
 
 -- G and H both select the character; remember which one it was, since a ghost carries only what it grabbed with G.
+-- Read in DoInteractionUpdate, which makes the selection: a patch on the tiny SelectCharacter is not reached from there.
 local function rememberSelection(instance)
     if ghosts[instance] == nil then return end
-    inspecting[instance] = instance.IsKeyHit(InputType.Health)
+    if instance.IsKeyHit(InputType.Grab) then
+        inspecting[instance] = false
+    elseif instance.IsKeyHit(InputType.Health) then
+        inspecting[instance] = true
+    end
 end
 
 -- Normal dragging lets go behind a wall or when the target walks away; a ghost carries it instead (see updateCarried).
@@ -247,7 +252,7 @@ local function ensurePatches()
     Hook.Patch(PATCH_ID, "Barotrauma.Networking.VoipServer", "CanReceive", VOIP_ARGS, hearSpectators, Hook.HookMethodType.Before)
     Hook.Patch(PATCH_ID, "Barotrauma.Character", "CanBeDraggedBy", canBeDragged, Hook.HookMethodType.Before)
     Hook.Patch(PATCH_ID, "Barotrauma.Character", "IsInventoryAccessibleTo", inventoryAccessible, Hook.HookMethodType.Before)
-    Hook.Patch(PATCH_ID, "Barotrauma.Character", "SelectCharacter", rememberSelection, Hook.HookMethodType.Before)
+    Hook.Patch(PATCH_ID, "Barotrauma.Character", "DoInteractionUpdate", rememberSelection, Hook.HookMethodType.Before)
     Hook.Patch(PATCH_ID, "Barotrauma.HumanoidAnimController", "DragCharacter", skipDrag, Hook.HookMethodType.Before)
     Hook.Patch(PATCH_ID, "Barotrauma.EntitySpawner", "AddEntityToRemoveQueue", keepGhost, Hook.HookMethodType.Before)
     Hook.Patch(PATCH_ID, "Barotrauma.Character", "CanInteractWith", REACH_CHARACTER_ARGS, reachCharacter, Hook.HookMethodType.Before)
