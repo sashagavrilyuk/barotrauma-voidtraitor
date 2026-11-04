@@ -671,6 +671,7 @@ config.RandomEventConfig = {
             "WreckRescue", "BeaconRescue", "CaptainHelmBoost", "OutpostPirateAttack",
             "PirateCrew", "HiddenPirate", "WreckPirate", "BeaconPirate",
             "BreackElectrical", "BreackHull", "KillElectrical", "KillHull", "WildCreature", "MalfunctioningBot",
+            "SeismicTremor",
         },
         Station = { "StationAttack" },
     },
@@ -686,7 +687,7 @@ config.RandomEventConfig = {
             "OxygenGeneratorPoison", "OxygenSufforin", "OxygenParalyzant", "OxygenMorbusine", "OxygenCyanide",
             "SuperBallastFlora", "WeakBallastFlora", "ShadyMission", "Prisoner", "WreckRescue", "BeaconRescue",
             "OutpostPirateAttack", "PirateCrew", "HiddenPirate", "WreckPirate", "BeaconPirate",
-            "BreackElectrical", "BreackHull", "KillElectrical", "KillHull", "WildCreature", "MalfunctioningBot",
+            "BreackElectrical", "BreackHull", "KillElectrical", "KillHull", "WildCreature", "MalfunctioningBot", "SeismicTremor",
         },
         MinThreatGapMinutes = 2, -- no random threat this soon after another threat
         CalmIntensity = 0.35, -- below this the minute counts as calm; the game's own event threshold on Medium
@@ -696,7 +697,7 @@ config.RandomEventConfig = {
         GraceAfterHelpMinutes = 4, -- no threat from the director this soon after its help
         LightThreats = {
             "LightsOff", "CommunicationsOffline", "JunctionBoxOverload", "SupercapacitorFailure", "ReactorShutdown",
-            "WeakBallastFlora", "BreackElectrical", "BreackHull",
+            "WeakBallastFlora", "BreackElectrical", "BreackHull", "SeismicTremor",
         },
         MediumThreats = {
             "VentCreatures", "HiddenPirate", "SuperBallastFlora", "WreckRescue", "BeaconRescue", "AbyssHelp", "WildCreature",
@@ -777,6 +778,7 @@ config.RandomEventConfig = {
         dofile(Traitormod.Path .. "/Lua/config/randomevents/ventcreatures.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/wildcreature.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/malfunctioningbot.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/seismictremor.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/clowncratesurprise.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/weakballastflora.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/wreckrescue.lua"),
