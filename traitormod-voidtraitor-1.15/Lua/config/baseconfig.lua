@@ -670,7 +670,7 @@ config.RandomEventConfig = {
             "SuperBallastFlora", "WeakBallastFlora", "AbyssHelp", "ShadyMission", "Prisoner",
             "WreckRescue", "BeaconRescue", "CaptainHelmBoost", "OutpostPirateAttack",
             "PirateCrew", "HiddenPirate", "WreckPirate", "BeaconPirate",
-            "BreackElectrical", "BreackHull", "KillElectrical", "KillHull",
+            "BreackElectrical", "BreackHull", "KillElectrical", "KillHull", "WildCreature", "MalfunctioningBot",
         },
         Station = { "StationAttack" },
     },
@@ -686,7 +686,7 @@ config.RandomEventConfig = {
             "OxygenGeneratorPoison", "OxygenSufforin", "OxygenParalyzant", "OxygenMorbusine", "OxygenCyanide",
             "SuperBallastFlora", "WeakBallastFlora", "ShadyMission", "Prisoner", "WreckRescue", "BeaconRescue",
             "OutpostPirateAttack", "PirateCrew", "HiddenPirate", "WreckPirate", "BeaconPirate",
-            "BreackElectrical", "BreackHull", "KillElectrical", "KillHull",
+            "BreackElectrical", "BreackHull", "KillElectrical", "KillHull", "WildCreature", "MalfunctioningBot",
         },
         MinThreatGapMinutes = 2, -- no random threat this soon after another threat
         CalmIntensity = 0.35, -- below this the minute counts as calm; the game's own event threshold on Medium
@@ -698,9 +698,15 @@ config.RandomEventConfig = {
             "LightsOff", "CommunicationsOffline", "JunctionBoxOverload", "SupercapacitorFailure", "ReactorShutdown",
             "WeakBallastFlora", "BreackElectrical", "BreackHull",
         },
-        MediumThreats = { "VentCreatures", "HiddenPirate", "SuperBallastFlora", "WreckRescue", "BeaconRescue", "AbyssHelp" },
+        MediumThreats = {
+            "VentCreatures", "HiddenPirate", "SuperBallastFlora", "WreckRescue", "BeaconRescue", "AbyssHelp", "WildCreature",
+            "MalfunctioningBot",
+        },
         -- preferred while dead players wait, so they get a role
-        GhostRoleThreats = { VentCreatures = true, HiddenPirate = true, WreckRescue = true, BeaconRescue = true },
+        GhostRoleThreats = {
+            VentCreatures = true, HiddenPirate = true, WreckRescue = true, BeaconRescue = true, WildCreature = true,
+            MalfunctioningBot = true,
+        },
         NeutralEveryMinutes = { 6, 10 },
         Neutral = {
             "MechanicSkillBoost", "EngineerSkillBoost", "MedicSkillBoost", "SurgeonSkillBoost", "CaptainHelmBoost",
@@ -769,6 +775,8 @@ config.RandomEventConfig = {
         dofile(Traitormod.Path .. "/Lua/config/randomevents/shadymission.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/prisoner.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/ventcreatures.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/wildcreature.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/malfunctioningbot.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/clowncratesurprise.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/weakballastflora.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/wreckrescue.lua"),
@@ -904,6 +912,8 @@ config.GhostRoleConfig = {
         dofile(Traitormod.Path .. "/Lua/config/ghostrole/misc.lua"),
         dofile(Traitormod.Path .. "/Lua/config/ghostrole/pointshop.lua"),
         dofile(Traitormod.Path .. "/Lua/config/ghostrole/system.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/ghostrole/wild.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/ghostrole/defensebot.lua"),
     }
 }
 
