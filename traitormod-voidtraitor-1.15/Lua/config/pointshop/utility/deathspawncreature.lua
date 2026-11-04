@@ -36,6 +36,7 @@ local function SpawnCreature(species, client, product, paidPrice, insideHuman)
     Entity.Spawner.AddCharacterToSpawnQueue(species, spawnPosition, function (character)
         client.SetClientCharacter(character)
         Traitormod.Pointshop.TrackRefund(client, product, paidPrice)
+        Traitormod.RoundEvents.RecordThreat()
     end)
 end
 

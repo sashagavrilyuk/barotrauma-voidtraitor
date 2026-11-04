@@ -674,6 +674,24 @@ config.RandomEventConfig = {
         },
         Station = { "StationAttack" },
     },
+    -- The longer the crew stays calm, the likelier a random threat becomes; any threat, whoever starts it, resets the count.
+    -- Off until a mode is listed, e.g. Modes = { Secret = true }.
+    Director = {
+        Modes = {},
+        Threats = {
+            "VentCreatures", "ClownCrateSurprise", "OxygenGeneratorHusk", "RandomLights", "ClownMagic", "LightsOff",
+            "CommunicationsOffline", "ReactorShutdown", "SupercapacitorFailure", "JunctionBoxOverload",
+            "OxygenGeneratorPoison", "OxygenSufforin", "OxygenParalyzant", "OxygenMorbusine", "OxygenCyanide",
+            "SuperBallastFlora", "WeakBallastFlora", "ShadyMission", "Prisoner", "WreckRescue", "BeaconRescue",
+            "OutpostPirateAttack", "PirateCrew", "HiddenPirate", "WreckPirate", "BeaconPirate",
+            "BreackElectrical", "BreackHull", "KillElectrical", "KillHull",
+        },
+        CalmIntensity = 0.35, -- below this the minute counts as calm; the game's own event threshold on Medium
+        QuietMinutes = 6, -- calm minutes before threats get likelier
+        BoostPerMinute = 0.5, -- extra chance multiplier for every further calm minute
+        MaxBoost = 3,
+        MinThreatGapMinutes = 2, -- no random threat this soon after another threat
+    },
     Events = {
         dofile(Traitormod.Path .. "/Lua/config/randomevents/stationattack.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/superballastflora.lua"),

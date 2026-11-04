@@ -9,6 +9,28 @@ re.EventConfigs = Traitormod.Config.RandomEventConfig
 
 re.AllowedEvents = {}
 
+-- Director state for the current round; Config is nil when the director is off for the mode
+re.Director = { QuietMinutes = 0 }
+
+---Notes that a threat started, whatever started it: the next random threat has to wait and the calm count starts over
+re.RecordThreat = function ()
+    re.Director.QuietMinutes = 0
+    re.Director.LastThreatTime = Traitormod.RoundTime
+end
+
+local function threatChanceMultiplier(event, intensity)
+    local director = re.Director
+    if director.Config == nil or not director.Threats[event.Name] then return 1 end
+    if director.LastThreatTime ~= nil
+        and Traitormod.RoundTime - director.LastThreatTime < director.Config.MinThreatGapMinutes * 60 then
+        return 0
+    end
+    -- a crew that is already in trouble gets no extra threats
+    if intensity >= director.Config.CalmIntensity then return 1 end
+    local extra = math.max(0, director.QuietMinutes - director.Config.QuietMinutes) * director.Config.BoostPerMinute
+    return math.min(director.Config.MaxBoost, 1 + extra)
+end
+
 ---Checks if event is happenning right now
 ---@param eventName string event.Name field
 ---@return boolean
@@ -113,6 +135,10 @@ re.TriggerEvent = function (eventName)
     end
     re.ThisRoundEvents[eventName] = re.ThisRoundEvents[eventName] + 1
 
+    if re.Director.Config ~= nil and re.Director.Threats[eventName] then
+        re.RecordThreat()
+    end
+
     local alive = 0
     for _, client in pairs(Client.ClientList) do
         local character = client.Character
@@ -151,11 +177,13 @@ re.CheckRandomEvent = function (event)
         return
     end
 
-    if math.random() > event.ChancePerMinute then
+    local multiplier = threatChanceMultiplier(event, intensity)
+    if math.random() > event.ChancePerMinute * multiplier then
         return
     end
 
-    Traitormod.Log("Selected random event to trigger \"" .. event.Name .. "\" with intensity " .. intensity .. " and round time " .. Traitormod.RoundTime / 60 .. " minutes.")
+    Traitormod.Log("Selected random event to trigger \"" .. event.Name .. "\" with intensity " .. intensity .. " and round time " .. Traitormod.RoundTime / 60 .. " minutes."
+        .. (re.Director.Config ~= nil and string.format(" Director chance x%.1f after %d calm minutes.", multiplier, re.Director.QuietMinutes) or ""))
 
     re.TriggerEvent(event.Name)
 end
@@ -182,6 +210,10 @@ Hook.Add("think", "TraitorMod.RoundEvents.Think", function ()
     end
 
     if Timer.GetTime() > lastRandomEventCheck then
+        local director = re.Director
+        if director.Config ~= nil and Game.GameSession.EventManager.CurrentIntensity < director.Config.CalmIntensity then
+            director.QuietMinutes = director.QuietMinutes + 1
+        end
         for _, event in pairs(re.EventConfigs.Events) do
             if re.OnGoingEvents[event.Name] == nil and re.AllowedEvents[event.Name] then
                 if not event.OnlyOncePerRound or re.ThisRoundEvents[event.Name] == nil then
@@ -217,6 +249,16 @@ re.Initialize = function (allowedEvents, modeName)
     for _, event in pairs(re.EventConfigs.Events) do
         if re.AllowedEvents[event.Name] and event.RoundStart then event.RoundStart() end
     end
+
+    re.Director = { QuietMinutes = 0 }
+    local director = re.EventConfigs.Director
+    if director.Modes[modeName] then
+        re.Director.Config = director
+        re.Director.Threats = {}
+        for _, name in ipairs(director.Threats) do
+            re.Director.Threats[name] = true
+        end
+    end
 end
 
 re.EndRound = function ()
@@ -227,6 +269,7 @@ re.EndRound = function ()
 
     re.ThisRoundEvents = {}
     re.AllowedEvents = {}
+    re.Director = { QuietMinutes = 0 }
 end
 
 for _, value in pairs(re.EventConfigs.Events) do

@@ -35,6 +35,8 @@ local config = ...
 -- config.GamemodeConfig.Station.WaveIntervals = { { Players = 40, Min = 12, Max = 16 } }
 -- Automatic events: Shared + current mode. Manual antagonist/shop calls are unchanged.
 -- Move an event between config.RandomEventConfig.ModeEvents.Shared / Secret / Station.
+-- Make random threats likelier after calm stretches in Secret:
+-- config.RandomEventConfig.Director.Modes = { Secret = true }
 
 -- ID console defaults are in baseconfig.lua; override config.IdConsole here.
 -- Add access and a cross-department preset (doors must use matching RequiredItem tags):
