@@ -1,7 +1,7 @@
 local event = {}
 
 event.Name = "HiddenPirate"
-event.MinRoundTime = 5
+event.MinRoundTime = 2
 event.MinIntensity = 0
 event.MaxIntensity = 0.4
 event.ChancePerMinute = 0.02

@@ -1,6 +1,10 @@
 local re = {}
 
-LuaUserData.RegisterType("Barotrauma.EventManager") -- temporary
+local eventManagerDescriptor = LuaUserData.RegisterType("Barotrauma.EventManager") -- temporary
+-- the game's own measures of the round, refreshed every 5 seconds in EventManager.CalculateCurrentIntensity
+for _, field in ipairs({ "avgHullIntegrity", "floodingAmount", "enemyDanger" }) do
+    LuaUserData.MakeFieldAccessible(eventManagerDescriptor, field)
+end
 
 re.OnGoingEvents = {}
 
@@ -18,17 +22,28 @@ re.RecordThreat = function ()
     re.Director.LastThreatTime = Traitormod.RoundTime
 end
 
-local function threatChanceMultiplier(event, intensity)
+-- after the opening a random threat waits until the gap since the last threat has passed
+local function threatHeldBack(event)
     local director = re.Director
-    if director.Config == nil or not director.Threats[event.Name] then return 1 end
-    if director.LastThreatTime ~= nil
-        and Traitormod.RoundTime - director.LastThreatTime < director.Config.MinThreatGapMinutes * 60 then
-        return 0
-    end
-    -- a crew that is already in trouble gets no extra threats
-    if intensity >= director.Config.CalmIntensity then return 1 end
-    local extra = math.max(0, director.QuietMinutes - director.Config.QuietMinutes) * director.Config.BoostPerMinute
-    return math.min(director.Config.MaxBoost, 1 + extra)
+    if director.Config == nil or not director.Threats[event.Name] or director.LastThreatTime == nil then return false end
+    local now = Traitormod.RoundTime
+    return now >= director.Config.OpeningMinutes * 60
+        and now - director.LastThreatTime < director.Config.MinThreatGapMinutes * 60
+end
+
+local eventsByName = {}
+for _, event in pairs(re.EventConfigs.Events) do
+    eventsByName[event.Name] = event
+end
+
+-- the order the director checks help in; at most one help per check
+local helpKinds = { "Collapse", "Medical", "Defense", "Hull", "Electrical" }
+-- help of a kind from any source starts that kind's cooldown
+local helpKindOf = {}
+for _, kind in ipairs(helpKinds) do
+    local config = re.EventConfigs.Director.Help[kind]
+    for _, name in ipairs(config.Events) do helpKindOf[name] = kind end
+    for _, name in ipairs(config.SevereEvents or {}) do helpKindOf[name] = kind end
 end
 
 ---Checks if event is happenning right now
@@ -135,8 +150,10 @@ re.TriggerEvent = function (eventName)
     end
     re.ThisRoundEvents[eventName] = re.ThisRoundEvents[eventName] + 1
 
-    if re.Director.Config ~= nil and re.Director.Threats[eventName] then
-        re.RecordThreat()
+    local director = re.Director
+    if director.Config ~= nil then
+        if director.Threats[eventName] then re.RecordThreat() end
+        if helpKindOf[eventName] then director.LastHelp[helpKindOf[eventName]] = Traitormod.RoundTime end
     end
 
     local alive = 0
@@ -177,13 +194,11 @@ re.CheckRandomEvent = function (event)
         return
     end
 
-    local multiplier = threatChanceMultiplier(event, intensity)
-    if math.random() > event.ChancePerMinute * multiplier then
+    if threatHeldBack(event) or math.random() > event.ChancePerMinute then
         return
     end
 
-    Traitormod.Log("Selected random event to trigger \"" .. event.Name .. "\" with intensity " .. intensity .. " and round time " .. Traitormod.RoundTime / 60 .. " minutes."
-        .. (re.Director.Config ~= nil and string.format(" Director chance x%.1f after %d calm minutes.", multiplier, re.Director.QuietMinutes) or ""))
+    Traitormod.Log("Selected random event to trigger \"" .. event.Name .. "\" with intensity " .. intensity .. " and round time " .. Traitormod.RoundTime / 60 .. " minutes.")
 
     re.TriggerEvent(event.Name)
 end
@@ -201,7 +216,190 @@ re.SendEventMessage = function (text, icon, color)
     end 
 end
 
+-- events the director may start now: in this mode, inside their round time window, not running and not used up
+local function startableEvents(names)
+    local minutes = Traitormod.RoundTime / 60
+    local result = {}
+    for _, name in ipairs(names) do
+        local event = eventsByName[name]
+        if event ~= nil and re.AllowedEvents[name] and re.OnGoingEvents[name] == nil
+            and (event.MinRoundTime == nil or minutes >= event.MinRoundTime)
+            and (event.MaxRoundTime == nil or minutes <= event.MaxRoundTime)
+            and not (event.OnlyOncePerRound and re.ThisRoundEvents[name] ~= nil)
+            and canStartEvent(event) then
+            table.insert(result, name)
+        end
+    end
+    return result
+end
+
+local function startOneOf(options, reason)
+    if #options == 0 then return false end
+    local name = options[math.random(#options)]
+    Traitormod.Log("Director starts " .. name .. ": " .. reason .. ".")
+    return re.TriggerEvent(name) == true
+end
+
+local function isDown(character, lowVitality)
+    -- Neurotrauma knocks people out with its own symptom while their vitality is still above zero
+    local knockedOut = character.CharacterHealth.GetAffliction("sym_unconsciousness")
+    return character.IsUnconscious or (knockedOut ~= nil and knockedOut.Strength > 0)
+        or character.Vitality / character.MaxVitality <= lowVitality
+end
+
+local function countCrew(lowVitality)
+    local crew = { Alive = 0, Down = 0, Dead = 0, Medics = 0, Security = 0, Mechanics = 0, Engineers = 0 }
+    for _, client in pairs(Client.ClientList) do
+        local character = client.Character
+        if character == nil or character.IsDead then
+            if not client.SpectateOnly then crew.Dead = crew.Dead + 1 end
+        elseif character.IsHuman and character.TeamID == CharacterTeamType.Team1
+            and not Traitormod.AdminGhost.IsGhost(character) then
+            crew.Alive = crew.Alive + 1
+            if isDown(character, lowVitality) then
+                crew.Down = crew.Down + 1
+            elseif character.HasJob("medicaldoctor") or character.HasJob("surgeon") then
+                crew.Medics = crew.Medics + 1
+            elseif character.HasJob("securityofficer") or character.HasJob("captain") then
+                crew.Security = crew.Security + 1
+            elseif character.HasJob("mechanic") then
+                crew.Mechanics = crew.Mechanics + 1
+            elseif character.HasJob("engineer") then
+                crew.Engineers = crew.Engineers + 1
+            end
+        end
+    end
+    return crew
+end
+
+-- Each returns how bad the trouble is (0 when there is none), whether crew of the right job are up to it,
+-- the events that fit and what to write in the log.
+local helpMeasures = {
+    Collapse = function (crew, config)
+        local collapsing = crew.Down * 2 >= crew.Alive or (crew.Alive <= config.MaxAlive and crew.Dead >= config.MinDead)
+        if crew.Alive == 0 or not collapsing then return 0 end
+        return crew.Down + crew.Dead, false, config.Events,
+            string.format("%d of %d living crew down, %d dead", crew.Down, crew.Alive, crew.Dead)
+    end,
+    Medical = function (crew, config)
+        if crew.Down == 0 then return 0 end
+        return crew.Down, crew.Medics >= crew.Down, config.Events,
+            string.format("%d crew down, %d medics up", crew.Down, crew.Medics)
+    end,
+    Defense = function (crew, config, eventManager)
+        local danger = eventManager.enemyDanger
+        if danger < config.EnemyDanger or crew.Down == 0 then return 0 end
+        return danger, crew.Security > 0, config.Events,
+            string.format("enemy danger %.2f, %d crew down, %d security up", danger, crew.Down, crew.Security)
+    end,
+    Hull = function (crew, config, eventManager)
+        local integrity, flooding = eventManager.avgHullIntegrity, eventManager.floodingAmount
+        if integrity > config.Integrity and flooding < config.Flooding then return 0 end
+        local severe = integrity <= config.SevereIntegrity or flooding >= config.SevereFlooding
+        return 1 - integrity + flooding, crew.Mechanics > 0, severe and config.SevereEvents or config.Events,
+            string.format("hull integrity %.2f, flooding %.2f, %d mechanics up", integrity, flooding, crew.Mechanics)
+    end,
+    Electrical = function (crew, config)
+        local broken = 0
+        for _, item in ipairs(re.Director.ElectricalItems) do
+            if not item.Removed and item.Condition <= 0 then broken = broken + 1 end
+        end
+        if broken < config.Broken then return 0 end
+        return broken, crew.Engineers > 0, broken >= config.SevereBroken and config.SevereEvents or config.Events,
+            string.format("%d power items broken, %d engineers up", broken, crew.Engineers)
+    end,
+}
+
+-- Help only for trouble that lasts, by chance, and with able crew of the right job only when they are not coping.
+local function checkHelp(director)
+    local help = director.Config.Help
+    if director.HelpGiven >= help.MaxPerRound then return end
+    local crew = countCrew(help.LowVitality)
+    local eventManager = Game.GameSession.EventManager
+    local now = Traitormod.RoundTime
+    for _, kind in ipairs(helpKinds) do
+        local config = help[kind]
+        local trouble, covered, events, reason = helpMeasures[kind](crew, config, eventManager)
+        local state = director.Trouble[kind]
+        if trouble <= 0 then
+            director.Trouble[kind] = nil
+        elseif state == nil then
+            director.Trouble[kind] = { Since = now, Start = trouble }
+        else
+            local lasted = now - state.Since
+            local lastHelp = director.LastHelp[kind]
+            local ready = lasted >= help.SustainSeconds
+                and (lastHelp == nil or now - lastHelp >= config.CooldownMinutes * 60)
+                and (not covered or lasted >= help.OverwhelmedSeconds or trouble > state.Start)
+            local chance = (covered and help.CoveredChance or help.Chance) * 0.5 ^ director.HelpGiven
+            if ready and math.random() < chance
+                and startOneOf(startableEvents(events), string.format("%s help, %s for %.0f s", kind, reason, lasted)) then
+                director.HelpGiven = director.HelpGiven + 1
+                director.LastHelpTime = now
+                director.Trouble[kind] = nil
+                return
+            end
+        end
+    end
+end
+
+local function startBoredThreat(director, crew)
+    local config = director.Config
+    local now = Traitormod.RoundTime
+    if director.QuietMinutes < config.LightThreatAfter
+        or Game.GameSession.EventManager.CurrentIntensity >= config.CalmIntensity
+        or (director.LastThreatTime ~= nil and now - director.LastThreatTime < config.MinThreatGapMinutes * 60)
+        or (director.LastHelpTime ~= nil and now - director.LastHelpTime < config.GraceAfterHelpMinutes * 60) then
+        return
+    end
+    local options = startableEvents(config.LightThreats)
+    if director.QuietMinutes >= config.MediumThreatAfter or now >= config.MediumThreatFromMinute * 60 then
+        for _, name in ipairs(startableEvents(config.MediumThreats)) do
+            table.insert(options, name)
+        end
+    end
+    if crew.Dead > 0 then
+        local withGhostRoles = {}
+        for _, name in ipairs(options) do
+            if config.GhostRoleThreats[name] then table.insert(withGhostRoles, name) end
+        end
+        if #withGhostRoles > 0 then options = withGhostRoles end
+    end
+    startOneOf(options, string.format("%d calm minutes, %d players dead", director.QuietMinutes, crew.Dead))
+end
+
+local function directorMinute(director)
+    local config = director.Config
+    local now = Traitormod.RoundTime
+    if Game.GameSession.EventManager.CurrentIntensity < config.CalmIntensity then
+        director.QuietMinutes = director.QuietMinutes + 1
+    end
+    startBoredThreat(director, countCrew(config.Help.LowVitality))
+
+    if director.NextNeutralTime ~= nil and now >= director.NextNeutralTime then
+        startOneOf(startableEvents(config.Neutral), "neutral event")
+        director.NextNeutralTime = nil
+    end
+    if director.NextNeutralTime == nil then
+        director.NextNeutralTime = now + math.random(config.NeutralEveryMinutes[1], config.NeutralEveryMinutes[2]) * 60
+    end
+
+    if not director.FalseFlagDone and now >= config.FalseFlagFromMinute * 60
+        and math.random() < config.FalseFlagChancePerMinute then
+        local options = {}
+        for role, names in pairs(config.FalseFlags) do
+            if #Traitormod.RoleManager.FindCharactersByRole(role) == 0 then
+                for _, name in ipairs(startableEvents(names)) do
+                    table.insert(options, name)
+                end
+            end
+        end
+        director.FalseFlagDone = startOneOf(options, "false trail, no such antagonist this round")
+    end
+end
+
 local lastRandomEventCheck = 0
+local nextHelpCheck = 0
 Hook.Add("think", "TraitorMod.RoundEvents.Think", function ()
     if not Game.RoundStarted then return end
 
@@ -209,11 +407,15 @@ Hook.Add("think", "TraitorMod.RoundEvents.Think", function ()
         if event.Think then event.Think() end
     end
 
+    local director = re.Director
+    local directing = director.Config ~= nil and Traitormod.RoundTime >= director.Config.OpeningMinutes * 60
+    if directing and Timer.GetTime() > nextHelpCheck then
+        checkHelp(director)
+        nextHelpCheck = Timer.GetTime() + director.Config.Help.CheckSeconds
+    end
+
     if Timer.GetTime() > lastRandomEventCheck then
-        local director = re.Director
-        if director.Config ~= nil and Game.GameSession.EventManager.CurrentIntensity < director.Config.CalmIntensity then
-            director.QuietMinutes = director.QuietMinutes + 1
-        end
+        if directing then directorMinute(director) end
         for _, event in pairs(re.EventConfigs.Events) do
             if re.OnGoingEvents[event.Name] == nil and re.AllowedEvents[event.Name] then
                 if not event.OnlyOncePerRound or re.ThisRoundEvents[event.Name] == nil then
@@ -257,6 +459,19 @@ re.Initialize = function (allowedEvents, modeName)
         re.Director.Threats = {}
         for _, name in ipairs(director.Threats) do
             re.Director.Threats[name] = true
+        end
+        re.Director.HelpGiven = 0
+        re.Director.LastHelp = {}
+        re.Director.Trouble = {}
+        re.Director.ElectricalItems = {}
+        for _, item in pairs(Submarine.MainSub.GetItems(false)) do
+            local identifier = string.lower(item.Prefab.Identifier.Value)
+            for _, part in ipairs(director.Help.Electrical.Items) do
+                if string.find(identifier, part, 1, true) ~= nil then
+                    table.insert(re.Director.ElectricalItems, item)
+                    break
+                end
+            end
         end
     end
 end

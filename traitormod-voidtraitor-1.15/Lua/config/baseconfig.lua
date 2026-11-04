@@ -674,10 +674,12 @@ config.RandomEventConfig = {
         },
         Station = { "StationAttack" },
     },
-    -- The longer the crew stays calm, the likelier a random threat becomes; any threat, whoever starts it, resets the count.
-    -- Off until a mode is listed, e.g. Modes = { Secret = true }.
+    -- The director watches the round and starts events itself: help when the crew is going under, a threat after a calm
+    -- stretch, a neutral event now and then and once in a while a false trail. The random events above keep running.
     Director = {
-        Modes = {},
+        Modes = { Secret = true },
+        OpeningMinutes = 5, -- the director stays out of the opening, where the early events run on their own
+        -- any of these, whoever starts it, resets the calm count and keeps random threats apart
         Threats = {
             "VentCreatures", "ClownCrateSurprise", "OxygenGeneratorHusk", "RandomLights", "ClownMagic", "LightsOff",
             "CommunicationsOffline", "ReactorShutdown", "SupercapacitorFailure", "JunctionBoxOverload",
@@ -686,11 +688,65 @@ config.RandomEventConfig = {
             "OutpostPirateAttack", "PirateCrew", "HiddenPirate", "WreckPirate", "BeaconPirate",
             "BreackElectrical", "BreackHull", "KillElectrical", "KillHull",
         },
-        CalmIntensity = 0.35, -- below this the minute counts as calm; the game's own event threshold on Medium
-        QuietMinutes = 6, -- calm minutes before threats get likelier
-        BoostPerMinute = 0.5, -- extra chance multiplier for every further calm minute
-        MaxBoost = 3,
         MinThreatGapMinutes = 2, -- no random threat this soon after another threat
+        CalmIntensity = 0.35, -- below this the minute counts as calm; the game's own event threshold on Medium
+        LightThreatAfter = 4, -- calm minutes before the director starts a light threat
+        MediumThreatAfter = 6, -- calm minutes before it may pick a medium one, or from MediumThreatFromMinute on
+        MediumThreatFromMinute = 8,
+        GraceAfterHelpMinutes = 4, -- no threat from the director this soon after its help
+        LightThreats = {
+            "LightsOff", "CommunicationsOffline", "JunctionBoxOverload", "SupercapacitorFailure", "ReactorShutdown",
+            "WeakBallastFlora", "BreackElectrical", "BreackHull",
+        },
+        MediumThreats = { "VentCreatures", "HiddenPirate", "SuperBallastFlora", "WreckRescue", "BeaconRescue", "AbyssHelp" },
+        -- preferred while dead players wait, so they get a role
+        GhostRoleThreats = { VentCreatures = true, HiddenPirate = true, WreckRescue = true, BeaconRescue = true },
+        NeutralEveryMinutes = { 6, 10 },
+        Neutral = {
+            "MechanicSkillBoost", "EngineerSkillBoost", "MedicSkillBoost", "SurgeonSkillBoost", "CaptainHelmBoost",
+            "SecurityMindSense", "SecurityTurretCoilgun", "SecurityTurretChaingun", "SecurityTurretFlakcannon",
+            "SecurityTurretPulseLaser", "SecurityTurretDoubleCoilgun", "SecurityTurretRailgun", "ClownCrateSurprise",
+        },
+        -- an event of an antagonist role nobody has this round, so the crew suspects the wrong people
+        FalseFlagFromMinute = 8,
+        FalseFlagChancePerMinute = 0.02,
+        FalseFlags = { Clown = { "RandomLights", "ClownMagic" }, Cultist = { "OxygenGeneratorHusk" } },
+        -- Help comes by chance and seldom: the crew should first get by on its own and with the Pointshop.
+        Help = {
+            CheckSeconds = 15,
+            MaxPerRound = 3,
+            SustainSeconds = 30, -- trouble shorter than this never gets help
+            Chance = 0.15, -- per check; halves with every help the director already gave
+            CoveredChance = 0.07, -- when crew of the right job are on their feet
+            OverwhelmedSeconds = 90, -- with such crew, help only when the trouble lasts this long or gets worse
+            LowVitality = 0.25, -- below this share of vitality a crew member counts as down
+            -- half the living crew down, or MaxAlive or fewer left with MinDead dead
+            Collapse = { CooldownMinutes = 4, MaxAlive = 3, MinDead = 2, Events = { "EmergencyTeam" } },
+            Medical = { CooldownMinutes = 3, Events = { "MedicalDelivery", "MedicSkillBoost", "SurgeonSkillBoost" } },
+            Defense = {
+                CooldownMinutes = 4,
+                EnemyDanger = 0.5,
+                Events = {
+                    "AmmoDelivery", "SecurityMindSense", "SecurityTurretCoilgun", "SecurityTurretChaingun",
+                    "SecurityTurretFlakcannon", "SecurityTurretPulseLaser", "SecurityTurretDoubleCoilgun",
+                    "SecurityTurretRailgun",
+                },
+            },
+            Hull = {
+                CooldownMinutes = 4,
+                Integrity = 0.6, Flooding = 0.3, -- the game's own measures; flooding 0.3 is about 20% water
+                SevereIntegrity = 0.3, SevereFlooding = 0.75,
+                Events = { "FixHull", "MechanicHullRepair" },
+                SevereEvents = { "FullFixHull" },
+            },
+            Electrical = {
+                CooldownMinutes = 4,
+                Items = { "junctionbox", "supercapacitor", "battery", "reactor" },
+                Broken = 2, SevereBroken = 4,
+                Events = { "ElectricalFixDischarge", "EngineerElectricalRepair" },
+                SevereEvents = { "FullElectricalFixDischarge" },
+            },
+        },
     },
     Events = {
         dofile(Traitormod.Path .. "/Lua/config/randomevents/stationattack.lua"),
