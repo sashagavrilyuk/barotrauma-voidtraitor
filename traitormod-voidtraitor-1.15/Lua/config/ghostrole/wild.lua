@@ -15,6 +15,15 @@ category.Roles = {
         Icon = "character",
         Action = keepLife,
     },
+
+    {
+        Identifier = "cargoguard",
+        Name = "GhostRoleCargoGuardName",
+        Description = "GhostRoleCargoGuardDescription",
+        Price = 0,
+        Icon = "character",
+        Action = keepLife,
+    },
 }
 
 return category

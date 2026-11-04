@@ -671,7 +671,7 @@ config.RandomEventConfig = {
             "WreckRescue", "BeaconRescue", "CaptainHelmBoost", "OutpostPirateAttack",
             "PirateCrew", "HiddenPirate", "WreckPirate", "BeaconPirate",
             "BreackElectrical", "BreackHull", "KillElectrical", "KillHull", "WildCreature", "MalfunctioningBot",
-            "SeismicTremor",
+            "SeismicTremor", "GuardedCargo",
         },
         Station = { "StationAttack" },
     },
@@ -687,7 +687,7 @@ config.RandomEventConfig = {
             "OxygenGeneratorPoison", "OxygenSufforin", "OxygenParalyzant", "OxygenMorbusine", "OxygenCyanide",
             "SuperBallastFlora", "WeakBallastFlora", "ShadyMission", "Prisoner", "WreckRescue", "BeaconRescue",
             "OutpostPirateAttack", "PirateCrew", "HiddenPirate", "WreckPirate", "BeaconPirate",
-            "BreackElectrical", "BreackHull", "KillElectrical", "KillHull", "WildCreature", "MalfunctioningBot", "SeismicTremor",
+            "BreackElectrical", "BreackHull", "KillElectrical", "KillHull", "WildCreature", "MalfunctioningBot", "SeismicTremor", "GuardedCargo",
         },
         MinThreatGapMinutes = 2, -- no random threat this soon after another threat
         CalmIntensity = 0.35, -- below this the minute counts as calm; the game's own event threshold on Medium
@@ -701,12 +701,12 @@ config.RandomEventConfig = {
         },
         MediumThreats = {
             "VentCreatures", "HiddenPirate", "SuperBallastFlora", "WreckRescue", "BeaconRescue", "AbyssHelp", "WildCreature",
-            "MalfunctioningBot",
+            "MalfunctioningBot", "GuardedCargo",
         },
         -- preferred while dead players wait, so they get a role
         GhostRoleThreats = {
             VentCreatures = true, HiddenPirate = true, WreckRescue = true, BeaconRescue = true, WildCreature = true,
-            MalfunctioningBot = true,
+            MalfunctioningBot = true, GuardedCargo = true,
         },
         NeutralEveryMinutes = { 6, 10 },
         Neutral = {
@@ -779,6 +779,7 @@ config.RandomEventConfig = {
         dofile(Traitormod.Path .. "/Lua/config/randomevents/wildcreature.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/malfunctioningbot.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/seismictremor.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/guardedcargo.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/clowncratesurprise.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/weakballastflora.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/wreckrescue.lua"),
