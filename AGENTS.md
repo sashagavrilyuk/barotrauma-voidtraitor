@@ -14,15 +14,30 @@ Write the smallest clear solution (never write 200 lines when 50 lines solve the
 ## Surgical changes
 Change ONLY task-required lines; preserve style. NO unrelated refactor, reformat, rename, comment rewrite or adjacent improvement. Report unrelated defects without editing them.
 - Remove imports/variables/functions only if YOUR changes made them unused.
-- Preserve working modes, settings, persistence, server authorization, behavior; check regressions. Support clients WITH/WITHOUT client LuaCs, NOT obsolete VoidTraitor builds. NEVER ADD V2/incremental network messages, legacy handlers, version branches, fallbacks or migrations; exception ONLY for explicit user request backed by verified real consumers.
+- Preserve working modes, settings, persistence, server authorization, behavior; check regressions. Client LuaCs is REQUIRED (user decision 2026-11-04): new features may use client code and Lua net messages; add NO paths for clients without client Lua and remove existing ones only in a task that covers them. Support only the current VoidTraitor build, NOT obsolete ones. NEVER ADD V2/incremental network messages, legacy handlers, version branches, fallbacks or migrations; exception ONLY for explicit user request backed by verified real consumers.
 - Never split files for GitHub upload.
+
+## Server load
+Server load comes first: the production server runs inside a game client, and a lagging server ruins every round. Treat load as a correctness requirement for every feature, event and client feature.
+- `think` (alias of `IEventUpdate.OnUpdate`, `LuaScriptManagementService.cs:270`) runs every update: no per-frame work without a throttle or early exit; add the hook only while its feature/event is active and remove it on finish and round end.
+- Prefer an existing event hook over polling. In hot paths do not iterate `Character.CharacterList`/`Item.ItemList`/`GetItems`, build strings, log or allocate tables when a held reference or an event does the job.
+- Events and directors: do the work once at start or on engine events; periodic checks run on timers of seconds, not frames, and stop when the event ends. Scan entity lists at most on such a timer, or collect references once at start.
+- Keep authority and state on the server and move presentation to the client (UI, sounds, camera, particles, text formatting): the server sends a short message, the client does the work.
+- Send net messages and entity events only on state change, never per tick, with small payloads, and only to the clients that need them.
+- New periodic work or spawns in bulk: measure it in the sandbox (counts, timings, profiler) before it ships. Cost claims need evidence; no speculative optimization of code that was not measured.
+
+## Security
+The pack and all client code are public and editable by any player; a client is never trusted.
+- Every client message is validated on the server: the sender is in the round and allowed (role, job, permission, alive/dead state, ownership, distance), values are type-checked and bounded, and requests that cost server work are rate-limited. The server computes outcomes itself (prices, points, spawns, damage, roles) and never applies a value the client claims.
+- Send each client only what its player may know at that moment: no antagonist roles or objectives of others, other players' points or data, hidden events or entities, admin-only data, config, webhooks or tokens. Filter on the server before sending, not in client code.
+- Never put secrets, admin logic, hidden-information tables or anything that grants power into the pack or client Lua. Admin features check permissions on the server for every request, not only when showing the UI.
 
 ## Evidence gate
 - BEFORE bug edits establish ORIGINAL expected/observed behavior, reproduction, trigger. Trace callers/hooks, state, event order, ownership/lifetime, cleanup, Lua/XML/C#/client/network/server paths. Compare working equivalents and competing causes against code/logs/source. Suspicious code is NOT proof.
 - Report reproduction, cited evidence, alternatives tested, proven cause or UNKNOWN, minimal fix and regressions. “Unverified” is NOT permission to skip source inspection. If cause remains unproven: targeted diagnostics, NO production patch.
 - If game fix fails, verify changed path loaded/ran, discard unsupported diagnosis and obtain NEW evidence BEFORE another patch. Never mask faults with delays, retries, polling, caches, flags, hooks, extra guards or weaker authorization.
 - Crashes, GUI, networking, physics, round lifecycle, ANY newly used/changed Barotrauma/LuaCs API, mode/submarine mechanics or repeat failures: PHASE 1 = RESEARCH ONLY, NO edits/commits. PHASE 2 only after user's LATER explicit approval of diagnosis. “Fix it” does not waive this. Explicit combined-pass waiver still requires completed source-based diagnosis before edits. Low-risk tasks: one pass.
-- EVERY new/changed engine call/hook: cite exact C# declaration/overload, args/return, enums/static semantics, Lua exposure, client/server availability, nil/null, removed/disposed lifetime; trace delayed callbacks (Timer.Wait) and consumers. GUI: click/pathing, create/layout, Update/Draw, item insert/remove, cleanup/reopen. Network: serialization, server authority/role/distance/inventory, clients WITH/WITHOUT LuaCs. Verify XML IDs/assets and builder sync.
+- EVERY new/changed engine call/hook: cite exact C# declaration/overload, args/return, enums/static semantics, Lua exposure, client/server availability, nil/null, removed/disposed lifetime; trace delayed callbacks (Timer.Wait) and consumers. GUI: click/pathing, create/layout, Update/Draw, item insert/remove, cleanup/reopen. Network: serialization, server authority/role/distance/inventory, what each client receives and may send (Security). Verify XML IDs/assets and builder sync.
 - Do not arbitrarily close a window because of a transient engine selection change if interaction should remain active. Equally, do not keep a window or authorize actions after genuine loss of interaction rights. Verify the intended lifecycle from source and an existing working implementation.
 - Reuse established VoidTraitor UI primitives and layouts. Account for resolution and HUD scale; avoid fixed dimensions that clip controls. Use existing drag/resize behavior when asked for it, not a partial imitation.
 - Mode/PvP/spawn/sub/level claims: inspect relevant BarotraumaShared C# (SubmarineInfo, GameMode, LevelGenerationParams), vanilla Content/Map XML AND working modes before technical conclusions.
@@ -69,7 +84,7 @@ Client-side GUI is strictly modular. Never dump everything into a single file or
 - `Lua/language/` — client localization (`russian.lua`, `welcome_russian.lua`).
 
 No category/event/Pointshop/roundevents editing helpers without real reuse.
-Prefer server-side Lua for small fixes/features. Use XML/client-side content only when server-side Lua cannot implement it correctly or would require excessive code/performance cost.
+Server-side Lua owns rules, state and authority. Use client Lua for presentation when it spares the server work or traffic, and XML content when the engine already does the job (item behavior, locks, sounds on items).
 
 ### Local paths 
 - `C:\Users\shuri\Desktop\barotrauma-voidtraitor\LuaCsForBarotrauma\` — LuaCs and available Barotrauma C# source; verify APIs, hooks, and engine behavior here.
