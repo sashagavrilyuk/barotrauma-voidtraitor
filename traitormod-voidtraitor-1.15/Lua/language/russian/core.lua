@@ -278,6 +278,7 @@ language.CMDDropPointsDropped = "Выброшено %s очков."
 
 -- Системные сообщения сервера
 language.ChatSenderServer = "Сервер"
+language.ClientLuaMissing = "Для этого нужен клиентский Lua. Подпишитесь на LuaCsForBarotraumaPlugin в Steam Workshop (https://steamcommunity.com/sharedfiles/filedetails/?id=3693624471), включите его в списке модов и перезайдите на сервер."
 language.WelcomeMessage = [=[Добро пожаловать в Void Traitor!
 
 Это сервер с собственным Traitor Mod, особыми ролями, целями, магазином и отдельными игровыми режимами.
@@ -287,9 +288,8 @@ language.WelcomeMessage = [=[Добро пожаловать в Void Traitor!
 наш сервер — https://discord.gg/rFrwmXg8DQ
 сервер партнёров Project Encelada — https://discord.gg/encelada
 
-Для более удобного доступа к меню и магазину можно установить:
-Traitor Menu (для работы нужен клиентский LuaCs)
-https://steamcommunity.com/sharedfiles/filedetails/?id=2990694897
+Для игры на сервере нужен клиентский Lua: подпишитесь на LuaCsForBarotraumaPlugin в Steam Workshop и включите его в списке модов:
+https://steamcommunity.com/sharedfiles/filedetails/?id=3693624471
 
 Команды вводятся в чат без «/»:
 !help — список основных команд

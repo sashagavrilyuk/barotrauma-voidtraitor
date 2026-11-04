@@ -234,65 +234,6 @@ ps.GetSubcategoryName = function (subcategory)
     return identifier
 end
 
----@param path table[]
----@return string
-ps.GetSubcategoryBreadcrumb = function (path)
-    local names = {}
-    for _, entry in ipairs(path) do
-        table.insert(names, ps.GetSubcategoryName(entry))
-    end
-    return table.concat(names, " > ")
-end
-
----@param productPath table[]
----@param currentPath table[]
----@return boolean
-ps.IsPathInside = function (productPath, currentPath)
-    if #currentPath > #productPath then return false end
-
-    for index, entry in ipairs(currentPath) do
-        local currentIdentifier = entry.Identifier or entry.Name
-        local productEntry = productPath[index]
-        if productEntry == nil then return false end
-
-        local productIdentifier = productEntry.Identifier or productEntry.Name
-        if productIdentifier ~= currentIdentifier then
-            return false
-        end
-    end
-
-    return true
-end
-
----@param category Pointshop.Category
----@param currentPath table[]
----@return table[], Pointshop.Product[]
-ps.GetCategoryMenuEntries = function (client, category, currentPath)
-    local subcategories = {}
-    local subcategoryLookup = {}
-    local products = {}
-
-    for _, product in ipairs(category.Products) do
-        if ps.CanClientSeeProduct(client, product) then
-            local productPath = ps.GetProductSubcategoryPath(product)
-            if ps.IsPathInside(productPath, currentPath) then
-                if #productPath == #currentPath then
-                    table.insert(products, product)
-                else
-                    local child = productPath[#currentPath + 1]
-                    local childKey = child.Identifier or child.Name or tostring(#subcategories + 1)
-                    if subcategoryLookup[childKey] == nil then
-                        subcategoryLookup[childKey] = child
-                        table.insert(subcategories, child)
-                    end
-                end
-            end
-        end
-    end
-
-    return subcategories, products
-end
-
 ---@param subcategory table
 ---@return string?
 ps.GetSubcategoryInfo = function (subcategory)
@@ -309,17 +250,6 @@ ps.GetSubcategoryInfo = function (subcategory)
     return nil
 end
 
----@param subcategory table
----@return string
-ps.GetSubcategoryDisplayText = function (subcategory)
-    local text = "[" .. ps.GetSubcategoryName(subcategory) .. "]"
-    local info = ps.GetSubcategoryInfo(subcategory)
-    if info ~= nil then
-        text = text .. " - " .. info
-    end
-    return text
-end
-
 ---@param product Pointshop.Product
 ---@return boolean
 ps.IsAttackDefendClassProduct = function (product)
@@ -334,20 +264,6 @@ ps.IsAttackDefendClassProduct = function (product)
     end
 
     return false
-end
-
----@param client Barotrauma.Networking.Client
----@param category Pointshop.Category
----@param path table[]
----@param message string
-ps.ShowCategoryMessageAndReturn = function (client, category, path, message)
-    textPromptUtils.Prompt(message, {Traitormod.Language.PointshopGoBack}, client, function (_, client2)
-        if not ps.ValidateClient(client2) or not ps.CanClientAccessCategory(client2, category) then
-            return
-        end
-
-        ps.ShowCategoryItems(client2, category, path)
-    end, category.Decoration or "gambler", category.FadeToBlack)
 end
 
 ---@param client Barotrauma.Networking.Client
@@ -707,189 +623,8 @@ ps.BuyProduct = function(client, product)
     end
 end
 
----@param client Barotrauma.Networking.Client
----@param product Pointshop.Product
----@param result Pointshop.ProductBuyFailureReason?
----@param quantity integer?
-ps.HandleProductBuy = function (client, product, result, quantity)
-    quantity = quantity or 1
-    if result == ps.ProductBuyFailureReason.NoPoints then
-        textPromptUtils.Prompt(Traitormod.Language.PointshopNoPoints, {}, client, function (id, client) end, "gambler")
-    elseif result == ps.ProductBuyFailureReason.NoStock then
-        textPromptUtils.Prompt(Traitormod.Language.PointshopNoStock, {}, client, function (id, client) end, "gambler")
-    elseif result == nil then
-        textPromptUtils.Prompt(
-            string.format(
-                Traitormod.Language.PointshopPurchased,
-                ps.GetProductName(product),
-                ps.GetProductPrice(client, product),
-                math.floor(Traitormod.GetData(client, "Points") or 0)
-            ),
-            {},
-            client,
-            function () end,
-            "gambler"
-        )
-    else
-        textPromptUtils.Prompt(result, {}, client, function (id, client) end, "gambler")
-    end
-end
 
----@param client Barotrauma.Networking.Client
----@param category Pointshop.Category
----@param path table[]?
-ps.ShowCategoryItems = function(client, category, path)
-    path = path or {}
-
-    local options = {}
-    local productsLookup = {}
-    local subcategoriesLookup = {}
-    local subcategories, products = ps.GetCategoryMenuEntries(client, category, path)
-
-    table.insert(options, Traitormod.Language.PointshopGoBack)
-    table.insert(options, Traitormod.Language.PointshopCancel)
-
-    for _, subcategory in ipairs(subcategories) do
-        table.insert(options, ps.GetSubcategoryDisplayText(subcategory))
-        subcategoriesLookup[#options] = subcategory
-    end
-
-    for _, product in ipairs(products) do
-        local limit = product.Limit or defaultLimit
-        local price = ps.GetProductPrice(client, product)
-        local productInfo = {}
-
-        if price ~= 0 then
-            table.insert(productInfo, ("%spt"):format(price))
-        end
-        if limit ~= math.huge then
-            table.insert(productInfo, ("%s/%s products"):format(ps.GetProductLimit(client, product), limit))
-        end
-
-        local text = ps.GetProductName(product)
-        if #productInfo > 0 then text = text .. " - " .. table.concat(productInfo, " ") end
-
-        table.insert(options, text)
-        productsLookup[#options] = product
-    end
-
-    local emptyLines = math.floor(#options / 4)
-    for i = 1, emptyLines, 1 do
-        table.insert(options, "") -- FIXME: some hud scaling settings will hide list items
-    end
-
-    local points = Traitormod.GetData(client, "Points") or 0
-    local promptText = string.format(Traitormod.Language.PointshopWishBuy, math.floor(points))
-    if #path > 0 then
-        promptText = promptText .. "\n" .. ps.GetSubcategoryBreadcrumb(path)
-    end
-
-    textPromptUtils.Prompt(
-        promptText,
-        options, client, function (id, client2)
-        if id == 1 then
-            if #path > 0 then
-                local parentPath = {}
-                for index = 1, #path - 1 do
-                    parentPath[index] = path[index]
-                end
-                ps.ShowCategoryItems(client2, category, parentPath)
-            else
-                ps.ShowCategory(client2)
-            end
-            return
-        end
-
-        local subcategory = subcategoriesLookup[id]
-        if subcategory ~= nil then
-            local nextPath = {}
-            for index, entry in ipairs(path) do
-                nextPath[index] = entry
-            end
-            table.insert(nextPath, subcategory)
-            ps.ShowCategoryItems(client2, category, nextPath)
-            return
-        end
-
-        local product = productsLookup[id]
-        if product == nil then return end
-
-        -- Check if product needs to be installed
-        if ps.GetProductHasInstallation(product) then
-            textPromptUtils.Prompt(
-            Traitormod.Language.PointshopInstallation,
-            {Traitormod.Language.Yes, Traitormod.Language.No}, client2, function (id, client3)
-                if id == 1 then
-                    if not ps.ValidateClient(client3) or not ps.CanClientAccessCategory(client2, category) then
-                        return
-                    end
-
-                    local result = ps.BuyProduct(client3, product)
-                    if result ~= nil and ps.IsAttackDefendClassProduct(product) then
-                        ps.ShowCategoryMessageAndReturn(client3, category, path, result)
-                    else
-                        ps.HandleProductBuy(client3, product, result)
-                    end
-                end
-            end, category.Decoration or "gambler", category.FadeToBlack)
-        else
-            if not ps.ValidateClient(client2) or not ps.CanClientAccessCategory(client2, category) then
-                return
-            end
-
-            local result = ps.BuyProduct(client2, product)
-            if result ~= nil and ps.IsAttackDefendClassProduct(product) then
-                ps.ShowCategoryMessageAndReturn(client2, category, path, result)
-            else
-                ps.HandleProductBuy(client2, product, result)
-            end
-        end
-    end, category.Decoration or "gambler", category.FadeToBlack)
-end
-
----@param client Barotrauma.Networking.Client
----@param resend boolean?
-ps.ShowCategory = function(client, resend)
-    local options = {}
-    local categoryLookup = {}
-
-    table.insert(options, Traitormod.Language.PointshopCancel)
-    for key, value in pairs(ps.ActiveCategories) do
-        if ps.CanClientAccessCategory(client, value) then
-            local subcategories, products = ps.GetCategoryMenuEntries(client, value, {})
-            if #subcategories > 0 or #products > 0 then
-                table.insert(options, ps.GetCategoryName(value))
-                categoryLookup[#options] = value
-            end
-        end
-    end
-
-    if #options == 1 then
-        textPromptUtils.Prompt(Traitormod.Language.PointshopNotAvailable, {}, client, function (id, client) end, "gambler")
-        return
-    end
-
-    table.insert(options, "")
-    table.insert(options, "") -- FIXME: for some reason when the bar is full, the last item is never shown?
-
-    local points = Traitormod.GetData(client, "Points") or 0
-
-    -- note: we have two different client variables here to prevent cheating
-    textPromptUtils.Prompt(string.format(Traitormod.Language.PointshopWishCategory, math.floor(points)), options, client, function (id, client2)
-        if id == 256 and resend then
-            Timer.Wait(function ()
-                ps.ShowCategory(client2, resend)
-            end, 1000)
-        end
-        if categoryLookup[id] == nil then return end
-
-        ps.ShowCategoryItems(client2, categoryLookup[id])
-    end, "officeinside")
-end
-
-
--- GUI pointshop for clients with the pack's Lua. Everyone else, and special shops the GUI
--- doesn't support, use the text prompt shop above.
+-- GUI pointshop; it needs the pack's client Lua
 ps.GuiNet = {
     Ready = "VoidTraitor_PointshopGuiReady",
     Request = "VoidTraitor_PointshopRequest",
@@ -901,6 +636,7 @@ ps.GuiNet = {
     Probe = "VoidTraitor_PointshopProbe",
     PurchaseSound = "VoidTraitor_PointshopPurchaseSound",
     ClassLimits = "VoidTraitor_PointshopClassLimits",
+    CloseLock = "VoidTraitor_PointshopCloseLock",
 }
 local guiNet = ps.GuiNet
 
@@ -1638,7 +1374,7 @@ ps.TrackRefund = function (client, product, paidPrice)
     ps.Refunds[client] = { Product = product, Time = Timer.GetTime(), Price = paidPrice }
 end
 
-function ps.SendGuiProbe(client, reason)
+function ps.SendGuiProbe(client)
     if client == nil or client.Connection == nil then return false end
 
     local netMessage = Networking.Start(guiNet.Probe)
@@ -1675,33 +1411,32 @@ function ps.ForgetGuiClient(client)
     guiBalanceSuppressed[client] = nil
 end
 
-local function openOldPointshop(client)
-    ps.ShowCategory(client)
+-- keeps the shop open until a class is picked (Attack/Defend, Hide and Seek)
+function ps.SetCloseLock(client, locked)
+    if client.Connection == nil then return end
+
+    local message = Networking.Start(guiNet.CloseLock)
+    message.WriteBoolean(locked)
+    Networking.Send(message, client.Connection, DeliveryMethod.Reliable)
 end
 
-local function openGuiOrFallback(client, forced)
+function ps.OpenGui(client)
     if ps.GuiClients[client] then
-        if ps.SendGuiSnapshot(client) then return true end
-        if forced then
-            Traitormod.SendMessage(client, Traitormod.Language.PointshopGuiUnavailable)
-        end
-        openOldPointshop(client)
+        ps.SendGuiSnapshot(client)
         return true
     end
 
-    ps.SendGuiProbe(client, forced and "forced gui command" or "default shop command")
+    -- the client announces its GUI only when its Lua loads, so ask again after a server Lua reload
+    ps.SendGuiProbe(client)
     Timer.Wait(function()
-        if ps.GuiClients[client] and ps.SendGuiSnapshot(client) then return end
-
-        if forced then
-            Traitormod.SendMessage(client, Traitormod.Language.PointshopGuiUnavailable)
+        if ps.GuiClients[client] then
+            ps.SendGuiSnapshot(client)
+        else
+            Traitormod.SendMessage(client, Traitormod.Language.ClientLuaMissing)
         end
-        openOldPointshop(client)
     end, 750)
     return true
 end
-
-ps.OpenGuiOrFallback = openGuiOrFallback
 
 ps.Command = function (client, args)
     if #ps.ActiveCategories == 0 then
@@ -1741,15 +1476,7 @@ ps.Command = function (client, args)
         end
     end
 
-    if args[1] == "old" or args[1] == "text" then
-        ps.ShowCategory(client)
-        return true
-    end
-
-    if args[1] == "gui" then
-        return openGuiOrFallback(client, true)
-    end
-    return openGuiOrFallback(client, false)
+    return ps.OpenGui(client)
 end
 
 

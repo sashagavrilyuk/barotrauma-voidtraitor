@@ -4,7 +4,6 @@
 local gm = Traitormod.Gamemodes.Gamemode:new()
 local TeamID1 = CharacterTeamType.Team1
 local TeamID2 = CharacterTeamType.Team2
-local textPromptUtils = require("textpromptutils")
 
 local function GetOppositeTeamID(teamID)
 	return (teamID == TeamID1 or teamID == 1) and TeamID2 or TeamID1
@@ -71,7 +70,7 @@ local function SpawnCharacter(client, team, class, jobId)
 
 	local character = Character.Create(characterInfo, spawnPoint.WorldPosition, characterInfo.Name, 0, true, true)
 	client.SetClientCharacter(character)
-	textPromptUtils.UnlockOption(client)
+	Traitormod.Pointshop.SetCloseLock(client, false)
 
     GearUpCharacter(character, team, spawnPoint, class)
 end
@@ -126,7 +125,7 @@ function gm:_SetNewClient(client, lockClassSelection)
 		CleanRemove(char)
 
 		if lockClassSelection then
-			textPromptUtils.LockOption(client, Traitormod.Language.PointshopCancel)
+			Traitormod.Pointshop.SetCloseLock(client, true)
 		end
 
 		local function loop()
@@ -135,11 +134,7 @@ function gm:_SetNewClient(client, lockClassSelection)
 			if not client.InGame then
 				Timer.Wait(loop, 1000)
 			else
-				if Traitormod.Pointshop.OpenGuiOrFallback ~= nil then
-					Traitormod.Pointshop.OpenGuiOrFallback(client, false)
-				else
-					Traitormod.Pointshop.ShowCategory(client, true)
-				end
+				Traitormod.Pointshop.OpenGui(client)
 			end
 		end
 		
@@ -420,7 +415,7 @@ function gm:End()
 	self.IsEnding = true
 	for _, team in pairs(self.Teams) do
 		for _, member in pairs(team.Members) do
-			textPromptUtils.UnlockOption(member)
+			Traitormod.Pointshop.SetCloseLock(member, false)
 		end
 	end
 

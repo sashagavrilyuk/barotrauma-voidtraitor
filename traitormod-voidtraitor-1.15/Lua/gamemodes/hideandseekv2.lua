@@ -2,7 +2,6 @@
 local gm = Traitormod.Gamemodes.Gamemode:new()
 local TeamID1 = CharacterTeamType.Team1
 local TeamID2 = CharacterTeamType.Team2
-local textPromptUtils = require("textpromptutils")
 
 gm.Name = "HideAndSeekV2"
 gm.RequiredGamemode = "pvp"
@@ -57,7 +56,7 @@ local function spawnCharacter(client, team, entry)
 
     local character = Character.Create(characterInfo, spawnPoint.WorldPosition, characterInfo.Name, 0, true, true)
     client.SetClientCharacter(character)
-    textPromptUtils.UnlockOption(client)
+    Traitormod.Pointshop.SetCloseLock(client, false)
     entry.OnSpawn(character, spawnPoint)
     colorTeamClothes(character, team)
     entry.Spawned = true
@@ -104,7 +103,7 @@ function gm:_SetNewClient(client, lockClassSelection)
         cleanRemove(character)
 
         if lockClassSelection then
-            textPromptUtils.LockOption(client, Traitormod.Language.PointshopCancel)
+            Traitormod.Pointshop.SetCloseLock(client, true)
         end
 
         local function openClassSelection()
@@ -120,11 +119,7 @@ function gm:_SetNewClient(client, lockClassSelection)
                 return
             end
 
-            if Traitormod.Pointshop.OpenGuiOrFallback ~= nil then
-                Traitormod.Pointshop.OpenGuiOrFallback(client, false)
-            else
-                Traitormod.Pointshop.ShowCategory(client, true)
-            end
+            Traitormod.Pointshop.OpenGui(client)
         end
 
         openClassSelection()
@@ -248,7 +243,7 @@ function gm:_ForfeitPlayer(team, id, messageKey)
 
     local member = team.Members[id]
     if member ~= nil then
-        textPromptUtils.UnlockOption(member)
+        Traitormod.Pointshop.SetCloseLock(member, false)
     end
     if messageKey ~= nil then
         sendStatus(messageKey, member ~= nil and member.Name or tostring(id))
@@ -611,7 +606,7 @@ function gm:End()
     self.IsEnding = true
     for _, team in pairs(self.Teams) do
         for _, member in pairs(team.Members) do
-            textPromptUtils.UnlockOption(member)
+            Traitormod.Pointshop.SetCloseLock(member, false)
         end
     end
 

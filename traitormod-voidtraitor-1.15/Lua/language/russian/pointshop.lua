@@ -1,18 +1,12 @@
 local language = ...
 
--- Серверные ответы и fallback-меню PointShop для игроков без client Lua
+-- Серверные ответы PointShop
 language.PointshopInGame = "Вы должны быть в игре, чтобы использовать магазин"
 language.PointshopCannotBeUsed = "Этот товар нельзя приобрести в данный момент"
 language.PointshopWait = "Вам придется подождать %s секунд, прежде чем вы сможете приобрести этот товар"
 language.PointshopNoPoints = "У вас недостаточно очков для покупки этого товара"
 language.PointshopNoStock = "Этого товара нет в наличии"
-language.PointshopPurchased = "Приобретено \"%s\" за %s очков\n\nНовый баланс: %s очков."
-language.PointshopGoBack = ">> Вернуться назад <<"
-language.PointshopCancel = ">> Отменить <<"
-language.PointshopWishBuy = "Ваш текущий баланс: %s очков\nЧто вы хотите купить?"
-language.PointshopInstallation = "Товар будет установлен в вашем текущем месте, и переместить его в другое место будет нельзя. Продолжить?\n"
 language.PointshopNotAvailable = "Магазин недоступен."
-language.PointshopWishCategory = "Ваш текущий баланс: %s очков\nВыберите категорию."
 language.PointshopRefunded = "Вам было возвращено %s очков за покупку %s"
 
 -- Названия категорий, товаров, классов и действий PointShop
@@ -284,7 +278,6 @@ language.ShipTooCloseToShip = "Невозможно купить корабль,
 language.PointshopSubcategorySlots = "%d/%d мест"
 language.PointshopGuiCartEmpty = "Корзина пуста."
 language.PointshopGuiPurchased = "Покупка выполнена. Товаров: %d. Потрачено: %d очков."
-language.PointshopGuiUnavailable = "GUI Pointshop недоступен. Открываю старое меню."
 language.PointshopGuiSinglePurchase = "Этот товар можно добавить в корзину только один раз за покупку."
 language.PointshopMissingItem = "Ошибка PointShop: не удалось найти предмет с идентификатором %s. Сообщите об этой ошибке."
 
