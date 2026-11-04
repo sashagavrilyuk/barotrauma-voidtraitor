@@ -1,7 +1,6 @@
 local gr = {}
 
 local config = Traitormod.Config.GhostRoleConfig or {}
-local textPromptUtils = require("textpromptutils")
 
 local guiNet = {
     Ready = "VoidTraitor_GhostRolesGuiReady",
@@ -434,103 +433,6 @@ function gr.TryTake(client, reference)
     return true
 end
 
-local function getMenuPageSize()
-    local pageSize = tonumber(config.MenuPageSize) or 10
-    return math.max(4, math.floor(pageSize))
-end
-
-local function reopenMenu(client, page)
-    Timer.Wait(function()
-        if client == nil or not client.InGame then return end
-        gr.ShowMenu(client, page)
-    end, 1)
-end
-
-function gr.ShowMenu(client, page)
-    if not validateGhostRoleClient(client) then return false end
-
-    local roles = getVisibleRoles()
-    local freeRoles, totalRoles = getRoleCounts()
-    local pageSize = getMenuPageSize()
-    local totalPages = math.max(1, math.ceil(math.max(1, totalRoles) / pageSize))
-    page = math.max(1, math.min(math.floor(tonumber(page) or 1), totalPages))
-
-    local options = {
-        lang("GhostRolesMenuCancel"),
-        lang("GhostRolesMenuRefresh"),
-    }
-    local roleLookup = {}
-
-    local hasPreviousPage = page > 1
-    local hasNextPage = page < totalPages
-
-    if hasPreviousPage then table.insert(options, lang("GhostRolesMenuPreviousPage")) end
-    if hasNextPage then table.insert(options, lang("GhostRolesMenuNextPage")) end
-
-    local firstRoleIndex = ((page - 1) * pageSize) + 1
-    local lastRoleIndex = math.min(firstRoleIndex + pageSize - 1, totalRoles)
-
-    for index = firstRoleIndex, lastRoleIndex do
-        local role = roles[index]
-        if role ~= nil then
-            local optionText = formatText(lang("GhostRolesMenuEntry"), getRoleName(role), getRoleStateText(role))
-            local price = getRolePrice(role)
-            if price > 0 then
-                optionText = optionText .. " " .. formatText(lang("GhostRolesMenuCost"), price)
-            end
-
-            table.insert(options, optionText)
-            roleLookup[#options] = role.Id
-        end
-    end
-
-    local message
-    if totalRoles == 0 then
-        message = formatText(lang("GhostRolesMenuEmpty"), math.floor(Traitormod.GetData(client, "Points") or 0))
-    else
-        message = formatText(
-            lang("GhostRolesMenuTitle"),
-            freeRoles,
-            totalRoles,
-            page,
-            totalPages,
-            math.floor(Traitormod.GetData(client, "Points") or 0)
-        )
-    end
-
-    textPromptUtils.Prompt(message, options, client, function(id, client2)
-        if id == 1 then return end
-        if id == 2 then
-            reopenMenu(client2, page)
-            return
-        end
-
-        local navigationIndex = 2
-        if hasPreviousPage then
-            navigationIndex = navigationIndex + 1
-            if id == navigationIndex then
-                reopenMenu(client2, page - 1)
-                return
-            end
-        end
-
-        if hasNextPage then
-            navigationIndex = navigationIndex + 1
-            if id == navigationIndex then
-                reopenMenu(client2, page + 1)
-                return
-            end
-        end
-
-        local roleId = roleLookup[id]
-        if roleId ~= nil and not gr.TryTake(client2, roleId) then
-            reopenMenu(client2, page)
-        end
-    end, "gambler")
-
-    return true
-end
-
 function gr.SendGuiSnapshot(client, openMenu)
     if client == nil or client.Connection == nil then return false end
 
@@ -610,7 +512,8 @@ function gr.Command(client, args)
         if gr.GuiClients[client] then
             return gr.SendGuiSnapshot(client, true)
         end
-        return gr.ShowMenu(client)
+        Traitormod.SendMessage(client, Traitormod.Language.ClientLuaMissing)
+        return true
     end
 
     return gr.TryTake(client, table.concat(args, " "))

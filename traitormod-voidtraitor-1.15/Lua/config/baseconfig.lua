@@ -897,7 +897,6 @@ config.MonsterBeaconConfig = {
 
 config.GhostRoleConfig = {
     Enabled = true,
-    MenuPageSize = 10,
     DeadRoleLifetimeSeconds = 180,
     DisconnectedCharacterDelaySeconds = 180,
     Groups = {

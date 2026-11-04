@@ -1,6 +1,6 @@
 local language = ...
 
--- Команды гост-ролей и серверный fallback для игроков без client Lua
+-- Команды и сообщения гост-ролей
 language.GhostRoleAvailable = "[Гост-роли] Доступна новая роль: %s. Используйте ‖color:gui.orange‖!ghostrole‖color:end‖, чтобы открыть список."
 language.GhostRolesDisabled = "Гост-роли отключены"
 language.GhostRolesSpectator = "Только наблюдатели могут использовать гост-роли"
@@ -16,13 +16,6 @@ language.GhostRolesMenuFree = "(Свободна)"
 language.GhostRolesMenuTaken = "(Занята)"
 language.GhostRolesMenuDead = "(Мёртва)"
 language.GhostRolesMenuCost = "(%d очков)"
-language.GhostRolesMenuCancel = "Закрыть"
-language.GhostRolesMenuRefresh = "Обновить"
-language.GhostRolesMenuPreviousPage = "Предыдущая страница"
-language.GhostRolesMenuNextPage = "Следующая страница"
-language.GhostRolesMenuEntry = "%s %s"
-language.GhostRolesMenuEmpty = "Сейчас гост-роли недоступны. Ваши очки: %d"
-language.GhostRolesMenuTitle = "Гост-роли (%d/%d свободно) | Страница %d/%d | Ваши очки: %d"
 language.GhostRolesNoPoints = "Для этой гост-роли нужно %d очков. Сейчас у вас %d."
 language.GhostRolesPurchased = "Гост-роль куплена за %d очков. Новый баланс: %d."
 language.GhostRolesAssignFailed = "Не удалось выдать гост-роль."
