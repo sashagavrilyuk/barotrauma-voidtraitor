@@ -185,10 +185,6 @@ Traitormod.AddCommand("!startmapvote", function (client, args)
 end)
 
 Traitormod.AddCommand("!vote", function (client, args)
-    if Traitormod.Voting.TryHandleGameVoteCommand(client, args) then
-        return true
-    end
-
     if not client.HasPermission(ClientPermissions.ConsoleCommands) then return end
     if not client.InGame then
         Traitormod.SendMessage(client, Traitormod.GetText("CMDInGameToUse"))

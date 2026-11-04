@@ -559,49 +559,6 @@ local function getConfiguredGameVoteModes()
     return modes
 end
 
-local function getVoteOptionNumbersText(options)
-    local optionNumbers = {}
-    for index = 1, #options do
-        table.insert(optionNumbers, string.format("!vote %s", index))
-    end
-    return table.concat(optionNumbers, " / ")
-end
-
-local function sendVoteOptions(client)
-    local gameVoteModes = getConfiguredGameVoteModes()
-    Traitormod.SendChatMessage(client, getVoteText("GameVoteOptionsHeader"), Color.LightGreen)
-    for index, mode in ipairs(gameVoteModes) do
-        Traitormod.SendChatMessage(client, string.format("%s — %s", index, mode.Text()), Color.White)
-    end
-    Traitormod.SendChatMessage(
-        client,
-        string.format(
-            getVoteText("GameVoteHowToVote"),
-            getVoteOptionNumbersText(gameVoteModes)
-        ),
-        Color.LightBlue
-    )
-end
-
-local function sendMapVoteOptions(client, candidates)
-    Traitormod.SendChatMessage(client, getVoteText("MapVoteOptionsHeader"), Color.LightGreen)
-    for index, submarine in ipairs(candidates) do
-        Traitormod.SendChatMessage(
-            client,
-            string.format("%s — %s (%s)", index, tostring(submarine.Name), getCapacityText(submarine)),
-            Color.White
-        )
-    end
-    Traitormod.SendChatMessage(
-        client,
-        string.format(
-            getVoteText("MapVoteHowToVote"),
-            getVoteOptionNumbersText(candidates)
-        ),
-        Color.LightBlue
-    )
-end
-
 local function getModeNames(gameVoteModes, modeIds)
     local names = {}
     for _, modeId in ipairs(modeIds) do
@@ -911,10 +868,6 @@ vt.StartGameVote = function(client, silent)
             tostring(voteDuration)
         )
         Traitormod.SendMessageEveryone(startedText)
-
-        for _, target in pairs(Client.ClientList) do
-            sendVoteOptions(target)
-        end
     end
 
     notifyGuiVoteChanged()
@@ -971,109 +924,33 @@ vt.StartMapVote = function(client, silent)
             vt.MapVote.StartedBy,
             tostring(voteDuration)
         ))
-
-        for _, target in pairs(Client.ClientList) do
-            sendMapVoteOptions(target, candidates)
-        end
     end
 
     notifyGuiVoteChanged()
     return true
 end
 
-local function tryHandleIndexedLobbyVote(client, args, voteData, options, getOptionName, acceptedKey, invalidKey, silentAccepted)
-    if voteData == nil then
-        return false
+local function castLobbyVote(client, voteData, options, optionId)
+    if voteData == nil or options[optionId] == nil then return false end
+
+    local previousVote = voteData.ClientVotes[client]
+    if previousVote ~= nil then
+        voteData.Results[previousVote] = math.max(0, (voteData.Results[previousVote] or 0) - 1)
     end
 
-    local optionId = tonumber(args[1])
-    if optionId ~= nil and options[optionId] ~= nil then
-        local previousVote = voteData.ClientVotes[client]
-        if previousVote ~= nil then
-            voteData.Results[previousVote] = math.max(0, (voteData.Results[previousVote] or 0) - 1)
-        end
-
-        voteData.ClientVotes[client] = optionId
-        voteData.Results[optionId] = (voteData.Results[optionId] or 0) + 1
-
-        if not silentAccepted then
-            Traitormod.SendMessage(client, string.format(getVoteText(acceptedKey), getOptionName(options[optionId])))
-        end
-        notifyGuiVoteChanged()
-        return true
-    end
-
-    if optionId ~= nil then
-        Traitormod.SendMessage(
-            client,
-            string.format(
-                getVoteText(invalidKey),
-                getVoteOptionNumbersText(options)
-            )
-        )
-        return true
-    end
-
-    return false
-end
-
-vt.TryHandleGameVoteCommand = function(client, args)
-    if vt.GameVote ~= nil then
-        local gameVoteModes = getConfiguredGameVoteModes()
-        return tryHandleIndexedLobbyVote(
-            client,
-            args,
-            vt.GameVote,
-            gameVoteModes,
-            function(option) return option.Text() end,
-            "GameVoteAccepted",
-            "GameVoteInvalidOption"
-        )
-    end
-
-    if vt.MapVote ~= nil then
-        return tryHandleIndexedLobbyVote(
-            client,
-            args,
-            vt.MapVote,
-            vt.MapVote.Candidates or {},
-            function(option) return tostring(option.Name) end,
-            "MapVoteAccepted",
-            "MapVoteInvalidOption"
-        )
-    end
-
-    return false
+    voteData.ClientVotes[client] = optionId
+    voteData.Results[optionId] = (voteData.Results[optionId] or 0) + 1
+    notifyGuiVoteChanged()
+    return true
 end
 
 vt.TryHandleGuiVote = function(client, optionId)
-    local args = { tostring(optionId or "") }
-
     if vt.GameVote ~= nil then
-        local gameVoteModes = getConfiguredGameVoteModes()
-        return tryHandleIndexedLobbyVote(
-            client,
-            args,
-            vt.GameVote,
-            gameVoteModes,
-            function(option) return option.Text() end,
-            "GameVoteAccepted",
-            "GameVoteInvalidOption",
-            true
-        )
+        return castLobbyVote(client, vt.GameVote, getConfiguredGameVoteModes(), optionId)
     end
 
     if vt.MapVote ~= nil then
-        return tryHandleIndexedLobbyVote(
-            client,
-            args,
-            vt.MapVote,
-            vt.MapVote.Candidates or {},
-            function(option) return tostring(option.Name) end,
-            "MapVoteAccepted",
-            "MapVoteInvalidOption",
-            true
-        )
+        return castLobbyVote(client, vt.MapVote, vt.MapVote.Candidates or {}, optionId)
     end
 
     return false
@@ -1163,7 +1040,6 @@ end
 
 vt.StartGuiVote = function(client, voteType)
     voteType = string.lower(tostring(voteType or ""))
-    -- votes started from the GUI are still announced in chat, so players without the pack can use !vote
     if voteType == "game" then
         return vt.StartGameVote(client, false)
     elseif voteType == "map" then
