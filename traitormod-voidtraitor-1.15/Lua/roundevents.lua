@@ -113,7 +113,16 @@ re.TriggerEvent = function (eventName)
     end
     re.ThisRoundEvents[eventName] = re.ThisRoundEvents[eventName] + 1
 
-    Traitormod.Log("Event " .. eventName .. " triggered.")
+    local alive = 0
+    for _, client in pairs(Client.ClientList) do
+        local character = client.Character
+        if character ~= nil and not character.Removed and not character.IsDead
+            and character.IsHuman and character.TeamID == CharacterTeamType.Team1 then
+            alive = alive + 1
+        end
+    end
+    Traitormod.Log(string.format("Event %s triggered (intensity %.2f, alive crew %d of %d players).",
+        eventName, Game.GameSession.EventManager.CurrentIntensity, alive, #Client.ClientList))
     return true
 end
 

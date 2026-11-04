@@ -333,6 +333,7 @@ function gr.Create(configIdentifier, character, options)
     gr.Roles[role.Id] = role
     gr.Characters[character] = role.Id
 
+    Traitormod.Log("Ghost role #" .. tostring(role.Id) .. " (" .. tostring(roleConfig.FullIdentifier) .. ") offered.")
     announceRole(role)
     broadcastGuiSnapshots()
     return role
