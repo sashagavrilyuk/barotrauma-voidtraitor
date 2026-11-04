@@ -26,6 +26,8 @@
 <entityname.vtcasinocratecrazy>Ящик с безумными предметами</entityname.vtcasinocratecrazy>
 <entityname.vtcasinocratenormal>Ящик со случайными предметами</entityname.vtcasinocratenormal>
 <entityname.vtcasinocrateweapons>Ящик со случайным оружием</entityname.vtcasinocrateweapons>
+<entityname.vtarmorycrate>Оружейный ящик</entityname.vtarmorycrate>
+<entitydescription.vtarmorycrate>Открывается картой охраны или капитана. Без неё — только взломать.</entitydescription.vtarmorycrate>
 <entityname.vtcasinocratemedical>Ящик со случайными медикаментами</entityname.vtcasinocratemedical>
 <entityname.vtcasinocratematerials>Ящик со случайными материалами</entityname.vtcasinocratematerials>
 

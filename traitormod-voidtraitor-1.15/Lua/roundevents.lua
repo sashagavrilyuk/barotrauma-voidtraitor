@@ -2,7 +2,7 @@ local re = {}
 
 local eventManagerDescriptor = LuaUserData.RegisterType("Barotrauma.EventManager") -- temporary
 -- the game's own measures of the round, refreshed every 5 seconds in EventManager.CalculateCurrentIntensity
-for _, field in ipairs({ "avgHullIntegrity", "floodingAmount", "enemyDanger" }) do
+for _, field in ipairs({ "avgHullIntegrity", "floodingAmount" }) do
     LuaUserData.MakeFieldAccessible(eventManagerDescriptor, field)
 end
 
@@ -37,7 +37,7 @@ for _, event in pairs(re.EventConfigs.Events) do
 end
 
 -- the order the director checks help in; at most one help per check
-local helpKinds = { "Collapse", "Medical", "Defense", "Hull", "Electrical" }
+local helpKinds = { "Collapse", "Medical", "Armory", "Defense", "Hull", "Electrical" }
 -- help of a kind from any source starts that kind's cooldown
 local helpKindOf = {}
 for _, kind in ipairs(helpKinds) do
@@ -272,6 +272,45 @@ local function countCrew(lowVitality)
     return crew
 end
 
+-- creatures fighting the main sub, with the filter the game uses for its enemy danger
+-- (EventManager.CalculateCurrentIntensity): inside the sub, or with their AI target on it
+local function countEnemies()
+    local inside, attacking = 0, 0
+    for _, character in pairs(Character.CharacterList) do
+        local ai = character.AIController
+        if not character.IsDead and not character.IsIncapacitated and character.Enabled and not character.IsPet
+            and ai ~= nil and LuaUserData.IsTargetType(ai, "Barotrauma.EnemyAIController") then
+            local target = ai.SelectedAiTarget
+            local targetEntity = target ~= nil and target.Entity or nil
+            if character.Submarine == Submarine.MainSub then
+                inside = inside + 1
+            elseif targetEntity ~= nil
+                and (targetEntity == Submarine.MainSub or targetEntity.Submarine == Submarine.MainSub) then
+                attacking = attacking + 1
+            end
+        end
+    end
+    return inside, attacking
+end
+
+local function countArmedCrew(weaponTags)
+    local armed = 0
+    for _, client in pairs(Client.ClientList) do
+        local character = client.Character
+        if character ~= nil and not character.IsDead and character.IsHuman and not character.IsIncapacitated
+            and character.TeamID == CharacterTeamType.Team1 and not Traitormod.AdminGhost.IsGhost(character) then
+            local hasWeapon = false
+            for item in character.Inventory.AllItems do
+                for _, tag in ipairs(weaponTags) do
+                    if item.HasTag(tag) then hasWeapon = true end
+                end
+            end
+            if hasWeapon then armed = armed + 1 end
+        end
+    end
+    return armed
+end
+
 -- Each returns how bad the trouble is (0 when there is none), whether crew of the right job are up to it,
 -- the events that fit and what to write in the log.
 local helpMeasures = {
@@ -286,11 +325,17 @@ local helpMeasures = {
         return crew.Down, crew.Medics >= crew.Down, config.Events,
             string.format("%d crew down, %d medics up", crew.Down, crew.Medics)
     end,
-    Defense = function (crew, config, eventManager)
-        local danger = eventManager.enemyDanger
-        if danger < config.EnemyDanger or crew.Down == 0 then return 0 end
-        return danger, crew.Security > 0, config.Events,
-            string.format("enemy danger %.2f, %d crew down, %d security up", danger, crew.Down, crew.Security)
+    Armory = function (crew, config)
+        if crew.EnemiesInside < config.InsideEnemies then return 0 end
+        local armed = countArmedCrew(config.WeaponTags)
+        return crew.EnemiesInside, armed >= crew.EnemiesInside, config.Events,
+            string.format("%d creatures inside, %d crew armed", crew.EnemiesInside, armed)
+    end,
+    Defense = function (crew, config)
+        local enemies = crew.EnemiesInside + crew.EnemiesAttacking
+        if enemies < config.Enemies then return 0 end
+        return enemies, crew.Security > 0, config.Events,
+            string.format("%d creatures on the sub, %d security up", enemies, crew.Security)
     end,
     Hull = function (crew, config, eventManager)
         local integrity, flooding = eventManager.avgHullIntegrity, eventManager.floodingAmount
@@ -315,6 +360,7 @@ local function checkHelp(director)
     local help = director.Config.Help
     if director.HelpGiven >= help.MaxPerRound then return end
     local crew = countCrew(help.LowVitality)
+    crew.EnemiesInside, crew.EnemiesAttacking = countEnemies()
     local eventManager = Game.GameSession.EventManager
     local now = Traitormod.RoundTime
     for _, kind in ipairs(helpKinds) do

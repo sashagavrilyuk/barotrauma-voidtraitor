@@ -16,6 +16,7 @@
   <TalentTrees file="%ModDir%/the void traitor pack/Talents/TalentTrees.xml" />
   <Item file="%ModDir%/the void traitor pack/items/item.xml" />
   <Item file="%ModDir%/the void traitor pack/items/casino/casino_crates.xml" />
+  <Item file="%ModDir%/the void traitor pack/items/armorycrate.xml" />
   <Item file="%ModDir%/the void traitor pack/items/hideandseek_idcard.xml" />
   <Afflictions file="%ModDir%/the void traitor pack/afflictions.xml" />
   <Submarine file="%ModDir%/void traitor pack submarine/fun boat/Я-HMS Elizabeth.sub" />

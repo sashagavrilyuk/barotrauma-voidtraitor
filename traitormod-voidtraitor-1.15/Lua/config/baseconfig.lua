@@ -654,7 +654,7 @@ config.ObjectiveConfig = {
 config.RandomEventConfig = {
     ModeEvents = {
         Shared = {
-            "MaintenanceToolsDelivery", "MedicalDelivery", "AmmoDelivery", "EmergencyTeam",
+            "MaintenanceToolsDelivery", "MedicalDelivery", "AmmoDelivery", "ArmoryCrate", "EmergencyTeam",
             "VentCreatures", "ClownCrateSurprise", "OxygenGeneratorHusk", "RandomLights",
             "ClownMagic", "LightsOff", "CommunicationsOffline", "ReactorShutdown",
             "SupercapacitorFailure", "JunctionBoxOverload", "OxygenGeneratorPoison",
@@ -723,9 +723,18 @@ config.RandomEventConfig = {
             -- half the living crew down, or MaxAlive or fewer left with MinDead dead
             Collapse = { CooldownMinutes = 4, MaxAlive = 3, MinDead = 2, Events = { "EmergencyTeam" } },
             Medical = { CooldownMinutes = 3, Events = { "MedicalDelivery", "MedicSkillBoost", "SurgeonSkillBoost" } },
+            -- creatures inside the sub while too few of the crew carry a gun
+            Armory = {
+                CooldownMinutes = 4,
+                InsideEnemies = 3,
+                WeaponTags = { "rangedweapon" },
+                Events = { "ArmoryCrate" },
+            },
+            -- a swarm on the sub: creatures inside it or attacking it; AmmoDelivery itself picks ammo for the
+            -- turrets the sub has and how much of it is left
             Defense = {
                 CooldownMinutes = 4,
-                EnemyDanger = 0.5,
+                Enemies = 8,
                 Events = {
                     "AmmoDelivery", "SecurityMindSense", "SecurityTurretCoilgun", "SecurityTurretChaingun",
                     "SecurityTurretFlakcannon", "SecurityTurretPulseLaser", "SecurityTurretDoubleCoilgun",
@@ -754,6 +763,7 @@ config.RandomEventConfig = {
         dofile(Traitormod.Path .. "/Lua/config/randomevents/maintenancetoolsdelivery.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/medicaldelivery.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/ammodelivery.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/armorycrate.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/abysshelp.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/emergencyteam.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/shadymission.lua"),
