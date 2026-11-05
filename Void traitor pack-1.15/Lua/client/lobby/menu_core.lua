@@ -16,6 +16,7 @@ P.GLOBAL_STATE_KEY = "VoidTraitorClientMenuState"
 P.HUD_PATCH_ID = "VoidTraitor.ClientMenu.Hud"
 P.PAUSE_PATCH_ID = "VoidTraitor.ClientMenu.Pause"
 P.RESPAWN_TEXT_PATCH_ID = "VoidTraitor.ClientMenu.RespawnText"
+P.RESPAWN_INFO_PATCH_ID = "VoidTraitor.ClientMenu.RespawnInfo"
 
 local previousState = rawget(_G, P.GLOBAL_STATE_KEY)
 if previousState ~= nil then
@@ -77,6 +78,9 @@ P.BUTTON_DRAW_ORDER = 0
 P.MENU_DRAW_ORDER = 125
 LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.NetLobbyScreen"], "respawnTabButton")
 LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.GameSession"], "deathChoiceInfoFrame")
+LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.GameSession"], "respawnInfoText")
+LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.GameSession"], "deathChoiceButtonContainer")
+LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.CrewManager"] or LuaUserData.RegisterType("Barotrauma.CrewManager"), "crewArea")
 P.VT_MENU_WIDTH_PIXELS = 370
 P.VT_MENU_DEFAULT_HEIGHT_PIXELS = 580
 P.VT_MENU_MIN_HEIGHT_PIXELS = 340

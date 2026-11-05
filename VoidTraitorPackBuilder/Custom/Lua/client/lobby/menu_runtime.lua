@@ -63,18 +63,61 @@ Hook.Patch(P.HUD_PATCH_ID, "Barotrauma.GameSession", "AddToGUIUpdateList", funct
 end)
 
 -- The respawn text normally sits in the top-left button row, where the SHOP and VT buttons are.
--- Move it down into the gap between those buttons and the crew list.
+-- Move it down into the gap between those buttons and the crew list; where that gap is narrower
+-- than a line (low resolutions), the crew list moves down while the text is shown.
+local respawnTextOffset, crewListShift, respawnTextShown
 Hook.Patch(P.RESPAWN_TEXT_PATCH_ID, "Barotrauma.GameSession", "CreateTopLeftButtons", function(instance)
     local state = rawget(_G, P.GLOBAL_STATE_KEY)
     if state == nil or state.Disabled then return end
 
-    local frame = instance.deathChoiceInfoFrame
+    local frame, text = instance.deathChoiceInfoFrame, instance.respawnInfoText
     local rowHeight = frame.RectTransform.Parent.Rect.Height
     local _, buttonHeight = P.GetTopButtonSize()
     local buttonsBottom = (rowHeight + buttonHeight) / 2
     local crewListTop = rowHeight + P.GetTopButtonSpacing()
+    local lineHeight = math.ceil(text.Font.LineHeight * text.TextScale)
+    local margin = GUI.IntScale(4)
+    local textTop = math.max(buttonsBottom + margin, (buttonsBottom + crewListTop - lineHeight) / 2)
+    crewListShift = math.max(0, math.ceil(textTop + lineHeight + margin - crewListTop))
+    -- the text block is top-aligned in its frame
+    respawnTextOffset = Point(0, math.floor(textTop - text.Padding.Y))
+    respawnTextShown = nil
     frame.IgnoreLayoutGroups = true
-    frame.RectTransform.AbsoluteOffset = Point(0, math.floor((buttonsBottom + crewListTop - rowHeight) / 2))
+    frame.RectTransform.AbsoluteOffset = respawnTextOffset
+end, Hook.HookMethodType.After)
+
+-- SetRespawnInfo runs every frame and, while the text is shown, hands it back to the button row
+Hook.Patch(P.RESPAWN_INFO_PATCH_ID, "Barotrauma.GameSession", "SetRespawnInfo", function(instance, ptable)
+    if respawnTextOffset == nil then return end
+    local frame = instance.deathChoiceInfoFrame
+    if not frame.Visible and respawnTextShown == false then return end
+    local state = rawget(_G, P.GLOBAL_STATE_KEY)
+    if state == nil or state.Disabled then return end
+    -- the frame also stays visible, empty, once the player has spawned
+    local text = ptable["text"]
+    local shown = frame.Visible and text ~= nil and text ~= ""
+    respawnTextShown = shown
+
+    if frame.Visible then
+        frame.IgnoreLayoutGroups = true
+        local offset = frame.RectTransform.AbsoluteOffset
+        if offset.X ~= respawnTextOffset.X or offset.Y ~= respawnTextOffset.Y then
+            frame.RectTransform.AbsoluteOffset = respawnTextOffset
+        end
+        -- the right half holds the campaign's bot takeover buttons; without them the text gets the whole width
+        local width = instance.deathChoiceButtonContainer.Visible and 0.5 or 1
+        local textRect = instance.respawnInfoText.RectTransform
+        if textRect.RelativeSize.X ~= width then textRect.RelativeSize = Vector2(width, 1) end
+    end
+
+    -- CrewManager rewrites the list's AbsoluteOffset every frame to slide it in, but leaves ScreenSpaceOffset alone
+    local crewArea = instance.CrewManager ~= nil and instance.CrewManager.crewArea or nil
+    if crewArea ~= nil then
+        local shift = shown and crewListShift or 0
+        if crewArea.RectTransform.ScreenSpaceOffset.Y ~= shift then
+            crewArea.RectTransform.ScreenSpaceOffset = Point(0, shift)
+        end
+    end
 end, Hook.HookMethodType.After)
 
 Hook.Patch(P.PAUSE_PATCH_ID, "Barotrauma.GUI", "TogglePauseMenu", {}, function(instance, params)
