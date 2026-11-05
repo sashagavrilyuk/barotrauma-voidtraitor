@@ -1,31 +1,23 @@
 local cloning = {}
-local componentEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateEventData", true)
 Traitormod.Cloning = cloning
 local config = Traitormod.Config.Cloning
-local prompts = require("textpromptutils")
+local json = require("json")
 LuaUserData.RegisterType("Barotrauma.ContentXElement")
 local contentElement = LuaUserData.CreateStatic("Barotrauma.ContentXElement")
 local state
+local sessions = {}
+local consoleTexts = { "CloneTitle", "CloneClose", "CloneScanner", "ClonePod", "CloneLinked", "CloneNotLinked", "CloneBody",
+    "CloneNoBody", "CloneBodyAlive", "ClonePower", "CloneNoPowerShort", "CloneBiomassLine", "CloneStart", "CloneEject" }
 
 function cloning.Start()
-    state = { Consoles = {}, Labels = {}, Scanners = {}, Pods = {}, Jobs = {}, Owners = {}, Reclaimed = {}, Pending = {}, ReconnectCheck = 0, Elapsed = 0 }
+    sessions = {}
+    state = { Consoles = {}, Scanners = {}, Pods = {}, Jobs = {}, Owners = {}, Reclaimed = {}, Pending = {}, ReconnectCheck = 0, Elapsed = 0 }
     for _, client in pairs(Client.ClientList) do
         if client.Character ~= nil then state.Owners[client.Character] = client end
     end
     for item in Item.ItemList do
         if item.Prefab.Identifier == "vt_cloning_console" then
-            state.Consoles[#state.Consoles + 1] = item
-            local labels = {}
-            for component in item.Components do
-                if LuaUserData.IsTargetType(component, "Barotrauma.Items.Components.ItemLabel") then
-                    labels[#labels + 1] = component
-                end
-            end
-            if #labels == 2 then
-                state.Labels[item] = labels
-            else
-                Traitormod.Error("Cloning console requires two ItemLabel components")
-            end
+            state.Consoles[item] = {}
         end
         if item.Prefab.Identifier == "vt_cloning_scanner" then state.Scanners[item] = true end
         if item.Prefab.Identifier == "vt_cloning_pod" then state.Pods[item] = { Biomass = 0, Consumed = {} } end
@@ -46,6 +38,10 @@ function cloning.Devices(console)
     return scanner, pod, linked ~= nil and linked.Character or nil
 end
 
+local function biomassCost(corpse)
+    return corpse.IsHuman and config.HumanBiomassCost or math.max(1, math.ceil(corpse.Mass * config.HumanBiomassCost / 80))
+end
+
 function cloning.Status(console)
     local scanner, pod, corpse = cloning.Devices(console)
     if scanner == nil or pod == nil or scanner.Removed or pod.Removed or pod.Condition <= 0 or state.Pods[pod] == nil then return "CloneDisconnected", 0 end
@@ -57,25 +53,78 @@ function cloning.Status(console)
     if corpse == nil or corpse.Removed then return "CloneEmpty", 0 end
     if not corpse.IsDead then return "CloneAlive", 0 end
     if not pod.GetComponentString("Powered").HasPower then return "CloneNoPower", 0 end
-    local cost = corpse.IsHuman and config.HumanBiomassCost or math.max(1, math.ceil(corpse.Mass * config.HumanBiomassCost / 80))
+    local cost = biomassCost(corpse)
     if state.Pods[pod].Biomass < cost then return "CloneNoBiomass", 0, cost end
     return "CloneReady", 0
+end
+
+local function sendConsent(client, open)
+    local message = Networking.Start("VoidTraitor_CloneConsent")
+    message.WriteBoolean(open)
+    if open then
+        message.WriteString(Traitormod.GetText("CloneConsentTitle"))
+        message.WriteString(Traitormod.GetText("CloneConsent"))
+        message.WriteString(Traitormod.GetText("CloneAccept"))
+        message.WriteString(Traitormod.GetText("CloneDecline"))
+    end
+    Networking.Send(message, client.Connection, DeliveryMethod.Reliable)
 end
 
 local function offerClone(client, job)
     if job.Account == nil or job.Declined or job.Accepted or state.Pending[client] == job
         or (client.Character ~= nil and not client.Character.IsDead) then return false end
     state.Pending[client] = job
-    prompts.Prompt(Traitormod.GetText("CloneConsent"), { Traitormod.GetText("CloneAccept"), Traitormod.GetText("CloneDecline") }, client, function(index, response)
-        if response == client and state ~= nil and state.Pending[client] == job then cloning.Answer(client, index == 1) end
-    end, "InfoFrameTabButton.Mission")
+    sendConsent(client, true)
     return true
 end
 
+local function withdrawOffer(job)
+    for client, pending in pairs(state.Pending) do
+        if pending == job then
+            state.Pending[client] = nil
+            sendConsent(client, false)
+        end
+    end
+end
+
+local function ejectBody(character, scanner)
+    local controller = scanner.GetComponentString("Controller")
+    if controller.User ~= nil then
+        character.DeselectCharacter()
+        controller.Select(character)
+    end
+end
+
+function cloning.Snapshot(console)
+    local status, percent = cloning.Status(console)
+    local scanner, pod, corpse = cloning.Devices(console)
+    local podData = pod ~= nil and not pod.Removed and state.Pods[pod] or nil
+    if corpse ~= nil and corpse.Removed then corpse = nil end
+    local snapshot = { Status = status == "CloneNoBiomass" and Traitormod.FormatText(status, biomassCost(corpse)) or Traitormod.GetText(status),
+        CanClone = status == "CloneReady", Growing = status == "CloneGrowing" or status == "ClonePaused", Progress = percent,
+        ScannerLinked = scanner ~= nil and not scanner.Removed, PodLinked = podData ~= nil,
+        Body = corpse ~= nil and corpse.Name or nil, BodyDead = corpse ~= nil and corpse.IsDead,
+        PodPowered = podData ~= nil and pod.GetComponentString("Powered").HasPower,
+        Biomass = podData ~= nil and podData.Biomass or 0, Cost = corpse ~= nil and biomassCost(corpse) or nil, Text = {} }
+    for _, key in ipairs(consoleTexts) do snapshot.Text[key] = Traitormod.GetText(key) end
+    return snapshot
+end
+
+function cloning.ValidateConsole(client, console, requireSelected)
+    return state ~= nil and Game.RoundStarted and console ~= nil and not console.Removed and state.Consoles[console] ~= nil
+        and client.Character ~= nil and client.Character.IsHuman and not client.Character.IsDead and not client.Character.IsIncapacitated
+        and (not requireSelected or client.Character.SelectedItem == console) and console.CanClientAccess(client)
+end
+
+function cloning.SendConsole(client, console, payload)
+    local message = Networking.Start("VoidTraitor_CloningSnapshot")
+    message.WriteUInt16(UShort(console.ID))
+    message.WriteString(payload or json.encode(cloning.Snapshot(console)))
+    Networking.Send(message, client.Connection)
+end
+
 function cloning.Begin(client, console)
-    if state == nil or not Game.RoundStarted or console.Removed
-        or client.Character == nil or client.Character.IsDead or client.Character.IsIncapacitated
-        or client.Character.SelectedItem ~= console or not console.CanClientAccess(client) then return false end
+    if not cloning.ValidateConsole(client, console, true) then return false end
     local status = cloning.Status(console)
     if status ~= "CloneReady" then return false end
     local _, pod, corpse = cloning.Devices(console)
@@ -100,7 +149,7 @@ function cloning.Begin(client, console)
     if previousOwner ~= nil then Traitormod.SelectedGamemode:HidePlayerFromCrew(clone) end
     local job = { Pod = pod, Corpse = corpse, Clone = clone, Progress = 0, Account = previousOwner ~= nil and Traitormod.GetClientAccountKey(previousOwner) or nil, Unkillable = unkillable }
     state.Jobs[pod] = job
-    state.Pods[pod].Biomass = state.Pods[pod].Biomass - (corpse.IsHuman and config.HumanBiomassCost or math.max(1, math.ceil(corpse.Mass * config.HumanBiomassCost / 80)))
+    state.Pods[pod].Biomass = state.Pods[pod].Biomass - biomassCost(corpse)
     local ownerConnected = false
     for _, client in pairs(Client.ClientList) do
         if client == previousOwner then
@@ -122,6 +171,7 @@ function cloning.Answer(client, accept)
     local job = state ~= nil and state.Pending[client] or nil
     if job == nil then return false end
     state.Pending[client] = nil
+    sendConsent(client, false)
     if not accept then job.Declined = true return true end
     if not Game.RoundStarted or job.Clone.Removed or job.Clone.IsDead
         or Traitormod.GetClientAccountKey(client) ~= job.Account
@@ -204,9 +254,7 @@ function cloning.Update(deltaTime)
             end
             if not pod.Removed then pod.GetComponentString("LightComponent").IsOn = false end
             state.Jobs[pod] = nil
-            for client, pending in pairs(state.Pending) do
-                if pending == job then state.Pending[client] = nil end
-            end
+            withdrawOffer(job)
         else
             job.Clone.CharacterHealth.Stun = 2
             if pod.GetComponentString("Powered").HasPower then job.Progress = job.Progress + deltaTime end
@@ -218,26 +266,18 @@ function cloning.Update(deltaTime)
                 if not job.Corpse.IsPlayer and job.Clone.AIController ~= nil then job.Clone.AIController.Enabled = true end
                 pod.GetComponentString("LightComponent").IsOn = false
                 state.Jobs[pod] = nil
-                for client, pending in pairs(state.Pending) do
-                    if pending == job then state.Pending[client] = nil end
-                end
+                withdrawOffer(job)
             end
         end
     end
-    for _, console in ipairs(state.Consoles) do
-        if not console.Removed then
-            local status, percent, cost = cloning.Status(console)
-            local labels = state.Labels[console]
-            if labels ~= nil then
-                local statusText = cost ~= nil and Traitormod.FormatText(status, cost) or Traitormod.GetText(status)
-                local progressText = Traitormod.FormatText("CloneProgress", percent)
-                if labels[1].Text ~= statusText then
-                    labels[1].Text = statusText
-                    Networking.CreateEntityEvent(console, componentEvent.__new(labels[1], nil))
-                end
-                if labels[2].Text ~= progressText then
-                    labels[2].Text = progressText
-                    Networking.CreateEntityEvent(console, componentEvent.__new(labels[2], nil))
+    for client, console in pairs(sessions) do
+        if not cloning.ValidateConsole(client, console, false) then sessions[client] = nil
+        else
+            local payload = json.encode(cloning.Snapshot(console))
+            if state.Consoles[console].Payload ~= payload then
+                state.Consoles[console].Payload = payload
+                for other, selected in pairs(sessions) do
+                    if selected == console then cloning.SendConsole(other, console, payload) end
                 end
             end
         end
@@ -252,7 +292,7 @@ end)
 Hook.Patch("Traitormod.Cloning.Terminal", "Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, parameters)
     local item = instance.Item
     local identifier = item.Prefab.Identifier
-    if identifier ~= "vt_cloning_console" and identifier ~= "vt_cloning_scanner" and identifier ~= "vt_cloning_pod" then return end
+    if identifier ~= "vt_cloning_scanner" and identifier ~= "vt_cloning_pod" then return end
     local pressed = parameters["msg"].ReadBoolean()
     parameters.PreventExecution = true
     if identifier == "vt_cloning_pod" then
@@ -269,17 +309,11 @@ Hook.Patch("Traitormod.Cloning.Terminal", "Barotrauma.Items.Components.CustomInt
         for _ = 1, amount do
             Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("vt_biomass"), client.Character.Inventory)
         end
-    elseif identifier == "vt_cloning_console" then
-        if pressed then cloning.Begin(parameters["c"], item) end
     elseif pressed and state ~= nil then
         local client = parameters["c"]
         if client ~= nil and client.Character ~= nil and not client.Character.IsDead
             and client.Character.SelectedItem == item and item.CanClientAccess(client) then
-            local controller = item.GetComponentString("Controller")
-            if controller.User ~= nil then
-                client.Character.DeselectCharacter()
-                controller.Select(client.Character)
-            end
+            ejectBody(client.Character, item)
         end
     end
 end, Hook.HookMethodType.Before)
@@ -308,8 +342,31 @@ Hook.Patch("Traitormod.Cloning.DeadOnly", "Barotrauma.Items.Components.Controlle
     end
 end, Hook.HookMethodType.Before)
 Hook.Add("think", "Traitormod.Cloning.Update", cloning.Update)
-Hook.Add("roundEnd", "Traitormod.Cloning.End", function() state = nil end)
+Networking.Receive("VoidTraitor_CloningOpen", function(message, client)
+    local console = Entity.FindEntityByID(message.ReadUInt16())
+    -- the request can arrive before the server sees the console selected; actions require the selection
+    if not cloning.ValidateConsole(client, console, false) then return end
+    sessions[client] = console
+    cloning.SendConsole(client, console)
+end)
+Networking.Receive("VoidTraitor_CloningAction", function(message, client)
+    local console, action = Entity.FindEntityByID(message.ReadUInt16()), message.ReadString()
+    if console == nil or sessions[client] ~= console then return end
+    if action == "close" then sessions[client] = nil return end
+    if not cloning.ValidateConsole(client, console, true) then return end
+    if action == "clone" then cloning.Begin(client, console)
+    elseif action == "eject" then
+        local scanner = cloning.Devices(console)
+        if scanner ~= nil and not scanner.Removed then ejectBody(client.Character, scanner) end
+    else return end
+    cloning.SendConsole(client, console)
+end)
+Networking.Receive("VoidTraitor_CloneConsentAnswer", function(message, client)
+    cloning.Answer(client, message.ReadBoolean())
+end)
+Hook.Add("roundEnd", "Traitormod.Cloning.End", function() state, sessions = nil, {} end)
 Hook.Add("client.disconnected", "Traitormod.Cloning.Disconnect", function(client)
+    sessions[client] = nil
     if state == nil then return end
     if client.Character ~= nil then state.Owners[client.Character] = client end
     state.Pending[client] = nil

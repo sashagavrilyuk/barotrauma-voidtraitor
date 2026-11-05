@@ -21,3 +21,4 @@ assert(loadfile(packPath .. "/Lua/client/station/idconsole.lua"))(packPath, clie
 assert(loadfile(packPath .. "/Lua/client/station/cargo.lua"))(packPath, clientCommon)
 assert(loadfile(packPath .. "/Lua/client/station/nuclear.lua"))(packPath, clientCommon)
 assert(loadfile(packPath .. "/Lua/client/station/communications.lua"))(packPath, clientCommon)
+assert(loadfile(packPath .. "/Lua/client/station/cloning.lua"))(packPath, clientCommon)

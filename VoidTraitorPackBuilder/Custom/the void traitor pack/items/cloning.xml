@@ -58,12 +58,7 @@
   <Item identifier="vt_cloning_console" name="" category="Electrical" scale="0.5" interactdistance="150" grabwhenselected="true" tags="vt_cloning_console">
     <Sprite texture="Content/Items/Electricity/signalcomp.png" sourcerect="0,368,144,128" depth="0.8" origin="0.5,0.3" />
     <Powered powerconsumption="50" minvoltage="0.5" isactive="true" />
-    <ItemLabel ignorelocalization="true" textcolor="230,230,230,255" textscale="0.75" padding="4,4,4,66" />
-    <ItemLabel ignorelocalization="true" textcolor="230,230,230,255" textscale="1.0" padding="4,66,4,4" />
-    <CustomInterface canbeselected="true" msg="ItemMsgInteractSelect" allowuioverlap="true">
-      <GuiFrame relativesize="0.32,0.16" minsize="260,80" maxsize="440,110" anchor="Center" relativeoffset="0,0.2" style="ItemUI" />
-      <Button text="CloneStart" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
-    </CustomInterface>
+    <ItemComponent canbeselected="true" msg="ItemMsgInteractSelect" />
     <ConnectionPanel canbeselected="true" selectkey="Action" msg="ItemMsgRewireScrewdriver">
       <GuiFrame relativesize="0.2,0.25" anchor="Center" style="ConnectionPanel" />
       <RequiredItem items="screwdriver" type="Equipped" />
