@@ -101,14 +101,11 @@ end
 
 
 local function sendSummaryPopup(client, summary)
-    if Traitormod.ClientHasLua ~= nil and Traitormod.ClientHasLua(client) then
-        local message = Networking.Start(summaryNetMessage)
-        message.WriteString(Traitormod.HighlightClientNames(summary, Color.Red))
-        Networking.Send(message, client.Connection)
-    else
-        local chatMessage = ChatMessage.Create(Traitormod.GetText("ChatSenderServer"), summary, ChatMessageType.ServerMessageBox, nil, nil)
-        Game.SendDirectChatMessage(chatMessage, client)
-    end
+    if not Traitormod.ClientHasLua(client) then return end
+
+    local message = Networking.Start(summaryNetMessage)
+    message.WriteString(Traitormod.HighlightClientNames(summary, Color.Red))
+    Networking.Send(message, client.Connection)
 end
 
 function gm:CharacterDeath(character)

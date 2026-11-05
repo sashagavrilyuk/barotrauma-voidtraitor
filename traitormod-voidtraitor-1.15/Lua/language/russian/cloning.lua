@@ -9,7 +9,6 @@ language.CloneNoBiomass = "Недостаточно биомассы: требу
 language.CloneReady = "Готово к клонированию"
 language.CloneProgress = "Процесс: %d%%"
 language.CloneConsent = "Вас клонируют. Вернуться в новое тело?"
-language.CloneConsentChat = "Вас клонируют. Вернуться в новое тело? !y — принять, !n — отказаться."
 language.CloneAccept = "Вернуться"
 language.CloneDecline = "Отказаться"
 language.Pointshop.vt_biomass = "Биомасса (10 единиц)"

@@ -66,13 +66,9 @@ local function offerClone(client, job)
     if job.Account == nil or job.Declined or job.Accepted or state.Pending[client] == job
         or (client.Character ~= nil and not client.Character.IsDead) then return false end
     state.Pending[client] = job
-    if Traitormod.Pointshop.GuiClients[client] then
-        prompts.Prompt(Traitormod.GetText("CloneConsent"), { Traitormod.GetText("CloneAccept"), Traitormod.GetText("CloneDecline") }, client, function(index, response)
-            if response == client and state ~= nil and state.Pending[client] == job then cloning.Answer(client, index == 1) end
-        end, "InfoFrameTabButton.Mission")
-    else
-        Traitormod.SendChatMessage(client, Traitormod.GetText("CloneConsentChat"))
-    end
+    prompts.Prompt(Traitormod.GetText("CloneConsent"), { Traitormod.GetText("CloneAccept"), Traitormod.GetText("CloneDecline") }, client, function(index, response)
+        if response == client and state ~= nil and state.Pending[client] == job then cloning.Answer(client, index == 1) end
+    end, "InfoFrameTabButton.Mission")
     return true
 end
 
