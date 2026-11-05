@@ -12,7 +12,7 @@ event.OnlyOncePerRound = true
 
 local warningSeconds = 20
 local minJamSeconds, maxJamSeconds = 120, 240
-local announcementColor = Color(255, 215, 0, 255) -- one colour for header and text, as other station announcements
+local announcementColor = Color(255, 215, 0, 255) -- shown like the alert codes: a lighter header over the coloured text
 
 local function jam(item, seconds)
     -- the tag check first keeps the pass over every item of the station cheap
@@ -23,7 +23,7 @@ end
 
 local function announce(text, sound)
     local mode = Traitormod.SelectedGamemode
-    mode:SendAlertMessage(text, announcementColor, announcementColor, Traitormod.GetText("CoalitionAnnouncementHeader"))
+    mode:SendAlertMessage(text, announcementColor, nil, Traitormod.GetText("CoalitionAnnouncementHeader"))
     mode:PlayAlertSound(sound)
 end
 

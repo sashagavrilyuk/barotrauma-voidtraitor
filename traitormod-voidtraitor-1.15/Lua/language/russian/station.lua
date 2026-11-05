@@ -17,6 +17,6 @@ language.StationAlertUsage = "Использование: !stationcode green/yel
 language.StationAlertCurrent = "Текущий код угрозы: %s. Для смены используйте !stationcode и название кода."
 language.StationAlertUnchanged = "Этот код угрозы уже действует."
 
-language.CoalitionAnnouncementHeader = "Объявление Командования Коалиции Европы:"
-language.RadiationStormStart = "Вблизи станции зафиксирован выброс заряженных частиц из магнитосферы Юпитера. Радиосвязь может перестать работать."
+language.CoalitionAnnouncementHeader = "ОБЪЯВЛЕНИЕ КОМАНДОВАНИЯ КОАЛИЦИИ ЕВРОПЫ:"
+language.RadiationStormStart = "Внимание! Вблизи станции зафиксирован выброс заряженных частиц из магнитосферы Юпитера. Радиосвязь может перестать работать."
 language.RadiationStormEnd = "Выброс частиц миновал станцию. Радиосвязь восстановлена."
