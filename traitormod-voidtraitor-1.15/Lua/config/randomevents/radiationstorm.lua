@@ -12,7 +12,7 @@ event.OnlyOncePerRound = true
 
 local warningSeconds = 20
 local minJamSeconds, maxJamSeconds = 120, 240
-local coalitionColor = Color(62, 177, 182, 255) -- the Coalition's colour on the game's faction list
+local announcementColor = Color(255, 215, 0, 255) -- one colour for header and text, as other station announcements
 
 local function jam(item, seconds)
     -- the tag check first keeps the pass over every item of the station cheap
@@ -23,8 +23,7 @@ end
 
 local function announce(text, sound)
     local mode = Traitormod.SelectedGamemode
-    local header = Traitormod.FormatText("CoalitionAnnouncementHeader", Traitormod.GetText("CoalitionRadiationService"))
-    mode:SendAlertMessage(text, coalitionColor, nil, header)
+    mode:SendAlertMessage(text, announcementColor, announcementColor, Traitormod.GetText("CoalitionAnnouncementHeader"))
     mode:PlayAlertSound(sound)
 end
 
@@ -38,7 +37,7 @@ event.Start = function ()
     event.JamAt = Traitormod.RoundTime + warningSeconds
     event.EndAt = event.JamAt + jamSeconds
     event.Jammed = false
-    announce(Traitormod.FormatText("RadiationStormStart", warningSeconds, math.floor(jamSeconds / 60 + 0.5)), "commsBlackout")
+    announce(Traitormod.GetText("RadiationStormStart"), "commsBlackout")
 end
 
 event.Think = function ()
