@@ -163,9 +163,20 @@ function console.Snapshot(client, item)
     return snapshot
 end
 
+-- what the window shows changes only with the console's cards and the cards the player carries
+local function cardsKey(client, item)
+    local parts = { console.Revision(item) }
+    for index = 0, client.Character.Inventory.Capacity - 1 do
+        local card = client.Character.Inventory.GetItemAt(index)
+        if card ~= nil and card.GetComponentString("IdCard") ~= nil then parts[#parts + 1] = card.ID end
+    end
+    return table.concat(parts, ",")
+end
+
 function console.Send(client)
     local session = sessions[client]
     if session == nil or not console.Validate(client, session.Item, true) then return end
+    session.CardsKey = cardsKey(client, session.Item)
     local message = Networking.Start("VoidTraitor_IdConsoleSnapshot")
     message.WriteUInt16(UShort(session.Item.ID))
     message.WriteString(json.encode(console.Snapshot(client, session.Item)))
@@ -191,7 +202,8 @@ function console.Action(client, item, action, payload)
     if not console.Validate(client, item) then return false end
     local accepted, reason = true, nil
     if action == "view" then
-        -- the open window asks for a fresh snapshot every second
+        -- the open window asks every second; it gets a snapshot only when its cards changed
+        if cardsKey(client, item) == session.CardsKey then return true end
     elseif action == "insert" or action == "eject" then
         if payload.Slot ~= 0 and payload.Slot ~= 1 then return false end
         local card = item.OwnInventory.GetItemAt(payload.Slot)
