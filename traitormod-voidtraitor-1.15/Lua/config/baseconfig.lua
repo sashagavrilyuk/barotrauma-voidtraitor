@@ -430,6 +430,12 @@ config.GamemodeConfig = {
             PumpFlowMultiplier = 1,
         },
         PointshopCategories = {"traitor", "cultist", "saboteur", "clown"},
+        -- antagonist products that start a random event; Station runs its own events
+        HiddenProducts = {
+            ReactorShutdown = true, SupercapacitorFailure = true, JunctionBoxOverload = true, OxygenSufforin = true,
+            OxygenParalyzant = true, OxygenMorbusine = true, OxygenCyanide = true, turnofflights = true,
+            turnoffcommunications = true, clownmagic = true, randomizelights = true, huskoxygensupply = true,
+        },
         EndOnComplete = false,
         EnableRandomEvents = true,
         TraitorTypeSelectionMode = "Random",

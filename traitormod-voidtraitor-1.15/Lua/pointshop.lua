@@ -307,6 +307,11 @@ ps.CanClientSeeProduct = function(client, product)
         return false
     end
 
+    local hiddenProducts = Traitormod.SelectedGamemode ~= nil and Traitormod.SelectedGamemode.HiddenProducts
+    if hiddenProducts and hiddenProducts[product.Identifier] then
+        return false
+    end
+
     if Traitormod.SelectedGamemode ~= nil and Traitormod.SelectedGamemode.RestrictShopToAccessibleCategories then
         local allowed = false
         for _, category in ipairs(ps.ActiveCategories) do
