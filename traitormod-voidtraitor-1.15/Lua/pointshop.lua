@@ -6,6 +6,12 @@ local textPromptUtils = require("textpromptutils")
 
 local defaultLimit = 999
 
+-- ItemPrefab.GetItemPrefab of LuaCs compares every prefab's name before trying the identifier: it costs
+-- about a millisecond and can return a legacy item that shares the name, so products use identifiers only
+local function findItemPrefab(identifier)
+    if ItemPrefab.Prefabs.ContainsKey(identifier) then return ItemPrefab.Prefabs[identifier] end
+end
+
 ---@enum Pointshop.ProductBuyFailureReason.Enum
 ps.ProductBuyFailureReason = {
     NoPoints = 1,
@@ -49,7 +55,7 @@ ps.ValidateConfig = function ()
                         Traitormod.Error(string.format("PointShop Error: Inside the Category \"%s\" theres a Product with Identifier \"%s\", that is invalid", category.Identifier, product.Identifier))
                     elseif item.Identifier == nil then
                         Traitormod.Error(string.format("PointShop Error: Inside the Category \"%s\" theres a Product with Identifier \"%s\", that has items without an Identifier", category.Identifier, product.Identifier))
-                    elseif ItemPrefab.GetItemPrefab(item.Identifier) == nil then
+                    elseif findItemPrefab(item.Identifier) == nil then
                         Traitormod.Error(string.format("PointShop Error: Inside the Category \"%s\" theres a Product with Identifier \"%s\", that has an invalid item identifier \"%s\"", category.Identifier, product.Identifier or "", item.Identifier or ""))
                     end
                 end
@@ -162,9 +168,8 @@ ps.GetProductName = function (product)
 
     if name then return name end
 
-    if ItemPrefab.GetItemPrefab(product.Identifier) then
-        return ItemPrefab.GetItemPrefab(product.Identifier).Name.Value
-    end
+    local prefab = findItemPrefab(product.Identifier)
+    if prefab ~= nil then return prefab.Name.Value end
 
     return product.Identifier
 end
@@ -365,7 +370,7 @@ end
 ---@return Barotrauma.ItemPrefab?
 ---@return string?
 local function getProductItemPrefab(item)
-    local prefab = ItemPrefab.GetItemPrefab(item.Identifier)
+    local prefab = findItemPrefab(item.Identifier)
     if prefab ~= nil then
         return prefab
     end
@@ -831,7 +836,7 @@ local function getProductDescription(product)
     if product.Items ~= nil then
         for _, item in pairs(product.Items) do
             local identifier = type(item) == "table" and item.Identifier or item
-            local prefab = identifier ~= nil and ItemPrefab.GetItemPrefab(identifier) or nil
+            local prefab = identifier ~= nil and findItemPrefab(identifier) or nil
             if prefab ~= nil and prefab.Description ~= nil and prefab.Description.Value ~= "" then
                 return prefab.Description.Value
             end
