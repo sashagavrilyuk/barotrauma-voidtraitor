@@ -18,8 +18,7 @@ function UI.Send(action, payload)
     Networking.Send(message)
 end
 
-function UI.CloseMenu()
-    UI.Send("close")
+local function removeMenu()
     UI.AwaitingOpen = false
     Common.RemoveGuiComponent(UI.MenuRoot)
     UI.MenuRoot, UI.CurrentMenu, UI.ItemId, UI.Update = nil, nil, nil, nil
@@ -27,9 +26,19 @@ function UI.CloseMenu()
     UI.ResizeState, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides, UI.Rights = nil, nil, nil, nil, nil
 end
 
+function UI.CloseMenu()
+    UI.Send("close")
+    local character = Character.Controlled
+    if character ~= nil and character.SelectedItem ~= nil and character.SelectedItem.ID == UI.ItemId then
+        character.EmulateInput(inputTypes.Deselect)
+        character.SelectedItem = nil
+    end
+    removeMenu()
+end
+
 function UI.Show(itemId, snapshot)
     if UI.ItemId == itemId and UI.Update ~= nil then UI.Update(snapshot) return end
-    UI.CloseMenu()
+    removeMenu()
     UI.ItemId = itemId
     local text = snapshot.Text
     local screenWidth, screenHeight = Common.GetScreenSize()
@@ -54,10 +63,6 @@ function UI.Show(itemId, snapshot)
     end
     Common.CreateWindowHeader(layout, root, text.Title, text.Close, function()
         UI.CloseMenu()
-        if Character.Controlled ~= nil then
-            Character.Controlled.EmulateInput(inputTypes.Deselect)
-            Character.Controlled.SelectedItem = nil
-        end
         return true
     end)
     local cards = GUI.LayoutGroup(Common.CreateRect(1, 1, layout), true)
