@@ -27,7 +27,9 @@
 <entityname.vtcasinocratenormal>Ящик со случайными предметами</entityname.vtcasinocratenormal>
 <entityname.vtcasinocrateweapons>Ящик со случайным оружием</entityname.vtcasinocrateweapons>
 <entityname.vtarmorycrate>Оружейный ящик</entityname.vtarmorycrate>
-<entitydescription.vtarmorycrate>Открывается картой охраны или капитана. Без неё — только взломать.</entitydescription.vtarmorycrate>
+<entitydescription.vtarmorycrate>Открывается картой охраны или капитана.</entitydescription.vtarmorycrate>
+<entityname.vt_guardedcargo>Ценный груз</entityname.vt_guardedcargo>
+<entitydescription.vt_guardedcargo>Контейнер с ценным грузом. Внутри работает сонарный маяк.</entitydescription.vt_guardedcargo>
 <entityname.vtcasinocratemedical>Ящик со случайными медикаментами</entityname.vtcasinocratemedical>
 <entityname.vtcasinocratematerials>Ящик со случайными материалами</entityname.vtcasinocratematerials>
 

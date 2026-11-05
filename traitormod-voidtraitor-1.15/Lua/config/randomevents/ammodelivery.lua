@@ -8,7 +8,8 @@ event.MaxIntensity = 1
 event.ChancePerMinute = 0.05
 event.OnlyOncePerRound = false
 
--- turret types: the loader that shows the sub has one, the tag of its ammo, the usual box and the stronger ones
+-- turret types: the loader that shows the sub has one, the tag of its ammo, the usual box (railgun shells
+-- come one by one, so six make up its box) and the stronger ones
 local turretAmmo = {
     { Loader = "coilgunloader", Tag = "coilgunammo", Regular = "coilgunammobox",
         Strong = { "coilgunammoboxexplosive", "coilgunammoboxpiercing" } },
@@ -18,15 +19,15 @@ local turretAmmo = {
         Strong = { "flakcannonammoboxexplosive", "flakcannondirectionalammobox", "flakcannonammoboxgravity", "flakcannonammoboxphysicorium" } },
     { Loader = "pulselaserloader", Tag = "pulselaserammo", Regular = "pulselaserammobox",
         Strong = { "pulselaserammobox_overcharge", "pulselaserammoboxtrilaser", "pulselaserammobox_emp" } },
-    { Loader = "railgunloader", Tag = "railgunammo", Regular = "railgunshell",
+    { Loader = "railgunloader", Tag = "railgunammo", Regular = "railgunshell", RegularCount = 6,
         Strong = { "railguncanistershell", "gravityshell" } },
 }
-local lowStock = 2 -- boxes of a type on the sub, loaded ones included, below which it gets regular ones
-local regularAmount = 2
+local boxesPerType = 2 -- one to use and one to spare for every turret type on the sub
 -- for a sub without any of the loaders above
 local fallbackItems = {"coilgunammoboxexplosive", "coilgunammoboxexplosive", "coilgunammoboxexplosive", "railgunshell", "railgunshell", "railgunshell", "railgunshell", "railgunshell"}
 
--- Regular ammo for the turret types that run low; the worse it is around the sub, the likelier stronger ammo on top.
+-- Two regular boxes per turret type on the sub, each going to a type the likelier the less of it is aboard
+-- (loaded boxes count), so they can all be one type; the worse it is around the sub, the likelier stronger ammo on top.
 local function pickItems()
     local present, stock = {}, {}
     for _, item in pairs(Submarine.MainSub.GetItems(false)) do
@@ -37,23 +38,33 @@ local function pickItems()
         end
     end
 
-    local intensity = Game.GameSession.EventManager.CurrentIntensity
-    local items, scarcest = {}, nil
+    local types, totalWeight = {}, 0
     for _, ammo in ipairs(turretAmmo) do
         if present[ammo] then
-            local count = stock[ammo] or 0
-            if count < lowStock then
-                for i = 1, regularAmount do table.insert(items, ammo.Regular) end
-            end
-            if math.random() < intensity then
-                table.insert(items, ammo.Strong[math.random(#ammo.Strong)])
-            end
-            if scarcest == nil or count < (stock[scarcest] or 0) then scarcest = ammo end
+            local weight = 1 / ((stock[ammo] or 0) + 1)
+            table.insert(types, { Ammo = ammo, Weight = weight })
+            totalWeight = totalWeight + weight
         end
     end
+    if #types == 0 then return fallbackItems end
 
-    if scarcest == nil then return fallbackItems end
-    if #items == 0 then table.insert(items, scarcest.Regular) end
+    local items = {}
+    for _ = 1, boxesPerType * #types do
+        local roll = math.random() * totalWeight
+        local chosen = types[#types].Ammo
+        for _, entry in ipairs(types) do
+            roll = roll - entry.Weight
+            if roll <= 0 then chosen = entry.Ammo break end
+        end
+        for _ = 1, chosen.RegularCount or 1 do table.insert(items, chosen.Regular) end
+    end
+
+    local intensity = Game.GameSession.EventManager.CurrentIntensity
+    for _, entry in ipairs(types) do
+        if math.random() < intensity then
+            table.insert(items, entry.Ammo.Strong[math.random(#entry.Ammo.Strong)])
+        end
+    end
     return items
 end
 

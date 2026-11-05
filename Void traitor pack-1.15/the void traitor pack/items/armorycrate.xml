@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
-  <!-- opens for security and captain ID cards; anyone else has to break it, and it buzzes while being hit -->
-  <Item name="" identifier="vtarmorycrate" category="Misc" hideinmenus="true" tags="crate" scale="0.5" pickdistance="150" health="150" damagedbymeleeweapons="true" damagedbyprojectiles="true" damagedbyexplosions="true" damagedbyrepairtools="true" impactsoundtag="impact_metal_heavy" waterproof="true" fireproof="true" spritecolor="170,190,255,255" description="">
-    <InventoryIcon texture="%ModDir%/the void traitor pack/items/casino/casino_crates.png" sourcerect="163,0,147,79" origin="0.5,0.5" />
-    <Sprite texture="%ModDir%/the void traitor pack/items/casino/casino_crates.png" sourcerect="163,0,147,79" depth="0.54" origin="0.5,0.5" />
-    <Body width="145" height="75" density="25" />
-    <ItemContainer capacity="20" slotsperrow="5" canbeselected="true" hideitems="true" msg="ItemMsgInteractSelect">
-      <GuiFrame relativesize="0.25,0.35" anchor="Center" style="ItemUI" />
+  <!-- opens for security and captain ID cards and buzzes while being hit; breaking it drops the contents -->
+  <Item name="" identifier="vtarmorycrate" category="Misc" hideinmenus="true" tags="crate" scale="0.5" pickdistance="150" health="150" damagedbymeleeweapons="true" damagedbyprojectiles="true" damagedbyexplosions="true" damagedbyrepairtools="true" impactsoundtag="impact_metal_heavy" waterproof="true" fireproof="true" description="">
+    <Sprite texture="Content/Items/Containers/containers.png" sourcerect="561,377,151,86" depth="0.54" origin="0.5,0.5" />
+    <Body width="150" height="75" density="25" />
+    <Holdable slots="RightHand+LeftHand" holdpos="0,-80" handle1="-30,14" handle2="30,14" aimable="false" msg="ItemMsgPickUpSelect" />
+    <ItemContainer capacity="20" slotsperrow="5" canbeselected="false" hideitems="true" keepopenwhenequipped="true" movableframe="true">
       <RequiredItem items="jobid:securityofficer,jobid:captain" type="Picked" msg="ItemMsgUnauthorizedAccess" />
       <StatusEffect type="OnDamaged" target="This">
         <Sound file="Content/Items/AlarmBuzzerLoop.ogg" range="700" />
@@ -14,6 +13,7 @@
       <StatusEffect type="OnBroken" target="This">
         <DropContainedItems />
         <Sound file="Content/Sounds/Damage/StructureCrunch1.ogg" range="700" />
+        <Remove />
       </StatusEffect>
     </ItemContainer>
   </Item>
