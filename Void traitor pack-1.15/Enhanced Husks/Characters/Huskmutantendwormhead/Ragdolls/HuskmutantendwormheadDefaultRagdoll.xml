@@ -48,7 +48,7 @@
       <StatusEffect type="OnFailure" target="UseTarget">
         <Explosion range="1500.0" force="1" shockwave="true" smoke="false" flames="false" sparks="false" underwaterbubble="false" camerashake="12.0" />
         <SpawnItem identifier="Endwormacidbile" spawnposition="This" count="1" aimspread="0" rotationtype="Limb" rotation="90" />
-        <sound file="%ModDir%/Enhanced Husks/Characters/Huskmutantendworm/spit.ogg" type="OnUse" range="5000" volume="1" dontmuffle="true" />
+        <sound file="%ModDir%/Enhanced Husks/Characters/Huskmutantendworm/spit.ogg" range="5000" volume="1" dontmuffle="true" />
       </StatusEffect>
     </attack>
   </limb>

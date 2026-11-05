@@ -368,18 +368,18 @@
       <StatusEffect type="OnWearing" target="Character" comparison="and">
         <Conditional bracletbuff="gt 25.08" />
         <Conditional bracletbuff="lt 25.1" />
-        <Sound file="Content/Sounds/Damage/Gore1.ogg" type="OnUse" range="500" volume="0.5" />
-        <Sound file="Content/Sounds/Damage/Gore2.ogg" type="OnUse" range="500" volume="0.5" />
-        <Sound file="Content/Sounds/Damage/Gore3.ogg" type="OnUse" range="500" volume="0.5" />
+        <Sound file="Content/Sounds/Damage/Gore1.ogg" range="500" volume="0.5" />
+        <Sound file="Content/Sounds/Damage/Gore2.ogg" range="500" volume="0.5" />
+        <Sound file="Content/Sounds/Damage/Gore3.ogg" range="500" volume="0.5" />
         <ParticleEmitter particle="bloodsplash" anglemin="0" anglemax="360" particleamount="2" velocitymin="0" velocitymax="0" scalemin="0.1" scalemax="0.25" />
         <Affliction identifier="stun" amount="0.001" />
       </StatusEffect>
       <StatusEffect type="OnSevered" target="Character,This" targetlimb="RightArm" comparison="and" condition="-100" checkconditionalalways="true">
         <Conditional bracletbuff="gt 25" />
         <Conditional bracletbuff="lt 49" />
-        <Sound file="Content/Sounds/Damage/Gore1.ogg" type="OnUse" range="500" />
-        <Sound file="Content/Sounds/Damage/Gore2.ogg" type="OnUse" range="500" />
-        <Sound file="Content/Sounds/Damage/Gore3.ogg" type="OnUse" range="500" />
+        <Sound file="Content/Sounds/Damage/Gore1.ogg" range="500" />
+        <Sound file="Content/Sounds/Damage/Gore2.ogg" range="500" />
+        <Sound file="Content/Sounds/Damage/Gore3.ogg" range="500" />
         <Affliction identifier="lacerations" amount="75" />
         <Affliction identifier="bleeding" amount="40" />
         <Affliction identifier="organdamage" amount="15" />
@@ -390,9 +390,9 @@
       <StatusEffect type="OnSevered" target="Character,This" targetlimb="RightArm" comparison="and" condition="-100" checkconditionalalways="true">
         <Conditional bracletbuff="gt 50" />
         <Conditional bracletbuff="lt 74" />
-        <Sound file="Content/Sounds/Damage/Gore1.ogg" type="OnUse" range="500" />
-        <Sound file="Content/Sounds/Damage/Gore2.ogg" type="OnUse" range="500" />
-        <Sound file="Content/Sounds/Damage/Gore3.ogg" type="OnUse" range="500" />
+        <Sound file="Content/Sounds/Damage/Gore1.ogg" range="500" />
+        <Sound file="Content/Sounds/Damage/Gore2.ogg" range="500" />
+        <Sound file="Content/Sounds/Damage/Gore3.ogg" range="500" />
         <Affliction identifier="lacerations" amount="162,5" />
         <Affliction identifier="bleeding" amount="60" />
         <Affliction identifier="organdamage" amount="35" />
@@ -402,9 +402,9 @@
       </StatusEffect>
       <StatusEffect type="OnSevered" target="Character,This" targetlimb="RightArm" comparison="and" condition="-100" checkconditionalalways="true">
         <Conditional bracletbuff="gt 75" />
-        <Sound file="Content/Sounds/Damage/Gore1.ogg" type="OnUse" range="500" />
-        <Sound file="Content/Sounds/Damage/Gore2.ogg" type="OnUse" range="500" />
-        <Sound file="Content/Sounds/Damage/Gore3.ogg" type="OnUse" range="500" />
+        <Sound file="Content/Sounds/Damage/Gore1.ogg" range="500" />
+        <Sound file="Content/Sounds/Damage/Gore2.ogg" range="500" />
+        <Sound file="Content/Sounds/Damage/Gore3.ogg" range="500" />
         <Affliction identifier="lacerations" amount="250" />
         <Affliction identifier="bleeding" amount="100" />
         <Affliction identifier="organdamage" amount="60" />
@@ -1057,11 +1057,11 @@
       <StatusEffect type="OnUse" target="this" setvalue="true" condition="0" />
       <StatusEffect type="Always" delay="5" stackable="false" target="This" checkconditionalalways="true">
         <Conditional condition="eq 3" />
-        <sound file="%ModDir%/More Arts (AOCS)/Items/plush_meow1.ogg" type="OnUse" range="1000" selectionmode="random" volume="1" />
-        <sound file="%ModDir%/More Arts (AOCS)/Items/plush_meow2.ogg" type="OnUse" range="1000" volume="2" />
-        <sound file="%ModDir%/More Arts (AOCS)/Items/plush_meow3.ogg" type="OnUse" range="1000" volume="3" />
-        <sound file="%ModDir%/More Arts (AOCS)/Items/plush_needymeow1.ogg" type="OnUse" range="1000" volume="1.5" />
-        <sound file="%ModDir%/More Arts (AOCS)/Items/plush_needymeow2.ogg" type="OnUse" range="1000" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/plush_meow1.ogg" range="1000" selectionmode="random" volume="1" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/plush_meow2.ogg" range="1000" volume="2" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/plush_meow3.ogg" range="1000" volume="3" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/plush_needymeow1.ogg" range="1000" volume="1.5" />
+        <sound file="%ModDir%/More Arts (AOCS)/Items/plush_needymeow2.ogg" range="1000" volume="1.5" />
       </StatusEffect>
       <StatusEffect type="Always" target="This" Condition="100" disabledeltatime="true" delay="1" stackable="false" checkconditionalalways="true">
         <Conditional condition="eq 0" />
@@ -1868,7 +1868,7 @@
       <GuiFrame relativesize="0.12,0.08" anchor="BottomCenter" absoluteoffset="20,128" style="ItemUI" />
       <Button text="quickcharger.onoff">
         <StatusEffect type="OnUse" target="this">
-          <sound file="Content/Items/Button/Switch1.ogg" type="OnActive" range="500.0" loop="true" volume="0.6" />
+          <sound file="Content/Items/Button/Switch1.ogg" range="500.0" loop="true" volume="0.6" />
         </StatusEffect>
         <StatusEffect type="OnUse" target="this" checkconditionalalways="true" condition="-1000" stackable="false" disabledeltatime="true">
           <Conditional condition="gte 1000" />
@@ -3298,7 +3298,7 @@
       </StatusEffect>
       <StatusEffect type="OnUse" target="This" Condition="-1000000" delay="0.8" />
       <StatusEffect type="OnBroken" target="This">
-        <sound file="%ModDir%/More Arts (AOCS)/Weapons/winchester_reload.ogg" type="OnUse" range="500.0" loop="false" />
+        <sound file="%ModDir%/More Arts (AOCS)/Weapons/winchester_reload.ogg" range="500.0" loop="false" />
       </StatusEffect>
       <StatusEffect type="Always" target="This" Condition="100" disabledeltatime="true" delay="0.55" stackable="false" checkconditionalalways="true">
         <Conditional condition="eq 0" />
@@ -3769,81 +3769,81 @@
         <Conditional condition="eq 0" />
         <ParticleEmitter particle="casingfirearm" particleamount="1" distancemin="5" distancemax="5" anglemin="90" anglemax="150" velocitymin="50" velocitymax="250" CopyEntityAngle="true" colormultiplier="255,0,0,255" />
         <ParticleEmitter particle="artmod_confettimini" copyentityangle="true" anglemin="90" anglemax="150" particleamount="5" velocitymin="50" velocitymax="250" scalemin="0.25" scalemax="0.75" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" type="OnUse" range="3000" selectionmode="Random" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" type="OnUse" range="3000" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" type="OnUse" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" range="3000" selectionmode="Random" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" range="3000" />
       </StatusEffect>
       <StatusEffect type="always" target="this" disabledeltatime="true" condition="1" checkconditionalalways="true" delay="1">
         <Conditional condition="eq 1" />
         <ParticleEmitter particle="casingfirearm" particleamount="1" distancemin="5" distancemax="5" anglemin="90" anglemax="150" velocitymin="50" velocitymax="250" CopyEntityAngle="true" colormultiplier="255,0,0,255" />
         <ParticleEmitter particle="artmod_confettimini" copyentityangle="true" anglemin="90" anglemax="150" particleamount="5" velocitymin="50" velocitymax="250" scalemin="0.25" scalemax="0.75" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" type="OnUse" range="3000" selectionmode="Random" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" type="OnUse" range="3000" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" type="OnUse" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" range="3000" selectionmode="Random" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" range="3000" />
       </StatusEffect>
       <StatusEffect type="always" target="this" disabledeltatime="true" condition="1" checkconditionalalways="true" delay="1">
         <Conditional condition="eq 2" />
         <ParticleEmitter particle="casingfirearm" particleamount="1" distancemin="5" distancemax="5" anglemin="90" anglemax="150" velocitymin="50" velocitymax="250" CopyEntityAngle="true" colormultiplier="255,255,0,255" />
         <ParticleEmitter particle="artmod_confettimini" copyentityangle="true" anglemin="90" anglemax="150" particleamount="5" velocitymin="50" velocitymax="250" scalemin="0.25" scalemax="0.75" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" type="OnUse" range="3000" selectionmode="Random" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" type="OnUse" range="3000" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" type="OnUse" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" range="3000" selectionmode="Random" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" range="3000" />
       </StatusEffect>
       <StatusEffect type="always" target="this" disabledeltatime="true" condition="1" checkconditionalalways="true" delay="1">
         <Conditional condition="eq 3" />
         <ParticleEmitter particle="casingfirearm" particleamount="1" distancemin="5" distancemax="5" anglemin="90" anglemax="150" velocitymin="50" velocitymax="250" CopyEntityAngle="true" colormultiplier="255,0,255,255" />
         <ParticleEmitter particle="artmod_confettimini" copyentityangle="true" anglemin="90" anglemax="150" particleamount="5" velocitymin="50" velocitymax="250" scalemin="0.25" scalemax="0.75" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" type="OnUse" range="3000" selectionmode="Random" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" type="OnUse" range="3000" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" type="OnUse" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" range="3000" selectionmode="Random" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" range="3000" />
       </StatusEffect>
       <StatusEffect type="always" target="this" disabledeltatime="true" condition="1" checkconditionalalways="true" delay="1">
         <Conditional condition="eq 4" />
         <ParticleEmitter particle="casingfirearm" particleamount="1" distancemin="5" distancemax="5" anglemin="90" anglemax="150" velocitymin="50" velocitymax="250" CopyEntityAngle="true" colormultiplier="0,255,255,255" />
         <ParticleEmitter particle="artmod_confettimini" copyentityangle="true" anglemin="90" anglemax="150" particleamount="5" velocitymin="50" velocitymax="250" scalemin="0.25" scalemax="0.75" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" type="OnUse" range="3000" selectionmode="Random" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" type="OnUse" range="3000" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" type="OnUse" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" range="3000" selectionmode="Random" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" range="3000" />
       </StatusEffect>
       <StatusEffect type="always" target="this" disabledeltatime="true" condition="1" checkconditionalalways="true" delay="1">
         <Conditional condition="eq 5" />
         <ParticleEmitter particle="casingfirearm" particleamount="1" distancemin="5" distancemax="5" anglemin="90" anglemax="150" velocitymin="50" velocitymax="250" CopyEntityAngle="true" colormultiplier="155,255,75,255" />
         <ParticleEmitter particle="artmod_confettimini" copyentityangle="true" anglemin="90" anglemax="150" particleamount="5" velocitymin="50" velocitymax="250" scalemin="0.25" scalemax="0.75" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" type="OnUse" range="3000" selectionmode="Random" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" type="OnUse" range="3000" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" type="OnUse" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" range="3000" selectionmode="Random" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" range="3000" />
       </StatusEffect>
       <StatusEffect type="always" target="this" disabledeltatime="true" condition="1" checkconditionalalways="true" delay="1">
         <Conditional condition="eq 6" />
         <ParticleEmitter particle="casingfirearm" particleamount="1" distancemin="5" distancemax="5" anglemin="90" anglemax="150" velocitymin="50" velocitymax="250" CopyEntityAngle="true" colormultiplier="25,195,115,255" />
         <ParticleEmitter particle="artmod_confettimini" copyentityangle="true" anglemin="90" anglemax="150" particleamount="5" velocitymin="50" velocitymax="250" scalemin="0.25" scalemax="0.75" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" type="OnUse" range="3000" selectionmode="Random" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" type="OnUse" range="3000" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" type="OnUse" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" range="3000" selectionmode="Random" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" range="3000" />
       </StatusEffect>
       <StatusEffect type="always" target="this" disabledeltatime="true" condition="1" checkconditionalalways="true" delay="1">
         <Conditional condition="eq 7" />
         <ParticleEmitter particle="casingfirearm" particleamount="1" distancemin="5" distancemax="5" anglemin="90" anglemax="150" velocitymin="50" velocitymax="250" CopyEntityAngle="true" colormultiplier="255,75,255,255" />
         <ParticleEmitter particle="artmod_confettimini" copyentityangle="true" anglemin="90" anglemax="150" particleamount="5" velocitymin="50" velocitymax="250" scalemin="0.25" scalemax="0.75" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" type="OnUse" range="3000" selectionmode="Random" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" type="OnUse" range="3000" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" type="OnUse" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" range="3000" selectionmode="Random" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" range="3000" />
       </StatusEffect>
       <StatusEffect type="always" target="this" disabledeltatime="true" condition="1" checkconditionalalways="true" delay="1">
         <Conditional condition="eq 8" />
         <ParticleEmitter particle="casingfirearm" particleamount="1" distancemin="5" distancemax="5" anglemin="90" anglemax="150" velocitymin="50" velocitymax="250" CopyEntityAngle="true" colormultiplier="95,75,175,255" />
         <ParticleEmitter particle="artmod_confettimini" copyentityangle="true" anglemin="90" anglemax="150" particleamount="5" velocitymin="50" velocitymax="250" scalemin="0.25" scalemax="0.75" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" type="OnUse" range="3000" selectionmode="Random" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" type="OnUse" range="3000" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" type="OnUse" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" range="3000" selectionmode="Random" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" range="3000" />
       </StatusEffect>
       <StatusEffect type="always" target="this" disabledeltatime="true" condition="1" checkconditionalalways="true" delay="1">
         <Conditional condition="eq 9" />
         <ParticleEmitter particle="casingfirearm" particleamount="1" distancemin="5" distancemax="5" anglemin="90" anglemax="150" velocitymin="50" velocitymax="250" CopyEntityAngle="true" colormultiplier="255,255,255,255" />
         <ParticleEmitter particle="artmod_confettimini" copyentityangle="true" anglemin="90" anglemax="150" particleamount="5" velocitymin="50" velocitymax="250" scalemin="0.25" scalemax="0.75" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" type="OnUse" range="3000" selectionmode="Random" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" type="OnUse" range="3000" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" type="OnUse" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" range="3000" selectionmode="Random" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" range="3000" />
       </StatusEffect>
     </RangedWeapon>
     <ItemContainer capacity="1" maxstacksize="1" removecontaineditemsondeconstruct="true" SpawnWithId="clownfunnyshotgunround" hideitems="true" containedstateindicatorstyle="bullet" drawinventory="false" canbeselected="false" ShowConditionInContainedStateIndicator="true">

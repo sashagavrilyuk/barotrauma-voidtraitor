@@ -135,7 +135,7 @@
           <!-- Sound. -->
           <StatusEffect type="OnInserted" target="This" delay="0.3" forceplaysounds="true" allowmultipleinstances="false">
             <ParticleEmitter particle="gunbubbles" particleamount="2" anglemin="180" anglemax="200" velocitymin="10" velocitymax="20" distancemin="-15" distancemax="15" />
-            <Sound file="%ModDir%/Guns Enhanced/RiotShotgun/RiotShotgunShellInsert.ogg" type="OnUse" range="500" volume="1.5" />
+            <Sound file="%ModDir%/Guns Enhanced/RiotShotgun/RiotShotgunShellInsert.ogg" range="500" volume="1.5" />
           </StatusEffect>
           <!-- Sets hand's position to default. -->
           <StatusEffect type="OnInserted" target="This" delay="0.56" handle2="70,-7" setvalue="true" allowmultipleinstances="false" />
@@ -152,7 +152,7 @@
           <!-- Sets the position. -->
           <StatusEffect type="OnInserted" target="This" delay="0.8" holdpos="30,-5" holdangle="30" aimpos="20,-15" aimangle="30" forceplaysounds="true" setvalue="true" allowmultipleinstances="false">
             <Conditional condition="eq 51" />
-            <Sound file="%ModDir%/Guns Enhanced/RiotShotgun/RiotShotgunPumpIn.ogg" type="OnUse" range="500" />
+            <Sound file="%ModDir%/Guns Enhanced/RiotShotgun/RiotShotgunPumpIn.ogg" range="500" />
           </StatusEffect>
           <!-- Sets hand position. -->
           <StatusEffect type="OnInserted" target="This" delay="0.9" handle2="40,-10" stackable="false" allowmultipleinstances="false">
@@ -167,7 +167,7 @@
           <!-- Sound. -->
           <StatusEffect type="OnInserted" target="This" delay="1.2" forceplaysounds="true" allowmultipleinstances="false">
             <Conditional condition="eq 51" />
-            <Sound file="%ModDir%/Guns Enhanced/RiotShotgun/RiotShotgunPumpOut.ogg" type="OnUse" range="500" />
+            <Sound file="%ModDir%/Guns Enhanced/RiotShotgun/RiotShotgunPumpOut.ogg" range="500" />
           </StatusEffect>
           <!-- Pump and hand back to default. -->
           <StatusEffect type="OnInserted" target="This" delay="1.3" handle2="70,-7" condition="100" setvalue="true" allowmultipleinstances="false">

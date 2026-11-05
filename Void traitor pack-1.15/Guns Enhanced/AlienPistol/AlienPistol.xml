@@ -82,11 +82,11 @@
           <StatusEffect type="OnInserted" target="This" delay="0.01" aimpos="30,-20" holdpos="40,-20" aimangle="50" holdangle="50" condition="0" setvalue="true" stackable="false" />
           <!-- Plays the sound. -->
           <StatusEffect type="OnRemoved" target="This" delay="0.01" forceplaysounds="true" stackable="false">
-            <Sound file="%ModDir%/Guns Enhanced/AlienPistol/AlienPistolUnload.ogg" volume="2" type="OnUse" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced/AlienPistol/AlienPistolUnload.ogg" volume="2" range="1000" />
           </StatusEffect>
           <!-- Plays the sound. -->
           <StatusEffect type="OnInserted" target="This" delay="0.9" forceplaysounds="true" stackable="false">
-            <Sound file="%ModDir%/Guns Enhanced/AlienPistol/AlienPistolLoad.ogg" type="OnUse" volume="2" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced/AlienPistol/AlienPistolLoad.ogg" volume="2" range="1000" />
           </StatusEffect>
           <!-- Rotates the gun and moves hands. -->
           <StatusEffect type="OnInserted" target="This" delay="1.1" aimpos="30,-30" holdpos="40,-25" aimangle="-30" holdangle="-30" setvalue="true" stackable="false" />

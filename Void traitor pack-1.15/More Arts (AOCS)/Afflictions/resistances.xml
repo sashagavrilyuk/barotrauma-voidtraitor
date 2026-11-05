@@ -480,9 +480,9 @@ iconcolors="94,54,95;163,73,164;200,191,231">
           <Affliction identifier="explosiondamage" strength="45" />
           <Affliction identifier="stun" strength="1.5" />
         </Explosion>
-        <Sound file="%ModDir%/More Arts (AOCS)/Items/AlienTubus11.ogg" type="OnUse" volume="1" range="3000" selectionmode="Random" />
-        <Sound file="%ModDir%/More Arts (AOCS)/Items/AlienTubus12.ogg" type="OnUse" volume="1" range="3000" />
-        <Sound file="%ModDir%/More Arts (AOCS)/Items/AlienTubus13.ogg" type="OnUse" volume="1" range="3000" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Items/AlienTubus11.ogg" volume="1" range="3000" selectionmode="Random" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Items/AlienTubus12.ogg" volume="1" range="3000" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Items/AlienTubus13.ogg" volume="1" range="3000" />
         <ParticleEmitter particle="artmod_shockwave" AngleMax="360" ScaleMultiplier="1,1" ParticlesPerSecond="1" particleamount="1" ColorMultiplier="255,185,155,255" />
       </StatusEffect>
     </PeriodicEffect>

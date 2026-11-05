@@ -514,8 +514,8 @@
     <Sprite texture="Content/Items/Medical/Medicines.png" sourcerect="0,0,1,1" depth="0.6" origin="0.5,0.5" />
     <ItemComponent capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery">
       <StatusEffect type="always" target="This" disabledeltatime="true" duration="1" stackable="false">
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/screwdriver1.ogg" type="OnUse" range="500" />
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/screwdriver2.ogg" type="OnUse" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/screwdriver1.ogg" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/screwdriver2.ogg" range="500" />
       </StatusEffect>
       <StatusEffect type="always" target="This" disabledeltatime="true" delay="1" stackable="false">
         <Remove />
@@ -527,17 +527,17 @@
     <Sprite texture="Content/Items/Medical/Medicines.png" sourcerect="0,0,1,1" depth="0.6" origin="0.5,0.5" />
     <ItemComponent capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery">
       <StatusEffect type="always" target="This" disabledeltatime="true" duration="1" stackable="false">
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt1.ogg" type="OnUse" range="500" />
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt2.ogg" type="OnUse" range="500" />
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt3.ogg" type="OnUse" range="500" />
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt4.ogg" type="OnUse" range="500" />
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt5.ogg" type="OnUse" range="500" />
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt6.ogg" type="OnUse" range="500" />
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt7.ogg" type="OnUse" range="500" />
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt8.ogg" type="OnUse" range="500" />
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt9.ogg" type="OnUse" range="500" />
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt10.ogg" type="OnUse" range="500" />
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt11.ogg" type="OnUse" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt1.ogg" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt2.ogg" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt3.ogg" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt4.ogg" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt5.ogg" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt6.ogg" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt7.ogg" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt8.ogg" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt9.ogg" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt10.ogg" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberblunt11.ogg" range="500" />
       </StatusEffect>
       <StatusEffect type="always" target="This" disabledeltatime="true" delay="1" stackable="false">
         <Remove />
@@ -549,9 +549,9 @@
     <Sprite texture="Content/Items/Medical/Medicines.png" sourcerect="0,0,1,1" depth="0.6" origin="0.5,0.5" />
     <ItemComponent capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery">
       <StatusEffect type="always" target="This" disabledeltatime="true" duration="1" stackable="false">
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberbite1.ogg" type="OnUse" range="500" />
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberbite2.ogg" type="OnUse" range="500" />
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberbite3.ogg" type="OnUse" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberbite1.ogg" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberbite2.ogg" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberbite3.ogg" range="500" />
       </StatusEffect>
       <StatusEffect type="always" target="This" disabledeltatime="true" delay="1" stackable="false">
         <Remove />
@@ -563,9 +563,9 @@
     <Sprite texture="Content/Items/Medical/Medicines.png" sourcerect="0,0,1,1" depth="0.6" origin="0.5,0.5" />
     <ItemComponent capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery">
       <StatusEffect type="always" target="This" disabledeltatime="true" duration="1" stackable="false">
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberdeath1.ogg" type="OnUse" range="500" />
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberdeath2.ogg" type="OnUse" range="500" />
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberdeath3.ogg" type="OnUse" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberdeath1.ogg" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberdeath2.ogg" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/cyberdeath3.ogg" range="500" />
       </StatusEffect>
       <StatusEffect type="always" target="This" disabledeltatime="true" delay="1" stackable="false">
         <Remove />
@@ -577,11 +577,11 @@
     <Sprite texture="Content/Items/Medical/Medicines.png" sourcerect="0,0,1,1" depth="0.6" origin="0.5,0.5" />
     <ItemComponent capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery">
       <StatusEffect type="always" target="This" disabledeltatime="true" duration="1" stackable="false">
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/welding1.ogg" type="OnUse" range="500" />
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/welding2.ogg" type="OnUse" range="500" />
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/welding3.ogg" type="OnUse" range="500" />
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/welding4.ogg" type="OnUse" range="500" />
-        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/welding5.ogg" type="OnUse" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/welding1.ogg" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/welding2.ogg" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/welding3.ogg" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/welding4.ogg" range="500" />
+        <Sound file="%ModDir%/NT Cybernetics Enhanced Forked/Sound/welding5.ogg" range="500" />
       </StatusEffect>
       <StatusEffect type="always" target="This" disabledeltatime="true" delay="1" stackable="false">
         <Remove />
@@ -594,11 +594,11 @@
     <Sprite texture="Content/Items/Medical/Medicines.png" sourcerect="0,0,1,1" depth="0.6" origin="0.5,0.5" />
     <ItemComponent capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery">
       <StatusEffect type="always" target="This" disabledeltatime="true" duration="1" stackable="false">
-        <Sound file="Content/Items/Electricity/Zap1.ogg" type="OnUse" range="500" />
-        <Sound file="Content/Items/Electricity/Zap2.ogg" type="OnUse" range="500" />
-        <Sound file="Content/Items/Electricity/Zap3.ogg" type="OnUse" range="500" />
-        <Sound file="Content/Items/Electricity/Zap4.ogg" type="OnUse" range="500" />
-        <Sound file="Content/Items/Electricity/Zap5.ogg" type="OnUse" range="500" />
+        <Sound file="Content/Items/Electricity/Zap1.ogg" range="500" />
+        <Sound file="Content/Items/Electricity/Zap2.ogg" range="500" />
+        <Sound file="Content/Items/Electricity/Zap3.ogg" range="500" />
+        <Sound file="Content/Items/Electricity/Zap4.ogg" range="500" />
+        <Sound file="Content/Items/Electricity/Zap5.ogg" range="500" />
         <Explosion range="50.0" stun="0" force="5.0" smoke="false" flash="true" flames="false" shockwave="false" sparks="true" underwaterbubble="false" />
         <ParticleEmitter particle="spark" particleburstamount="5" anglemin="0" anglemax="359" velocitymin="100" velocitymax="500" scalemin="0.5" scalemax="1" />
       </StatusEffect>

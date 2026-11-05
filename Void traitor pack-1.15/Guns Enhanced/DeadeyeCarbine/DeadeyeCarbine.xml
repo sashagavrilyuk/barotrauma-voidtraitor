@@ -102,7 +102,7 @@
           <StatusEffect type="OnInserted" target="This" handle2="26,-5" delay="0.3" setvalue="true" />
           <!-- Sets gun's and hand's position, makes a sound. -->
           <StatusEffect type="OnInserted" target="This" handle2="0,-40" holdangle="40" holdpos="15,-15" aimangle="45" aimpos="25,0" delay="0.7" condition="0" setvalue="true" forceplaysounds="true">
-            <Sound file="%ModDir%/Guns Enhanced/MachinePistol/MachinePistolMagInsert.ogg" type="OnUse" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced/MachinePistol/MachinePistolMagInsert.ogg" range="1000" />
           </StatusEffect>
           <!-- Makes the magazine visible. -->
           <StatusEffect type="OnInserted" target="This" hideitems="false" delay="0.8" setvalue="true" />
@@ -112,17 +112,17 @@
           <StatusEffect type="OnInserted" target="This" handle1="-20,0" delay="1.1" setvalue="true" />
           <!-- Eject port work. -->
           <StatusEffect type="OnInserted" target="This" handle1="1,0" condition="75" delay="1.5" forceplaysounds="true">
-            <Sound file="%ModDir%/Guns Enhanced/DeadeyeCarbine/DeadeyeCarbineEjectPortClose.ogg" type="OnUse" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced/DeadeyeCarbine/DeadeyeCarbineEjectPortClose.ogg" range="1000" />
             <ParticleEmitter particle="gunbubbles" particleamount="2" anglemin="80" anglemax="100" velocitymin="10" velocitymax="20" />
           </StatusEffect>
           <!-- End. Sets everything to default values. -->
           <StatusEffect type="OnInserted" target="This" handle1="-30,-25" handle2="26,-5" holdangle="-35" holdpos="40,-10" aimangle="0" aimpos="40,0" condition="100" delay="2" setvalue="true" />
           <!-- If the magazine is removed/swapped, sets the condition to 1. -->
           <StatusEffect type="OnRemoved" target="This" condition="1" delay="0.01" setvalue="true" forceplaysounds="true">
-            <Sound file="%ModDir%/Guns Enhanced/MachinePistol/MachinePistolMagDetach.ogg" type="OnUse" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced/MachinePistol/MachinePistolMagDetach.ogg" range="1000" />
           </StatusEffect>
           <StatusEffect type="OnRemoved" target="This" delay="0.01" forceplaysounds="true">
-            <Sound file="%ModDir%/Guns Enhanced/DeadeyeCarbine/DeadeyeCarbineEjectPortOpen.ogg" type="OnUse" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced/DeadeyeCarbine/DeadeyeCarbineEjectPortOpen.ogg" range="1000" />
           </StatusEffect>
         </Containable>
         <SlotIcon slotindex="0" texture="Content/UI/StatusMonitorUI.png" sourcerect="256,448,64,64" origin="0.5,0.5" />

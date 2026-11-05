@@ -1171,7 +1171,7 @@
       </StatusEffect>
       <StatusEffect target="Character">
         <Conditional IsLocalPlayer="True" />
-        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/Painkiller-LoonyPark.ogg" selectionmode="Random" loop="true" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Afflictions/Painkiller-LoonyPark.ogg" selectionmode="Random" loop="true" stream="true" />
       </StatusEffect>
     </Effect>
     <PeriodicEffect mininterval="4" maxinterval="8">
@@ -1588,7 +1588,7 @@
     <Effect minstrength="0" maxstrength="5" strengthchange="-5">
       <StatusEffect target="Character" type="OnActive">
         <Conditional IsLocalPlayer="True" />
-        <Sound file="%ModDir%/More Arts (AOCS)/TraitorItems/EndTimes.ogg" loop="true" />
+        <Sound file="%ModDir%/More Arts (AOCS)/TraitorItems/EndTimes.ogg" loop="true" stream="true" />
       </StatusEffect>
     </Effect>
     <icon texture="Content/UI/CommandUIAtlas.png" sourcerect="768,896,128,128" origin="0,0" />

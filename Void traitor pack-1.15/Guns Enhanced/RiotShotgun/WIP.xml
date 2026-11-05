@@ -122,7 +122,7 @@
         <!-- Sound. -->
         <StatusEffect type="OnActive" target="This" delay="0.2" forceplaysounds="true">
           <ParticleEmitter particle="gunbubbles" particleamount="2" anglemin="180" anglemax="200" velocitymin="10" velocitymax="20" distancemin="-15" distancemax="15" />
-          <Sound file="%ModDir%/Guns Enhanced/RiotShotgun/RiotShotgunShellInsert.ogg" type="OnUse" range="500" volume="1.5" />
+          <Sound file="%ModDir%/Guns Enhanced/RiotShotgun/RiotShotgunShellInsert.ogg" range="500" volume="1.5" />
         </StatusEffect>
         <!-- Sets hand's position to default. -->
         <StatusEffect type="OnActive" target="This" delay="0.4" handle2="70,-7" setvalue="true" />
@@ -160,13 +160,13 @@
         <StatusEffect type="OnActive" target="This" delay="0.9" holdpos="30,-5" holdangle="30" aimpos="20,-15" aimangle="30" forceplaysounds="true" conditionalcomparison="and" setvalue="true">
           <Conditional DualWieldReloadTimePenaltyMultiplier="eq 1" />
           <Conditional DualWieldAccuracyPenalty="eq 0" />
-          <Sound file="%ModDir%/Guns Enhanced/RiotShotgun/RiotShotgunPumpIn.ogg" type="OnUse" range="500" />
+          <Sound file="%ModDir%/Guns Enhanced/RiotShotgun/RiotShotgunPumpIn.ogg" range="500" />
         </StatusEffect>
         <!-- Sets hand position. Sound -->
         <StatusEffect type="OnActive" target="This" delay="1" handle2="40,-10" forceplaysounds="true" setvalue="true">
           <Conditional DualWieldReloadTimePenaltyMultiplier="eq 1" />
           <Conditional DualWieldAccuracyPenalty="eq 0" />
-          <Sound file="%ModDir%/Guns Enhanced/RiotShotgun/RiotShotgunPumpOut.ogg" type="OnUse" range="500" />
+          <Sound file="%ModDir%/Guns Enhanced/RiotShotgun/RiotShotgunPumpOut.ogg" range="500" />
         </StatusEffect>
         <!-- Pump frame animation and particle. -->
         <StatusEffect type="OnActive" target="This" delay="1.2" condition="50" setvalue="true">

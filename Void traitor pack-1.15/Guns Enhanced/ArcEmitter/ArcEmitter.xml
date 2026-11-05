@@ -88,13 +88,13 @@
           <StatusEffect type="OnInserted" target="This" condition="0" hideitems="true" holdpos="40,-15" aimpos="40,-7" aimangle="-5" holdangle="-5" handle2="-24,20" setvalue="true" stackable="false" />
           <!-- Sound. -->
           <StatusEffect type="OnRemoved" target="This" delay="0.01" forceplaysounds="true" stackable="false">
-            <Sound file="%ModDir%/Guns Enhanced/ArcEmitter/ArcEmitterUnload.ogg" type="OnUse" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced/ArcEmitter/ArcEmitterUnload.ogg" range="1000" />
           </StatusEffect>
           <!-- Sets the hand's position. -->
           <StatusEffect type="OnInserted" target="This" delay="0.7" handle2="-24,40" setvalue="true" stackable="false" />
           <!-- Sets the hand's position to insert the battery. -->
           <StatusEffect type="OnInserted" target="This" delay="0.9" handle2="-24,20" setvalue="true" stackable="false">
-            <Sound file="%ModDir%/Guns Enhanced/ArcEmitter/ArcEmitterload.ogg" type="OnUse" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced/ArcEmitter/ArcEmitterload.ogg" range="1000" />
           </StatusEffect>
           <!-- Explosion, particles and a sound.
 		Also shows the battery. -->

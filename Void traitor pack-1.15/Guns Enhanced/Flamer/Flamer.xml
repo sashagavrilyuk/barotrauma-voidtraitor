@@ -120,13 +120,13 @@
           <StatusEffect type="OnInserted" target="This" AllowAccess="true" delay="2.0" setvalue="true" />
           <!-- Plays the sound of the can is removed. -->
           <StatusEffect type="OnRemoved" target="This" delay="0.01" forceplaysounds="true" stackable="false">
-            <Sound file="%ModDir%/Guns Enhanced/Flamer/FlamerUnload.ogg" type="OnUse" volume="3" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced/Flamer/FlamerUnload.ogg" volume="3" range="1000" />
           </StatusEffect>
           <!-- Makes the fuel can invisible. -->
           <StatusEffect type="OnInserted" target="This" hideitems="true" handle2="8,-6" aimangle="10" holdangle="10" holdpos="30,-20" condition="0" delay="0.01" setvalue="true" stackable="false" />
           <!-- Sound and hand animation. -->
           <StatusEffect type="OnInserted" target="This" delay="0.9" handle2="8,-30" setvalue="true" forceplaysounds="true" stackable="false">
-            <Sound file="%ModDir%/Guns Enhanced/Flamer/FlamerLoad.ogg" type="OnUse" volume="3" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced/Flamer/FlamerLoad.ogg" volume="3" range="1000" />
           </StatusEffect>
           <!-- Hand animation. -->
           <StatusEffect type="OnInserted" target="This" delay="1.2" handle2="8,-11" stackable="false" />

@@ -103,7 +103,7 @@
           <StatusEffect type="OnInserted" target="This" handle2="60,8" holdangle="25" aimangle="25" delay="0.3" setvalue="true" />
           <!-- Eject port open sound and hand movement. -->
           <StatusEffect type="OnInserted" target="This" handle2="40,8" delay="0.8" setvalue="true" forceplaysounds="true">
-            <Sound file="%ModDir%/Guns Enhanced Unofficial Addon/MercenaryAutoshotgun/AutoshotgunEjectPortOpen.ogg" type="OnUse" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced Unofficial Addon/MercenaryAutoshotgun/AutoshotgunEjectPortOpen.ogg" range="1000" />
           </StatusEffect>
           <!-- Eject port open animation. -->
           <StatusEffect type="OnInserted" target="This" condition="66" delay="0.9" setvalue="true" />
@@ -111,7 +111,7 @@
           <StatusEffect type="OnInserted" target="This" handle2="60,-10" holdangle="20" aimangle="20" delay="1.2" setvalue="true" />
           <!-- Shell insert sound and hand movement. -->
           <StatusEffect type="OnInserted" target="This" handle2="40,-10" delay="1.5" setvalue="true" forceplaysounds="true">
-            <Sound file="%ModDir%/Guns Enhanced Unofficial Addon/MercenaryAutoshotgun/RiotShotgunShellInsert.ogg" type="OnUse" range="1000" volume="2" />
+            <Sound file="%ModDir%/Guns Enhanced Unofficial Addon/MercenaryAutoshotgun/RiotShotgunShellInsert.ogg" range="1000" volume="2" />
           </StatusEffect>
           <!-- Shell insert animation. -->
           <StatusEffect type="OnInserted" target="This" condition="33" delay="1.6" setvalue="true" />
@@ -119,7 +119,7 @@
           <StatusEffect type="OnInserted" target="This" handle2="40,8" holdangle="25" aimangle="25" delay="2" setvalue="true" />
           <!-- Eject port close sound and hand movement. -->
           <StatusEffect type="OnInserted" target="This" handle2="60,8" delay="2.4" setvalue="true" forceplaysounds="true">
-            <Sound file="%ModDir%/Guns Enhanced Unofficial Addon/MercenaryAutoshotgun/AutoshotgunEjectPortClose.ogg" type="OnUse" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced Unofficial Addon/MercenaryAutoshotgun/AutoshotgunEjectPortClose.ogg" range="1000" />
           </StatusEffect>
           <!-- Eject port open animation. -->
           <StatusEffect type="OnInserted" target="This" condition="100" delay="2.5" setvalue="true" />

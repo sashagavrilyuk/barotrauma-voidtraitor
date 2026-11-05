@@ -77,8 +77,8 @@
     </LightComponent>
     <ItemComponent characterusable="false">
       <StatusEffect type="OnBroken" targettype="This" disabledeltatime="true">
-        <sound file="Content/Items/Weapons/ExplosionMedium1.ogg" type="OnUse" range="10000" selectionmode="All" />
-        <sound file="Content/Items/Weapons/ExplosionDebris1.ogg" type="OnUse" range="10000" />
+        <sound file="Content/Items/Weapons/ExplosionMedium1.ogg" range="10000" selectionmode="All" />
+        <sound file="Content/Items/Weapons/ExplosionDebris1.ogg" range="10000" />
         <ParticleEmitter particle="weldspark" particleamount="20" distancemin="0" distancemax="128" anglemin="-360" anglemax="360" scalemin="2.5" scalemax="5.0" velocitymin="250" velocitymax="500" />
         <ParticleEmitter particle="explosionfire" particleamount="20" distancemin="0" distancemax="128" anglemin="-360" anglemax="360" scalemin="1.5" scalemax="3.5" velocitymin="250" velocitymax="500" />
         <ParticleEmitter particle="explosionsmoke" particleamount="4" distancemin="0" distancemax="128" anglemin="-360" anglemax="360" scalemin="2.5" scalemax="5.0" velocitymin="250" velocitymax="500" />

@@ -228,7 +228,7 @@
               <Conditional targetcontainer="true" skillrequirement="true" weapons="lt 40" />
               <Conditional targetcontainer="true" isplayer="true" />
               <ParticleEmitter particle="gunbubbles" particleamount="3" anglemin="180" anglemax="200" velocitymin="10" velocitymax="20" distancemin="0" distancemax="10" />
-              <Sound file="%ModDir%/Guns Enhanced/Rifle/RifleEjectPortOpen.ogg" type="OnUse" range="1000" />
+              <Sound file="%ModDir%/Guns Enhanced/Rifle/RifleEjectPortOpen.ogg" range="1000" />
             </StatusEffect>
             <!-- Mid-status effect animation. -->
             <StatusEffect type="OnInserted" target="This" delay="0.4" condition="50" setvalue="true" conditionalcomparison="and">
@@ -244,7 +244,7 @@
             <StatusEffect type="OnInserted" target="This" delay="0.9" forceplaysounds="true" conditionalcomparison="and">
               <Conditional targetcontainer="true" skillrequirement="true" weapons="lt 40" />
               <Conditional targetcontainer="true" isplayer="true" />
-              <Sound file="%ModDir%/Guns Enhanced/Rifle/RifleRoundInsert.ogg" type="OnUse" range="1000" />
+              <Sound file="%ModDir%/Guns Enhanced/Rifle/RifleRoundInsert.ogg" range="1000" />
               <ParticleEmitter particle="gunbubbles" particleamount="3" anglemin="180" anglemax="200" velocitymin="10" velocitymax="20" distancemin="0" distancemax="10" />
             </StatusEffect>
             <!-- Sets the hand to open eject port position. -->
@@ -255,7 +255,7 @@
             <!-- Sets the hand to closed eject port position. -->
             <StatusEffect type="OnInserted" target="This" delay="1.6" handle2="-5,-10" setvalue="true" forceplaysounds="true" conditionalcomparison="and">
               <Conditional targetcontainer="true" skillrequirement="true" weapons="lt 40" />
-              <Sound file="%ModDir%/Guns Enhanced/Rifle/RifleEjectPortClose.ogg" type="OnUse" range="1000" />
+              <Sound file="%ModDir%/Guns Enhanced/Rifle/RifleEjectPortClose.ogg" range="1000" />
               <Conditional targetcontainer="true" isplayer="true" />
             </StatusEffect>
             <!-- Mid-status effect animation. -->
@@ -280,7 +280,7 @@
             <StatusEffect type="OnInserted" target="This" delay="0.3" handle2="-20,0" setvalue="true" forceplaysounds="true" conditionalcomparison="and">
               <Conditional targetcontainer="true" skillrequirement="true" weapons="gte 40" />
               <Conditional targetcontainer="true" isplayer="true" />
-              <Sound file="%ModDir%/Guns Enhanced/Rifle/RifleEjectPortOpen.ogg" type="OnUse" range="1000" />
+              <Sound file="%ModDir%/Guns Enhanced/Rifle/RifleEjectPortOpen.ogg" range="1000" />
             </StatusEffect>
             <!-- Mid-status effect animation. -->
             <StatusEffect type="OnInserted" target="This" delay="0.4" condition="50" setvalue="true" conditionalcomparison="and">
@@ -296,7 +296,7 @@
             <StatusEffect type="OnInserted" target="This" delay="0.9" forceplaysounds="true" conditionalcomparison="and">
               <Conditional targetcontainer="true" skillrequirement="true" weapons="gte 40" />
               <Conditional targetcontainer="true" isplayer="true" />
-              <Sound file="%ModDir%/Guns Enhanced/Rifle/RifleRoundInsert.ogg" type="OnUse" range="1000" />
+              <Sound file="%ModDir%/Guns Enhanced/Rifle/RifleRoundInsert.ogg" range="1000" />
               <ParticleEmitter particle="gunbubbles" particleamount="3" anglemin="180" anglemax="200" velocitymin="10" velocitymax="20" distancemin="0" distancemax="10" />
             </StatusEffect>
             <!-- Sets the hand to open eject port position. -->
@@ -307,7 +307,7 @@
             <!-- Sets the hand to closed eject port position. -->
             <StatusEffect type="OnInserted" target="This" delay="1.6" handle2="-5,-10" setvalue="true" forceplaysounds="true" conditionalcomparison="and">
               <Conditional targetcontainer="true" skillrequirement="true" weapons="gte 40" />
-              <Sound file="%ModDir%/Guns Enhanced/Rifle/RifleEjectPortClose.ogg" type="OnUse" range="1000" />
+              <Sound file="%ModDir%/Guns Enhanced/Rifle/RifleEjectPortClose.ogg" range="1000" />
               <ParticleEmitter particle="gunbubbles" particleamount="3" anglemin="180" anglemax="200" velocitymin="10" velocitymax="20" distancemin="0" distancemax="10" />
               <Conditional targetcontainer="true" isplayer="true" />
             </StatusEffect>

@@ -144,14 +144,14 @@
           <!-- Sets gun position and hand to magazine. -->
           <StatusEffect type="OnInserted" target="This" handle2="-3,-30" condition="0" handle1="-15,-5" holdpos="40,0" aimpos="50,1" holdangle="-10" aimangle="-10" delay="0.01" setvalue="true">
             <Conditional DualWieldAccuracyPenalty="eq 1" />
-            <Sound file="%ModDir%/Guns Enhanced Unofficial Addon/DiversAssaultRifle/AssaultRifleEjectPortOpen.ogg" type="OnUse" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced Unofficial Addon/DiversAssaultRifle/AssaultRifleEjectPortOpen.ogg" range="1000" />
           </StatusEffect>
           <StatusEffect type="OnInserted" target="This" condition="50" delay="0.1" setvalue="true">
             <Conditional DualWieldAccuracyPenalty="eq 1" />
           </StatusEffect>
           <!-- Plays magazine insert sound. -->
           <StatusEffect type="OnInserted" target="This" delay="0.4" forceplaysounds="true">
-            <Sound file="%ModDir%/Guns Enhanced Unofficial Addon/DiversAssaultRifle/AssaultRifleMagAttach.ogg" type="OnUse" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced Unofficial Addon/DiversAssaultRifle/AssaultRifleMagAttach.ogg" range="1000" />
             <Conditional DualWieldAccuracyPenalty="eq 1" />
           </StatusEffect>
           <!-- Sets hand's position to magazine. -->
@@ -169,7 +169,7 @@
           </StatusEffect>
           <!-- Plays sound. -->
           <StatusEffect type="OnInserted" target="This" delay="1.4" setvalue="true" forceplaysounds="true">
-            <Sound file="%ModDir%/Guns Enhanced Unofficial Addon/DiversAssaultRifle/AssaultRifleEjectPortClose.ogg" type="OnUse" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced Unofficial Addon/DiversAssaultRifle/AssaultRifleEjectPortClose.ogg" range="1000" />
             <Conditional DualWieldAccuracyPenalty="eq 1" />
           </StatusEffect>
           <!-- Closes eject port. -->
@@ -183,7 +183,7 @@
           </StatusEffect>
           <!-- Plays magazine insert sound. -->
           <StatusEffect type="OnInserted" target="This" delay="0.4" forceplaysounds="true">
-            <Sound file="%ModDir%/Guns Enhanced Unofficial Addon/DiversAssaultRifle/AssaultRifleMagAttach.ogg" type="OnUse" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced Unofficial Addon/DiversAssaultRifle/AssaultRifleMagAttach.ogg" range="1000" />
             <Conditional DualWieldAccuracyPenalty="eq 2" />
           </StatusEffect>
           <!-- Sets hand's position to magazine. -->

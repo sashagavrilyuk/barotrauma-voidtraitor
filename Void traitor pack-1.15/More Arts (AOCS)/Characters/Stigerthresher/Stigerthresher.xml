@@ -40,8 +40,8 @@
     <Affliction identifier="acidburnresist" strength="10" />
   </StatusEffect>
   <StatusEffect target="This" type="OnSpawn" stackable="false">
-    <sound file="%ModDir%/More Arts (AOCS)/Items/rotspawn1.ogg" type="OnBroken" range="1000" selectionmode="random" />
-    <sound file="%ModDir%/More Arts (AOCS)/Items/rotspawn2.ogg" type="OnBroken" range="1000" />
+    <sound file="%ModDir%/More Arts (AOCS)/Items/rotspawn1.ogg" range="1000" selectionmode="random" />
+    <sound file="%ModDir%/More Arts (AOCS)/Items/rotspawn2.ogg" range="1000" />
     <ParticleEmitter particle="artmod_artbloodexplode" distancemax="0" anglemin="0" anglemax="360" particlespersecond="1" particleamount="1" velocitymin="1" velocitymax="10" scalemin="4" scalemax="4" />
     <ParticleEmitter particle="artmod_artbloodexplodeA" distancemax="0" anglemin="0" anglemax="360" particlespersecond="1" particleamount="1" velocitymin="1" velocitymax="10" scalemin="3" scalemax="3" />
   </StatusEffect>

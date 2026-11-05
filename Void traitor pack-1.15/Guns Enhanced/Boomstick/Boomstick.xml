@@ -88,7 +88,7 @@
           <StatusEffect type="OnInserted" target="This" holdangle="0" holdpos="25,-10" aimpos="25,-10" aimangle="-5" condition="0" handle2="80,-10" setvalue="true" forceplaysounds="true" delay="0.01" />
           <!-- Hand movement to break open the boomstick. Plays opening sound. -->
           <StatusEffect type="OnInserted" target="This" delay="0.4" handle2="70,-40" setvalue="true" forceplaysounds="true">
-            <Sound file="%ModDir%/Guns Enhanced/Boomstick/BoomstickOpen.ogg" type="OnUse" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced/Boomstick/BoomstickOpen.ogg" range="1000" />
           </StatusEffect>
           <!-- Breaks open the boomstick. -->
           <StatusEffect type="OnInserted" target="This" delay="0.5" condition="2" setvalue="true" />
@@ -97,29 +97,29 @@
           <!-- Based off condition, different number of shells is dropped. -->
           <StatusEffect type="OnInserted" target="This" delay="1" forceplaysounds="true" stackable="false">
             <Conditional condition="eq 100" />
-            <Sound file="%ModDir%/Guns Enhanced/Boomstick/BoomstickUnload.ogg" type="OnUse" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced/Boomstick/BoomstickUnload.ogg" range="1000" />
           </StatusEffect>
           <StatusEffect type="OnInserted" target="This" delay="1" forceplaysounds="true" stackable="false">
             <Conditional condition="eq 66" />
             <ParticleEmitter particle="shotgunshellcasing" particleamount="1" anglemin="170" anglemax="190" velocitymin="150" velocitymax="200" CopyEntityAngle="true" />
             <ParticleEmitter particle="gunbubbles" particleamount="1" anglemin="180" anglemax="200" velocitymin="10" velocitymax="20" />
-            <Sound file="%ModDir%/Guns Enhanced/Boomstick/BoomstickUnload.ogg" type="OnUse" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced/Boomstick/BoomstickUnload.ogg" range="1000" />
           </StatusEffect>
           <StatusEffect type="OnInserted" target="This" delay="1" forceplaysounds="true" stackable="false">
             <Conditional condition="eq 33" />
             <ParticleEmitter particle="shotgunshellcasing" particleamount="2" anglemin="170" anglemax="190" velocitymin="150" velocitymax="200" CopyEntityAngle="true" />
             <ParticleEmitter particle="gunbubbles" particleamount="2" anglemin="180" anglemax="200" velocitymin="10" velocitymax="20" />
-            <Sound file="%ModDir%/Guns Enhanced/Boomstick/BoomstickUnload.ogg" type="OnUse" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced/Boomstick/BoomstickUnload.ogg" range="1000" />
           </StatusEffect>
           <!-- Rotates the shotgun back. -->
           <StatusEffect type="OnInserted" target="This" delay="1.6" holdangle="0" aimangle="-5" setvalue="true" />
           <!-- Hand movement to insert the shells. -->
           <StatusEffect type="OnInserted" target="This" delay="1.9" handle2="1,-10" setvalue="true" forceplaysounds="true">
-            <Sound file="%ModDir%/Guns Enhanced/Boomstick/BoomstickLoad.ogg" type="OnUse" range="1000" volume="1.5" />
+            <Sound file="%ModDir%/Guns Enhanced/Boomstick/BoomstickLoad.ogg" range="1000" volume="1.5" />
           </StatusEffect>
           <!-- Hand movement to close the boomstick. Plays the sound. -->
           <StatusEffect type="OnInserted" target="This" delay="2.4" handle2="80,-10" setvalue="true" forceplaysounds="true">
-            <Sound file="%ModDir%/Guns Enhanced/Boomstick/BoomstickClose.ogg" type="OnUse" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced/Boomstick/BoomstickClose.ogg" range="1000" />
           </StatusEffect>
           <!-- Closes the boomstick. -->
           <StatusEffect type="OnInserted" target="This" delay="2.5" condition="100" setvalue="true" />

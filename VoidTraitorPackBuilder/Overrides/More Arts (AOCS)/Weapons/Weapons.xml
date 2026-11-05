@@ -689,7 +689,7 @@
         <ParticleEmitter particle="casingfirearm" particleamount="1" distancemin="10" distancemax="10" anglemin="90" anglemax="150" velocitymin="50" velocitymax="250" CopyEntityAngle="true" />
       </StatusEffect>
       <StatusEffect type="OnBroken" target="This">
-        <sound file="%ModDir%/More Arts (AOCS)/Weapons/winchester_reload.ogg" type="OnUse" range="500.0" loop="false" />
+        <sound file="%ModDir%/More Arts (AOCS)/Weapons/winchester_reload.ogg" range="500.0" loop="false" />
       </StatusEffect>
       <StatusEffect type="Always" target="This" Condition="100" disabledeltatime="true" delay="0.55" stackable="false" checkconditionalalways="true">
         <Conditional condition="eq 0" />
@@ -747,30 +747,30 @@
       <StatusEffect type="always" target="this" disabledeltatime="true" condition="25" checkconditionalalways="true" delay="1">
         <Conditional condition="eq 75" />
         <ParticleEmitter particle="casingfirearm" colormultiplier="0.5,0.5,0.5,1" distancemin="15" distancemax="15" ScaleMultiplier="1.5,1.5" particleamount="1" anglemin="90" anglemax="150" velocitymin="50" velocitymax="250" CopyEntityAngle="true" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" type="OnUse" range="3000" selectionmode="Random" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" type="OnUse" range="3000" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" type="OnUse" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" range="3000" selectionmode="Random" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" range="3000" />
       </StatusEffect>
       <StatusEffect type="always" target="this" disabledeltatime="true" condition="25" checkconditionalalways="true" delay="1.35">
         <Conditional condition="eq 50" />
         <ParticleEmitter particle="casingfirearm" colormultiplier="0.5,0.5,0.5,1" distancemin="15" distancemax="15" ScaleMultiplier="1.5,1.5" particleamount="1" anglemin="90" anglemax="150" velocitymin="50" velocitymax="250" CopyEntityAngle="true" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" type="OnUse" range="3000" selectionmode="Random" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" type="OnUse" range="3000" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" type="OnUse" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" range="3000" selectionmode="Random" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" range="3000" />
       </StatusEffect>
       <StatusEffect type="always" target="this" disabledeltatime="true" condition="25" checkconditionalalways="true" delay="1.35">
         <Conditional condition="eq 25" />
         <ParticleEmitter particle="casingfirearm" colormultiplier="0.5,0.5,0.5,1" distancemin="15" distancemax="15" ScaleMultiplier="1.5,1.5" particleamount="1" anglemin="90" anglemax="150" velocitymin="50" velocitymax="250" CopyEntityAngle="true" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" type="OnUse" range="3000" selectionmode="Random" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" type="OnUse" range="3000" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" type="OnUse" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" range="3000" selectionmode="Random" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" range="3000" />
       </StatusEffect>
       <StatusEffect type="always" target="this" disabledeltatime="true" condition="25" checkconditionalalways="true" delay="2">
         <Conditional condition="eq 0" />
         <ParticleEmitter particle="casingfirearm" colormultiplier="0.5,0.5,0.5,1" distancemin="15" distancemax="15" ScaleMultiplier="1.5,1.5" particleamount="1" anglemin="90" anglemax="150" velocitymin="50" velocitymax="250" CopyEntityAngle="true" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" type="OnUse" range="3000" selectionmode="Random" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" type="OnUse" range="3000" />
-        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" type="OnUse" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad1.ogg" range="3000" selectionmode="Random" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad2.ogg" range="3000" />
+        <Sound file="Content/Items/Weapons/ShotgunLoad3.ogg" range="3000" />
       </StatusEffect>
       <RequiredItems items="shotgunammo" type="Contained" msg="ItemMsgAmmoRequired" />
       <RequiredSkill identifier="weapons" level="60" />
@@ -995,20 +995,20 @@
       </StatusEffect>
       <StatusEffect type="OnSecondaryUse" target="this" tags="off" duration="0.5" delay="0.1" />
       <StatusEffect type="OnSecondaryUse" target="this" spread="-10" reload="-0.1" condition="-1" disabledeltatime="true" stackable="false" checkconditionalalways="true" delay="1.5">
-        <Sound file="%ModDir%/More Arts (AOCS)/Weapons/drumrifle-ac1.ogg" type="OnUse" volume="0.25" range="1000" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Weapons/drumrifle-ac1.ogg" volume="0.25" range="1000" />
         <Conditional condition="eq 5" />
       </StatusEffect>
       <StatusEffect type="OnSecondaryUse" target="this" spread="-10" reload="-0.1" condition="-1" disabledeltatime="true" stackable="false" checkconditionalalways="true" delay="1.5">
-        <Sound file="%ModDir%/More Arts (AOCS)/Weapons/drumrifle-ac1.ogg" type="OnUse" volume="0.25" range="1000" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Weapons/drumrifle-ac1.ogg" volume="0.25" range="1000" />
         <Conditional condition="eq 4" />
       </StatusEffect>
       <StatusEffect type="OnSecondaryUse" target="this" spread="-5" reload="-0.1" condition="-1" disabledeltatime="true" stackable="false" checkconditionalalways="true" delay="1.5">
-        <Sound file="%ModDir%/More Arts (AOCS)/Weapons/drumrifle-ac1.ogg" type="OnUse" volume="0.25" range="1000" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Weapons/drumrifle-ac1.ogg" volume="0.25" range="1000" />
         <Conditional condition="eq 3" />
       </StatusEffect>
       <StatusEffect type="OnSecondaryUse" target="this" spread="-5" reload="-0.1" condition="-1" disabledeltatime="true" stackable="false" checkconditionalalways="true" delay="1.5">
         <Conditional condition="eq 2" />
-        <Sound file="%ModDir%/More Arts (AOCS)/Weapons/drumrifle-ac2.ogg" type="OnUse" volume="0.25" range="1000" />
+        <Sound file="%ModDir%/More Arts (AOCS)/Weapons/drumrifle-ac2.ogg" volume="0.25" range="1000" />
       </StatusEffect>
       <RequiredItems items="revolverammo" type="Contained" msg="ItemMsgAmmoRequired" />
       <RequiredSkill identifier="weapons" level="65" />
@@ -2503,15 +2503,15 @@
       </StatusEffect>
       <StatusEffect type="OnUse" target="This" Condition="-10000" />
       <StatusEffect type="OnBroken" target="This" delay="1.5">
-        <sound file="%ModDir%/More Arts (AOCS)/Weapons/Boomboomreload.ogg" type="OnUse" range="500.0" loop="false" />
+        <sound file="%ModDir%/More Arts (AOCS)/Weapons/Boomboomreload.ogg" range="500.0" loop="false" />
       </StatusEffect>
       <StatusEffect type="Always" target="This" Condition="100" disabledeltatime="true" delay="3" stackable="false" checkconditionalalways="true">
         <Conditional condition="eq 0" />
       </StatusEffect>
       <StatusEffect type="OnFailure" target="Character,this" disabledeltatime="true">
         <Conditional skillrequirement="true" weapons="lt 75" />
-        <sound file="Content/Items/Weapons/ExplosionMedium1.ogg" type="OnBroken" range="500" selectionmode="All" />
-        <sound file="Content/Items/Weapons/ExplosionDebris1.ogg" type="OnBroken" range="500" />
+        <sound file="Content/Items/Weapons/ExplosionMedium1.ogg" range="500" selectionmode="All" />
+        <sound file="Content/Items/Weapons/ExplosionDebris1.ogg" range="500" />
         <Explosion range="200.0" structuredamage="0" ballastfloradamage="10" itemdamage="5" force="2.5" severlimbsprobability="0.5" flash="false">
           <Affliction identifier="burn" strength="10" />
           <Affliction identifier="explosiondamage" strength="10" />
@@ -2583,7 +2583,7 @@
         <Conditional condition="eq 5" />
       </StatusEffect>
       <StatusEffect type="OnSecondaryUse" target="this" stackable="false">
-        <sound file="%ModDir%/More Arts (AOCS)/Weapons/minigun loop.ogg" type="OnUse" range="500.0" volume="0.6" loop="true" />
+        <sound file="%ModDir%/More Arts (AOCS)/Weapons/minigun loop.ogg" range="500.0" volume="0.6" loop="true" />
       </StatusEffect>
     </Holdable>
     <Wearable slots="Bag" msg="ItemMsgEquipSelect" canbeselected="false" canbepicked="true" pickkey="Select">
@@ -5392,7 +5392,7 @@
       <StatusEffect type="OnUse" target="This" Condition="-1000000" delay="0.8" />
       <StatusEffect type="OnBroken" target="This">
         <ParticleEmitter particle="casingfirearm" ScaleMultiplier="1,1" particleamount="1" distancemin="10" distancemax="10" anglemin="90" anglemax="150" velocitymin="50" velocitymax="250" CopyEntityAngle="true" />
-        <sound file="%ModDir%/More Arts (AOCS)/Weapons/winchester_reload.ogg" type="OnUse" range="500.0" loop="false" />
+        <sound file="%ModDir%/More Arts (AOCS)/Weapons/winchester_reload.ogg" range="500.0" loop="false" />
       </StatusEffect>
       <StatusEffect type="Always" target="This" Condition="100" disabledeltatime="true" delay="0.55" stackable="false" checkconditionalalways="true">
         <Conditional condition="eq 0" />

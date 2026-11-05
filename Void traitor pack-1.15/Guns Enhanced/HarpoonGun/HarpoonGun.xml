@@ -73,7 +73,7 @@
           <StatusEffect type="OnInserted" target="This" holdpos="20,-15" aimpos="30,-15" handle2="80,20" holdangle="20" aimangle="20" delay="0.01" condition="0" setvalue="true" stackable="false" />
           <!-- Sound. -->
           <StatusEffect type="OnInserted" target="This" delay="0.3" forceplaysounds="true" stackable="false">
-            <Sound file="%ModDir%/Guns Enhanced/HarpoonGun/HarpoonGunHarpoonLoad.ogg" type="OnUse" range="1000" />
+            <Sound file="%ModDir%/Guns Enhanced/HarpoonGun/HarpoonGunHarpoonLoad.ogg" range="1000" />
           </StatusEffect>
           <!-- Sets the hand's position to insert the harpoon. -->
           <StatusEffect type="OnInserted" target="This" holdpos="20,-15" aimpos="30,-15" handle2="0,20" holdangle="10" aimangle="10" delay="0.4" setvalue="true" stackable="false" />

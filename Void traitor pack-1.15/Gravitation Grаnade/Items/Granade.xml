@@ -187,7 +187,7 @@
     <Body radius="50" density="10" gravityscale="0" />
     <Projectile characterusable="false" launchimpulse="0.0" impulsespread="0.5" damagedoors="true">
       <StatusEffect type="OnSpawn" target="This">
-        <sound file="Content/Items/Weapons/GRAVITYSHELLS_boom.ogg" volume="2" range="50000" type="OnUse" />
+        <sound file="Content/Items/Weapons/GRAVITYSHELLS_boom.ogg" volume="2" range="50000" />
         <!-- initial "explosion" -->
         <ParticleEmitter particle="cyborgammotracer" particleamount="25" anglemin="0" anglemax="360" distancemin="0" distancemax="150" scalemin="1" scalemax="1.5" velocitymin="-50" velocitymax="0" />
         <ParticleEmitter particle="gravityshellfx" particleamount="100" anglemin="0" anglemax="360" distancemin="0" distancemax="0" scalemin="0.1" scalemax="1" />
@@ -230,7 +230,7 @@
     <Body radius="50" density="10" gravityscale="0" />
     <Projectile characterusable="false" launchimpulse="0.0" impulsespread="0.5" damagedoors="true">
       <StatusEffect type="OnSpawn" target="This">
-        <sound file="Content/Items/Weapons/GRAVITYSHELLS_boom.ogg" volume="2" range="50000" type="OnUse" />
+        <sound file="Content/Items/Weapons/GRAVITYSHELLS_boom.ogg" volume="2" range="50000" />
         <!-- initial "explosion" -->
         <ParticleEmitter particle="cyborgammotracer" particleamount="25" anglemin="0" anglemax="360" distancemin="0" distancemax="150" scalemin="1" scalemax="1.5" velocitymin="-50" velocitymax="0" />
         <ParticleEmitter particle="gravityshellfx" particleamount="100" anglemin="0" anglemax="360" distancemin="0" distancemax="0" scalemin="0.1" scalemax="1" />

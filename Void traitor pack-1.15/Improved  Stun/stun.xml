@@ -2,7 +2,7 @@
 <Override>
   <Afflictions>
     <!-- Глушилка -->
-    <Stun name="Stun" identifier="stun" description="The patient is dazed and unresponsive." type="stun" limbspecific="false" indicatorlimb="Head" activationthreshold="1.0" showiconthreshold="1000" maxstrength="30">
+    <Stun name="Stun" identifier="stun" description="The patient is dazed and unresponsive." type="stun" limbspecific="false" indicatorlimb="Head" activationthreshold="0" showiconthreshold="1000" maxstrength="30">
       <Description textidentifier="afflictiondescription.stun" target="OtherCharacter" />
       <Description textidentifier="afflictiondescription.stun.self" target="Self" />
       <Effect minstrength="0" maxstrength="1" minvitalitydecrease="0" maxvitalitydecrease="0" strengthchange="-1.0"></Effect>
