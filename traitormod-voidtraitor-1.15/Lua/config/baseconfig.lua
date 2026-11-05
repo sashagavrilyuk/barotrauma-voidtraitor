@@ -656,7 +656,7 @@ config.RandomEventConfig = {
         Shared = {
             "MaintenanceToolsDelivery", "MedicalDelivery", "AmmoDelivery", "ArmoryCrate", "EmergencyTeam",
             "VentCreatures", "ClownCrateSurprise", "OxygenGeneratorHusk", "RandomLights",
-            "ClownMagic", "LightsOff", "CommunicationsOffline", "ReactorShutdown",
+            "ClownMagic", "LightsOff", "ReactorShutdown",
             "SupercapacitorFailure", "JunctionBoxOverload", "OxygenGeneratorPoison",
             "OxygenSufforin", "OxygenParalyzant", "OxygenMorbusine", "OxygenCyanide",
             "SecurityMindSense", "SecurityTurretCoilgun", "SecurityTurretChaingun",
@@ -671,9 +671,9 @@ config.RandomEventConfig = {
             "WreckRescue", "BeaconRescue", "CaptainHelmBoost", "OutpostPirateAttack",
             "PirateCrew", "HiddenPirate", "WreckPirate", "BeaconPirate",
             "BreackElectrical", "BreackHull", "KillElectrical", "KillHull", "WildCreature", "MalfunctioningBot",
-            "SeismicTremor", "GuardedCargo",
+            "SeismicTremor", "GuardedCargo", "CommunicationsOffline",
         },
-        Station = { "StationAttack" },
+        Station = { "StationAttack", "RadiationStorm" },
     },
     -- The director watches the round and starts events itself: help when the crew is going under, a threat after a calm
     -- stretch, a neutral event now and then and once in a while a false trail. The random events above keep running.
@@ -766,6 +766,7 @@ config.RandomEventConfig = {
     },
     Events = {
         dofile(Traitormod.Path .. "/Lua/config/randomevents/stationattack.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/radiationstorm.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/superballastflora.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/maintenancetoolsdelivery.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/medicaldelivery.lua"),

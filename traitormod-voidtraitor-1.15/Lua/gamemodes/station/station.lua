@@ -33,7 +33,8 @@ local alertSounds = {
     evacDocked = "vt_station_sound_evac_docked",
     evacLaunching = "vt_station_sound_yellow",
     evacDeparted = "vt_station_sound_green",
-    attack = "vt_station_sound_attack"
+    attack = "vt_station_sound_attack",
+    commsBlackout = "vt_station_sound_comms_blackout"
 }
 local eventSet = LuaUserData.CreateStatic("Barotrauma.EventSet", true)
 LuaUserData.RegisterType("Barotrauma.EventPrefab")
@@ -176,8 +177,8 @@ function gm:PlayAlertSound(code)
     end
 end
 
-function gm:SendAlertMessage(text, color, headerColor)
-    local header = Traitormod.FormatText("StationAnnouncementHeader", self.StationAnnouncementName)
+function gm:SendAlertMessage(text, color, headerColor, header)
+    header = header or Traitormod.FormatText("StationAnnouncementHeader", self.StationAnnouncementName)
     local tint = headerColor or Color(math.floor(color.R * 0.8 + 51),
         math.floor(color.G * 0.8 + 51), math.floor(color.B * 0.8 + 51))
     local headerTag = string.format("‖color:%d,%d,%d‖", tint.R, tint.G, tint.B)

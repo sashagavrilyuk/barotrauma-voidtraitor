@@ -60,6 +60,15 @@ Original: https://github.com/tgstation/tgstation/blob/b327cb667c1ca5d1aa14e6368e
 From Corvax: Ertanic/Corvax @ 2b3f061209a9eb26c5fb9dff7e157fa95a4271f8
 Resources/Audio/Announcements/shuttle_dock.ogg
 
+Station event announcements
+===========================
+comms_blackout.ogg (radiation storm)
+License: CC-BY-SA-3.0 (https://creativecommons.org/licenses/by-sa/3.0/)
+Original: TauCeti Station, https://github.com/TauCetiStation/TauCetiClassic/commit/92d2767dbb39f28540f78d5055e7be1eb7acee98
+From Corvax: space-syndicate/space-station-14 @ 31a9350ca98bfe9f4eaa8a0a2752f442fd45a314
+Resources/Audio/Corvax/Announcements/comms_blackout.ogg (licenses.txt in the same folder)
+File unchanged.
+
 Nuclear countdown and alarm
 ===========================
 Music for VoidTraitor nuclear countdown (original OGG files, unmodified).
