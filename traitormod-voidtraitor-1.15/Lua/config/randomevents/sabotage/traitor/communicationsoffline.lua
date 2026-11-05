@@ -34,7 +34,12 @@ event.Start = function ()
         end
     end)
 
-    Timer.Wait(event.End, event.AmountTime * 57 * 1000)
+    -- ends from Think, so a round that ends first leaves nothing behind for the next one
+    event.EndTime = Traitormod.RoundTime + event.AmountTime * 57
+end
+
+event.Think = function ()
+    if Traitormod.RoundTime >= event.EndTime then event.End() end
 end
 
 event.End = function (isEndRound)
