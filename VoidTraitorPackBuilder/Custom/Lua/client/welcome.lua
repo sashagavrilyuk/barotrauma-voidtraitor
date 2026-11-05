@@ -1,7 +1,6 @@
 if SERVER then return end 
 
 -- сообщаем серверу, что у клиента есть Lua пака
-local handshakeTimer = 0
 local function SendHandshake()
     if not Game.IsMultiplayer or not Networking.IsActive then return end
 
@@ -9,12 +8,6 @@ local function SendHandshake()
     Networking.Send(msg)
 end
 SendHandshake()
-Hook.Add("think", "VoidTraitor.LuaCheck", function(deltaTime)
-    handshakeTimer = handshakeTimer + deltaTime
-    if handshakeTimer < 5 then return end
-    handshakeTimer = 0
-    SendHandshake()
-end)
 Hook.Add("roundStart", "VoidTraitor.LuaCheck.RoundStart", SendHandshake)
 
 local packPath, Common = ...
