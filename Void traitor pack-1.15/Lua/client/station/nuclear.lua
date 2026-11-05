@@ -121,9 +121,6 @@ Hook.Patch("VoidTraitor.Nuclear.Use", "Barotrauma.Items.Components.Holdable", "U
 end, Hook.HookMethodType.Before)
 Common.InstallHudPatch("VoidTraitor.Nuclear.Hud", "VoidTraitorNuclearGuiState", 120)
 Common.InstallPausePatch("VoidTraitor.Nuclear.Pause", "VoidTraitorNuclearGuiState")
-Hook.Patch("VoidTraitor.Nuclear.NativeHud", "Barotrauma.Item", "AddToGUIUpdateList", { "System.Int32" }, function(item, parameters)
-    if not UI.Disabled and Game.RoundStarted and item.Prefab.Identifier == "vt_nuclear_bomb" then parameters.PreventExecution = true end
-end, Hook.HookMethodType.Before)
 Hook.Patch("VoidTraitor.Nuclear.Inventory", "Barotrauma.CharacterHUD", "LockInventory", { "Barotrauma.Character" }, function(_, parameters)
     if not UI.Disabled and UI.CurrentMenu ~= nil and parameters["character"] == Character.Controlled then return true end
 end, Hook.HookMethodType.After)

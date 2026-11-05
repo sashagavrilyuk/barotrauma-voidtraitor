@@ -1,15 +1,15 @@
 local cargo = {}
 Traitormod.Cargo = cargo
 local config, ps = Traitormod.Config.Cargo, Traitormod.Pointshop
-local json, prompts = require("json"), require("textpromptutils")
+local json = require("json")
 local sessions = {}
 
-function cargo.Validate(client, item, allowUnselected)
+function cargo.Validate(client, item)
     return cargo.State ~= nil and Game.RoundStarted
         and client ~= nil and client.Character ~= nil and client.Character.IsHuman
         and not client.Character.IsDead and not client.Character.IsIncapacitated
         and item ~= nil and not item.Removed and item.Prefab.Identifier == "vt_cargo_console"
-        and (allowUnselected == true or client.Character.SelectedItem == item) and item.CanClientAccess(client)
+        and item.CanClientAccess(client)
 end
 
 function cargo.CanManage(client)
@@ -142,7 +142,7 @@ end
 function cargo.Snapshot(client, shipSnapshot, incremental)
     local state = cargo.State
     local snapshot = { Orders = state.Orders, Budget = state.Budget, Reserved = state.Reserved, CanManage = cargo.CanManage(client), Text = {} }
-    for _, key in ipairs({ "Title", "Close", "Budget", "Reserved", "Reason", "Submit", "Approve", "Reject", "Orders", "Quantity", "Pending", "Accepted", "Outbound", "Loaded", "Delivered", "Rejected", "Capacity", "Large", "LastSale", "Ship", "Sales", "NoShip", "Empty", "Search", "Cart", "Home", "Trading", "Returning", "Catalog", "Back", "Next", "Refresh", "NativeActions", "Choose", "Submitted", "Denied", "NoFunds", "NoStock", "LoadFailed" }) do
+    for _, key in ipairs({ "Title", "Close", "Budget", "Reserved", "Reason", "Submit", "Approve", "Reject", "Orders", "Quantity", "Pending", "Accepted", "Outbound", "Loaded", "Delivered", "Rejected", "Capacity", "Large", "LastSale", "Ship", "NoShip", "Empty", "Search", "Cart", "Home", "Trading", "Returning", "Submitted", "Denied", "NoFunds", "NoStock", "LoadFailed" }) do
         snapshot.Text[key] = Traitormod.GetText("Cargo" .. key)
     end
     if incremental then
@@ -400,11 +400,9 @@ function cargo.Think(deltaTime)
     if state.Dirty then
         state.Dirty = false
         local shipSnapshot
-        for client, session in pairs(sessions) do
-            if session.Gui then
-                shipSnapshot = shipSnapshot or cargo.ShipSnapshot()
-                cargo.Send(client, nil, shipSnapshot)
-            end
+        for client in pairs(sessions) do
+            shipSnapshot = shipSnapshot or cargo.ShipSnapshot()
+            cargo.Send(client, nil, shipSnapshot)
         end
     end
     local lost = {}
@@ -475,85 +473,28 @@ end
 
 function cargo.Send(client, result, shipSnapshot)
     local session = sessions[client]
-    if session == nil or not cargo.Validate(client, session.Item, session.Gui) then return end
-    local snapshot = cargo.Snapshot(client, shipSnapshot, session.Gui and session.CatalogSent)
+    if session == nil or not cargo.Validate(client, session.Item) then return end
+    local snapshot = cargo.Snapshot(client, shipSnapshot, session.CatalogSent)
     snapshot.Result = result
     if result ~= nil and result.Action == "submit" then snapshot.SubmitAccepted = result.Success end
-    if session.Gui then
-        local message = Networking.Start("VoidTraitor_CargoSnapshot")
-        message.WriteUInt16(UShort(session.Item.ID))
-        -- Manager is a server-side reference, it is not sent
-        local orders = {}
-        for _, order in ipairs(snapshot.Orders) do
-            local entry = {}
-            for key, value in pairs(order) do if key ~= "Manager" then entry[key] = value end end
-            orders[#orders + 1] = entry
-        end
-        snapshot.Orders = orders
-        message.WriteString(json.encode(snapshot))
-        Networking.Send(message, client.Connection, DeliveryMethod.Reliable)
-        session.CatalogSent = true
-        return
+    local message = Networking.Start("VoidTraitor_CargoSnapshot")
+    message.WriteUInt16(UShort(session.Item.ID))
+    -- Manager is a server-side reference, it is not sent
+    local orders = {}
+    for _, order in ipairs(snapshot.Orders) do
+        local entry = {}
+        for key, value in pairs(order) do if key ~= "Manager" then entry[key] = value end end
+        orders[#orders + 1] = entry
     end
-    local text = snapshot.Text
-    local lines = { text.Budget .. ": " .. snapshot.Budget .. " / " .. text.Reserved .. ": " .. snapshot.Reserved,
-        text.Ship .. ": " .. (text[snapshot.Ship.State] or snapshot.Ship.State),
-        text.Capacity .. ": " .. snapshot.Ship.SlotsFree .. "/" .. snapshot.Ship.SlotsTotal .. " + " .. snapshot.Ship.LargeFree .. "/" .. snapshot.Ship.LargeTotal,
-        text.Sales .. ": " .. snapshot.Ship.SalesValue }
-    local buttons = {}
-    if session.View == "catalog" then
-        for index = (session.Page - 1) * 8 + 1, math.min(session.Page * 8, #snapshot.Products) do
-            local product = snapshot.Products[index]
-            buttons[#buttons + 1] = { Label = product.Name .. " — " .. product.Price .. " кр", Action = "product", Payload = { Id = product.Id } }
-        end
-        if session.Page * 8 < #snapshot.Products then buttons[#buttons + 1] = { Label = text.Next, Action = "page", Payload = { Page = session.Page + 1 } } end
-        if session.Page > 1 then buttons[#buttons + 1] = { Label = text.Back, Action = "page", Payload = { Page = session.Page - 1 } } end
-    elseif session.View == "order" then
-        local order = cargo.FindOrder(session.Order)
-        if order ~= nil then
-            lines[#lines + 1] = order.Name .. " ×" .. order.Quantity .. " — " .. order.Price .. " кр\n" .. order.Author .. ": " .. order.Reason .. "\n" .. (text[order.Status] or order.Status)
-            if snapshot.CanManage and (order.Status == "Pending" or order.Status == "Accepted") then
-                if order.Status == "Pending" then buttons[#buttons + 1] = { Label = text.Approve, Action = "approve", Payload = { OrderId = order.Id } } end
-                buttons[#buttons + 1] = { Label = text.Reject, Action = "reject", Payload = { OrderId = order.Id } }
-            end
-        end
-    else
-        buttons[#buttons + 1] = { Label = text.Catalog, Action = "view", Payload = { View = "catalog" } }
-        for index = (session.Page - 1) * 8 + 1, math.min(session.Page * 8, #snapshot.Orders) do
-            local order = snapshot.Orders[index]
-            buttons[#buttons + 1] = { Label = "#" .. order.Id .. " " .. order.Name .. " ×" .. order.Quantity .. " — " .. order.Price .. " кр (" .. (text[order.Status] or order.Status) .. ")", Action = "order", Payload = { OrderId = order.Id } }
-        end
-        if session.Page * 8 < #snapshot.Orders then buttons[#buttons + 1] = { Label = text.Next, Action = "page", Payload = { Page = session.Page + 1 } } end
-        if session.Page > 1 then buttons[#buttons + 1] = { Label = text.Back, Action = "page", Payload = { Page = session.Page - 1 } } end
-    end
-    if session.Product ~= nil then
-        for _, product in ipairs(snapshot.Products) do
-            if product.Id == session.Product then lines[#lines + 1] = text.Choose .. ": " .. product.Name .. "\n" .. product.Description .. "\n" .. product.Price .. " кр / " .. product.Stock end
-        end
-    end
-    lines[#lines + 1] = text.NativeActions
-    local terminal = session.Item.GetComponentString("Terminal")
-    local body = table.concat(lines, "\n\n")
-    if terminal.ShowMessage ~= body then
-        terminal.ShowMessage = body
-        terminal.SyncHistory()
-    end
-    buttons[#buttons + 1] = { Label = text.Refresh, Action = "view", Payload = { View = "main" } }
-    buttons[#buttons + 1] = { Label = text.Close, Action = "close", Payload = {} }
-    local options = {}
-    for _, button in ipairs(buttons) do options[#options + 1] = button.Label end
-    local prompt = {}
-    session.Prompt = prompt
-    prompts.Prompt(text.Title, options, client, function(index, response)
-        if response ~= client or sessions[client] ~= session or session.Prompt ~= prompt then return end
-        local button = buttons[index]
-        if button ~= nil then cargo.Action(client, session.Item, button.Action, button.Payload) end
-    end, "InfoFrameTabButton.Mission")
+    snapshot.Orders = orders
+    message.WriteString(json.encode(snapshot))
+    Networking.Send(message, client.Connection, DeliveryMethod.Reliable)
+    session.CatalogSent = true
 end
 
-function cargo.Open(client, item, gui)
-    if not cargo.Validate(client, item, gui == true) then return false end
-    sessions[client] = { Item = item, Gui = gui == true, View = "main", Page = 1 }
+function cargo.Open(client, item)
+    if not cargo.Validate(client, item) then return false end
+    sessions[client] = { Item = item }
     cargo.Send(client)
     return true
 end
@@ -562,26 +503,20 @@ function cargo.Action(client, item, action, payload)
     local session = sessions[client]
     if session == nil or session.Item ~= item then return false end
     if action == "close" then
-        if session.Gui then sessions[client] = nil else session.Prompt = nil end
+        sessions[client] = nil
         return true
     end
-    if not cargo.Validate(client, item, session.Gui) then return false end
-    local success, reason = true, nil
+    if not cargo.Validate(client, item) then return false end
+    local success, reason
     if action == "submit" then success, reason = cargo.Submit(client, payload)
     elseif action == "approve" or action == "reject" then success, reason = cargo.Decide(client, action, payload.OrderId)
-    elseif action == "view" and (payload.View == "main" or payload.View == "catalog") then session.View, session.Page = payload.View, 1
-    elseif action == "page" and type(payload.Page) == "number" and payload.Page == math.floor(payload.Page) and payload.Page >= 1
-        and payload.Page <= math.ceil((session.View == "catalog" and #cargo.State.Products or #cargo.State.Orders) / 8) then session.Page = payload.Page
-    elseif action == "product" then
-        for _, entry in ipairs(cargo.State.Products) do if entry.Id == payload.Id then session.Product, session.View = payload.Id, "main" break end end
-    elseif action == "order" and cargo.FindOrder(payload.OrderId) ~= nil then session.Order, session.View = payload.OrderId, "order"
-    elseif action ~= "refresh" then return false end
+    else return false end
     if reason ~= nil then Traitormod.SendChatMessage(client, Traitormod.GetText(reason)) end
     cargo.Send(client, { Action = action, Success = success, Message = reason ~= nil and Traitormod.GetText(reason) or "" })
-    if success and (action == "submit" or action == "approve" or action == "reject") then
+    if success then
         local shipSnapshot
-        for other, otherSession in pairs(sessions) do
-            if other ~= client and otherSession.Gui then
+        for other in pairs(sessions) do
+            if other ~= client then
                 shipSnapshot = shipSnapshot or cargo.ShipSnapshot()
                 cargo.Send(other, nil, shipSnapshot)
             end
@@ -590,7 +525,7 @@ function cargo.Action(client, item, action, payload)
     return success
 end
 
-Networking.Receive("VoidTraitor_CargoOpen", function(message, client) cargo.Open(client, Entity.FindEntityByID(message.ReadUInt16()), true) end)
+Networking.Receive("VoidTraitor_CargoOpen", function(message, client) cargo.Open(client, Entity.FindEntityByID(message.ReadUInt16())) end)
 Networking.Receive("VoidTraitor_CargoAction", function(message, client)
     local item, action, text = Entity.FindEntityByID(message.ReadUInt16()), message.ReadString(), message.ReadString()
     if #action > 24 or #text > 8192 then return end
@@ -598,25 +533,12 @@ Networking.Receive("VoidTraitor_CargoAction", function(message, client)
     if ok and type(payload) == "table" then cargo.Action(client, item, action, payload) end
 end)
 
-Hook.Patch("Traitormod.Cargo.Native", "Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, parameters)
-    local item, client, message = instance.Item, parameters["c"], parameters["msg"]
-    if item.Prefab.Identifier == "vt_cargo_package" then
-        local unpack = message.ReadBoolean()
-        parameters.PreventExecution = true
-        if unpack and not cargo.Unpack(client, item) then Traitormod.SendChatMessage(client, Traitormod.GetText("CargoUnpackDenied")) end
-        return
-    end
-    if item.Prefab.Identifier ~= "vt_cargo_console" then return end
-    local quantity, reason, menu, submit = message.ReadString(), message.ReadString(), message.ReadBoolean(), message.ReadBoolean()
+Hook.Patch("Traitormod.Cargo.Unpack", "Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, parameters)
+    local item, client = instance.Item, parameters["c"]
+    if item.Prefab.Identifier ~= "vt_cargo_package" then return end
+    local unpack = parameters["msg"].ReadBoolean()
     parameters.PreventExecution = true
-    if not cargo.Validate(client, item) then return end
-    if menu then cargo.Open(client, item, false)
-    elseif submit then
-        local session = sessions[client]
-        if session ~= nil and session.Item == item and session.Product ~= nil then
-            cargo.Action(client, item, "submit", { Entries = { { Id = session.Product, Quantity = tonumber(quantity) } }, Reason = reason })
-        end
-    end
+    if unpack and not cargo.Unpack(client, item) then Traitormod.SendChatMessage(client, Traitormod.GetText("CargoUnpackDenied")) end
 end, Hook.HookMethodType.Before)
 
 Hook.Add("think", "Traitormod.Cargo.Think", cargo.Think)

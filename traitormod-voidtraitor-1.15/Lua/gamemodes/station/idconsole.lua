@@ -10,11 +10,9 @@ for _, preset in ipairs(console.Config.Presets) do
     end
 end
 local json = require("json")
-local prompts = require("textpromptutils")
 local sessions = {}
 local removeEvent = LuaUserData.CreateStatic("Barotrauma.EntitySpawner+RemoveEntity", true)
 local spawnEvent = LuaUserData.CreateStatic("Barotrauma.EntitySpawner+SpawnEntity", true)
-local interfaceEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateEventData", true)
 local eventSet = LuaUserData.CreateStatic("Barotrauma.EventSet", true)
 
 local function playCardSound(item, action)
@@ -136,7 +134,7 @@ end
 
 function console.Snapshot(client, item)
     local snapshot = { Revision = console.Revision(item), Slots = {}, HeldCards = {}, Access = {}, Presets = {}, Text = {} }
-    for _, key in ipairs({ "Title", "Auth", "Target", "Empty", "Insert", "Eject", "Choose", "Ready", "Missing", "Name", "Job", "Save", "Preset", "All", "Clear", "Confirm", "Reset", "Apply", "Close", "NoRights", "Forbidden" }) do
+    for _, key in ipairs({ "Title", "Auth", "Target", "Empty", "Insert", "Eject", "Choose", "Ready", "Name", "Job", "Save", "Preset", "All", "Clear", "Confirm", "Reset", "Apply", "Close", "NoRights", "Forbidden" }) do
         snapshot.Text[key] = Traitormod.GetText("IdConsole" .. key)
     end
     local auth, target = item.OwnInventory.GetItemAt(0), item.OwnInventory.GetItemAt(1)
@@ -167,76 +165,18 @@ end
 
 function console.Send(client)
     local session = sessions[client]
-    if session == nil or not console.Validate(client, session.Item, session.Gui) then return end
-    local snapshot = console.Snapshot(client, session.Item)
-    session.Revision = snapshot.Revision
-    local terminal = session.Item.GetComponentString("Terminal")
-    local lines = {}
-    for index, slot in ipairs(snapshot.Slots) do
-        lines[#lines + 1] = (index == 1 and snapshot.Text.Auth or snapshot.Text.Target) .. ": " .. slot.Name .. "\n" .. slot.Title .. "\n" .. slot.Access
-    end
-    lines[#lines + 1] = snapshot.CanEdit and snapshot.Text.Ready or snapshot.Text.Missing
-    local body = table.concat(lines, "\n\n")
-    if not session.Gui then body = body .. "\n" .. Traitormod.GetText("IdConsoleNativeIdentity") end
-    if terminal.ShowMessage ~= body then
-        terminal.ShowMessage = body
-        terminal.SyncHistory()
-    end
-    local interface = session.Item.GetComponentString("CustomInterface")
-    local signals = snapshot.Slots[2].Name .. ";" .. snapshot.Slots[2].Title .. ";1;1"
-    if not session.Gui and interface.Signals ~= signals then
-        interface.Signals = signals
-        Networking.CreateEntityEvent(session.Item, interfaceEvent(interface, nil))
-    end
-    if session.Gui then
-        local message = Networking.Start("VoidTraitor_IdConsoleSnapshot")
-        message.WriteUInt16(UShort(session.Item.ID))
-        message.WriteString(json.encode(snapshot))
-        Networking.Send(message, client.Connection, DeliveryMethod.Reliable)
-        return
-    end
-    local buttons = {}
-    for index, slot in ipairs(snapshot.Slots) do
-        if session.View == "main" then
-            buttons[#buttons + 1] = { Label = (slot.Id == 0 and snapshot.Text.Insert or snapshot.Text.Eject) .. " — " .. (index == 1 and snapshot.Text.Auth or snapshot.Text.Target),
-                Action = slot.Id == 0 and "choose" or "eject", Payload = { Slot = slot.Slot, Card = slot.Id } }
-        end
-    end
-    if session.View == "choose" then
-        for _, card in ipairs(snapshot.HeldCards) do buttons[#buttons + 1] = { Label = card.Name, Action = "insert", Payload = { Slot = session.Slot, Card = card.Id } } end
-    elseif snapshot.CanEdit then
-        if session.View == "presets" then
-            for _, preset in ipairs(snapshot.Presets) do buttons[#buttons + 1] = { Label = preset.Name, Action = "preset", Payload = { Job = preset.Id, Revision = snapshot.Revision } } end
-        elseif session.View == "grant" or session.View == "revoke" then
-            for _, entry in ipairs(snapshot.Access) do
-                if entry.Allowed then buttons[#buttons + 1] = { Label = entry.Name, Action = "toggle", Payload = { Tag = entry.Tag, Granted = session.View == "grant", Revision = snapshot.Revision } } end
-            end
-        elseif session.View == "clear" then
-            buttons[#buttons + 1] = { Label = snapshot.Text.Confirm, Action = "clear_all", Payload = { Revision = snapshot.Revision } }
-        else
-            for _, action in ipairs({ "presets", "grant", "revoke", "clear" }) do
-                buttons[#buttons + 1] = { Label = Traitormod.GetText(({presets="IdConsolePresets",grant="IdConsoleGrant",revoke="IdConsoleRevoke",clear="IdConsoleClear"})[action]), Action = "view", Payload = { View = action } }
-            end
-        end
-    end
-    buttons[#buttons + 1] = { Label = Traitormod.GetText(session.View == "main" and "IdConsoleRefresh" or "IdConsoleBack"), Action = "view", Payload = { View = "main" } }
-    buttons[#buttons + 1] = { Label = snapshot.Text.Close, Action = "close", Payload = {} }
-    local options = {}
-    for _, button in ipairs(buttons) do options[#options + 1] = button.Label end
-    session.Prompt = {}
-    local prompt = session.Prompt
-    prompts.Prompt(snapshot.Text.Title .. "\n\n" .. Traitormod.GetText("IdConsoleNativeActions"), options, client, function(index, responseClient)
-        if responseClient ~= client or sessions[client] ~= session or session.Prompt ~= prompt then return end
-        local button = buttons[index]
-        if button ~= nil then console.Action(client, session.Item, button.Action, button.Payload) end
-    end, "InfoFrameTabButton.Mission")
+    if session == nil or not console.Validate(client, session.Item, true) then return end
+    local message = Networking.Start("VoidTraitor_IdConsoleSnapshot")
+    message.WriteUInt16(UShort(session.Item.ID))
+    message.WriteString(json.encode(console.Snapshot(client, session.Item)))
+    Networking.Send(message, client.Connection, DeliveryMethod.Reliable)
 end
 
-function console.Open(client, item, gui)
+function console.Open(client, item)
     -- The GUI request can arrive before the server sees the console selected, so opening doesn't
     -- require the selection; actions are validated again with it.
-    if not console.Validate(client, item, gui == true) then return false end
-    sessions[client] = { Item = item, View = "main", Gui = gui == true }
+    if not console.Validate(client, item, true) then return false end
+    sessions[client] = { Item = item }
     console.Send(client)
     return true
 end
@@ -245,18 +185,13 @@ function console.Action(client, item, action, payload)
     local session = sessions[client]
     if session == nil or session.Item ~= item then return false end
     if action == "close" then
-        -- players without the GUI close the dialog to type into the console's text fields, so keep their session
-        if session.Gui then sessions[client] = nil else session.Prompt = nil end
+        sessions[client] = nil
         return true
     end
     if not console.Validate(client, item) then return false end
     local accepted, reason = true, nil
-    if action == "choose" then
-        if payload.Slot ~= 0 and payload.Slot ~= 1 then return false end
-        session.View, session.Slot = "choose", payload.Slot
-    elseif action == "view" then
-        if payload.View ~= "main" and payload.View ~= "presets" and payload.View ~= "grant" and payload.View ~= "revoke" and payload.View ~= "clear" then return false end
-        session.View = payload.View
+    if action == "view" then
+        -- the open window asks for a fresh snapshot every second
     elseif action == "insert" or action == "eject" then
         if payload.Slot ~= 0 and payload.Slot ~= 1 then return false end
         local card = item.OwnInventory.GetItemAt(payload.Slot)
@@ -273,48 +208,19 @@ function console.Action(client, item, action, payload)
             if accepted and not character.Inventory.TryPutItem(card, character, { InvSlotType.Any }, true) then card.Drop(character, true) end
         end
         if accepted then playCardSound(item, action) end
-        session.View = "main"
     elseif action == "apply" then
         accepted, reason = console.Apply(client, item, payload)
-    elseif action == "preset" or action == "toggle" or action == "clear_all" then
-        local snapshot = console.Snapshot(client, item)
-        local desired, selected = {}, nil
-        if action == "preset" then
-            for _, preset in ipairs(snapshot.Presets) do
-                if preset.Id == payload.Job then
-                    selected = preset
-                    break
-                end
-            end
-            if selected == nil then return false end
-        end
-        for _, entry in ipairs(snapshot.Access) do
-            local granted = entry.Granted
-            if entry.Allowed then
-                if action == "clear_all" then granted = false
-                elseif action == "toggle" and entry.Tag == payload.Tag then granted = payload.Granted == true
-                elseif selected ~= nil then
-                    granted = false
-                    for _, tag in ipairs(selected.Tags) do
-                        if tag == entry.Tag then granted = true end
-                    end
-                end
-            end
-            if granted then desired[#desired + 1] = entry.Tag end
-        end
-        accepted, reason = console.Apply(client, item, { Tags = desired, Revision = payload.Revision, Job = selected ~= nil and selected.Id or nil, Title = selected ~= nil and selected.Name or nil })
-        session.View = "main"
     else return false end
     if not accepted then Traitormod.SendChatMessage(client, Traitormod.GetText(reason or "IdConsoleRejected")) end
     console.Send(client)
     for other, otherSession in pairs(sessions) do
-        if other ~= client and otherSession.Item == item and otherSession.Gui then console.Send(other) end
+        if other ~= client and otherSession.Item == item then console.Send(other) end
     end
     return accepted
 end
 
 Networking.Receive("VoidTraitor_IdConsoleOpen", function(message, client)
-    console.Open(client, Entity.FindEntityByID(message.ReadUInt16()), true)
+    console.Open(client, Entity.FindEntityByID(message.ReadUInt16()))
 end)
 Networking.Receive("VoidTraitor_IdConsoleAction", function(message, client)
     local item, action, text = Entity.FindEntityByID(message.ReadUInt16()), message.ReadString(), message.ReadString()
@@ -322,32 +228,6 @@ Networking.Receive("VoidTraitor_IdConsoleAction", function(message, client)
     local ok, payload = pcall(json.decode, text)
     if ok and type(payload) == "table" then console.Action(client, item, action, payload) end
 end)
-
--- The console's packet carries two text fields and two buttons, in XML order.
--- None of the generic CustomInterface handling is applied to the ID card.
-Hook.Patch("Traitormod.IdConsole.Native", "Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, parameters)
-    local item, client = instance.Item, parameters["c"]
-    if item.Prefab.Identifier ~= "vt_station_access" then return end
-    local message = parameters["msg"]
-    local name, title, menu, save = message.ReadString(), message.ReadString(), message.ReadBoolean(), message.ReadBoolean()
-    parameters.PreventExecution = true
-    if not console.Validate(client, item) then return end
-    if menu then console.Open(client, item, false)
-    elseif save then
-        local snapshot = console.Snapshot(client, item)
-        local tags = {}
-        for _, entry in ipairs(snapshot.Access) do
-            if entry.Granted then tags[#tags + 1] = entry.Tag end
-        end
-        local session = sessions[client]
-        local accepted, reason
-        if session ~= nil and session.Item == item then
-            accepted, reason = console.Apply(client, item, { Revision = session.Revision, Tags = tags, Name = name, Title = title })
-        end
-        if not accepted then Traitormod.SendChatMessage(client, Traitormod.GetText(reason or "IdConsoleRejected")) end
-        console.Open(client, item, false)
-    end
-end, Hook.HookMethodType.Before)
 
 function console.InitializeCard(character, passenger)
     if character.Inventory == nil or character.Info == nil or character.Info.Job == nil then return end

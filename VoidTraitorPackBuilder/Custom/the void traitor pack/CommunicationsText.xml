@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <infotexts language="Russian" translatedname="Русский">
   <entityname.vt_communications_console>Консоль связи</entityname.vt_communications_console>
-  <CommsVoice>Прямой эфир: вкл. / выкл.</CommsVoice>
-  <CommsCodes>Уровень угрозы</CommsCodes>
-  <CommsEvacuation>Эвакуация: вызов / отзыв</CommsEvacuation>
 </infotexts>

@@ -325,9 +325,6 @@ Hook.Patch("VoidTraitor.Cargo.Hud", "Barotrauma.GameSession", "AddToGUIUpdateLis
     if S.filterPopup ~= nil then S.filterPopup:AddToGUIUpdateList(false, P.GUI_DRAW_ORDER + 60) end
 end)
 Common.InstallPausePatch("VoidTraitor.Cargo.Pause", "VoidTraitorCargoGuiState")
-Hook.Patch("VoidTraitor.Cargo.NativeHud", "Barotrauma.Item", "AddToGUIUpdateList", { "System.Int32" }, function(item, parameters)
-    if not UI.Disabled and Game.RoundStarted and item.Prefab.Identifier == "vt_cargo_console" then parameters.PreventExecution = true end
-end, Hook.HookMethodType.Before)
 Hook.Patch("VoidTraitor.Cargo.Inventory", "Barotrauma.CharacterHUD", "LockInventory", { "Barotrauma.Character" }, function(_, parameters)
     if not UI.Disabled and UI.CurrentMenu ~= nil and parameters["character"] == Character.Controlled then return true end
 end, Hook.HookMethodType.After)

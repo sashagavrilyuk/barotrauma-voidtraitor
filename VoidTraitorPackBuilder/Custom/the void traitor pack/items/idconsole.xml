@@ -2,25 +2,7 @@
 <Items>
   <Item identifier="vt_station_access" name="" category="Electrical" tags="vt_idconsole" scale="0.5" isshootable="true" interactdistance="150" grabwhenselected="true">
     <Sprite texture="Content/Items/Electricity/signalcomp.png" depth="0.8" sourcerect="0,368,144,128" origin="0.5,0.3" canflipx="false" />
-    <Terminal canbeselected="true" readonly="true" allowingameediting="false" msg="ItemMsgInteractSelect" maxmessages="1" maxmessagelength="4096" allowuioverlap="true">
-      <GuiFrame relativesize="0.35,0.45" anchor="CenterLeft" style="ItemUI" />
-    </Terminal>
-    <CustomInterface canbeselected="true" msg="ItemMsgInteractSelect" allowuioverlap="true">
-      <GuiFrame relativesize="0.35,0.26" anchor="CenterRight" style="ItemUI" />
-      <!-- CustomInterface hides elements without a signal, property or status effect, hence the empty OnUse effects. -->
-      <TextBox text="IdConsoleName" signal="" maxtextlength="64">
-        <StatusEffect type="OnUse" target="This" />
-      </TextBox>
-      <TextBox text="IdConsoleJob" signal="" maxtextlength="64">
-        <StatusEffect type="OnUse" target="This" />
-      </TextBox>
-      <Button text="IdConsoleMenu" signal="1">
-        <StatusEffect type="OnUse" target="This" />
-      </Button>
-      <Button text="IdConsoleSave" signal="1">
-        <StatusEffect type="OnUse" target="This" />
-      </Button>
-    </CustomInterface>
+    <ItemComponent canbeselected="true" msg="ItemMsgInteractSelect" />
     <ItemContainer capacity="2" maxstacksize="1" canbeselected="false" hideitems="true" drawinventory="false" allowdraganddrop="false" quickusemovesitemsinside="false">
       <Containable items="identitycard,idcard" />
     </ItemContainer>

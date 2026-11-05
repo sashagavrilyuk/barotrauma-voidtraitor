@@ -1,7 +1,6 @@
 local console = {}
 Traitormod.Communications = console
 local json = require("json")
-local prompts = require("textpromptutils")
 local config = Traitormod.Config.Communications
 local terminals, sessions, broadcasters = {}, {}, {}
 local codes = { "green", "blue", "violet", "yellow", "red" }
@@ -10,14 +9,11 @@ local announcementHeaderColor = Color(255, 255, 170, 255)
 local active = false
 local texts
 local patchVoice
-local componentEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateEventData", true)
-local terminalDescriptor = Descriptors["Barotrauma.Items.Components.Terminal"] or LuaUserData.RegisterType("Barotrauma.Items.Components.Terminal")
-LuaUserData.MakePropertyAccessible(terminalDescriptor, "OutputValue")
 
 function console.Start()
     active, terminals, sessions, broadcasters = true, {}, {}, {}
     texts = {}
-    for _, key in ipairs({ "Title", "Announce", "Voice", "Stop", "Busy", "Cooldown", "Remaining", "Code", "NoPower", "Close",
+    for _, key in ipairs({ "Title", "Announce", "Voice", "Stop", "Busy", "Cooldown", "Code", "Close",
         "green", "blue", "violet", "yellow", "red", "delta", "gamma", "epsilon" }) do
         texts[key] = Traitormod.GetText("Comms" .. key)
     end
@@ -105,16 +101,6 @@ function console.Action(client, item, action, value)
     data.Revision = nil
 end
 
-function console.ChooseCode(client, item)
-    if not console.Validate(client, item) then return end
-    local options = {}
-    for _, code in ipairs(codes) do options[#options + 1] = texts[code] end
-    options[#options + 1] = texts.Close
-    prompts.Prompt(string.format(texts.Code, texts[Traitormod.SelectedGamemode.AlertCode]), options, client, function(index, responseClient)
-        if responseClient == client and codes[index] ~= nil then console.Action(client, item, "code", codes[index]) end
-    end, "InfoFrameTabButton.Mission")
-end
-
 function console.Think()
     if not active then return end
     for item, data in pairs(terminals) do
@@ -123,21 +109,10 @@ function console.Think()
             console.Stop(data)
         end
         if item.Removed then terminals[item] = nil
-        else
-            local snapshot = console.Snapshot(nil, item, data)
-            local revision = json.encode(snapshot)
+        elseif next(sessions) ~= nil then
+            local revision = json.encode(console.Snapshot(nil, item, data))
             if data.Revision ~= revision then
                 data.Revision = revision
-                local voice = snapshot.Voice and string.format(texts.Remaining, snapshot.Remaining)
-                    or snapshot.VoiceCooldown > 0 and string.format(texts.Cooldown, snapshot.VoiceCooldown) or texts.Voice
-                local body = string.format(texts.Code, texts[snapshot.Alert]) .. "\n" .. voice
-                    .. "\n" .. snapshot.Evacuation.Status .. "\n" .. snapshot.Evacuation.Action
-                if not snapshot.Powered then body = texts.NoPower end
-                local terminal = item.GetComponentString("Terminal")
-                if terminal.ShowMessage ~= body then
-                    terminal.ShowMessage, terminal.OutputValue = body, body
-                    Networking.CreateEntityEvent(item, componentEvent.__new(terminal, nil))
-                end
                 for client, selected in pairs(sessions) do
                     if selected == item then
                         if console.Validate(client, item, true) then console.Send(client, item)
@@ -162,21 +137,6 @@ Networking.Receive("VoidTraitor_CommunicationsAction", function(message, client)
     if #action <= 16 and #value <= ChatMessage.MaxLength then console.Action(client, item, action, value) end
 end)
 Hook.Add("client.disconnected", "Traitormod.Communications.Disconnect", function(client) sessions[client] = nil end)
-Hook.Patch("Traitormod.Communications.Terminal", "Barotrauma.Items.Components.Terminal", "ServerEventRead", function(instance, parameters)
-    if instance.Item.Prefab.Identifier ~= "vt_communications_console" then return end
-    local value = parameters["msg"].ReadString()
-    parameters.PreventExecution = true
-    console.Action(parameters["c"], instance.Item, "announce", value)
-end, Hook.HookMethodType.Before)
-Hook.Patch("Traitormod.Communications.Buttons", "Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, parameters)
-    if instance.Item.Prefab.Identifier ~= "vt_communications_console" then return end
-    local message = parameters["msg"]
-    local voice, code, evacuation = message.ReadBoolean(), message.ReadBoolean(), message.ReadBoolean()
-    parameters.PreventExecution = true
-    if voice then console.Action(parameters["c"], instance.Item, "voice")
-    elseif code then console.ChooseCode(parameters["c"], instance.Item)
-    elseif evacuation then console.Action(parameters["c"], instance.Item, "evacuation") end
-end, Hook.HookMethodType.Before)
 -- Patched only on the first broadcast: the patch then runs for every speaker and listener for the rest of the session.
 local voicePatched = false
 function patchVoice()

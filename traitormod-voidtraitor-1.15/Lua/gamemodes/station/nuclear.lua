@@ -5,7 +5,6 @@ local json = require("json")
 local bombs, sessions = {}, {}
 local active = false
 local texts
-local statusLabels = { locked = "Locked", code = "AwaitCode", ready = "Ready", armed = "Armed", cooldown = "Cooldown", exploded = "Exploded" }
 -- Track order must match the six OnActive sounds in nuclear.xml.
 local musicLengths = { 109.9977, 111.6000, 103.3606, 196.2902, 109.5756 }
 local activationLength = 14
@@ -14,8 +13,6 @@ local componentEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateE
 local eventSet = LuaUserData.CreateStatic("Barotrauma.EventSet", true)
 local holdableDescriptor = Descriptors["Barotrauma.Items.Components.Holdable"] or LuaUserData.RegisterType("Barotrauma.Items.Components.Holdable")
 LuaUserData.MakePropertyAccessible(holdableDescriptor, "PickingTime")
-local terminalDescriptor = Descriptors["Barotrauma.Items.Components.Terminal"] or LuaUserData.RegisterType("Barotrauma.Items.Components.Terminal")
-LuaUserData.MakePropertyAccessible(terminalDescriptor, "OutputValue")
 
 function nuclear.Start()
     active, bombs, sessions = true, {}, {}
@@ -61,19 +58,6 @@ end
 
 function nuclear.Update(item, data)
     local snapshot = nuclear.Snapshot(item, data)
-    local first = snapshot.Text[statusLabels[data.Status]]
-    local second = Traitormod.FormatText("NukeTime", snapshot.Remaining)
-    if data.Status == "locked" then second = snapshot.Text.AwaitDisk
-    elseif data.Status == "code" then second = Traitormod.FormatText("NukeCode", string.rep("*", #data.Entered) .. string.rep("_", 6 - #data.Entered))
-    elseif data.Status == "cooldown" then second = Traitormod.FormatText("NukeCooling", snapshot.Cooldown) end
-    local body = first .. "\n" .. second
-    local terminal = item.GetComponentString("Terminal")
-    if terminal.ShowMessage ~= body then
-        terminal.ShowMessage = body
-        -- the Terminal event only carries OutputValue; SyncHistory would resend every previous countdown line
-        terminal.OutputValue = body
-        Networking.CreateEntityEvent(item, componentEvent.__new(terminal, nil))
-    end
     local holdable = item.GetComponentString("Holdable")
     local canPick = data.Status ~= "exploded" and (not holdable.Attached or data.Status == "armed" and data.Remaining > config.DisarmTime)
     if holdable.CanBePicked ~= canPick then
@@ -163,10 +147,6 @@ function nuclear.Action(client, item, action, value)
             data.Entered = ""
             nuclear.PlaySound(item, "reject")
         end
-    elseif action == "code" and data.Status == "code" and type(value) == "string" and value:match("^%d%d%d%d%d%d$") then
-        if Timer.GetTime() - data.LastAttempt < 1 then return false end
-        data.Entered = value
-        return nuclear.Action(client, item, "enter")
     elseif action == "anchor" and data.Status ~= "armed" and data.Status ~= "exploded" and item.ParentInventory == nil then
         if disk == nil then
             Traitormod.SendChatMessage(client, Traitormod.GetText("NukeAnchorNeedsDisk"))
@@ -297,22 +277,6 @@ Networking.Receive("VoidTraitor_NuclearAction", function(message, client)
     if #action <= 16 and #value <= 6 then nuclear.Action(client, item, action, value) end
 end)
 
-Hook.Patch("Traitormod.Nuclear.Terminal", "Barotrauma.Items.Components.Terminal", "ServerEventRead", function(instance, parameters)
-    if instance.Item.Prefab.Identifier ~= "vt_nuclear_bomb" then return end
-    local value = parameters["msg"].ReadString()
-    parameters.PreventExecution = true
-    if #value <= 6 then nuclear.Action(parameters["c"], instance.Item, "code", value) end
-end, Hook.HookMethodType.Before)
-Hook.Patch("Traitormod.Nuclear.Buttons", "Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, parameters)
-    if instance.Item.Prefab.Identifier ~= "vt_nuclear_bomb" then return end
-    local message = parameters["msg"]
-    local insert, eject, anchor, arm = message.ReadBoolean(), message.ReadBoolean(), message.ReadBoolean(), message.ReadBoolean()
-    parameters.PreventExecution = true
-    if insert then nuclear.Action(parameters["c"], instance.Item, "insert")
-    elseif eject then nuclear.Action(parameters["c"], instance.Item, "eject")
-    elseif anchor then nuclear.Action(parameters["c"], instance.Item, "anchor")
-    elseif arm then nuclear.Action(parameters["c"], instance.Item, "arm") end
-end, Hook.HookMethodType.Before)
 -- LMB picks up a loose bomb; an armed anchored bomb is disarmed with the game's timed pick action.
 Hook.Patch("Traitormod.Nuclear.Use", "Barotrauma.Items.Components.Holdable", "Use", function(instance, parameters)
     if instance.Item.Prefab.Identifier ~= "vt_nuclear_bomb" then return end
