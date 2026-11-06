@@ -17,6 +17,7 @@ assert(loadfile(packPath .. "/Lua/client/lobby/menu.lua"))(packPath, clientCommo
 assert(loadfile(packPath .. "/Lua/client/attackdefend_respawn.lua"))(packPath, clientCommon)
 assert(loadfile(packPath .. "/Lua/client/missions.lua"))(packPath)
 assert(loadfile(packPath .. "/Lua/client/tremor.lua"))()
+assert(loadfile(packPath .. "/Lua/client/stun.lua"))(packPath)
 assert(loadfile(packPath .. "/Lua/client/station/idconsole.lua"))(packPath, clientCommon)
 assert(loadfile(packPath .. "/Lua/client/station/cargo.lua"))(packPath, clientCommon)
 assert(loadfile(packPath .. "/Lua/client/station/nuclear.lua"))(packPath, clientCommon)

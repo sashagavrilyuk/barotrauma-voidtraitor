@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<infotexts language="English" nowhitespace="false" translatedname="English">
-  <Override>
-    <hint.radiojammed>For some reason, your headset don't work, or you stun.</hint.radiojammed>
-  </Override>
-  <Override>
-    <radiojammedwarning>Headset are not working</radiojammedwarning>
-  </Override>
-</infotexts>

@@ -347,10 +347,6 @@
   <OutpostModule file="%ModDir%/More Arts (AOCS)/modules/Artmod_Alienroom1.sub" />
   <Orders file="%ModDir%/All Jobs See Reports/Orders.xml" />
   <Item file="%ModDir%/Belt Only Outerclothes/XML/BeltOnlyOuterclothes.XML" />
-  <Afflictions file="%ModDir%/Improved  Stun/stun.xml" />
-  <Item file="%ModDir%/Improved  Stun/items.xml" />
-  <Text file="%ModDir%/Improved  Stun/eng.xml" />
-  <Text file="%ModDir%/Improved  Stun/rus.xml" />
   <Item file="%ModDir%/Mission Mode Starting Options/AutofillEmitters.xml" />
   <Item file="%ModDir%/Mission Mode Starting Options/ExperienceEmitters.xml" />
   <RandomEvents file="%ModDir%/Mission Mode Starting Options/SpawnItemEvents.xml" />
