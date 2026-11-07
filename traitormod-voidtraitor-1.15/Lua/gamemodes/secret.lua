@@ -101,8 +101,6 @@ end
 
 
 local function sendSummaryPopup(client, summary)
-    if not Traitormod.ClientHasLua(client) then return end
-
     local message = Networking.Start(summaryNetMessage)
     message.WriteString(Traitormod.HighlightClientNames(summary, Color.Red))
     Networking.Send(message, client.Connection)

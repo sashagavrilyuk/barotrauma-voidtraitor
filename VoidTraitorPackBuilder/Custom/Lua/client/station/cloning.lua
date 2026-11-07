@@ -111,8 +111,7 @@ function UI.ShowConsent(title, question, acceptText, declineText)
     local root = GUI.Frame(GUI.RectTransform(Point(math.floor(width), Common.SafeIntScale(200)), nil, GUI.Anchor.Center), "GUIFrame")
     UI.ConsentRoot = root
     local layout, frame = Common.CreateWindowContent(root)
-    -- closing only hides the question; it can still be answered with !y or !n
-    Common.CreateWindowHeader(layout, root, title, nil, function() UI.CloseConsent() return true end)
+    Common.CreateWindowHeader(layout, root, title, nil, function() return answerConsent(false) end)
     local questionText = Common.CreateText(layout, 1, 1, nil, question, GUI.Alignment.Center, 1, nil, true)
     questionText.CalculateHeightFromText()
     Common.SetFixedHeight(questionText, questionText.Rect.Height)
