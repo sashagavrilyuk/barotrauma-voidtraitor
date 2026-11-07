@@ -1,7 +1,8 @@
 if SERVER then return end
 
--- While the local character is stunned (a long stun or a Neurotrauma coma) the darkness closes in around them
--- like the crit view of Space Station 14, instead of a black screen.
+-- While the local character is knocked down and cannot get up (a long stun, unconsciousness, paralysis or a
+-- Neurotrauma coma) the darkness closes in around them like the crit view of Space Station 14, instead of a
+-- black screen.
 local packPath = ...
 local PATCH_ID = "VoidTraitor.StunView"
 local RISE_TIME = 2.5
@@ -9,6 +10,8 @@ local FALL_TIME = 1
 -- radius of the dark mask as a share of the screen width, as in SS14; its inner third stays clear
 local FAR_RADIUS = 0.6
 local NEAR_RADIUS = 0.06
+-- once fully down even the clear middle is dimmed, so nearby lamps do not shine at full strength
+local INNER_DARKNESS = 0.5
 
 local gameMain = LuaUserData.CreateStatic("Barotrauma.GameMain")
 local mask = Sprite(packPath .. "/the void traitor pack/UI/stunmask.png", Vector2(0.5, 0.5))
@@ -42,7 +45,8 @@ Hook.Patch(PATCH_ID, "Barotrauma.CharacterHUD", "Draw", function (instance, ptab
         level = 0
         return
     end
-    if character.Stun > 0 then
+    -- not Character.Stun: it is also 1 while the player lies down on purpose by holding the ragdoll key
+    if character.IsKnockedDown then
         level = math.min(1, level + deltaTime / RISE_TIME)
     elseif level > 0 then
         level = math.max(0, level - deltaTime / FALL_TIME)
@@ -62,6 +66,7 @@ Hook.Patch(PATCH_ID, "Barotrauma.CharacterHUD", "Draw", function (instance, ptab
     local radius = math.floor((FAR_RADIUS + level * (NEAR_RADIUS - FAR_RADIUS)) * width + 0.5)
     local color = Color(0, 0, 0, math.floor(255 * darkness() + 0.5))
 
+    fill(spriteBatch, 0, 0, width, height, Color(0, 0, 0, math.floor(255 * INNER_DARKNESS * level + 0.5)))
     mask.Draw(spriteBatch, Vector2(x, y), color, 0, 2 * radius / mask.size.X)
     fill(spriteBatch, 0, 0, width, y - radius, color)
     fill(spriteBatch, 0, y + radius, width, height - y - radius, color)
