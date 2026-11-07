@@ -207,6 +207,22 @@ function cargo.Submit(client, payload)
     return true, "CargoSubmitted"
 end
 
+-- An order paid by someone else: accepted at once, it costs the station nothing and flies with the next trip.
+-- Returns false when the product is not sold by cargo.
+function cargo.AddGift(categoryId, identifier, quantity, author, reason)
+    local state = cargo.State
+    for _, entry in ipairs(state.Products) do
+        if entry.Category.Identifier == categoryId and entry.Product.Identifier == identifier then
+            state.NextOrderId = state.NextOrderId + 1
+            state.Orders[#state.Orders + 1] = { Id = state.NextOrderId, Product = entry.Id, Name = ps.GetProductName(entry.Product),
+                IconIdentifier = identifier, Quantity = quantity, Price = 0, Reason = reason, Author = author, Status = "Accepted" }
+            state.Dirty = true
+            return true
+        end
+    end
+    return false
+end
+
 function cargo.FindOrder(id)
     for _, order in ipairs(cargo.State.Orders) do if order.Id == id then return order end end
 end

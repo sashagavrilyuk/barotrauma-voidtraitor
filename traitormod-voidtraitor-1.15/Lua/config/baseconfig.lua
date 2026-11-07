@@ -70,6 +70,24 @@ config.Cargo = {
     SaleExcluded = {},
     LargeAreaSize = 200,
     DeliveredHistorySeconds = 150,
+    -- free orders of the CoalitionGifts event; Text says in the announcement what is sent and to whom
+    Gifts = {
+        { Text = "CoalitionGiftMedical", Orders = {
+            { Category = "medical", Identifier = "antibleeding1", Quantity = 2 },
+            { Category = "medical", Identifier = "suture", Quantity = 1 },
+            { Category = "medical", Identifier = "antibiotics", Quantity = 2 },
+        } },
+        { Text = "CoalitionGiftRepair", Orders = {
+            { Category = "maintenance", Identifier = "weldingtool", Quantity = 2 },
+            { Category = "maintenance", Identifier = "fixfoamgrenade", Quantity = 2 },
+            { Category = "maintenance", Identifier = "repairpack", Quantity = 2 },
+        } },
+        { Text = "CoalitionGiftMaterials", Orders = {
+            { Category = "materials", Identifier = "steel", Quantity = 5 },
+            { Category = "materials", Identifier = "copper", Quantity = 5 },
+            { Category = "materials", Identifier = "plastic", Quantity = 5 },
+        } },
+    },
 }
 config.Cloning = { Time = 30, HumanBiomassCost = 50, HumanBiomassYield = 28 }
 config.Nuclear = { Time = 300, MinimumTime = 180, Cooldown = 30, DisarmTime = 30, ExplosionRange = 12000, PlacementMargin = 150, MusicStartDelay = 30 }
@@ -697,6 +715,11 @@ config.RandomEventConfig = {
                 VentCreatures = { Weight = 5, EarliestMinute = 20, MinPlayers = 15 }, -- vent hordes
                 MalfunctioningBot = { Weight = 2.5, EarliestMinute = 15, MinPlayers = 4, RepeatAfterMinutes = 20 }, -- derelict cyborg
                 IceCollapse = { Weight = 5, EarliestMinute = 10 }, -- no SS14 counterpart
+                LifeSupportFailure = { Weight = 8 }, -- gas leak
+                BreakerFlip = { Weight = 7, MinPlayers = 15 }, -- breaker flip
+                WeakBallastFlora = { Weight = 7, EarliestMinute = 15, MinPlayers = 15 }, -- kudzu
+                CoalitionGifts = { Weight = 6, EarliestMinute = 20, MinPlayers = 10 }, -- cargo gifts
+                SleeperAgents = { Weight = 8, EarliestMinute = 30, MinPlayers = 15, MaxPerRound = 1 }, -- sleeper agents
             },
         },
     },
@@ -793,6 +816,10 @@ config.RandomEventConfig = {
         dofile(Traitormod.Path .. "/Lua/config/randomevents/stationattack.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/radiationstorm.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/icecollapse.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/lifesupportfailure.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/breakerflip.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/coalitiongifts.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/sleeperagents.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/superballastflora.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/maintenancetoolsdelivery.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/medicaldelivery.lua"),

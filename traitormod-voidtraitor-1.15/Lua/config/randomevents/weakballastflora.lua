@@ -31,6 +31,12 @@ local function isBallastPump(pump)
     return false
 end
 
+-- the station has no ballast: there the flora comes in with the water of any of its pumps, like the SS14 kudzu
+local function isStation()
+    local mode = Traitormod.SelectedGamemode
+    return mode ~= nil and mode.Name == "Station"
+end
+
 local function getBallastPumps()
     local pumps = {}
 
@@ -38,9 +44,11 @@ local function getBallastPumps()
         return pumps
     end
 
-    for _, item in pairs(Submarine.MainSub.GetItems(true)) do
+    local station = isStation()
+    -- on the station only its own pumps, not those of the shuttles docked to it
+    for _, item in pairs(Submarine.MainSub.GetItems(not station)) do
         local pump = item.GetComponentString("Pump")
-        if pump ~= nil and isBallastPump(pump) then
+        if pump ~= nil and (station or isBallastPump(pump)) then
             table.insert(pumps, pump)
         end
     end
@@ -54,7 +62,8 @@ end
 
 event.Start = function()
     local pumps = getBallastPumps()
-    local infectCount = math.min(#pumps, math.random(1, 3))
+    local station = isStation()
+    local infectCount = math.min(#pumps, station and 1 or math.random(1, 3))
 
     for i = 1, infectCount, 1 do
         local index = math.random(#pumps)
@@ -65,7 +74,10 @@ event.Start = function()
         pump.Item.CreateServerEvent(pump, pump)
     end
 
-    Traitormod.RoundEvents.SendEventMessage(Traitormod.Language.WeakBallastFlora, "EndRoundButton", Color(155, 255, 155, 255))
+    -- on the station nobody is warned, the crew finds it growing
+    if not station then
+        Traitormod.RoundEvents.SendEventMessage(Traitormod.Language.WeakBallastFlora, "EndRoundButton", Color(155, 255, 155, 255))
+    end
     event.End()
 end
 
