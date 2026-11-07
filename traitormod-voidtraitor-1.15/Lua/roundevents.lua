@@ -16,6 +16,9 @@ re.AllowedEvents = {}
 -- Director state for the current round; Config is nil when the director is off for the mode
 re.Director = { QuietMinutes = 0 }
 
+-- Scheduler state for the current round; Config is nil when the mode has no scheduler
+re.Scheduler = { LastRun = {} }
+
 ---Notes that a threat started, whatever started it: the next random threat has to wait and the calm count starts over
 re.RecordThreat = function ()
     re.Director.QuietMinutes = 0
@@ -149,6 +152,7 @@ re.TriggerEvent = function (eventName)
         re.ThisRoundEvents[eventName] = 0
     end
     re.ThisRoundEvents[eventName] = re.ThisRoundEvents[eventName] + 1
+    re.Scheduler.LastRun[eventName] = Traitormod.RoundTime
 
     local director = re.Director
     if director.Config ~= nil then
@@ -238,6 +242,44 @@ local function startOneOf(options, reason)
     local name = options[math.random(#options)]
     Traitormod.Log("Director starts " .. name .. ": " .. reason .. ".")
     return re.TriggerEvent(name) == true
+end
+
+-- Like the SS14 scheduler: one event by weight among those that may run now. Runs started by anyone (admins, shops)
+-- count towards the limits.
+local function runScheduledEvent(scheduler)
+    local config = scheduler.Config
+    local now = Traitormod.RoundTime
+    scheduler.NextTime = now + math.random(config.IntervalSeconds[1], config.IntervalSeconds[2])
+
+    local players = #Client.ClientList
+    local options, totalWeight = {}, 0
+    for name, limits in pairs(config.Events) do
+        local event = eventsByName[name]
+        local lastRun = scheduler.LastRun[name]
+        if event ~= nil and re.OnGoingEvents[name] == nil
+            and now >= (limits.EarliestMinute or config.EarliestMinute) * 60
+            and players >= (limits.MinPlayers or 0)
+            and (limits.MaxPerRound == nil or (re.ThisRoundEvents[name] or 0) < limits.MaxPerRound)
+            and (lastRun == nil or now - lastRun >= (limits.RepeatAfterMinutes or config.RepeatAfterMinutes) * 60)
+            and canStartEvent(event) then
+            table.insert(options, name)
+            totalWeight = totalWeight + limits.Weight
+        end
+    end
+    if #options == 0 then
+        Traitormod.Log("Scheduler found no event that can start.")
+        return
+    end
+
+    local roll = math.random() * totalWeight
+    for _, name in ipairs(options) do
+        roll = roll - config.Events[name].Weight
+        if roll < 0 then
+            Traitormod.Log("Scheduler starts " .. name .. ".")
+            re.TriggerEvent(name)
+            return
+        end
+    end
 end
 
 local function isDown(character, lowVitality)
@@ -460,6 +502,11 @@ Hook.Add("think", "TraitorMod.RoundEvents.Think", function ()
         nextHelpCheck = Timer.GetTime() + director.Config.Help.CheckSeconds
     end
 
+    local scheduler = re.Scheduler
+    if scheduler.Config ~= nil and Traitormod.RoundTime >= scheduler.NextTime then
+        runScheduledEvent(scheduler)
+    end
+
     if Timer.GetTime() > lastRandomEventCheck then
         if directing then directorMinute(director) end
         for _, event in pairs(re.EventConfigs.Events) do
@@ -478,9 +525,6 @@ re.Initialize = function (allowedEvents, modeName)
 
     local groups = re.EventConfigs.ModeEvents
     if allowedEvents == nil and groups[modeName] ~= nil then
-        for _, name in ipairs(groups.Shared) do
-            re.AllowedEvents[name] = true
-        end
         for _, name in ipairs(groups[modeName]) do
             re.AllowedEvents[name] = true
         end
@@ -520,6 +564,13 @@ re.Initialize = function (allowedEvents, modeName)
             end
         end
     end
+
+    local scheduler = re.EventConfigs.Schedulers[modeName]
+    re.Scheduler = { Config = scheduler, LastRun = {} }
+    if scheduler ~= nil then
+        re.Scheduler.NextTime = Traitormod.RoundTime
+            + math.random(scheduler.FirstEventSeconds[1], scheduler.FirstEventSeconds[2])
+    end
 end
 
 re.EndRound = function ()
@@ -531,6 +582,7 @@ re.EndRound = function ()
     re.ThisRoundEvents = {}
     re.AllowedEvents = {}
     re.Director = { QuietMinutes = 0 }
+    re.Scheduler = { LastRun = {} }
 end
 
 for _, value in pairs(re.EventConfigs.Events) do

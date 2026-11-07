@@ -190,6 +190,12 @@ function gm:SendAlertMessage(text, color, headerColor, header)
     end
 end
 
+-- station events are announced by the Coalition Command, laid out like the alert codes
+function gm:SendCoalitionAnnouncement(text, sound)
+    self:SendAlertMessage(text, Color(255, 215, 0, 255), nil, Traitormod.GetText("CoalitionAnnouncementHeader"))
+    self:PlayAlertSound(sound)
+end
+
 function gm:SetAlertCode(code)
     if alertCodes[code] == nil or self.AlertCode == code then return false end
     self.AlertCode = code

@@ -46,7 +46,12 @@ event.Start = function ()
     end
 
     Networking.Send(Networking.Start(NET_TREMOR))
-    Traitormod.RoundEvents.SendEventMessage(Traitormod.Language.SeismicTremor, "GameModeIcon.sandbox")
+    local mode = Traitormod.SelectedGamemode
+    if mode ~= nil and mode.Name == "Station" then
+        mode:SendCoalitionAnnouncement(Traitormod.GetText("SeismicTremorStation"), "green")
+    else
+        Traitormod.RoundEvents.SendEventMessage(Traitormod.Language.SeismicTremor, "GameModeIcon.sandbox")
+    end
 
     event.End()
 end

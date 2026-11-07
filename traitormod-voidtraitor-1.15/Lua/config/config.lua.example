@@ -33,8 +33,8 @@ local config = ...
 -- config.GamemodeConfig.Station.WaveSpawnMinDistance = 5
 -- config.GamemodeConfig.Station.WaveSpawnMaxDistance = 15
 -- config.GamemodeConfig.Station.WaveIntervals = { { Players = 40, Min = 12, Max = 16 } }
--- Automatic events: Shared + current mode. Manual antagonist/shop calls are unchanged.
--- Move an event between config.RandomEventConfig.ModeEvents.Shared / Secret / Station.
+-- Automatic events: the current mode's list, and in Station its scheduler. Manual antagonist/shop calls are unchanged.
+-- Add or remove an event in config.RandomEventConfig.ModeEvents.Secret / Station or Schedulers.Station.Events.
 -- Turn the event director off (help, threats after calm, neutral events, false trails):
 -- config.RandomEventConfig.Director.Modes = {}
 

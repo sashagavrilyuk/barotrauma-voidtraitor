@@ -658,8 +658,9 @@ config.ObjectiveConfig = {
 
 ----- EVENTS -----
 config.RandomEventConfig = {
+    -- events the random rolls and the director may start in each mode; shops and admins can start any event
     ModeEvents = {
-        Shared = {
+        Secret = {
             "MaintenanceToolsDelivery", "MedicalDelivery", "AmmoDelivery", "ArmoryCrate", "EmergencyTeam",
             "VentCreatures", "ClownCrateSurprise", "OxygenGeneratorHusk", "RandomLights",
             "ClownMagic", "LightsOff", "ReactorShutdown",
@@ -671,15 +672,32 @@ config.RandomEventConfig = {
             "MechanicSkillBoost", "EngineerElectricalRepair", "EngineerSkillBoost",
             "MedicSkillBoost", "SurgeonSkillBoost", "ElectricalFixDischarge", "FixHull",
             "FullFixHull", "FullElectricalFixDischarge",
-        },
-        Secret = {
             "SuperBallastFlora", "WeakBallastFlora", "AbyssHelp", "ShadyMission", "Prisoner",
             "WreckRescue", "BeaconRescue", "CaptainHelmBoost", "OutpostPirateAttack",
             "PirateCrew", "HiddenPirate", "WreckPirate", "BeaconPirate",
             "BreackElectrical", "BreackHull", "KillElectrical", "KillHull", "WildCreature", "MalfunctioningBot",
             "SeismicTremor", "GuardedCargo", "CommunicationsOffline",
         },
-        Station = { "StationAttack", "RadiationStorm" },
+        Station = { "StationAttack" }, -- the waves; Station draws its other events from its scheduler
+    },
+    -- Like the SS14 station event scheduler: the first event a few minutes in, then one event every few minutes, drawn by
+    -- weight from those that may run now. The weights and limits follow the closest SS14 events.
+    Schedulers = {
+        Station = {
+            FirstEventSeconds = { 200, 320 },
+            IntervalSeconds = { 180, 600 },
+            -- defaults for the events below
+            EarliestMinute = 5,
+            RepeatAfterMinutes = 30,
+            -- Weight, and optionally EarliestMinute, RepeatAfterMinutes, MinPlayers (connected) and MaxPerRound
+            Events = {
+                RadiationStorm = { Weight = 8 }, -- solar flare
+                SeismicTremor = { Weight = 7 }, -- breaker flip
+                WildCreature = { Weight = 6 }, -- random sentience
+                VentCreatures = { Weight = 5, EarliestMinute = 20, MinPlayers = 15 }, -- vent hordes
+                MalfunctioningBot = { Weight = 2.5, EarliestMinute = 15, MinPlayers = 4, RepeatAfterMinutes = 20 }, -- derelict cyborg
+            },
+        },
     },
     -- The director watches the round and starts events itself: help when the crew is going under, a threat after a calm
     -- stretch, a neutral event now and then and once in a while a false trail. The random events above keep running.

@@ -26,7 +26,11 @@ event.Start = function ()
         Traitormod.GhostRoles.Create("defensebot.malfunctioning", bot)
     end)
 
-    Traitormod.RoundEvents.SendEventMessage(Traitormod.Language.MalfunctioningBot, "GameModeIcon.PVP", Color.Red)
+    -- the station is not warned, like the hidden threats of SS14
+    local mode = Traitormod.SelectedGamemode
+    if mode == nil or mode.Name ~= "Station" then
+        Traitormod.RoundEvents.SendEventMessage(Traitormod.Language.MalfunctioningBot, "GameModeIcon.PVP", Color.Red)
+    end
 
     event.End()
 end

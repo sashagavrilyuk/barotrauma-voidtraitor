@@ -118,7 +118,12 @@ event.Start = function()
     event.Token = (event.Token or 0) + 1
     local token = event.Token
 
-    Traitormod.RoundEvents.SendEventMessage(Traitormod.Language.VentCreaturesWarning, "GameModeIcon.PVP", Color(255, 190, 70, 255))
+    local mode = Traitormod.SelectedGamemode
+    if mode ~= nil and mode.Name == "Station" then
+        mode:SendCoalitionAnnouncement(Traitormod.GetText("VentCreaturesStation"), "green")
+    else
+        Traitormod.RoundEvents.SendEventMessage(Traitormod.Language.VentCreaturesWarning, "GameModeIcon.PVP", Color(255, 190, 70, 255))
+    end
 
     Timer.Wait(function()
         if event.Token ~= token then
