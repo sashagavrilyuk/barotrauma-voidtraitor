@@ -13,7 +13,6 @@ category.Roles = {
         Name = "GhostRoleCrawlerHatchlingName",
         Description = "GhostRoleVentCreatureDescription",
         Price = 0,
-        Icon = "vt_preview_creature_crawler_hatchling",
         Action = keepLife,
     },
 
@@ -23,7 +22,6 @@ category.Roles = {
         Name = "GhostRoleTigerthresherHatchlingName",
         Description = "GhostRoleVentCreatureDescription",
         Price = 0,
-        Icon = "vt_preview_creature_tigerthresher_hatchling",
         Action = keepLife,
     },
 
@@ -33,7 +31,6 @@ category.Roles = {
         Name = "GhostRoleMudraptorHatchlingName",
         Description = "GhostRoleVentCreatureDescription",
         Price = 0,
-        Icon = "vt_preview_creature_mudraptor_hatchling",
         Action = keepLife,
     },
 
@@ -43,7 +40,6 @@ category.Roles = {
         Name = "GhostRoleCrawlerHuskName",
         Description = "GhostRoleVentHuskDescription",
         Price = 0,
-        Icon = "vt_preview_creature_crawlerhusk",
         Action = keepLife,
     },
 
@@ -53,7 +49,6 @@ category.Roles = {
         Name = "GhostRoleTigerthresherHuskName",
         Description = "GhostRoleVentHuskDescription",
         Price = 0,
-        Icon = "vt_preview_creature_tigerthresherhusk",
         Action = keepLife,
     },
 
@@ -63,7 +58,6 @@ category.Roles = {
         Name = "GhostRoleMudraptorHuskName",
         Description = "GhostRoleVentHuskDescription",
         Price = 0,
-        Icon = "vt_preview_creature_huskmutantmudraptor",
         Action = keepLife,
     },
 
@@ -73,7 +67,6 @@ category.Roles = {
         Name = "GhostRoleOrangeBoyName",
         Description = "GhostRoleVentPetDescription",
         Price = 0,
-        Icon = "vt_preview_creature_orangeboy",
         Action = keepLife,
     },
 
@@ -83,7 +76,6 @@ category.Roles = {
         Name = "GhostRoleBalloonName",
         Description = "GhostRoleVentPetDescription",
         Price = 0,
-        Icon = "vt_preview_creature_balloon",
         Action = keepLife,
     },
 
@@ -93,7 +85,6 @@ category.Roles = {
         Name = "GhostRolePsilotoadName",
         Description = "GhostRoleVentPetDescription",
         Price = 0,
-        Icon = "vt_preview_creature_psilotoad",
         Action = keepLife,
     },
 
@@ -103,7 +94,6 @@ category.Roles = {
         Name = "GhostRoleClownOrangeBoyName",
         Description = "GhostRoleVentPetDescription",
         Price = 0,
-        Icon = "vt_preview_creature_clown_orangeboy",
         Action = keepLife,
     },
 
@@ -113,7 +103,6 @@ category.Roles = {
         Name = "GhostRoleClownPeanutName",
         Description = "GhostRoleVentPetDescription",
         Price = 0,
-        Icon = "vt_preview_creature_clown_peanut",
         Action = keepLife,
     },
 
@@ -123,7 +112,6 @@ category.Roles = {
         Name = "GhostRoleClownPsilotoadName",
         Description = "GhostRoleVentPetDescription",
         Price = 0,
-        Icon = "vt_preview_creature_clown_psilotoad",
         Action = keepLife,
     },
 }

@@ -10,7 +10,6 @@ category.Roles = {
         Name = "GhostRoleMudraptorHatchlingName",
         Description = "GhostRoleRandomCreatureDescription",
         Price = 0,
-        Icon = "vt_preview_creature_mudraptor_hatchling",
     },
 
     {
@@ -20,7 +19,6 @@ category.Roles = {
         Name = "GhostRoleCrawlerHatchlingName",
         Description = "GhostRoleRandomCreatureDescription",
         Price = 0,
-        Icon = "vt_preview_creature_crawler_hatchling",
     },
 
     {
@@ -30,7 +28,6 @@ category.Roles = {
         Name = "GhostRoleTigerthresherHatchlingName",
         Description = "GhostRoleRandomCreatureDescription",
         Price = 0,
-        Icon = "vt_preview_creature_tigerthresher_hatchling",
     },
 
     {
@@ -40,7 +37,6 @@ category.Roles = {
         Name = "GhostRoleWatcherName",
         Description = "GhostRoleRandomCreatureDescription",
         Price = 0,
-        Icon = "vt_preview_creature_watcher",
     },
 
     {
@@ -50,7 +46,6 @@ category.Roles = {
         Name = "GhostRolePetMudraptorName",
         Description = "GhostRoleRandomCreatureDescription",
         Price = 0,
-        Icon = "vt_preview_creature_mudraptor_pet",
     },
 
     {
@@ -60,7 +55,6 @@ category.Roles = {
         Name = "GhostRoleFractalGuardianName",
         Description = "GhostRoleRandomCreatureDescription",
         Price = 0,
-        Icon = "vt_preview_creature_fractalguardian",
     },
 
     {
@@ -70,7 +64,6 @@ category.Roles = {
         Name = "GhostRoleFractalGuardianName",
         Description = "GhostRoleRandomCreatureDescription",
         Price = 0,
-        Icon = "vt_preview_creature_fractalguardian",
     },
 
     {
@@ -80,7 +73,6 @@ category.Roles = {
         Name = "GhostRoleFractalGuardianName",
         Description = "GhostRoleRandomCreatureDescription",
         Price = 0,
-        Icon = "vt_preview_creature_fractalguardian",
     },
 }
 

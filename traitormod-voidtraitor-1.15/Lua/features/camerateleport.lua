@@ -16,15 +16,13 @@ local function getCharacterIcon(character)
     if ghostRoles ~= nil then
         local roleId = ghostRoles.Characters[character]
         local role = roleId ~= nil and ghostRoles.Roles[roleId] or nil
-        if role ~= nil and role.Config ~= nil and role.Config.Icon ~= nil then
-            return tostring(role.Config.Icon)
-        end
+        local icon = role ~= nil and role.Config ~= nil and ghostRoles.GetConfigIcon(role.Config) or nil
+        if icon ~= nil then return icon end
 
         local species = string.lower(tostring(character.SpeciesName or ""))
         local roleConfig = ghostRoles.AutoRegisterBySpecies[species]
-        if roleConfig ~= nil and roleConfig.Icon ~= nil then
-            return tostring(roleConfig.Icon)
-        end
+        icon = roleConfig ~= nil and ghostRoles.GetConfigIcon(roleConfig) or nil
+        if icon ~= nil then return icon end
     end
 
     if character.Info ~= nil and character.Info.Job ~= nil and character.Info.Job.Prefab ~= nil then

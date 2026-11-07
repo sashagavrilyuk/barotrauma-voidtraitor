@@ -25,7 +25,6 @@ category.Products = {
         },
 
         GuiCreature = "crawler",
-        Icon = "vt_preview_creature_crawler",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -48,7 +47,6 @@ category.Products = {
         },
 
         GuiCreature = "Leucocyte",
-        Icon = "vt_preview_creature_leucocyte",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -71,7 +69,6 @@ category.Products = {
         },
 
         GuiCreature = "legacycrawler",
-        Icon = "vt_preview_creature_legacycrawler",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -94,7 +91,6 @@ category.Products = {
         },
 
         GuiCreature = "crawler_hatchling",
-        Icon = "vt_preview_creature_crawler_hatchling",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -117,7 +113,6 @@ category.Products = {
         },
 
         GuiCreature = "mudraptor_hatchling",
-        Icon = "vt_preview_creature_mudraptor_hatchling",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -140,7 +135,6 @@ category.Products = {
         },
 
         GuiCreature = "tigerthresher_hatchling",
-        Icon = "vt_preview_creature_tigerthresher_hatchling",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -163,7 +157,6 @@ category.Products = {
         },
 
         GuiCreature = "spineling",
-        Icon = "vt_preview_creature_spineling",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -186,7 +179,6 @@ category.Products = {
         },
 
         GuiCreature = "Spineling_morbusine",
-        Icon = "vt_preview_creature_spineling_morbusine",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -209,7 +201,6 @@ category.Products = {
         },
 
         GuiCreature = "mudraptor",
-        Icon = "vt_preview_creature_mudraptor",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -232,7 +223,6 @@ category.Products = {
         },
 
         GuiCreature = "mantis",
-        Icon = "vt_preview_creature_mantis",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -256,7 +246,6 @@ category.Products = {
         },
 
         GuiCreature = "Bonethresher",
-        Icon = "vt_preview_creature_bonethresher",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -280,7 +269,6 @@ category.Products = {
         },
 
         GuiCreature = "Tigerthresher",
-        Icon = "vt_preview_creature_tigerthresher",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -304,7 +292,6 @@ category.Products = {
         },
 
         GuiCreature = "legacymoloch",
-        Icon = "vt_preview_creature_legacymoloch",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -328,7 +315,6 @@ category.Products = {
         },
 		
         GuiCreature = "legacymoloch",
-        Icon = "vt_preview_creature_legacymoloch",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -352,7 +338,6 @@ category.Products = {
         },
 
         GuiCreature = "Molochblack",
-        Icon = "vt_preview_creature_molochblack",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -376,7 +361,6 @@ category.Products = {
         },
 
         GuiCreature = "Carrier",
-        Icon = "vt_preview_creature_carrier",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -400,7 +384,6 @@ category.Products = {
         },
 
         GuiCreature = "hammerhead",
-        Icon = "vt_preview_creature_hammerhead",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -424,7 +407,6 @@ category.Products = {
         },
 
         GuiCreature = "Hammerheadmatriarch",
-        Icon = "vt_preview_creature_hammerheadmatriarch",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -447,7 +429,6 @@ category.Products = {
         },
 
         GuiCreature = "fractalguardian",
-        Icon = "vt_preview_creature_fractalguardian",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -471,7 +452,6 @@ category.Products = {
         },
 
         GuiCreature = "Spineling_giant",
-        Icon = "vt_preview_creature_spineling_giant",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -495,7 +475,6 @@ category.Products = {
         },
 
         GuiCreature = "Mudraptor_veteran",
-        Icon = "vt_preview_creature_mudraptor_veteran",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -518,7 +497,6 @@ category.Products = {
         },
 
         GuiCreature = "latcher",
-        Icon = "vt_preview_creature_latcher",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -541,7 +519,6 @@ category.Products = {
         },
 		
         GuiCreature = "Watcher",
-        Icon = "vt_preview_creature_watcher",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -564,7 +541,6 @@ category.Products = {
         },
 
         GuiCreature = "charybdis",
-        Icon = "vt_preview_creature_charybdis",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -587,7 +563,6 @@ category.Products = {
         },
 
         GuiCreature = "endworm",
-        Icon = "vt_preview_creature_endworm",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)

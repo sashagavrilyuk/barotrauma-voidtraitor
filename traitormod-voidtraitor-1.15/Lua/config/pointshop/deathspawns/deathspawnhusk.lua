@@ -25,7 +25,6 @@ category.Products = {
         },
 
         GuiCreature = "Crawlerhusk",
-        Icon = "vt_preview_creature_crawlerhusk",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -48,7 +47,6 @@ category.Products = {
         },
 
         GuiCreature = "legacyhusk",
-        Icon = "vt_preview_creature_legacyhusk",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -71,7 +69,6 @@ category.Products = {
         },
 
         GuiCreature = "Hammerhead_mhusk",
-        Icon = "vt_preview_creature_hammerhead_mhusk",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -94,7 +91,6 @@ category.Products = {
         },
 
         GuiCreature = "Hammerhead_mhusk",
-        Icon = "vt_preview_creature_hammerhead_mhusk",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -117,7 +113,6 @@ category.Products = {
         },
 
         GuiCreature = "Coelanthhusk",
-        Icon = "vt_preview_creature_coelanthhusk",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -140,7 +135,6 @@ category.Products = {
         },
 
         GuiCreature = "Bonethresherhusk",
-        Icon = "vt_preview_creature_bonethresherhusk",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -163,7 +157,6 @@ category.Products = {
         },
 
         GuiCreature = "Tigerthresherhusk",
-        Icon = "vt_preview_creature_tigerthresherhusk",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -186,7 +179,6 @@ category.Products = {
         },
 
         GuiCreature = "Snatcher",
-        Icon = "vt_preview_creature_snatcher",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -209,7 +201,6 @@ category.Products = {
         },
 
         GuiCreature = "Molochhusk",
-        Icon = "vt_preview_creature_molochhusk",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -232,7 +223,6 @@ category.Products = {
         },
 
         GuiCreature = "Molochblackhusk",
-        Icon = "vt_preview_creature_molochblackhusk",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -255,7 +245,6 @@ category.Products = {
         },
 
         GuiCreature = "Mantishusk",
-        Icon = "vt_preview_creature_mantishusk",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -278,7 +267,6 @@ category.Products = {
         },
 
         GuiCreature = "Legacycrawlerhusk",
-        Icon = "vt_preview_creature_legacycrawlerhusk",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -301,7 +289,6 @@ category.Products = {
         },
 
         GuiCreature = "Huskmutanthunterranged",
-        Icon = "vt_preview_creature_huskmutanthunterranged",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -324,7 +311,6 @@ category.Products = {
         },
 
         GuiCreature = "Huskmutanttigerthresher",
-        Icon = "vt_preview_creature_huskmutanttigerthresher",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -347,7 +333,6 @@ category.Products = {
         },
 
         GuiCreature = "Huskmutantcrawler",
-        Icon = "vt_preview_creature_huskmutantcrawler",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -370,7 +355,6 @@ category.Products = {
         },
 
         GuiCreature = "Huskmutantmudraptor",
-        Icon = "vt_preview_creature_huskmutantmudraptor",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -393,7 +377,6 @@ category.Products = {
         },
 
         GuiCreature = "Huskmutantmudraptor",
-        Icon = "vt_preview_creature_huskmutantmudraptor",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -416,7 +399,6 @@ category.Products = {
         },
 
         GuiCreature = "Endwormhuskhead",
-        Icon = "vt_preview_creature_endwormhuskhead",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -439,7 +421,6 @@ category.Products = {
         },
 
         GuiCreature = "Endwormhusk",
-        Icon = "vt_preview_creature_endwormhusk",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -461,7 +442,6 @@ category.Products = {
         },
 
         GuiCreature = "Charybdishusk",
-        Icon = "vt_preview_creature_charybdishusk",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -484,7 +464,6 @@ category.Products = {
         },
 
         GuiCreature = "Charybdishusk",
-        Icon = "vt_preview_creature_charybdishusk",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -507,7 +486,8 @@ category.Products = {
         },
 
         GuiCreature = "Humanhusk",
-        Icon = "vt_preview_creature_humanhusk",
+        -- a husked human's head is generated per character, so show the legacy husk's helmet
+        Icon = "creature:legacyhusk",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)

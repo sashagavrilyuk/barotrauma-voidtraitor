@@ -123,9 +123,15 @@ local function getRolePrice(role)
     return math.max(0, math.floor(tonumber(role.Config.Price) or 0))
 end
 
+-- a creature role without its own icon shows the head of its species
+function gr.GetConfigIcon(config)
+    if config.Icon ~= nil then return tostring(config.Icon) end
+    if config.Species ~= nil then return "creature:" .. tostring(config.Species) end
+end
+
 local function getRoleIcon(role)
     if role == nil or role.Config == nil then return "" end
-    return tostring(role.Config.Icon or "character")
+    return gr.GetConfigIcon(role.Config) or "character"
 end
 
 local function getRoleState(role)

@@ -12,7 +12,7 @@ category.Roles = {
         Name = "GhostRoleMalfunctioningBotName",
         Description = "GhostRoleMalfunctioningBotDescription",
         Price = 0,
-        Icon = "vt_preview_creature_defensebot",
+        Icon = "creature:Defensebot",
         Action = keepLife,
     },
 }

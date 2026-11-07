@@ -967,6 +967,10 @@ local function getProductIconIdentifier(product)
     local manualIcon = getManualGuiIconIdentifier(product)
     if manualIcon ~= "" then return manualIcon end
 
+    if product.GuiCreature ~= nil then
+        return "creature:" .. product.GuiCreature
+    end
+
     if ps.IsAttackDefendClassProduct(product) then
         local jobIdentifier = getAttackDefendClassJobIdentifier(product)
         if type(jobIdentifier) == "string" and jobIdentifier ~= "" then

@@ -17,7 +17,6 @@ category.Products = {
         IsLimitGlobal = false,
 
         GuiCreature = "peanut",
-        Icon = "vt_preview_creature_peanut",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -32,7 +31,6 @@ category.Products = {
         IsLimitGlobal = false,
 
         GuiCreature = "orangeboy",
-        Icon = "vt_preview_creature_orangeboy",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -47,7 +45,6 @@ category.Products = {
         IsLimitGlobal = false,
 
         GuiCreature = "balloon",
-        Icon = "vt_preview_creature_balloon",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -62,7 +59,6 @@ category.Products = {
         IsLimitGlobal = false,
 
         GuiCreature = "psilotoad",
-        Icon = "vt_preview_creature_psilotoad",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -77,7 +73,8 @@ category.Products = {
         IsLimitGlobal = false,
 
         GuiCreature = "Clown_Orangeboy",
-        Icon = "vt_preview_creature_clown_orangeboy",
+        -- the clown pets have no head sprite of their own, so show the plain pet
+        Icon = "creature:orangeboy",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -92,7 +89,7 @@ category.Products = {
         IsLimitGlobal = false,
 
         GuiCreature = "Clown_Peanut",
-        Icon = "vt_preview_creature_clown_peanut",
+        Icon = "creature:peanut",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -107,7 +104,7 @@ category.Products = {
         IsLimitGlobal = false,
 
         GuiCreature = "Clown_Psilotoad",
-        Icon = "vt_preview_creature_clown_psilotoad",
+        Icon = "creature:psilotoad",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -122,7 +119,6 @@ category.Products = {
         IsLimitGlobal = true,
 
         GuiCreature = "Defensebot",
-        Icon = "vt_preview_creature_defensebot",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -138,7 +134,6 @@ category.Products = {
         IsLimitGlobal = true,
 
         GuiCreature = "Mudraptor_pet",
-        Icon = "vt_preview_creature_mudraptor_pet",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -154,7 +149,6 @@ category.Products = {
         IsLimitGlobal = true,
 
         GuiCreature = "STransformedMudraptor",
-        Icon = "vt_preview_creature_stransformedmudraptor",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)
@@ -170,7 +164,6 @@ category.Products = {
         IsLimitGlobal = true,
 
         GuiCreature = "Huskmutanthunteraddict",
-        Icon = "vt_preview_creature_huskmutanthunteraddict",
         CloseGuiAfterPurchase = true,
 
         Action = function (client, product, items, paidPrice)

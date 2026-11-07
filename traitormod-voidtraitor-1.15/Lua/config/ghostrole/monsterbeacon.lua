@@ -9,7 +9,6 @@ category.Roles = {
         Name = "GhostRoleMudraptorName",
         Description = "GhostRoleMonsterBeaconDescription",
         Price = 0,
-        Icon = "vt_preview_creature_mudraptor",
     },
 
     {
@@ -18,7 +17,6 @@ category.Roles = {
         Name = "GhostRoleTigerthresherName",
         Description = "GhostRoleMonsterBeaconDescription",
         Price = 0,
-        Icon = "vt_preview_creature_tigerthresher",
     },
 
     {
@@ -27,7 +25,6 @@ category.Roles = {
         Name = "GhostRoleVeteranMudraptorName",
         Description = "GhostRoleMonsterBeaconDescription",
         Price = 0,
-        Icon = "vt_preview_creature_mudraptor_veteran",
     },
 
     {
@@ -36,7 +33,6 @@ category.Roles = {
         Name = "GhostRoleCrawlerName",
         Description = "GhostRoleMonsterBeaconDescription",
         Price = 0,
-        Icon = "vt_preview_creature_crawler",
     },
 
     {
@@ -45,7 +41,6 @@ category.Roles = {
         Name = "GhostRoleBonethresherName",
         Description = "GhostRoleMonsterBeaconDescription",
         Price = 0,
-        Icon = "vt_preview_creature_bonethresher",
     },
 
     {
@@ -54,7 +49,6 @@ category.Roles = {
         Name = "GhostRoleCrawlerHuskName",
         Description = "GhostRoleMonsterBeaconDescription",
         Price = 0,
-        Icon = "vt_preview_creature_crawlerhusk",
     },
 
     {
@@ -63,7 +57,6 @@ category.Roles = {
         Name = "GhostRoleMudraptorHuskName",
         Description = "GhostRoleMonsterBeaconDescription",
         Price = 0,
-        Icon = "vt_preview_creature_huskmutantmudraptor",
     },
 
     {
@@ -72,7 +65,6 @@ category.Roles = {
         Name = "GhostRoleTigerthresherHuskName",
         Description = "GhostRoleMonsterBeaconDescription",
         Price = 0,
-        Icon = "vt_preview_creature_tigerthresherhusk",
     },
 
     {
@@ -81,7 +73,6 @@ category.Roles = {
         Name = "GhostRoleBonethresherHuskName",
         Description = "GhostRoleMonsterBeaconDescription",
         Price = 0,
-        Icon = "vt_preview_creature_bonethresherhusk",
     },
 
     {

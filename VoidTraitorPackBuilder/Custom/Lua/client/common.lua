@@ -203,6 +203,94 @@ function Common.GetCharacterById(characterId)
     return nil
 end
 
+local RagdollParams = LuaUserData.CreateStatic("Barotrauma.RagdollParams", true)
+LuaUserData.MakeMethodAccessible(Descriptors["Barotrauma.RagdollParams"], "Load", { "Barotrauma.ContentPath", "Barotrauma.Identifier" })
+local creatureHeads = {}
+
+local function getAttribute(element, key)
+    local value = element ~= nil and element.GetAttributeString(key, "") or ""
+    if value ~= "" then return value end
+end
+
+-- the ragdoll file as RagdollParams.GetDefaultRagdollParams finds it; its generic getters can't be called from Lua
+local function findRagdollFile(prefab)
+    local root = prefab.ConfigElement
+    local element = root.GetChildElement("ragdolls") or root.GetChildElement("ragdoll")
+    local file = getAttribute(element, "path") or getAttribute(element, "file")
+    if file ~= nil then return ContentPath.FromRaw(element.ContentPackage, file) end
+
+    local species = prefab.Identifier
+    local folderAttribute = getAttribute(element, "folder")
+    if not prefab.VariantOf.IsEmpty and (folderAttribute == nil or string.lower(folderAttribute) == "default") then
+        species = prefab.GetBaseCharacterSpeciesName(prefab.VariantOf)
+    end
+
+    -- the file with the default name, otherwise the first one in the folder
+    local folder = RagdollParams.GetFolder(species)
+    if not File.DirectoryExists(folder) then return nil end
+    local files = File.GetFiles(folder)
+    if #files == 0 then return nil end
+    table.sort(files, function(a, b) return string.lower(a) < string.lower(b) end)
+    local defaultName = string.lower(RagdollParams.GetDefaultFileName(species))
+    for _, path in ipairs(files) do
+        if string.find(string.lower(path), defaultName, 1, true) then
+            file = path
+            break
+        end
+    end
+    return ContentPath.FromRaw(CharacterPrefab.FindBySpeciesName(species).ContentPackage, file or files[1])
+end
+
+local function loadCreatureHead(species)
+    local prefab = CharacterPrefab.FindBySpeciesName(Identifier(species))
+    local file = prefab ~= nil and findRagdollFile(prefab) or nil
+    if file == nil then return nil end
+    local ragdoll = RagdollParams()
+    if not ragdoll.Load(file, prefab.Identifier) then return nil end
+
+    local head, main
+    for limb in ragdoll.Limbs do
+        if limb.Type == LimbType.Head then head = limb end
+        if limb.Type == ragdoll.MainLimb then main = limb end
+    end
+    local limb = head or main
+    local spriteParams = limb ~= nil and limb.GetSprite() or nil
+    if spriteParams == nil then return nil end
+
+    -- the texture is picked like Limb.GetSpritePath does: the limb's own, then the variant's, then the ragdoll's
+    local element = spriteParams.Element
+    local root = prefab.ConfigElement
+    local isVariant = not prefab.VariantOf.IsEmpty
+    local texture, package = getAttribute(element, "texture"), element.ContentPackage
+    if texture == nil and isVariant then
+        texture, package = getAttribute(root, "texture"), root.ContentPackage
+    end
+    if texture == nil then
+        texture, package = spriteParams.GetTexturePath(), element.ContentPackage
+    end
+    local path = ContentPath.FromRaw(package, texture).Value
+    -- generated characters fill [GENDER] and [HEADID] from their CharacterInfo; such creatures need a configured Icon
+    if path == "" or string.find(path, "[", 1, true) then return nil end
+
+    -- variants with smaller textures scale the source rects of their base ragdoll (RagdollParams.TryApplyVariantScale)
+    local sourceRectScale = ragdoll.SourceRectScale
+    local variantRagdoll = isVariant and (root.GetChildElement("ragdoll") or root.GetChildElement("ragdolls")) or nil
+    if variantRagdoll ~= nil and variantRagdoll.GetAttributeFloat("sourcerectscale", 0) > 0 then
+        sourceRectScale = variantRagdoll.GetAttributeFloat("sourcerectscale", 0)
+    end
+
+    return Sprite(element, "", path, false, sourceRectScale)
+end
+
+-- the head sprite of a creature species, or its main limb if it has no head
+function Common.GetCreatureHead(species)
+    local key = string.lower(species)
+    if creatureHeads[key] == nil then
+        creatureHeads[key] = loadCreatureHead(species) or false
+    end
+    return creatureHeads[key] or nil
+end
+
 function Common.GetPrefabIconData(iconIdentifier)
     iconIdentifier = tostring(iconIdentifier or "")
 
@@ -213,6 +301,10 @@ function Common.GetPrefabIconData(iconIdentifier)
         local sprite = prefab.Icon or prefab.IconSmall
         if sprite == nil then return nil, nil end
         return sprite, prefab.UIColor or Color(255, 255, 255, 255)
+    elseif string.sub(iconIdentifier, 1, 9) == "creature:" then
+        local sprite = Common.GetCreatureHead(string.sub(iconIdentifier, 10))
+        if sprite == nil then return nil, nil end
+        return sprite, Color(255, 255, 255, 255)
     elseif iconIdentifier ~= "" and iconIdentifier ~= "character" then
         local prefab = ItemPrefab.GetItemPrefab(iconIdentifier)
         if prefab ~= nil then
