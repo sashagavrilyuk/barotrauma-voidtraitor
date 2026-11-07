@@ -92,6 +92,8 @@ config.Cargo = {
 config.Cloning = { Time = 30, HumanBiomassCost = 50, HumanBiomassYield = 28 }
 config.Nuclear = { Time = 300, MinimumTime = 180, Cooldown = 30, DisarmTime = 30, ExplosionRange = 12000, PlacementMargin = 150, MusicStartDelay = 30 }
 config.Communications = { InitialDelay = 30, AnnouncementCooldown = 90, VoiceDuration = 30, VoiceCooldown = 90 }
+-- the power switch of a power controller answers to an ID card with this access
+config.PowerController = { AccessTag = "vt_access_engineering" }
 
 ----- DISCORD -----
 
@@ -716,7 +718,9 @@ config.RandomEventConfig = {
                 MalfunctioningBot = { Weight = 2.5, EarliestMinute = 15, MinPlayers = 4, RepeatAfterMinutes = 20 }, -- derelict cyborg
                 IceCollapse = { Weight = 5, EarliestMinute = 10 }, -- no SS14 counterpart
                 LifeSupportFailure = { Weight = 8 }, -- gas leak
+                ShortCircuit = { Weight = 5, MinPlayers = 15 }, -- no SS14 counterpart
                 BreakerFlip = { Weight = 7, MinPlayers = 15 }, -- breaker flip
+                PowerGridCheck = { Weight = 5 }, -- power grid check
                 WeakBallastFlora = { Weight = 7, EarliestMinute = 15, MinPlayers = 15 }, -- kudzu
                 CoalitionGifts = { Weight = 6, EarliestMinute = 20, MinPlayers = 10 }, -- cargo gifts
                 SleeperAgents = { Weight = 8, EarliestMinute = 30, MinPlayers = 15, MaxPerRound = 1 }, -- sleeper agents
@@ -817,7 +821,9 @@ config.RandomEventConfig = {
         dofile(Traitormod.Path .. "/Lua/config/randomevents/radiationstorm.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/icecollapse.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/lifesupportfailure.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/shortcircuit.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/breakerflip.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/powergridcheck.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/coalitiongifts.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/sleeperagents.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/superballastflora.lua"),

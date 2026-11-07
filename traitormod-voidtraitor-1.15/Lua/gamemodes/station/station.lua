@@ -5,6 +5,7 @@ dofile(Traitormod.Path .. "/Lua/gamemodes/station/cargo.lua")
 dofile(Traitormod.Path .. "/Lua/gamemodes/station/cloning.lua")
 dofile(Traitormod.Path .. "/Lua/gamemodes/station/nuclear.lua")
 dofile(Traitormod.Path .. "/Lua/gamemodes/station/communications.lua")
+dofile(Traitormod.Path .. "/Lua/gamemodes/station/powercontroller.lua")
 local evacuation = dofile(Traitormod.Path .. "/Lua/gamemodes/station/evacuation.lua")
 local bodyTypes = LuaUserData.CreateEnumTable("FarseerPhysics.BodyType")
 local alertCodes = {

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <!-- The vanilla power distributor with a power switch for engineering access (traitormod Lua/gamemodes/station/powercontroller.lua).
+       There are no supply ratio signal inputs, so a wired signal cannot bring power back past the switch. -->
+  <Item identifier="vt_powercontroller" name="" tags="junctionbox,vt_powercontroller" category="Electrical,Machine" scale="0.5" spritecolor="190,210,235,255" linkable="true" allowedlinks="reactor" damagedbyexplosions="true" explosiondamagemultiplier="0.2" GrabWhenSelected="true">
+    <Sprite texture="Content/Items/Electricity/PowerDistributor.png" sourcerect="0,0,112,128" depth="0.8" canflipx="false" origin="0.5,0.5" />
+    <UpgradePreviewSprite texture="Content/UI/WeaponUI.png" sourcerect="99,961,28,32" origin="0.5,0.45" />
+    <BrokenSprite texture="Content/Items/Electricity/PowerDistributor.png" sourcerect="128,0,112,128" depth="0.8" maxcondition="80" fadein="true" />
+    <BrokenSprite texture="Content/Items/Electricity/PowerDistributor.png" sourcerect="128,128,112,128" depth="0.8" maxcondition="0" />
+    <InfectedSprite texture="Content/Items/Gardening/ballastflora.png" sourcerect="8,260,149,170" origin="0.5,0.5" />
+    <DamagedInfectedSprite texture="Content/Items/Gardening/ballastflora.png" sourcerect="157,260,149,170" origin="0.5,0.5" />
+    <PowerDistributor ZapSoundTag="zap_buzz" canbeselected="true" vulnerabletoemp="true" canbeoverloaded="true" msg="ItemMsgInteractSelect">
+      <GuiFrame relativesize="0.2,0.5" minsize="450,250" anchor="Center" style="ItemUI" />
+      <StatusEffect type="InWater" target="This" condition="-0.25">
+        <Conditional voltage="gt 0.1" />
+      </StatusEffect>
+    </PowerDistributor>
+    <CustomInterface canbeselected="true" elementstates="True">
+      <GuiFrame relativesize="0.2,0.06" minsize="450,50" anchor="Center" relativeoffset="0.0,-0.29" style="ItemUI" />
+      <!-- The game hides interface elements that set no property, run no effect and have no wire, so the switch names
+           a property no component has: the game shows it and sets nothing. The starting signal keeps the game from
+           reading a missing one. -->
+      <TickBox text="PowerControllerPower" propertyname="vt_powerswitch" signal="True" />
+    </CustomInterface>
+    <!-- status strip, switched by the server: green while on, red while off -->
+    <LightComponent range="10.0" lightcolor="255,255,255,0" alphablend="true" powerconsumption="1" IsOn="true" castshadows="false" allowingameediting="false">
+      <sprite texture="%ModDir%/the void traitor pack/items/powercontroller.png" sourcerect="0,0,112,128" depth="0.1" origin="0.5,0.5" alpha="1.0" />
+    </LightComponent>
+    <LightComponent range="10.0" lightcolor="255,255,255,0" alphablend="true" powerconsumption="1" IsOn="false" castshadows="false" allowingameediting="false">
+      <sprite texture="%ModDir%/the void traitor pack/items/powercontroller.png" sourcerect="0,128,112,128" depth="0.1" origin="0.5,0.5" alpha="1.0" />
+    </LightComponent>
+    <LightComponent ZapSoundTag="zap_buzz" range="10.0" lightcolor="255,255,255,0" alphablend="true" powerconsumption="1" IsOn="true" castshadows="false" allowingameediting="false">
+      <sprite texture="Content/Items/Electricity/PowerDistributor.png" sourcerect="0,128,112,128" depth="0.1" origin="0.5,0.5" alpha="1.0" />
+      <IsActive targetitemcomponent="PowerDistributor" overload="eq False" />
+    </LightComponent>
+    <LightComponent ZapSoundTag="zap_buzz" range="10.0" lightcolor="255,255,255,0" alphablend="true" powerconsumption="1" IsOn="false" castshadows="false" allowingameediting="false" blinkfrequency="1.5">
+      <sprite texture="Content/Items/Electricity/PowerDistributor.png" sourcerect="0,128,112,128" depth="0.1" origin="0.5,0.5" alpha="1.0" />
+      <IsActive targetitemcomponent="PowerDistributor" overload="eq True" />
+    </LightComponent>
+    <ConnectionPanel selectkey="Action" canbeselected="true" msg="ItemMsgRewireScrewdriver" hudpriority="10">
+      <GuiFrame relativesize="0.2,0.5" minsize="600,700" anchor="Center" style="ConnectionPanel" />
+      <RequiredSkill identifier="electrical" level="55" />
+      <StatusEffect type="OnFailure" target="Character" targetlimbs="LeftHand,RightHand" AllowWhenBroken="true">
+        <Sound file="Content/Sounds/Damage/Electrocution1.ogg" range="1000" />
+        <Explosion range="100.0" force="1.0" flames="false" shockwave="false" sparks="true" underwaterbubble="false" />
+        <Affliction identifier="stun" strength="4" probability="0.5" />
+        <Affliction identifier="electricshock" strength="60"/>
+        <Affliction identifier="burn" strength="5" />
+        <ParticleEmitter particle="ElectricShock" DistanceMin="10" DistanceMax="25" ParticleAmount="5" ScaleMin="0.1" ScaleMax="0.12" />
+      </StatusEffect>
+      <RequiredItem items="screwdriver" type="Equipped" />
+      <input name="power_in" displayname="connection.powerin" />
+      <output name="power_out_0" displayname="connection.poweroutx~[num]=0" fallbackdisplayname="connection.powerout" ispower="true" maxwires="1" />
+      <output name="supply_ratio_out_0" displayname="connection.supplyratiooutx~[num]=0" />
+      <output name="power_out_1" displayname="connection.poweroutx~[num]=1" fallbackdisplayname="connection.powerout" ispower="true" maxwires="1" />
+      <output name="supply_ratio_out_1" displayname="connection.supplyratiooutx~[num]=1" />
+      <output name="power_out_2" displayname="connection.poweroutx~[num]=2" fallbackdisplayname="connection.powerout" ispower="true" maxwires="1" />
+      <output name="supply_ratio_out_2" displayname="connection.supplyratiooutx~[num]=2" />
+      <output name="power_out_3" displayname="connection.poweroutx~[num]=3" fallbackdisplayname="connection.powerout" ispower="true" maxwires="1" />
+      <output name="supply_ratio_out_3" displayname="connection.supplyratiooutx~[num]=3" />
+      <output name="power_out_4" displayname="connection.poweroutx~[num]=4" fallbackdisplayname="connection.powerout" ispower="true" maxwires="1" />
+      <output name="supply_ratio_out_4" displayname="connection.supplyratiooutx~[num]=4" />
+      <output name="power_out_5" displayname="connection.poweroutx~[num]=5" fallbackdisplayname="connection.powerout" ispower="true" maxwires="1" />
+      <output name="supply_ratio_out_5" displayname="connection.supplyratiooutx~[num]=5" />
+      <output name="power_out_6" displayname="connection.poweroutx~[num]=6" fallbackdisplayname="connection.powerout" ispower="true" maxwires="1" />
+      <output name="supply_ratio_out_6" displayname="connection.supplyratiooutx~[num]=6" />
+      <output name="power_out_7" displayname="connection.poweroutx~[num]=7" fallbackdisplayname="connection.powerout" ispower="true" maxwires="1" />
+      <output name="supply_ratio_out_7" displayname="connection.supplyratiooutx~[num]=7" />
+      <output name="power_value_out" displayname="connection.powervalueout" />
+      <output name="load_value_out" displayname="connection.loadvalueout" />
+      <output name="condition_out" displayname="connection.conditionout" />
+    </ConnectionPanel>
+    <Repairable selectkey="Action" header="electricalrepairsheader" deteriorationspeed="0.1" mindeteriorationdelay="120" maxdeteriorationdelay="720" mindeteriorationcondition="0" RepairThreshold="80" fixDurationHighSkill="5" fixDurationLowSkill="25" msg="ItemMsgRepairScrewdriver" hudpriority="10">
+      <GuiFrame relativesize="0.2,0.16" minsize="400,180" maxsize="480,280" anchor="Center" relativeoffset="0.0,0.27" style="ItemUI" />
+      <RequiredSkill identifier="electrical" level="55" />
+      <RequiredItem items="screwdriver" type="Equipped" />
+      <StatusEffect type="OnFailure" target="Character" targetlimbs="LeftHand,RightHand" AllowWhenBroken="true">
+        <Sound file="Content/Sounds/Damage/Electrocution1.ogg" range="1000" />
+        <Explosion range="100.0" force="1.0" flames="false" shockwave="false" sparks="true" underwaterbubble="false" />
+        <Affliction identifier="stun" strength="4" probability="0.5" />
+        <Affliction identifier="electricshock" strength="60"/>
+        <Affliction identifier="burn" strength="5" />
+        <ParticleEmitter particle="ElectricShock" DistanceMin="10" DistanceMax="25" ParticleAmount="5" ScaleMin="0.1" ScaleMax="0.12" />
+      </StatusEffect>
+      <ParticleEmitter particle="damagebubbles" particlespersecond="2" scalemin="0.5" scalemax="1.5" anglemax="360" velocitymin="-10" velocitymax="10" mincondition="0.0" maxcondition="50.0" />
+      <ParticleEmitter particle="MistSmoke" particlespersecond="30" anglemin="0" anglemax="360" distancemin="0" distancemax="30" velocitymin="0" velocitymax="20" mincondition="0.0" maxcondition="50.0" />
+      <ParticleEmitter particle="spark" particleamount="5" emitinterval="2" particlespersecond="5" anglemax="360" distancemax="30" velocitymin="100" velocitymax="500" scalemin="0.5" scalemax="1" mincondition="0.0" maxcondition="15.0" />
+      <ParticleEmitter particle="fleshsmoke" particlespersecond="2" scalemin="1" scalemax="2" mincondition="0.0" maxcondition="50.0" />
+    </Repairable>
+  </Item>
+</Items>

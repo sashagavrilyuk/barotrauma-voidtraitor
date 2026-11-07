@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="Russian" translatedname="Русский">
+  <entityname.vt_powercontroller>Локальный контроллер питания</entityname.vt_powercontroller>
+  <entitydescription.vt_powercontroller>Распределяет питание по выходам отсека. Включать и выключать его может персонал с инженерным доступом.</entitydescription.vt_powercontroller>
+  <PowerControllerPower>Питание</PowerControllerPower>
+</infotexts>
