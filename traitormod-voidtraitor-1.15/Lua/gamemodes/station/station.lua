@@ -19,26 +19,6 @@ local alertCodes = {
     gamma = "StationAlertGamma",
     epsilon = "StationAlertEpsilon"
 }
-local alertSounds = {
-    green = "vt_station_sound_green",
-    yellow = "vt_station_sound_yellow",
-    blue = "vt_station_sound_blue",
-    violet = "vt_station_sound_violet",
-    red = "vt_station_sound_red",
-    delta = "vt_station_sound_delta",
-    gamma = "vt_station_sound_gamma",
-    epsilon = "vt_station_sound_epsilon",
-    biohazard = "vt_station_sound_biohazard",
-    announcement = "vt_station_sound_announcement",
-    evacCalled = "vt_station_sound_evac_called",
-    evacRecalled = "vt_station_sound_evac_recalled",
-    evacDocked = "vt_station_sound_evac_docked",
-    evacLaunching = "vt_station_sound_yellow",
-    evacDeparted = "vt_station_sound_green",
-    attack = "vt_station_sound_attack",
-    commsBlackout = "vt_station_sound_comms_blackout"
-}
-local eventSet = LuaUserData.CreateStatic("Barotrauma.EventSet", true)
 LuaUserData.RegisterType("Barotrauma.EventPrefab")
 LuaUserData.RegisterType("Barotrauma.ScriptedEvent")
 local stationSuffixes = {"LV", "NX", "EV", "QT", "PR"}
@@ -156,41 +136,30 @@ function gm:CharacterDeath(character)
     if not Traitormod.Config.TestMode then secret.CharacterDeath(self, character) end
 end
 
-function gm:PlayAlertSound(code)
-    local eventPrefab = eventSet.GetEventPrefab(Identifier(alertSounds[code]))
-    if eventPrefab == nil then
-        Traitormod.Error("Station alert sound event not found: " .. alertSounds[code])
-        return
-    end
-
-    local station = Submarine.MainSub
-    local borders = station.GetDockedBorders()
-    local center = station.WorldPosition + Vector2(borders.X + borders.Width / 2, borders.Y - borders.Height / 2)
-    local closest, distance
-    for hull in Hull.HullList do
-        if hull.Submarine == station then
-            local current = Vector2.Distance(center, hull.WorldPosition)
-            if distance == nil or current < distance then closest, distance = hull, current end
-        end
-    end
-    if closest ~= nil then
-        local event = eventPrefab.CreateInstance(Game.GameSession.EventManager.RandomSeed)
-        event.AddTarget(Identifier("station"), closest)
-        Game.GameSession.EventManager.ActivateEvent(event)
-    end
+-- the client maps the sound name to its file (pack Lua/client/station/announcements.lua)
+function gm:PlayAlertSound(sound)
+    local message = Networking.Start("VoidTraitor_StationAlertSound")
+    message.WriteString(sound)
+    Networking.Send(message)
 end
 
+local function writeColor(message, color)
+    message.WriteByte(Byte(color.R))
+    message.WriteByte(Byte(color.G))
+    message.WriteByte(Byte(color.B))
+end
+
+-- the client puts the header in the chat line above the text, in a bold font
 function gm:SendAlertMessage(text, color, headerColor, header)
     header = header or Traitormod.FormatText("StationAnnouncementHeader", self.StationAnnouncementName)
     local tint = headerColor or Color(math.floor(color.R * 0.8 + 51),
         math.floor(color.G * 0.8 + 51), math.floor(color.B * 0.8 + 51))
-    local headerTag = string.format("‖color:%d,%d,%d‖", tint.R, tint.G, tint.B)
-    local announcement = headerTag .. header .. "‖end‖\n" .. text
-    for _, client in pairs(Client.ClientList) do
-        local message = ChatMessage.Create("", announcement, ChatMessageType.Default, nil, nil)
-        message.Color = color
-        Game.SendDirectChatMessage(message, client)
-    end
+    local message = Networking.Start("VoidTraitor_StationAnnouncement")
+    message.WriteString(header)
+    message.WriteString(text)
+    writeColor(message, color)
+    writeColor(message, tint)
+    Networking.Send(message)
 end
 
 -- station events are announced by the Coalition Command, laid out like the alert codes
@@ -203,7 +172,7 @@ function gm:SetAlertCode(code)
     if alertCodes[code] == nil or self.AlertCode == code then return false end
     self.AlertCode = code
     self:SendAlertMessage(Traitormod.GetText(alertCodes[code]), alertColors[code])
-    if alertSounds[code] ~= nil then self:PlayAlertSound(code) end
+    self:PlayAlertSound(code)
     return true
 end
 
