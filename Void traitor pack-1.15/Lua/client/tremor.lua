@@ -1,6 +1,6 @@
 if SERVER then return end
 
--- Rumble and camera shake for the server's SeismicTremor event (traitormod Lua/config/randomevents/seismictremor.lua).
+-- Rumble and camera shake for the server's SeismicTremor and IceCollapse events (traitormod Lua/config/randomevents).
 local NET_TREMOR = "VoidTraitor_SeismicTremor"
 local SHAKE_HOOK = "VoidTraitor.SeismicTremor.Shake"
 local DURATION = 4

@@ -696,6 +696,7 @@ config.RandomEventConfig = {
                 WildCreature = { Weight = 6 }, -- random sentience
                 VentCreatures = { Weight = 5, EarliestMinute = 20, MinPlayers = 15 }, -- vent hordes
                 MalfunctioningBot = { Weight = 2.5, EarliestMinute = 15, MinPlayers = 4, RepeatAfterMinutes = 20 }, -- derelict cyborg
+                IceCollapse = { Weight = 5, EarliestMinute = 10 }, -- no SS14 counterpart
             },
         },
     },
@@ -791,6 +792,7 @@ config.RandomEventConfig = {
     Events = {
         dofile(Traitormod.Path .. "/Lua/config/randomevents/stationattack.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/radiationstorm.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/icecollapse.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/superballastflora.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/maintenancetoolsdelivery.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/medicaldelivery.lua"),
