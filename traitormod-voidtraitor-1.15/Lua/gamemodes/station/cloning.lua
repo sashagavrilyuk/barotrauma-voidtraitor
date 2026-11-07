@@ -180,7 +180,7 @@ function cloning.Answer(client, accept)
         if owner.Character == job.Clone then return false end
     end
     local role = Traitormod.RoleManager.GetRole(job.Corpse)
-    if role ~= nil and role.Name == "HuskServant" then
+    if role ~= nil and (role.Name == "HuskServant" or role.Name == "Husk") then
         Traitormod.RoleManager.RemoveRole(job.Corpse)
         if job.Clone.IsHuman then
             Traitormod.RoleManager.AssignRole(job.Clone, Traitormod.RoleManager.Roles.Crew:new())

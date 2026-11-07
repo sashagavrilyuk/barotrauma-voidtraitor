@@ -158,8 +158,12 @@ function hud.GetRoleHeader(role)
         return Traitormod.Language.ObjectiveHudClownSummary
     elseif role.Name == "Saboteur" then
         return Traitormod.Language.ObjectiveHudSaboteurSummary
+    elseif role.Name == "PatientZero" then
+        return Traitormod.Language.ObjectiveHudPatientZeroSummary
     elseif role.Name == "HuskServant" then
         return Traitormod.Language.ObjectiveHudHuskServantSummary
+    elseif role.Name == "Husk" then
+        return Traitormod.Language.ObjectiveHudHuskSummary
     elseif role.Name == "Crew" then
         return Traitormod.Language.ObjectiveHudCrewSummary
     end

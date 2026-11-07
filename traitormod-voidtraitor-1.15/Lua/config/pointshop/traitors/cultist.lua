@@ -8,7 +8,8 @@ category.Decoration = "cultist"
 category.FadeToBlack = true
 
 category.CanAccess = function(client)
-    return client.Character and not client.Character.IsDead and Traitormod.RoleManager.HasRole(client.Character, "Cultist")
+    return client.Character and not client.Character.IsDead and (Traitormod.RoleManager.HasRole(client.Character, "Cultist")
+        or Traitormod.RoleManager.HasRole(client.Character, "PatientZero"))
 end
 
 LuaUserData.MakeMethodAccessible(Descriptors["Barotrauma.StatusEffect"], "set_Afflictions")

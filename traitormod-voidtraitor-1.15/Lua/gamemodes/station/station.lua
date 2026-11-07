@@ -7,6 +7,7 @@ dofile(Traitormod.Path .. "/Lua/gamemodes/station/nuclear.lua")
 dofile(Traitormod.Path .. "/Lua/gamemodes/station/communications.lua")
 dofile(Traitormod.Path .. "/Lua/gamemodes/station/powercontroller.lua")
 local evacuation = dofile(Traitormod.Path .. "/Lua/gamemodes/station/evacuation.lua")
+local weightedRandom = dofile(Traitormod.Path .. "/Lua/weightedrandom.lua")
 local bodyTypes = LuaUserData.CreateEnumTable("FarseerPhysics.BodyType")
 local alertCodes = {
     green = "StationAlertGreen",
@@ -117,6 +118,7 @@ function gm:Start()
 
     self.SpawnedAccounts = {}
     self.StationCrew = {}
+    self.CrewHusks = {}
     self.PendingShuttleArrivals = {}
     self.BiohazardAnnounced = false
     self.NextHuskCheck = 0
@@ -232,20 +234,54 @@ function gm:OnNuclearDisarmed()
     self:SetAlertCode("green")
 end
 
-function gm:CheckHuskOutbreak()
-    if self.BiohazardAnnounced or #self.StationCrew == 0 then return end
-
-    local infected = 0
-    for _, character in ipairs(self.StationCrew) do
-        if not character.Removed then
-            local infection = character.CharacterHealth.GetAffliction("huskinfection", true)
-            if (infection ~= nil and infection.Strength > 0) or character.IsHusk then
-                infected = infected + 1
-            end
+-- living crew who may become a mid-round antagonist, weighted the way the round start picks traitors
+function gm:MidRoundAntagonistCandidates()
+    local weights, count = {}, 0
+    for _, client in pairs(Client.ClientList) do
+        local character = client.Character
+        if client.InGame and not client.SpectateOnly and character ~= nil and not character.IsDead
+            and not Traitormod.AdminGhost.IsGhost(character) and self.TraitorFilter(client) > 0
+            and Traitormod.GetData(client, "NonTraitor") ~= true and not Traitormod.RoleManager.IsAntagonist(character) then
+            weights[client] = (Traitormod.GetData(client, "Weight") or 0) * self.TraitorFilter(client)
+            count = count + 1
         end
     end
+    return weights, count
+end
 
-    if infected * 2 > #self.StationCrew then
+-- turns up to amount of those candidates into the given antagonist role and returns their characters
+function gm:AssignMidRoundAntagonists(roleName, amount)
+    local roles = Traitormod.RoleManager
+    local weights = self:MidRoundAntagonistCandidates()
+    local chosen = {}
+    for _ = 1, amount do
+        local client = weightedRandom.Choose(weights)
+        if client == nil then break end
+        weights[client] = nil
+
+        local character = client.Character
+        -- the crew role makes way for the antagonist one
+        roles.RemoveRole(character)
+        roles.AssignRole(character, roles.Roles[roleName]:new())
+        Traitormod.SetData(client, "Weight", 0)
+        self.InitialCrew[Traitormod.GetClientAccountKey(client)] = nil
+        table.insert(chosen, character)
+    end
+    return chosen
+end
+
+-- Biohazard level 5 once husks that were crew outnumber the living crew, the way SS14 counts zombies among the living.
+-- The infected are not counted: they may still be cured.
+function gm:CheckHuskOutbreak()
+    local husks, crew = 0, 0
+    for _, husk in ipairs(self.CrewHusks) do
+        if not husk.Removed and not husk.IsDead then husks = husks + 1 end
+    end
+    for _, character in ipairs(self.StationCrew) do
+        if not character.Removed and not character.IsDead then crew = crew + 1 end
+    end
+
+    if husks > crew then
         self.BiohazardAnnounced = true
         self:SendAlertMessage(Traitormod.GetText("StationBiohazard5"), alertColors.biohazard)
         self:PlayAlertSound("biohazard")
@@ -500,6 +536,21 @@ Hook.Add("traitormod.midroundspawn", "Traitormod.Station.ShuttleArrival", functi
     if not selected.PendingShuttleArrivals[accountKey] then return end
     selected.PendingShuttleArrivals[accountKey] = nil
     table.insert(selected.StationCrew, character)
+end)
+
+-- A crew member who turns into a husk is removed, and the husk is created in their place with their info and name.
+Hook.Add("character.created", "Traitormod.Station.CrewHusk", function(character)
+    local selected = Traitormod.SelectedGamemode
+    -- the mode is chosen before the level loads, the crew is listed only when the round starts
+    if selected == nil or selected.Name ~= "Station" or selected.CrewHusks == nil
+        or not character.IsHusk or character.Info == nil then return end
+
+    for _, member in ipairs(selected.StationCrew) do
+        if member.IsDead and member.Name == character.Name then
+            table.insert(selected.CrewHusks, character)
+            return
+        end
+    end
 end)
 
 Hook.Add("client.connected", "Traitormod.Station.Reconnect", function(client)

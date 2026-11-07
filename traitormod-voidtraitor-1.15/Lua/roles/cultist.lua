@@ -169,7 +169,7 @@ function role:Greet()
     local primary, secondary = self:ObjectivesToString()
 
     local sb = Traitormod.StringBuilder:new()
-    sb("%s\n\n", Traitormod.Language.CultistYou)
+    sb("%s\n\n", Traitormod.Language[self.Name .. "You"])
     sb("%s\n", Traitormod.Language.MainObjectivesYou)
     sb(primary)
     sb("\n\n%s\n", Traitormod.Language.SecondaryObjectivesYou)
@@ -192,7 +192,7 @@ end
 function role:OtherGreet()
     local sb = Traitormod.StringBuilder:new()
     local primary, secondary = self:ObjectivesToString()
-    sb(Traitormod.Language.CultistOther, self.Character.Name)
+    sb(Traitormod.Language[self.Name .. "Other"], self.Character.Name)
     sb("\n%s\n", Traitormod.Language.MainObjectivesOther)
     sb(primary)
     sb("\n%s\n", Traitormod.Language.SecondaryObjectivesOther)
@@ -227,6 +227,9 @@ Hook.Add("husk.clientControlHusk", "Traitormod.Cultist.HuskControl", function (c
 
     if cultist then
         Traitormod.RoleManager.TransferRole(client.Character, cultist)
+    elseif Traitormod.SelectedGamemode ~= nil and Traitormod.SelectedGamemode.Name == "Station" then
+        -- Station has no husk church: whoever turns there spreads the infection (patient zero event)
+        Traitormod.RoleManager.AssignRole(client.Character, Traitormod.RoleManager.Roles.Husk:new())
     else
         Traitormod.RoleManager.AssignRole(client.Character, Traitormod.RoleManager.Roles.HuskServant:new())
     end

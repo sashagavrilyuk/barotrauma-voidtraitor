@@ -533,6 +533,13 @@ config.RoleConfig = {
         SelectPiratesAsTargets = false,
     },
 
+    -- a cultist who carries the parasite (Station event PatientZero); the rest comes from Cultist
+    PatientZero = {
+        SubObjectives = {"DestroyCaly"},
+        MinSubObjectives = 1,
+        MaxSubObjectives = 1,
+    },
+
     HuskServant = {
         TraitorBroadcast = true,
     },
@@ -724,6 +731,7 @@ config.RandomEventConfig = {
                 WeakBallastFlora = { Weight = 7, EarliestMinute = 15, MinPlayers = 15 }, -- kudzu
                 CoalitionGifts = { Weight = 6, EarliestMinute = 20, MinPlayers = 10 }, -- cargo gifts
                 SleeperAgents = { Weight = 8, EarliestMinute = 30, MinPlayers = 15, MaxPerRound = 1 }, -- sleeper agents
+                PatientZero = { Weight = 1, EarliestMinute = 45, MinPlayers = 15, MaxPerRound = 1 }, -- zombie outbreak
             },
         },
     },
@@ -826,6 +834,7 @@ config.RandomEventConfig = {
         dofile(Traitormod.Path .. "/Lua/config/randomevents/powergridcheck.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/coalitiongifts.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/sleeperagents.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/patientzero.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/superballastflora.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/maintenancetoolsdelivery.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/medicaldelivery.lua"),
