@@ -9,7 +9,9 @@ LuaUserData.MakeFieldAccessible(chatBoxDescriptor, "popupMessages")
 local gameMain = LuaUserData.CreateStatic("Barotrauma.GameMain")
 
 local HEADER_TO_TEXT_SIZE = 14 / 12
-local SOUND_GAIN = 0.75
+-- the game plays no sound louder than full volume after the sound slider, so like vanilla sounds with volume 2 these
+-- are at full volume from half the slider up
+local SOUND_GAIN = 2
 local SOUND_FILES = {
     green = "green_announce.ogg",
     yellow = "notice1.ogg",
