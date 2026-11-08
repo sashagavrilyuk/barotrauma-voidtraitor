@@ -76,11 +76,15 @@ P.Admin = assert(loadfile(P.PackPath .. "/Lua/client/lobby/admin.lua"))(P.Common
     CreateDivider = P.CreateDivider,
     CreateCategoryHeader = P.CreateCategoryHeader,
     GetOkText = function() return P.UiText.Ok end,
+    ShowEvents = function(tab) P.ShowEventsWindow(tab) end,
 })
 
 P.Admin.OnAvailabilityChanged = function()
     if S.currentMenuKind ~= "vt" then
-        if not P.Admin.IsAvailable() then S.vtActiveTab = "main" end
+        if not P.Admin.IsAvailable() then
+            S.vtActiveTab = "main"
+            if S.currentMenuKind == "events" then P.CloseMenu() end
+        end
         return
     end
 

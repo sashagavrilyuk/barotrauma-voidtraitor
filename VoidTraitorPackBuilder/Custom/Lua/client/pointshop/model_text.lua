@@ -24,24 +24,7 @@ function P.Utf8Truncate(value, maxChars)
     return value
 end
 
-P.Utf8Lower = {
-    ["А"] = "а", ["Б"] = "б", ["В"] = "в", ["Г"] = "г", ["Д"] = "д", ["Е"] = "е", ["Ё"] = "ё",
-    ["Ж"] = "ж", ["З"] = "з", ["И"] = "и", ["Й"] = "й", ["К"] = "к", ["Л"] = "л", ["М"] = "м",
-    ["Н"] = "н", ["О"] = "о", ["П"] = "п", ["Р"] = "р", ["С"] = "с", ["Т"] = "т", ["У"] = "у",
-    ["Ф"] = "ф", ["Х"] = "х", ["Ц"] = "ц", ["Ч"] = "ч", ["Ш"] = "ш", ["Щ"] = "щ", ["Ъ"] = "ъ",
-    ["Ы"] = "ы", ["Ь"] = "ь", ["Э"] = "э", ["Ю"] = "ю", ["Я"] = "я",
-}
-
-function P.NormalizeSearchText(value)
-    -- Lua patterns work on bytes, so Cyrillic is lowercased by replacing the known
-    -- uppercase letters, then ASCII is lowercased as usual.
-    local result = tostring(value or "")
-    for upper, lower in pairs(P.Utf8Lower) do
-        result = string.gsub(result, upper, lower)
-    end
-    result = string.lower(result)
-    return string.gsub(string.gsub(result, "^%s+", ""), "%s+$", "")
-end
+P.NormalizeSearchText = P.Common.NormalizeSearchText
 
 function P.GetCartEntry(productId)
     for _, entry in ipairs(S.cart) do

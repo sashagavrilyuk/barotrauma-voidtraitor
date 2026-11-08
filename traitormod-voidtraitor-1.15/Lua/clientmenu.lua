@@ -353,21 +353,40 @@ function cm.SendAdminData(client)
             netMessage.WriteString(role.Name)
         end
 
+        -- events go to the Station tab when Station starts them itself, to the Secret tab otherwise; the state is why an
+        -- event can't start now, empty when it can
+        local roundEvents = Traitormod.RoundEvents
+        local eventConfig = roundEvents.EventConfigs
+        local stationEvents = {}
+        for name in pairs(eventConfig.Schedulers.Station.Events) do stationEvents[name] = true end
+        for _, name in ipairs(eventConfig.ModeEvents.Station) do stationEvents[name] = true end
+        local secretEvents = {}
+        for _, name in ipairs(eventConfig.ModeEvents.Secret) do secretEvents[name] = true end
+        local mode = Traitormod.SelectedGamemode
+        local stationRound = mode ~= nil and mode.Name == "Station"
+
         local events = {}
-        local eventConfigs = Traitormod.RoundEvents
-            and Traitormod.RoundEvents.EventConfigs
-            and Traitormod.RoundEvents.EventConfigs.Events
-            or {}
-        for _, event in pairs(eventConfigs) do
-            if event.Name ~= nil then table.insert(events, tostring(event.Name)) end
+        for _, event in pairs(eventConfig.Events) do
+            local station = stationEvents[event.Name] == true
+            local secret = secretEvents[event.Name] == true or not station
+            local state = ""
+            if not Game.RoundStarted then
+                state = "noround"
+            elseif roundEvents.IsEventActive(event.Name) then
+                state = "running"
+            elseif not roundEvents.CanStartEvent(event) then
+                state = (station and not secret and not stationRound) and "station" or "conditions"
+            end
+            table.insert(events, { Name = event.Name, Station = station, Secret = secret, State = state })
         end
-        table.sort(events, function(a, b) return string.lower(a) < string.lower(b) end)
 
         netMessage.WriteInt32(#events)
-        for _, eventName in ipairs(events) do
-            netMessage.WriteString(eventName)
+        for _, event in ipairs(events) do
+            netMessage.WriteString(event.Name)
+            netMessage.WriteBoolean(event.Station)
+            netMessage.WriteBoolean(event.Secret)
+            netMessage.WriteString(event.State)
         end
-
     end
 
     Networking.Send(netMessage, client.Connection)
@@ -405,7 +424,7 @@ function cm.RunAdminActionV2(client, actionId, targetKey, value)
 
     sendActionLog(client, "admin:" .. action.Id)
     local result = runCommand(action.Command, client, args)
-    if action.Id == "revive" then cm.SendAdminData(client) end
+    if action.Id == "revive" or action.Id == "triggerevent" then cm.SendAdminData(client) end
     return result
 end
 

@@ -154,6 +154,7 @@ Hook.Add("think", "VoidTraitor.ClientMenu.UiState", function(deltaTime)
     if S.sharedState.Disabled then return end
 
     P.UpdateVoidTraitorMenuInteraction()
+    P.UpdateEventsWindowInteraction()
 
     S.uiStateCheckTimer = S.uiStateCheckTimer + (tonumber(deltaTime) or 0)
     if S.uiStateCheckTimer < 0.1 then return end

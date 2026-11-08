@@ -88,7 +88,7 @@ Client-side code is strictly modular. Never dump everything into a single file o
 - `Lua/client/init.lua` & `Lua/client/common.lua` — client bootstrap (loads every client module) and shared GUI core helpers. Shared UI primitives/layout helpers belong in `common.lua`.
 - `Lua/client/` — standalone client screens and effects (`attackdefend_respawn.lua`, `killfeed.lua`, `missions.lua`, `roundsummary.lua`, `submarine_description.lua`, `tremor.lua`, `welcome.lua`).
 - `Lua/client/lobby/` — strictly separated lobby & voting layers:
-  - Lobby menu: `menu.lua`, `menu_core.lua`, `menu_window.lua`, `menu_widgets.lua`, `menu_controls.lua`, `menu_runtime.lua`, `admin.lua`.
+  - Lobby menu: `menu.lua`, `menu_core.lua`, `menu_window.lua`, `menu_widgets.lua`, `menu_controls.lua`, `menu_runtime.lua`, `admin.lua`, `menu_events.lua` (admin event window).
   - Voting UI: `voting.lua`, `voting_menu.lua`, `voting_layout.lua`, `voting_display.lua`, `voting_runtime.lua`.
 - `Lua/client/pointshop/` — strictly separated Pointshop client layers:
   - GUI core & widgets: `gui.lua`, `gui_core.lua`, `widgets.lua`, `input.lua`.

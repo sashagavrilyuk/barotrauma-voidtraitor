@@ -1,7 +1,8 @@
 local P = ...
 local S = P.State
 
-function P.ShowConfirm(title, text, action)
+-- onClosed runs after either answer, e.g. to bring back the window the question came from
+function P.ShowConfirm(title, text, onConfirm, onClosed)
     P.SaveVoidTraitorMenuGeometry()
     P.Common.RemoveGuiComponent(S.currentMenu)
 
@@ -14,33 +15,40 @@ function P.ShowConfirm(title, text, action)
     S.sharedState.CurrentMenu = overlay
     S.sharedState.CurrentMenuKind = S.currentMenuKind
 
-    local box = GUI.Frame(P.CreateRect(0.20, 0.165, overlay, GUI.Anchor.Center), "GUIFrame")
+    -- the box gets the height of its rows: the title, the wrapped question and the buttons
+    local screenWidth, screenHeight = P.GetScreenSize()
+    local box = GUI.Frame(P.CreatePixelRect(math.min(P.SafeIntScale(460), screenWidth * 0.9), P.SafeIntScale(200), overlay, GUI.Anchor.Center), "GUIFrame")
     box.CanBeFocused = true
+    local content, frame = P.Common.CreateWindowContent(box)
 
-    local titleBlock = P.CreateText(box, 0.90, 0.22, GUI.Anchor.TopCenter, title, GUI.Alignment.Center, 1.02, Color(255, 235, 170, 255), false)
-    titleBlock.RectTransform.AbsoluteOffset = Point(0, P.SafeIntScale(8))
+    local titleBlock = P.CreateText(content, 1, 1, nil, title, GUI.Alignment.Center, 1, Color(255, 235, 170, 255), false)
     titleBlock.Font = GUI.Style.LargeFont
-    P.CreateText(box, 0.86, 0.30, GUI.Anchor.Center, text, GUI.Alignment.Center, 1.08, Color(230, 230, 220, 255), true)
+    P.Common.FitHeightToText(titleBlock)
+    local question = P.CreateText(content, 1, 1, nil, text, GUI.Alignment.Center, 1, Color(230, 230, 220, 255), true)
+    question.CalculateHeightFromText()
+    P.Common.SetFixedHeight(question, question.Rect.Height)
 
-    local buttons = GUI.Frame(P.CreateRect(0.76, 0.20, box, GUI.Anchor.BottomCenter), nil)
-    buttons.RectTransform.AbsoluteOffset = Point(0, P.SafeIntScale(18))
-    buttons.Color = Color(0, 0, 0, 0)
-    buttons.CanBeFocused = false
+    local buttons = GUI.LayoutGroup(P.CreateRect(1, 1, content, nil), true, GUI.Anchor.CenterLeft)
+    P.Common.SetFixedHeight(buttons, P.Common.GetStyleHeight("GUIButton"))
+    buttons.Stretch = true
+    buttons.AbsoluteSpacing = P.Common.GetGap()
 
-    local cancel = GUI.Button(P.CreateRect(0.47, 1, buttons, GUI.Anchor.CenterLeft), P.UiText.Cancel, GUI.Alignment.Center, "GUIButton")
-    P.SetButtonTextScale(cancel, 1.00)
+    local cancel = P.Common.CreateButton(buttons, 0.5, P.UiText.Cancel)
     cancel.OnClicked = function()
         P.CloseMenu()
+        if onClosed ~= nil then onClosed() end
         return true
     end
 
-    local confirm = GUI.Button(P.CreateRect(0.47, 1, buttons, GUI.Anchor.CenterRight), P.UiText.Yes, GUI.Alignment.Center, "GUIButton")
-    P.SetButtonTextScale(confirm, 1.00)
+    local confirm = P.Common.CreateButton(buttons, 0.5, P.UiText.Yes)
     confirm.OnClicked = function()
-        P.SendCommand(action)
+        onConfirm()
         P.CloseMenu()
+        if onClosed ~= nil then onClosed() end
         return true
     end
+
+    box.RectTransform:Resize(Point(box.Rect.Width, math.min(P.Common.GetMinimumHeight(frame), screenHeight)), true)
 end
 
 

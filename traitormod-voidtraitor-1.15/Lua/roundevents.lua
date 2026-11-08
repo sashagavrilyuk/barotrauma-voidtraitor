@@ -87,6 +87,8 @@ local function canStartEvent(event)
     return result ~= false
 end
 
+re.CanStartEvent = canStartEvent
+
 local wrappedEventEnds = {}
 
 local function ensureEventEndCleanup(event)

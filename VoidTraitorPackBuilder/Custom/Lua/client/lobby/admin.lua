@@ -25,7 +25,6 @@ local roles = {}
 local events = {}
 local selectedPlayerKey = nil
 local selectedRoleId = nil
-local selectedEvent = nil
 local ghostCharacters = {}
 local selectedGhostCharacterName = nil
 local dataLoaded = false
@@ -40,20 +39,16 @@ local text = {
     NoCharacter = language.NoCharacter,
     SelectRole = language.SelectRole,
     NoRoles = language.NoRoles,
-    SelectEvent = language.SelectEvent,
-    NoEvents = language.NoEvents,
     SelectCharacter = language.SelectCharacter,
     NoCharacters = language.NoCharacters,
 }
 
 local playerButtons = {}
 local roleButtons = {}
-local eventButtons = {}
 local ghostCharacterButtons = {}
 local selectedPlayerText = nil
 local playerDependentButtons = {}
 local assignRoleButton = nil
-local triggerEventButton = nil
 local ghostRoleButton = nil
 
 local CreateRect = UI.CreateRect
@@ -90,12 +85,6 @@ local function validateSelections()
     if not roleFound then
         selectedRoleId = roles[1] ~= nil and roles[1].Id or nil
     end
-
-    local eventFound = false
-    for _, eventName in ipairs(events) do
-        if eventName == selectedEvent then eventFound = true break end
-    end
-    if not eventFound then selectedEvent = events[1] end
 end
 
 local function playerLabel(player)
@@ -117,7 +106,6 @@ local function refreshSelection()
         end
     end
     for id, button in pairs(roleButtons) do button.Selected = id == selectedRoleId end
-    for eventName, button in pairs(eventButtons) do button.Selected = eventName == selectedEvent end
     for characterName, button in pairs(ghostCharacterButtons) do button.Selected = characterName == selectedGhostCharacterName end
 
     if selectedPlayerText ~= nil then
@@ -127,7 +115,6 @@ local function refreshSelection()
     local hasPlayer = selectedPlayer ~= nil
     for _, button in ipairs(playerDependentButtons) do button.Enabled = hasPlayer end
     if assignRoleButton ~= nil then assignRoleButton.Enabled = hasPlayer and selectedRoleId ~= nil end
-    if triggerEventButton ~= nil then triggerEventButton.Enabled = selectedEvent ~= nil end
     if ghostRoleButton ~= nil then ghostRoleButton.Enabled = selectedGhostCharacterName ~= nil end
 end
 
@@ -199,6 +186,15 @@ function Admin.WhenDataReady(callback)
     send(NET_DATA_REQUEST)
 end
 
+-- Events with Id, the tabs they belong to (Station, Secret) and State: why they can't start now, "" when they can
+function Admin.GetEvents()
+    return events
+end
+
+function Admin.TriggerEvent(eventId)
+    sendAction("triggerevent", "", eventId)
+end
+
 function Admin.IsAvailable()
     return available
 end
@@ -214,12 +210,10 @@ end
 function Admin.ClearView()
     playerButtons = {}
     roleButtons = {}
-    eventButtons = {}
     ghostCharacterButtons = {}
     selectedPlayerText = nil
     playerDependentButtons = {}
     assignRoleButton = nil
-    triggerEventButton = nil
     ghostRoleButton = nil
     pendingReady = nil
 end
@@ -396,35 +390,13 @@ function Admin.Build(parent)
     if eventEntry ~= nil then
         CreateDivider(parent)
         CreateCategoryHeader(parent, eventEntry.Category)
-        local eventLabel = CreateText(parent, 1, 1, nil, text.SelectEvent, GUI.Alignment.Left, 0.82, Color(210, 220, 200, 255), false)
-        Common.FitHeightToText(eventLabel)
-
-        local eventList = createFixedList(parent, OPTION_LIST_HEIGHT)
-        if #events == 0 then
-            CreateText(eventList.Content, 1, 0.70, nil, text.NoEvents, GUI.Alignment.Center, 0.82, Color(195, 195, 185, 255), true)
-        else
-            for _, eventName in ipairs(events) do
-                local button = GUI.Button(CreateRect(1, 0.12, eventList.Content, nil), eventName, GUI.Alignment.Left, "ListBoxElement")
-                SetFixedHeight(button, ROW_HEIGHT)
-                SetButtonTextScale(button, 0.82)
-                eventButtons[eventName] = button
-                button.OnClicked = function()
-                    if selectedEvent ~= eventName then
-                        selectedEvent = eventName
-                        refreshSelection()
-                    end
-                    return true
-                end
+        for _, group in ipairs({ { Id = "station", Label = language.StationEvents }, { Id = "secret", Label = language.SecretEvents } }) do
+            local button = CreateMenuButton(parent, group.Label, true)
+            button.ToolTip = tostring(eventEntry.Hint or "")
+            button.OnClicked = function()
+                UI.ShowEvents(group.Id)
+                return true
             end
-            eventList:RecalculateChildren()
-            eventList:UpdateScrollBarSize()
-        end
-
-        triggerEventButton = CreateMenuButton(parent, eventEntry.Label, false)
-        triggerEventButton.ToolTip = tostring(eventEntry.Hint or "")
-        triggerEventButton.OnClicked = function()
-            if selectedEvent ~= nil then sendAction("triggerevent", "", selectedEvent) end
-            return true
         end
     end
 
@@ -479,7 +451,6 @@ Networking.Receive(NET_DATA, function(message)
         events = {}
         selectedPlayerKey = nil
         selectedRoleId = nil
-        selectedEvent = nil
         pendingReady = nil
         if changed and Admin.OnAvailabilityChanged ~= nil then Admin.OnAvailabilityChanged() end
         return
@@ -510,13 +481,20 @@ Networking.Receive(NET_DATA, function(message)
     roles = newRoles
 
     local newEvents = {}
-    for _ = 1, message.ReadInt32() do table.insert(newEvents, message.ReadString()) end
+    for _ = 1, message.ReadInt32() do
+        table.insert(newEvents, {
+            Id = message.ReadString(),
+            Station = message.ReadBoolean(),
+            Secret = message.ReadBoolean(),
+            State = message.ReadString(),
+        })
+    end
     events = newEvents
-
 
     validateSelections()
     dataLoaded = true
     refreshSelection()
+    Admin.OnDataChanged()
 
     local callback = pendingReady
     pendingReady = nil

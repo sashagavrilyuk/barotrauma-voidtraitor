@@ -191,6 +191,25 @@ function Common.Clamp(value, minimum, maximum)
     return value
 end
 
+local utf8Lower = {
+    ["А"] = "а", ["Б"] = "б", ["В"] = "в", ["Г"] = "г", ["Д"] = "д", ["Е"] = "е", ["Ё"] = "ё",
+    ["Ж"] = "ж", ["З"] = "з", ["И"] = "и", ["Й"] = "й", ["К"] = "к", ["Л"] = "л", ["М"] = "м",
+    ["Н"] = "н", ["О"] = "о", ["П"] = "п", ["Р"] = "р", ["С"] = "с", ["Т"] = "т", ["У"] = "у",
+    ["Ф"] = "ф", ["Х"] = "х", ["Ц"] = "ц", ["Ч"] = "ч", ["Ш"] = "ш", ["Щ"] = "щ", ["Ъ"] = "ъ",
+    ["Ы"] = "ы", ["Ь"] = "ь", ["Э"] = "э", ["Ю"] = "ю", ["Я"] = "я",
+}
+
+function Common.NormalizeSearchText(value)
+    -- Lua patterns work on bytes, so Cyrillic is lowercased by replacing the known
+    -- uppercase letters, then ASCII is lowercased as usual.
+    local result = tostring(value or "")
+    for upper, lower in pairs(utf8Lower) do
+        result = string.gsub(result, upper, lower)
+    end
+    result = string.lower(result)
+    return string.gsub(string.gsub(result, "^%s+", ""), "%s+$", "")
+end
+
 function Common.GetCharacterById(characterId)
     characterId = math.floor(tonumber(characterId) or 0)
     if characterId <= 0 or characterId > 65535 then return nil end

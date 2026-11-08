@@ -681,8 +681,13 @@ Traitormod.AddCommand("!triggerevent", function (client, args)
         return true
     end
 
-    Traitormod.RoundEvents.TriggerEvent(event.Name)
-    Traitormod.SendMessage(client, Traitormod.FormatText("CMDTriggerEventSuccess", event.Name))
+    if Traitormod.RoundEvents.IsEventActive(event.Name) then
+        Traitormod.SendMessage(client, Traitormod.FormatText("CMDTriggerEventRunning", event.Name))
+    elseif Traitormod.RoundEvents.TriggerEvent(event.Name) then
+        Traitormod.SendMessage(client, Traitormod.FormatText("CMDTriggerEventSuccess", event.Name))
+    else
+        Traitormod.SendMessage(client, Traitormod.FormatText("CMDTriggerEventCannotStart", event.Name))
+    end
 
     return true
 end)
