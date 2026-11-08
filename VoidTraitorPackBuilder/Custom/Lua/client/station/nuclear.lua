@@ -124,7 +124,25 @@ Common.InstallPausePatch("VoidTraitor.Nuclear.Pause", "VoidTraitorNuclearGuiStat
 Hook.Patch("VoidTraitor.Nuclear.Inventory", "Barotrauma.CharacterHUD", "LockInventory", { "Barotrauma.Character" }, function(_, parameters)
     if not UI.Disabled and UI.CurrentMenu ~= nil and parameters["character"] == Character.Controlled then return true end
 end, Hook.HookMethodType.After)
-Hook.Add("roundEnd", "VoidTraitor.Nuclear.End", function() UI.CloseMenu() UI.SelectedItem = nil end)
+-- The countdown song of an armed bomb plays for the whole station; the bomb's own sounds and its final alarm play from
+-- the bomb (nuclear.xml). Songs are streamed, so they start at once and hold no samples in memory while silent.
+local gameMain = LuaUserData.CreateStatic("Barotrauma.GameMain")
+local SONG_GAIN = 0.75
+local song, songChannel
+local function stopSong()
+    if songChannel ~= nil then songChannel.Dispose() end
+    if song ~= nil then song.Dispose() end
+    song, songChannel = nil, nil
+end
+Networking.Receive("VoidTraitor_NuclearMusic", function(message)
+    local file = message.ReadString()
+    stopSong()
+    if file == "" then return end
+    song = gameMain.SoundManager.LoadSound(packPath .. "/Sounds/Station/Nuclear/" .. file, true)
+    songChannel = song.Play(SONG_GAIN)
+end)
+Hook.Add("stop", "VoidTraitor.Nuclear.Song", stopSong)
+Hook.Add("roundEnd", "VoidTraitor.Nuclear.End", function() UI.CloseMenu() UI.SelectedItem = nil stopSong() end)
 Hook.Add("think", "VoidTraitor.Nuclear.Selection", function()
     Common.UpdateSelectedItemMenu(UI, "vt_nuclear_bomb", function(selected)
         local message = Networking.Start("VoidTraitor_NuclearOpen")
