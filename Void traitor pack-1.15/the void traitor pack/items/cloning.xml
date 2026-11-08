@@ -36,7 +36,7 @@
       <limbposition limb="Head" position="0,35" />
       <limbposition limb="Torso" position="0,0" />
     </Controller>
-    <LightComponent ison="false" powerconsumption="0" range="140" lightcolor="80,210,240,210" pulsemagnitude="0.4" pulsefrequency="0.8" castshadows="false" />
+    <LightComponent ison="false" allowingameediting="false" powerconsumption="0" range="140" lightcolor="80,210,240,210" pulsemagnitude="0.4" pulsefrequency="0.8" castshadows="false" />
     <ItemContainer capacity="4" maxstacksize="64" canbeselected="false" hideitems="true" drawinventory="false">
       <Containable items="vt_biomass" />
     </ItemContainer>
