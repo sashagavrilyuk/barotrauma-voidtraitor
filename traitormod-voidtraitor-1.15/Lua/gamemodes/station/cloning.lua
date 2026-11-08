@@ -2,6 +2,7 @@ local cloning = {}
 Traitormod.Cloning = cloning
 local config = Traitormod.Config.Cloning
 local json = require("json")
+local textPromptUtils = require("textpromptutils")
 LuaUserData.RegisterType("Barotrauma.ContentXElement")
 local contentElement = LuaUserData.CreateStatic("Barotrauma.ContentXElement")
 local state
@@ -289,34 +290,25 @@ Hook.Add("characterDeath", "Traitormod.Cloning.Owner", function(character)
     local client = Traitormod.FindClientCharacter(character)
     if client ~= nil then state.Owners[character] = client end
 end)
-Hook.Patch("Traitormod.Cloning.Terminal", "Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, parameters)
-    local item = instance.Item
-    local identifier = item.Prefab.Identifier
-    if identifier ~= "vt_cloning_scanner" and identifier ~= "vt_cloning_pod" then return end
-    local pressed = parameters["msg"].ReadBoolean()
-    parameters.PreventExecution = true
-    if identifier == "vt_cloning_pod" then
-        local client = parameters["c"]
-        if not pressed or state == nil or not Game.RoundStarted
-            or client == nil or client.Character == nil or client.Character.IsDead
-            or client.Character.SelectedItem ~= item or not item.CanClientAccess(client) then return end
-        local data = state.Pods[item]
-        if data == nil then return end
-        storeBiomass(item, data)
-        if data.Biomass == 0 then return end
-        local amount = data.Biomass
-        data.Biomass = 0
-        for _ = 1, amount do
-            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("vt_biomass"), client.Character.Inventory)
-        end
-    elseif pressed and state ~= nil then
-        local client = parameters["c"]
-        if client ~= nil and client.Character ~= nil and not client.Character.IsDead
-            and client.Character.SelectedItem == item and item.CanClientAccess(client) then
-            ejectBody(client.Character, item)
-        end
+local function takeBiomass(client, pod)
+    if state == nil or not Game.RoundStarted or client.Character == nil or client.Character.IsDead
+        or client.Character.SelectedItem ~= pod or not pod.CanClientAccess(client) then return end
+    local data = state.Pods[pod]
+    if data == nil then return end
+    storeBiomass(pod, data)
+    local amount = data.Biomass
+    data.Biomass = 0
+    for _ = 1, amount do
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("vt_biomass"), client.Character.Inventory)
     end
-end, Hook.HookMethodType.Before)
+end
+textPromptUtils.ItemPrompts.vt_cloning_pod = function(client, pod)
+    local data = state ~= nil and state.Pods[pod] or nil
+    if data == nil then return end
+    storeBiomass(pod, data)
+    textPromptUtils.Prompt(Traitormod.FormatText("ClonePodBiomass", data.Biomass), { Traitormod.GetText("CloneTakeBiomass") },
+        client, function() takeBiomass(client, pod) end, pod)
+end
 Hook.Patch("Traitormod.Cloning.Biomass", "Barotrauma.Items.Components.Deconstructor", "ApplyDeconstructionStatusEffects", function(instance, parameters)
     if state == nil or instance.Item.Prefab.Identifier ~= "vt_biomass_reclaimer" or parameters["type"] ~= ActionType.OnDeconstructed then return end
     local linked = parameters["targetItem"].GetComponentString("LinkedControllerCharacterComponent")

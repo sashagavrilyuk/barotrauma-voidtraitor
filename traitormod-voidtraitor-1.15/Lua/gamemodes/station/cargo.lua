@@ -2,6 +2,7 @@ local cargo = {}
 Traitormod.Cargo = cargo
 local config, ps = Traitormod.Config.Cargo, Traitormod.Pointshop
 local json = require("json")
+local textPromptUtils = require("textpromptutils")
 local sessions = {}
 
 function cargo.Validate(client, item)
@@ -549,13 +550,11 @@ Networking.Receive("VoidTraitor_CargoAction", function(message, client)
     if ok and type(payload) == "table" then cargo.Action(client, item, action, payload) end
 end)
 
-Hook.Patch("Traitormod.Cargo.Unpack", "Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, parameters)
-    local item, client = instance.Item, parameters["c"]
-    if item.Prefab.Identifier ~= "vt_cargo_package" then return end
-    local unpack = parameters["msg"].ReadBoolean()
-    parameters.PreventExecution = true
-    if unpack and not cargo.Unpack(client, item) then Traitormod.SendChatMessage(client, Traitormod.GetText("CargoUnpackDenied")) end
-end, Hook.HookMethodType.Before)
+textPromptUtils.ItemPrompts.vt_cargo_package = function(client, item)
+    textPromptUtils.Prompt(Traitormod.GetText("CargoUnpackPrompt"), { Traitormod.GetText("CargoUnpack") }, client, function()
+        if not cargo.Unpack(client, item) then Traitormod.SendChatMessage(client, Traitormod.GetText("CargoUnpackDenied")) end
+    end, item)
+end
 
 Hook.Add("think", "Traitormod.Cargo.Think", cargo.Think)
 Hook.Add("roundEnd", "Traitormod.Cargo.End", function() cargo.State, sessions = nil, {} end)

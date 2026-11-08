@@ -16,15 +16,10 @@
     <Sprite texture="Content/Items/Labels/labels.png" sourcerect="1,99,126,126" depth="0.92" origin="0.5,0.5" />
     <ItemLabel text="CargoLargeZone" textcolor="255,220,80,255" textscale="0.8" allowingameediting="false" />
   </Item>
-  <Item identifier="vt_cargo_package" name="" category="Misc" tags="vt_cargo_package" scale="0.5" pickdistance="150" impactsoundtag="impact_metal_heavy">
+  <Item identifier="vt_cargo_package" name="" category="Misc" tags="vt_cargo_package,vt_itemprompt" scale="0.5" pickdistance="150" impactsoundtag="impact_metal_heavy">
     <Sprite texture="Content/Items/Containers/containers.png" depth="0.54" sourcerect="407,376,152,89" origin="0.5,0.5" />
     <Body width="150" height="75" density="25" />
     <Holdable pickkey="Use" slots="RightHand+LeftHand" holdpos="0,-80" handle1="-30,14" handle2="30,14" aimable="false" msg="ItemMsgPickUpUse" />
-    <CustomInterface selectkey="Select" canbeselected="true" msg="ItemMsgInteractSelect">
-      <GuiFrame relativesize="0.24,0.1" anchor="Center" style="ItemUI" />
-      <Button text="CargoUnpack" signal="1">
-        <StatusEffect type="OnUse" target="This" />
-      </Button>
-    </CustomInterface>
+    <ItemComponent selectkey="Select" canbeselected="true" msg="ItemMsgInteractSelect" />
   </Item>
 </Items>

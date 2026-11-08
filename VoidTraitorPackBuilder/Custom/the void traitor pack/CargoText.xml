@@ -9,5 +9,4 @@
   <entityname.vt_cargo_package>Доставка оборудования</entityname.vt_cargo_package>
   <entitydescription.vt_cargo_package>Перенесите коробку на станцию, поставьте её в нужном месте и разверните оборудование.</entitydescription.vt_cargo_package>
   <CargoLargeZone>КРУПНЫЙ ГРУЗ</CargoLargeZone>
-  <CargoUnpack>Развернуть оборудование</CargoUnpack>
 </infotexts>

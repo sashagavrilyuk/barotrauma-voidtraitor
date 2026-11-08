@@ -32,4 +32,6 @@ language.CargoNoFunds = "В бюджете станции недостаточн
 language.CargoNoStock = "Недостаточно товаров на складе."
 language.CargoLoadFailed = "Груз не удалось разместить. Заявка остаётся для следующего рейса."
 language.CargoPackageContents = "Упакованное оборудование: %s. Перенесите на станцию и разверните через меню предмета."
+language.CargoUnpackPrompt = "В упаковке оборудование. Его можно развернуть прямо здесь."
+language.CargoUnpack = "Развернуть оборудование"
 language.CargoUnpackDenied = "Оборудование можно развернуть только на станции, выбрав упаковку рядом с собой."

@@ -23,17 +23,13 @@
       <limbposition limb="RightFoot" position="140,-230" />
       <StatusEffect type="OnActive" targettype="Character" delay="0.1" stackable="true" indetectable="true" DisableFocusingOnEntities="true" invisibletimer="0.1" IgnoreMeleeWeapons="true" PressureProtection="6500.0" setvalue="true" />
     </Controller>
-    <CustomInterface canbeselected="true" msg="ItemMsgInteractSelect" allowuioverlap="true">
-      <GuiFrame relativesize="0.22,0.14" minsize="200,65" maxsize="300,95" anchor="Center" relativeoffset="0,0.18" style="ItemUI" />
-      <Button text="CloneEject" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
-    </CustomInterface>
     <ConnectionPanel canbeselected="true" selectkey="Action" msg="ItemMsgRewireScrewdriver">
       <GuiFrame relativesize="0.2,0.25" anchor="Center" style="ConnectionPanel" />
       <RequiredItem items="screwdriver" type="Equipped" />
       <output name="scan" displayname="CloneScannerConnection" />
     </ConnectionPanel>
   </Item>
-  <Item identifier="vt_cloning_pod" name="" category="Machine" scale="0.5" interactdistance="180" health="150" tags="vt_cloning_pod">
+  <Item identifier="vt_cloning_pod" name="" category="Machine" scale="0.5" interactdistance="180" health="150" tags="vt_cloning_pod,vt_itemprompt">
     <Sprite texture="Content/Items/Fabricators/FabricatorsAndDeconstructors.png" sourcerect="256,0,256,288" depth="0.8" color="120,170,200,255" />
     <Powered powerconsumption="500" minvoltage="0.5" isactive="true" />
     <Controller canbeselected="false" canbeselectedbycharacters="true" allowputtinginothercharacters="false" selectingkickscharacterout="false" forceusertostayattached="true" drawuserbehind="true" allowingameediting="false" userpos="0,0">
@@ -44,10 +40,7 @@
     <ItemContainer capacity="4" maxstacksize="64" canbeselected="false" hideitems="true" drawinventory="false">
       <Containable items="vt_biomass" />
     </ItemContainer>
-    <CustomInterface canbeselected="true" msg="ItemMsgInteractSelect" allowuioverlap="true">
-      <GuiFrame relativesize="0.24,0.12" minsize="200,65" maxsize="300,95" anchor="Center" style="ItemUI" />
-      <Button text="CloneTakeBiomass" signal="1"><StatusEffect type="OnUse" target="This" /></Button>
-    </CustomInterface>
+    <ItemComponent canbeselected="true" msg="ItemMsgInteractSelect" />
     <ConnectionPanel canbeselected="true" selectkey="Action" msg="ItemMsgRewireScrewdriver">
       <GuiFrame relativesize="0.2,0.25" anchor="Center" style="ConnectionPanel" />
       <RequiredItem items="screwdriver" type="Equipped" />
