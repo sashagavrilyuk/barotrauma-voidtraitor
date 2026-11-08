@@ -380,6 +380,8 @@ function cm.SendAdminData(client)
             table.insert(events, { Name = event.Name, Station = station, Secret = secret, State = state })
         end
 
+        -- the client opens the event window on the tab of the current round
+        netMessage.WriteBoolean(stationRound)
         netMessage.WriteInt32(#events)
         for _, event in ipairs(events) do
             netMessage.WriteString(event.Name)

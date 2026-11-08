@@ -120,7 +120,7 @@ event.Start = function()
 
     local mode = Traitormod.SelectedGamemode
     if mode ~= nil and mode.Name == "Station" then
-        mode:SendCoalitionAnnouncement(Traitormod.GetText("VentCreaturesStation"), "green")
+        mode:SendCoalitionAnnouncement(Traitormod.GetText("VentCreaturesStation"), "attention")
     else
         Traitormod.RoundEvents.SendEventMessage(Traitormod.Language.VentCreaturesWarning, "GameModeIcon.PVP", Color(255, 190, 70, 255))
     end

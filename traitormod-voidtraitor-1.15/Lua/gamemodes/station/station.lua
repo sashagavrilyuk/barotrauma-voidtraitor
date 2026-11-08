@@ -162,9 +162,9 @@ function gm:SendAlertMessage(text, color, headerColor, header)
     Networking.Send(message)
 end
 
--- station events are announced by the Coalition Command, laid out like the alert codes
+-- station events are announced by the Coalition Command: gold text under a pale header, like the communications console
 function gm:SendCoalitionAnnouncement(text, sound)
-    self:SendAlertMessage(text, Color(255, 215, 0, 255), nil, Traitormod.GetText("CoalitionAnnouncementHeader"))
+    self:SendAlertMessage(text, Color(255, 215, 0, 255), Color(255, 255, 170, 255), Traitormod.GetText("CoalitionAnnouncementHeader"))
     self:PlayAlertSound(sound)
 end
 

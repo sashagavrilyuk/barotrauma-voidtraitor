@@ -28,8 +28,26 @@ local SOUND_FILES = {
     evacDeparted = "green_announce.ogg",
     attack = "aliens.ogg",
     commsBlackout = "comms_blackout.ogg",
+    breakerFlip = "apc.ogg",
+    powerOff = "power_off.ogg",
+    powerOn = "power_on.ogg",
+    intercept = "intercept.ogg",
+    attention = "attention.ogg",
 }
+
+-- The game loads a sound in the background and stops every channel of it that started before the loading finished
+-- (OggSound in Barotrauma 1.15), so a sound loaded on first use is never heard that first time. All of them are loaded
+-- when the client starts and freed when its Lua stops.
 local loadedSounds = {}
+for _, file in pairs(SOUND_FILES) do
+    if loadedSounds[file] == nil then
+        loadedSounds[file] = gameMain.SoundManager.LoadSound(packPath .. "/Sounds/Station/" .. file)
+    end
+end
+
+Hook.Add("stop", "VoidTraitor.StationAnnouncements", function()
+    for _, sound in pairs(loadedSounds) do sound.Dispose() end
+end)
 
 local function readColor(message)
     return Color(message.ReadByte(), message.ReadByte(), message.ReadByte(), 255)
@@ -118,9 +136,5 @@ Networking.Receive("VoidTraitor_StationAnnouncement", function(message)
 end)
 
 Networking.Receive("VoidTraitor_StationAlertSound", function(message)
-    local file = SOUND_FILES[message.ReadString()]
-    if loadedSounds[file] == nil then
-        loadedSounds[file] = gameMain.SoundManager.LoadSound(packPath .. "/Sounds/Station/" .. file)
-    end
-    loadedSounds[file].Play(SOUND_GAIN)
+    loadedSounds[SOUND_FILES[message.ReadString()]].Play(SOUND_GAIN)
 end)

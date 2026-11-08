@@ -108,3 +108,20 @@ Source attribution (CEV Eris): https://github.com/space-syndicate/space-station-
 id_swipe.ogg — Corvax SS14, Resources/Audio/Machines/id_swipe.ogg
 Source: https://github.com/space-syndicate/space-station-14/blob/master/Resources/Prototypes/Entities/Structures/Machines/Computers/computers.yml
 Per-file licensing for these two sound assets has not been independently confirmed; verify before distribution.
+
+Station event announcements (unmodified Corvax SS14 assets)
+============================================================
+From Corvax: space-syndicate/space-station-14 @ 92c04d4f117146ba5251396d07b4dc7458faea1e
+License: CC-BY-SA-3.0 (https://creativecommons.org/licenses/by-sa/3.0/)
+
+apc.ogg — Resources/Audio/Corvax/Announcements/apc.ogg (Corvax BreakerFlip announcement)
+Taken from TauCeti at https://github.com/TauCetiStation/TauCetiClassic/commit/92d2767dbb39f28540f78d5055e7be1eb7acee98
+(Resources/Audio/Corvax/Announcements/licenses.txt)
+power_off.ogg, power_on.ogg, attention.ogg — Resources/Audio/Announcements/ (Russian voice-over)
+Author: discord:Basia (437113799137427460)
+Original: https://github.com/TauCetiStation/TauCetiClassic/pull/10207
+(Resources/Audio/Announcements/attributions.yml)
+intercept.ogg — Resources/Audio/Announcements/intercept.ogg
+Copyright: Taken from tgstation
+Source: https://github.com/tgstation/tgstation/blob/95731342b97167d7883ff091d389f79c36442ee6/sound/ai/default/intercept.ogg
+(Resources/Audio/Announcements/attributions.yml)

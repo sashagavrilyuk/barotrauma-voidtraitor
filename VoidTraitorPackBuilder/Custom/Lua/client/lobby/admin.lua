@@ -23,6 +23,7 @@ local players = {}
 local playerByKey = {}
 local roles = {}
 local events = {}
+local stationRound = false
 local selectedPlayerKey = nil
 local selectedRoleId = nil
 local ghostCharacters = {}
@@ -390,13 +391,11 @@ function Admin.Build(parent)
     if eventEntry ~= nil then
         CreateDivider(parent)
         CreateCategoryHeader(parent, eventEntry.Category)
-        for _, group in ipairs({ { Id = "station", Label = language.StationEvents }, { Id = "secret", Label = language.SecretEvents } }) do
-            local button = CreateMenuButton(parent, group.Label, true)
-            button.ToolTip = tostring(eventEntry.Hint or "")
-            button.OnClicked = function()
-                UI.ShowEvents(group.Id)
-                return true
-            end
+        local button = CreateMenuButton(parent, eventEntry.Label, true)
+        button.ToolTip = tostring(eventEntry.Hint or "")
+        button.OnClicked = function()
+            UI.ShowEvents(stationRound and "station" or "secret")
+            return true
         end
     end
 
@@ -480,6 +479,7 @@ Networking.Receive(NET_DATA, function(message)
     end
     roles = newRoles
 
+    stationRound = message.ReadBoolean()
     local newEvents = {}
     for _ = 1, message.ReadInt32() do
         table.insert(newEvents, {

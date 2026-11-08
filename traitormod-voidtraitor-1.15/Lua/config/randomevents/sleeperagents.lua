@@ -23,7 +23,7 @@ end
 event.Start = function ()
     local mode = Traitormod.SelectedGamemode
     mode:AssignMidRoundAntagonists("Traitor", math.max(1, math.min(maxAgents, math.floor(#Client.ClientList / playersPerAgent))))
-    mode:SendCoalitionAnnouncement(Traitormod.GetText("SleeperAgents"), "green")
+    mode:SendCoalitionAnnouncement(Traitormod.GetText("SleeperAgents"), "intercept")
     event.End()
 end
 

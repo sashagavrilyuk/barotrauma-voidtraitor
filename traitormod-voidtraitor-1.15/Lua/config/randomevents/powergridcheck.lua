@@ -26,7 +26,7 @@ event.Start = function ()
     event.OffAt = Traitormod.RoundTime + math.random(minWarningSeconds, maxWarningSeconds)
     event.OnAt = event.OffAt + math.random(minOutageSeconds, maxOutageSeconds)
     Traitormod.PowerController.Locked = true
-    Traitormod.SelectedGamemode:SendCoalitionAnnouncement(Traitormod.GetText("PowerGridCheckStart"), "green")
+    Traitormod.SelectedGamemode:SendCoalitionAnnouncement(Traitormod.GetText("PowerGridCheckStart"), "powerOff")
 end
 
 event.Think = function ()
@@ -37,7 +37,7 @@ event.Think = function ()
         for _, item in ipairs(event.Off) do
             if not item.Removed then Traitormod.PowerController.SetOn(item, true) end
         end
-        Traitormod.SelectedGamemode:SendCoalitionAnnouncement(Traitormod.GetText("PowerGridCheckEnd"), "green")
+        Traitormod.SelectedGamemode:SendCoalitionAnnouncement(Traitormod.GetText("PowerGridCheckEnd"), "powerOn")
         event.End()
         return
     end

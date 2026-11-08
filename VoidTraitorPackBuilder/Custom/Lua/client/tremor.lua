@@ -12,14 +12,19 @@ local SOUNDS = {
 }
 
 local gameMain = LuaUserData.CreateStatic("Barotrauma.GameMain")
-local loadedSounds = {}
+
+-- loaded ahead of time: a sound played before its background loading finishes is cut off (Lua/client/station/announcements.lua)
+for _, sound in ipairs(SOUNDS) do
+    sound.Sound = gameMain.SoundManager.LoadSound(sound.Path)
+end
+
+Hook.Add("stop", "VoidTraitor.SeismicTremor", function ()
+    for _, sound in ipairs(SOUNDS) do sound.Sound.Dispose() end
+end)
 
 Networking.Receive(NET_TREMOR, function ()
     for _, sound in ipairs(SOUNDS) do
-        if loadedSounds[sound.Path] == nil then
-            loadedSounds[sound.Path] = gameMain.SoundManager.LoadSound(sound.Path)
-        end
-        loadedSounds[sound.Path].Play(sound.Gain)
+        sound.Sound.Play(sound.Gain)
     end
 
     -- the camera eases its shake back to zero by itself, so keep it up while the tremor fades
