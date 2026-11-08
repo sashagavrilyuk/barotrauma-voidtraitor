@@ -120,6 +120,13 @@
         </StatusEffect>
       </StatusEffectAction>
     </ScriptedEvent>
+    <ScriptedEvent identifier="vt_nuke_alarm" commonness="0" triggereventcooldown="false">
+      <StatusEffectAction targettag="nuke">
+        <StatusEffect target="This">
+          <Sound file="%ModDir%/Sounds/Station/Nuclear/nuke_alarm.ogg" stream="true" range="1000000" volume="2" dontmuffle="true" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
     <ScriptedEvent identifier="vt_nuke_detonate" commonness="0" triggereventcooldown="false">
       <StatusEffectAction targettag="nuke">
         <StatusEffect target="This">

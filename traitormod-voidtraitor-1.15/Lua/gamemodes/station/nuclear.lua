@@ -6,7 +6,8 @@ local bombs, sessions = {}, {}
 local active = false
 local texts
 -- Countdown songs: every client plays them for the whole station (Void traitor pack Lua/client/station/nuclear.lua),
--- each started so that it ends with the countdown. The bomb's own sounds and its final alarm stay on the item.
+-- each from the point that makes it end with the countdown. The bomb's own sounds and its final alarm play at the bomb
+-- (Void traitor pack Sounds/Station/Nuclear/NuclearEvents.xml).
 local music = {
     { File = "running_out.ogg", Length = 109.9977 },
     { File = "countdown.ogg", Length = 111.6000 },
@@ -14,7 +15,8 @@ local music = {
     { File = "blatantly_nuclear.ogg", Length = 196.2902 },
     { File = "level.ogg", Length = 109.5756 },
 }
-local activationLength = 14
+-- the explosion comes as the alarm (13.7 s, Sounds/Station/Nuclear/nuke_alarm.ogg) fades out
+local activationLength = 13
 
 local componentEvent = LuaUserData.CreateStatic("Barotrauma.Item+ComponentStateEventData", true)
 local eventSet = LuaUserData.CreateStatic("Barotrauma.EventSet", true)
@@ -38,8 +40,7 @@ function nuclear.Register(item)
     local code = ""
     for _ = 1, 6 do code = code .. tostring(math.random(0, 9)) end
     bombs[item] = { Code = code, Entered = "", Status = "locked", Remaining = config.Time, Cooldown = 0, LastAttempt = -1,
-        MusicIndex = 0, Song = "",
-        MusicElapsed = 0, MusicPlaying = false, MusicStarted = false }
+        MusicIndex = 0, Song = "", SongPlaying = false, MusicPlaying = false }
 end
 
 function nuclear.Validate(client, item, readOnly)
@@ -63,6 +64,15 @@ function nuclear.Send(client, item, payload)
     Networking.Send(message, client.Connection)
 end
 
+function nuclear.SendSong(data, song, playing, position)
+    data.Song, data.SongPlaying = song, playing
+    local message = Networking.Start("VoidTraitor_NuclearMusic")
+    message.WriteString(song)
+    message.WriteBoolean(playing)
+    message.WriteSingle(position)
+    Networking.Send(message)
+end
+
 function nuclear.Update(item, data)
     local snapshot = nuclear.Snapshot(item, data)
     local holdable = item.GetComponentString("Holdable")
@@ -75,18 +85,13 @@ function nuclear.Update(item, data)
     local armed = data.Status == "armed" or data.Status == "exploded"
     if light.IsOn ~= armed then
         light.IsOn = armed
-        -- A property event would only say "IsOn" and clients would apply it to the first light component,
-        -- which is the alarm (child components are added before the parent).
         Networking.CreateEntityEvent(item, componentEvent.__new(light, nil))
     end
-    local alarm = data.Status == "exploded"
-    if data.Alarm.IsOn ~= alarm then data.Alarm.IsOn = alarm end
-    local song = data.MusicPlaying and music[data.MusicIndex].File or ""
-    if data.Song ~= song then
-        data.Song = song
-        local message = Networking.Start("VoidTraitor_NuclearMusic")
-        message.WriteString(song)
-        Networking.Send(message)
+    local song = armed and music[data.MusicIndex].File or ""
+    if data.Song ~= song or data.SongPlaying ~= data.MusicPlaying then
+        -- the song ends one second before the countdown does
+        local position = data.MusicPlaying and music[data.MusicIndex].Length + 1 - data.Remaining or 0
+        nuclear.SendSong(data, song, data.MusicPlaying, position)
     end
     local payload
     for client, selected in pairs(sessions) do
@@ -111,7 +116,7 @@ end
 function nuclear.Disarm(item, data)
     if data.Status ~= "armed" or data.Remaining <= 0 then return end
     data.Status, data.Cooldown, data.Entered = "cooldown", config.Cooldown, ""
-    data.MusicPlaying, data.MusicStarted = false, false
+    data.MusicPlaying = false
     data.Remaining = math.max(data.Remaining, config.MinimumTime)
     nuclear.PlaySound(item, "disarm")
     item.OwnInventory.Locked = false
@@ -195,9 +200,9 @@ function nuclear.Action(client, item, action, value)
             for index, track in ipairs(music) do
                 if track.Length + config.MusicStartDelay + 1 < data.Remaining then availableMusic[#availableMusic + 1] = index end
             end
-            data.MusicIndex = #availableMusic > 0 and availableMusic[math.random(#availableMusic)] or 0
+            -- a timer too short to leave the quiet time before any song starts one partway through
+            data.MusicIndex = #availableMusic > 0 and availableMusic[math.random(#availableMusic)] or math.random(#music)
         end
-        Networking.CreateEntityEvent(item, componentEvent.__new(data.Alarm, nil))
         data.Status = "armed"
         item.OwnInventory.Locked = true
         nuclear.PlaySound(item, "confirm")
@@ -211,21 +216,15 @@ end
 function nuclear.Think(deltaTime)
     if not active or not Game.RoundStarted then return end
     for item, data in pairs(bombs) do
-        if item.Removed then bombs[item] = nil
+        if item.Removed then
+            bombs[item] = nil
+            -- a bomb that blew up or was deleted while armed no longer keeps the game music silent
+            if data.Song ~= "" then nuclear.SendSong(data, "", false, 0) end
         else
             -- OnSpawn runs before the item's spawn is sent to clients, so the rest is set up here
             if not data.Initialized then
                 data.Initialized = true
-                for component in item.Components do
-                    if component.Name == "LightComponent" then
-                        if component.Range == 0 then
-                            data.Alarm = component
-                        else
-                            data.Light = component
-                        end
-                    end
-                end
-                Networking.CreateEntityEvent(item, componentEvent.__new(data.Alarm, nil))
+                data.Light = item.GetComponentString("LightComponent")
                 local holdable = item.GetComponentString("Holdable")
                 if holdable.PickingTime ~= config.DisarmTime then
                     holdable.PickingTime = config.DisarmTime
@@ -246,15 +245,12 @@ function nuclear.Think(deltaTime)
                 if data.Cooldown == 0 then data.Status = "ready" end
             elseif data.Status == "armed" then
                 data.Remaining = math.max(0, data.Remaining - deltaTime)
-                if data.MusicIndex > 0 and not data.MusicStarted
-                    and data.Remaining <= music[data.MusicIndex].Length - data.MusicElapsed + 1 then
-                    data.MusicStarted, data.MusicPlaying = true, true
-                end
-                if data.MusicPlaying then data.MusicElapsed = data.MusicElapsed + deltaTime end
-                if data.Remaining <= 1 then data.MusicPlaying = false end
+                data.MusicPlaying = data.Remaining > 1 and data.Remaining <= music[data.MusicIndex].Length + 1
                 if data.Remaining == 0 and data.Status == "armed" then
                     data.Status = "exploded"
                     data.ActivationRemaining = activationLength
+                    -- played once, so it never starts over before the detonation
+                    nuclear.PlaySound(item, "alarm")
                 end
             elseif data.Status == "exploded" then
                 data.ActivationRemaining = math.max(0, data.ActivationRemaining - deltaTime)

@@ -125,21 +125,40 @@ Hook.Patch("VoidTraitor.Nuclear.Inventory", "Barotrauma.CharacterHUD", "LockInve
     if not UI.Disabled and UI.CurrentMenu ~= nil and parameters["character"] == Character.Controlled then return true end
 end, Hook.HookMethodType.After)
 -- The countdown song of an armed bomb plays for the whole station; the bomb's own sounds and its final alarm play from
--- the bomb (nuclear.xml). Songs are streamed, so they start at once and hold no samples in memory while silent.
+-- the bomb (Sounds/Station/Nuclear/NuclearEvents.xml). Songs are streamed, so they start at once and hold no samples in
+-- memory while silent. A song is music, so the music slider sets its volume; 1.5 like the vanilla final boss music.
 local gameMain = LuaUserData.CreateStatic("Barotrauma.GameMain")
-local SONG_GAIN = 0.75
-local song, songChannel
+local MUSIC = Identifier("music")
+local SONG_GAIN = 1.5
+local AL_FORMAT_STEREO16 = 4355
+local songFile, song, silence, songChannel
 local function stopSong()
     if songChannel ~= nil then songChannel.Dispose() end
+    if silence ~= nil then silence.Dispose() end
     if song ~= nil then song.Dispose() end
-    song, songChannel = nil, nil
+    songFile, song, silence, songChannel = nil, nil, nil, nil
 end
 Networking.Receive("VoidTraitor_NuclearMusic", function(message)
-    local file = message.ReadString()
-    stopSong()
-    if file == "" then return end
-    song = gameMain.SoundManager.LoadSound(packPath .. "/Sounds/Station/Nuclear/" .. file, true)
-    songChannel = song.Play(SONG_GAIN)
+    local file, playing, position = message.ReadString(), message.ReadBoolean(), message.ReadSingle()
+    if file ~= songFile then
+        stopSong()
+        if file == "" then return end
+        songFile = file
+        song = gameMain.SoundManager.LoadSound(packPath .. "/Sounds/Station/Nuclear/" .. file, true)
+        -- The game fades its music out only while a channel marked MuteBackgroundMusic plays (SoundPlayer.UpdateMusic),
+        -- so a muted copy of the song keeps it silent while the bomb is armed.
+        silence = song.Play(0, MUSIC)
+        silence.Looping = true
+        silence.MuteBackgroundMusic = true
+    end
+    if playing and songChannel == nil then
+        songChannel = song.Play(SONG_GAIN, MUSIC)
+        -- the stream position counts bytes of 16-bit samples of every channel (OggSound.FillStreamBuffer)
+        songChannel.StreamSeekPos = math.floor(position * song.SampleRate) * 2 * (song.ALFormat == AL_FORMAT_STEREO16 and 2 or 1)
+    elseif not playing and songChannel ~= nil then
+        songChannel.Dispose()
+        songChannel = nil
+    end
 end)
 Hook.Add("stop", "VoidTraitor.Nuclear.Song", stopSong)
 Hook.Add("roundEnd", "VoidTraitor.Nuclear.End", function() UI.CloseMenu() UI.SelectedItem = nil stopSong() end)
