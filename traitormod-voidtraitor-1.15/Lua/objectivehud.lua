@@ -4,7 +4,7 @@ hud.RoleStates = setmetatable({}, { __mode = "k" })
 hud.ObjectiveStates = setmetatable({}, { __mode = "k" })
 hud.NextRoleId = 0
 hud.NextObjectiveId = 0
-hud.UpdateInterval = 15.0
+hud.UpdateInterval = 1.0
 hud.RemoveInterval = 1.0
 hud.UpdateTimer = hud.UpdateInterval
 hud.RemoveTimer = hud.RemoveInterval
@@ -199,6 +199,16 @@ function hud.AddObjective(role, objective)
 
     if state.Added and state.Text == text then
         state.Client = client
+        return
+    end
+
+    -- an objective already in the list keeps its place: the client writes the new text into it (pack Lua/client/objectives.lua)
+    if state.Added and state.Client == client then
+        local message = Networking.Start("VoidTraitor_ObjectiveText")
+        message.WriteString(state.Id)
+        message.WriteString(text)
+        Networking.Send(message, client.Connection)
+        state.Text = text
         return
     end
 
