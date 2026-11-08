@@ -8,6 +8,7 @@ LuaUserData.MakeFieldAccessible(chatBoxDescriptor, "chatBox")
 LuaUserData.MakeFieldAccessible(chatBoxDescriptor, "popupMessages")
 local gameMain = LuaUserData.CreateStatic("Barotrauma.GameMain")
 
+local HEADER_TO_TEXT_SIZE = 14 / 12
 local SOUND_GAIN = 0.75
 local SOUND_FILES = {
     green = "green_announce.ogg",
@@ -40,11 +41,19 @@ local function getChildren(component)
     return children
 end
 
--- Wrap is a plain field, so it goes before the font, whose setter lays the text out again
+-- Wrap is a plain field, so it goes before the font, whose setter lays the text out again. Like SS14 announcements
+-- (14 pt bold header over 12 pt text) the header is scaled to that ratio of the chat text font, which the game sizes
+-- for the resolution and the text scale setting.
 local function setHeaderFont(textBlock, color)
     textBlock.Wrap = true
     textBlock.Font = GUI.Style.SubHeadingFont
+    textBlock.TextScale = GUI.Style.SmallFont.Size * HEADER_TO_TEXT_SIZE / GUI.Style.SubHeadingFont.Size
     textBlock.OverrideTextColor(color)
+end
+
+-- TextSize is measured before TextScale is applied
+local function getTextHeight(textBlock)
+    return math.ceil(textBlock.TextSize.Y * textBlock.TextScale)
 end
 
 -- ChatBox.AddMessage puts the sender button inside the timestamp row and the text right below that row
@@ -55,12 +64,20 @@ local function styleChatHeader(entry, color)
     setHeaderFont(sender.TextBlock, color)
     -- the header wraps in the rest of the row after the timestamp
     sender.RectTransform.NonScaledSize = Point(timestamp.Rect.Width - sender.RectTransform.AbsoluteOffset.X, sender.Rect.Height)
-    local height = math.ceil(sender.TextBlock.TextSize.Y)
-    sender.RectTransform.NonScaledSize = Point(sender.Rect.Width, height)
-    timestamp.RectTransform.MinSize = Point(0, height)
-    text.RectTransform.AbsoluteOffset = Point(text.RectTransform.AbsoluteOffset.X, height)
-    -- a resize makes the chat box sum up the row heights of the message again
-    entry.RectTransform.Resize(entry.RectTransform.NonScaledSize, false)
+
+    local function fitRowToHeader()
+        local height = getTextHeight(sender.TextBlock)
+        if height == timestamp.RectTransform.MinSize.Y then return end
+        timestamp.RectTransform.MinSize = Point(0, height)
+        -- the button height is relative to the row, so it is set after the row has grown
+        sender.RectTransform.NonScaledSize = Point(sender.Rect.Width, height)
+        text.RectTransform.AbsoluteOffset = Point(text.RectTransform.AbsoluteOffset.X, height)
+        -- a resize makes the chat box sum up the row heights of the message again
+        entry.RectTransform.Resize(entry.RectTransform.NonScaledSize, false)
+    end
+    fitRowToHeader()
+    -- the header wraps again whenever the chat gets narrower or wider, e.g. when its scroll bar shows up
+    sender.TextBlock.RectTransform.SizeChanged.add(fitRowToHeader)
 end
 
 -- the popup shown while the chat is closed keeps its width; its height is worked out like in ChatBox.AddMessage
@@ -69,8 +86,10 @@ local function stylePopupHeader(popup, color)
     local rows = getChildren(content)
     local sender, text = rows[1], rows[2]
     setHeaderFont(sender, color)
-    sender.CalculateHeightFromText()
-    sender.RectTransform.MinSize = Point(0, sender.Rect.Height)
+    -- the layout group sizes the header relative to itself, so its height is pinned
+    local height = getTextHeight(sender)
+    sender.RectTransform.MinSize = Point(0, height)
+    sender.RectTransform.MaxSize = Point(sender.RectTransform.MaxSize.X, height)
     local relativeHeight = content.RectTransform.RelativeSize.Y
     popup.RectTransform.Resize(Point(popup.Rect.Width, math.floor((sender.Rect.Height + text.Rect.Height) / relativeHeight)))
     content.Recalculate()
