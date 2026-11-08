@@ -158,8 +158,6 @@ statistics.Command = function (client, args)
                 for key, value in pairs(statistics.stats) do
                     table.insert(options, key)
                 end
-                table.insert(options, "")
-                table.insert(options, "")
                 
                 textPromptUtils.Prompt(text, options, client, function (id, client2)
                     statistics.ShowStats(client2, options[id])

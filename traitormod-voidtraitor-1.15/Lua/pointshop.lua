@@ -1454,7 +1454,7 @@ end
 
 ps.Command = function (client, args)
     if #ps.ActiveCategories == 0 then
-        textPromptUtils.Prompt(Traitormod.Language.PointshopNotAvailable, {}, client, function (id, client) end, "gambler")
+        textPromptUtils.Prompt(Traitormod.Language.PointshopNotAvailable, {}, client, function () end)
         return true    
     end
 
