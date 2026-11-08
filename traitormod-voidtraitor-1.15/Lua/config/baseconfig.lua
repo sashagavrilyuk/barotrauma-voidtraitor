@@ -86,6 +86,18 @@ config.Cargo = {
             { Category = "materials", Identifier = "copper", Quantity = 5 },
             { Category = "materials", Identifier = "plastic", Quantity = 5 },
         } },
+        { Text = "CoalitionGiftElectrical", Orders = {
+            { Category = "wiring", Identifier = "wire", Quantity = 6 },
+            -- one installation: each takes a large cargo spot of the shuttle
+            { Category = "wiring", Identifier = "junctionbox", Quantity = 1 },
+        } },
+        { Text = "CoalitionGiftBurns", Orders = {
+            { Category = "medical", Identifier = "ointment", Quantity = 1 },
+            { Category = "medical", Identifier = "skinaid", Quantity = 1 },
+        } },
+        { Text = "CoalitionGiftBiomass", Orders = {
+            { Category = "biomass", Identifier = "vt_biomass", Quantity = 1 },
+        } },
     },
 }
 config.Cloning = { Time = 30, HumanBiomassCost = 50, HumanBiomassYield = 28 }
@@ -731,6 +743,10 @@ config.RandomEventConfig = {
                 CoalitionGifts = { Weight = 6, EarliestMinute = 20, MinPlayers = 10 }, -- cargo gifts
                 SleeperAgents = { Weight = 8, EarliestMinute = 30, MinPlayers = 15, MaxPerRound = 1 }, -- sleeper agents
                 PatientZero = { Weight = 1, EarliestMinute = 45, MinPlayers = 15, MaxPerRound = 1 }, -- zombie outbreak
+                ClericalError = { Weight = 5, MinPlayers = 15 }, -- clerical error
+                BureaucraticError = { Weight = 3, MinPlayers = 25 }, -- bureaucratic error
+                Stowaway = { Weight = 5, MinPlayers = 10 }, -- closet skeleton
+                CritterMigration = { Weight = 6, EarliestMinute = 15 }, -- mouse migration
             },
         },
     },
@@ -834,6 +850,10 @@ config.RandomEventConfig = {
         dofile(Traitormod.Path .. "/Lua/config/randomevents/coalitiongifts.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/sleeperagents.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/patientzero.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/clericalerror.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/bureaucraticerror.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/stowaway.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/crittermigration.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/superballastflora.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/maintenancetoolsdelivery.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/medicaldelivery.lua"),
@@ -973,6 +993,7 @@ config.GhostRoleConfig = {
         dofile(Traitormod.Path .. "/Lua/config/ghostrole/rescue.lua"),
         dofile(Traitormod.Path .. "/Lua/config/ghostrole/emergency.lua"),
         dofile(Traitormod.Path .. "/Lua/config/ghostrole/prisoner.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/ghostrole/stowaway.lua"),
         dofile(Traitormod.Path .. "/Lua/config/ghostrole/pirates/beacon.lua"),
         dofile(Traitormod.Path .. "/Lua/config/ghostrole/pirates/wreck.lua"),
         dofile(Traitormod.Path .. "/Lua/config/ghostrole/pirates/hidden.lua"),
