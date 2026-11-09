@@ -25,6 +25,7 @@ LuaUserData.MakePropertyAccessible(holdableDescriptor, "PickingTime")
 
 function nuclear.Start()
     active, bombs, sessions = true, {}, {}
+    nuclear.StationDestroyed = false
     texts = {}
     for _, key in ipairs({ "Title", "Locked", "AwaitDisk", "AwaitCode", "Ready", "Armed", "Cooldown", "Exploded",
         "Time", "Cooling", "Code", "Eject", "Insert", "Anchor", "Detach", "Arm", "Close" }) do
@@ -41,6 +42,15 @@ function nuclear.Register(item)
     for _ = 1, 6 do code = code .. tostring(math.random(0, 9)) end
     bombs[item] = { Code = code, Entered = "", Status = "locked", Remaining = config.Time, Cooldown = 0, LastAttempt = -1,
         MusicIndex = 0, Song = "", SongPlaying = false, MusicPlaying = false }
+end
+
+-- the codes of the bombs still standing, for the operatives sent to use them
+function nuclear.Codes()
+    local codes = {}
+    for item, data in pairs(bombs) do
+        if not item.Removed and data.Status ~= "exploded" then table.insert(codes, data.Code) end
+    end
+    return codes
 end
 
 function nuclear.Validate(client, item, readOnly)
@@ -260,6 +270,7 @@ function nuclear.Think(deltaTime)
                     nuclear.PlaySound(item.CurrentHull or item, "detonate")
                     Explosion(config.ExplosionRange, 100, 10000, 10000, 10000, 1).Explode(position, item)
                     if Vector2.Distance(position, Submarine.MainSub.WorldPosition) <= config.ExplosionRange then
+                        nuclear.StationDestroyed = true
                         Traitormod.SelectedGamemode:BeginEnding("traitors")
                     end
                     Entity.Spawner.AddEntityToRemoveQueue(item)

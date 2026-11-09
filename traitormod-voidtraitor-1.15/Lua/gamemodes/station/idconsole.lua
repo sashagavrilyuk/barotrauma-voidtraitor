@@ -264,7 +264,7 @@ function console.InitializeCard(character, passenger)
             end
         end
     end
-    if character.Info.Job.Prefab.Identifier.Value == "captain" then
+    if not passenger and character.Info.Job.Prefab.Identifier.Value == "captain" then
         card.AddTag("vt_station_original_captain_id")
     end
     card.AddTag("vt_station_card_initialized")

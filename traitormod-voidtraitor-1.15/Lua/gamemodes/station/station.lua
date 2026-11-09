@@ -7,6 +7,7 @@ dofile(Traitormod.Path .. "/Lua/gamemodes/station/nuclear.lua")
 dofile(Traitormod.Path .. "/Lua/gamemodes/station/communications.lua")
 dofile(Traitormod.Path .. "/Lua/gamemodes/station/powercontroller.lua")
 local evacuation = dofile(Traitormod.Path .. "/Lua/gamemodes/station/evacuation.lua")
+local boats = dofile(Traitormod.Path .. "/Lua/gamemodes/station/boats.lua")
 local weightedRandom = dofile(Traitormod.Path .. "/Lua/weightedrandom.lua")
 local bodyTypes = LuaUserData.CreateEnumTable("FarseerPhysics.BodyType")
 local alertCodes = {
@@ -126,6 +127,7 @@ function gm:Start()
     end
     self.AlertCode = "green"
     evacuation.Start(self)
+    boats.Start(self)
     Traitormod.Communications.Start()
     self:HideSmugglerStash()
 end

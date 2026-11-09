@@ -460,6 +460,14 @@ config.GamemodeConfig = {
             TravelTime = 300,
             PumpFlowMultiplier = 1,
         },
+        -- boats of the station map for the events from outside, by the tag of their helm; they wait parked above the level
+        -- and come out at its far end when their event starts
+        EventBoats = {
+            Saboteur = "vt_saboteur_helm",
+            LoneOperative = "vt_loneop_helm",
+            NuclearOperatives = "vt_nukeops_helm",
+            Visitors = "vt_visitor_helm",
+        },
         -- SS14's smuggler stash: at round start valuables are hidden in a random one of these cabinets of the station
         SmugglerStash = {
             Containers = { "suppliescabinet", "mediumsteelcabinet", "mediumwindowedsteelcabinet", "steelcabinet" },
@@ -744,6 +752,9 @@ config.RandomEventConfig = {
                 IceCollapse = { Weight = 5, EarliestMinute = 10 }, -- no SS14 counterpart
                 IceSpear = { Weight = 3.5, EarliestMinute = 30, MinPlayers = 25 }, -- immovable rod
                 VentClog = { Weight = 5, EarliestMinute = 15, MinPlayers = 15 }, -- vent clog
+                Visitors = { Weight = 5, EarliestMinute = 15, MaxPerRound = 1 }, -- unknown shuttle
+                SaboteurBoat = { Weight = 6, EarliestMinute = 30, MinPlayers = 30, MaxPerRound = 1 }, -- space ninja
+                LoneOperative = { Weight = 5.5, EarliestMinute = 35, MinPlayers = 20, MaxPerRound = 1 }, -- lone operative
                 LifeSupportFailure = { Weight = 8 }, -- gas leak
                 ShortCircuit = { Weight = 5, MinPlayers = 15 }, -- no SS14 counterpart
                 BreakerFlip = { Weight = 7, MinPlayers = 15 }, -- breaker flip
@@ -854,6 +865,9 @@ config.RandomEventConfig = {
         dofile(Traitormod.Path .. "/Lua/config/randomevents/icecollapse.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/icespear.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/ventclog.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/visitors.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/saboteurboat.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/loneoperative.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/lifesupportfailure.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/shortcircuit.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/breakerflip.lua"),
@@ -1005,6 +1019,8 @@ config.GhostRoleConfig = {
         dofile(Traitormod.Path .. "/Lua/config/ghostrole/emergency.lua"),
         dofile(Traitormod.Path .. "/Lua/config/ghostrole/prisoner.lua"),
         dofile(Traitormod.Path .. "/Lua/config/ghostrole/stowaway.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/ghostrole/visitors.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/ghostrole/separatists.lua"),
         dofile(Traitormod.Path .. "/Lua/config/ghostrole/pirates/beacon.lua"),
         dofile(Traitormod.Path .. "/Lua/config/ghostrole/pirates/wreck.lua"),
         dofile(Traitormod.Path .. "/Lua/config/ghostrole/pirates/hidden.lua"),
