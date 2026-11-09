@@ -50,11 +50,11 @@
   <Text file="%ModDir%/the void traitor pack/IdConsoleText.xml" />
   <Item file="%ModDir%/the void traitor pack/items/cargo.xml" />
   <Text file="%ModDir%/the void traitor pack/CargoText.xml" />
-  <Submarine file="%ModDir%/void traitor pack submarine/Station/Boat/VoidTraitor Cargo Test.sub" />
-  <Submarine file="%ModDir%/void traitor pack submarine/Station/Boat/VoidTraitor Evac Test.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/Station/Cargo/VoidTraitor Cargo Test.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/Station/Evac/VoidTraitor Evac Test.sub" />
   <Submarine file="%ModDir%/void traitor pack submarine/Station/Boat/VoidTraitor Saboter.sub" />
   <Submarine file="%ModDir%/void traitor pack submarine/Station/Boat/VoidTraitor Lon operative.sub" />
-  <Submarine file="%ModDir%/void traitor pack submarine/Station/Boat/VoidTraitor Operative.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/Station/Operatives/VoidTraitor Operative.sub" />
   <Submarine file="%ModDir%/void traitor pack submarine/Station/Boat/VoidTraitor Visitor.sub" />
   <Item file="%ModDir%/the void traitor pack/items/cloning.xml" />
   <Text file="%ModDir%/the void traitor pack/CloningText.xml" />

@@ -2,9 +2,9 @@ local boats = {}
 Traitormod.StationBoats = boats
 local bodyTypes = LuaUserData.CreateEnumTable("FarseerPhysics.BodyType")
 
--- The boats of the events from outside (saboteur, operatives, visitors) belong to the station map like the evacuation
--- ship: they load with the station on every client, wait parked above the end of the level with their items switched
--- off, and come out at the far end of the level when their event starts. The map may hold several boats with the same
+-- The boats of the events from outside (saboteur, operative, visitors) are loaded on every client with the round
+-- (Void traitor pack Lua/extensions/station_boats.lua), wait parked above the end of the level with their items
+-- switched off, and come out at the far end of the level when their event starts. Several boats may carry the same
 -- helm tag, so that their event can come again.
 
 local function park(sub, helm, spot)

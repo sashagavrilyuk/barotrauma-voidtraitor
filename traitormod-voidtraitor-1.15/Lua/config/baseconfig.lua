@@ -460,12 +460,11 @@ config.GamemodeConfig = {
             TravelTime = 300,
             PumpFlowMultiplier = 1,
         },
-        -- boats of the station map for the events from outside, by the tag of their helm; they wait parked above the level
-        -- and come out at its far end when their event starts, each boat once, so more boats with a tag let it come again
+        -- boats of the events from outside, by the tag of their helm; they wait parked above the level and come out at its
+        -- far end when their event starts, each boat once, so more boats with a tag let it come again
         EventBoats = {
             Saboteur = "vt_saboteur_helm",
             LoneOperative = "vt_loneop_helm",
-            NuclearOperatives = "vt_nukeops_helm",
             Visitors = "vt_visitor_helm",
         },
         -- SS14's smuggler stash: at round start valuables are hidden in a random one of these cabinets of the station
