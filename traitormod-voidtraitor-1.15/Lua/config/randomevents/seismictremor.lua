@@ -3,7 +3,7 @@ local Tremor = dofile(Traitormod.Path .. "/Lua/config/randomevents/utility/tremo
 local event = {}
 
 -- Europa's tidal tectonics shake the sub: everyone aboard staggers and is thrown aside with the loose items, a few
--- junction boxes take a hit and wall sections crack.
+-- junction boxes take a hit, wall sections crack and the walls between rooms bend.
 event.Name = "SeismicTremor"
 event.MinRoundTime = 8
 event.MinIntensity = 0
@@ -18,9 +18,20 @@ local sectionsPerCrack = 150
 local minCracks = 2
 -- share of the section's health; a section has a large hole from 0.7 on
 local minDamage, maxDamage = 0.5, 0.8
+-- the walls between rooms bend in many more places: one try per this many wall sections, kept only where there is a
+-- room on both sides, so no water comes in from outside
+local sectionsPerDent = 25
+local minDentDamage, maxDentDamage = 0.3, 0.7
 
 event.CanStart = function ()
     return Submarine.MainSub ~= nil
+end
+
+local function isBetweenRooms(wall, index)
+    local position = wall.SectionPosition(index, true)
+    local offset = wall.IsHorizontal and Vector2(0, wall.WorldRect.Height / 2 + 32)
+        or Vector2(wall.WorldRect.Width / 2 + 32, 0)
+    return Hull.FindHull(position + offset, nil, true) ~= nil and Hull.FindHull(position - offset, nil, true) ~= nil
 end
 
 event.Start = function ()
@@ -53,6 +64,13 @@ event.Start = function ()
         local wall = walls[math.random(#walls)]
         wall.AddDamage(math.random(0, wall.SectionCount - 1),
             wall.MaxHealth * (minDamage + math.random() * (maxDamage - minDamage)))
+    end
+    for i = 1, math.floor(sectionCount / sectionsPerDent) do
+        local wall = walls[math.random(#walls)]
+        local index = math.random(0, wall.SectionCount - 1)
+        if isBetweenRooms(wall, index) then
+            wall.AddDamage(index, wall.MaxHealth * (minDentDamage + math.random() * (maxDentDamage - minDentDamage)))
+        end
     end
 
     Tremor()
