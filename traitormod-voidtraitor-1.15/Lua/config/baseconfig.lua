@@ -743,6 +743,7 @@ config.RandomEventConfig = {
                 MalfunctioningBot = { Weight = 2.5, EarliestMinute = 15, MinPlayers = 4, RepeatAfterMinutes = 20 }, -- derelict cyborg
                 IceCollapse = { Weight = 5, EarliestMinute = 10 }, -- no SS14 counterpart
                 IceSpear = { Weight = 3.5, EarliestMinute = 30, MinPlayers = 25 }, -- immovable rod
+                VentClog = { Weight = 5, EarliestMinute = 15, MinPlayers = 15 }, -- vent clog
                 LifeSupportFailure = { Weight = 8 }, -- gas leak
                 ShortCircuit = { Weight = 5, MinPlayers = 15 }, -- no SS14 counterpart
                 BreakerFlip = { Weight = 7, MinPlayers = 15 }, -- breaker flip
@@ -852,6 +853,7 @@ config.RandomEventConfig = {
         dofile(Traitormod.Path .. "/Lua/config/randomevents/radiationstorm.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/icecollapse.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/icespear.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/ventclog.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/lifesupportfailure.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/shortcircuit.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/breakerflip.lua"),
