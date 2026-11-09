@@ -127,6 +127,27 @@ function gm:Start()
     self.AlertCode = "green"
     evacuation.Start(self)
     Traitormod.Communications.Start()
+    self:HideSmugglerStash()
+end
+
+function gm:HideSmugglerStash()
+    local stash = self.SmugglerStash
+    local cabinets = {}
+    for _, item in pairs(Submarine.MainSub.GetItems(false)) do
+        for _, identifier in ipairs(stash.Containers) do
+            if item.Prefab.Identifier.Value == identifier then
+                table.insert(cabinets, item)
+                break
+            end
+        end
+    end
+    if #cabinets == 0 then return end
+
+    local cabinet = cabinets[math.random(#cabinets)]
+    for _ = 1, stash.ItemCount do
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(stash.Items[math.random(#stash.Items)]), cabinet.OwnInventory)
+    end
+    Traitormod.SpawnPointItem(cabinet.OwnInventory, stash.Points, Traitormod.GetText("SmugglerStashPoints"))
 end
 
 -- Test mode is set in Start (a single admin), not by the player count.

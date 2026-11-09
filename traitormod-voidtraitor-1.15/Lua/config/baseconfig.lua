@@ -460,6 +460,13 @@ config.GamemodeConfig = {
             TravelTime = 300,
             PumpFlowMultiplier = 1,
         },
+        -- SS14's smuggler stash: at round start valuables are hidden in a random one of these cabinets of the station
+        SmugglerStash = {
+            Containers = { "suppliescabinet", "mediumsteelcabinet", "mediumwindowedsteelcabinet", "steelcabinet" },
+            Items = { "physicorium", "incendium", "fulgurium", "dementonite", "combatstimulantsyringe", "fulguriumbatterycell" },
+            ItemCount = 3,
+            Points = 1000,
+        },
         PointshopCategories = {"traitor", "cultist", "saboteur", "clown"},
         -- antagonist products that start a random event; Station runs its own events
         HiddenProducts = {
@@ -735,6 +742,7 @@ config.RandomEventConfig = {
                 VentCreatures = { Weight = 5, EarliestMinute = 20, MinPlayers = 15 }, -- vent hordes
                 MalfunctioningBot = { Weight = 2.5, EarliestMinute = 15, MinPlayers = 4, RepeatAfterMinutes = 20 }, -- derelict cyborg
                 IceCollapse = { Weight = 5, EarliestMinute = 10 }, -- no SS14 counterpart
+                IceSpear = { Weight = 3.5, EarliestMinute = 30, MinPlayers = 25 }, -- immovable rod
                 LifeSupportFailure = { Weight = 8 }, -- gas leak
                 ShortCircuit = { Weight = 5, MinPlayers = 15 }, -- no SS14 counterpart
                 BreakerFlip = { Weight = 7, MinPlayers = 15 }, -- breaker flip
@@ -843,6 +851,7 @@ config.RandomEventConfig = {
         dofile(Traitormod.Path .. "/Lua/config/randomevents/stationattack.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/radiationstorm.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/icecollapse.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/icespear.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/lifesupportfailure.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/shortcircuit.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/breakerflip.lua"),
