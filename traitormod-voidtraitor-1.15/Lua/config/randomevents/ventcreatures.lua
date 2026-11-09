@@ -7,6 +7,9 @@ event.MaxIntensity = 1
 event.ChancePerMinute = 0.075
 event.OnlyOncePerRound = true
 
+-- up to one creature per this many players, at least minAmount and at most maxAmount
+local playersPerCreature = 2
+local minAmount, maxAmount = 2, 8
 local monsterPool = { "crawler_hatchling", "tigerthresher_hatchling", "mudraptor_hatchling" }
 local huskPool = {"Crawler_hatchlinghusk", "Tigerthresher_hatchlinghusk", "Mudraptor_hatchlinghusk"}
 local petPool = { "orangeboy", "balloon", "psilotoad" }
@@ -163,7 +166,8 @@ event.Start = function()
             table.insert(freeVents, vent)
         end
 
-        local amount = math.random(1, 7)
+        local amount = math.random(minAmount,
+            math.max(minAmount, math.min(maxAmount, math.floor(#Client.ClientList / playersPerCreature))))
 
         for i = 1, amount do
             local vent = removeRandomVent(freeVents)

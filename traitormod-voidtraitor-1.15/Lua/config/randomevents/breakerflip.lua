@@ -23,7 +23,7 @@ event.Start = function ()
         Traitormod.PowerController.SetOn(table.remove(controllers, math.random(#controllers)), false)
     end
 
-    Traitormod.SelectedGamemode:SendCoalitionAnnouncement(Traitormod.GetText("BreakerFlip"), "breakerFlip")
+    Traitormod.SelectedGamemode:SendCoalitionAnnouncement(Traitormod.GetText("BreakerFlip"), "green")
     event.End()
 end
 

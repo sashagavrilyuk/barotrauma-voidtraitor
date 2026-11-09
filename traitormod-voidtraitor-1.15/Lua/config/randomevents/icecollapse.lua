@@ -1,8 +1,10 @@
+local Tremor = dofile(Traitormod.Path .. "/Lua/config/randomevents/utility/tremor.lua")
+
 local event = {}
 
--- The ice vault over the station shifts: the Coalition warns the station, then a stretch of the roof gives way. A few
+-- The rock vault over the station shifts: the Coalition warns the station, then a stretch of the roof gives way. A few
 -- roof sections break open and let the water in, people under them are knocked down and hurt, and the whole station
--- hears and feels it through the seismic tremor effect of the clients (Void traitor pack Lua/client/tremor.lua).
+-- shakes with the tremor.
 event.Name = "IceCollapse"
 event.MinRoundTime = 10
 event.MinIntensity = 0
@@ -11,13 +13,12 @@ event.MaxIntensity = 1
 event.ChancePerMinute = 0
 event.OnlyOncePerRound = false
 
-local NET_TREMOR = "VoidTraitor_SeismicTremor"
 local minWarningSeconds, maxWarningSeconds = 20, 40
 local roofDepth = 300 -- the roof is searched this far down from the top of the station
 local radius = 600
-local minSections, maxSections = 2, 4
+local minSections, maxSections = 4, 7
 -- share of the wall's health: a section leaks from 0.1 on and has a large hole that floods a room in seconds from 0.7 on
-local minDamage, maxDamage = 0.3, 0.6
+local minDamage, maxDamage = 0.7, 1
 local stunSeconds = 3
 local minInjury, maxInjury = 10, 25
 
@@ -80,7 +81,7 @@ event.Think = function ()
         end
     end
 
-    Networking.Send(Networking.Start(NET_TREMOR))
+    Tremor()
     event.End()
 end
 

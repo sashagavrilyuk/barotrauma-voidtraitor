@@ -30,7 +30,6 @@ local SOUND_FILES = {
     evacDeparted = "green_announce.ogg",
     attack = "aliens.ogg",
     commsBlackout = "comms_blackout.ogg",
-    breakerFlip = "apc.ogg",
     powerOff = "power_off.ogg",
     powerOn = "power_on.ogg",
     intercept = "intercept.ogg",

@@ -114,9 +114,6 @@ Station event announcements (unmodified Corvax SS14 assets)
 From Corvax: space-syndicate/space-station-14 @ 92c04d4f117146ba5251396d07b4dc7458faea1e
 License: CC-BY-SA-3.0 (https://creativecommons.org/licenses/by-sa/3.0/)
 
-apc.ogg — Resources/Audio/Corvax/Announcements/apc.ogg (Corvax BreakerFlip announcement)
-Taken from TauCeti at https://github.com/TauCetiStation/TauCetiClassic/commit/92d2767dbb39f28540f78d5055e7be1eb7acee98
-(Resources/Audio/Corvax/Announcements/licenses.txt)
 power_off.ogg, power_on.ogg, attention.ogg — Resources/Audio/Announcements/ (Russian voice-over)
 Author: discord:Basia (437113799137427460)
 Original: https://github.com/TauCetiStation/TauCetiClassic/pull/10207

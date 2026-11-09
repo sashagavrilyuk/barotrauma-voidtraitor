@@ -9,6 +9,8 @@ event.MaxIntensity = 0.5
 event.ChancePerMinute = 0.01
 event.OnlyOncePerRound = true
 
+local playersPerBot, maxBots = 10, 3
+
 event.CanStart = function ()
     return Submarine.MainSub ~= nil
 end
@@ -18,13 +20,16 @@ event.Start = function ()
     for _, hull in pairs(Submarine.MainSub.GetHulls(false)) do
         if not hull.IsWetRoom then table.insert(hulls, hull) end
     end
-    local hull = hulls[math.random(#hulls)]
 
-    Entity.Spawner.AddCharacterToSpawnQueue("defensebot", hull.WorldPosition, function (bot)
-        -- the game turns its bot hostile the same way (NPCChangeTeamAction teamid="Team2")
-        bot.TeamID = CharacterTeamType.Team2
-        Traitormod.GhostRoles.Create("defensebot.malfunctioning", bot)
-    end)
+    local amount = math.max(1, math.min(maxBots, math.floor(#Client.ClientList / playersPerBot)))
+    for _ = 1, math.min(#hulls, amount) do
+        local hull = table.remove(hulls, math.random(#hulls))
+        Entity.Spawner.AddCharacterToSpawnQueue("defensebot", hull.WorldPosition, function (bot)
+            -- the game turns its bot hostile the same way (NPCChangeTeamAction teamid="Team2")
+            bot.TeamID = CharacterTeamType.Team2
+            Traitormod.GhostRoles.Create("defensebot.malfunctioning", bot)
+        end)
+    end
 
     -- the station is not warned, like the hidden threats of SS14
     local mode = Traitormod.SelectedGamemode
