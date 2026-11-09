@@ -4,7 +4,8 @@ local bodyTypes = LuaUserData.CreateEnumTable("FarseerPhysics.BodyType")
 
 -- The boats of the events from outside (saboteur, operatives, visitors) belong to the station map like the evacuation
 -- ship: they load with the station on every client, wait parked above the end of the level with their items switched
--- off, and come out at the far end of the level when their event starts.
+-- off, and come out at the far end of the level when their event starts. The map may hold several boats with the same
+-- helm tag, so that their event can come again.
 
 local function park(sub, helm, spot)
     local active = {}
@@ -27,22 +28,23 @@ function boats.Start(mode)
     local spot = 0
     for item in Item.ItemList do
         for name, tag in pairs(mode.EventBoats) do
-            if boats.Parked[name] == nil and item.Submarine ~= nil and item.HasTag(tag) then
+            if item.Submarine ~= nil and item.HasTag(tag) then
                 spot = spot + 1
-                boats.Parked[name] = park(item.Submarine, item, spot)
+                boats.Parked[name] = boats.Parked[name] or {}
+                table.insert(boats.Parked[name], park(item.Submarine, item, spot))
             end
         end
     end
 end
 
 function boats.IsParked(name)
-    return boats.Parked ~= nil and boats.Parked[name] ~= nil
+    return boats.Parked ~= nil and boats.Parked[name] ~= nil and #boats.Parked[name] > 0
 end
 
--- brings the boat out at the far end of the level with its items on and charged, as the evacuation ship comes
+-- brings one of the boats out at the far end of the level with its items on and charged, as the evacuation ship comes
 function boats.Launch(name)
-    local boat = boats.Parked[name]
-    boats.Parked[name] = nil
+    local parked = boats.Parked[name]
+    local boat = table.remove(parked, math.random(#parked))
     for item, wasActive in pairs(boat.Active) do
         if not item.Removed then
             local battery = item.GetComponentString("PowerContainer")

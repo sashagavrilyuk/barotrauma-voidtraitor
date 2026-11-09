@@ -9,7 +9,7 @@ event.MinIntensity = 0
 event.MaxIntensity = 1
 -- only the Station scheduler and admins start it
 event.ChancePerMinute = 0
-event.OnlyOncePerRound = true
+event.OnlyOncePerRound = false
 
 local function hasWaitingPlayers()
     for _, client in pairs(Client.ClientList) do

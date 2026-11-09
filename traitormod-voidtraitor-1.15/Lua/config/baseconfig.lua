@@ -461,7 +461,7 @@ config.GamemodeConfig = {
             PumpFlowMultiplier = 1,
         },
         -- boats of the station map for the events from outside, by the tag of their helm; they wait parked above the level
-        -- and come out at its far end when their event starts
+        -- and come out at its far end when their event starts, each boat once, so more boats with a tag let it come again
         EventBoats = {
             Saboteur = "vt_saboteur_helm",
             LoneOperative = "vt_loneop_helm",
@@ -752,9 +752,9 @@ config.RandomEventConfig = {
                 IceCollapse = { Weight = 5, EarliestMinute = 10 }, -- no SS14 counterpart
                 IceSpear = { Weight = 3.5, EarliestMinute = 30, MinPlayers = 25 }, -- immovable rod
                 VentClog = { Weight = 5, EarliestMinute = 15, MinPlayers = 15 }, -- vent clog
-                Visitors = { Weight = 5, EarliestMinute = 15, MaxPerRound = 1 }, -- unknown shuttle
-                SaboteurBoat = { Weight = 6, EarliestMinute = 30, MinPlayers = 30, MaxPerRound = 1 }, -- space ninja
-                LoneOperative = { Weight = 5.5, EarliestMinute = 35, MinPlayers = 20, MaxPerRound = 1 }, -- lone operative
+                Visitors = { Weight = 5, EarliestMinute = 15 }, -- unknown shuttle
+                SaboteurBoat = { Weight = 6, EarliestMinute = 30, MinPlayers = 30, RepeatAfterMinutes = 20 }, -- space ninja
+                LoneOperative = { Weight = 5.5, EarliestMinute = 35, MinPlayers = 20 }, -- lone operative
                 LifeSupportFailure = { Weight = 8 }, -- gas leak
                 ShortCircuit = { Weight = 5, MinPlayers = 15 }, -- no SS14 counterpart
                 BreakerFlip = { Weight = 7, MinPlayers = 15 }, -- breaker flip
