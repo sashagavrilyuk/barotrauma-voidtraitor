@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<contentpackage name="the void traitor pack-1.15" modversion="1.1.1.4" corepackage="False" steamworkshopid="3466169195" gameversion="1.15.28.0" AccentColor="{R:255 G:255 B:255 A:255}">
+<contentpackage name="the void traitor pack-1.15" modversion="1.1.1.5" corepackage="False" steamworkshopid="3466169195" gameversion="1.15.28.0" AccentColor="{R:255 G:255 B:255 A:255}">
   <Afflictions file="%ModDir%/NT Surgery Plus/Afflictions/Afflictions.xml" />
   <Item file="%ModDir%/NT Surgery Plus/Items/BodyParts/Organs.xml" />
   <Item file="%ModDir%/NT Surgery Plus/Items/Jobgear/Surgeon/surgeon_gear.xml" />
@@ -438,9 +438,9 @@
   <Text file="%ModDir%/the void traitor pack/PowerControllerText.xml" />
   <RandomEvents file="%ModDir%/Sounds/Station/Alerts.xml" />
   <RandomEvents file="%ModDir%/Sounds/Station/Nuclear/NuclearEvents.xml" />
-  <Submarine file="%ModDir%/void traitor pack submarine/Station/VoidTraitor Station Test.sub" />
   <Submarine file="%ModDir%/void traitor pack submarine/Station/Boat/VoidTraitor Visitor.sub" />
   <Submarine file="%ModDir%/void traitor pack submarine/Station/Boat/VoidTraitor Saboter.sub" />
   <Submarine file="%ModDir%/void traitor pack submarine/Station/Operatives/VoidTraitor Operative.sub" />
   <Submarine file="%ModDir%/void traitor pack submarine/Station/Boat/VoidTraitor Lon operative.sub" />
+  <Submarine file="%ModDir%/void traitor pack submarine/Station/VoidTraitor Station Test.sub" />
 </contentpackage>
