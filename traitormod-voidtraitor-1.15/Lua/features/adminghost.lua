@@ -16,11 +16,13 @@ local REACH_CHARACTER_ARGS = { "Barotrauma.Character", "System.Single", "System.
 local UPDATE_ANIM_ARGS = { "System.Single" }
 local UPDATE_RAGDOLL_ARGS = { "System.Single", "Barotrauma.Camera" }
 local VOIP_ARGS = { "Barotrauma.Networking.Client", "Barotrauma.Networking.Client", "out System.Single", "out System.Boolean" }
+local CHAT_ARGS = { "Barotrauma.Networking.ChatMessage" }
 local BODY_KINEMATIC, BODY_DYNAMIC = 1, 2 -- FarseerPhysics.BodyType
 local WALK_SPEED, RUN_SPEED = 5, 15 -- sim units per second (100 display units each)
 -- how fast a carried character catches up with the ghost
 local CATCH_UP = 10
 local PROBE_TIMEOUT_MS = 2000
+local MAX_SKILL = 100 -- Skill.DefaultMaximumSkill
 
 LuaUserData.RegisterType("Barotrauma.ContentXElement")
 local contentElement = LuaUserData.CreateStatic("Barotrauma.ContentXElement")
@@ -190,18 +192,36 @@ local function refuseStun(instance, ptable)
     if ghosts[instance] ~= nil and ptable["newStun"] > 0 then ptable.PreventExecution = true end
 end
 
--- Lets ghosts hear dead and spectating players. The sender has no living character,
--- so the ghost's client plays the voice at full volume.
-local function hearSpectators(instance, ptable)
-    local recipient = ptable["recipient"]
-    if not isGhostClient(recipient) then return end
-    local sender = ptable["sender"]
-    if sender.Muted or (sender.Character ~= nil and not sender.Character.IsDead) then return end
+-- A ghost talks only with the dead: it hears dead and spectating players, and only they and other ghosts hear it.
+-- The original is skipped, so the out parameters have to be set here.
+local function deadVoice(instance, ptable)
+    local sender, recipient = ptable["sender"], ptable["recipient"]
+    if sender.Muted then return end
+    if isGhostClient(sender) then
+        ptable.PreventExecution = true
+        ptable["distanceFactor"] = Single(0)
+        -- clients fade out a living speaker's normal voice after a few metres, but radio carries across the level
+        ptable["isRadio"] = true
+        return isGhostClient(recipient) or recipient.Character == nil or recipient.Character.IsDead
+    end
+    if not isGhostClient(recipient) or (sender.Character ~= nil and not sender.Character.IsDead) then return end
     ptable.PreventExecution = true
-    -- the original is skipped, so the out parameters have to be set here
+    -- the sender has no living character, so the ghost's client plays the voice at full volume
     ptable["distanceFactor"] = Single(0)
     ptable["isRadio"] = false
     return true
+end
+
+-- Dead chat only reaches clients without a living character; send ghosts a copy.
+-- The server records each chat message it sends here once.
+local function copyDeadChat(instance, ptable)
+    local message = ptable["message"]
+    if message.Type ~= ChatMessageType.Dead then return end
+    for _, state in pairs(ghosts) do
+        if state.Client ~= message.SenderClient then
+            Game.SendDirectChatMessage(ChatMessage.Create(message.SenderName, message.Text, ChatMessageType.Dead, nil, message.SenderClient), state.Client)
+        end
+    end
 end
 
 -- Normally only incapacitated or cuffed characters, pets and bots of the same team can be grabbed (G)
@@ -249,7 +269,8 @@ local function ensurePatches()
     Hook.Patch(PATCH_ID, "Barotrauma.Character", "CanInteractWith", REACH_ARGS, reach, Hook.HookMethodType.Before)
     Hook.Patch(PATCH_ID, "Barotrauma.Character", "UpdateAnimAll", UPDATE_ANIM_ARGS, setVelocities, Hook.HookMethodType.After)
     Hook.Patch(PATCH_ID, "Barotrauma.Ragdoll", "UpdateAll", UPDATE_RAGDOLL_ARGS, clearCollisions, Hook.HookMethodType.After)
-    Hook.Patch(PATCH_ID, "Barotrauma.Networking.VoipServer", "CanReceive", VOIP_ARGS, hearSpectators, Hook.HookMethodType.Before)
+    Hook.Patch(PATCH_ID, "Barotrauma.Networking.VoipServer", "CanReceive", VOIP_ARGS, deadVoice, Hook.HookMethodType.Before)
+    Hook.Patch(PATCH_ID, "Barotrauma.Networking.GameServer", "AddChatMessage", CHAT_ARGS, copyDeadChat, Hook.HookMethodType.After)
     Hook.Patch(PATCH_ID, "Barotrauma.Character", "CanBeDraggedBy", canBeDragged, Hook.HookMethodType.Before)
     Hook.Patch(PATCH_ID, "Barotrauma.Character", "IsInventoryAccessibleTo", inventoryAccessible, Hook.HookMethodType.Before)
     Hook.Patch(PATCH_ID, "Barotrauma.Character", "DoInteractionUpdate", rememberSelection, Hook.HookMethodType.Before)
@@ -297,6 +318,7 @@ local function enable(client)
         info = CharacterInfo("human", client.Name)
     end
     info.Name = string.format(Traitormod.Language.AdminGhostName, info.Name)
+    for skill in info.Job.GetSkills() do info.SetSkillLevel(skill.Identifier, MAX_SKILL) end
     local ghost = Character.Create(info, position, info.Name, 0, true, true)
     -- friendly to every team: bots ignore it and clients leave it out of the crew list
     -- (team None also made every bot's AI several times slower)
@@ -369,31 +391,24 @@ Networking.Receive(NET_READY, function(message, client)
     if Game.RoundStarted then enable(client) end
 end)
 
--- Dead chat from a ghost: the server would drop it because the ghost is alive,
--- so send it to everyone who can read dead chat here.
-Hook.Add("chatMessage", "Traitormod.AdminGhost.DeadChat", function(message, client)
-    if client == nil or not isGhostClient(client) then return end
+-- A ghost speaks only to the dead, so its local and radio chat go to dead chat too. The server would drop
+-- dead chat from it because the ghost is alive, so send it here to the sender and everyone without a living
+-- character; other ghosts get it from copyDeadChat.
+Hook.Add("chatMessage", "Traitormod.AdminGhost.DeadChat", function(message, client, type)
+    if client == nil or type ~= ChatMessageType.Default or not isGhostClient(client) then return end
+    -- commands are run by their own handler; their text must not reach anyone
+    if string.sub(message, 1, 1) == "!" then return true end
     local command, text = ChatMessage.GetChatMessageCommand(message)
     command = string.lower(command)
-    if command ~= "d" and command ~= "dead" then return end
+    if command ~= "" and command ~= "r" and command ~= "radio" and command ~= "d" and command ~= "dead" then return end
 
     for _, recipient in pairs(Client.ClientList) do
-        if recipient.Character == nil or recipient.Character.IsDead or isGhostClient(recipient) then
+        if recipient == client or recipient.Character == nil or recipient.Character.IsDead then
             Game.SendDirectChatMessage(ChatMessage.Create(client.Character.Name, text, ChatMessageType.Dead, nil, client), recipient)
         end
     end
     Game.Server.AddChatMessage(text, ChatMessageType.Dead, client.Character.Name, client)
     return true
-end)
-
--- Dead chat only reaches clients without a living character; send ghosts a copy.
-Hook.Add("modifyChatMessage", "Traitormod.AdminGhost.DeadChatCopy", function(message)
-    if message.Type ~= ChatMessageType.Dead then return end
-    for _, state in pairs(ghosts) do
-        if state.Client ~= message.SenderClient then
-            Game.SendDirectChatMessage(ChatMessage.Create(message.SenderName, message.Text, ChatMessageType.Dead, nil, message.SenderClient), state.Client)
-        end
-    end
 end)
 
 Hook.Add("roundEnd", "Traitormod.AdminGhost.RoundEnd", function()
