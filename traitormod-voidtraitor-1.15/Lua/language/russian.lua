@@ -22,6 +22,7 @@ assert(loadfile(path .. "cargo.lua"))(language)
 assert(loadfile(path .. "cloning.lua"))(language)
 assert(loadfile(path .. "nuclear.lua"))(language)
 assert(loadfile(path .. "communications.lua"))(language)
+assert(loadfile(path .. "radio.lua"))(language)
 
 -- Игровые режимы, итог раунда и голосования
 assert(loadfile(path .. "gamemodes.lua"))(language)

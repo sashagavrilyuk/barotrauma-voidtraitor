@@ -6,6 +6,7 @@ dofile(Traitormod.Path .. "/Lua/gamemodes/station/cloning.lua")
 dofile(Traitormod.Path .. "/Lua/gamemodes/station/nuclear.lua")
 dofile(Traitormod.Path .. "/Lua/gamemodes/station/communications.lua")
 dofile(Traitormod.Path .. "/Lua/gamemodes/station/powercontroller.lua")
+dofile(Traitormod.Path .. "/Lua/gamemodes/station/radio.lua")
 local evacuation = dofile(Traitormod.Path .. "/Lua/gamemodes/station/evacuation.lua")
 local boats = dofile(Traitormod.Path .. "/Lua/gamemodes/station/boats.lua")
 local weightedRandom = dofile(Traitormod.Path .. "/Lua/weightedrandom.lua")
@@ -120,6 +121,7 @@ function gm:Start()
     Traitormod.Cargo.Start()
     Traitormod.Cloning.Start()
     Traitormod.Nuclear.Start()
+    Traitormod.StationRadio.Start()
     for character in Character.CharacterList do
         if character.IsHuman and not character.IsDead and character.Submarine == Submarine.MainSub then
             self:InitializeIdCard(character)
@@ -366,6 +368,7 @@ function gm:InitializeIdCard(character)
         passenger = self.Passengers[account] == true
     end
     Traitormod.IdConsole.InitializeCard(character, passenger)
+    Traitormod.StationRadio.InitializeHeadset(character, passenger)
 end
 
 function gm:CanShuttleRespawn(client)

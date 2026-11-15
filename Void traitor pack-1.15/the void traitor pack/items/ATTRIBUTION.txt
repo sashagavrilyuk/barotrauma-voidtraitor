@@ -1,0 +1,12 @@
+VOIDTRAITOR — ITEM TEXTURE ATTRIBUTION
+
+radiokeys.png — department radio keys
+======================================
+Space Station 14, Resources/Textures/Objects/Devices/encryption_keys.rsi
+Source: https://github.com/space-wizards/space-station-14/tree/081e2582dc7ca0bb5a5b0d8ea723425e498ffc16/Resources/Textures/Objects/Devices/encryption_keys.rsi
+Created by DSC@300074782328750080 for Space Station 14, crypt states modified by Flareguy for Space Station 14.
+Changes: each key is a crypt state with its department label drawn on top (crypt_silver + com_label,
+crypt_gray + eng_label, med_label, sec_label, cargo_label, sci_label), scaled 2x without smoothing.
+
+License: Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)
+https://creativecommons.org/licenses/by-sa/3.0/

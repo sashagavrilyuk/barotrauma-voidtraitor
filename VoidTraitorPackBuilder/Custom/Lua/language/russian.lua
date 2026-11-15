@@ -288,4 +288,13 @@ language.Voting = {
     StationTitle = "Выбор станции",
 }
 
+-- Список режимов чата: каналы рации и чат мёртвых админ-призрака
+language.Radio = {
+    Common = "Общий",
+    Dead = "Мёртвые",
+    Channel = "Канал %d",
+    VoiceTooltip = "Слышать голос в канале «%s»",
+    TextTooltip = "Видеть сообщения канала «%s»",
+}
+
 return language

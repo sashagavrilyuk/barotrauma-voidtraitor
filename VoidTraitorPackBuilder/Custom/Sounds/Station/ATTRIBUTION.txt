@@ -109,6 +109,14 @@ id_swipe.ogg — Corvax SS14, Resources/Audio/Machines/id_swipe.ogg
 Source: https://github.com/space-syndicate/space-station-14/blob/master/Resources/Prototypes/Entities/Structures/Machines/Computers/computers.yml
 Per-file licensing for these two sound assets has not been independently confirmed; verify before distribution.
 
+Radio key sounds (unmodified Space Station 14 assets)
+=====================================================
+Radio/pistol_magin.ogg, Radio/pistol_magout.ogg — Space Station 14, Resources/Audio/Items/, the sounds SS14 plays
+when an encryption key is put into or taken out of a headset (Content.Shared/Radio/Components/EncryptionKeyHolderComponent.cs).
+Source: https://github.com/space-wizards/space-station-14/tree/ae41d03ec6158e72450c9c045875a11e14fabd74/Resources/Audio/Items
+Same-named CEV Eris originals: https://github.com/space-wizards/space-station-14/blob/master/Resources/Audio/Weapons/Guns/sources.json
+Per-file licensing for these two sound assets has not been independently confirmed; verify before distribution.
+
 Station event announcements (unmodified Corvax SS14 assets)
 ============================================================
 From Corvax: space-syndicate/space-station-14 @ 92c04d4f117146ba5251396d07b4dc7458faea1e

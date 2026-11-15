@@ -9,6 +9,7 @@ local NET_STATE = "VoidTraitor_AdminGhostState"
 local NET_LIST = "VoidTraitor_AdminGhostList"
 local NET_LIST_REQUEST = "VoidTraitor_AdminGhostListRequest"
 local SHOW_ID = "VoidTraitor.AdminGhost.Show"
+local RADIO_STATE_KEY = "VoidTraitorRadioState"
 local PATCH_ID = "VoidTraitor.AdminGhost"
 local REACH_ARGS = { "Barotrauma.Item", "out System.Single", "System.Boolean", "System.Boolean" }
 local REACH_CHARACTER_ARGS = { "Barotrauma.Character", "System.Single", "System.Boolean", "System.Boolean" }
@@ -214,6 +215,7 @@ local function showGhosts()
 end
 
 local function stop()
+    if ghost ~= nil then rawget(_G, RADIO_STATE_KEY).LeaveGhost() end
     release(carried)
     carried = nil
     ghostId = nil
@@ -235,6 +237,7 @@ local function watchControl()
     cameraZoom = gameMain.GameScreen.Cam.Zoom
     cameraTargetZoom = cameraZoom
     ensurePatches()
+    rawget(_G, RADIO_STATE_KEY).EnterGhost()
 end
 
 Networking.Receive(NET_PROBE, function()

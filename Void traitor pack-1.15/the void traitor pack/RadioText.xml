@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="Russian" translatedname="Русский">
+  <entityname.vt_radiokey_command>Ключ рации: Командование</entityname.vt_radiokey_command>
+  <entitydescription.vt_radiokey_command>Вставляется в гарнитуру и открывает канал отдела «Командование». Вставить и вынуть ключ можно только с отвёрткой в руке.</entitydescription.vt_radiokey_command>
+  <entityname.vt_radiokey_engineering>Ключ рации: Инженерия</entityname.vt_radiokey_engineering>
+  <entitydescription.vt_radiokey_engineering>Вставляется в гарнитуру и открывает канал отдела «Инженерия». Вставить и вынуть ключ можно только с отвёрткой в руке.</entitydescription.vt_radiokey_engineering>
+  <entityname.vt_radiokey_medical>Ключ рации: Медицина</entityname.vt_radiokey_medical>
+  <entitydescription.vt_radiokey_medical>Вставляется в гарнитуру и открывает канал отдела «Медицина». Вставить и вынуть ключ можно только с отвёрткой в руке.</entitydescription.vt_radiokey_medical>
+  <entityname.vt_radiokey_security>Ключ рации: Безопасность</entityname.vt_radiokey_security>
+  <entitydescription.vt_radiokey_security>Вставляется в гарнитуру и открывает канал отдела «Безопасность». Вставить и вынуть ключ можно только с отвёрткой в руке.</entitydescription.vt_radiokey_security>
+  <entityname.vt_radiokey_cargo>Ключ рации: Карго</entityname.vt_radiokey_cargo>
+  <entitydescription.vt_radiokey_cargo>Вставляется в гарнитуру и открывает канал отдела «Карго». Вставить и вынуть ключ можно только с отвёрткой в руке.</entitydescription.vt_radiokey_cargo>
+  <entityname.vt_radiokey_science>Ключ рации: РНД</entityname.vt_radiokey_science>
+  <entitydescription.vt_radiokey_science>Вставляется в гарнитуру и открывает канал отдела «РНД». Вставить и вынуть ключ можно только с отвёрткой в руке.</entitydescription.vt_radiokey_science>
+</infotexts>

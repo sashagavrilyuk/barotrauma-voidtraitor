@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <!-- Department radio keys for the headset's key slot (traitormod Lua/gamemodes/station/radio.lua): a headset talks and
+       listens on a department's channel while it holds the key. Texture from Space Station 14, see ATTRIBUTION.txt. -->
+  <Item name="" identifier="vt_radiokey_command" category="Equipment" tags="smallitem,vt_radiokey" scale="0.5" impactsoundtag="impact_metal_light">
+    <InventoryIcon texture="%ModDir%/the void traitor pack/items/radiokeys.png" sourcerect="0,0,64,64" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/the void traitor pack/items/radiokeys.png" sourcerect="0,0,64,64" depth="0.6" origin="0.5,0.5" />
+    <Body width="40" height="48" density="15" />
+    <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
+  </Item>
+  <Item identifier="vt_radiokey_engineering" variantof="vt_radiokey_command">
+    <InventoryIcon sourcerect="64,0,64,64" />
+    <Sprite sourcerect="64,0,64,64" />
+  </Item>
+  <Item identifier="vt_radiokey_medical" variantof="vt_radiokey_command">
+    <InventoryIcon sourcerect="128,0,64,64" />
+    <Sprite sourcerect="128,0,64,64" />
+  </Item>
+  <Item identifier="vt_radiokey_security" variantof="vt_radiokey_command">
+    <InventoryIcon sourcerect="192,0,64,64" />
+    <Sprite sourcerect="192,0,64,64" />
+  </Item>
+  <Item identifier="vt_radiokey_cargo" variantof="vt_radiokey_command">
+    <InventoryIcon sourcerect="256,0,64,64" />
+    <Sprite sourcerect="256,0,64,64" />
+  </Item>
+  <Item identifier="vt_radiokey_science" variantof="vt_radiokey_command">
+    <InventoryIcon sourcerect="320,0,64,64" />
+    <Sprite sourcerect="320,0,64,64" />
+  </Item>
+</Items>

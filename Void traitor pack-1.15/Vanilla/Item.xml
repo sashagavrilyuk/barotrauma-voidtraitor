@@ -48,5 +48,52 @@
 			</MeleeWeapon>
 			<Projectile characterusable="false" launchimpulse="20.0" sticktocharacters="true" launchrotation="-90" inheritstatuseffectsfrom="MeleeWeapon" />
 		</Item>
+		<!-- The vanilla headset with a slot for department radio keys (Station radio, traitormod Lua/gamemodes/station/radio.lua).
+		     Keys go in and come out with a screwdriver in hand, like the vanilla containers that need one. -->
+		<Item name="" identifier="headset" scale="0.5" category="Equipment" tags="smallitem,mobileradio" description="" cargocontaineridentifier="metalcrate" impactsoundtag="impact_metal_light">
+			<PreferredContainer primary="crewcab" secondary="divingcab,outpostdivingcab"/>
+			<PreferredContainer secondary="outpoststoragecab"/>
+			<Price baseprice="40">
+				<Price storeidentifier="merchantoutpost" minavailable="3" />
+				<Price storeidentifier="merchantcity" multiplier="0.9" minavailable="10" />
+				<Price storeidentifier="merchantresearch" minavailable="4" />
+				<Price storeidentifier="merchantmilitary" minavailable="6" />
+				<Price storeidentifier="merchantmine" minavailable="6" />
+			</Price>
+			<InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="256,0,64,64" origin="0.5,0.5" />
+			<Sprite name="Headset" texture="Content/Items/Jobgear/headgears.png" depth="0.6" sourcerect="28,321,49,62" origin="0.5,0.5" />
+			<Body radius="20" height="20" density="15" />
+			<Deconstruct time="5">
+			</Deconstruct>
+			<Fabricate suitablefabricators="fabricator" requiredtime="10">
+				<RequiredItem identifier="silicon" />
+				<RequiredItem identifier="copper" />
+			</Fabricate>
+			<WifiComponent range="35000.0" LinkToChat="true" MinChatMessageInterval="0.0">
+				<StatusEffect type="OnActive" targettype="This">
+					<Conditional JamTimer="gt 0" targetitemcomponent="WifiComponent" />
+					<sound file="Content/Sounds/RadioStatic.ogg" range="500.0" frequencymultiplier="0.7" loop="true" volume="0.5" />
+				</StatusEffect>
+			</WifiComponent>
+			<Upgrade gameversion="0.18.0.0">
+				<WifiComponent>
+					<RequiredItems items="" />
+				</WifiComponent>
+			</Upgrade>
+			<ItemContainer capacity="6" hideitems="true">
+				<Containable items="vt_radiokey">
+					<StatusEffect type="OnInserted" target="This">
+						<Sound file="%ModDir%/Sounds/Station/Radio/pistol_magin.ogg" range="400" />
+					</StatusEffect>
+					<StatusEffect type="OnRemoved" target="This">
+						<Sound file="%ModDir%/Sounds/Station/Radio/pistol_magout.ogg" range="400" />
+					</StatusEffect>
+				</Containable>
+				<RequiredItem items="screwdriver" type="Equipped" />
+			</ItemContainer>
+			<Wearable limbtype="Head" slots="Any,Headset" msg="ItemMsgPickUpSelect" displaycontainedstatus="true">
+				<sprite name="Headset Wearable" texture="Content/Items/Jobgear/headgears.png" limb="Head" depth="0.1" hidelimb="false" inheritlimbdepth="true" inheritscale="true" ignorelimbscale="true" scale="0.7" hideotherwearables="false" sourcerect="26,317,51,64" origin="0.5,0.6" />
+			</Wearable>
+		</Item>
 	</Override>
 </Items>

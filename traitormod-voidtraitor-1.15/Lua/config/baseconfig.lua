@@ -59,6 +59,28 @@ config.IdConsole = {
         { Id = "cargo", Name = "IdConsoleCargoJob", Tags = { "vt_access_maintenance", "vt_access_cargo" } },
     },
 }
+-- Station radio. Every headset talks and listens on the common channel; a department channel needs the
+-- department's key inside the headset (the headset holds up to 6 keys, Void traitor pack: Vanilla/Item.xml).
+config.Radio = {
+    CommonChannel = 0,
+    Departments = {
+        { Id = "command", Name = "RadioCommand", Channel = 1353, Key = "vt_radiokey_command" },
+        { Id = "engineering", Name = "RadioEngineering", Channel = 1357, Key = "vt_radiokey_engineering" },
+        { Id = "medical", Name = "RadioMedical", Channel = 1355, Key = "vt_radiokey_medical" },
+        { Id = "security", Name = "RadioSecurity", Channel = 1359, Key = "vt_radiokey_security" },
+        { Id = "cargo", Name = "RadioCargo", Channel = 1347, Key = "vt_radiokey_cargo" },
+        { Id = "science", Name = "RadioScience", Channel = 1351, Key = "vt_radiokey_science" },
+    },
+    -- department keys a job's headset gets at spawn
+    JobKeys = {
+        captain = { "command", "engineering", "medical", "security", "cargo", "science" },
+        engineer = { "engineering" },
+        mechanic = { "engineering" },
+        medicaldoctor = { "medical" },
+        surgeon = { "medical" },
+        securityofficer = { "security" },
+    },
+}
 config.Cargo = {
     Budget = 10000,
     Categories = { "medical", "materials", "maintenance", "wiring", "biomass" },

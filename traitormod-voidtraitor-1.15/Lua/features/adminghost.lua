@@ -10,6 +10,7 @@ local NET_READY = "VoidTraitor_AdminGhostReady"
 local NET_STATE = "VoidTraitor_AdminGhostState"
 local NET_LIST = "VoidTraitor_AdminGhostList"
 local NET_LIST_REQUEST = "VoidTraitor_AdminGhostListRequest"
+local NET_DEAD_CHAT = "VoidTraitor_AdminGhostDeadChat"
 local PATCH_ID = "Traitormod.AdminGhost"
 local REACH_ARGS = { "Barotrauma.Item", "out System.Single", "System.Boolean", "System.Boolean" }
 local REACH_CHARACTER_ARGS = { "Barotrauma.Character", "System.Single", "System.Boolean", "System.Boolean" }
@@ -37,6 +38,8 @@ local listeners = {}
 local inspecting = {}
 -- ghost -> the character it carries
 local carried = {}
+-- ghost -> true while it talks to the dead (picked in the client's chat mode list)
+local talksToDead = {}
 local patched = false
 
 -- levitatingCollider makes the ragdoll stand a character up on the floor and turns it into a ragdoll in the air;
@@ -55,6 +58,10 @@ end
 
 local function isGhostClient(client)
     return client.Character ~= nil and ghosts[client.Character] ~= nil
+end
+
+function adminGhost.TalksToDead(client)
+    return client.Character ~= nil and talksToDead[client.Character] == true
 end
 
 -- Moves a character by its collider, ignoring gravity and floors.
@@ -192,12 +199,12 @@ local function refuseStun(instance, ptable)
     if ghosts[instance] ~= nil and ptable["newStun"] > 0 then ptable.PreventExecution = true end
 end
 
--- A ghost talks only with the dead: it hears dead and spectating players, and only they and other ghosts hear it.
+-- A ghost hears dead and spectating players; while it talks to the dead, only they and other ghosts hear it.
 -- The original is skipped, so the out parameters have to be set here.
 local function deadVoice(instance, ptable)
     local sender, recipient = ptable["sender"], ptable["recipient"]
     if sender.Muted then return end
-    if isGhostClient(sender) then
+    if adminGhost.TalksToDead(sender) then
         ptable.PreventExecution = true
         ptable["distanceFactor"] = Single(0)
         -- clients fade out a living speaker's normal voice after a few metres, but radio carries across the level
@@ -305,6 +312,20 @@ local function sendState(client, ghost, active)
     Networking.Send(message, client.Connection)
 end
 
+-- A headset with every department key, so the ghost uses the radio like the crew does: it talks for the admin's
+-- team (the crew's when the admin has none yet) and hears every team.
+local function giveHeadset(client, ghost)
+    local team = client.TeamID == CharacterTeamType.None and CharacterTeamType.Team1 or client.TeamID
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.Prefabs["headset"], ghost.Inventory, nil, nil, function(headset)
+        local wifi = headset.GetComponentString("WifiComponent")
+        wifi.TeamID = team
+        wifi.AllowCrossTeamCommunication = true
+        for _, department in ipairs(Traitormod.Config.Radio.Departments) do
+            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.Prefabs[department.Key], headset.OwnInventory)
+        end
+    end, true, false, InvSlotType.Headset)
+end
+
 local function enable(client)
     local body = client.Character
     local position = body ~= nil and not body.IsDead and body.WorldPosition or client.SpectatePos
@@ -330,6 +351,8 @@ local function enable(client)
     for limb in ghost.AnimController.Limbs do limb.body.FarseerBody.IgnoreGravity = true end
 
     ghosts[ghost] = { Client = client, Body = body, Info = client.CharacterInfo }
+    talksToDead[ghost] = true
+    giveHeadset(client, ghost)
     client.SetClientCharacter(ghost)
     ensurePatches()
     sendState(client, ghost, true)
@@ -343,6 +366,7 @@ local function removeGhost(ghost, returnControl)
     inspecting[ghost] = nil
     if carried[ghost] ~= nil and not carried[ghost].Removed then release(carried[ghost]) end
     carried[ghost] = nil
+    talksToDead[ghost] = nil
 
     -- Character.Remove would drop the ghost's items into the world, so remove them too
     for item in ghost.Inventory.AllItems do
@@ -385,22 +409,27 @@ Networking.Receive(NET_LIST_REQUEST, function(message, client)
     sendList(client.Connection)
 end)
 
+Networking.Receive(NET_DEAD_CHAT, function(message, client)
+    if not isGhostClient(client) then return end
+    talksToDead[client.Character] = message.ReadBoolean()
+end)
+
 Networking.Receive(NET_READY, function(message, client)
     if not probing[client] then return end
     probing[client] = nil
     if Game.RoundStarted then enable(client) end
 end)
 
--- A ghost speaks only to the dead, so its local and radio chat go to dead chat too. The server would drop
--- dead chat from it because the ghost is alive, so send it here to the sender and everyone without a living
--- character; other ghosts get it from copyDeadChat.
+-- Dead chat from a ghost (the client's "dead" chat mode sends it with the dead chat prefix): the server would drop
+-- it because the ghost is alive, so send it here to the sender and everyone without a living character;
+-- other ghosts get it from copyDeadChat.
 Hook.Add("chatMessage", "Traitormod.AdminGhost.DeadChat", function(message, client, type)
     if client == nil or type ~= ChatMessageType.Default or not isGhostClient(client) then return end
     -- commands are run by their own handler; their text must not reach anyone
     if string.sub(message, 1, 1) == "!" then return true end
     local command, text = ChatMessage.GetChatMessageCommand(message)
     command = string.lower(command)
-    if command ~= "" and command ~= "r" and command ~= "radio" and command ~= "d" and command ~= "dead" then return end
+    if command ~= "d" and command ~= "dead" then return end
 
     for _, recipient in pairs(Client.ClientList) do
         if recipient == client or recipient.Character == nil or recipient.Character.IsDead then
