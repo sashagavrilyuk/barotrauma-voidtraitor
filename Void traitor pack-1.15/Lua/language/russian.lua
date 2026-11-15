@@ -289,6 +289,21 @@ language.Voting = {
     StationTitle = "Выбор станции",
 }
 
+-- Раунд и персонаж в правой колонке лобби
+language.Lobby = {
+    Round = "Раунд #%d",
+    Running = "идёт %s",
+    Waiting = "ожидание начала",
+    Mode = "Режим: %s",
+    Map = "Карта: %s",
+    Players = "Игроков: %d",
+    NoJob = "Профессия не выбрана",
+    Jobs = "Профессии",
+    Appearance = "Внешность",
+    ShowSettings = "Показать настройки",
+    HideSettings = "Скрыть настройки",
+}
+
 -- Оверлей админа над персонажами
 language.AdminOverlay = {
     NoPlayer = "без игрока",

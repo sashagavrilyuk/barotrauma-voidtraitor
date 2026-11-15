@@ -105,7 +105,7 @@ P.CreateVoteButton = function()
 
     P.SafeSetAsLastChild(root)
 
-    local button = GUI.Button(P.CreateRect(1, 1, root, GUI.Anchor.Center), P.VoteUiText.Button, GUI.Alignment.Center, "GUITabButton")
+    local button = GUI.Button(P.CreateRect(1, 1, root, GUI.Anchor.Center), P.VoteUiText.Button, GUI.Alignment.Center, "GUIButton")
     button.CanBeFocused = true
     button.ToolTip = P.VoteUiText.Tooltip
     P.SetButtonTextScale(button, 1.0)
@@ -133,10 +133,9 @@ end
 function P.EnsureVoteButton()
     if S.sharedState.Disabled then return end
 
-    if P.IsWelcomeMenuOpen() then
-        if S.currentMenuKind == "votestart" or S.currentMenuKind == "voteactive" then P.CloseMenu() end
-        P.DestroyVoteButton()
-        return
+    -- the button stays in the player card under the welcome window; only the vote's own popups make way
+    if P.IsWelcomeMenuOpen() and (S.currentMenuKind == "votestart" or S.currentMenuKind == "voteactive") then
+        P.CloseMenu()
     end
 
     if not P.IsLobbyScreenAvailable() then

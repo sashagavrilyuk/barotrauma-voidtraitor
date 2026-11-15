@@ -165,8 +165,11 @@ Hook.Add("think", "VoidTraitor.ClientMenu.UiState", function(deltaTime)
     if P.IsLobbyScreenAvailable() then
         P.EnsureVoteButton()
         P.RefreshActiveVoteUi()
+        P.RefreshRoundInfo()
     else
-        if S.currentMenuKind == "votestart" or S.currentMenuKind == "voteactive" then P.CloseMenu() end
+        if S.currentMenuKind == "votestart" or S.currentMenuKind == "voteactive" or S.currentMenuKind == "character" then
+            P.CloseMenu()
+        end
         P.DestroyVoteButton()
     end
 end)

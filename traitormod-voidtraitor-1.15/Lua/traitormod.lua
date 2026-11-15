@@ -95,6 +95,30 @@ end
 LuaUserData.RegisterType("Barotrauma.GameModePreset")
 LuaUserData.RegisterType("Barotrauma.Voting")
 
+-- The gamemode a round with this submarine config and the current lobby settings plays. A mission round is
+-- Secret only when rollTraitors() passes; the lobby asks which mode is coming without rolling.
+Traitormod.FindGamemode = function (subConfig, rollTraitors)
+    local gamemodes = Traitormod.Gamemodes
+    if subConfig.Gamemode and gamemodes[subConfig.Gamemode] then
+        return gamemodes[subConfig.Gamemode]
+    end
+
+    local modeIdentifier = Game.ServerSettings.GameModeIdentifier
+    if modeIdentifier == "pvp" then
+        local hideAndSeekV2 = gamemodes.HideAndSeekV2
+        local attackDefendV2 = gamemodes.AttackDefendV2
+        if hideAndSeekV2 ~= nil and hideAndSeekV2:CheckRequirements() then return hideAndSeekV2 end
+        if attackDefendV2 ~= nil and attackDefendV2:CheckRequirements() then return attackDefendV2 end
+        if attackDefendV2 == nil then
+            Traitormod.Error("AttackDefendV2 gamemode was not loaded. Falling back to PvP.")
+        end
+        return gamemodes.PvP
+    elseif modeIdentifier ~= "multiplayercampaign" and rollTraitors() and gamemodes.Secret ~= nil then
+        return gamemodes.Secret
+    end
+    return gamemodes.Gamemode
+end
+
 ---//TODO
 ---@param submarineInfo Barotrauma.SubmarineInfo
 ---@param chooseGamemode unknown
@@ -106,33 +130,15 @@ Traitormod.PreRoundStart = function (submarineInfo, chooseGamemode)
     local description = submarineInfo.Description.Value
     local subConfig = Traitormod.ParseSubmarineConfig(description)
 
-    if subConfig.Gamemode and Traitormod.Gamemodes[subConfig.Gamemode] then
-        Traitormod.SelectedGamemode = Traitormod.Gamemodes[subConfig.Gamemode]:new()
-        for key, value in pairs(subConfig) do
-            Traitormod.SelectedGamemode[key] = value
-        end
-    elseif Game.ServerSettings.GameModeIdentifier == "pvp" then
-        local hideAndSeekV2 = Traitormod.Gamemodes.HideAndSeekV2
-        local attackDefendV2 = Traitormod.Gamemodes.AttackDefendV2
-        if hideAndSeekV2 ~= nil and hideAndSeekV2:CheckRequirements() then
-            Traitormod.SelectedGamemode = hideAndSeekV2:new()
-        elseif attackDefendV2 ~= nil and attackDefendV2:CheckRequirements() then
-            Traitormod.SelectedGamemode = attackDefendV2:new()
-        else
-            if attackDefendV2 == nil then
-                Traitormod.Error("AttackDefendV2 gamemode was not loaded. Falling back to PvP.")
+    local gamemode = Traitormod.FindGamemode(subConfig, function()
+        return math.random() <= Game.ServerSettings.TraitorProbability
+    end)
+    if gamemode ~= nil then
+        Traitormod.SelectedGamemode = gamemode:new()
+        if gamemode == Traitormod.Gamemodes[subConfig.Gamemode] then
+            for key, value in pairs(subConfig) do
+                Traitormod.SelectedGamemode[key] = value
             end
-            Traitormod.SelectedGamemode = Traitormod.Gamemodes.PvP:new()
-        end
-    elseif Game.ServerSettings.GameModeIdentifier == "multiplayercampaign" then
-        if Traitormod.Gamemodes.Gamemode ~= nil then
-            Traitormod.SelectedGamemode = Traitormod.Gamemodes.Gamemode:new()
-        end
-    elseif math.random() <= Game.ServerSettings.TraitorProbability and Traitormod.Gamemodes.Secret ~= nil then
-        Traitormod.SelectedGamemode = Traitormod.Gamemodes.Secret:new()
-    else
-        if Traitormod.Gamemodes.Gamemode ~= nil then
-            Traitormod.SelectedGamemode = Traitormod.Gamemodes.Gamemode:new()
         end
     end
 
@@ -261,6 +267,7 @@ Hook.Add("missionsEnded", "Traitormod.MissionsEnded", function(missions)
     Traitormod.RoundEvents.EndRound()
 
     Traitormod.SelectedGamemode = nil
+    Traitormod.ClientMenu.SendLobbyInfoEveryone()
 
     Traitormod.SaveData()
     Traitormod.Stats.SaveData()

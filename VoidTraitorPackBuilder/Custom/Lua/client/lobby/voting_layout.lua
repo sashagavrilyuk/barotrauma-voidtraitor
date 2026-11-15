@@ -66,41 +66,14 @@ function P.GetLobbyComponent(name)
     return screen ~= nil and screen[name] or nil
 end
 
-function P.GetLobbyComponentRect(name)
-    return P.GetComponentRect(P.GetLobbyComponent(name))
-end
-
+-- The vote button fills its slot at the bottom of the player card (panel.lua) and moves with the card.
 function P.GetVoteButtonParent()
-    return P.GetLobbyGuiFrame()
+    return S.lobbyPanel ~= nil and S.lobbyPanel.VoteSlot or nil
 end
 
 function P.GetVoteButtonAnchorRect()
-    local subRect = P.GetLobbyComponentRect("SubList")
-    local modeRect = P.GetLobbyComponentRect("ModeList")
-    local anchorRect = subRect or modeRect
-    if anchorRect == nil then return nil end
-
-    local x = P.ReadRectValue(anchorRect, "X", 0)
-    local y = P.ReadRectValue(anchorRect, "Y", 0)
-    local width = P.ReadRectValue(anchorRect, "Width", 0)
-    local height = P.ReadRectValue(anchorRect, "Height", 0)
-    if width <= 0 or height <= 0 then return nil end
-
-    local buttonWidth = math.max(P.SafeIntScale(170), math.min(P.SafeIntScale(245), math.floor(width * 0.324)))
-    local buttonY = y + height + P.SafeIntScale(6)
-    local buttonHeight = P.SafeIntScale(32)
-    local respawnRect = P.GetComponentRect(P.GetLobbyComponent("respawnTabButton"))
-    if respawnRect ~= nil then
-        buttonY = P.ReadRectValue(respawnRect, "Y", buttonY)
-        buttonHeight = P.ReadRectValue(respawnRect, "Height", buttonHeight)
-    end
-
-    return {
-        X = x + width - buttonWidth - P.SafeIntScale(6),
-        Y = buttonY,
-        Width = buttonWidth,
-        Height = buttonHeight,
-    }
+    local slot = P.GetVoteButtonParent()
+    return slot ~= nil and slot.Rect or nil
 end
 
 function P.GetVoteButtonMetrics()
@@ -132,14 +105,7 @@ function P.CreateLobbyAbsoluteRect(x, y, width, height)
 end
 
 function P.GetVoteButtonRect(parent)
-    local anchor = P.GetVoteButtonAnchorRect()
-    if anchor ~= nil then
-        local rect = P.CreateLobbyAbsoluteRect(anchor.X, anchor.Y, anchor.Width, anchor.Height)
-        if rect ~= nil then return rect end
-    end
-
-    local width, height = P.GetVoteButtonMetrics()
-    return GUI.RectTransform(Point(width, height), parent ~= nil and parent.RectTransform or nil, GUI.Anchor.TopLeft)
+    return P.CreateRect(1, 1, parent)
 end
 
 function P.GetVoteStartPanelRect(parent)

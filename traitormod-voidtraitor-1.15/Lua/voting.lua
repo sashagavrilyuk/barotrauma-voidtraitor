@@ -667,6 +667,8 @@ local function finishGameVote(cancelledText)
 
     Traitormod.SendMessageEveryone(selectionText)
     notifyGuiVoteChanged()
+    -- the mode can change on the same submarine, which the lobby panels would not notice
+    Traitormod.ClientMenu.SendLobbyInfoEveryone()
 end
 
 local function finishMapVote(cancelledText)

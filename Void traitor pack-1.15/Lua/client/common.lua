@@ -146,6 +146,7 @@ function Common.CreateDivider(parent)
     Common.SetFixedHeight(frame, Common.GetGap())
     frame.Color = Color(0, 0, 0, 0)
     GUI.Image(Common.CreateRect(1, 1, frame, GUI.Anchor.Center), "HorizontalLine")
+    return frame
 end
 
 function Common.FitWindowWidth(preferredWidth, minimumWidth, margin)

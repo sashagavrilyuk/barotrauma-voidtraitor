@@ -11,6 +11,8 @@ P.NET_REQUEST = "VoidTraitor_ClientMenuRequest"
 P.NET_SNAPSHOT = "VoidTraitor_ClientMenuSnapshot"
 P.NET_RUN = "VoidTraitor_ClientMenuRun"
 P.NET_POINTSHOP_REQUEST = "VoidTraitor_PointshopRequest"
+P.NET_LOBBY_INFO = "VoidTraitor_LobbyInfo"
+P.NET_LOBBY_INFO_REQUEST = "VoidTraitor_LobbyInfoRequest"
 
 P.GLOBAL_STATE_KEY = "VoidTraitorClientMenuState"
 P.HUD_PATCH_ID = "VoidTraitor.ClientMenu.Hud"
@@ -25,6 +27,9 @@ if previousState ~= nil then
     Common.RemoveGuiComponent(previousState.ButtonRoot)
     Common.RemoveGuiComponent(previousState.VoteButtonRoot)
     Common.RemoveGuiComponent(previousState.GuiRoot)
+    for _, part in ipairs(previousState.LobbyParts or {}) do
+        Common.RemoveGuiComponent(part)
+    end
 end
 
 S.sharedState = { Disabled = false }
@@ -76,7 +81,6 @@ P.MenuText = menuText
 -- same draw order as the vanilla top-left buttons, so the debug console stays on top
 P.BUTTON_DRAW_ORDER = 0
 P.MENU_DRAW_ORDER = 125
-LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.NetLobbyScreen"], "respawnTabButton")
 LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.GameSession"], "deathChoiceInfoFrame")
 LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.GameSession"], "respawnInfoText")
 LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.GameSession"], "deathChoiceButtonContainer")
@@ -176,6 +180,7 @@ end
 
 P.CloseMenu = function()
     P.SaveVoidTraitorMenuGeometry()
+    if S.currentMenuKind == "character" then P.HideJobSelection() end
 
     Common.RemoveGuiComponent(S.currentMenu)
 

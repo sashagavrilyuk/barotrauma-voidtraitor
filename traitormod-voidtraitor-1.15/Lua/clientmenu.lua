@@ -6,6 +6,8 @@ local vtNet = {
     Request = "VoidTraitor_ClientMenuRequest",
     Snapshot = "VoidTraitor_ClientMenuSnapshot",
     Run = "VoidTraitor_ClientMenuRun",
+    LobbyInfo = "VoidTraitor_LobbyInfo",
+    LobbyInfoRequest = "VoidTraitor_LobbyInfoRequest",
 }
 
 local adminNet = {
@@ -443,7 +445,63 @@ function cm.RunAction(client, actionId, input)
     return action.Callback(client, input)
 end
 
+-- A round without traitors keeps the Secret name, so the lobby doesn't tell whether traitors were rolled.
+local lobbyModeNames = {
+    Secret = "GameVoteOptionSecret",
+    Gamemode = "GameVoteOptionSecret",
+    Station = "GameVoteOptionStation",
+    AttackDefendV2 = "GameVoteOptionAttackDefend",
+    HideAndSeekV2 = "GameVoteOptionHideAndSeek",
+}
+
+-- The running mode, or between rounds the one the selected submarine and the lobby settings lead to.
+local function getLobbyGamemode()
+    if Traitormod.SelectedGamemode ~= nil then return Traitormod.SelectedGamemode end
+    local sub = Game.NetLobbyScreen.SelectedSub
+    if sub == nil then return nil end
+    return Traitormod.FindGamemode(Traitormod.ParseSubmarineConfig(sub.Description.Value), function() return true end)
+end
+
+-- Round number, mode, map and time for the lobby panel; between rounds the next round's number and mode.
+function cm.SendLobbyInfo(client)
+    if client == nil or client.Connection == nil then return end
+
+    local running = Traitormod.SelectedGamemode ~= nil
+    local gamemode = getLobbyGamemode()
+    local modeKey = gamemode ~= nil and lobbyModeNames[gamemode.Name] or nil
+    local netMessage = Networking.Start(vtNet.LobbyInfo)
+    netMessage.WriteBoolean(running)
+    netMessage.WriteInt32(Traitormod.RoundNumber + 1)
+    netMessage.WriteString(modeKey ~= nil and Traitormod.Language[modeKey] or "")
+    if running then
+        -- the main submarine is loaded only once the round has started
+        netMessage.WriteString(Submarine.MainSub ~= nil and Submarine.MainSub.Info.DisplayName.Value or "")
+        netMessage.WriteInt32(math.floor(Traitormod.RoundTime))
+    end
+    Networking.Send(netMessage, client.Connection)
+end
+
+function cm.SendLobbyInfoEveryone()
+    for _, client in pairs(Client.ClientList) do
+        cm.SendLobbyInfo(client)
+    end
+end
+
+Hook.Add("roundStart", "Traitormod.ClientMenu.LobbyInfo", function()
+    cm.SendLobbyInfoEveryone()
+end)
+
+-- A client asks again when the lobby's submarine or mode changes, at most once a second.
+local nextLobbyInfoTime = {}
+Networking.Receive(vtNet.LobbyInfoRequest, function(message, client)
+    local now = Timer.GetTime()
+    if (nextLobbyInfoTime[client.SessionId] or 0) > now then return end
+    nextLobbyInfoTime[client.SessionId] = now + 0.5
+    cm.SendLobbyInfo(client)
+end)
+
 Networking.Receive(vtNet.Ready, function(message, client)
+    cm.SendLobbyInfo(client)
     return cm.SendSnapshot(client)
 end)
 
@@ -574,6 +632,7 @@ Hook.Add("client.disconnected", "Traitormod.ClientMenu.Disconnect", function(cli
     if Traitormod.Pointshop ~= nil and Traitormod.Pointshop.ForgetGuiClient ~= nil then
         Traitormod.Pointshop.ForgetGuiClient(client)
     end
+    nextLobbyInfoTime[client.SessionId] = nil
 end)
 
 return cm
