@@ -2,7 +2,8 @@
 -- channel needs the department's key inside the headset. Unlike vanilla radios, which hear only the channel they
 -- are tuned to, a headset hears the common channel and all of its keys' channels at once. A player talks on a
 -- channel by tuning the headset to it, which the client's chat mode list does (Void traitor pack-1.15:
--- Lua/client/radio.lua); its tickboxes turn hearing a channel's voice or text off.
+-- Lua/client/radio.lua); its tickboxes turn hearing a channel's voice or text off. Any other channel works only while a
+-- powered radio relay is tuned to it; admin ghosts hear those channels like their keys' channels.
 local radio = {}
 Traitormod.StationRadio = radio
 
@@ -14,6 +15,9 @@ local PATCH_ID = "Traitormod.StationRadio"
 local DISTANCE_ARGS = { "System.String", "Barotrauma.Networking.ChatMessageType", "Barotrauma.Character", "Barotrauma.Character" }
 local VOIP_ARGS = { "Barotrauma.Networking.Client", "Barotrauma.Networking.Client", "out System.Single", "out System.Boolean" }
 local SPEAK_RANGE_VOIP = ChatMessage.SpeakRangeVOIP
+local RELAY_TAG = "vt_radiorelay"
+-- how many channels a player can turn off: the common one, the departments and the relays' ones
+local MAX_MUTED = 32
 
 local departmentById, departmentByChannel, departmentByKey = {}, {}, {}
 for _, department in ipairs(config.Departments) do
@@ -28,6 +32,9 @@ local patched = false
 local keyedHeadsets = {}
 -- client -> { Voice = { [channel] = true }, Text = { ... } }: channels the player turned off in the chat mode list
 local muted = {}
+-- radio relays of the round, and the channels of the powered ones (read at most once a second)
+local relays = {}
+local relayChannels, relaySecond = {}, nil
 -- client -> its headset, read at most once a second: voice packets come every 20 ms for every listener, and reading
 -- the headset and its keys on each of them cost about 35 microseconds per packet and listener (measured in the sandbox)
 local voiceRadios = {}
@@ -39,21 +46,40 @@ local function chatRadio(character)
     return wifi
 end
 
--- department channels of the keys in the headset
-local function keyChannels(wifi)
+local function poweredRelayChannels()
+    local second = math.floor(os.time())
+    if second == relaySecond then return relayChannels end
+    relaySecond = second
+    relayChannels = {}
+    for relay in pairs(relays) do
+        if relay.Removed then
+            relays[relay] = nil
+        elseif relay.GetComponentString("Powered").HasPower then
+            relayChannels[relay.GetComponentString("WifiComponent").Channel] = true
+        end
+    end
+    return relayChannels
+end
+
+-- department channels of the keys in the headset; an admin ghost also hears the relays' channels
+local function keyChannels(wifi, character)
     local channels = {}
     local keys = wifi.Item.OwnInventory
-    if keys == nil then return channels end
-    for key in keys.AllItems do
-        local department = departmentByKey[key.Prefab.Identifier.Value]
-        if department ~= nil then channels[department.Channel] = true end
+    if keys ~= nil then
+        for key in keys.AllItems do
+            local department = departmentByKey[key.Prefab.Identifier.Value]
+            if department ~= nil then channels[department.Channel] = true end
+        end
+    end
+    if Traitormod.AdminGhost.IsGhost(character) then
+        for channel in pairs(poweredRelayChannels()) do channels[channel] = true end
     end
     return channels
 end
 
 -- What the radio checks need from a headset. The channel, jamming and position change often and are read by readLive.
-local function radioState(wifi)
-    return { Wifi = wifi, Item = wifi.Item, Keys = keyChannels(wifi), Team = wifi.TeamID,
+local function radioState(wifi, character)
+    return { Wifi = wifi, Item = wifi.Item, Keys = keyChannels(wifi, character), Team = wifi.TeamID,
         Cross = wifi.AllowCrossTeamCommunication, Range = wifi.Range }
 end
 
@@ -68,8 +94,9 @@ local function reaches(sender, receiver)
     local channel = sender.Channel
     if departmentByChannel[channel] ~= nil then
         if not sender.Keys[channel] or not receiver.Keys[channel] then return false end
-    elseif channel ~= config.CommonChannel and receiver.Channel ~= channel then
-        return false
+    elseif channel ~= config.CommonChannel then
+        if not poweredRelayChannels()[channel] then return false end
+        if receiver.Channel ~= channel and not receiver.Keys[channel] then return false end
     end
     if sender.Team ~= receiver.Team and not receiver.Cross then return false end
     if sender.Jam > 0 or receiver.Jam > 0 then return false end
@@ -88,7 +115,7 @@ local function voiceRadio(client)
     if entry ~= nil and entry.Second == second then return entry.State end
     local character = client.Character
     local wifi = character ~= nil and not character.IsDead and character.SpeechImpediment < 100 and chatRadio(character) or nil
-    entry = { Second = second, State = wifi ~= nil and radioState(wifi) or nil }
+    entry = { Second = second, State = wifi ~= nil and radioState(wifi, character) or nil }
     if entry.State ~= nil then entry.State.Character = character end
     voiceRadios[client] = entry
     return entry.State
@@ -105,7 +132,7 @@ local function routeText(instance, ptable)
     if senderWifi == nil or receiverWifi == nil then return end
     ptable.PreventExecution = true
     local message = ptable["message"]
-    local senderRadio, receiverRadio = radioState(senderWifi), radioState(receiverWifi)
+    local senderRadio, receiverRadio = radioState(senderWifi, sender), radioState(receiverWifi, receiver)
     readLive(senderRadio)
     readLive(receiverRadio)
     if not reaches(senderRadio, receiverRadio)
@@ -140,7 +167,8 @@ local function routeVoice(instance, ptable)
     return garble < 1
 end
 
-local function sendChannels(connection)
+-- The relays' channels go only to admin ghosts: players find them by tuning in.
+local function sendChannels(connection, ghost)
     local message = Networking.Start(NET_CHANNELS)
     local departments = active and config.Departments or {}
     message.WriteUInt16(config.CommonChannel)
@@ -150,7 +178,20 @@ local function sendChannels(connection)
         message.WriteString(department.Key)
         message.WriteString(Traitormod.GetText(department.Name))
     end
+    local channels = {}
+    if active and ghost then
+        for channel in pairs(poweredRelayChannels()) do
+            if channel ~= config.CommonChannel and departmentByChannel[channel] == nil then channels[#channels + 1] = channel end
+        end
+        table.sort(channels)
+    end
+    message.WriteByte(#channels)
+    for _, channel in ipairs(channels) do message.WriteUInt16(channel) end
     Networking.Send(message, connection)
+end
+
+local function trackRelay(item)
+    if item.HasTag(RELAY_TAG) then relays[item] = true end
 end
 
 -- Puts the keys of the character's job into its headset, once per headset.
@@ -168,28 +209,26 @@ end
 -- outside Station rounds they return right away.
 function radio.Start()
     active = true
+    for item in Item.ItemList do trackRelay(item) end
+    Hook.Add("item.created", "Traitormod.StationRadio.Relays", trackRelay)
     if not patched then
         patched = true
         Hook.Patch(PATCH_ID, "Barotrauma.Networking.ChatMessage", "ApplyDistanceEffect", DISTANCE_ARGS, routeText, Hook.HookMethodType.Before)
         Hook.Patch(PATCH_ID, "Barotrauma.Networking.VoipServer", "CanReceive", VOIP_ARGS, routeVoice, Hook.HookMethodType.Before)
     end
-    sendChannels(nil)
+    sendChannels(nil, false)
 end
 
 Networking.Receive(NET_CHANNELS_REQUEST, function(message, client)
-    sendChannels(client.Connection)
+    sendChannels(client.Connection, Traitormod.AdminGhost.IsGhost(client.Character))
 end)
 
--- Only the common and department channels can be turned off; other channels are ignored, and a longer list than
--- there are channels rejects the message.
+-- A list longer than a player can turn off rejects the message.
 local function readChannels(message)
     local count = message.ReadByte()
-    if count > #config.Departments + 1 then return nil end
+    if count > MAX_MUTED then return nil end
     local channels = {}
-    for _ = 1, count do
-        local channel = message.ReadUInt16()
-        if channel == config.CommonChannel or departmentByChannel[channel] ~= nil then channels[channel] = true end
-    end
+    for _ = 1, count do channels[message.ReadUInt16()] = true end
     return channels
 end
 
@@ -209,6 +248,9 @@ Hook.Add("roundEnd", "Traitormod.StationRadio.End", function()
     active = false
     keyedHeadsets = {}
     voiceRadios = {}
+    relays = {}
+    relayChannels, relaySecond = {}, nil
+    Hook.Remove("item.created", "Traitormod.StationRadio.Relays")
 end)
 
 return radio

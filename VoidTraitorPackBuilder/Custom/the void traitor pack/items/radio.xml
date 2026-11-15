@@ -28,4 +28,35 @@
     <InventoryIcon sourcerect="320,0,64,64" />
     <Sprite sourcerect="320,0,64,64" />
   </Item>
+  <!-- Radio relay (traitormod Lua/gamemodes/station/radio.lua): a channel other than the common and department ones works
+       only while a powered relay is tuned to it. The channel is set by selecting the relay, like a Wi-Fi component.
+       Texture from Space Station 14, see ATTRIBUTION.txt. -->
+  <Item identifier="vt_radiorelay" name="" category="Electrical" tags="vt_radiorelay" scale="0.5" impactsoundtag="impact_metal_light" isshootable="true" GrabWhenSelected="true">
+    <InventoryIcon texture="%ModDir%/the void traitor pack/items/radiorelay.png" sourcerect="0,0,64,64" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/the void traitor pack/items/radiorelay.png" sourcerect="0,0,64,64" depth="0.8" origin="0.5,0.5" canflipx="false" />
+    <Body width="44" height="60" density="15" />
+    <Holdable selectkey="Select" pickkey="Use" aimpos="65,-10" handle1="0,0" attachable="true" aimable="true" PickingTime="5.0" slots="Any,RightHand,LeftHand" msg="ItemMsgDetachWrench" MsgWhenDropped="ItemMsgPickupSelect">
+      <RequiredItem items="wrench,deattachtool" excludeditems="multitool" type="Equipped" />
+    </Holdable>
+    <WifiComponent canbeselected="true" />
+    <Powered PowerConsumption="50" MinVoltage="0.5" IsActive="true" VulnerableToEMP="true" />
+    <!-- the lights, drawn only while the relay has power -->
+    <LightComponent range="10.0" lightcolor="255,255,255,0" powerconsumption="1" IsOn="true" castshadows="false" allowingameediting="false">
+      <sprite texture="%ModDir%/the void traitor pack/items/radiorelay.png" sourcerect="64,0,64,64" depth="0.79" origin="0.5,0.5" alpha="1.0" />
+    </LightComponent>
+    <ConnectionPanel selectkey="Action" canbeselected="true" msg="ItemMsgRewireScrewdriver" hudpriority="10">
+      <GuiFrame relativesize="0.2,0.32" minsize="400,350" maxsize="480,420" anchor="Center" style="ConnectionPanel" />
+      <RequiredItem items="screwdriver" type="Equipped" />
+      <input name="power_in" displayname="connection.powerin" />
+    </ConnectionPanel>
+    <Fabricate suitablefabricators="fabricator" requiredtime="20">
+      <RequiredItem identifier="wificomponent" />
+      <RequiredItem identifier="fpgacircuit" />
+      <RequiredItem identifier="copper" />
+    </Fabricate>
+    <Deconstruct time="10">
+      <Item identifier="wificomponent" />
+      <Item identifier="fpgacircuit" />
+    </Deconstruct>
+  </Item>
 </Items>

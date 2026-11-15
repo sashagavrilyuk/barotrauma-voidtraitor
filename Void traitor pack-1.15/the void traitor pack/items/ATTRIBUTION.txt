@@ -10,3 +10,15 @@ crypt_gray + eng_label, med_label, sec_label, cargo_label, sci_label), scaled 2x
 
 License: Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)
 https://creativecommons.org/licenses/by-sa/3.0/
+
+radiorelay.png — radio relay
+=============================
+Space Station 14, Resources/Textures/Structures/Machines/telecomms.rsi
+Source: https://github.com/space-wizards/space-station-14/tree/9af1d69e3099775c9090a8a1af7a2b2c834d7895/Resources/Textures/Structures/Machines/telecomms.rsi
+Sprites by Spangs04, based on servers taken from tgstation at commit
+https://github.com/tgstation/tgstation/blob/9c3494fd79e6bf8dc532300b9de4f688ff276ac9/icons/obj/machines/telecomms.dmi
+Changes: telecom-nopower and the first frame of telecom-on, each with telecom-stripe and variant-common drawn on top,
+scaled 2x without smoothing.
+
+License: Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)
+https://creativecommons.org/licenses/by-sa/3.0/

@@ -5,8 +5,6 @@
 local adminGhost = {}
 
 local AFFLICTION = "vt_adminghost"
-local NET_PROBE = "VoidTraitor_AdminGhostProbe"
-local NET_READY = "VoidTraitor_AdminGhostReady"
 local NET_STATE = "VoidTraitor_AdminGhostState"
 local NET_LIST = "VoidTraitor_AdminGhostList"
 local NET_LIST_REQUEST = "VoidTraitor_AdminGhostListRequest"
@@ -22,7 +20,6 @@ local BODY_KINEMATIC, BODY_DYNAMIC = 1, 2 -- FarseerPhysics.BodyType
 local WALK_SPEED, RUN_SPEED = 5, 15 -- sim units per second (100 display units each)
 -- how fast a carried character catches up with the ghost
 local CATCH_UP = 10
-local PROBE_TIMEOUT_MS = 2000
 local MAX_SKILL = 100 -- Skill.DefaultMaximumSkill
 
 LuaUserData.RegisterType("Barotrauma.ContentXElement")
@@ -30,8 +27,6 @@ local contentElement = LuaUserData.CreateStatic("Barotrauma.ContentXElement")
 
 -- ghost character -> { Client, Body, Info }
 local ghosts = {}
--- clients we are waiting on to confirm they have the client script
-local probing = {}
 -- clients that get the ghost list (spectators with the client script)
 local listeners = {}
 -- ghost -> true if it selected the character with H (health window) instead of grabbing it
@@ -392,16 +387,7 @@ function adminGhost.Toggle(client)
             return
         end
     end
-    if probing[client] then return end
-
-    -- movement prediction needs the client script; wait for it to answer the probe
-    probing[client] = true
-    Networking.Send(Networking.Start(NET_PROBE), client.Connection)
-    Timer.Wait(function()
-        if not probing[client] then return end
-        probing[client] = nil
-        Traitormod.SendMessage(client, Traitormod.Language.CMDAdminGhostNoClientLua)
-    end, PROBE_TIMEOUT_MS)
+    enable(client)
 end
 
 Networking.Receive(NET_LIST_REQUEST, function(message, client)
@@ -412,12 +398,6 @@ end)
 Networking.Receive(NET_DEAD_CHAT, function(message, client)
     if not isGhostClient(client) then return end
     talksToDead[client.Character] = message.ReadBoolean()
-end)
-
-Networking.Receive(NET_READY, function(message, client)
-    if not probing[client] then return end
-    probing[client] = nil
-    if Game.RoundStarted then enable(client) end
 end)
 
 -- Dead chat from a ghost (the client's "dead" chat mode sends it with the dead chat prefix): the server would drop
@@ -442,12 +422,10 @@ end)
 
 Hook.Add("roundEnd", "Traitormod.AdminGhost.RoundEnd", function()
     for ghost in pairs(ghosts) do removeGhost(ghost, false) end
-    probing = {}
     listeners = {}
 end)
 
 Hook.Add("client.disconnected", "Traitormod.AdminGhost.Disconnect", function(client)
-    probing[client] = nil
     listeners[client] = nil
     for ghost, state in pairs(ghosts) do
         if state.Client == client then removeGhost(ghost, false) end

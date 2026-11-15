@@ -252,7 +252,6 @@ language.CMDCharacterDeadOrMissing = "Персонаж клиента мёртв
 language.CMDVoidSent = "Персонаж отправлен в войд."
 language.CMDVoidNotInVoid = "Этот персонаж не находится в войде."
 language.CMDVoidRemoved = "Персонаж убран из войда."
-language.CMDAdminGhostNoClientLua = "Для !aghost нужен клиентский LuaCs с Void traitor pack."
 language.AdminGhostName = "%s (призрак)"
 language.CMDReviveSuccess = "Персонаж %s оживлён и получил 1 жизнь обратно."
 language.CMDReviveAnnounce = "Администратор оживил %s."

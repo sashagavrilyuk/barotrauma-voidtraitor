@@ -4,7 +4,8 @@ if SERVER then return end
 -- common channel and the departments whose keys are in the headset (traitormod Lua/gamemodes/station/radio.lua);
 -- picking one tunes the headset to that channel, and the two tickboxes of a channel turn hearing its voice and
 -- reading its messages on and off. The vanilla radio entry stays in the list, hidden, because the chat keys select it.
--- An admin ghost also gets "dead", which sends its chat to dead chat (traitormod Lua/features/adminghost.lua).
+-- An admin ghost also gets "dead", which sends its chat to dead chat (traitormod Lua/features/adminghost.lua), and the
+-- channels of the powered radio relays.
 local Common = select(2, ...)
 local text = Common.Language.Radio
 
@@ -28,6 +29,8 @@ local gameMain = LuaUserData.CreateStatic("Barotrauma.GameMain")
 local commonChannel = 0
 -- departments of the current Station round ({ Channel, Key, Name }); empty in other rounds
 local departments = {}
+-- channels of the powered radio relays; the server sends them only to admin ghosts
+local relayChannels = {}
 -- channels the player turned off, kept for the whole session
 local muted = { Voice = {}, Text = {} }
 local deadChat = false
@@ -44,6 +47,15 @@ local function headsetRadio()
     local character = Character.Controlled
     local headset = character ~= nil and character.Inventory ~= nil and character.Inventory.GetItemInLimbSlot(InvSlotType.Headset) or nil
     return headset, headset ~= nil and headset.GetComponentString("WifiComponent") or nil
+end
+
+local function isGhost()
+    local character = Character.Controlled
+    return character ~= nil and character.CharacterHealth.GetAffliction("vt_adminghost") ~= nil
+end
+
+local function requestChannels()
+    Networking.Send(Networking.Start(NET_CHANNELS_REQUEST))
 end
 
 local function channelName(channel)
@@ -172,13 +184,17 @@ local function fill(dropdown)
     -- hidden in Station, where it would only repeat one of the channels
     entries[#entries + 1] = { Text = TextManager.Get("chatmode.radio"), Data = ChatMode.Radio, Hidden = station }
     if station then entries[#entries + 1] = { Text = text.Common, Data = { Channel = commonChannel }, Channel = commonChannel } end
-    if Character.Controlled ~= nil and Character.Controlled.CharacterHealth.GetAffliction("vt_adminghost") ~= nil then
-        entries[#entries + 1] = { Text = text.Dead, Data = { Dead = true } }
-    end
+    local ghost = isGhost()
+    if ghost then entries[#entries + 1] = { Text = text.Dead, Data = { Dead = true } } end
     if station then
         for _, department in ipairs(departments) do
             if held[department.Key] then
                 entries[#entries + 1] = { Text = department.Name, Data = { Channel = department.Channel }, Channel = department.Channel }
+            end
+        end
+        if ghost then
+            for _, channel in ipairs(relayChannels) do
+                entries[#entries + 1] = { Text = channelName(channel), Data = { Channel = channel }, Channel = channel }
             end
         end
     end
@@ -229,7 +245,12 @@ local function install()
     if dropdown == nil or dropdown == installedOn then return end
     installedOn = dropdown
     dropdown.OnSelected = function(component, data) return pick(dropdown, data) end
-    dropdown.OnDropped = function() fill(dropdown) return true end
+    dropdown.OnDropped = function()
+        fill(dropdown)
+        -- relays get switched on and off; the answer fills the list again
+        if isGhost() then requestChannels() end
+        return true
+    end
     -- runs after the list closed itself on the click
     dropdown.AfterSelected = function()
         if reopen then
@@ -258,7 +279,10 @@ Networking.Receive(NET_CHANNELS, function(message)
     for _ = 1, message.ReadByte() do
         departments[#departments + 1] = { Channel = message.ReadUInt16(), Key = message.ReadString(), Name = message.ReadString() }
     end
+    relayChannels = {}
+    for _ = 1, message.ReadByte() do relayChannels[#relayChannels + 1] = message.ReadUInt16() end
     install()
+    if installedOn ~= nil and installedOn.Dropped then fill(installedOn) end
     -- the server forgets the player's choice when they reconnect
     if #departments > 0 then sendHearing() end
 end)
@@ -271,6 +295,7 @@ _G[STATE_KEY] = {
         -- dead mode rides on local chat: the chat keys keep it there (see pick)
         gameMain.ActiveChatMode = ChatMode.Local
         if installedOn ~= nil then showTarget(installedOn) end
+        requestChannels()
     end,
     LeaveGhost = function()
         deadChat = false
@@ -280,15 +305,16 @@ _G[STATE_KEY] = {
 
 Hook.Add("roundStart", PATCH_ID, function()
     install()
-    Networking.Send(Networking.Start(NET_CHANNELS_REQUEST))
+    requestChannels()
 end)
 
 Hook.Add("roundEnd", PATCH_ID, function()
     departments = {}
+    relayChannels = {}
     deadChat = false
 end)
 
 if Game.RoundStarted then
     install()
-    Networking.Send(Networking.Start(NET_CHANNELS_REQUEST))
+    requestChannels()
 end

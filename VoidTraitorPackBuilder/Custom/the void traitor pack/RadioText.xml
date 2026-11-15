@@ -12,4 +12,6 @@
   <entitydescription.vt_radiokey_cargo>Вставляется в гарнитуру и открывает канал отдела «Карго». Вставить и вынуть ключ можно только с отвёрткой в руке.</entitydescription.vt_radiokey_cargo>
   <entityname.vt_radiokey_science>Ключ рации: РНД</entityname.vt_radiokey_science>
   <entitydescription.vt_radiokey_science>Вставляется в гарнитуру и открывает канал отдела «РНД». Вставить и вынуть ключ можно только с отвёрткой в руке.</entitydescription.vt_radiokey_science>
+  <entityname.vt_radiorelay>Радиоретранслятор</entityname.vt_radiorelay>
+  <entitydescription.vt_radiorelay>Открывает канал рации на своей частоте, пока получает питание. Частоту меняют, выбрав аппарат. Крепится к стене гаечным ключом.</entitydescription.vt_radiorelay>
 </infotexts>

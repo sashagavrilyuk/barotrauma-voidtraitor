@@ -3,8 +3,6 @@ if SERVER then return end
 -- Client side of the admin ghost: the same movement and reach code as the server
 -- (traitormod-voidtraitor-1.15: Lua/features/adminghost.lua), so prediction matches it.
 -- Spectators and ghosts also see the ghosts that the vt_adminghost affliction hides.
-local NET_PROBE = "VoidTraitor_AdminGhostProbe"
-local NET_READY = "VoidTraitor_AdminGhostReady"
 local NET_STATE = "VoidTraitor_AdminGhostState"
 local NET_LIST = "VoidTraitor_AdminGhostList"
 local NET_LIST_REQUEST = "VoidTraitor_AdminGhostListRequest"
@@ -209,8 +207,9 @@ local function showGhosts()
     local controlled = Character.Controlled
     if controlled ~= nil and not controlled.IsDead and controlled ~= ghost then return end
     for id in pairs(listed) do
+        -- the list can arrive before the ghost does, while its ID still belongs to an entity the server removed
         local character = Entity.FindEntityByID(id)
-        if character ~= nil then character.InvisibleTimer = 0 end
+        if character ~= nil and LuaUserData.IsTargetType(character, "Barotrauma.Character") then character.InvisibleTimer = 0 end
     end
 end
 
@@ -239,10 +238,6 @@ local function watchControl()
     ensurePatches()
     rawget(_G, RADIO_STATE_KEY).EnterGhost()
 end
-
-Networking.Receive(NET_PROBE, function()
-    Networking.Send(Networking.Start(NET_READY))
-end)
 
 Networking.Receive(NET_STATE, function(message)
     local id, active = message.ReadUInt16(), message.ReadBoolean()
