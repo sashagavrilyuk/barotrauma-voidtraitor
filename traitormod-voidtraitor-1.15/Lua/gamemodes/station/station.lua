@@ -228,14 +228,19 @@ function gm:OnNuclearDisarmed()
     self:SetAlertCode("green")
 end
 
--- living crew who may become a mid-round antagonist, weighted the way the round start picks traitors
-function gm:MidRoundAntagonistCandidates()
+-- Station players take each antagonist type only if they ticked it in the lobby's Antagonists window.
+function gm:WantsAntagonist(client, preference)
+    return (Traitormod.GetData(client, "StationAntagonists") or {})[preference] == true
+end
+
+-- living crew who want this mid-round antagonist, weighted the way the round start picks traitors
+function gm:MidRoundAntagonistCandidates(preference)
     local weights, count = {}, 0
     for _, client in pairs(Client.ClientList) do
         local character = client.Character
         if client.InGame and not client.SpectateOnly and character ~= nil and not character.IsDead
             and not Traitormod.AdminGhost.IsGhost(character) and self.TraitorFilter(client) > 0
-            and Traitormod.GetData(client, "NonTraitor") ~= true and not Traitormod.RoleManager.IsAntagonist(character) then
+            and self:WantsAntagonist(client, preference) and not Traitormod.RoleManager.IsAntagonist(character) then
             weights[client] = (Traitormod.GetData(client, "Weight") or 0) * self.TraitorFilter(client)
             count = count + 1
         end
@@ -244,9 +249,9 @@ function gm:MidRoundAntagonistCandidates()
 end
 
 -- turns up to amount of those candidates into the given antagonist role and returns their characters
-function gm:AssignMidRoundAntagonists(roleName, amount)
+function gm:AssignMidRoundAntagonists(roleName, amount, preference)
     local roles = Traitormod.RoleManager
-    local weights = self:MidRoundAntagonistCandidates()
+    local weights = self:MidRoundAntagonistCandidates(preference)
     local chosen = {}
     for _ = 1, amount do
         local client = weightedRandom.Choose(weights)

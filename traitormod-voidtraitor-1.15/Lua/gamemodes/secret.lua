@@ -181,7 +181,7 @@ function gm:Start()
     self:SelectAntagonists()
 end
 
-function gm:AssignAntagonists(antagonists)
+function gm:AssignAntagonists(antagonists, roleName)
     local function AssignCrew()
         for key, value in pairs(Client.ClientList) do
             if value.Character ~= nil and value.Character.IsHuman and not value.SpectateOnly and not value.Character.IsDead and value.Character.TeamID == CharacterTeamType.Team1 then
@@ -232,7 +232,7 @@ function gm:AssignAntagonists(antagonists)
     end
 
     if self.TraitorTypeSelectionMode == "Random" then
-        local role = Traitormod.RoleManager.Roles[weightedRandom.Choose(self.TraitorTypeChance)]
+        local role = Traitormod.RoleManager.Roles[roleName]
 
         local roles = {}
         for key, value in pairs(antagonists) do
@@ -292,6 +292,11 @@ function gm:UpdateTestMode(playerCount)
     end
 end
 
+-- Anyone may be picked unless they refused in the lobby's Antagonists window.
+function gm:WantsAntagonist(client, roleName)
+    return Traitormod.GetData(client, "NonTraitor") ~= true
+end
+
 function gm:SelectAntagonists()
     local this = self
     local thisRoundNumber = Traitormod.RoundNumber
@@ -301,6 +306,8 @@ function gm:SelectAntagonists()
     Timer.Wait(function()
         if thisRoundNumber ~= Traitormod.RoundNumber or not Game.RoundStarted then return end
 
+        -- a random type is chosen before the players, so a mode can pick only those who want it
+        local roleName = this.TraitorTypeSelectionMode == "Random" and weightedRandom.Choose(this.TraitorTypeChance) or nil
         local clientWeight = {}
         local traitorChoices = 0
         local playerInGame = 0
@@ -308,7 +315,7 @@ function gm:SelectAntagonists()
             -- valid traitor choices must be ingame, player was spawned before (has a character), is no spectator
             if value.InGame and value.Character and not value.SpectateOnly then
                 -- filter by config
-                if this.TraitorFilter(value) > 0 and Traitormod.GetData(value, "NonTraitor") ~= true
+                if this.TraitorFilter(value) > 0 and this:WantsAntagonist(value, roleName)
                     and not Traitormod.AdminGhost.IsGhost(value.Character)
                 then
                     -- players are alive or if respawning is on and config allows dead traitors (not supported yet)
@@ -322,7 +329,7 @@ function gm:SelectAntagonists()
         end
 
         if traitorChoices == 0 then
-            this:AssignAntagonists({})
+            this:AssignAntagonists({}, roleName)
             Traitormod.Log("No players to assign traitors")
             return
         end
@@ -355,7 +362,7 @@ function gm:SelectAntagonists()
             end
         end
 
-        self:AssignAntagonists(antagonists)
+        self:AssignAntagonists(antagonists, roleName)
     end, delay * 1000)
 end
 

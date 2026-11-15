@@ -2,8 +2,6 @@ local language = ...
 
 -- Состояние предателя и основные сообщения роли
 language.NoTraitor = "Вы не антагонист"
-language.TraitorOn = "Вы можете быть выбраны в качестве антагониста"
-language.TraitorOff = "Вы не можете быть выбраны в качестве антагониста.\n\nИспользуйте !toggletraitor, чтобы изменить это."
 language.AllTraitorsDead = "Все антагонисты мертвы!"
 language.TraitorsAlive = "Есть живые антагонисты..."
 language.KilledByTraitor = "Ваша смерть может быть вызвана предателем, выполняющим секретное задание"

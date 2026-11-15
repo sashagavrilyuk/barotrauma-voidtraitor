@@ -88,33 +88,6 @@ Traitormod.AddCommand("!traitoralive", function (client, args)
     return true
 end)
 
-Traitormod.AddCommand("!toggletraitor", function (client, args)
-    local text = Traitormod.Language.CommandNotActive
-
-    if Traitormod.Config.OptionalTraitors then
-        local toggle = false
-        if #args > 0 then
-            toggle = string.lower(args[1]) == "on"
-        else
-            toggle = Traitormod.GetData(client, "NonTraitor") == true
-        end
-    
-        if toggle then
-            text = Traitormod.Language.TraitorOn
-        else
-            text = Traitormod.Language.TraitorOff
-        end
-        Traitormod.SetData(client, "NonTraitor", not toggle)
-        Traitormod.SaveData() -- move this to player disconnect someday...
-        
-        Traitormod.Log(Traitormod.ClientLogName(client) .. " can become traitor: " .. tostring(toggle))
-    end
-
-    Traitormod.SendMessage(client, text)
-
-    return true
-end)
-
 Traitormod.AddCommand({"!point", "!points"}, function (client, args)
     Traitormod.SendMessage(client, Traitormod.GetDataInfo(client, true))
 

@@ -16,13 +16,13 @@ local maxAgents = 2
 event.CanStart = function ()
     local mode = Traitormod.SelectedGamemode
     if mode == nil or mode.Name ~= "Station" then return false end
-    local _, count = mode:MidRoundAntagonistCandidates()
+    local _, count = mode:MidRoundAntagonistCandidates("SleeperAgent")
     return count > 0
 end
 
 event.Start = function ()
     local mode = Traitormod.SelectedGamemode
-    mode:AssignMidRoundAntagonists("Traitor", math.max(1, math.min(maxAgents, math.floor(#Client.ClientList / playersPerAgent))))
+    mode:AssignMidRoundAntagonists("Traitor", math.max(1, math.min(maxAgents, math.floor(#Client.ClientList / playersPerAgent))), "SleeperAgent")
     mode:SendCoalitionAnnouncement(Traitormod.GetText("SleeperAgents"), "intercept")
     event.End()
 end

@@ -17,14 +17,14 @@ local minHiddenSeconds, maxHiddenSeconds = 300, 450
 event.CanStart = function ()
     local mode = Traitormod.SelectedGamemode
     if mode == nil or mode.Name ~= "Station" then return false end
-    local _, count = mode:MidRoundAntagonistCandidates()
+    local _, count = mode:MidRoundAntagonistCandidates("PatientZero")
     return count > 0
 end
 
 event.Start = function ()
     local amount = math.max(1, math.min(maxCarriers, math.floor(#Client.ClientList / playersPerCarrier)))
     event.Carriers = {}
-    for _, character in ipairs(Traitormod.SelectedGamemode:AssignMidRoundAntagonists("PatientZero", amount)) do
+    for _, character in ipairs(Traitormod.SelectedGamemode:AssignMidRoundAntagonists("PatientZero", amount, "PatientZero")) do
         table.insert(event.Carriers, {
             Character = character,
             WakeAt = Traitormod.RoundTime + math.random(minHiddenSeconds, maxHiddenSeconds),

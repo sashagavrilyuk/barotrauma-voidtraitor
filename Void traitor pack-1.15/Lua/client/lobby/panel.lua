@@ -292,12 +292,16 @@ local function arrangePlayerCard(screen)
     buttons.AbsoluteSpacing = Common.GetButtonSpacing()
     buttons.CanBeFocused = false
     Common.SetFixedHeight(buttons, Common.GetStyleHeight("GUIButton"))
-    for _, showAppearance in ipairs({ false, true }) do
-        local label = showAppearance and text.Appearance or text.Jobs
-        local button = GUI.Button(Common.CreateRect(0.5, 1, buttons), label, GUI.Alignment.Center, "GUIButton")
-        Common.SetAutoScaleText(button.TextBlock, 1)
+    local labels = {}
+    for _, entry in ipairs({
+        { Label = text.Jobs, Open = function() P.ShowCharacterWindow(false) end },
+        { Label = text.Antagonists, Open = function() P.ShowAntagonistsWindow() end },
+        { Label = text.Appearance, Open = function() P.ShowCharacterWindow(true) end },
+    }) do
+        local button = GUI.Button(Common.CreateRect(1 / 3, 1, buttons), entry.Label, GUI.Alignment.Center, "GUIButton")
+        labels[#labels + 1] = button.TextBlock
         button.OnClicked = function()
-            P.ShowCharacterWindow(showAppearance)
+            entry.Open()
             return true
         end
     end
@@ -306,6 +310,8 @@ local function arrangePlayerCard(screen)
     rememberParts()
     refreshCardJob(screen)
     fitCard(panel)
+    -- once the buttons have their width: one text size for all three, the one the longest label needs
+    GUI.TextBlock.AutoScaleAndNormalize(table.unpack(labels))
 end
 
 function P.ArrangePlayerCard(screen)
@@ -315,7 +321,10 @@ function P.ArrangePlayerCard(screen)
     if oldCard ~= nil then P.RemoveCharacterFigure(oldCard.Figure) end
 end
 
-function P.ShowCharacterWindow(showAppearance)
+-- A window beside the player card, with room on the left for the vanilla job grid, which opens to the left of
+-- the editor, and as tall as the vanilla card, which takes 0.55 of the right column (CreateSidePanelContents).
+-- Returns the window's content layout.
+function P.OpenCardWindow(kind, title)
     local screen = Game.NetLobbyScreen
     if S.currentMenu ~= nil then P.CloseMenu() end
 
@@ -328,22 +337,26 @@ function P.ShowCharacterWindow(showAppearance)
     root.IgnoreLayoutGroups = true
     P.SafeSetAsLastChild(root)
     S.currentMenu = root
-    S.currentMenuKind = "character"
+    S.currentMenuKind = kind
     S.sharedState.CurrentMenu = root
     S.sharedState.CurrentMenuKind = S.currentMenuKind
 
-    -- beside the player card, with room on the left for the vanilla job grid, which opens to the left of the editor
-    -- and as tall as the vanilla card, which takes 0.55 of the right column (NetLobbyScreen.CreateSidePanelContents)
     local card = screen.playerInfoContent.Parent.Parent
     local cardRect, columnRect = card.Rect, card.Parent.Rect
     local windowRect = GUI.RectTransform(Point(cardRect.Width, math.floor(columnRect.Height * 0.55)), root.RectTransform, GUI.Anchor.TopLeft)
     windowRect.AbsoluteOffset = Point(cardRect.X - cardRect.Width - Common.GetGap() - root.Rect.X, cardRect.Y - root.Rect.Y)
     local window = GUI.Frame(windowRect, "GUIFrame")
     local content = Common.CreateWindowContent(window)
-    Common.CreateWindowHeader(content, window, showAppearance and text.Appearance or text.Jobs, P.UiText.Cancel, function()
+    Common.CreateWindowHeader(content, window, title, P.UiText.Cancel, function()
         if S.currentMenu == root then P.CloseMenu() end
         return true
     end)
+    return content
+end
+
+function P.ShowCharacterWindow(showAppearance)
+    local screen = Game.NetLobbyScreen
+    local content = P.OpenCardWindow("character", showAppearance and text.Appearance or text.Jobs)
 
     -- only the editor moves: the window's own title replaces the vanilla tabs, which stay hidden in the card
     local editor = screen.characterInfoFrame

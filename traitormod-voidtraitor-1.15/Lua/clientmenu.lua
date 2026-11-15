@@ -8,6 +8,8 @@ local vtNet = {
     Run = "VoidTraitor_ClientMenuRun",
     LobbyInfo = "VoidTraitor_LobbyInfo",
     LobbyInfoRequest = "VoidTraitor_LobbyInfoRequest",
+    Antagonists = "VoidTraitor_Antagonists",
+    AntagonistSet = "VoidTraitor_AntagonistSet",
 }
 
 local adminNet = {
@@ -134,10 +136,6 @@ end)
 addAction("status", 12, function(client, input)
     return runCommand("!status", client, input)
 end, nil, canUseAliveCharacter)
-
-addAction("toggletraitor", 13, function(client, input)
-    return runCommand("!toggletraitor", client, input)
-end, nil, function() return Traitormod.Config.OptionalTraitors == true end, true)
 
 addAction("suicide", 20, function(client, input)
     return runCommand("!suicide", client, input)
@@ -500,8 +498,72 @@ Networking.Receive(vtNet.LobbyInfoRequest, function(message, client)
     cm.SendLobbyInfo(client)
 end)
 
+-- What the lobby's Antagonists window lists. Secret keeps its opt-out (NonTraitor), Station types are opt-in
+-- (StationAntagonists, read by the Station mode's WantsAntagonist).
+local antagonistOptions = {
+    { Category = "Secret", Keys = { "Traitor" } },
+    { Category = "StationStart", Keys = { "Traitor", "Cultist", "Clown", "Saboteur" } },
+    { Category = "StationMidRound", Keys = { "SleeperAgent", "PatientZero" } },
+}
+
+local function isAntagonistGroupShown(category)
+    return category ~= "Secret" or Traitormod.Config.OptionalTraitors == true
+end
+
+local function isAntagonistOption(category, key)
+    if not isAntagonistGroupShown(category) then return false end
+    for _, group in ipairs(antagonistOptions) do
+        if group.Category == category then
+            for _, option in ipairs(group.Keys) do
+                if option == key then return true end
+            end
+        end
+    end
+    return false
+end
+
+function cm.SendAntagonists(client)
+    local wanted = Traitormod.GetData(client, "StationAntagonists") or {}
+    local netMessage = Networking.Start(vtNet.Antagonists)
+    netMessage.WriteByte(#antagonistOptions)
+    for _, group in ipairs(antagonistOptions) do
+        local shown = isAntagonistGroupShown(group.Category)
+        netMessage.WriteString(group.Category)
+        netMessage.WriteByte(shown and #group.Keys or 0)
+        for _, key in ipairs(shown and group.Keys or {}) do
+            netMessage.WriteString(key)
+            if group.Category == "Secret" then
+                netMessage.WriteBoolean(Traitormod.GetData(client, "NonTraitor") ~= true)
+            else
+                netMessage.WriteBoolean(wanted[key] == true)
+            end
+        end
+    end
+    Networking.Send(netMessage, client.Connection)
+end
+
+-- One option per message, at most five a second; the reply carries all of them, so the window shows what is stored.
+local nextAntagonistSetTime = {}
+Networking.Receive(vtNet.AntagonistSet, function(message, client)
+    local category, key, value = message.ReadString(), message.ReadString(), message.ReadBoolean()
+    local now = Timer.GetTime()
+    if (nextAntagonistSetTime[client.SessionId] or 0) > now or not isAntagonistOption(category, key) then return end
+    nextAntagonistSetTime[client.SessionId] = now + 0.2
+
+    if category == "Secret" then
+        Traitormod.SetData(client, "NonTraitor", not value)
+    else
+        local wanted = Traitormod.GetData(client, "StationAntagonists") or {}
+        wanted[key] = value or nil
+        Traitormod.SetData(client, "StationAntagonists", wanted)
+    end
+    Traitormod.Log(Traitormod.ClientLogName(client) .. " antagonist option " .. category .. "." .. key .. ": " .. tostring(value))
+    cm.SendAntagonists(client)
+end)
+
 Networking.Receive(vtNet.Ready, function(message, client)
     cm.SendLobbyInfo(client)
+    cm.SendAntagonists(client)
     return cm.SendSnapshot(client)
 end)
 
@@ -633,6 +695,7 @@ Hook.Add("client.disconnected", "Traitormod.ClientMenu.Disconnect", function(cli
         Traitormod.Pointshop.ForgetGuiClient(client)
     end
     nextLobbyInfoTime[client.SessionId] = nil
+    nextAntagonistSetTime[client.SessionId] = nil
 end)
 
 return cm

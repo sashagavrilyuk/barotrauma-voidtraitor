@@ -253,7 +253,7 @@ config.Codewords = {
 
 config.AmountCodeWords = 2
 
-config.OptionalTraitors = true        -- players can use !toggletraitor
+config.OptionalTraitors = true        -- players can refuse to be a traitor in Secret (lobby Antagonists window)
 config.RagdollOnDisconnect = false
 config.EnableControlHusk = true     -- EXPERIMENTAL: enable to control husked character after death
 config.DeathLogBook = true

@@ -30,7 +30,6 @@ language.ClientMenu = {
         role = { Label = "Моя роль", Hint = "Аналог !role / !traitor", Category = "Main" },
         points = { Label = "Очки и жизни", Hint = "Аналог !points", Category = "Main" },
         status = { Label = "Статус", Hint = "Аналог !status", Category = "Main" },
-        toggletraitor = { Label = "Допуск к роли антагониста", Hint = "Аналог !toggletraitor", Category = "Main" },
         suicide = { Label = "Самоубийство", Hint = "Аналог !suicide / !kill / !death", Category = "Character", ConfirmTitle = "Подтверждение", ConfirmText = "Вы точно хотите убить своего персонажа?" },
         droppoints = { Label = "Сбросить очки", Hint = "Аналог !droppoints", Category = "Character", InputHint = "Сколько очков сбросить?" },
         freehandcuffs = { Label = "Снять фальшивые наручники", Hint = "Аналог !freehandcuffs / !fhc", Category = "Character" },
@@ -299,7 +298,18 @@ language.Lobby = {
     Players = "Игроков: %d",
     NoJob = "Профессия не выбрана",
     Jobs = "Профессии",
+    Antagonists = "Антагонисты",
     Appearance = "Внешность",
+    AntagonistGroups = {
+        Secret = "Миссия с предателями",
+        StationStart = "Станция — начало раунда",
+        StationMidRound = "Станция — посреди раунда",
+    },
+    AntagonistOptions = {
+        Secret = { Traitor = "Быть предателем" },
+        StationStart = { Traitor = "Предатель", Cultist = "Культист", Clown = "Клоун", Saboteur = "Диверсант" },
+        StationMidRound = { SleeperAgent = "Спящий агент", PatientZero = "Нулевой заражённый" },
+    },
     ShowSettings = "Показать настройки",
     HideSettings = "Скрыть настройки",
 }

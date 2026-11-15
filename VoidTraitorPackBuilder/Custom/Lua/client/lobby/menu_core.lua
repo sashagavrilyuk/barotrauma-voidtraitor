@@ -13,6 +13,8 @@ P.NET_RUN = "VoidTraitor_ClientMenuRun"
 P.NET_POINTSHOP_REQUEST = "VoidTraitor_PointshopRequest"
 P.NET_LOBBY_INFO = "VoidTraitor_LobbyInfo"
 P.NET_LOBBY_INFO_REQUEST = "VoidTraitor_LobbyInfoRequest"
+P.NET_ANTAGONISTS = "VoidTraitor_Antagonists"
+P.NET_ANTAGONIST_SET = "VoidTraitor_AntagonistSet"
 
 P.GLOBAL_STATE_KEY = "VoidTraitorClientMenuState"
 P.HUD_PATCH_ID = "VoidTraitor.ClientMenu.Hud"
