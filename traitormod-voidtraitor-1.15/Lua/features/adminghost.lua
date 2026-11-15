@@ -289,7 +289,11 @@ local function sendList(connection)
     local count = 0
     for _ in pairs(ghosts) do count = count + 1 end
     message.WriteByte(count)
-    for ghost in pairs(ghosts) do message.WriteUInt16(ghost.ID) end
+    for ghost in pairs(ghosts) do
+        message.WriteUInt16(ghost.ID)
+        -- clients name its voice: talking to the dead reaches them over the radio (see deadVoice)
+        message.WriteBoolean(talksToDead[ghost] == true)
+    end
     Networking.Send(message, connection)
 end
 
@@ -417,7 +421,10 @@ end)
 
 Networking.Receive(NET_DEAD_CHAT, function(message, client)
     if not isGhostClient(client) then return end
-    talksToDead[client.Character] = message.ReadBoolean()
+    local value = message.ReadBoolean()
+    if talksToDead[client.Character] == value then return end
+    talksToDead[client.Character] = value
+    sendListToListeners()
 end)
 
 -- Dead chat from a ghost (the client's "dead" chat mode sends it with the dead chat prefix): the server would drop

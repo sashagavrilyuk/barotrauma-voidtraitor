@@ -5,7 +5,9 @@ if SERVER then return end
 -- picking one tunes the headset to that channel, and the two tickboxes of a channel turn hearing its voice and
 -- reading its messages on and off. The vanilla radio entry stays in the list, hidden, because the chat keys select it.
 -- An admin ghost also gets "dead", which sends its chat to dead chat (traitormod Lua/features/adminghost.lua), and the
--- channels the telecom servers' blank keys open.
+-- channels the telecom servers' blank keys open. Its local and dead entries get tickboxes too, which this client
+-- applies itself: the server would need another patch on every voice packet to hold back local voice.
+-- Players' chat messages are labelled with the radio channel or dead chat they were said in.
 local Common = select(2, ...)
 local text = Common.Language.Radio
 
@@ -17,6 +19,7 @@ local NET_DEAD_CHAT = "VoidTraitor_AdminGhostDeadChat"
 local STATE_KEY = "VoidTraitorRadioState"
 local PATCH_ID = "VoidTraitor.Radio"
 local SEND_ARGS = { "System.String", "Barotrauma.Networking.ChatMessageType" }
+local LABEL_FORMAT = "[%s] %s"
 local DEAD_CHAT_PREFIX = "d; "
 local RADIO_CHAT_PREFIX = "r; "
 local HEARING_KINDS = { "Voice", "Text" }
@@ -36,6 +39,12 @@ local departments = {}
 local blankChannels = {}
 -- channels the player turned off, kept for the whole session
 local muted = { Voice = {}, Text = {} }
+-- "Local" and "Dead" when an admin ghost turned them off, kept for the whole session
+local ghostMuted = { Voice = {}, Text = {} }
+local inGhost = false
+local voicePatched = false
+-- character IDs of admin ghosts that talk to the dead (traitormod Lua/features/adminghost.lua)
+local talkingToDead = {}
 -- channels a radiation storm jams, and the headset whose jam timer this script runs
 local jammed = {}
 local jammedRadio = nil
@@ -49,10 +58,13 @@ local function chatBox()
     return Game.Client ~= nil and Game.Client.ChatBox or nil
 end
 
-local function headsetRadio()
-    local character = Character.Controlled
+local function headsetOf(character)
     local headset = character ~= nil and character.Inventory ~= nil and character.Inventory.GetItemInLimbSlot(InvSlotType.Headset) or nil
     return headset, headset ~= nil and headset.GetComponentString("WifiComponent") or nil
+end
+
+local function headsetRadio()
+    return headsetOf(Character.Controlled)
 end
 
 -- The server blocks a jammed channel; the jam timer of a headset tuned to one only gives the game's warning in the
@@ -76,6 +88,58 @@ local function channelName(channel)
         if department.Channel == channel then return department.Name end
     end
     return string.format(text.Channel, channel)
+end
+
+-- What a character talks on over the radio: its channel in Station rounds, otherwise just the radio.
+local function radioName(character)
+    local _, radio = headsetOf(character)
+    if #departments > 0 and radio ~= nil then return channelName(radio.Channel) end
+    return tostring(TextManager.Get("chatmode.radio"))
+end
+
+-- Where a voice this client hears comes from: "Dead", "Radio" or "Local", and its name. The server tells only
+-- whether a voice came over the radio; a ghost that talks to the dead does it over the radio too.
+local function voiceSource(client)
+    local character = client.Character
+    if character == nil or character.IsDead or talkingToDead[character.ID] then return "Dead", text.Dead end
+    if client.VoipSound ~= nil and client.VoipSound.UsingRadio then return "Radio", radioName(character) end
+    return "Local", tostring(TextManager.Get("chatmode.local"))
+end
+
+-- An admin ghost's local and dead voice it turned off. The game sets the gain every frame before this.
+local function muteVoice(instance)
+    if not inGhost or instance.VoipSound == nil then return end
+    if ghostMuted.Voice[voiceSource(instance)] then instance.VoipSound.Gain = 0 end
+end
+
+local function isOwn(message)
+    local sender = message.SenderClient
+    return message.SenderCharacter == Character.Controlled or (sender ~= nil and Game.Client ~= nil and sender.SessionId == Game.Client.SessionId)
+end
+
+-- A player's chat message gets the radio channel or dead chat it was said in; an admin ghost leaves out local and dead
+-- chat it turned off, except its own. Messages from the server and items have no sender character and stay as they are.
+local function labelMessage(instance, ptable)
+    local message = ptable["message"]
+    local type, sender = message.Type, message.SenderCharacter
+    local kind
+    if type == ChatMessageType.Dead then
+        kind = "Dead"
+    elseif sender ~= nil and type == ChatMessageType.Radio then
+        kind = "Radio"
+    elseif sender ~= nil and type == ChatMessageType.Default then
+        kind = "Local"
+    else
+        return
+    end
+    if inGhost and ghostMuted.Text[kind] and not isOwn(message) then
+        ptable.PreventExecution = true
+        return
+    end
+    if kind == "Local" then return end
+    local label = kind == "Dead" and text.Dead or radioName(sender)
+    -- the message's text can't be changed, so the chat gets a copy
+    ptable["message"] = ChatMessage.Create(message.SenderName, string.format(LABEL_FORMAT, label, message.Text), type, message.Sender, message.SenderClient)
 end
 
 local function setDeadChat(value)
@@ -162,16 +226,18 @@ local function fixedRect(width, height, parent, x)
     return rect
 end
 
--- Voice and text tickboxes of a channel row, each followed by a divider line; returns where the name starts.
-local function addTickBoxes(row, channel, name, size, gap)
+-- Voice and text tickboxes of a row, each followed by a divider line; they turn hearing `key` off in `store`, and
+-- `changed` runs after each click. Returns where the name starts.
+local function addTickBoxes(row, store, key, changed, name, size, gap)
     local x = gap
     for _, kind in ipairs(HEARING_KINDS) do
         local tickBox = GUI.TickBox(fixedRect(size, size, row, x), "")
-        tickBox.Selected = not muted[kind][channel]
-        tickBox.ToolTip = string.format(text[kind .. "Tooltip"], name)
+        tickBox.Selected = not store[kind][key]
+        -- the local entry's name is the game's LocalizedString, not a Lua string
+        tickBox.ToolTip = string.format(text[kind .. "Tooltip"], tostring(name))
         tickBox.OnSelected = function(box)
-            muted[kind][channel] = not box.Selected or nil
-            sendHearing()
+            store[kind][key] = not box.Selected or nil
+            if changed ~= nil then changed() end
             return true
         end
         tickBoxes[#tickBoxes + 1] = tickBox
@@ -191,15 +257,15 @@ local function fill(dropdown)
         for key in headset.OwnInventory.AllItems do held[key.Prefab.Identifier.Value] = true end
     end
     local station = #departments > 0 and radio ~= nil
+    local ghost = Common.IsAdminGhost()
     -- in order from the button up: local, common (the vanilla radio entry outside Station), dead, departments
-    local entries = { { Text = TextManager.Get("chatmode.local"), Data = ChatMode.Local } }
+    local entries = { { Text = TextManager.Get("chatmode.local"), Data = ChatMode.Local, Hearing = ghost and "Local" or nil } }
     -- hidden in Station, where it would only repeat one of the channels
     entries[#entries + 1] = { Text = TextManager.Get("chatmode.radio"), Data = ChatMode.Radio, Hidden = station }
     if station and held[commonKey] then
         entries[#entries + 1] = { Text = text.Common, Data = { Channel = commonChannel }, Channel = commonChannel }
     end
-    local ghost = Common.IsAdminGhost()
-    if ghost then entries[#entries + 1] = { Text = text.Dead, Data = { Dead = true } } end
+    if ghost then entries[#entries + 1] = { Text = text.Dead, Data = { Dead = true }, Hearing = "Dead" } end
     if station then
         for _, department in ipairs(departments) do
             if held[department.Key] then
@@ -219,7 +285,7 @@ local function fill(dropdown)
     -- the vanilla tickbox style makes the box this size whatever size the tickbox is given
     local tickSize = Common.GetStyleHeight("GUITickBox")
     local gap = math.max(2, math.floor(rowHeight * 0.15))
-    local tickArea = station and (#HEARING_KINDS * (tickSize + DIVIDER_WIDTH + 2 * gap) + gap) or 0
+    local tickArea = (station or ghost) and (#HEARING_KINDS * (tickSize + DIVIDER_WIDTH + 2 * gap) + gap) or 0
     local rows, longest = 0, 0
     for _, entry in ipairs(entries) do
         if not entry.Hidden then
@@ -236,7 +302,9 @@ local function fill(dropdown)
     dropdown.ClearChildren()
     tickBoxes = {}
     local list = dropdown.ListBox
-    list.RectTransform.NonScaledSize = Point(math.max(dropdown.Rect.Width, math.ceil(tickArea + buttonWidth)), rowHeight * rows)
+    -- the list's frame takes some height from its rows; without it the last row goes under a scrollbar
+    local frameHeight = list.Rect.Height - list.Content.Rect.Height
+    list.RectTransform.NonScaledSize = Point(math.max(dropdown.Rect.Width, math.ceil(tickArea + buttonWidth)), rowHeight * rows + frameHeight)
     -- grows to the right of the button instead of both ways, so it stays on screen
     list.RectTransform.SetPosition(GUI.Anchor.TopLeft, GUI.Pivot.BottomLeft)
     for i = #entries, 1, -1 do
@@ -245,7 +313,12 @@ local function fill(dropdown)
         row.Visible = not entry.Hidden
         if tickArea > 0 then
             local padding = row.Padding
-            local nameStart = entry.Channel ~= nil and addTickBoxes(row, entry.Channel, entry.Text, tickSize, gap) or tickArea
+            local nameStart = tickArea
+            if entry.Channel ~= nil then
+                nameStart = addTickBoxes(row, muted, entry.Channel, sendHearing, entry.Text, tickSize, gap)
+            elseif entry.Hearing ~= nil then
+                nameStart = addTickBoxes(row, ghostMuted, entry.Hearing, nil, entry.Text, tickSize, gap)
+            end
             row.Padding = Vector4(nameStart, padding.Y, padding.Z, padding.W)
         end
     end
@@ -285,6 +358,8 @@ Hook.Patch(PATCH_ID, "Barotrauma.ChatBox", "SetChannel", function(instance)
     showTarget(instance.ChatModeDropDown)
 end, Hook.HookMethodType.After)
 
+Hook.Patch(PATCH_ID, "Barotrauma.ChatBox", "AddMessage", labelMessage, Hook.HookMethodType.Before)
+
 -- In dead mode the ghost's chat goes out with the dead chat prefix; commands stay as they are.
 Hook.Patch(PATCH_ID, "Barotrauma.Networking.GameClient", "SendChatMessage", SEND_ARGS, function(instance, ptable)
     local message = ptable["message"]
@@ -313,18 +388,34 @@ Networking.Receive(NET_JAMMED, function(message)
 end)
 
 -- Called by the admin ghost's client script: a new ghost starts in dead chat, as on the server.
+-- The speaker list (Lua/client/speakers.lua) names voices with VoiceSource.
 _G[STATE_KEY] = {
     EnterGhost = function()
         install()
         deadChat = true
+        inGhost = true
         -- dead mode rides on local chat: the chat keys keep it there (see pick)
         gameMain.ActiveChatMode = ChatMode.Local
         if installedOn ~= nil then showTarget(installedOn) end
         requestChannels()
+        -- added on first use and never removed, like the ghost's own patches; it returns right away outside a ghost
+        if not voicePatched then
+            voicePatched = true
+            Hook.Patch(PATCH_ID, "Barotrauma.Networking.Client", "UpdateVoipSound", muteVoice, Hook.HookMethodType.After)
+        end
     end,
     LeaveGhost = function()
         deadChat = false
+        inGhost = false
         if installedOn ~= nil then showTarget(installedOn) end
+    end,
+    -- ids: { [character ID] = true } of the ghosts that talk to the dead
+    SetTalkingToDead = function(ids)
+        talkingToDead = ids
+    end,
+    VoiceSource = voiceSource,
+    IsVoiceMuted = function(client)
+        return inGhost and ghostMuted.Voice[voiceSource(client)] == true
     end,
 }
 
@@ -339,6 +430,7 @@ Hook.Add("roundEnd", PATCH_ID, function()
     jammed = {}
     jammedRadio = nil
     deadChat = false
+    talkingToDead = {}
 end)
 
 if Game.RoundStarted then

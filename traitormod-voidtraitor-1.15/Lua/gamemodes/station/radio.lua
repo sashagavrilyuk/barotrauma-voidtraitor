@@ -99,18 +99,26 @@ local function readLive(state)
     state.Position = state.Item.WorldPosition
 end
 
+-- Whether a headset's channel goes out at all: a powered server opens it, it isn't jammed, the headset holds the key
+-- of a keyed channel and isn't jammed itself.
+local function transmits(sender)
+    local channel = sender.Channel
+    return serverChannels()[channel] and not jammed[channel] and (not keyedChannels[channel] or sender.Keys[channel])
+        and sender.Jam <= 0
+end
+
 -- The vanilla radio checks (team, jamming, range) plus the servers, keys and jammed channels, without the
 -- single-channel rule.
 local function reaches(sender, receiver)
+    if not transmits(sender) then return false end
     local channel = sender.Channel
-    if not serverChannels()[channel] or jammed[channel] then return false end
     if keyedChannels[channel] then
-        if not sender.Keys[channel] or not receiver.Keys[channel] then return false end
+        if not receiver.Keys[channel] then return false end
     elseif receiver.Channel ~= channel and not receiver.Keys[channel] then
         return false
     end
     if sender.Team ~= receiver.Team and not receiver.Cross then return false end
-    if sender.Jam > 0 or receiver.Jam > 0 then return false end
+    if receiver.Jam > 0 then return false end
     return Vector2.DistanceSquared(sender.Position, receiver.Position) <= sender.Range * sender.Range
 end
 
@@ -156,15 +164,32 @@ local function routeText(instance, ptable)
     return text
 end
 
--- Who hears a voice on the radio, by the same rules. Spectators, local voice and players without a headset keep
--- the original rules. The original is skipped, so the out parameters have to be set here.
+-- Who hears a voice on the radio, by the same rules. Local voice and players without a headset keep the original
+-- rules; spectators too, unless the speaker's channel doesn't go out. The original is skipped, so the out parameters
+-- have to be set here.
 local function routeVoice(instance, ptable)
     if not active then return end
     local sender, recipient = ptable["sender"], ptable["recipient"]
-    local speaker, listener = voiceRadio(sender), voiceRadio(recipient)
-    if speaker == nil or listener == nil or sender.Muted or sender.VoipQueue.ForceLocal
+    local speaker = voiceRadio(sender)
+    if speaker == nil or sender.Muted or sender.VoipQueue.ForceLocal
         or (Traitormod.AdminGhost.IsGhost(speaker.Character) and Traitormod.AdminGhost.TalksToDead(sender)) then return end
+    local listener = voiceRadio(recipient)
+    if listener == nil and recipient.Character ~= nil and not recipient.Character.IsDead then return end
     readLive(speaker)
+    if listener == nil then
+        if transmits(speaker) then return end
+        -- spectators hear it as speech nearby, the same way the original does without a radio
+        ptable.PreventExecution = true
+        ptable["isRadio"] = false
+        local position = recipient.SpectatePos
+        if position == nil then
+            ptable["distanceFactor"] = Single(0)
+            return true
+        end
+        local distance = math.min(Vector2.Distance(speaker.Character.WorldPosition, position) / SPEAK_RANGE_VOIP, 1)
+        ptable["distanceFactor"] = Single(distance)
+        return distance < 1
+    end
     readLive(listener)
     ptable.PreventExecution = true
     if reaches(speaker, listener) and hears(recipient, speaker.Channel, "Voice") then
@@ -176,6 +201,28 @@ local function routeVoice(instance, ptable)
     ptable["isRadio"] = false
     ptable["distanceFactor"] = Single(garble)
     return garble < 1
+end
+
+-- Radio chat that can't go out (no headset, or its channel doesn't transmit) is said nearby instead, the way the
+-- original turns the chat of someone who can't speak into dead chat, so everyone sees it as normal speech.
+-- Only player chat comes here without a type; the original picks it from the r; command or the chat mode.
+-- It is sent again as local chat: an enum argument can't be changed from Lua (Lua numbers don't cast to ChatMode).
+local function sayOffAirNearby(instance, ptable)
+    if not active or ptable["type"] ~= nil then return end
+    local client = ptable["senderClient"]
+    local character = client ~= nil and client.Character or nil
+    if character == nil or character.IsDead then return end
+    local command, text = ChatMessage.GetChatMessageCommand(ptable["message"])
+    command = string.lower(command)
+    if command ~= "r" and command ~= "radio" and (command ~= "" or ptable["chatMode"] ~= ChatMode.Radio) then return end
+    local wifi = chatRadio(character)
+    if wifi ~= nil then
+        local state = radioState(wifi, character)
+        readLive(state)
+        if transmits(state) then return end
+    end
+    ptable.PreventExecution = true
+    Game.Server.SendChatMessage(text, ChatMessageType.Default, client)
 end
 
 -- The blank keys' channels go only to admin ghosts: players find them by tuning in.
@@ -241,6 +288,7 @@ function radio.Start()
         patched = true
         Hook.Patch(PATCH_ID, "Barotrauma.Networking.ChatMessage", "ApplyDistanceEffect", DISTANCE_ARGS, routeText, Hook.HookMethodType.Before)
         Hook.Patch(PATCH_ID, "Barotrauma.Networking.VoipServer", "CanReceive", VOIP_ARGS, routeVoice, Hook.HookMethodType.Before)
+        Hook.Patch(PATCH_ID, "Barotrauma.Networking.GameServer", "SendChatMessage", sayOffAirNearby, Hook.HookMethodType.Before)
     end
     sendChannels(nil, false)
 end

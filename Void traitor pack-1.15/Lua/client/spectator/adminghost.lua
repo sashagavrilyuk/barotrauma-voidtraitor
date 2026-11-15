@@ -26,6 +26,8 @@ local carried
 -- set while the ghost's focus search runs (see measureLimbDistance)
 local searchingFocus = false
 local cameraZoom, cameraTargetZoom
+-- lighting as it was before the ghost turned it off
+local lightingBefore
 -- entity IDs of every ghost in the round
 local listed = {}
 
@@ -214,7 +216,10 @@ local function showGhosts()
 end
 
 local function stop()
-    if ghost ~= nil then rawget(_G, RADIO_STATE_KEY).LeaveGhost() end
+    if ghost ~= nil then
+        rawget(_G, RADIO_STATE_KEY).LeaveGhost()
+        gameMain.LightManager.LightingEnabled = lightingBefore
+    end
     release(carried)
     carried = nil
     ghostId = nil
@@ -233,6 +238,9 @@ local function watchControl()
     for limb in ghost.AnimController.Limbs do limb.body.FarseerBody.IgnoreGravity = true end
     -- taking control of a character turns line of sight back on
     gameMain.LightManager.LosEnabled = false
+    -- full light, as the lighting console command gives
+    lightingBefore = gameMain.LightManager.LightingEnabled
+    gameMain.LightManager.LightingEnabled = false
     cameraZoom = gameMain.GameScreen.Cam.Zoom
     cameraTargetZoom = cameraZoom
     ensurePatches()
@@ -253,8 +261,14 @@ end)
 
 Networking.Receive(NET_LIST, function(message)
     listed = {}
+    local talkingToDead = {}
     local count = message.ReadByte()
-    for _ = 1, count do listed[message.ReadUInt16()] = true end
+    for _ = 1, count do
+        local id = message.ReadUInt16()
+        listed[id] = true
+        if message.ReadBoolean() then talkingToDead[id] = true end
+    end
+    rawget(_G, RADIO_STATE_KEY).SetTalkingToDead(talkingToDead)
     if count > 0 then
         Hook.Add("think", SHOW_ID, showGhosts)
     else
