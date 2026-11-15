@@ -5,7 +5,7 @@ if SERVER then return end
 -- picking one tunes the headset to that channel, and the two tickboxes of a channel turn hearing its voice and
 -- reading its messages on and off. The vanilla radio entry stays in the list, hidden, because the chat keys select it.
 -- An admin ghost also gets "dead", which sends its chat to dead chat (traitormod Lua/features/adminghost.lua), and the
--- channels of the powered radio relays.
+-- channels the telecom servers' blank keys open.
 local Common = select(2, ...)
 local text = Common.Language.Radio
 
@@ -26,11 +26,11 @@ LuaUserData.MakePropertyAccessible(chatBoxType, "ChatModeDropDown")
 LuaUserData.MakeMethodAccessible(chatBoxType, "SetChannel")
 local gameMain = LuaUserData.CreateStatic("Barotrauma.GameMain")
 
-local commonChannel = 0
+local commonChannel, commonKey = 0, nil
 -- departments of the current Station round ({ Channel, Key, Name }); empty in other rounds
 local departments = {}
--- channels of the powered radio relays; the server sends them only to admin ghosts
-local relayChannels = {}
+-- channels the telecom servers' blank keys open; the server sends them only to admin ghosts
+local blankChannels = {}
 -- channels the player turned off, kept for the whole session
 local muted = { Voice = {}, Text = {} }
 local deadChat = false
@@ -47,11 +47,6 @@ local function headsetRadio()
     local character = Character.Controlled
     local headset = character ~= nil and character.Inventory ~= nil and character.Inventory.GetItemInLimbSlot(InvSlotType.Headset) or nil
     return headset, headset ~= nil and headset.GetComponentString("WifiComponent") or nil
-end
-
-local function isGhost()
-    local character = Character.Controlled
-    return character ~= nil and character.CharacterHealth.GetAffliction("vt_adminghost") ~= nil
 end
 
 local function requestChannels()
@@ -183,8 +178,10 @@ local function fill(dropdown)
     local entries = { { Text = TextManager.Get("chatmode.local"), Data = ChatMode.Local } }
     -- hidden in Station, where it would only repeat one of the channels
     entries[#entries + 1] = { Text = TextManager.Get("chatmode.radio"), Data = ChatMode.Radio, Hidden = station }
-    if station then entries[#entries + 1] = { Text = text.Common, Data = { Channel = commonChannel }, Channel = commonChannel } end
-    local ghost = isGhost()
+    if station and held[commonKey] then
+        entries[#entries + 1] = { Text = text.Common, Data = { Channel = commonChannel }, Channel = commonChannel }
+    end
+    local ghost = Common.IsAdminGhost()
     if ghost then entries[#entries + 1] = { Text = text.Dead, Data = { Dead = true } } end
     if station then
         for _, department in ipairs(departments) do
@@ -193,7 +190,7 @@ local function fill(dropdown)
             end
         end
         if ghost then
-            for _, channel in ipairs(relayChannels) do
+            for _, channel in ipairs(blankChannels) do
                 entries[#entries + 1] = { Text = channelName(channel), Data = { Channel = channel }, Channel = channel }
             end
         end
@@ -247,8 +244,8 @@ local function install()
     dropdown.OnSelected = function(component, data) return pick(dropdown, data) end
     dropdown.OnDropped = function()
         fill(dropdown)
-        -- relays get switched on and off; the answer fills the list again
-        if isGhost() then requestChannels() end
+        -- servers get keys and power on and off; the answer fills the list again
+        if Common.IsAdminGhost() then requestChannels() end
         return true
     end
     -- runs after the list closed itself on the click
@@ -274,13 +271,13 @@ Hook.Patch(PATCH_ID, "Barotrauma.Networking.GameClient", "SendChatMessage", SEND
 end, Hook.HookMethodType.Before)
 
 Networking.Receive(NET_CHANNELS, function(message)
-    commonChannel = message.ReadUInt16()
+    commonChannel, commonKey = message.ReadUInt16(), message.ReadString()
     departments = {}
     for _ = 1, message.ReadByte() do
         departments[#departments + 1] = { Channel = message.ReadUInt16(), Key = message.ReadString(), Name = message.ReadString() }
     end
-    relayChannels = {}
-    for _ = 1, message.ReadByte() do relayChannels[#relayChannels + 1] = message.ReadUInt16() end
+    blankChannels = {}
+    for _ = 1, message.ReadByte() do blankChannels[#blankChannels + 1] = message.ReadUInt16() end
     install()
     if installedOn ~= nil and installedOn.Dropped then fill(installedOn) end
     -- the server forgets the player's choice when they reconnect
@@ -310,7 +307,7 @@ end)
 
 Hook.Add("roundEnd", PATCH_ID, function()
     departments = {}
-    relayChannels = {}
+    blankChannels = {}
     deadChat = false
 end)
 

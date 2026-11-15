@@ -493,6 +493,19 @@ Traitormod.AddCommand("!aghost", function (client, args)
     return true
 end)
 
+Traitormod.AddCommand("!aoverlay", function (client, args)
+    if not client.HasPermission(ClientPermissions.ConsoleCommands) then return end
+
+    if not Game.RoundStarted then
+        Traitormod.SendMessage(client, Traitormod.Language.RoundNotStarted)
+        return true
+    end
+
+    Traitormod.AdminOverlay.Toggle(client)
+
+    return true
+end)
+
 Traitormod.AddCommand("!revive", function (client, args)
     if not client.HasPermission(ClientPermissions.ConsoleCommands) then return end
 

@@ -80,7 +80,7 @@
 					<RequiredItems items="" />
 				</WifiComponent>
 			</Upgrade>
-			<ItemContainer capacity="6" hideitems="true">
+			<ItemContainer capacity="8" hideitems="true">
 				<Containable items="vt_radiokey">
 					<StatusEffect type="OnInserted" target="This">
 						<Sound file="%ModDir%/Sounds/Station/Radio/pistol_magin.ogg" range="400" />
@@ -89,7 +89,7 @@
 						<Sound file="%ModDir%/Sounds/Station/Radio/pistol_magout.ogg" range="400" />
 					</StatusEffect>
 				</Containable>
-				<RequiredItem items="screwdriver" type="Equipped" />
+				<RequiredItem items="screwdriver" type="Equipped" ignoreineditor="true" />
 			</ItemContainer>
 			<Wearable limbtype="Head" slots="Any,Headset" msg="ItemMsgPickUpSelect" displaycontainedstatus="true">
 				<sprite name="Headset Wearable" texture="Content/Items/Jobgear/headgears.png" limb="Head" depth="0.1" hidelimb="false" inheritlimbdepth="true" inheritscale="true" ignorelimbscale="true" scale="0.7" hideotherwearables="false" sourcerect="26,317,51,64" origin="0.5,0.6" />

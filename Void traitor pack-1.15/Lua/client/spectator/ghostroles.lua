@@ -6,6 +6,7 @@ local NET_READY = "VoidTraitor_GhostRolesGuiReady"
 local NET_REQUEST = "VoidTraitor_GhostRolesRequest"
 local NET_SNAPSHOT = "VoidTraitor_GhostRolesSnapshot"
 local NET_TAKE = "VoidTraitor_GhostRolesTake"
+local NET_ADMIN_GHOST_TELEPORT = "VoidTraitor_AdminGhostTeleport"
 
 local GLOBAL_STATE_KEY = "VoidTraitorGhostRolesGuiState"
 local HUD_PATCH_ID = "VoidTraitor.GhostRolesGui.Hud"
@@ -223,6 +224,7 @@ end
 local function EnsureBottomButton()
     if sharedState.Disabled or not ShouldShowBottomButton() then return end
     if buttonRoot == nil then CreateBottomButton() end
+    bottomButton.RectTransform.AbsoluteOffset = Point(bottomButton.RectTransform.AbsoluteOffset.X, Common.GetBottomButtonLift())
 end
 
 sharedState.EnsureBottomButton = EnsureBottomButton
@@ -253,6 +255,14 @@ end
 local function StartFollow(characterId, position)
     characterId = tonumber(characterId)
     if characterId == nil or characterId <= 0 or position == nil then return false end
+
+    -- the camera follows an admin ghost's body, so the server moves the ghost there instead
+    if Common.IsAdminGhost() then
+        local message = Networking.Start(NET_ADMIN_GHOST_TELEPORT)
+        message.WriteUInt16(characterId)
+        Networking.Send(message)
+        return true
+    end
 
     followCharacterId = characterId
     followPosition = position

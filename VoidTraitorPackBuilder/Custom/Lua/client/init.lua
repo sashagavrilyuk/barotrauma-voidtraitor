@@ -14,6 +14,7 @@ assert(loadfile(packPath .. "/Lua/client/spectator/camera_teleport.lua"))(packPa
 assert(loadfile(packPath .. "/Lua/client/spectator/ghostroles.lua"))(packPath, clientCommon)
 assert(loadfile(packPath .. "/Lua/client/spectator/adminghost.lua"))()
 assert(loadfile(packPath .. "/Lua/client/radio.lua"))(packPath, clientCommon)
+assert(loadfile(packPath .. "/Lua/client/adminoverlay.lua"))(packPath, clientCommon)
 assert(loadfile(packPath .. "/Lua/client/pointshop/gui.lua"))(packPath, clientCommon)
 assert(loadfile(packPath .. "/Lua/client/pointshop/input.lua"))(packPath)
 assert(loadfile(packPath .. "/Lua/client/lobby/menu.lua"))(packPath, clientCommon)

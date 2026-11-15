@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
-  <!-- Department radio keys for the headset's key slot (traitormod Lua/gamemodes/station/radio.lua): a headset talks and
-       listens on a department's channel while it holds the key. Texture from Space Station 14, see ATTRIBUTION.txt. -->
+  <!-- Radio keys and the telecom server, like Space Station 14's (traitormod Lua/gamemodes/station/radio.lua): a channel
+       works only while a powered telecom server holds its key, and a headset talks and listens on a channel while it
+       holds the key too. Textures from Space Station 14, see ATTRIBUTION.txt. -->
   <Item name="" identifier="vt_radiokey_command" category="Equipment" tags="smallitem,vt_radiokey" scale="0.5" impactsoundtag="impact_metal_light">
     <InventoryIcon texture="%ModDir%/the void traitor pack/items/radiokeys.png" sourcerect="0,0,64,64" origin="0.5,0.5" />
     <Sprite texture="%ModDir%/the void traitor pack/items/radiokeys.png" sourcerect="0,0,64,64" depth="0.6" origin="0.5,0.5" />
@@ -28,21 +29,53 @@
     <InventoryIcon sourcerect="320,0,64,64" />
     <Sprite sourcerect="320,0,64,64" />
   </Item>
-  <!-- Radio relay (traitormod Lua/gamemodes/station/radio.lua): a channel other than the common and department ones works
-       only while a powered relay is tuned to it. The channel is set by selecting the relay, like a Wi-Fi component.
-       Texture from Space Station 14, see ATTRIBUTION.txt. -->
-  <Item identifier="vt_radiorelay" name="" category="Electrical" tags="vt_radiorelay" scale="0.5" impactsoundtag="impact_metal_light" isshootable="true" GrabWhenSelected="true">
-    <InventoryIcon texture="%ModDir%/the void traitor pack/items/radiorelay.png" sourcerect="0,0,64,64" origin="0.5,0.5" />
-    <Sprite texture="%ModDir%/the void traitor pack/items/radiorelay.png" sourcerect="0,0,64,64" depth="0.8" origin="0.5,0.5" canflipx="false" />
+  <Item identifier="vt_radiokey_common" variantof="vt_radiokey_command">
+    <InventoryIcon sourcerect="384,0,64,64" />
+    <Sprite sourcerect="384,0,64,64" />
+  </Item>
+  <!-- A key for a channel of its own: the frequency is set while holding it, like a bomb's timer.
+       The Wi-Fi component only keeps the frequency; it is not linked to chat. -->
+  <Item identifier="vt_radiokey_blank" variantof="vt_radiokey_command">
+    <InventoryIcon sourcerect="448,0,64,64" />
+    <Sprite sourcerect="448,0,64,64" />
+    <WifiComponent />
+    <CustomInterface canbeselected="true" drawhudwhenequipped="true" allowuioverlap="false">
+      <GuiFrame relativesize="0.15,0.08" anchor="CenterLeft" pivot="TopLeft" relativeoffset="0.006,0.006" style="ItemUI" />
+      <IntegerInput text="radiokey.frequency" targetitemcomponent="WifiComponent" propertyname="Channel" min="0" max="10000" step="1" />
+    </CustomInterface>
+    <Fabricate suitablefabricators="fabricator" requiredtime="10">
+      <RequiredItem identifier="fpgacircuit" />
+    </Fabricate>
+    <Deconstruct time="5">
+      <Item identifier="fpgacircuit" />
+    </Deconstruct>
+  </Item>
+  <Item identifier="vt_telecomserver" name="" category="Electrical,Machine" tags="vt_telecomserver" scale="0.5" impactsoundtag="impact_metal_light" isshootable="true" GrabWhenSelected="true">
+    <InventoryIcon texture="%ModDir%/the void traitor pack/items/telecomserver.png" sourcerect="0,0,64,64" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/the void traitor pack/items/telecomserver.png" sourcerect="0,0,64,64" depth="0.8" origin="0.5,0.5" canflipx="false" />
     <Body width="44" height="60" density="15" />
     <Holdable selectkey="Select" pickkey="Use" aimpos="65,-10" handle1="0,0" attachable="true" aimable="true" PickingTime="5.0" slots="Any,RightHand,LeftHand" msg="ItemMsgDetachWrench" MsgWhenDropped="ItemMsgPickupSelect">
       <RequiredItem items="wrench,deattachtool" excludeditems="multitool" type="Equipped" />
     </Holdable>
-    <WifiComponent canbeselected="true" />
-    <Powered PowerConsumption="50" MinVoltage="0.5" IsActive="true" VulnerableToEMP="true" />
-    <!-- the lights, drawn only while the relay has power -->
+    <!-- keys come out with a crowbar, as in Space Station 14; the map editor needs no tool -->
+    <ItemContainer capacity="10" hideitems="true" canbeselected="true">
+      <Containable items="vt_radiokey">
+        <StatusEffect type="OnInserted" target="This">
+          <Sound file="%ModDir%/Sounds/Station/Radio/pistol_magin.ogg" range="400" />
+        </StatusEffect>
+        <StatusEffect type="OnRemoved" target="This">
+          <Sound file="%ModDir%/Sounds/Station/Radio/pistol_magout.ogg" range="400" />
+        </StatusEffect>
+      </Containable>
+      <RequiredItem items="crowbar" type="Equipped" ignoreineditor="true" />
+    </ItemContainer>
+    <!-- the fans are as loud as the voltage lets them be: silent without power -->
+    <Powered PowerConsumption="50" MinVoltage="0.5" IsActive="true" VulnerableToEMP="true">
+      <sound file="%ModDir%/Sounds/Station/Radio/server_fans.ogg" type="OnActive" range="500" volume="0.35" volumeproperty="Voltage" loop="true" />
+    </Powered>
+    <!-- the lights, drawn only while the server has power -->
     <LightComponent range="10.0" lightcolor="255,255,255,0" powerconsumption="1" IsOn="true" castshadows="false" allowingameediting="false">
-      <sprite texture="%ModDir%/the void traitor pack/items/radiorelay.png" sourcerect="64,0,64,64" depth="0.79" origin="0.5,0.5" alpha="1.0" />
+      <sprite texture="%ModDir%/the void traitor pack/items/telecomserver.png" sourcerect="64,0,64,64" depth="0.79" origin="0.5,0.5" alpha="1.0" />
     </LightComponent>
     <ConnectionPanel selectkey="Action" canbeselected="true" msg="ItemMsgRewireScrewdriver" hudpriority="10">
       <GuiFrame relativesize="0.2,0.32" minsize="400,350" maxsize="480,420" anchor="Center" style="ConnectionPanel" />
@@ -50,12 +83,12 @@
       <input name="power_in" displayname="connection.powerin" />
     </ConnectionPanel>
     <Fabricate suitablefabricators="fabricator" requiredtime="20">
-      <RequiredItem identifier="wificomponent" />
+      <RequiredItem identifier="fpgacircuit" />
       <RequiredItem identifier="fpgacircuit" />
       <RequiredItem identifier="copper" />
     </Fabricate>
     <Deconstruct time="10">
-      <Item identifier="wificomponent" />
+      <Item identifier="fpgacircuit" />
       <Item identifier="fpgacircuit" />
     </Deconstruct>
   </Item>

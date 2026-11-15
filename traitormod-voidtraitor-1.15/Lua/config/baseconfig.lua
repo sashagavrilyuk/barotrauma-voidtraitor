@@ -59,10 +59,13 @@ config.IdConsole = {
         { Id = "cargo", Name = "IdConsoleCargoJob", Tags = { "vt_access_maintenance", "vt_access_cargo" } },
     },
 }
--- Station radio. Every headset talks and listens on the common channel; a department channel needs the
--- department's key inside the headset (the headset holds up to 6 keys, Void traitor pack: Vanilla/Item.xml).
+-- Station radio, like Space Station 14's: a channel works only while a powered telecom server holds its key, and a
+-- headset needs the key too (a headset holds up to 8 keys, Void traitor pack: Vanilla/Item.xml). A blank key opens the
+-- channel it is set to.
 config.Radio = {
     CommonChannel = 0,
+    CommonKey = "vt_radiokey_common",
+    BlankKey = "vt_radiokey_blank",
     Departments = {
         { Id = "command", Name = "RadioCommand", Channel = 1353, Key = "vt_radiokey_command" },
         { Id = "engineering", Name = "RadioEngineering", Channel = 1357, Key = "vt_radiokey_engineering" },
@@ -71,7 +74,7 @@ config.Radio = {
         { Id = "cargo", Name = "RadioCargo", Channel = 1347, Key = "vt_radiokey_cargo" },
         { Id = "science", Name = "RadioScience", Channel = 1351, Key = "vt_radiokey_science" },
     },
-    -- department keys a job's headset gets at spawn
+    -- department keys a job's headset gets at spawn, next to the common key every headset gets
     JobKeys = {
         captain = { "command", "engineering", "medical", "security", "cargo", "science" },
         engineer = { "engineering" },

@@ -607,9 +607,15 @@ function Common.FitBottomButton(button, horizontalPaddingPixels)
     button.RectTransform.AbsoluteOffset = Point(button.RectTransform.AbsoluteOffset.X, screenHeight - input.Bottom)
 end
 
+function Common.IsAdminGhost()
+    local character = Character.Controlled
+    return character ~= nil and character.CharacterHealth.GetAffliction("vt_adminghost") ~= nil
+end
+
+-- spectators, and an admin ghost, which uses the spectator windows too
 function Common.IsLocalCandidate()
     local character = Character.Controlled
-    return character == nil or character.IsDead == true
+    return character == nil or character.IsDead == true or Common.IsAdminGhost()
 end
 
 function Common.IsRoundStarted()
@@ -618,6 +624,17 @@ end
 
 function Common.IsConnected()
     return Game.Client ~= nil
+end
+
+-- How far above the bottom edge the spectator windows' buttons go: an admin ghost has its hotbar there.
+function Common.GetBottomButtonLift()
+    if not Common.IsAdminGhost() then return 0 end
+    local _, height = Common.GetScreenSize()
+    local top = height
+    for position in Character.Controlled.Inventory.SlotPositions do
+        if position.Y > height / 2 and position.Y < top then top = position.Y end
+    end
+    return math.floor(height - top) + Common.GetGap()
 end
 
 function Common.ShouldShowBottomButton()

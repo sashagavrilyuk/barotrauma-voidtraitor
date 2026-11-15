@@ -9,6 +9,7 @@ local NET_STATE = "VoidTraitor_AdminGhostState"
 local NET_LIST = "VoidTraitor_AdminGhostList"
 local NET_LIST_REQUEST = "VoidTraitor_AdminGhostListRequest"
 local NET_DEAD_CHAT = "VoidTraitor_AdminGhostDeadChat"
+local NET_TELEPORT = "VoidTraitor_AdminGhostTeleport"
 local PATCH_ID = "Traitormod.AdminGhost"
 local REACH_ARGS = { "Barotrauma.Item", "out System.Single", "System.Boolean", "System.Boolean" }
 local REACH_CHARACTER_ARGS = { "Barotrauma.Character", "System.Single", "System.Boolean", "System.Boolean" }
@@ -307,7 +308,7 @@ local function sendState(client, ghost, active)
     Networking.Send(message, client.Connection)
 end
 
--- A headset with every department key, so the ghost uses the radio like the crew does: it talks for the admin's
+-- A headset with every key, so the ghost uses the radio like the crew does: it talks for the admin's
 -- team (the crew's when the admin has none yet) and hears every team.
 local function giveHeadset(client, ghost)
     local team = client.TeamID == CharacterTeamType.None and CharacterTeamType.Team1 or client.TeamID
@@ -315,6 +316,7 @@ local function giveHeadset(client, ghost)
         local wifi = headset.GetComponentString("WifiComponent")
         wifi.TeamID = team
         wifi.AllowCrossTeamCommunication = true
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.Prefabs[Traitormod.Config.Radio.CommonKey], headset.OwnInventory)
         for _, department in ipairs(Traitormod.Config.Radio.Departments) do
             Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.Prefabs[department.Key], headset.OwnInventory)
         end
@@ -380,6 +382,16 @@ local function removeGhost(ghost, returnControl)
     sendListToListeners()
 end
 
+-- The admin takes another character (a ghost role): the ghost goes away without giving the old body back.
+function adminGhost.Leave(client)
+    for ghost, state in pairs(ghosts) do
+        if state.Client == client then
+            removeGhost(ghost, false)
+            sendState(client, ghost, false)
+        end
+    end
+end
+
 function adminGhost.Toggle(client)
     for ghost, state in pairs(ghosts) do
         if state.Client == client then
@@ -393,6 +405,14 @@ end
 Networking.Receive(NET_LIST_REQUEST, function(message, client)
     listeners[client] = true
     sendList(client.Connection)
+end)
+
+-- The spectator windows' "follow" moves a ghost to the character instead of moving the camera.
+Networking.Receive(NET_TELEPORT, function(message, client)
+    local target = Entity.FindEntityByID(message.ReadUInt16())
+    if not isGhostClient(client) or target == nil or not LuaUserData.IsTargetType(target, "Barotrauma.Character")
+        or target.Removed then return end
+    client.Character.TeleportTo(target.WorldPosition)
 end)
 
 Networking.Receive(NET_DEAD_CHAT, function(message, client)

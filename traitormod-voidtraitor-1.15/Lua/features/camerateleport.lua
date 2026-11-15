@@ -60,8 +60,12 @@ end
 function cameraTeleport.SendSnapshot(client, openMenu)
     if client == nil or client.Connection == nil then return false end
 
-    local allowed = client.InGame and Game.RoundStarted and (client.Character == nil or client.Character.IsDead)
-    local targets = allowed and getTargets() or {}
+    local own = client.Character
+    local allowed = client.InGame and Game.RoundStarted and (own == nil or own.IsDead or Traitormod.AdminGhost.IsGhost(own))
+    local targets = {}
+    for _, target in ipairs(allowed and getTargets() or {}) do
+        if target.Character ~= own then targets[#targets + 1] = target end
+    end
     local message = Networking.Start(guiNet.Snapshot)
 
     message.WriteBoolean(openMenu == true)

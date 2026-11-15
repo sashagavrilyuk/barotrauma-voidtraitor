@@ -199,7 +199,7 @@ end
 
 local function canUseGhostRoles(client)
     if client == nil or not config.Enabled or not Game.RoundStarted or not client.InGame then return false end
-    return client.Character == nil or client.Character.IsDead
+    return client.Character == nil or client.Character.IsDead or Traitormod.AdminGhost.IsGhost(client.Character)
 end
 
 local function validateGhostRoleClient(client)
@@ -213,7 +213,7 @@ local function validateGhostRoleClient(client)
         return false
     end
 
-    if client.Character ~= nil and not client.Character.IsDead then
+    if client.Character ~= nil and not client.Character.IsDead and not Traitormod.AdminGhost.IsGhost(client.Character) then
         Traitormod.SendMessage(client, lang("GhostRolesSpectator"))
         return false
     end
@@ -411,6 +411,7 @@ function gr.TryTake(client, reference)
     end
 
     Traitormod.MidRoundSpawn.SetSpawnedClient(client, true)
+    Traitormod.AdminGhost.Leave(client)
     client.SetClientCharacter(role.Character)
     role.Taken = true
 

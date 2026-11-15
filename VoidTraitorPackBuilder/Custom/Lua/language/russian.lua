@@ -64,6 +64,7 @@ language.AdminMenu = {
         ongoingevents = { Label = "Активные события", Hint = "Аналог !ongoingevents", Category = "Info" },
         endroundnow = { Label = "Закончить раунд сейчас", Hint = "Немедленно завершает раунд во время финального отсчёта Secret.", Category = "Info" },
         aghost = { Label = "Админ-призрак", Hint = "Аналог !aghost: войти в режим админ-призрака или выйти из него", Category = "Info" },
+        aoverlay = { Label = "Оверлей админа", Hint = "Аналог !aoverlay: показать или скрыть над персонажами игрока, роль и здоровье", Category = "Info" },
         revive = { Label = "Оживить игрока", Hint = "Аналог !revive", Category = "Players" },
         void = { Label = "Отправить в пустоту", Hint = "Аналог !void", Category = "Players" },
         unvoid = { Label = "Вернуть из пустоты", Hint = "Аналог !unvoid", Category = "Players" },
@@ -286,6 +287,12 @@ language.Voting = {
     MapTitle = "Голосование за подлодку",
     StartStation = "Голосование за станцию",
     StationTitle = "Выбор станции",
+}
+
+-- Оверлей админа над персонажами
+language.AdminOverlay = {
+    NoPlayer = "без игрока",
+    Health = "здоровье %d%%",
 }
 
 -- Список режимов чата: каналы рации и чат мёртвых админ-призрака

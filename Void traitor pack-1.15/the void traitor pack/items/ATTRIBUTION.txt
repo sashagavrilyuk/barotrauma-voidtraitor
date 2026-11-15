@@ -6,13 +6,14 @@ Space Station 14, Resources/Textures/Objects/Devices/encryption_keys.rsi
 Source: https://github.com/space-wizards/space-station-14/tree/081e2582dc7ca0bb5a5b0d8ea723425e498ffc16/Resources/Textures/Objects/Devices/encryption_keys.rsi
 Created by DSC@300074782328750080 for Space Station 14, crypt states modified by Flareguy for Space Station 14.
 Changes: each key is a crypt state with its department label drawn on top (crypt_silver + com_label,
-crypt_gray + eng_label, med_label, sec_label, cargo_label, sci_label), scaled 2x without smoothing.
+crypt_gray + eng_label, med_label, sec_label, cargo_label, sci_label, common_label; the blank key is crypt_gray
+alone), scaled 2x without smoothing.
 
 License: Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)
 https://creativecommons.org/licenses/by-sa/3.0/
 
-radiorelay.png — radio relay
-=============================
+telecomserver.png — telecom server
+==================================
 Space Station 14, Resources/Textures/Structures/Machines/telecomms.rsi
 Source: https://github.com/space-wizards/space-station-14/tree/9af1d69e3099775c9090a8a1af7a2b2c834d7895/Resources/Textures/Structures/Machines/telecomms.rsi
 Sprites by Spangs04, based on servers taken from tgstation at commit

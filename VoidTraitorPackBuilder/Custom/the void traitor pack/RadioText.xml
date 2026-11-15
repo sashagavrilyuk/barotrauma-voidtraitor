@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <infotexts language="Russian" translatedname="Русский">
   <entityname.vt_radiokey_command>Ключ рации: Командование</entityname.vt_radiokey_command>
-  <entitydescription.vt_radiokey_command>Вставляется в гарнитуру и открывает канал отдела «Командование». Вставить и вынуть ключ можно только с отвёрткой в руке.</entitydescription.vt_radiokey_command>
+  <entitydescription.vt_radiokey_command>Открывает канал «Командование» в гарнитуре или в сервере связи. В гарнитуру вставляется и вынимается с отвёрткой в руке, в сервер — с ломом.</entitydescription.vt_radiokey_command>
   <entityname.vt_radiokey_engineering>Ключ рации: Инженерия</entityname.vt_radiokey_engineering>
-  <entitydescription.vt_radiokey_engineering>Вставляется в гарнитуру и открывает канал отдела «Инженерия». Вставить и вынуть ключ можно только с отвёрткой в руке.</entitydescription.vt_radiokey_engineering>
+  <entitydescription.vt_radiokey_engineering>Открывает канал «Инженерия» в гарнитуре или в сервере связи. В гарнитуру вставляется и вынимается с отвёрткой в руке, в сервер — с ломом.</entitydescription.vt_radiokey_engineering>
   <entityname.vt_radiokey_medical>Ключ рации: Медицина</entityname.vt_radiokey_medical>
-  <entitydescription.vt_radiokey_medical>Вставляется в гарнитуру и открывает канал отдела «Медицина». Вставить и вынуть ключ можно только с отвёрткой в руке.</entitydescription.vt_radiokey_medical>
+  <entitydescription.vt_radiokey_medical>Открывает канал «Медицина» в гарнитуре или в сервере связи. В гарнитуру вставляется и вынимается с отвёрткой в руке, в сервер — с ломом.</entitydescription.vt_radiokey_medical>
   <entityname.vt_radiokey_security>Ключ рации: Безопасность</entityname.vt_radiokey_security>
-  <entitydescription.vt_radiokey_security>Вставляется в гарнитуру и открывает канал отдела «Безопасность». Вставить и вынуть ключ можно только с отвёрткой в руке.</entitydescription.vt_radiokey_security>
+  <entitydescription.vt_radiokey_security>Открывает канал «Безопасность» в гарнитуре или в сервере связи. В гарнитуру вставляется и вынимается с отвёрткой в руке, в сервер — с ломом.</entitydescription.vt_radiokey_security>
   <entityname.vt_radiokey_cargo>Ключ рации: Карго</entityname.vt_radiokey_cargo>
-  <entitydescription.vt_radiokey_cargo>Вставляется в гарнитуру и открывает канал отдела «Карго». Вставить и вынуть ключ можно только с отвёрткой в руке.</entitydescription.vt_radiokey_cargo>
+  <entitydescription.vt_radiokey_cargo>Открывает канал «Карго» в гарнитуре или в сервере связи. В гарнитуру вставляется и вынимается с отвёрткой в руке, в сервер — с ломом.</entitydescription.vt_radiokey_cargo>
   <entityname.vt_radiokey_science>Ключ рации: РНД</entityname.vt_radiokey_science>
-  <entitydescription.vt_radiokey_science>Вставляется в гарнитуру и открывает канал отдела «РНД». Вставить и вынуть ключ можно только с отвёрткой в руке.</entitydescription.vt_radiokey_science>
-  <entityname.vt_radiorelay>Радиоретранслятор</entityname.vt_radiorelay>
-  <entitydescription.vt_radiorelay>Открывает канал рации на своей частоте, пока получает питание. Частоту меняют, выбрав аппарат. Крепится к стене гаечным ключом.</entitydescription.vt_radiorelay>
+  <entitydescription.vt_radiokey_science>Открывает канал «РНД» в гарнитуре или в сервере связи. В гарнитуру вставляется и вынимается с отвёрткой в руке, в сервер — с ломом.</entitydescription.vt_radiokey_science>
+  <entityname.vt_radiokey_common>Ключ рации: Общий</entityname.vt_radiokey_common>
+  <entitydescription.vt_radiokey_common>Открывает канал «Общий» в гарнитуре или в сервере связи. В гарнитуру вставляется и вынимается с отвёрткой в руке, в сервер — с ломом.</entitydescription.vt_radiokey_common>
+  <entityname.vt_radiokey_blank>Чистый ключ рации</entityname.vt_radiokey_blank>
+  <entitydescription.vt_radiokey_blank>Ключ своей частоты: выставьте частоту, держа ключ в руке, и вставьте его в сервер связи. Номера общего канала и отделов на нём не работают.</entitydescription.vt_radiokey_blank>
+  <radiokey.frequency>Частота</radiokey.frequency>
+  <entityname.vt_telecomserver>Сервер связи</entityname.vt_telecomserver>
+  <entitydescription.vt_telecomserver>Канал рации работает, только пока сервер с ключом этого канала получает питание. Ключи вставляются и вынимаются с ломом в руке. Крепится к стене гаечным ключом.</entitydescription.vt_telecomserver>
 </infotexts>

@@ -128,7 +128,7 @@ local function UpdateBottomButtonPosition()
 
     local width = bottomButton.Rect.Width
     local offsetX = -math.floor((ghostWidth + width) / 2 + SafeIntScale(BOTTOM_BUTTON_GAP_PIXELS))
-    bottomButton.RectTransform.AbsoluteOffset = Point(offsetX, bottomButton.RectTransform.AbsoluteOffset.Y)
+    bottomButton.RectTransform.AbsoluteOffset = Point(offsetX, Common.GetBottomButtonLift())
 end
 
 local function CreateBottomButton()
