@@ -17,8 +17,9 @@ LuaUserData.MakeMethodAccessible(screenType, "SelectJobPreferencesTab")
 LuaUserData.MakeMethodAccessible(screenType, "SelectAppearanceTab")
 
 local STATUS_COLOR = Color(170, 175, 165, 255)
--- height of the character picture in 1920x1080 pixels
-local PREVIEW_HEIGHT = 150
+-- height of the character picture in 1920x1080 pixels; a picture scales with the screen like the vanilla HUD,
+-- while the text rows keep the font's size, which does not shrink below 1080p
+local PREVIEW_HEIGHT = 220
 
 S.lobbyInfo = nil
 S.lobbyInfoCheckTime = 0
@@ -240,14 +241,15 @@ function P.RefreshRoundInfo()
     end
 end
 
-function P.RefreshJobLabel(screen)
-    if S.card == nil then return end
+-- The card shows the first job preference: its name and the character in its outfit.
+local function refreshCardJob(screen)
     local slot = firstChild(screen.JobList.Content)
     local first = slot ~= nil and slot.UserData or nil
     S.card.JobLabel.Text = first ~= nil and first.Prefab.Name.Value or text.NoJob
+    P.SetFigureJob(S.card.Figure, first)
 end
 
-function P.ArrangePlayerCard(screen)
+local function arrangePlayerCard(screen)
     -- the window holds the editor of the card that was just replaced
     if S.currentMenuKind == "character" then P.CloseMenu() end
     S.card = nil
@@ -278,8 +280,8 @@ function P.ArrangePlayerCard(screen)
     local preview = GUI.Frame(Common.CreateRect(1, 1, content), nil)
     preview.Color = TRANSPARENT
     preview.CanBeFocused = false
-    Common.SetFixedHeight(preview, Common.SafeIntScale(PREVIEW_HEIGHT))
-    content.UserData.CreateIcon(GUI.RectTransform(Vector2(1, 1), preview.RectTransform, GUI.Anchor.Center))
+    Common.SetFixedHeight(preview, GUI.IntScale(PREVIEW_HEIGHT))
+    local figure = P.CreateCharacterFigure(GUI.RectTransform(Vector2(1, 1), preview.RectTransform, GUI.Anchor.Center), content.UserData)
 
     local jobLabel = Common.CreateText(content, 1, 1, nil, "", GUI.Alignment.Center, 1, nil, false)
     jobLabel.Font = GUI.Style.SubHeadingFont
@@ -300,10 +302,17 @@ function P.ArrangePlayerCard(screen)
         end
     end
 
-    S.card = { JobLabel = jobLabel, Parts = { preview, jobLabel, buttons } }
+    S.card = { JobList = screen.JobList, JobLabel = jobLabel, Figure = figure, Parts = { preview, jobLabel, buttons } }
     rememberParts()
-    P.RefreshJobLabel(screen)
+    refreshCardJob(screen)
     fitCard(panel)
+end
+
+function P.ArrangePlayerCard(screen)
+    local oldCard = S.card
+    arrangePlayerCard(screen)
+    -- after the new figure has loaded, so the textures both use stay loaded
+    if oldCard ~= nil then P.RemoveCharacterFigure(oldCard.Figure) end
 end
 
 function P.ShowCharacterWindow(showAppearance)
@@ -397,10 +406,11 @@ Hook.Patch("VoidTraitor.Lobby.Spectate", "Barotrauma.NetLobbyScreen", "SetSpecta
     fitCard(S.lobbyPanel)
 end, Hook.HookMethodType.After)
 
-Hook.Patch("VoidTraitor.Lobby.JobLabel", "Barotrauma.NetLobbyScreen", "UpdateJobPreferences", { "Barotrauma.CharacterInfo" },
+-- Runs on a change of job, variant or head, and also inside UpdatePlayerFrame for the card being built there.
+Hook.Patch("VoidTraitor.Lobby.CardJob", "Barotrauma.NetLobbyScreen", "UpdateJobPreferences", { "Barotrauma.CharacterInfo" },
     function(instance)
-        if S.sharedState.Disabled then return end
-        P.RefreshJobLabel(instance)
+        if S.sharedState.Disabled or S.card == nil or S.card.JobList ~= instance.JobList then return end
+        refreshCardJob(instance)
     end, Hook.HookMethodType.After)
 
 -- The client Lua can load after the lobby has already built its card.
