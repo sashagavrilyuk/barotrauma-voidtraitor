@@ -12,6 +12,7 @@ local text = Common.Language.Radio
 local NET_CHANNELS = "VoidTraitor_RadioChannels"
 local NET_CHANNELS_REQUEST = "VoidTraitor_RadioChannelsRequest"
 local NET_HEARING = "VoidTraitor_RadioHearing"
+local NET_JAMMED = "VoidTraitor_RadioJammed"
 local NET_DEAD_CHAT = "VoidTraitor_AdminGhostDeadChat"
 local STATE_KEY = "VoidTraitorRadioState"
 local PATCH_ID = "VoidTraitor.Radio"
@@ -20,6 +21,8 @@ local DEAD_CHAT_PREFIX = "d; "
 local RADIO_CHAT_PREFIX = "r; "
 local HEARING_KINDS = { "Voice", "Text" }
 local DIVIDER_WIDTH = 2 -- width of the vanilla VerticalLine style
+-- longer than any jamming: it ends with the server's message
+local JAM_SECONDS = 3600
 
 local chatBoxType = LuaUserData.RegisterType("Barotrauma.ChatBox")
 LuaUserData.MakePropertyAccessible(chatBoxType, "ChatModeDropDown")
@@ -33,6 +36,9 @@ local departments = {}
 local blankChannels = {}
 -- channels the player turned off, kept for the whole session
 local muted = { Voice = {}, Text = {} }
+-- channels a radiation storm jams, and the headset whose jam timer this script runs
+local jammed = {}
+local jammedRadio = nil
 local deadChat = false
 local installedOn = nil
 -- tickboxes in the open list; a click on one also selects its row, which must not change the chat target
@@ -47,6 +53,17 @@ local function headsetRadio()
     local character = Character.Controlled
     local headset = character ~= nil and character.Inventory ~= nil and character.Inventory.GetItemInLimbSlot(InvSlotType.Headset) or nil
     return headset, headset ~= nil and headset.GetComponentString("WifiComponent") or nil
+end
+
+-- The server blocks a jammed channel; the jam timer of a headset tuned to one only gives the game's warning in the
+-- chat and the headset's static, since the server doesn't send its own timer. While it runs the game won't change
+-- the channel, so the patches on SetChannel clear it first and set it again for the new channel; the channel arrows
+-- and presets check it before SetChannel and stay locked, as on a jammed vanilla radio.
+local function applyJam()
+    if jammedRadio ~= nil then jammedRadio.JamTimer = 0 end
+    local _, radio = headsetRadio()
+    jammedRadio = radio ~= nil and jammed[radio.Channel] and radio or nil
+    if jammedRadio ~= nil then jammedRadio.JamTimer = JAM_SECONDS end
 end
 
 local function requestChannels()
@@ -258,8 +275,13 @@ local function install()
     end
 end
 
+Hook.Patch(PATCH_ID, "Barotrauma.ChatBox", "SetChannel", function()
+    if jammedRadio ~= nil then jammedRadio.JamTimer = 0 end
+end, Hook.HookMethodType.Before)
+
 -- Channel picked with the numbers or typed in: show its name.
 Hook.Patch(PATCH_ID, "Barotrauma.ChatBox", "SetChannel", function(instance)
+    applyJam()
     showTarget(instance.ChatModeDropDown)
 end, Hook.HookMethodType.After)
 
@@ -282,6 +304,12 @@ Networking.Receive(NET_CHANNELS, function(message)
     if installedOn ~= nil and installedOn.Dropped then fill(installedOn) end
     -- the server forgets the player's choice when they reconnect
     if #departments > 0 then sendHearing() end
+end)
+
+Networking.Receive(NET_JAMMED, function(message)
+    jammed = {}
+    for _ = 1, message.ReadByte() do jammed[message.ReadUInt16()] = true end
+    applyJam()
 end)
 
 -- Called by the admin ghost's client script: a new ghost starts in dead chat, as on the server.
@@ -308,6 +336,8 @@ end)
 Hook.Add("roundEnd", PATCH_ID, function()
     departments = {}
     blankChannels = {}
+    jammed = {}
+    jammedRadio = nil
     deadChat = false
 end)
 

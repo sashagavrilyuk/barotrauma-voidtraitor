@@ -11,6 +11,7 @@ local config = Traitormod.Config.Radio
 local NET_CHANNELS = "VoidTraitor_RadioChannels"
 local NET_CHANNELS_REQUEST = "VoidTraitor_RadioChannelsRequest"
 local NET_HEARING = "VoidTraitor_RadioHearing"
+local NET_JAMMED = "VoidTraitor_RadioJammed"
 local PATCH_ID = "Traitormod.StationRadio"
 local DISTANCE_ARGS = { "System.String", "Barotrauma.Networking.ChatMessageType", "Barotrauma.Character", "Barotrauma.Character" }
 local VOIP_ARGS = { "Barotrauma.Networking.Client", "Barotrauma.Networking.Client", "out System.Single", "out System.Boolean" }
@@ -38,6 +39,8 @@ local muted = {}
 -- telecom servers of the round, and the channels the powered ones open (read at most once a second)
 local servers = {}
 local openChannels, openSecond = {}, nil
+-- channels a radiation storm jams
+local jammed = {}
 -- client -> its headset, read at most once a second: voice packets come every 20 ms for every listener, and reading
 -- the headset and its keys on each of them cost about 35 microseconds per packet and listener (measured in the sandbox)
 local voiceRadios = {}
@@ -96,10 +99,11 @@ local function readLive(state)
     state.Position = state.Item.WorldPosition
 end
 
--- The vanilla radio checks (team, jamming, range) plus the servers and keys, without the single-channel rule.
+-- The vanilla radio checks (team, jamming, range) plus the servers, keys and jammed channels, without the
+-- single-channel rule.
 local function reaches(sender, receiver)
     local channel = sender.Channel
-    if not serverChannels()[channel] then return false end
+    if not serverChannels()[channel] or jammed[channel] then return false end
     if keyedChannels[channel] then
         if not sender.Keys[channel] or not receiver.Keys[channel] then return false end
     elseif receiver.Channel ~= channel and not receiver.Keys[channel] then
@@ -198,6 +202,17 @@ local function sendChannels(connection, ghost)
     Networking.Send(message, connection)
 end
 
+-- The game's jam timer isn't sent to clients, so they run it themselves on a headset tuned to a jammed channel to get
+-- the game's warning in the chat and the headset's static.
+local function sendJammed(connection)
+    local message = Networking.Start(NET_JAMMED)
+    local channels = {}
+    for channel in pairs(jammed) do channels[#channels + 1] = channel end
+    message.WriteByte(#channels)
+    for _, channel in ipairs(channels) do message.WriteUInt16(channel) end
+    Networking.Send(message, connection)
+end
+
 local function trackServer(item)
     if item.HasTag(SERVER_TAG) then servers[item] = true end
 end
@@ -230,8 +245,15 @@ function radio.Start()
     sendChannels(nil, false)
 end
 
+-- channels: { [channel] = true }; an empty table ends the jamming
+function radio.Jam(channels)
+    jammed = channels
+    sendJammed(nil)
+end
+
 Networking.Receive(NET_CHANNELS_REQUEST, function(message, client)
     sendChannels(client.Connection, Traitormod.AdminGhost.IsGhost(client.Character))
+    sendJammed(client.Connection)
 end)
 
 -- A list longer than a player can turn off rejects the message.
@@ -261,6 +283,7 @@ Hook.Add("roundEnd", "Traitormod.StationRadio.End", function()
     voiceRadios = {}
     servers = {}
     openChannels, openSecond = {}, nil
+    jammed = {}
     Hook.Remove("item.created", "Traitormod.StationRadio.Servers")
 end)
 

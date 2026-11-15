@@ -1,7 +1,7 @@
 local event = {}
 
 -- Station's take on the SS14 solar flare: the Coalition warns the station, then charged particles from Jupiter jam
--- every chat radio for a few minutes. The game's own jam timer runs out by itself; the communications console still
+-- the common channel and two random department channels for a few minutes. The communications console still
 -- reaches everyone.
 event.Name = "RadiationStorm"
 event.MinRoundTime = 10
@@ -12,12 +12,17 @@ event.OnlyOncePerRound = true
 
 local warningSeconds = 20
 local minJamSeconds, maxJamSeconds = 120, 240
+local jammedDepartments = 2
 
-local function jam(item, seconds)
-    -- the tag check first keeps the pass over every item of the station cheap
-    if not item.HasTag("mobileradio") then return end
-    local radio = item.GetComponentString("WifiComponent")
-    if radio ~= nil and radio.LinkToChat then radio.JamTimer = seconds end
+local function pickChannels()
+    local config = Traitormod.Config.Radio
+    local channels = { [config.CommonChannel] = true }
+    local departments = {}
+    for _, department in ipairs(config.Departments) do departments[#departments + 1] = department.Channel end
+    for _ = 1, math.min(jammedDepartments, #departments) do
+        channels[table.remove(departments, math.random(#departments))] = true
+    end
+    return channels
 end
 
 event.CanStart = function ()
@@ -38,11 +43,7 @@ event.Think = function ()
     if not event.Jammed then
         if now < event.JamAt then return end
         event.Jammed = true
-        for item in Item.ItemList do jam(item, event.EndAt - now) end
-        -- radios made or bought during the storm are jammed too
-        Hook.Add("item.created", "Traitormod.RadiationStorm", function (item)
-            jam(item, event.EndAt - Traitormod.RoundTime)
-        end)
+        Traitormod.StationRadio.Jam(pickChannels())
     elseif now >= event.EndAt then
         Traitormod.SelectedGamemode:SendCoalitionAnnouncement(Traitormod.GetText("RadiationStormEnd"), "green")
         event.End()
@@ -50,7 +51,7 @@ event.Think = function ()
 end
 
 event.End = function ()
-    Hook.Remove("item.created", "Traitormod.RadiationStorm")
+    Traitormod.StationRadio.Jam({})
 end
 
 return event
