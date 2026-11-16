@@ -153,6 +153,8 @@ function UI.UpdateOrders()
     for _, order in ipairs(snapshot.Orders) do
         local row = P.CreateLayout(list.Content, 1, 1, nil, true, GUI.Anchor.CenterLeft)
         Common.SetFixedHeight(row, GetRowHeight())
+        -- the shares below fill the row, so the buttons end at its right edge
+        row.Stretch = true
         local icon = GUI.Frame(P.CreateRect(0.07, 1, row), nil)
         icon.Color = Color(0, 0, 0, 0)
         icon.CanBeFocused = false
@@ -308,6 +310,8 @@ function UI.Show(itemId, snapshot)
     UI.FitMinimumHeight()
     UI.Update(snapshot)
     if S.shopList == nil then P.ShowMenu() end
+    -- laid out now, or the lists' rows show unplaced for a frame (lobby/menu_window.lua)
+    root.ForceLayoutRecalculation()
 end
 
 Networking.Receive("VoidTraitor_CargoSnapshot", function(message)

@@ -132,6 +132,7 @@ P.ShowVoidTraitorMenu = function()
                 S.vtAdminList.BarScroll = S.vtAdminScroll
                 S.vtAdminList:RecalculateChildren()
                 S.vtAdminList:UpdateScrollBarSize()
+                S.vtAdminListFrame.ForceLayoutRecalculation()
             end
 
             S.vtActiveTab = "admin"
@@ -159,5 +160,8 @@ P.ShowVoidTraitorMenu = function()
     end
 
     P.AddVoidTraitorResizeHandles(panel)
+    -- Laid out now rather than in its first update: a list box picks the rows it updates and draws from its size at
+    -- that moment (GUIListBox.AddToGUIUpdateList), so for one frame rows would show below the window or unplaced.
+    root.ForceLayoutRecalculation()
     P.SaveVoidTraitorMenuGeometry()
 end
