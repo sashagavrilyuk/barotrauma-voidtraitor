@@ -5,18 +5,20 @@
     <Talent identifier="he-hungryeuropan" ishiddenextratalent="true">
       <Icon texture="%ModDir:2954998725%/Content/UI/HE-IconsAtlas.png" sourcerect="0,385,119,119" origin="0.5,0.5" />
       <Description tag="talentdescription.he-hungryeuropan" />
+      <!-- VoidTraitor: the server sets the hunger and thirst rates (GamemodeConfig.Station.NeedsFullMinutes); at 0 here
+           clients never apply needs themselves and only show what the server sends -->
       <AbilityGroupInterval interval="1.0">
         <Abilities>
           <CharacterAbilityApplyStatusEffects>
             <StatusEffects>
               <StatusEffect type="OnAbility" target="Character" disabledeltatime="true" multiplyafflictionsbymaxvitality="true">
                 <Conditional IsBot="false" />
-                <Affliction identifier="hunger" strength="0.01" />
+                <Affliction identifier="hunger" strength="0" />
                 <!-- <Affliction identifier="hungerfoodbuffresistance" strength="0.01"/> -->
               </StatusEffect>
               <StatusEffect type="OnAbility" target="Character" disabledeltatime="true" multiplyafflictionsbymaxvitality="true">
                 <Conditional IsBot="false" />
-                <Affliction identifier="thirst" strength="0.02" />
+                <Affliction identifier="thirst" strength="0" />
               </StatusEffect>
             </StatusEffects>
           </CharacterAbilityApplyStatusEffects>

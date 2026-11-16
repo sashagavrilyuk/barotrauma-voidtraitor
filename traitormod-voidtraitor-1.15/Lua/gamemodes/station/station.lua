@@ -33,6 +33,22 @@ local function escapeMinutesText(minutes)
         or "OutpostEscapeMinutesMany"
     return string.format("%d %s", minutes, Traitormod.GetText(form))
 end
+
+-- The needs talent has zero rates in the pack, so clients never apply needs themselves and only show what the server
+-- sends. Every character's talent is built from this XML, so the server writes its rates in before anyone gets it.
+local function setNeedsRates(talentId, fullMinutes)
+    local talent = TalentPrefab.TalentPrefabs[talentId]
+    for group in talent.ConfigElement.GetChildElements("abilitygroupinterval") do
+        local interval = group.GetAttributeFloat("interval", 1)
+        for element in group.Descendants() do
+            local minutes = fullMinutes[element.GetAttributeString("identifier", "")]
+            if minutes ~= nil and string.lower(tostring(element.Name)) == "affliction" then
+                element.SetAttributeValue("strength", tostring(100 / (minutes * 60) * interval))
+            end
+        end
+    end
+end
+
 local alertColors = {
     green = Color(80, 220, 110, 255),
     yellow = Color(255, 215, 60, 255),
@@ -79,6 +95,7 @@ function gm:PreStart()
     settings.AllowSpectating = true
     settings.MinRespawnRatio = 0
     settings.ServerDetailsChanged = true
+    if self.NeedsTalent ~= nil then setNeedsRates(self.NeedsTalent, self.NeedsFullMinutes) end
 end
 
 function gm:Start()

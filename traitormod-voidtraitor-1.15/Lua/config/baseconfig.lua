@@ -436,6 +436,8 @@ config.GamemodeConfig = {
         },
         -- the Hungry Europans talent that gives players hunger and thirst when they spawn; nil turns needs off
         NeedsTalent = "he-hungryeuropan",
+        -- minutes for each need to fill up from empty at 100 vitality; a need left out stays off
+        NeedsFullMinutes = { hunger = 167, thirst = 83 },
         WavesEnabled = true,
         SuppressOutdoorWaves = true,
         WaveMinPlayers = 20,
