@@ -8,6 +8,8 @@ local text = Common.Language.Lobby
 -- (gamemodes/station/jobpreferences.lua); each button sends one change and shows what the server stored.
 
 local HIGH = 3
+-- what a role's missing time is for, after OVERALL = 0 (gamemodes/station/jobpreferences.lua)
+local ROLE = 1
 -- SS14's department colors
 local DEPARTMENT_COLORS = {
     command = Color(110, 151, 201, 255),
@@ -49,9 +51,20 @@ local function roleName(id, role)
     return roleText("jobname.", id, role)
 end
 
+local function duration(minutes)
+    local hours = math.floor(minutes / 60)
+    if hours == 0 then return string.format(text.StationMinutes, minutes) end
+    if minutes % 60 == 0 then return string.format(text.StationHours, hours) end
+    return string.format(text.StationHoursMinutes, hours, minutes % 60)
+end
+
 local function roleTooltip(id, role)
     local description = roleText("jobdescription.", id, role)
     if role.Karma > 0 then description = description .. "\n" .. string.format(text.StationNeedKarma, role.Karma) end
+    for _, need in ipairs(role.Missing) do
+        local target = need.Kind == ROLE and roleName(need.Id, S.stationJobs.Roles[need.Id]) or text.StationDepartments[need.Id]
+        description = description .. "\n" .. string.format(text.StationNeedTime[need.Kind + 1], duration(need.Minutes), target)
+    end
     return description
 end
 
@@ -82,7 +95,7 @@ local function createRow(list, id, role, height, labels)
         icon.CanBeFocused = false
     end
 
-    local locked = role.Karma > 0
+    local locked = role.Karma > 0 or #role.Missing > 0
     local name = Common.CreateText(row, 0.3, 1, nil, roleName(id, role), GUI.Alignment.CenterLeft, 1,
         locked and LOCKED_COLOR or nil, false)
     Common.SetAutoScaleText(name, 1)
@@ -214,7 +227,11 @@ Networking.Receive(P.NET_STATION_JOBS, function(message)
         local karma = message.ReadUInt16()
         local level = message.ReadByte()
         local outfit = message.ReadByte()
-        jobs.Roles[id] = { Job = job, Variants = variants, Karma = karma, Level = level, Outfit = outfit }
+        local missing = {}
+        for _ = 1, message.ReadByte() do
+            missing[#missing + 1] = { Kind = message.ReadByte(), Id = message.ReadString(), Minutes = message.ReadUInt16() }
+        end
+        jobs.Roles[id] = { Job = job, Variants = variants, Karma = karma, Level = level, Outfit = outfit, Missing = missing }
     end
     S.stationJobs = jobs
 

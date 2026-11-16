@@ -25,6 +25,8 @@ local config = ...
 
 -- Station defaults; explicit [traitormod] map settings take priority.
 -- config.GamemodeConfig.Station.Roles.engineer.Slots = 4
+-- config.GamemodeConfig.Station.Roles.chiefengineer.Requirements = { { Role = "engineer", Hours = 3 } }
+-- config.GamemodeConfig.Station.RoleTimeRequirements = false
 -- config.GamemodeConfig.Station.NeedsFullMinutes = { hunger = 167, thirst = 83 }
 -- config.GamemodeConfig.Station.WaveMinPlayers = 20
 -- config.GamemodeConfig.Station.WaveMaxPlayers = 40

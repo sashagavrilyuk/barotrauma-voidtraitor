@@ -330,7 +330,8 @@ end
 
 function gm:HasRoleSeat(client, id, counts)
     local role = self.Roles[id]
-    if role == nil or not JobPrefab.Prefabs.ContainsKey(role.Job) or client.Karma < JobPrefab.Get(role.Job).MinKarma then
+    if role == nil or not JobPrefab.Prefabs.ContainsKey(role.Job) or client.Karma < JobPrefab.Get(role.Job).MinKarma
+        or Traitormod.StationJobs.MissingTime(client, id) ~= nil then
         return false
     end
     return (counts[id] or 0) < self.Seats[id]
@@ -441,7 +442,7 @@ function gm:SpawnNewcomerOnShuttle(client, submarine)
     end
 end
 
-function gm:Think()
+function gm:Think(deltaTime)
     if not Game.RoundStarted then return end
     self:UpdateCrewDown()
     local endOutpost = Level.Loaded.EndOutpost
@@ -477,6 +478,12 @@ function gm:Think()
         local accountKey = Traitormod.GetClientAccountKey(client)
         if client.Character ~= nil and not client.Character.IsDead and not Traitormod.AdminGhost.IsGhost(client.Character) then
             self.SpawnedAccounts[accountKey] = true
+            -- time on the role for the role timers, unless the player is away: the game's idle timer counts from
+            -- their last input
+            local role = self.AccountRoles[accountKey]
+            if role ~= nil and client.KickAFKTimer < self.RoleTimeIdleSeconds then
+                Traitormod.StationJobs.AddRoleTime(client, role, deltaTime)
+            end
         elseif self.SpawnedAccounts[accountKey] and client.Character == nil and not client.SpectateOnly then
             local reclaimable = false
             for character in Character.CharacterList do
@@ -526,6 +533,10 @@ end
 
 function gm:End()
     Traitormod.Config.TestMode = false
+    -- roles this round's time opened show up in the jobs window
+    for _, client in pairs(Client.ClientList) do
+        Traitormod.StationJobs.Send(client)
+    end
     Traitormod.Communications.End()
     self.EvacuationState = nil
     self.AccountRoles = nil

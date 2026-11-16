@@ -326,6 +326,15 @@ language.Lobby = {
     StationPassengerHint = "Если ни одна из выбранных профессий не достанется, вы станете пассажиром.",
     StationHighHint = "«Высокий» можно поставить только одной профессии.",
     StationNeedKarma = "Нужно %d кармы",
+    -- time a role still needs: in total, on a role, in a department
+    StationNeedTime = {
+        "Нужно ещё %s общего времени игры",
+        "Нужно ещё %s на роли «%s»",
+        "Нужно ещё %s: %s",
+    },
+    StationMinutes = "%d мин",
+    StationHours = "%d ч",
+    StationHoursMinutes = "%d ч %d мин",
     StationOutfit = "Снаряжение: %s",
     StationVariant = "Вариант %d",
     Back = "Назад",

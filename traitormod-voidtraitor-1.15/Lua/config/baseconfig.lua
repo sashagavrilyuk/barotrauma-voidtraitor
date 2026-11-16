@@ -434,16 +434,30 @@ config.GamemodeConfig = {
         -- card preset (IdConsole.Presets) and Radio the department keys of the headset. Passenger is the role of everyone
         -- who got no other: no access and only the common channel. A map sets its own seats in the [traitormod] JSON of
         -- its description, for example "RoleSlots": { "engineer": 6, "cook": 0 }; roles it leaves out keep these.
+        -- Requirements are SS14's role timers: the role opens once the player has the hours of every line, on a role
+        -- ({ Role = "engineer", Hours = 5 }), in a department, which adds up the time of its roles ({ Department =
+        -- "engineering", Hours = 10 }), or in total on the server, as !playtime shows it ({ Hours = 4 }).
         Roles = {
             captain = { Job = "captain", Slots = 1, Head = 7, IdPreset = "captain",
-                Radio = { "command", "engineering", "medical", "security", "cargo", "science" } },
-            headofpersonnel = { Job = "assistant", Slots = 1, Head = 6, IdPreset = "headpersonnel", Radio = { "command" } },
-            headofsecurity = { Job = "securityofficer", Slots = 1, Head = 5, IdPreset = "headofsecurity", Radio = { "command", "security" } },
-            chiefengineer = { Job = "engineer", Slots = 1, Head = 4, IdPreset = "chiefengineer", Radio = { "command", "engineering" } },
-            chiefmedicalofficer = { Job = "medicaldoctor", Slots = 1, Head = 3, IdPreset = "chiefmedicalofficer", Radio = { "command", "medical" } },
-            researchdirector = { Job = "scientist", Slots = 1, Head = 2, IdPreset = "researchdirector", Radio = { "command", "science" } },
-            quartermaster = { Job = "mechanic", Slots = 1, Head = 1, IdPreset = "quartermaster", Radio = { "command", "cargo" } },
-            securityofficer = { Job = "securityofficer", Slots = 5, IdPreset = "securityofficer", Radio = { "security" } },
+                Radio = { "command", "engineering", "medical", "security", "cargo", "science" },
+                Requirements = { { Department = "command", Hours = 4 }, { Department = "security", Hours = 4 },
+                    { Department = "engineering", Hours = 4 }, { Department = "medical", Hours = 4 }, { Department = "science", Hours = 4 } } },
+            headofpersonnel = { Job = "assistant", Slots = 1, Head = 6, IdPreset = "headpersonnel", Radio = { "command" },
+                Requirements = { { Department = "command", Hours = 2.5 }, { Department = "security", Hours = 2.5 },
+                    { Department = "engineering", Hours = 2.5 }, { Department = "medical", Hours = 2.5 }, { Department = "science", Hours = 2.5 } } },
+            headofsecurity = { Job = "securityofficer", Slots = 1, Head = 5, IdPreset = "headofsecurity", Radio = { "command", "security" },
+                Requirements = { { Role = "securityofficer", Hours = 5 }, { Department = "security", Hours = 10 } } },
+            chiefengineer = { Job = "engineer", Slots = 1, Head = 4, IdPreset = "chiefengineer", Radio = { "command", "engineering" },
+                Requirements = { { Role = "engineer", Hours = 5 }, { Department = "engineering", Hours = 10 } } },
+            chiefmedicalofficer = { Job = "medicaldoctor", Slots = 1, Head = 3, IdPreset = "chiefmedicalofficer", Radio = { "command", "medical" },
+                Requirements = { { Role = "medicaldoctor", Hours = 5 }, { Department = "medical", Hours = 10 } } },
+            researchdirector = { Job = "scientist", Slots = 1, Head = 2, IdPreset = "researchdirector", Radio = { "command", "science" },
+                Requirements = { { Role = "scientist", Hours = 5 }, { Department = "science", Hours = 10 } } },
+            quartermaster = { Job = "mechanic", Slots = 1, Head = 1, IdPreset = "quartermaster", Radio = { "command", "cargo" },
+                Requirements = { { Role = "cargotechnician", Hours = 5 }, { Role = "miner", Hours = 2.5 }, { Department = "cargo", Hours = 10 } } },
+            -- SS14 asks 4 hours in Security, played as a cadet; there are no cadets here
+            securityofficer = { Job = "securityofficer", Slots = 5, IdPreset = "securityofficer", Radio = { "security" },
+                Requirements = { { Hours = 4 } } },
             engineer = { Job = "engineer", Slots = 4, IdPreset = "engineer", Radio = { "engineering" } },
             cargotechnician = { Job = "mechanic", Slots = 3, IdPreset = "cargo", Radio = { "cargo" } },
             miner = { Job = "mechanic", Slots = 2, IdPreset = "cargo", Radio = { "cargo" } },
@@ -464,6 +478,10 @@ config.GamemodeConfig = {
             { Id = "science", Roles = { "researchdirector", "scientist" } },
             { Id = "service", Roles = { "headofpersonnel", "cook", "janitor", "passenger" } },
         },
+        -- false opens every role whatever its Requirements. Time on a role counts while the player lives with it in a
+        -- Station round and has touched the controls in the last RoleTimeIdleSeconds, as SS14 leaves out AFK players.
+        RoleTimeRequirements = true,
+        RoleTimeIdleSeconds = 180,
         -- the Hungry Europans talent that gives players hunger and thirst when they spawn; nil turns needs off
         NeedsTalent = "he-hungryeuropan",
         -- minutes for each need to fill up from empty at 100 vitality; a need left out stays off

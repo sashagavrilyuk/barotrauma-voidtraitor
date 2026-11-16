@@ -1,6 +1,7 @@
 -- The player's choice in the lobby's Station jobs window, as in SS14: a level for each role (1 low, 2 medium, 3 high,
 -- only one high) and the outfit variant of each role. The server keeps it with the player's data and sends it, with the
 -- roles of the config, on joining and after every change; station.lua hands out the roles from it.
+-- The time the player has played each role is kept here too, for SS14's role timers (Requirements in the config).
 local jobs = {}
 Traitormod.StationJobs = jobs
 
@@ -9,12 +10,51 @@ local NET_JOBS = "VoidTraitor_StationJobs"
 local NET_JOB_SET = "VoidTraitor_StationJobSet"
 local NET_OUTFIT_SET = "VoidTraitor_StationOutfitSet"
 local HIGH = 3
+-- what a role's missing time is for, as the window names it
+local OVERALL, ROLE, DEPARTMENT = 0, 1, 2
+
+local departmentRoles = {}
+for _, department in ipairs(config.Departments) do
+    departmentRoles[department.Id] = department.Roles
+end
 
 -- roles whose job is loaded, so a role of a disabled mod is neither shown nor taken
 local function roleJob(id)
     local role = config.Roles[id]
     if role == nil or not JobPrefab.Prefabs.ContainsKey(role.Job) then return nil end
     return JobPrefab.Get(role.Job)
+end
+
+-- seconds of play on each role, by role
+function jobs.AddRoleTime(client, id, seconds)
+    local times = Traitormod.GetData(client, "StationRoleTime") or {}
+    times[id] = (times[id] or 0) + seconds
+    Traitormod.SetData(client, "StationRoleTime", times)
+end
+
+-- What the player still lacks for a role: nil when it is open, otherwise a list of { Kind, Id, Seconds }.
+function jobs.MissingTime(client, id)
+    local requirements = config.Roles[id].Requirements
+    if not config.RoleTimeRequirements or requirements == nil then return nil end
+    local times = Traitormod.GetData(client, "StationRoleTime") or {}
+    local missing
+    for _, requirement in ipairs(requirements) do
+        local kind, target, played = OVERALL, "", 0
+        if requirement.Role ~= nil then
+            kind, target, played = ROLE, requirement.Role, times[requirement.Role] or 0
+        elseif requirement.Department ~= nil then
+            kind, target = DEPARTMENT, requirement.Department
+            for _, role in ipairs(departmentRoles[target]) do played = played + (times[role] or 0) end
+        else
+            played = Traitormod.GetData(client, "Playtime") or 0
+        end
+        local left = requirement.Hours * 3600 - played
+        if left > 0 then
+            missing = missing or {}
+            missing[#missing + 1] = { Kind = kind, Id = target, Seconds = left }
+        end
+    end
+    return missing
 end
 
 function jobs.Send(client)
@@ -45,6 +85,14 @@ function jobs.Send(client)
         message.WriteUInt16(client.Karma < job.MinKarma and math.ceil(job.MinKarma) or 0)
         message.WriteByte(levels[id] or 0)
         message.WriteByte(outfits[id] or 0)
+        -- the time still missing, in minutes
+        local missing = jobs.MissingTime(client, id) or {}
+        message.WriteByte(#missing)
+        for _, need in ipairs(missing) do
+            message.WriteByte(need.Kind)
+            message.WriteString(need.Id)
+            message.WriteUInt16(math.min(math.ceil(need.Seconds / 60), 65535))
+        end
     end
     Networking.Send(message, client.Connection)
 end
