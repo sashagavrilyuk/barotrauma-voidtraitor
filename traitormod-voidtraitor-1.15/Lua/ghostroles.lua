@@ -350,6 +350,12 @@ function gr.IsGhostRole(character)
     return roleId ~= nil and gr.Roles[roleId] ~= nil
 end
 
+-- the name of the ghost role a character was offered as, nil for other characters
+function gr.GetCharacterRoleName(character)
+    local role = gr.Roles[gr.Characters[character]]
+    return role ~= nil and getRoleName(role) or nil
+end
+
 function gr.ReturnGhostRole(character)
     if character == nil then return false end
 

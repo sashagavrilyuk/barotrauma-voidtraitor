@@ -674,7 +674,7 @@ function gm:BeginEnding(reason, transitionType, viaCampaignTransition)
 
     Traitormod.SendMessageEveryone(message)
 
-    Traitormod.SendRoundSummary(self.FinalSummary)
+    Traitormod.SendRoundSummary(self.FinalSummary, self.GetManifest ~= nil and self:GetManifest() or nil)
 
     if Traitormod.Discord then
         Traitormod.Discord.AnnounceRoundEnded(Traitormod.RoundTime)

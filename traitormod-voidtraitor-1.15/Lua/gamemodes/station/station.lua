@@ -90,6 +90,12 @@ function gm:PreStart()
     -- the role of each account this round, and whether its character is still to spawn
     self.AccountRoles = {}
     self.PendingRoles = {}
+    -- the role of each character spawned with one; the character keeps it, its player may later play others
+    self.RoleCharacters = {}
+    -- every character a player controlled this round, like SS14's minds: { Character, Name, Job, GhostRole, Account,
+    -- Player } in the order they were taken; for the round-end manifest and the crew records to come
+    self.Records = {}
+    self.RecordOf = {}
     -- the round's own seats: the map's RoleSlots over the config's, then BureaucraticError may change them
     self.Seats = {}
     for id, role in pairs(self.Roles) do
@@ -406,6 +412,7 @@ function gm:InitializeIdCard(character)
         id = self.AccountRoles[account]
     end
     -- characters of no player keep the access and keys of their job; a player's card shows the role
+    if id ~= nil then self.RoleCharacters[character] = id end
     local role = self.Roles[id]
     local passenger = role ~= nil and role.Passenger == true
     Traitormod.IdConsole.InitializeCard(character, passenger, role and role.IdPreset, role and id)
@@ -414,9 +421,46 @@ end
 
 -- a player's character goes by its role in objectives (Traitormod.GetJobString); nil for anyone else
 function gm:GetRoleName(character)
-    local client = Traitormod.FindClientCharacter(character)
-    local id = client ~= nil and self.AccountRoles[Traitormod.GetClientAccountKey(client)] or nil
+    local id = self.RoleCharacters[character]
     return id ~= nil and TextManager.Get("jobname." .. id).Value or nil
+end
+
+-- a character a player has just taken, as SS14 keeps a mind for each; a ghost role's name is kept now, as the role
+-- may be gone by the end of the round
+function gm:RecordCharacter(client, character)
+    local job = character.Info ~= nil and character.Info.Job ~= nil and character.Info.Job.Prefab.Identifier.Value or ""
+    local record = { Character = character, Name = character.DisplayName, Job = job,
+        GhostRole = Traitormod.GhostRoles.GetCharacterRoleName(character) or "",
+        Account = Traitormod.GetClientAccountKey(client), Player = client.Name }
+    self.Records[#self.Records + 1] = record
+    self.RecordOf[character] = record
+end
+
+-- SS14's round-end player manifest: each character a player controlled with its role (the Station role it was
+-- spawned with, a ghost role or its job), its antagonist role if any, and the players who only watched. Kind is
+-- "crew" for a character with a Station role, "ghost" for any other a player took, "observer" for a watcher.
+function gm:GetManifest()
+    local manifest, played = {}, {}
+    for _, record in ipairs(self.Records) do
+        played[record.Account] = true
+        local id = self.RoleCharacters[record.Character]
+        local role = record.GhostRole
+        if id ~= nil then
+            role = TextManager.Get("jobname." .. id).Value
+        elseif role == "" and record.Job ~= "" then
+            role = JobPrefab.Get(record.Job).Name.Value
+        end
+        local antagonist = Traitormod.RoleManager.GetRole(record.Character)
+        manifest[#manifest + 1] = { Name = record.Name, Role = role, Job = id ~= nil and self.Roles[id].Job or record.Job,
+            Antagonist = antagonist ~= nil and antagonist.IsAntagonist and antagonist.Name or "", Player = record.Player,
+            Kind = id ~= nil and "crew" or "ghost" }
+    end
+    for _, client in pairs(Client.ClientList) do
+        if not played[Traitormod.GetClientAccountKey(client)] then
+            manifest[#manifest + 1] = { Name = client.Name, Role = "", Job = "", Antagonist = "", Player = client.Name, Kind = "observer" }
+        end
+    end
+    return manifest
 end
 
 function gm:CanShuttleRespawn(client)
@@ -478,6 +522,7 @@ function gm:Think(deltaTime)
         local accountKey = Traitormod.GetClientAccountKey(client)
         if client.Character ~= nil and not client.Character.IsDead and not Traitormod.AdminGhost.IsGhost(client.Character) then
             self.SpawnedAccounts[accountKey] = true
+            if self.RecordOf[client.Character] == nil then self:RecordCharacter(client, client.Character) end
             -- time on the role for the role timers, unless the player is away: the game's idle timer counts from
             -- their last input
             local role = self.AccountRoles[accountKey]
@@ -541,6 +586,9 @@ function gm:End()
     self.EvacuationState = nil
     self.AccountRoles = nil
     self.PendingRoles = nil
+    self.RoleCharacters = nil
+    self.Records = nil
+    self.RecordOf = nil
     secret.End(self)
     if Traitormod.OriginalGamemode ~= nil then
         Game.NetLobbyScreen.SelectedModeIdentifier = Traitormod.OriginalGamemode

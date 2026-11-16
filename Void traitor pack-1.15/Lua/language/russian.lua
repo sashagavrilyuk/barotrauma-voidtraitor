@@ -346,6 +346,33 @@ language.Lobby = {
 }
 
 -- Оверлей админа над персонажами
+-- Окно итогов раунда и манифест игроков Станции (как в SS14)
+language.RoundSummary = {
+    Summary = "Итоги",
+    Manifest = "Манифест",
+    Search = "Поиск",
+    Character = "Персонаж",
+    Role = "Роль",
+    Type = "Тип",
+    Player = "Игрок",
+    Crew = "Экипаж",
+    Observer = "Наблюдатель",
+    GhostRole = "Гост-роль",
+    NoRole = "—",
+    -- антагонисты по идентификатору роли сервера
+    Antagonists = {
+        Traitor = "Предатель",
+        Cultist = "Культист",
+        Clown = "Клоун",
+        Saboteur = "Диверсант",
+        Operative = "Оперативник",
+        PatientZero = "Нулевой заражённый",
+        Husk = "Хаск",
+        HuskServant = "Слуга хаска",
+        Antagonist = "Антагонист",
+    },
+}
+
 language.AdminOverlay = {
     NoPlayer = "без игрока",
     Health = "здоровье %d%%",

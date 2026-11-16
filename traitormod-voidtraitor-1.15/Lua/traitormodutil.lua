@@ -462,10 +462,23 @@ Traitormod.SendMessageEveryone = function (text, popup)
     end
 end
 
--- the round summary window of every client (Lua/client/roundsummary.lua in the pack), instead of the chat
-Traitormod.SendRoundSummary = function (summary)
+-- the round summary window of every client (Lua/client/roundsummary.lua in the pack), instead of the chat; a mode
+-- with a player manifest (gm:GetManifest) sends it along for the window's manifest tab
+local MANIFEST_KINDS = { crew = 0, ghost = 1, observer = 2 }
+
+Traitormod.SendRoundSummary = function (summary, manifest)
+    manifest = manifest or {}
     local message = Networking.Start("VoidTraitor_RoundSummary")
     message.WriteString(Traitormod.HighlightClientNames(summary, Color.Red))
+    message.WriteUInt16(#manifest)
+    for _, row in ipairs(manifest) do
+        message.WriteString(row.Name)
+        message.WriteString(row.Role)
+        message.WriteString(row.Job)
+        message.WriteString(row.Antagonist)
+        message.WriteByte(MANIFEST_KINDS[row.Kind])
+        message.WriteString(row.Player)
+    end
     Networking.Send(message)
 end
 
