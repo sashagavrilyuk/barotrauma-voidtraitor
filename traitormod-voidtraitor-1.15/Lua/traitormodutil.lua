@@ -826,6 +826,11 @@ Traitormod.HighlightClientNames = function (text, color)
 end
 
 Traitormod.GetJobString = function(character)
+    -- a mode with its own roles names its players by them
+    local selected = Traitormod.SelectedGamemode
+    local role = selected ~= nil and selected.GetRoleName ~= nil and selected:GetRoleName(character) or nil
+    if role ~= nil then return role end
+
     local prefix = "Crew member"
     if character.Info and character.Info.Job then
         prefix = tostring(TextManager.Get("jobname." .. tostring(character.Info.Job.Prefab.Identifier)))

@@ -223,6 +223,20 @@ function Common.GetCharacterById(characterId)
     return nil
 end
 
+-- The Station role on the ID card a character wears: its job: tag, which the ID console edits, named as the card's
+-- tooltip names it. nil without a card or outside Station, where cards carry no such tag.
+function Common.GetCardRole(character)
+    local card = character ~= nil and character.Inventory ~= nil and character.Inventory.GetItemInLimbSlot(InvSlotType.Card) or nil
+    if card == nil then return nil end
+    for tag in card.GetTags() do
+        if tag.Value:sub(1, 4) == "job:" then
+            local title = tag.Value:sub(5)
+            return TextManager.ContainsTag("jobname." .. title) and TextManager.Get("jobname." .. title).Value or title
+        end
+    end
+    return nil
+end
+
 local RagdollParams = LuaUserData.CreateStatic("Barotrauma.RagdollParams", true)
 LuaUserData.MakeMethodAccessible(Descriptors["Barotrauma.RagdollParams"], "Load", { "Barotrauma.ContentPath", "Barotrauma.Identifier" })
 local creatureHeads = {}

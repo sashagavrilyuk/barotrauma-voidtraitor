@@ -411,6 +411,13 @@ function gm:InitializeIdCard(character)
     Traitormod.StationRadio.InitializeHeadset(character, passenger, role and (role.Radio or {}))
 end
 
+-- a player's character goes by its role in objectives (Traitormod.GetJobString); nil for anyone else
+function gm:GetRoleName(character)
+    local client = Traitormod.FindClientCharacter(character)
+    local id = client ~= nil and self.AccountRoles[Traitormod.GetClientAccountKey(client)] or nil
+    return id ~= nil and TextManager.Get("jobname." .. id).Value or nil
+end
+
 function gm:CanShuttleRespawn(client)
     return not self.SpawnedAccounts[Traitormod.GetClientAccountKey(client)]
         and client.InGame and not client.SpectateOnly

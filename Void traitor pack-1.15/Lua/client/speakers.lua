@@ -42,7 +42,7 @@ local settings = { Look = "Detailed", X = nil, Y = nil }
 -- account id -> voice volume the player set for them
 local volumes = {}
 local saveQueued = false
--- rows in the order they appeared: { Client, Fade, Amplitude }
+-- rows in the order they appeared: { Client, Name, Fade, Amplitude }
 local rows = {}
 local rowOf = {}
 -- clients whose voice arrived since the last update
@@ -154,10 +154,17 @@ local function identity(client)
     return spectateIcon, SOURCE_COLORS.Dead
 end
 
+-- the client's name, after the role on its ID card while it lives in Station; taken when its row appears
+local function speakerName(client)
+    local character = client.Character
+    local role = character ~= nil and not character.IsDead and Common.GetCardRole(character) or nil
+    return role ~= nil and role .. " " .. client.Name or client.Name
+end
+
 -- Where the row's name starts on the left, for the click area.
 local function nameLeft(row, x)
     local font = GUI.Style.SmallFont
-    local left = x - size(5) - font.MeasureString(row.Client.Name).X
+    local left = x - size(5) - font.MeasureString(row.Name).X
     if settings.Look == "Detailed" then left = left - size(ICON_SIZE) - size(3) end
     return math.floor(left)
 end
@@ -180,7 +187,7 @@ local function drawRow(spriteBatch, row, x, y)
             icon.Draw(spriteBatch, center, fade(nameColor, alpha), 0, scale)
         end
     end
-    local name = row.Client.Name
+    local name = row.Name
     drawText(spriteBatch, x - size(5) - font.MeasureString(name).X, textY, name, nameColor, alpha)
     GUI.DrawRectangle(spriteBatch, Vector2(x, y), Vector2(barWidth * row.Amplitude, barHeight), fade(barColor, alpha * 0.85), true)
     GUI.DrawRectangle(spriteBatch, Vector2(x, y), Vector2(barWidth, barHeight), fade(OUTLINE, alpha), false)
@@ -281,7 +288,7 @@ local function update()
     lastUpdate = now
     for client in pairs(heard) do
         if rowOf[client] == nil and isSpeaking(client) then
-            local row = { Client = client, Fade = 0, Amplitude = 0 }
+            local row = { Client = client, Name = speakerName(client), Fade = 0, Amplitude = 0 }
             rows[#rows + 1] = row
             rowOf[client] = row
         end

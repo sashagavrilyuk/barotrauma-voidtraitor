@@ -7,7 +7,8 @@ if SERVER then return end
 -- An admin ghost also gets "dead", which sends its chat to dead chat (traitormod Lua/features/adminghost.lua), and the
 -- channels the telecom servers' blank keys open. Its local and dead entries get tickboxes too, which this client
 -- applies itself: the server would need another patch on every voice packet to hold back local voice.
--- Players' chat messages are labelled with the radio channel or dead chat they were said in.
+-- Players' chat messages are labelled with the radio channel or dead chat they were said in, and in Station the
+-- speaker's name with the role on their ID card.
 local Common = select(2, ...)
 local text = Common.Language.Radio
 
@@ -136,10 +137,14 @@ local function labelMessage(instance, ptable)
         ptable.PreventExecution = true
         return
     end
-    if kind == "Local" then return end
-    local label = kind == "Dead" and text.Dead or radioName(sender)
+    -- the living speak under the role on their ID card in Station
+    local role = kind ~= "Dead" and Common.GetCardRole(sender) or nil
+    if kind == "Local" and role == nil then return end
+    local name = role ~= nil and role .. " " .. message.SenderName or message.SenderName
+    local body = message.Text
+    if kind ~= "Local" then body = string.format(LABEL_FORMAT, kind == "Dead" and text.Dead or radioName(sender), body) end
     -- the message's text can't be changed, so the chat gets a copy
-    ptable["message"] = ChatMessage.Create(message.SenderName, string.format(LABEL_FORMAT, label, message.Text), type, message.Sender, message.SenderClient)
+    ptable["message"] = ChatMessage.Create(name, body, type, message.Sender, message.SenderClient)
 end
 
 local function setDeadChat(value)
