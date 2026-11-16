@@ -141,6 +141,19 @@ Hook.Add("keyUpdate", "VoidTraitor.ClientMenu.PauseGuard", function()
     if S.currentMenu ~= nil and PlayerInput.KeyHit(Keys.Escape) then
         P.RequestEscapeClose()
     end
+    -- U and I do what the VT and SHOP buttons do during a round, after SS14's character menu and inventory keys;
+    -- I also closes the shop. Not while typing.
+    if not Game.RoundStarted or GUI.KeyboardDispatcher.Subscriber ~= nil then return end
+    if PlayerInput.KeyHit(Keys.U) then
+        P.ToggleMainMenu()
+    elseif PlayerInput.KeyHit(Keys.I) and S.shopAvailable ~= false then
+        local shop = rawget(_G, "VoidTraitorPointshopGuiState")
+        if shop ~= nil and shop.CurrentMenu ~= nil then
+            if shop.CloseLocked ~= true then shop.CloseMenu() end
+        else
+            P.OpenShop()
+        end
+    end
 end)
 
 Hook.Add("roundEnd", "VoidTraitor.ClientMenu.RoundEnd", function()

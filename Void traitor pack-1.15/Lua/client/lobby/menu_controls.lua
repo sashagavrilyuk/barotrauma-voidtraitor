@@ -52,6 +52,20 @@ function P.ShowConfirm(title, text, onConfirm, onClosed)
 end
 
 
+-- the SHOP and VT buttons, and their keys (lobby/menu_runtime.lua)
+function P.OpenShop()
+    if S.currentMenu ~= nil then P.CloseMenu() end
+    P.SendNetMessage(P.NET_POINTSHOP_REQUEST)
+end
+
+function P.ToggleMainMenu()
+    if S.currentMenu ~= nil then
+        P.CloseMenu()
+    else
+        P.RequestMenuSnapshot(true)
+    end
+end
+
 function P.CreateTopButtons()
     if S.buttonRoot ~= nil then
         P.Common.RemoveGuiComponent(S.buttonRoot)
@@ -76,8 +90,7 @@ function P.CreateTopButtons()
         shop.ToolTip = P.UiText.ShopTooltip
         P.SetButtonTextScale(shop, labelScale)
         shop.OnClicked = function(button, userData)
-            if S.currentMenu ~= nil then P.CloseMenu() end
-            P.SendNetMessage(P.NET_POINTSHOP_REQUEST)
+            P.OpenShop()
             return true
         end
     end
@@ -87,11 +100,7 @@ function P.CreateTopButtons()
     vt.ToolTip = P.UiText.MainTooltip
     P.SetButtonTextScale(vt, labelScale)
     vt.OnClicked = function(button, userData)
-        if S.currentMenu ~= nil then
-            P.CloseMenu()
-        else
-            P.RequestMenuSnapshot(true)
-        end
+        P.ToggleMainMenu()
         return true
     end
 
