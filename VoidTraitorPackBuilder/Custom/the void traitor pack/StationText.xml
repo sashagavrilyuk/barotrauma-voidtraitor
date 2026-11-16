@@ -6,4 +6,27 @@
   <MissionDescription.vt_station>Работайте на неподвижной станции и выполняйте задания своей роли. Среди экипажа скрываются предатели. Достижение конечного аванпоста не завершает станционный раунд.</MissionDescription.vt_station>
   <jobname.scientist>Учёный</jobname.scientist>
   <jobdescription.scientist>Сотрудник научного отдела станции: исследования, электроника и помощь медикам.</jobdescription.scientist>
+  <!-- Station roles that are not jobs of their own (GamemodeConfig.Station.Roles); the ID card shows them too -->
+  <jobname.headofpersonnel>Глава персонала</jobname.headofpersonnel>
+  <jobdescription.headofpersonnel>Глава сервиса и кадров станции: выдаёт доступы и следит за экипажем.</jobdescription.headofpersonnel>
+  <jobname.headofsecurity>Глава службы безопасности</jobname.headofsecurity>
+  <jobdescription.headofsecurity>Руководит службой безопасности и отвечает за порядок на станции.</jobdescription.headofsecurity>
+  <jobname.chiefengineer>Старший инженер</jobname.chiefengineer>
+  <jobdescription.chiefengineer>Руководит инженерами: реактор, питание и ремонт станции.</jobdescription.chiefengineer>
+  <jobname.chiefmedicalofficer>Главный врач</jobname.chiefmedicalofficer>
+  <jobdescription.chiefmedicalofficer>Руководит медицинским отделом и отвечает за здоровье экипажа.</jobdescription.chiefmedicalofficer>
+  <jobname.researchdirector>Научный руководитель</jobname.researchdirector>
+  <jobdescription.researchdirector>Руководит научным отделом и его исследованиями.</jobdescription.researchdirector>
+  <jobname.quartermaster>Старший механик</jobname.quartermaster>
+  <jobdescription.quartermaster>Руководит отделом снабжения: грузы, заказы и добыча.</jobdescription.quartermaster>
+  <jobname.cargotechnician>Грузчик</jobname.cargotechnician>
+  <jobdescription.cargotechnician>Принимает и разносит грузы, оформляет заказы отделов.</jobdescription.cargotechnician>
+  <jobname.miner>Шахтёр</jobname.miner>
+  <jobdescription.miner>Добывает руду и ресурсы за пределами станции.</jobdescription.miner>
+  <jobname.cook>Повар</jobname.cook>
+  <jobdescription.cook>Готовит еду и напитки для экипажа станции.</jobdescription.cook>
+  <jobname.janitor>Уборщик</jobname.janitor>
+  <jobdescription.janitor>Следит за чистотой и порядком на станции.</jobdescription.janitor>
+  <jobname.passenger>Пассажир</jobname.passenger>
+  <jobdescription.passenger>Пассажир станции: без доступов и обязанностей.</jobdescription.passenger>
 </infotexts>

@@ -35,12 +35,19 @@ local function sendChange(name, id, value)
     end)
 end
 
+-- a role's texts are jobname.<role> and jobdescription.<role> (StationText.xml), as the ID card shows them; a role
+-- named after its job uses the job's own
+local function roleText(prefix, id, role)
+    local key = TextManager.ContainsTag(prefix .. id) and prefix .. id or prefix .. role.Job
+    return TextManager.Get(key).Value
+end
+
 local function roleName(id, role)
-    return text.StationRoles[id] or JobPrefab.Get(role.Job).Name.Value
+    return roleText("jobname.", id, role)
 end
 
 local function roleTooltip(id, role)
-    local description = text.StationRoleDescriptions[id] or TextManager.Get("jobdescription." .. role.Job).Value
+    local description = roleText("jobdescription.", id, role)
     if role.Karma > 0 then description = description .. "\n" .. string.format(text.StationNeedKarma, role.Karma) end
     return description
 end

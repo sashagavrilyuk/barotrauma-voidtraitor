@@ -48,6 +48,18 @@ function console.Sync(card, entity, property)
     Networking.CreateEntityEvent(card, Item.ChangePropertyEventData(entity.SerializableProperties[Identifier(property)], entity))
 end
 
+-- The card's tooltip shows the last job tag (Inventory tooltip: "job" or "jobid"), translated as jobname.<value> when
+-- the game has that text and as written otherwise. Writing all tags at once keeps their order on the server and in the
+-- spawn data and property events clients read, so the title stays after jobid.
+local function setJobTitle(card, title)
+    local tags = {}
+    for tag in card.GetTags() do
+        if tag.Value:sub(1, 4) ~= "job:" then tags[#tags + 1] = tag.Value end
+    end
+    tags[#tags + 1] = "job:" .. title
+    card.Tags = table.concat(tags, ",")
+end
+
 function console.Apply(client, item, payload)
     if not console.Validate(client, item) then return false end
     local auth, target = item.OwnInventory.GetItemAt(0), item.OwnInventory.GetItemAt(1)
@@ -66,7 +78,8 @@ function console.Apply(client, item, payload)
     local info = target.GetComponentString("IdCard")
     local name, title = payload.Name, payload.Title
     for _, value in pairs({ name, title }) do
-        if type(value) ~= "string" or #value > 192 or value:find("[,;%c]") then return false end
+        -- commas and colons split the card's tags apart
+        if type(value) ~= "string" or #value > 192 or value:find("[,;:%c]") then return false end
     end
     local preset
     if payload.Job ~= nil then
@@ -78,7 +91,8 @@ function console.Apply(client, item, payload)
         end
         if preset == nil or (preset.JobId ~= nil and not JobPrefab.Prefabs.ContainsKey(preset.JobId)) then return false end
     end
-    local replace = (name ~= nil and name ~= info.OwnerName) or (title ~= nil and title ~= console.CardTitle(target))
+    -- the owner's name and job are in the card's spawn data; the title is a tag
+    local replace = (name ~= nil and name ~= info.OwnerName)
         or (preset ~= nil and preset.JobId ~= nil and preset.JobId ~= info.OwnerJobId.Value)
     if replace then
         -- An unsent refresh for this card has to go out first, otherwise the event queue
@@ -93,11 +107,9 @@ function console.Apply(client, item, payload)
         if desired[entry.Tag] then target.AddTag(entry.Tag) else target.RemoveTag(Identifier(entry.Tag)) end
     end
     local remove = {}
-    local storedTitle
     for tag in target.GetTags() do
         local value = tag.Value
-        if value:sub(1, 12) == "vt_jobtitle:" then storedTitle = value:sub(13) end
-        if (name ~= nil and value:sub(1, 5) == "name:") or (title ~= nil and value:sub(1, 12) == "vt_jobtitle:")
+        if (name ~= nil and value:sub(1, 5) == "name:")
             or (preset ~= nil and preset.JobId ~= nil and value:sub(1, 6) == "jobid:") then remove[#remove + 1] = tag end
     end
     for _, tag in ipairs(remove) do target.RemoveTag(tag) end
@@ -105,15 +117,11 @@ function console.Apply(client, item, payload)
         info.OwnerName = name
         target.AddTag("name:" .. name)
     end
-    if title ~= nil then target.AddTag("vt_jobtitle:" .. title) end
     if preset ~= nil and preset.JobId ~= nil then
         info.OwnerJobId = Identifier(preset.JobId)
         target.AddTag("jobid:" .. preset.JobId)
     end
-    if replace and (name ~= nil or title ~= nil) then
-        target.Description = title or storedTitle or ""
-        info.Description = target.Description
-    end
+    if title ~= nil then setJobTitle(target, title) end
     if replace then
         -- Clients get the card's name and look only in its spawn data, so respawn it on their side.
         -- The server item, its ID and objective references stay the same.
@@ -126,7 +134,10 @@ end
 
 function console.CardTitle(card)
     for tag in card.GetTags() do
-        if tag.Value:sub(1, 12) == "vt_jobtitle:" then return tag.Value:sub(13) end
+        if tag.Value:sub(1, 4) == "job:" then
+            local title = tag.Value:sub(5)
+            return TextManager.ContainsTag("jobname." .. title) and TextManager.Get("jobname." .. title).Value or title
+        end
     end
     local job = card.GetComponentString("IdCard").OwnerJob
     return job ~= nil and job.Name.Value or ""
@@ -241,8 +252,8 @@ Networking.Receive("VoidTraitor_IdConsoleAction", function(message, client)
     if ok and type(payload) == "table" then console.Action(client, item, action, payload) end
 end)
 
--- presetId is the card preset of the player's role; without it the card gets the preset of the job
-function console.InitializeCard(character, passenger, presetId)
+-- presetId and title are the card preset and the role of the player; without a preset the card gets the job's
+function console.InitializeCard(character, passenger, presetId, title)
     if character.Inventory == nil or character.Info == nil or character.Info.Job == nil then return end
     local card = character.Inventory.GetItemInLimbSlot(InvSlotType.Card)
     if card == nil or card.HasTag("vt_station_card_initialized") then return end
@@ -266,6 +277,7 @@ function console.InitializeCard(character, passenger, presetId)
             end
         end
     end
+    if title ~= nil then setJobTitle(card, title) end
     if not passenger and character.Info.Job.Prefab.Identifier.Value == "captain" then
         card.AddTag("vt_station_original_captain_id")
     end

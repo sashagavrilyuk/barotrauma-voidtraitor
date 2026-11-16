@@ -398,15 +398,16 @@ end
 
 function gm:InitializeIdCard(character)
     local client = Traitormod.FindClientCharacter(character)
-    local role
+    local id
     if client ~= nil then
         local account = Traitormod.GetClientAccountKey(client)
         self.PendingRoles[account] = nil
-        role = self.Roles[self.AccountRoles[account]]
+        id = self.AccountRoles[account]
     end
-    -- characters of no player keep the access and keys of their job
+    -- characters of no player keep the access and keys of their job; a player's card shows the role
+    local role = self.Roles[id]
     local passenger = role ~= nil and role.Passenger == true
-    Traitormod.IdConsole.InitializeCard(character, passenger, role and role.IdPreset)
+    Traitormod.IdConsole.InitializeCard(character, passenger, role and role.IdPreset, role and id)
     Traitormod.StationRadio.InitializeHeadset(character, passenger, role and (role.Radio or {}))
 end
 
