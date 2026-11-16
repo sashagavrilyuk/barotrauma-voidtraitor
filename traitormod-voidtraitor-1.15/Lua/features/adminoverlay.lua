@@ -1,7 +1,7 @@
 -- Admin overlay like Space Station 14's: an admin who turns it on (!aoverlay or the admin menu) sees above every living
--- human and every character a player controls who controls it and its antagonist role. The admin's client draws them
--- with the name, job and health it knows itself (Void traitor pack-1.15: Lua/client/adminoverlay.lua); roles are hidden
--- information, so they go only to the admins who asked.
+-- human and every character a player controls who controls it, its job (a Station player's role) and its antagonist
+-- role. The admin's client draws them with the name and health it knows itself (Void traitor pack-1.15:
+-- Lua/client/adminoverlay.lua); roles are hidden information, so they go only to the admins who asked.
 local overlay = {}
 
 local NET_DATA = "VoidTraitor_AdminOverlay"
@@ -23,6 +23,7 @@ local function snapshot()
             and not Traitormod.AdminGhost.IsGhost(character) then
             local role = Traitormod.RoleManager.GetRole(character)
             entries[#entries + 1] = { Id = character.ID, Player = player or "",
+                Job = character.Info ~= nil and character.Info.Job ~= nil and Traitormod.GetJobString(character) or "",
                 Role = role ~= nil and role.IsAntagonist and role.Name or "" }
         end
     end
@@ -31,7 +32,7 @@ end
 
 local function signatureOf(entries)
     local parts = {}
-    for _, entry in ipairs(entries) do parts[#parts + 1] = entry.Id .. "|" .. entry.Player .. "|" .. entry.Role end
+    for _, entry in ipairs(entries) do parts[#parts + 1] = entry.Id .. "|" .. entry.Player .. "|" .. entry.Job .. "|" .. entry.Role end
     return table.concat(parts, ";")
 end
 
@@ -41,6 +42,7 @@ local function send(client, entries)
     for _, entry in ipairs(entries) do
         message.WriteUInt16(entry.Id)
         message.WriteString(entry.Player)
+        message.WriteString(entry.Job)
         message.WriteString(entry.Role)
     end
     Networking.Send(message, client.Connection)

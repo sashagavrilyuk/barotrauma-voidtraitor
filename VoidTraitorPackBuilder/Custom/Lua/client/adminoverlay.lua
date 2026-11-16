@@ -2,7 +2,8 @@ if SERVER then return end
 
 -- Client half of the admin overlay (traitormod Lua/features/adminoverlay.lua), like Space Station 14's: above every
 -- character the server listed it draws the name and job, the player who controls it, an antagonist role and the
--- health. The server sends only what this client can't know: who controls a character and its role.
+-- health. The server sends what this client can't know: who controls a character, its job (in Station the role it
+-- was given, whatever ID card it wears) and its antagonist role.
 local Common = select(2, ...)
 local text = Common.Language.AdminOverlay
 
@@ -17,13 +18,13 @@ local ROLE_COLOR = Color(255, 90, 90)
 local BACKGROUND = Color(0, 0, 0, 160)
 
 local gameMain = LuaUserData.CreateStatic("Barotrauma.GameMain")
--- { Id, Player, Role } from the server; empty while the overlay is off
+-- { Id, Player, Job, Role } from the server; empty while the overlay is off
 local entries = {}
 local root = nil
 
 local function linesOf(character, entry)
     local name = tostring(character.Name)
-    if character.Info ~= nil and character.Info.Job ~= nil then name = name .. " (" .. tostring(character.Info.Job.Name) .. ")" end
+    if entry.Job ~= "" then name = name .. " (" .. entry.Job .. ")" end
     local lines = {
         { Text = name, Color = TEXT_COLOR },
         { Text = entry.Player ~= "" and entry.Player or text.NoPlayer, Color = PLAYER_COLOR },
@@ -62,7 +63,7 @@ end, Hook.HookMethodType.After)
 Networking.Receive(NET_DATA, function(message)
     entries = {}
     for _ = 1, message.ReadUInt16() do
-        entries[#entries + 1] = { Id = message.ReadUInt16(), Player = message.ReadString(), Role = message.ReadString() }
+        entries[#entries + 1] = { Id = message.ReadUInt16(), Player = message.ReadString(), Job = message.ReadString(), Role = message.ReadString() }
     end
     if root == nil then
         root = GUI.CustomComponent(Common.CreateCanvasRect(0, 0, gameMain.GraphicsWidth, gameMain.GraphicsHeight), function(spriteBatch) draw(spriteBatch) end)
