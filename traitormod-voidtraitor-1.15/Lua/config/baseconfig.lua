@@ -44,6 +44,7 @@ config.IdConsole = {
         { Tag = "vt_access_security", Name = "IdConsoleSecurity" },
         { Tag = "vt_access_armory", Name = "IdConsoleArmory" },
         { Tag = "vt_access_cargo", Name = "IdConsoleCargo" },
+        { Tag = "vt_access_science", Name = "IdConsoleScience" },
         { Tag = "vt_access_command", Name = "IdConsoleCommand" },
         { Tag = "vt_access_personnel", Name = "IdConsolePersonnel" },
     },
@@ -54,6 +55,7 @@ config.IdConsole = {
         { Id = "medicaldoctor", JobId = "medicaldoctor", Tags = { "vt_access_maintenance", "vt_access_medical", "vt_access_medical_stock" } },
         { Id = "surgeon", JobId = "surgeon", Tags = { "vt_access_maintenance", "vt_access_medical", "vt_access_medical_stock" } },
         { Id = "securityofficer", JobId = "securityofficer", Tags = { "vt_access_maintenance", "vt_access_security", "vt_access_armory" } },
+        { Id = "scientist", JobId = "scientist", Tags = { "vt_access_maintenance", "vt_access_science" } },
         { Id = "captain", JobId = "captain", AllAccess = true, Tags = {} },
         { Id = "headpersonnel", Name = "IdConsoleHeadPersonnel", AllAccess = true, Tags = {} },
         { Id = "cargo", Name = "IdConsoleCargoJob", Tags = { "vt_access_maintenance", "vt_access_cargo" } },
@@ -82,6 +84,7 @@ config.Radio = {
         medicaldoctor = { "medical" },
         surgeon = { "medical" },
         securityofficer = { "security" },
+        scientist = { "science" },
     },
 }
 config.Cargo = {

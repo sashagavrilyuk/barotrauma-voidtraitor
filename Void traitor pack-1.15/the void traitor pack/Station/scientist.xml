@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Station only: hidden from the vanilla job choice, the Station mode assigns it. -->
+<Jobs>
+  <Job identifier="scientist" minkarma="0" uicolor="0.72,0.54,0.84" vitalitymodifier="0" hiddenjob="true" idlebehavior="Active">
+    <Jobicon>
+      <sprite texture="%ModDir%/the void traitor pack/UI/jobs/scientist.png" sourcerect="0,0,128,128" origin="0.5,0.5" />
+    </Jobicon>
+    <JobiconSmall>
+      <sprite texture="%ModDir%/the void traitor pack/UI/jobs/scientist.png" sourcerect="128,0,28,28" origin="0.5,0.5" />
+    </JobiconSmall>
+    <Skills>
+      <Skill identifier="electrical" level="40,50" primary="true" />
+      <Skill identifier="medical" level="30,40" />
+      <Skill identifier="mechanical" level="20,30" />
+      <Skill identifier="weapons" level="10,20" />
+      <Skill identifier="helm" level="10,20" />
+    </Skills>
+    <ItemSet>
+      <Item identifier="idcard" equip="true" showpreview="false" />
+      <Item identifier="researcherclothes" equip="true" outfit="true" />
+      <Item identifier="headset" equip="true" showpreview="false" />
+      <Item identifier="screwdriver" />
+    </ItemSet>
+    <AutonomousObjectives>
+      <Order identifier="extinguishfires" prioritymodifier="1" />
+      <Order identifier="rescue" prioritymodifier="1" />
+      <Order identifier="repairsystems" prioritymodifier="0.5" />
+      <Order identifier="fixleaks" prioritymodifier="0.5" />
+    </AutonomousObjectives>
+  </Job>
+</Jobs>

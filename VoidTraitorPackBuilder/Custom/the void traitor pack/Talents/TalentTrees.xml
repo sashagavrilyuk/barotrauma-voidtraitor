@@ -143,4 +143,11 @@
       </TalentOptions>
     </SubTree>
   </TalentTree>
+  <TalentTree jobidentifier="scientist">
+    <SubTree identifier="scientist_primary" nameidentifier="talenttree.primary" type="primary">
+      <TalentOptions requiredtalents="1" maxchosentalents="1">
+        <TalentOption identifier="nothings"/>
+      </TalentOptions>
+    </SubTree>
+  </TalentTree>
 </TalentTrees>
