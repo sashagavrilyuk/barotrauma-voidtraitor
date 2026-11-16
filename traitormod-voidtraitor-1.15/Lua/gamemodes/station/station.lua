@@ -96,6 +96,9 @@ function gm:PreStart()
     -- Player } in the order they were taken; for the round-end manifest and the crew records to come
     self.Records = {}
     self.RecordOf = {}
+    -- the crew list of the Tab menu (crewmanifest.lua in the pack) is sent again when a crew member is added
+    self.CrewChanged = false
+    self.NextCrewSend = 0
     -- the round's own seats: the map's RoleSlots over the config's, then BureaucraticError may change them
     self.Seats = {}
     for id, role in pairs(self.Roles) do
@@ -412,7 +415,10 @@ function gm:InitializeIdCard(character)
         id = self.AccountRoles[account]
     end
     -- characters of no player keep the access and keys of their job; a player's card shows the role
-    if id ~= nil then self.RoleCharacters[character] = id end
+    if id ~= nil then
+        self.RoleCharacters[character] = id
+        self.CrewChanged = true
+    end
     local role = self.Roles[id]
     local passenger = role ~= nil and role.Passenger == true
     Traitormod.IdConsole.InitializeCard(character, passenger, role and role.IdPreset, role and id)
@@ -434,6 +440,43 @@ function gm:RecordCharacter(client, character)
         Account = Traitormod.GetClientAccountKey(client), Player = client.Name }
     self.Records[#self.Records + 1] = record
     self.RecordOf[character] = record
+    self.CrewChanged = true
+end
+
+-- SS14's crew manifest, which its PDA shows: the latest crew character of each player with the role it was given, by
+-- department; no one else and no state, so it tells no more than the station's records would. Everyone may read it.
+function gm:SendCrew(client)
+    local latest, order = {}, {}
+    for _, record in ipairs(self.Records) do
+        local id = self.RoleCharacters[record.Character]
+        if id ~= nil then
+            if latest[record.Account] == nil then order[#order + 1] = record.Account end
+            latest[record.Account] = { Name = record.Name, Role = id }
+        end
+    end
+    local departments = {}
+    for _, department in ipairs(self.Departments) do
+        local members = {}
+        for _, account in ipairs(order) do
+            local member = latest[account]
+            for _, role in ipairs(department.Roles) do
+                if member.Role == role then members[#members + 1] = member end
+            end
+        end
+        if #members > 0 then departments[#departments + 1] = { Id = department.Id, Members = members } end
+    end
+    local message = Networking.Start("VoidTraitor_StationCrew")
+    message.WriteByte(#departments)
+    for _, department in ipairs(departments) do
+        message.WriteString(department.Id)
+        message.WriteByte(#department.Members)
+        for _, member in ipairs(department.Members) do
+            message.WriteString(member.Name)
+            message.WriteString(member.Role)
+            message.WriteString(self.Roles[member.Role].Job)
+        end
+    end
+    Networking.Send(message, client ~= nil and client.Connection or nil)
 end
 
 -- SS14's round-end player manifest: each character a player controlled with its role (the Station role it was
@@ -489,6 +532,12 @@ end
 function gm:Think(deltaTime)
     if not Game.RoundStarted then return end
     self:UpdateCrewDown()
+    -- at most once a second, as players spawn in groups
+    if self.CrewChanged and Timer.GetTime() >= self.NextCrewSend then
+        self.CrewChanged = false
+        self.NextCrewSend = Timer.GetTime() + 1
+        self:SendCrew()
+    end
     local endOutpost = Level.Loaded.EndOutpost
     if endOutpost ~= nil and not self.Ending then
         local inside, total = 0, 0

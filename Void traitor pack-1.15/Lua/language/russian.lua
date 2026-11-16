@@ -330,6 +330,8 @@ language.Lobby = {
     StationLoadout = "Снаряжение",
     StationPassengerHint = "Если ни одна из выбранных профессий не достанется, вы станете пассажиром.",
     StationHighHint = "«Высокий» можно поставить только одной профессии.",
+    -- столбец роли во вкладке экипажа (Tab) в Станции
+    StationCrewRole = "Должность",
     StationNeedKarma = "Нужно %d кармы",
     -- time a role still needs: in total, on a role, in a department
     StationNeedTime = {

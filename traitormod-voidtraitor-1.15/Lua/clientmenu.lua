@@ -567,6 +567,8 @@ Networking.Receive(vtNet.Ready, function(message, client)
     cm.SendLobbyInfo(client)
     cm.SendAntagonists(client)
     Traitormod.StationJobs.Send(client)
+    local selected = Traitormod.SelectedGamemode
+    if selected ~= nil and selected.SendCrew ~= nil and Game.RoundStarted then selected:SendCrew(client) end
     return cm.SendSnapshot(client)
 end)
 
