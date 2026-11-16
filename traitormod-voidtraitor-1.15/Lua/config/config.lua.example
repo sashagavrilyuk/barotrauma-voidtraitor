@@ -53,6 +53,6 @@ local config = ...
 --     if preset.Id == "engineer" then table.insert(preset.Tags, "vt_access_cargo") end
 -- end
 -- JobId is optional: only explicitly configured native jobs change IdCard.OwnerJobId.
--- Captain and headpersonnel presets with AllAccess also include custom Access entries.
+-- Captain and headofpersonnel presets with AllAccess also include custom Access entries.
 
 return config

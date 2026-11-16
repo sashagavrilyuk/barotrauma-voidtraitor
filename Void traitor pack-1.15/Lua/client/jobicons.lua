@@ -1,10 +1,11 @@
 if SERVER then return end
 
 -- Like SS14, a character's job icon comes from the ID card it wears wherever the game draws it for that character:
--- its own portrait, the health window and the order wheel (CharacterInfo.DrawJobIcon). A Station card's job: tag is
--- its role, which gives a head its emblem; its jobid: tag is the job, whose icon and colour the others show. In
--- Station a character without a card shows the "no ID card" icon. Cards of other modes have no job: tag and keep the
--- game's icon, as do the crew list on the left (the role each was given) and Station's crew tab.
+-- its own portrait, the health window and the order wheel (CharacterInfo.DrawJobIcon). A Station card's vt_preset: tag
+-- is the ID console preset it was made out with, which gives a head its emblem; its jobid: tag is the job, whose icon
+-- and colour the others show. The job: tag, the title anyone can write at the console, changes neither. In Station a
+-- character without a card shows the "no ID card" icon. Cards of other modes have no job: tag and keep the game's icon,
+-- as do the crew list on the left (the role each was given) and Station's crew tab.
 local _, Common = ...
 
 local PATCH_ID = "VoidTraitor.JobIcons"
@@ -21,18 +22,20 @@ local function cardIcon(character)
         if Common.StationCrew == nil then return nil end
         return Common.GetNoIdCardIcon(false), NO_CARD_COLOR
     end
-    local role, jobId
+    local station, preset, jobId = false, nil, nil
     for tag in card.GetTags() do
         local value = tag.Value
         if value:sub(1, 4) == "job:" then
-            role = value:sub(5)
+            station = true
+        elseif value:sub(1, 10) == "vt_preset:" then
+            preset = value:sub(11)
         elseif value:sub(1, 6) == "jobid:" then
             jobId = value:sub(7)
         end
     end
-    if role == nil then return nil end
+    if not station then return nil end
     local job = jobId ~= nil and JobPrefab.Prefabs.ContainsKey(jobId) and JobPrefab.Get(jobId) or nil
-    return Common.GetRoleIcon(role, jobId, false), job ~= nil and job.UIColor or NO_CARD_COLOR
+    return Common.GetRoleIcon(preset, jobId, false), job ~= nil and job.UIColor or NO_CARD_COLOR
 end
 
 Hook.Patch(PATCH_ID, "Barotrauma.CharacterInfo", "DrawJobIcon", function(instance, ptable)

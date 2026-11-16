@@ -48,6 +48,8 @@ config.IdConsole = {
         { Tag = "vt_access_command", Name = "IdConsoleCommand" },
         { Tag = "vt_access_personnel", Name = "IdConsolePersonnel" },
     },
+    -- A card shows its preset's icon: a head's emblem when the preset is named after a head role, otherwise the icon
+    -- of the job it is made out to (JobId; without one the card keeps its job).
     Presets = {
         { Id = "assistant", JobId = "assistant", Tags = { "vt_access_maintenance" } },
         { Id = "mechanic", JobId = "mechanic", Tags = { "vt_access_maintenance", "vt_access_engineering", "vt_access_engineering_stock" } },
@@ -56,14 +58,14 @@ config.IdConsole = {
         { Id = "surgeon", JobId = "surgeon", Tags = { "vt_access_maintenance", "vt_access_medical", "vt_access_medical_stock" } },
         { Id = "securityofficer", JobId = "securityofficer", Tags = { "vt_access_maintenance", "vt_access_security", "vt_access_armory" } },
         { Id = "scientist", JobId = "scientist", Tags = { "vt_access_maintenance", "vt_access_science" } },
-        { Id = "headofsecurity", Name = "IdConsoleHeadOfSecurity", Tags = { "vt_access_maintenance", "vt_access_security", "vt_access_armory", "vt_access_command" } },
-        { Id = "chiefengineer", Name = "IdConsoleChiefEngineer", Tags = { "vt_access_maintenance", "vt_access_engineering", "vt_access_reactor", "vt_access_engineering_stock", "vt_access_command" } },
-        { Id = "chiefmedicalofficer", Name = "IdConsoleChiefMedicalOfficer", Tags = { "vt_access_maintenance", "vt_access_medical", "vt_access_medical_stock", "vt_access_command" } },
-        { Id = "researchdirector", Name = "IdConsoleResearchDirector", Tags = { "vt_access_maintenance", "vt_access_science", "vt_access_command" } },
-        { Id = "quartermaster", Name = "IdConsoleQuartermaster", Tags = { "vt_access_maintenance", "vt_access_cargo", "vt_access_command" } },
+        { Id = "headofsecurity", JobId = "securityofficer", Name = "IdConsoleHeadOfSecurity", Tags = { "vt_access_maintenance", "vt_access_security", "vt_access_armory", "vt_access_command" } },
+        { Id = "chiefengineer", JobId = "engineer", Name = "IdConsoleChiefEngineer", Tags = { "vt_access_maintenance", "vt_access_engineering", "vt_access_reactor", "vt_access_engineering_stock", "vt_access_command" } },
+        { Id = "chiefmedicalofficer", JobId = "medicaldoctor", Name = "IdConsoleChiefMedicalOfficer", Tags = { "vt_access_maintenance", "vt_access_medical", "vt_access_medical_stock", "vt_access_command" } },
+        { Id = "researchdirector", JobId = "scientist", Name = "IdConsoleResearchDirector", Tags = { "vt_access_maintenance", "vt_access_science", "vt_access_command" } },
+        { Id = "quartermaster", JobId = "mechanic", Name = "IdConsoleQuartermaster", Tags = { "vt_access_maintenance", "vt_access_cargo", "vt_access_command" } },
         { Id = "captain", JobId = "captain", AllAccess = true, Tags = {} },
-        { Id = "headpersonnel", Name = "IdConsoleHeadPersonnel", AllAccess = true, Tags = {} },
-        { Id = "cargo", Name = "IdConsoleCargoJob", Tags = { "vt_access_maintenance", "vt_access_cargo" } },
+        { Id = "headofpersonnel", JobId = "assistant", Name = "IdConsoleHeadPersonnel", AllAccess = true, Tags = {} },
+        { Id = "cargo", JobId = "mechanic", Name = "IdConsoleCargoJob", Tags = { "vt_access_maintenance", "vt_access_cargo" } },
     },
 }
 -- Station radio, like Space Station 14's: a channel works only while a powered telecom server holds its key, and a
@@ -442,7 +444,7 @@ config.GamemodeConfig = {
                 Radio = { "command", "engineering", "medical", "security", "cargo", "science" },
                 Requirements = { { Department = "command", Hours = 4 }, { Department = "security", Hours = 4 },
                     { Department = "engineering", Hours = 4 }, { Department = "medical", Hours = 4 }, { Department = "science", Hours = 4 } } },
-            headofpersonnel = { Job = "assistant", Slots = 1, Head = 6, IdPreset = "headpersonnel", Radio = { "command" },
+            headofpersonnel = { Job = "assistant", Slots = 1, Head = 6, IdPreset = "headofpersonnel", Radio = { "command" },
                 Requirements = { { Department = "command", Hours = 2.5 }, { Department = "security", Hours = 2.5 },
                     { Department = "engineering", Hours = 2.5 }, { Department = "medical", Hours = 2.5 }, { Department = "science", Hours = 2.5 } } },
             headofsecurity = { Job = "securityofficer", Slots = 1, Head = 5, IdPreset = "headofsecurity", Radio = { "command", "security" },

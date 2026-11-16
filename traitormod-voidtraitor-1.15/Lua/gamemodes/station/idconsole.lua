@@ -110,7 +110,8 @@ function console.Apply(client, item, payload)
     for tag in target.GetTags() do
         local value = tag.Value
         if (name ~= nil and value:sub(1, 5) == "name:")
-            or (preset ~= nil and preset.JobId ~= nil and value:sub(1, 6) == "jobid:") then remove[#remove + 1] = tag end
+            or (preset ~= nil and preset.JobId ~= nil and value:sub(1, 6) == "jobid:")
+            or (preset ~= nil and value:sub(1, 10) == "vt_preset:") then remove[#remove + 1] = tag end
     end
     for _, tag in ipairs(remove) do target.RemoveTag(tag) end
     if name ~= nil then
@@ -121,6 +122,8 @@ function console.Apply(client, item, payload)
         info.OwnerJobId = Identifier(preset.JobId)
         target.AddTag("jobid:" .. preset.JobId)
     end
+    -- the card's icon follows its preset, not the title, which can be anything (Lua/client/jobicons.lua)
+    if preset ~= nil then target.AddTag("vt_preset:" .. preset.Id) end
     if title ~= nil then setJobTitle(target, title) end
     if replace then
         -- Clients get the card's name and look only in its spawn data, so respawn it on their side.
@@ -273,6 +276,7 @@ function console.InitializeCard(character, passenger, presetId, title)
         for _, preset in ipairs(console.Config.Presets) do
             if preset.Id == presetId then
                 for _, tag in ipairs(preset.Tags) do card.AddTag(tag) end
+                card.AddTag("vt_preset:" .. presetId)
                 break
             end
         end
