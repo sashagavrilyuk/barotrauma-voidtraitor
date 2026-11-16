@@ -791,12 +791,15 @@ def main() -> None:
             print(f"WARNING: {target_folder}: package name '{source_name}' вместо ожидаемого '{expected_name}'")
 
         destination = output / target_folder
-        excluded_files = copy_package(
-            source, destination, excludes_by_target.get(target_folder.casefold(), set())
-        )
+        excludes = excludes_by_target.get(target_folder.casefold(), set())
+        excluded_files = copy_package(source, destination, excludes)
         rewrite_moddir_references(destination, target_folder, named_moddirs)
 
         for child in list(source_root):
+            # an excluded file leaves the content list as well, so the game does not look for it
+            relative = normalized_filelist_relative(child.attrib.get("file", ""))
+            if relative is not None and is_excluded(Path(relative), excludes):
+                continue
             imported = copy.deepcopy(child)
             rewrite_node_paths(imported, target_folder, named_moddirs)
             final_root.append(imported)

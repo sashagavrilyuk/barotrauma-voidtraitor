@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Override>
+  <Items>
+    <!--crawler-->
+    <Item name="Crawler Half" identifier="he-crawlermeatchunk" category="Misc" subcategory="Ingredients" maxstacksize="8" cargocontaineridentifier="he-coolercrate" description="" Tags="smallitem,meat,meatchunk,crawlermeat,ingredient,canspoil,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_soft" isshootable="true" requireaimtouse="true">
+      <PreferredContainer secondary="abandonedcrewcab" minamount="0" maxamount="1" spawnprobability="0.02" />
+      <PreferredContainer primary="refrigerator" secondary="refrigeratedcontainer" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="311,446,200,66" depth="0.6" origin="0.5,0.5" />
+      <Body width="200" radius="33" density="12" />
+      <Price baseprice="100" minavailable="4" maxavailable="16" mincondition="0.9" maxcondition="1.0" usecondition="false" sold="false">
+        <Price storeidentifier="merchantoutpost" />
+        <Price storeidentifier="merchantcity" />
+        <Price storeidentifier="merchantresearch" />
+        <Price storeidentifier="merchantmilitary" />
+        <Price storeidentifier="merchantmine" />
+        <Price storeidentifier="merchantmedical" />
+        <Price storeidentifier="merchantbutcher" multiplier="1.0" minavailable="0" maxavailable="16" sold="true" />
+      </Price>
+      <Deconstruct time="10" requireddeconstructor="deconstructor">
+        <Item identifier="alienblood" amount="1" />
+      </Deconstruct>
+      <!-- ItemContainer for freshness item which is spawned in at the start of a round if the inventory does not yet contain a freshness item. It represents the item spoilage | Previously meat was losing condition directly when spoiling which made it non-stackable, but with spoilage moved to freshness item, meat stays stackable -->
+      <ItemContainer capacity="1" maxstacksize="1" canbeselected="false" allowaccess="false" allowdraganddrop="false" showinventory="false" hideitems="true" slotsperrow="1" uilabel="" allowuioverlap="true" showcontentsintooltip="true" showcontainedstateindicator="true" removecontaineditemsondeconstruct="true">
+        <Containable items="freshness" />
+        <!-- StatusEffect spawning in the freshness item at the start of a round -->
+        <StatusEffect type="Always" target="This" spawnitemrandomly="true" oneshot="true">
+          <SpawnItem identifier="he-freshness" spawnposition="ThisInventory" spawnifinventoryfull="false" spawnifcantbecontained="false" />
+        </StatusEffect>
+      </ItemContainer>
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="true" slots="Any,RightHand+LeftHand" aimpos="26,20" holdangle="270" holdpos="32,28" aimangle="120" aimable="false" swingwhenusing="true" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-12.0" />
+        <StatusEffect type="OnUse" target="Character">
+          <ReduceAffliction type="hunger" amount="2" />
+          <Affliction identifier="deliriuminepoisoning" probability="0.001" amount="8" />
+          <Affliction identifier="nausea" amount="4" />
+          <Affliction identifier="worminfection" amount="1" probability="0.00052" />
+          <Affliction identifier="tapeworminfection" amount="1" probability="0.00052" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="True" />
+    </Item>
+    <!-- Crawler Meat Chunk /// What is this meat used for? should it not exist?  -->
+    <Item name="Crawler Meat Chunk" identifier="he-crawlermeatchunkspecial" category="Misc" subcategory="Ingredients" maxstacksize="8" cargocontaineridentifier="he-coolercrate" description="A chunk of crawler meat." Tags="smallitem,meat,meatchunk,crawlermeat,ingredient,canspoil,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_soft" isshootable="true" requireaimtouse="true">
+      <PreferredContainer primary="refrigerator" secondary="refrigeratedcontainer" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="311,446,200,66" depth="0.6" origin="0.5,0.5" />
+      <Body width="200" radius="33" density="12" />
+      <Price baseprice="100" minavailable="4" maxavailable="16" mincondition="0.9" maxcondition="1.0" usecondition="false" sold="false">
+        <Price storeidentifier="merchantoutpost" />
+        <Price storeidentifier="merchantcity" />
+        <Price storeidentifier="merchantresearch" />
+        <Price storeidentifier="merchantmilitary" />
+        <Price storeidentifier="merchantmine" />
+        <Price storeidentifier="merchantmedical" />
+        <Price storeidentifier="merchantbutcher" multiplier="1.0" minavailable="0" maxavailable="16" sold="true" />
+      </Price>
+      <Deconstruct time="10" requireddeconstructor="deconstructor">
+        <Item identifier="alienblood" amount="1" />
+      </Deconstruct>
+      <!-- ItemContainer for freshness item which is spawned in at the start of a round if the inventory does not yet contain a freshness item. It represents the item spoilage | Previously meat was losing condition directly when spoiling which made it non-stackable, but with spoilage moved to freshness item, meat stays stackable -->
+      <ItemContainer capacity="1" maxstacksize="1" canbeselected="false" allowaccess="false" allowdraganddrop="false" showinventory="false" hideitems="true" slotsperrow="1" uilabel="" allowuioverlap="true" showcontentsintooltip="true" showcontainedstateindicator="true" removecontaineditemsondeconstruct="true">
+        <Containable items="freshness" />
+        <!-- StatusEffect spawning in the freshness item at the start of a round -->
+        <StatusEffect type="Always" target="This" spawnitemrandomly="true" oneshot="true">
+          <SpawnItem identifier="he-freshness" spawnposition="ThisInventory" spawnifinventoryfull="false" spawnifcantbecontained="false" />
+        </StatusEffect>
+      </ItemContainer>
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="true" slots="Any,RightHand+LeftHand" aimpos="26,20" holdangle="270" holdpos="32,28" aimangle="120" aimable="false" swingwhenusing="true" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-12.0" />
+        <StatusEffect type="OnUse" target="Character">
+          <ReduceAffliction type="hunger" amount="2" />
+          <Affliction identifier="deliriuminepoisoning" probability="0.001" amount="8" />
+          <Affliction identifier="nausea" amount="4" />
+          <Affliction identifier="worminfection" amount="1" probability="0.00052" />
+          <Affliction identifier="tapeworminfection" amount="1" probability="0.00052" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="True" />
+    </Item>
+    <Item name="Raw Crawler Meat" identifier="he-rawcrawlermeat" category="Misc" subcategory="Ingredients" maxstacksize="8" cargocontaineridentifier="he-coolercrate" description="" Tags="smallitem,meat,rawmeatpiece,ingredient,canspoil,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_soft" isshootable="true" requireaimtouse="true">
+      <PreferredContainer primary="refrigerator" secondary="refrigeratedcontainer" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="258,477,51,17" depth="0.6" origin="0.5,0.5" />
+      <Fabricate suitablefabricators="cuttingboard" requiredtime="13" requiresrecipe="false" amount="2">
+        <RequiredSkill identifier="butchery" level="15" />
+        <RequiredItem identifier="he-crawlermeatchunk" Amount="1" MinCondition="0.5" MaxCondition="1.0" UseCondition="False" />
+      </Fabricate>
+      <Deconstruct time="3" requireddeconstructor="deconstructor" />
+      <Body width="51" radius="8" density="9" />
+      <Price baseprice="55" minavailable="4" maxavailable="16" mincondition="0.9" maxcondition="1.0" usecondition="false" sold="false">
+        <Price storeidentifier="merchantoutpost" />
+        <Price storeidentifier="merchantcity" />
+        <Price storeidentifier="merchantresearch" />
+        <Price storeidentifier="merchantmilitary" />
+        <Price storeidentifier="merchantmine" />
+        <Price storeidentifier="merchantmedical" />
+        <Price storeidentifier="merchantbutcher" multiplier="1.0" minavailable="0" maxavailable="32" sold="true" />
+      </Price>
+      <!-- ItemContainer for freshness item which is spawned in at the start of a round if the inventory does not yet contain a freshness item. It represents the item spoilage | Previously meat was losing condition directly when spoiling which made it non-stackable, but with spoilage moved to freshness item, meat stays stackable -->
+      <ItemContainer capacity="1" maxstacksize="1" canbeselected="false" allowaccess="false" allowdraganddrop="false" showinventory="false" hideitems="true" slotsperrow="1" uilabel="" allowuioverlap="true" showcontentsintooltip="true" showcontainedstateindicator="true" removecontaineditemsondeconstruct="true">
+        <Containable items="freshness" />
+        <!-- StatusEffect spawning in the freshness item at the start of a round -->
+        <StatusEffect type="Always" target="This" spawnitemrandomly="true" oneshot="true">
+          <SpawnItem identifier="he-freshness" spawnposition="ThisInventory" spawnifinventoryfull="false" spawnifcantbecontained="false" />
+        </StatusEffect>
+      </ItemContainer>
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="28,18" holdangle="30" aimangle="0" aimable="false" swingwhenusing="true" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-12.0" />
+        <StatusEffect type="OnUse" target="Character">
+          <ReduceAffliction type="hunger" amount="2" />
+          <Affliction identifier="deliriuminepoisoning" probability="0.001" amount="8" />
+          <Affliction identifier="nausea" amount="4" />
+          <Affliction identifier="worminfection" amount="1" probability="0.00052" />
+          <Affliction identifier="tapeworminfection" amount="1" probability="0.00052" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="True" />
+    </Item>
+    <Item name="Raw Crawler Filets" identifier="he-rawcrawlerfilets" category="Misc" subcategory="Ingredients" maxstacksize="1" cargocontaineridentifier="he-coolercrate" description="" Tags="smallitem,meat,ingredient,canspoil,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_soft" isshootable="true" requireaimtouse="true">
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="186,313,93,25" depth="0.6" origin="0.5,0.5" />
+      <!--<InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="178,405,61,13" origin="0.5,0.5" />-->
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="186,313,93,25" depth="0.525" origin="0.5,0.65" />
+      <Body width="80" radius="12" density="12" />
+      <Price baseprice="120" minavailable="4" maxavailable="16" mincondition="0.9" maxcondition="1.0" usecondition="false" sold="false">
+        <Price storeidentifier="merchantoutpost" />
+        <Price storeidentifier="merchantcity" />
+        <Price storeidentifier="merchantresearch" />
+        <Price storeidentifier="merchantmilitary" />
+        <Price storeidentifier="merchantmine" />
+        <Price storeidentifier="merchantmedical" />
+        <Price storeidentifier="merchantbutcher" multiplier="1.0" minavailable="0" maxavailable="16" sold="false" />
+      </Price>
+      <Deconstruct time="5" requireddeconstructor="deconstructor" />
+      <Fabricate suitablefabricators="cuttingboard" requiredtime="13" requiresrecipe="false" amount="1">
+        <RequiredSkill identifier="butchery" level="35" />
+        <RequiredItem identifier="he-crawlermeatchunk" MinCondition="0.5" MaxCondition="1.0" UseCondition="False" />
+        <RequiredItem identifier="he-salt" UseCondition="True" MinCondition="0.1" />
+        <RequiredItem identifier="he-pepper" UseCondition="True" MinCondition="0.1" />
+        <RequiredItem identifier="he-cookingoil" UseCondition="True" MinCondition="0.1" />
+      </Fabricate>
+      <!-- ItemContainer for freshness item which is spawned in at the start of a round if the inventory does not yet contain a freshness item. It represents the item spoilage | Previously meat was losing condition directly when spoiling which made it non-stackable, but with spoilage moved to freshness item, meat stays stackable -->
+      <ItemContainer capacity="1" maxstacksize="1" canbeselected="false" allowaccess="false" allowdraganddrop="false" showinventory="false" hideitems="true" slotsperrow="1" uilabel="" allowuioverlap="true" showcontentsintooltip="true" showcontainedstateindicator="true" removecontaineditemsondeconstruct="true">
+        <Containable items="freshness" />
+        <!-- StatusEffect spawning in the freshness item at the start of a round -->
+        <StatusEffect type="Always" target="This" spawnitemrandomly="true" oneshot="true">
+          <SpawnItem identifier="he-freshness" spawnposition="ThisInventory" spawnifinventoryfull="false" spawnifcantbecontained="false" />
+        </StatusEffect>
+      </ItemContainer>
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="true" slots="Any,RightHand+LeftHand" aimpos="26,20" holdangle="270" holdpos="32,28" aimangle="120" aimable="false" swingwhenusing="true" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-8.0" />
+        <StatusEffect type="OnUse" target="Character">
+          <ReduceAffliction type="hunger" amount="2" />
+          <Affliction identifier="deliriuminepoisoning" probability="0.001" amount="8" />
+          <Affliction identifier="nausea" amount="2" />
+          <Affliction identifier="worminfection" amount="1" probability="0.00052" />
+          <Affliction identifier="tapeworminfection" amount="1" probability="0.00052" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="True" />
+    </Item>
+    <Item name="Crawler Filets" identifier="he-preparedcrawlerfilets" category="Misc" subcategory="Ingredients" maxstacksize="1" cargocontaineridentifier="he-coolercrate" description="" Tags="smallitem,meat,ingredient,canspoil,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_soft" isshootable="true" requireaimtouse="true">
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="186,287,93,25" depth="0.6" origin="0.5,0.5" />
+      <!--<InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="178,391,61,13" origin="0.5,0.5" />-->
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="186,287,93,25" depth="0.525" origin="0.5,0.65" />
+      <Body width="80" radius="12" density="12" />
+      <Price baseprice="120" minavailable="4" maxavailable="16" mincondition="0.9" maxcondition="1.0" usecondition="false" sold="false">
+        <Price storeidentifier="merchantoutpost" />
+        <Price storeidentifier="merchantcity" />
+        <Price storeidentifier="merchantresearch" />
+        <Price storeidentifier="merchantmilitary" />
+        <Price storeidentifier="merchantmine" />
+        <Price storeidentifier="merchantmedical" />
+        <Price storeidentifier="merchantbutcher" multiplier="1.0" minavailable="0" maxavailable="16" sold="true" />
+      </Price>
+      <Deconstruct time="5" requireddeconstructor="deconstructor" />
+      <Fabricate suitablefabricators="oven" requiredtime="35" requiresrecipe="false" amount="1">
+        <RequiredSkill identifier="cooking" level="35" />
+        <RequiredItem identifier="he-rawcrawlerfilets" MinCondition="0.5" MaxCondition="1.0" UseCondition="False" />
+      </Fabricate>
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="true" slots="Any,RightHand+LeftHand" aimpos="26,20" holdangle="270" holdpos="32,28" aimangle="120" aimable="false" swingwhenusing="true" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-8.0" />
+        <StatusEffect type="OnUse" target="Character">
+          <ReduceAffliction type="hunger" amount="2" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="True" />
+    </Item>
+  </Items>
+</Override>

@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<prefabs>
+  <waterdropshort drawontop="False" LifeTime="0.3" LifeTimeMin="0" StartDelayMin="0" StartDelayMax="0" AngularVelocityMin="0" AngularVelocityMax="0" StartRotationMin="0" StartRotationMax="0" RotateToDirection="True" Drag="0" WaterDrag="0.3" VelocityChange="0,-9.8" VelocityChangeWater="0,-5" CanEnterSubs="True" CollisionRadius="10" InvariantCollisionSize="False" UseCollision="True" DeleteOnCollision="True" Friction="0.5" Restitution="0.2" StartSizeMin="0.4,0.2" StartSizeMax="0.4,0.2" SizeChangeMin="-0.02,-0.02" SizeChangeMax="-0.02,-0.02" GrowTime="0.1" StartColor="255,255,255,125" MiddleColor="255,255,255,255" EndColor="255,255,255,0" UseMiddleColor="False" DrawTarget="Air" DrawOrder="Default" DrawAlways="False" BlendState="AlphaBlend" Priority="0" AnimDuration="1" LoopAnim="True">
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="0,96,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="32,96,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="64,96,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="96,96,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="128,96,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="160,96,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="192,96,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="224,96,32,32" />
+  </waterdropshort>
+  <colagoosplash drawontop="False" LifeTime="1.5" LifeTimeMin="0" StartDelayMin="0" StartDelayMax="0.2" AngularVelocityMin="0" AngularVelocityMax="0" StartRotationMin="0" StartRotationMax="360" RotateToDirection="False" Drag="0" WaterDrag="0" VelocityChange="0,-5" VelocityChangeWater="0,-0.1" CanEnterSubs="True" CollisionRadius="30" InvariantCollisionSize="False" UseCollision="True" DeleteOnCollision="False" Friction="0.5" Restitution="0.5" StartSizeMin="0.5,0.5" StartSizeMax="1,1" SizeChangeMin="0,0" SizeChangeMax="0,0" GrowTime="0.1" StartColor="40,10,0,255" MiddleColor="255,255,255,255" EndColor="20,5,0,255" UseMiddleColor="False" DrawTarget="Both" DrawOrder="Default" DrawAlways="False" BlendState="AlphaBlend" Priority="0" AnimDuration="1.5" LoopAnim="True">
+    <animatedsprite texture="Content/Particles/Spatter1.png" sourcerect="0,0,1024,1024" columns="4" rows="8" origin="0.2,0.5" />
+    <animatedsprite texture="Content/Particles/Spatter2.png" sourcerect="0,0,1024,1024" columns="4" rows="8" origin="0.5,0.5" />
+    <animatedsprite texture="Content/Particles/Spatter3.png" sourcerect="0,0,1024,1024" columns="4" rows="8" origin="0.3,0.5" />
+  </colagoosplash>
+  <colabubbles drawontop="False" LifeTime="3" LifeTimeMin="0" StartDelayMin="0" StartDelayMax="0" AngularVelocityMin="0" AngularVelocityMax="0" StartRotationMin="0" StartRotationMax="360" RotateToDirection="False" Drag="0" WaterDrag="0" VelocityChange="0,0.1" VelocityChangeWater="0,0.1" CanEnterSubs="True" CollisionRadius="30" InvariantCollisionSize="False" UseCollision="True" DeleteOnCollision="False" Friction="0.5" Restitution="0.5" StartSizeMin="0.6,0.6" StartSizeMax="1,1" SizeChangeMin="0.1,0.1" SizeChangeMax="0.3,0.3" GrowTime="0.1" StartColor="40,10,0,200" MiddleColor="255,255,255,255" EndColor="25,5,0,0" UseMiddleColor="False" DrawTarget="Water" DrawOrder="Default" DrawAlways="False" BlendState="AlphaBlend" Priority="-1" AnimDuration="1" LoopAnim="True">
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="270,5,103,119" />
+  </colabubbles>
+  <toiletwaterleak startalpha="255,255,255,0" LifeTime="2" LifeTimeMin="0" StartDelayMin="0" StartDelayMax="0" AngularVelocityMin="0" AngularVelocityMax="0" StartRotationMin="0" StartRotationMax="360" RotateToDirection="False" Drag="0" WaterDrag="10" VelocityChange="0,-6" VelocityChangeWater="0,-6" CanEnterSubs="True" CollisionRadius="20" InvariantCollisionSize="False" UseCollision="True" DeleteOnCollision="False" Friction="0.01" Restitution="0.2" StartSizeMin="0.5,0.15" StartSizeMax="0.8,0.3" SizeChangeMin="0.4,0.4" SizeChangeMax="0.8,0.8" GrowTime="0.2" StartColor="255,255,255,255" MiddleColor="255,255,255,255" EndColor="255,255,255,0" UseMiddleColor="False" DrawTarget="Air" DrawOrder="Default" DrawAlways="False" BlendState="AlphaBlend" Priority="0" AnimDuration="1" LoopAnim="True">
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="256,128,128,128" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="256,254,128,128" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="384,128,128,128" />
+  </toiletwaterleak>
+  <whiteshards drawontop="False" LifeTime="2" LifeTimeMin="0" StartDelayMin="0" StartDelayMax="0" AngularVelocityMin="0" AngularVelocityMax="0" StartRotationMin="0" StartRotationMax="360" RotateToDirection="False" Drag="0" WaterDrag="0.3" VelocityChange="0,-5" VelocityChangeWater="0,-2" CanEnterSubs="True" CollisionRadius="5" InvariantCollisionSize="False" UseCollision="True" DeleteOnCollision="True" Friction="3" Restitution="0.5" StartSizeMin="0.1,0.1" StartSizeMax="0.5,0.5" SizeChangeMin="0,0" SizeChangeMax="0,0" GrowTime="0" StartColor="255,255,255,255" MiddleColor="255,255,255,255" EndColor="255,255,255,0" UseMiddleColor="False" DrawTarget="Both" DrawOrder="Default" DrawAlways="False" BlendState="AlphaBlend" Priority="0" AnimDuration="1" LoopAnim="True">
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="0,64,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="32,64,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="64,64,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="96,64,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="128,64,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="160,64,48,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="208,64,48,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="0,96,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="32,96,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="64,96,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="96,96,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="128,96,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="160,96,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="192,96,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="224,96,32,32" />
+  </whiteshards>
+  <smallwhitechunks drawontop="False" LifeTime="3" LifeTimeMin="0" StartDelayMin="0" StartDelayMax="0" AngularVelocityMin="-500" AngularVelocityMax="500" StartRotationMin="0" StartRotationMax="360" RotateToDirection="False" Drag="0" WaterDrag="0.3" VelocityChange="0,-8" VelocityChangeWater="0,-1" CanEnterSubs="True" CollisionRadius="10" InvariantCollisionSize="False" UseCollision="True" DeleteOnCollision="True" Friction="0.5" Restitution="0.5" StartSizeMin="0.8,0.8" StartSizeMax="1,1" SizeChangeMin="-0.5,-0.5" SizeChangeMax="-0.5,-0.5" GrowTime="0" StartColor="255,255,255,255" MiddleColor="255,255,255,255" EndColor="100,50,0,0" UseMiddleColor="False" DrawTarget="Both" DrawOrder="Default" DrawAlways="False" BlendState="AlphaBlend" Priority="0" AnimDuration="1" LoopAnim="True">
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="0,64,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="32,64,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="64,64,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="96,64,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="128,64,32,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="160,64,48,32" />
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="208,64,48,32" />
+  </smallwhitechunks>
+  <jarlid drawontop="False" LifeTime="5" LifeTimeMin="0" StartDelayMin="0" StartDelayMax="0" AngularVelocityMin="-100" AngularVelocityMax="100" StartRotationMin="0" StartRotationMax="0" RotateToDirection="False" Drag="0" WaterDrag="0.3" VelocityChange="0,-8" VelocityChangeWater="0,-1" CanEnterSubs="True" CollisionRadius="5" InvariantCollisionSize="False" UseCollision="True" DeleteOnCollision="True" Friction="0.5" Restitution="0.5" StartSizeMin="1,1" StartSizeMax="1,1" SizeChangeMin="0,0" SizeChangeMax="0,0" GrowTime="0" StartColor="255,255,255,255" MiddleColor="255,255,255,255" EndColor="255,255,255,255" UseMiddleColor="False" DrawTarget="Both" DrawOrder="Default" DrawAlways="False" BlendState="AlphaBlend" Priority="0" AnimDuration="1" LoopAnim="True">
+    <sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/Jars.png" sourcerect="5,1,32,4" />
+  </jarlid>
+  <soapbubbles drawontop="True" LifeTime="2" LifeTimeMin="0" StartDelayMin="0" StartDelayMax="0" AngularVelocityMin="0" AngularVelocityMax="0" StartRotationMin="0" StartRotationMax="360" RotateToDirection="False" Drag="0" WaterDrag="0" VelocityChange="0,0" VelocityChangeWater="0,0.1" CanEnterSubs="True" CollisionRadius="30" InvariantCollisionSize="False" UseCollision="True" DeleteOnCollision="True" Friction="0.5" Restitution="0.5" StartSizeMin="0.6,0.6" StartSizeMax="1,1" SizeChangeMin="0.1,0.1" SizeChangeMax="0.5,0.5" GrowTime="0.5" StartColor="200,255,255,200" MiddleColor="255,255,255,255" EndColor="255,255,255,0" UseMiddleColor="False" DrawTarget="Both" DrawOrder="Foreground" DrawAlways="False" BlendState="AlphaBlend" Priority="-1" AnimDuration="1" LoopAnim="True">
+    <sprite texture="Content/Particles/ParticleAtlas.png" sourcerect="270,5,103,119" />
+  </soapbubbles>
+  <nomeatparticle drawontop="True" LifeTime="1" LifeTimeMin="0" StartDelayMin="0" StartDelayMax="0" AngularVelocityMin="0" AngularVelocityMax="0" StartRotationMin="0" StartRotationMax="0" RotateToDirection="False" Drag="0" WaterDrag="0" VelocityChange="0,3" VelocityChangeWater="0,3" CanEnterSubs="True" CollisionRadius="30" InvariantCollisionSize="False" UseCollision="True" DeleteOnCollision="True" Friction="0.5" Restitution="0.5" StartSizeMin="0.8,0.8" StartSizeMax="1.0,1.0" SizeChangeMin="0.5,0.5" SizeChangeMax="0.5,0.5" GrowTime="0" StartColor="160,70,50,255" MiddleColor="160,70,50,255" EndColor="80,35,25,50" UseMiddleColor="True" DrawTarget="Both" DrawOrder="Foreground" DrawAlways="False" BlendState="AlphaBlend" Priority="-1" AnimDuration="1" LoopAnim="True">
+    <sprite texture="%ModDir%/Hungry Europans/Content/UI/HE-IconsAtlas.png" sourcerect="720,935,91,77" />
+  </nomeatparticle>
+</prefabs>

@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<npcsets>
+  <Override>
+    <!-- TODO: go back to overriding vanilla NPCs if barodevs allow us to override specific NPCs instead of whole NPCset  -->
+    <npcset identifier="he-specialNPCs">
+      <!-- Artie Dolittle Override to have him spawn with coalition premium beer instead of ethanol -->
+      <npc identifier="he-artiedolittle" job="assistant" moduleflags="none" behavior="Passive">
+        <Character speciesname="human" gender="male" headspriteid="3" hairindex="2" beardindex="0" moustacheindex="0" faceattachmentindex="0" skincolor="255,255,255,255" haircolor="255,255,255,255" facialhaircolor="255,255,255,255" personality="Fearful">
+          <job name="Assistant" identifier="assistant">
+            <skill identifier="electrical" level="5" />
+            <skill identifier="mechanical" level="5" />
+            <skill identifier="weapons" level="5" />
+            <skill identifier="medical" level="5" />
+            <skill identifier="helm" level="5" />
+          </job>
+        </Character>
+        <ItemSet commonness="1">
+          <Item identifier="idcard" equip="true" />
+          <Item identifier="headset" equip="true" showpreview="false" />
+          <Item identifier="commonerclothes3" equip="true" />
+          <Item identifier="he-beercoalitionpremium" equip="true" />
+        </ItemSet>
+      </npc>
+      <!-- Aunt Doris override to make her an actual chef instead of medic -->
+      <npc identifier="he-auntdoris" faction="coalition" moduleflags="none" behavior="Passive">
+        <Character name="Aunt Doris" nameidentifier="auntdoris" speciesname="human" tags="female,head13" experiencepoints="6000" additionaltalentpoints="0" hairindex="12" beardindex="0" moustacheindex="0" faceattachmentindex="9" skincolor="243,198,150,255" haircolor="222,215,204,255" facialhaircolor="187,169,129,255" startitemsgiven="false" ragdoll="" personality="fearful" missionscompletedsincedeath="0">
+          <job identifier="he-chef">
+            <skill identifier="cooking" level="100" />
+            <skill identifier="butchery" level="100" />
+            <skill identifier="medical" level="60" />
+            <skill identifier="helm" level="50" />
+            <skill identifier="weapons" level="50" />
+            <skill identifier="mechanical" level="50" />
+            <skill identifier="electrical" level="50" />
+          </job>
+          <talents>
+            <talent identifier="slayer" />
+            <talent identifier="buff" />
+            <talent identifier="firstaidtraining" />
+            <talent identifier="mudraptorwrestler" />
+            <talent identifier="heavylifting" />
+            <talent identifier="nonthreatening" />
+            <talent identifier="inspiringpresence" />
+          </talents>
+        </Character>
+        <ItemSet commonness="1">
+          <Item identifier="idcard" equip="true" />
+          <Item identifier="headset" equip="true" showpreview="false" />
+          <Item identifier="he-chefscapmaster1" equip="true" />
+          <Item identifier="he-chefsuniform1" equip="true" />
+          <Item identifier="he-cleaver" equip="true" />
+          <Item identifier="banana" equip="true" />
+          <Item identifier="antibleeding1" amount="4" />
+          <Item identifier="he-endwormhotdog" amount="1" />
+          <Item identifier="he-pan" />
+          <Item identifier="seedbag">
+            <Item identifier="creepingorangevineseed" amount="4" />
+            <Item identifier="raptorbaneseed" amount="2" />
+            <Item identifier="tobaccovineseed" amount="3" />
+          </Item>
+        </ItemSet>
+      </npc>
+    </npcset>
+  </Override>
+</npcsets>

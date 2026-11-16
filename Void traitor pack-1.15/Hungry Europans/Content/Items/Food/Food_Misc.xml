@@ -1,0 +1,1065 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Override>
+  <Items>
+    <!-- OVERRIDES -->
+    <!-- MAKE ITEM EDIBLE -->
+    <Item name="Protein Bar" identifier="proteinbar" health="11" category="Misc" subcategory="Food" maxstacksize="8" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_softitem" isshootable="True" requireaimtouse="True">
+      <PreferredContainer secondary="wreckmedcab,abandonedmedcab" spawnprobability="0.04" />
+      <PreferredContainer secondary="abandonedcrewcab" minamount="0" maxamount="1" spawnprobability="0.04" />
+      <PreferredContainer secondary="crewcab" amount="1" spawnprobability="0.08" />
+      <PreferredContainer primary="table" secondary="kitchen,crewcab" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="202,469,54,18" depth="0.6" origin="0.5,0.5" />
+      <BrokenSprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="207,490,49,23" depth="0.6" maxcondition="99.99" />
+      <InventoryIcon texture="Content/Items/InventoryIconAtlas2.png" sourcerect="0,768,64,64" origin="0.5,0.5" />
+      <Fabricate suitablefabricators="vendingmachinefood,cafeteria" requiredtime="3" requiredmoney="29" fabricationlimitmin="0" fabricationlimitmax="7" />
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Body width="47" radius="13" density="9" />
+      <SuitableTreatment type="hungerDISABLEDFORNOW" suitability="25" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="false" slots="Any,RightHand,LeftHand" aimpos="35,0" aimangle="-50" holdangle="270" holdpos="0,0" handle1="0,-8" handle2="0,-8" aimable="false" swingwhenaiming="true" swingamount="10,6" swingspeed="0.2" msg="ItemMsgPickUpSelect">
+        <!--////////// BOT EATING \\\\\\\\\\-->
+        <!-- Bots "eat" by holding the food in their hands -->
+        <StatusEffect type="OnActive" target="This,Character" duration="1" condition="-1" stackable="false" comparison="And">
+          <Conditional hunger="gt 1" targetcontainer="true" />
+          <Conditional IsPlayer="false" targetcontainer="true" />
+          <Conditional IsHuman="true" targetcontainer="true" />
+          <Affliction identifier="he-proteinrich" amount="16.0" />
+          <Affliction identifier="he-stuffed" amount="0.75" />
+          <ReduceAffliction type="hunger" amount="1.2" />
+          <Affliction identifier="ate_sweet" amount="1" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <!-- Unwrap -->
+        <StatusEffect type="OnUse" target="This" Condition="10" setvalue="true" oneshot="true" comparison="And">
+          <Conditional condition="gte 11" />
+          <Conditional HasTag="neq opened" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Unwrap.ogg" loop="false" range="200" volume="5.0" />
+        </StatusEffect>
+        <!-- Apply new aimpos, aimangle and "opened" tag after a delay to avoid accidentally taking a bite instantly after unwrapping -->
+        <StatusEffect type="OnUse" target="This" aimpos="25,15" aimangle="0" settags="opened" delay="0.5" disabledeltatime="true" setvalue="true" stackable="false" oneshot="true" />
+        <!--////////// REGULAR EATING \\\\\\\\\\-->
+        <StatusEffect type="OnUse" target="This,Character" condition="-1" comparison="And">
+          <Conditional InWater="false" />
+          <Conditional HasTag="opened" />
+          <Affliction identifier="he-proteinrich" amount="16.0" />
+          <Affliction identifier="he-stuffed" amount="0.75" />
+          <ReduceAffliction type="hunger" amount="1.2" />
+          <Affliction identifier="ate_sweet" amount="1" />
+          <ParticleEmitter particle="smallwhitechunks" particlespersecond="2" scalemin="0.15" scalemax="0.2" distancemin="0" distancemax="5" anglemin="200" anglemax="340" velocitymin="10" velocitymax="15" copyentityangle="true" colormultiplier="120,80,30,255" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="true" />
+    </Item>
+    <!-- END OF OVERRIDES -->
+    <!-- MISC FOOD -->
+    <Item name="Protein Algae Cake" identifier="he-proteinalgaecake" health="16" category="Misc" subcategory="Food" maxstacksize="8" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_softitem" isshootable="True" requireaimtouse="True">
+      <PreferredContainer secondary="wreckmedcab,abandonedmedcab" spawnprobability="0.04" />
+      <PreferredContainer secondary="abandonedcrewcab" minamount="0" maxamount="1" spawnprobability="0.04" />
+      <PreferredContainer secondary="crewcab" amount="1" spawnprobability="0.08" />
+      <PreferredContainer primary="table" secondary="kitchen,crewcab" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="109,164,40,42" depth="0.6" origin="0.5,0.5" />
+      <BrokenSprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="110,150,28,13" depth="0.6" maxcondition="99.99" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="109,164,40,42" origin="0.5,0.5" />
+      <Fabricate suitablefabricators="vendingmachinefood,cafeteria" requiredtime="3" requiredmoney="39" fabricationlimitmin="0" fabricationlimitmax="7" />
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Body width="35" height="36" density="9.4" />
+      <SuitableTreatment type="hungerDISABLEDFORNOW" suitability="25" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="false" slots="Any,RightHand,LeftHand" aimpos="35,0" holdangle="270" handle1="10,-10" holdpos="0,0" aimangle="0" aimable="false" swingwhenaiming="true" swingamount="10,6" swingspeed="0.2" msg="ItemMsgPickUpSelect">
+        <!--////////// BOT EATING \\\\\\\\\\-->
+        <!-- Bots "eat" by holding the food in their hands -->
+        <StatusEffect type="OnActive" target="This,Character" duration="1" condition="-1" stackable="false" comparison="And">
+          <Conditional hunger="gt 1" targetcontainer="true" />
+          <Conditional IsPlayer="false" targetcontainer="true" />
+          <Conditional IsHuman="true" targetcontainer="true" />
+          <Affliction identifier="he-proteinrich" amount="16.0" />
+          <Affliction identifier="he-stuffed" amount="0.75" />
+          <ReduceAffliction type="hunger" amount="1" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <!-- Unwrap -->
+        <StatusEffect type="OnUse" target="This" Condition="15" setvalue="true" oneshot="true" comparison="And">
+          <Conditional condition="gte 16" />
+          <Conditional HasTag="neq opened" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Unwrap.ogg" loop="false" range="200" volume="5.0" />
+        </StatusEffect>
+        <!-- Apply new aimpos, aimangle and "opened" tag after a delay to avoid accidentally taking a bite instantly after unwrapping -->
+        <StatusEffect type="OnUse" target="This" aimpos="22,15" settags="opened" delay="0.5" disabledeltatime="true" setvalue="true" stackable="false" oneshot="true" />
+        <!--////////// REGULAR EATING \\\\\\\\\\-->
+        <StatusEffect type="OnUse" target="This,Character" condition="-1" comparison="And">
+          <Conditional condition="lte 15" />
+          <Conditional InWater="false" />
+          <Conditional HasTag="opened" />
+          <Affliction identifier="he-proteinrich" amount="16.0" />
+          <Affliction identifier="he-stuffed" amount="0.75" />
+          <ReduceAffliction type="hunger" amount="1" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <ParticleEmitter particle="smallwhitechunks" particlespersecond="2" scalemin="0.15" scalemax="0.2" distancemin="0" distancemax="5" anglemin="200" anglemax="340" velocitymin="10" velocitymax="15" copyentityangle="true" colormultiplier="20,150,50,255" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="true" />
+    </Item>
+    <!-- CHIPS -->
+    <Item name="Bag of Pomegrenade Chips" identifier="he-chips1" health="11" category="Misc" subcategory="Food" maxstacksize="8" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="Dried pomegrenade chips. A popular little snack to watch the annual 'DUNWICE FACE-OFF' to." Tags="smallitem,fooditem,fingerfood" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_soft" isshootable="True" requireaimtouse="True">
+      <PreferredContainer secondary="abandonedcrewcab" minamount="0" maxamount="1" spawnprobability="0.04" />
+      <PreferredContainer secondary="crewcab" amount="1" spawnprobability="0.08" />
+      <PreferredContainer primary="table" secondary="kitchen,crewcab" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="0,207,48,67" depth="0.6" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="0,207,48,67" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="0,207,48,67" depth="0.525" origin="0.5,0.85" />
+      <BrokenSprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="49,207,48,67" depth="0.6" maxcondition="99.99" />
+      <!--<InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="0,207,48,67" origin="0.5,0.5" />-->
+      <Fabricate suitablefabricators="vendingmachinefood,cafeteria" requiredtime="3" requiredmoney="19" fabricationlimitmin="0" fabricationlimitmax="7" />
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Body width="46" height="64" density="9" />
+      <SuitableTreatment type="hungerDISABLEDFORNOW" suitability="20" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="false" slots="RightHand+LeftHand,Any" holdangle="20" holdpos="30,-30" handle1="-10,-20" handle2="0,20" aimable="false" msg="ItemMsgPickUpSelect">
+        <!-- EVERYTHING RELATED TO POISONING FOOD IS HANDLED VIA THE POISON EFFECT PRESET ITEMS DEFINED IN - variantof="" AND THEIR CODE IS LOCATED IN - "/Content/Items/#Presets/#ItemPresets.xml" -->
+        <StatusEffect type="OnUse" target="This" Condition="14" aimangle="120" setvalue="true" oneshot="true">
+          <Conditional condition="gte 15" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Unwrap.ogg" loop="false" range="200" volume="5.0" />
+        </StatusEffect>
+        <!--////////// BOT EATING \\\\\\\\\\-->
+        <!-- Bots "eat" by holding the food in their hands -->
+        <StatusEffect type="OnActive" target="This,Character" duration="1" condition="-1" stackable="false" comparison="And">
+          <Conditional hunger="gt 1" targetcontainer="true" />
+          <Conditional IsPlayer="false" targetcontainer="true" />
+          <Conditional IsHuman="true" targetcontainer="true" />
+          <Affliction identifier="ate_friedfood" amount="1" />
+          <Affliction identifier="he-stuffed" amount="0.75" />
+          <ReduceAffliction type="hunger" amount="1" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <!--////////// REGULAR EATING \\\\\\\\\\-->
+        <!-- Unwrap -->
+        <StatusEffect type="OnUse" target="This" Condition="10" setvalue="true" oneshot="true" comparison="And">
+          <Conditional condition="gte 11" />
+          <Conditional HasTag="neq opened" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Unwrap.ogg" loop="false" range="200" volume="5.0" />
+        </StatusEffect>
+        <!-- Apply new aimpos, aimangle and "opened" tag after a delay to avoid accidentally taking a bite instantly after unwrapping -->
+        <StatusEffect type="OnUse" target="This" settags="opened" delay="0.5" disabledeltatime="true" setvalue="true" stackable="false" oneshot="true" />
+        <StatusEffect type="OnSecondaryUse" target="This" Condition="-1" disabledeltatime="true" stackable="false" comparison="And">
+          <Conditional HasStatusTag="neq emptyhand" />
+          <Conditional InWater="false" />
+          <Conditional Condition="lt 11" />
+          <Conditional HasTag="opened" />
+        </StatusEffect>
+        <!-- eating fries "animation" -->
+        <StatusEffect type="OnSecondaryUse" target="This" handle2="-20,55" setvalue="true" duration="0.5" stackable="false" comparison="And">
+          <Conditional HasStatusTag="neq emptyhand" />
+          <Conditional InWater="false" />
+          <Conditional Condition="lt 11" />
+          <Conditional HasTag="opened" />
+          <ParticleEmitter particle="fruitchunks" particlespersecond="4" scalemin="0.2" scalemax="0.35" distancemin="-10" distancemax="-15" anglemin="250" anglemax="290" velocitymin="0" velocitymax="10" copyentityangle="true" />
+        </StatusEffect>
+        <StatusEffect type="OnSecondaryUse" target="This" handle2="0,20" delay="0.5" duration="0.1" setvalue="true" stackable="false" comparison="And">
+          <Conditional HasStatusTag="eq emptyhand" />
+          <Conditional InWater="false" />
+          <Conditional Condition="lt 11" />
+          <Conditional HasTag="opened" />
+        </StatusEffect>
+        <!-- health effects -->
+        <StatusEffect type="OnSecondaryUse" target="This,Character" duration="1" stackable="false" comparison="And">
+          <Conditional HasStatusTag="neq emptyhand" />
+          <Conditional InWater="false" />
+          <Conditional Condition="lt 11" />
+          <Conditional HasTag="opened" />
+          <Affliction identifier="ate_friedfood" amount="1" />
+          <Affliction identifier="he-stuffed" amount="0.75" />
+          <ReduceAffliction type="hunger" amount="1" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingCrunchy.ogg" loop="true" range="200" volume="5.0" selectionmode="Random" />
+        </StatusEffect>
+        <StatusEffect type="OnSecondaryUse" target="This,Character" duration="1" stackable="false" comparison="And">
+          <Conditional HasStatusTag="neq emptyhand" />
+          <Conditional InWater="false" />
+          <Conditional Condition="lt 11" />
+          <Conditional thirst="gt 0.1" />
+          <Conditional HasTag="opened" />
+          <Affliction identifier="thirst" amount="0.2" />
+        </StatusEffect>
+        <!-- Prevent using this item continuously by applying the tag "emptyhand" which prevents the StatusEffect that uses the item from triggering again, effectively only allowing it to trigger once per mouse-click -->
+        <StatusEffect type="OnSecondaryUse" target="This,Character" StatusEffecttags="emptyhand" duration="0.5" stackable="false" />
+        <StatusEffect type="OnBroken" target="This" delay="0.3" disabledeltatime="true" oneshot="true">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="true" />
+    </Item>
+    <Item name="Bag of Jotato Chips" identifier="he-chips2" health="11" category="Misc" subcategory="Food" maxstacksize="8" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="Dried mutated pomegrenade chips. A popular little snack. It is said to speed up the healing of burns a bit." Tags="smallitem,fooditem,fingerfood" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_soft" isshootable="True" requireaimtouse="True">
+      <PreferredContainer secondary="abandonedcrewcab" minamount="0" maxamount="1" spawnprobability="0.04" />
+      <PreferredContainer secondary="crewcab" amount="1" spawnprobability="0.08" />
+      <PreferredContainer primary="table" secondary="kitchen,crewcab" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="99,207,48,67" depth="0.6" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="99,207,48,67" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="99,207,48,67" depth="0.525" origin="0.5,0.85" />
+      <BrokenSprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="148,207,48,67" depth="0.6" maxcondition="99.99" />
+      <!--<InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="0,207,48,67" origin="0.5,0.5" />-->
+      <Fabricate suitablefabricators="vendingmachinefood,cafeteria" requiredtime="3" requiredmoney="19" fabricationlimitmin="0" fabricationlimitmax="7" />
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Body width="46" height="64" density="9" />
+      <SuitableTreatment type="hungerDISABLEDFORNOW" suitability="20" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="false" slots="RightHand+LeftHand,Any" holdangle="20" holdpos="30,-30" handle1="-10,-20" handle2="0,20" aimable="false" msg="ItemMsgPickUpSelect">
+        <!-- EVERYTHING RELATED TO POISONING FOOD IS HANDLED VIA THE POISON EFFECT PRESET ITEMS DEFINED IN - variantof="" AND THEIR CODE IS LOCATED IN - "/Content/Items/#Presets/#ItemPresets.xml" -->
+        <StatusEffect type="OnUse" target="This" Condition="14" aimangle="120" setvalue="true" oneshot="true">
+          <Conditional condition="gte 15" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Unwrap.ogg" loop="false" range="200" volume="5.0" />
+        </StatusEffect>
+        <!--////////// BOT EATING \\\\\\\\\\-->
+        <!-- Bots "eat" by holding the food in their hands -->
+        <StatusEffect type="OnActive" target="This,Character" duration="1" condition="-1" stackable="false" comparison="And">
+          <Conditional hunger="gt 1" targetcontainer="true" />
+          <Conditional IsPlayer="false" targetcontainer="true" />
+          <Conditional IsHuman="true" targetcontainer="true" />
+          <Affliction identifier="ate_friedfood" amount="1" />
+          <Affliction identifier="he-stuffed" amount="0.75" />
+          <ReduceAffliction type="hunger" amount="1" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <!--////////// REGULAR EATING \\\\\\\\\\-->
+        <!-- Unwrap -->
+        <StatusEffect type="OnUse" target="This" Condition="10" setvalue="true" oneshot="true" comparison="And">
+          <Conditional condition="gte 11" />
+          <Conditional HasTag="neq opened" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Unwrap.ogg" loop="false" range="200" volume="5.0" />
+        </StatusEffect>
+        <!-- Apply new aimpos, aimangle and "opened" tag after a delay to avoid accidentally taking a bite instantly after unwrapping -->
+        <StatusEffect type="OnUse" target="This" settags="opened" delay="0.5" disabledeltatime="true" setvalue="true" stackable="false" oneshot="true" />
+        <StatusEffect type="OnSecondaryUse" target="This" Condition="-1" disabledeltatime="true" stackable="false" comparison="And">
+          <Conditional HasStatusTag="neq emptyhand" />
+          <Conditional InWater="false" />
+          <Conditional Condition="lt 11" />
+          <Conditional HasTag="opened" />
+        </StatusEffect>
+        <!-- eating fries "animation" -->
+        <StatusEffect type="OnSecondaryUse" target="This" handle2="-20,55" setvalue="true" duration="0.5" stackable="false" comparison="And">
+          <Conditional HasStatusTag="neq emptyhand" />
+          <Conditional InWater="false" />
+          <Conditional Condition="lt 11" />
+          <Conditional HasTag="opened" />
+          <ParticleEmitter particle="fruitchunks" particlespersecond="4" scalemin="0.2" scalemax="0.35" distancemin="-10" distancemax="-15" anglemin="250" anglemax="290" velocitymin="0" velocitymax="10" copyentityangle="true" />
+        </StatusEffect>
+        <StatusEffect type="OnSecondaryUse" target="This" handle2="0,20" delay="0.5" duration="0.1" setvalue="true" stackable="false" comparison="And">
+          <Conditional HasStatusTag="eq emptyhand" />
+          <Conditional InWater="false" />
+          <Conditional Condition="lt 11" />
+          <Conditional HasTag="opened" />
+        </StatusEffect>
+        <!-- health effects -->
+        <StatusEffect type="OnSecondaryUse" target="This,Character" duration="1" stackable="false" comparison="And">
+          <Conditional HasStatusTag="neq emptyhand" />
+          <Conditional InWater="false" />
+          <Conditional Condition="lt 11" />
+          <Conditional HasTag="opened" />
+          <Affliction identifier="ate_friedfood" amount="1" />
+          <Affliction identifier="he-stuffed" amount="0.75" />
+          <ReduceAffliction type="hunger" amount="1" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingCrunchy.ogg" loop="true" range="200" volume="5.0" selectionmode="Random" />
+        </StatusEffect>
+        <StatusEffect type="OnSecondaryUse" target="This,Character" duration="1" stackable="false" comparison="And">
+          <Conditional HasStatusTag="neq emptyhand" />
+          <Conditional InWater="false" />
+          <Conditional Condition="lt 11" />
+          <Conditional thirst="gt 0.1" />
+          <Conditional HasTag="opened" />
+          <Affliction identifier="thirst" amount="0.2" />
+        </StatusEffect>
+        <!-- Prevent using this item continuously by applying the tag "emptyhand" which prevents the StatusEffect that uses the item from triggering again, effectively only allowing it to trigger once per mouse-click -->
+        <StatusEffect type="OnSecondaryUse" target="This,Character" StatusEffecttags="emptyhand" duration="0.5" stackable="false" />
+        <StatusEffect type="OnBroken" target="This" delay="0.3" disabledeltatime="true" oneshot="true">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="true" />
+    </Item>
+    <!-- BREAD -->
+    <Item hideinmenus="false" name="Bread" identifier="he-bread" health="16" category="Misc" subcategory="Food" maxstacksize="8" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_softitem" isshootable="True" requireaimtouse="True">
+      <PreferredContainer secondary="abandonedcrewcab" minamount="0" maxamount="1" spawnprobability="0.02" />
+      <PreferredContainer secondary="crewcab" amount="1" spawnprobability="0.0" notcampaign="True" />
+      <PreferredContainer primary="kitchen" secondary="table,crewcab" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="86,430,72,34" depth="0.6" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="86,430,72,34" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="86,430,72,34" depth="0.525" origin="0.5,0.7" />
+      <Fabricate suitablefabricators="oven" requiredtime="120" requiresrecipe="false" amount="1">
+        <RequiredSkill identifier="cooking" level="40" />
+        <RequiredItem identifier="he-dough" amount="1" />
+      </Fabricate>
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Body width="72" height="34" density="9" />
+      <SuitableTreatment type="hungerDISABLEDFORNOW" suitability="30" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="false" slots="Any,RightHand,LeftHand" aimpos="28,18" holdangle="0" holdpos="36,-20" aimangle="0" aimable="false" swingwhenaiming="true" swingamount="10,6" swingspeed="0.2" msg="ItemMsgPickUpSelect">
+        <!--////////// BOT EATING \\\\\\\\\\-->
+        <!-- Bots "eat" by holding the food in their hands -->
+        <StatusEffect type="OnActive" target="This,Character" duration="1" condition="-1" stackable="false" comparison="And">
+          <Conditional hunger="gt 1" targetcontainer="true" />
+          <Conditional IsPlayer="false" targetcontainer="true" />
+          <Conditional IsHuman="true" targetcontainer="true" />
+          <Affliction identifier="he-stuffed" amount="2" />
+          <ReduceAffliction type="hunger" amount="2" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <!--////////// REGULAR EATING \\\\\\\\\\-->
+        <StatusEffect type="OnUse" target="This" Condition="-1">
+          <Conditional InWater="false" />
+        </StatusEffect>
+        <StatusEffect type="OnUse" target="Character" comparison="And">
+          <Conditional InWater="false" />
+          <Affliction identifier="he-stuffed" amount="2" />
+          <ReduceAffliction type="hunger" amount="2" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="true" />
+    </Item>
+    <Item hideinmenus="false" name="Burger Buns" identifier="he-burgerbun" health="8" category="Misc" subcategory="Food" maxstacksize="8" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_softitem" isshootable="True" requireaimtouse="True">
+      <PreferredContainer secondary="abandonedcrewcab" minamount="0" maxamount="1" spawnprobability="0.02" />
+      <PreferredContainer secondary="crewcab" amount="1" spawnprobability="0.0" notcampaign="True" />
+      <PreferredContainer primary="kitchen" secondary="table,crewcab" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="86,465,42,20" depth="0.6" origin="0.5,0.5" />
+      <Fabricate suitablefabricators="oven" requiredtime="80" requiresrecipe="false" amount="2">
+        <RequiredSkill identifier="cooking" level="30" />
+        <RequiredItem identifier="he-dough" mincondition="0.25" />
+      </Fabricate>
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Body width="42" radius="10" density="6" />
+      <SuitableTreatment type="hungerDISABLEDFORNOW" suitability="20" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="false" slots="Any,RightHand,LeftHand" aimpos="28,18" holdangle="0" holdpos="36,-20" aimangle="0" aimable="false" swingwhenaiming="true" swingamount="10,6" swingspeed="0.2" msg="ItemMsgPickUpSelect">
+        <!--////////// BOT EATING \\\\\\\\\\-->
+        <!-- Bots "eat" by holding the food in their hands -->
+        <StatusEffect type="OnActive" target="This,Character" duration="1" condition="-1" stackable="false" comparison="And">
+          <Conditional hunger="gt 1" targetcontainer="true" />
+          <Conditional IsPlayer="false" targetcontainer="true" />
+          <Conditional IsHuman="true" targetcontainer="true" />
+          <Affliction identifier="he-stuffed" amount="1.0" />
+          <ReduceAffliction type="hunger" amount="1.0" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <!--////////// REGULAR EATING \\\\\\\\\\-->
+        <StatusEffect type="OnUse" target="This" Condition="-1">
+          <Conditional InWater="false" />
+        </StatusEffect>
+        <StatusEffect type="OnUse" target="Character" comparison="And">
+          <Conditional InWater="false" />
+          <Affliction identifier="he-stuffed" amount="1.0" />
+          <ReduceAffliction type="hunger" amount="1.0" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="true" />
+    </Item>
+    <Item hideinmenus="false" name="Hotdog Bun" identifier="he-hotdogbun" health="8" category="Misc" subcategory="Food" maxstacksize="8" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_softitem" isshootable="True" requireaimtouse="True">
+      <PreferredContainer secondary="abandonedcrewcab" minamount="0" maxamount="1" spawnprobability="0.02" />
+      <PreferredContainer secondary="crewcab" amount="1" spawnprobability="0.0" notcampaign="True" />
+      <PreferredContainer primary="kitchen" secondary="table,crewcab" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="147,467,53,18" depth="0.6" origin="0.5,0.5" />
+      <Fabricate suitablefabricators="oven" requiredtime="80" requiresrecipe="false" amount="2">
+        <RequiredSkill identifier="cooking" level="30" />
+        <RequiredItem identifier="he-dough" mincondition="0.25" />
+      </Fabricate>
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Body width="53" radius="18" density="6" />
+      <SuitableTreatment type="hungerDISABLEDFORNOW" suitability="20" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="false" slots="Any,RightHand,LeftHand" aimpos="28,18" holdangle="0" holdpos="36,-20" aimangle="0" aimable="false" swingwhenaiming="true" swingamount="10,6" swingspeed="0.2" msg="ItemMsgPickUpSelect">
+        <!--////////// BOT EATING \\\\\\\\\\-->
+        <!-- Bots "eat" by holding the food in their hands -->
+        <StatusEffect type="OnActive" target="This,Character" duration="1" condition="-1" stackable="false" comparison="And">
+          <Conditional hunger="gt 1" targetcontainer="true" />
+          <Conditional IsPlayer="false" targetcontainer="true" />
+          <Conditional IsHuman="true" targetcontainer="true" />
+          <Affliction identifier="he-stuffed" amount="1.0" />
+          <ReduceAffliction type="hunger" amount="1.0" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <!--////////// REGULAR EATING \\\\\\\\\\-->
+        <StatusEffect type="OnUse" target="This" Condition="-1">
+          <Conditional InWater="false" />
+        </StatusEffect>
+        <StatusEffect type="OnUse" target="Character" comparison="And">
+          <Conditional InWater="false" />
+          <Affliction identifier="he-stuffed" amount="1.0" />
+          <ReduceAffliction type="hunger" amount="1.0" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="true" />
+    </Item>
+    <Item hideinmenus="false" name="Bread Slices" identifier="he-breadslices" health="8" category="Misc" subcategory="Food" maxstacksize="32" maxstacksizecharacterinventory="8" cargocontaineridentifier="metalcrate" description="Two slices of bread. Great for making sandwiches!" Tags="smallitem,fooditem,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_softitem" isshootable="True" requireaimtouse="True">
+      <PreferredContainer secondary="abandonedcrewcab" minamount="0" maxamount="1" spawnprobability="0.02" />
+      <PreferredContainer secondary="crewcab" amount="1" spawnprobability="0.0" notcampaign="True" />
+      <PreferredContainer primary="kitchen" secondary="table,crewcab" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="86,421,50,8" depth="0.6" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="86,421,50,8" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="86,421,50,8" depth="0.525" origin="0.5,0.05" />
+      <Fabricate suitablefabricators="cuttingboard" requiredtime="8" requiresrecipe="false" amount="3">
+        <RequiredSkill identifier="cooking" level="30" />
+        <RequiredItem identifier="he-bread" amount="1" MinCondition="0.5" UseCondition="True" />
+      </Fabricate>
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Body width="50" radius="8" density="5" />
+      <SuitableTreatment type="hungerDISABLEDFORNOW" suitability="20" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="false" slots="Any,RightHand,LeftHand" aimpos="28,18" holdangle="0" holdpos="36,-20" aimangle="0" aimable="false" swingwhenaiming="true" swingamount="10,6" swingspeed="0.2" msg="ItemMsgPickUpSelect">
+        <!--////////// BOT EATING \\\\\\\\\\-->
+        <!-- Bots "eat" by holding the food in their hands -->
+        <StatusEffect type="OnActive" target="This,Character" duration="1" condition="-1" stackable="false" comparison="And">
+          <Conditional hunger="gt 1" targetcontainer="true" />
+          <Conditional IsPlayer="false" targetcontainer="true" />
+          <Conditional IsHuman="true" targetcontainer="true" />
+          <Affliction identifier="he-stuffed" amount="0.65" />
+          <ReduceAffliction type="hunger" amount="0.65" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <!--////////// REGULAR EATING \\\\\\\\\\-->
+        <StatusEffect type="OnUse" target="This" Condition="-1">
+          <Conditional InWater="false" />
+        </StatusEffect>
+        <StatusEffect type="OnUse" target="Character" comparison="And">
+          <Conditional InWater="false" />
+          <Affliction identifier="he-stuffed" amount="0.65" />
+          <ReduceAffliction type="hunger" amount="0.65" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="true" />
+    </Item>
+    <!-- MEAT -->
+    <!-- EASY | NO TYPE | NO BUFFS -->
+    <Item name="Pile of Raw Jerky" identifier="he-rawjerky" category="Misc" subcategory="Ingredients" maxstacksize="8" maxstacksizecharacterinventory="8" cargocontaineridentifier="he-coolercrate" description="" Tags="smallitem,meat,ingredient,canspoil,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_soft" isshootable="true" requireaimtouse="true">
+      <PreferredContainer secondary="abandonedcrewcab" minamount="0" maxamount="1" spawnprobability="0.0" />
+      <PreferredContainer primary="refrigerator" secondary="refrigeratedcontainer" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="379,322,51,11" depth="0.6" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/InventoryIcons.Png" sourcerect="44,0,64,60" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="379,322,51,11" depth="0.525" origin="0.5,0.3" />
+      <Fabricate suitablefabricators="cuttingboard" requiredtime="16" requiresrecipe="false" amount="3">
+        <RequiredSkill identifier="butchery" level="10" />
+        <RequiredItem tag="rawmeatpiece" amount="3" MinCondition="0.2" MaxCondition="1.0" UseCondition="False" />
+        <RequiredItem identifier="he-salt" UseCondition="True" MinCondition="0.3" />
+        <RequiredItem identifier="he-pepper" UseCondition="True" MinCondition="0.1" />
+      </Fabricate>
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Body width="51" radius="5" density="11" />
+      <Price baseprice="15" minavailable="4" maxavailable="16" mincondition="0.9" maxcondition="1.0" usecondition="false" sold="false">
+        <Price storeidentifier="merchantoutpost" />
+        <Price storeidentifier="merchantcity" />
+        <Price storeidentifier="merchantresearch" />
+        <Price storeidentifier="merchantmilitary" />
+        <Price storeidentifier="merchantmine" />
+        <Price storeidentifier="merchantmedical" />
+        <Price storeidentifier="merchantbutcher" multiplier="2.0" minavailable="0" maxavailable="32" sold="true" />
+      </Price>
+      <!-- ItemContainer for freshness item which is spawned in at the start of a round if the inventory does not yet contain a freshness item. It represents the item spoilage | Previously meat was losing condition directly when spoiling which made it non-stackable, but with spoilage moved to freshness item, meat stays stackable -->
+      <ItemContainer capacity="1" maxstacksize="1" canbeselected="false" allowaccess="false" allowdraganddrop="false" showinventory="false" hideitems="true" slotsperrow="1" uilabel="" allowuioverlap="true" showcontentsintooltip="true" showcontainedstateindicator="true" removecontaineditemsondeconstruct="true">
+        <Containable items="freshness" />
+        <!-- StatusEffect spawning in the freshness item at the start of a round -->
+        <StatusEffect type="Always" target="This" spawnitemrandomly="true" oneshot="true">
+          <SpawnItem identifier="he-freshness" spawnposition="ThisInventory" spawnifinventoryfull="false" spawnifcantbecontained="false" />
+        </StatusEffect>
+      </ItemContainer>
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="28,18" holdangle="30" aimangle="0" aimable="false" swingwhenusing="true" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-2.0" />
+        <StatusEffect type="OnUse" target="Character">
+          <ReduceAffliction type="hunger" amount="1.5" />
+          <Affliction identifier="applystomachache" strength="0.25" probability="0.5" />
+          <Affliction identifier="deliriuminepoisoning" amount="1.2" probability="0.001" />
+          <Affliction identifier="nausea" amount="1.2" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="true" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="True" />
+    </Item>
+    <Item hideinmenus="false" name="Jerky" identifier="he-cookedjerky" health="10" category="Misc" subcategory="Food" maxstacksize="8" maxstacksizecharacterinventory="8" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_softitem" isshootable="True" requireaimtouse="True">
+      <PreferredContainer secondary="abandonedcrewcab" minamount="0" maxamount="3" spawnprobability="0.05" />
+      <PreferredContainer secondary="crewcab" amount="1" spawnprobability="0.05" />
+      <PreferredContainer primary="table" secondary="kitchen,crewcab" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="387,312,43,10" depth="0.6" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/InventoryIcons.Png" sourcerect="0,0,43,58" origin="0.5,0.5" />
+      <Fabricate suitablefabricators="oven" requiredtime="80" requiresrecipe="false" amount="3">
+        <RequiredSkill identifier="cooking" level="20" />
+        <RequiredItem identifier="he-rawjerky" amount="3" MinCondition="0.5" MaxCondition="1.0" UseCondition="False" />
+      </Fabricate>
+      <Fabricate suitablefabricators="oven" requiredtime="80" requiresrecipe="false" amount="8">
+        <RequiredSkill identifier="cooking" level="20" />
+        <RequiredItem identifier="he-rawjerky" amount="8" MinCondition="0.5" MaxCondition="1.0" UseCondition="False" />
+      </Fabricate>
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Fabricate suitablefabricators="cafeteria" requiredtime="10" requiredmoney="20" fabricationlimitmin="0" fabricationlimitmax="40" />
+      <Body width="40" height="7" density="12" />
+      <SuitableTreatment type="hungerDISABLEDFORNOW" suitability="15" />
+      <SuitableTreatment type="thirstDISABLEDFORNOW" suitability="-30" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="false" slots="Any,RightHand,LeftHand" aimpos="25,14" holdangle="270" holdpos="20,30" handle1="10,-10" aimangle="0" aimable="false" swingwhenaiming="true" swingamount="10,6" swingspeed="0.2" msg="ItemMsgPickUpSelect">
+        <!--////////// BOT EATING \\\\\\\\\\-->
+        <!-- Bots "eat" by holding the food in their hands -->
+        <StatusEffect type="OnActive" target="This,Character" duration="1" condition="-1" stackable="false" comparison="And">
+          <Conditional hunger="gt 1" targetcontainer="true" />
+          <Conditional IsPlayer="false" targetcontainer="true" />
+          <Conditional IsHuman="true" targetcontainer="true" />
+          <Affliction identifier="he-stuffed" amount="1.2" />
+          <ReduceAffliction type="hunger" amount="1.2" />
+          <Affliction identifier="thirst" amount="0.8" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <!--////////// REGULAR EATING \\\\\\\\\\-->
+        <StatusEffect type="OnUse" target="This" comparison="And" oneshot="true">
+          <Conditional InWater="false" />
+          <Conditional ConditionPercentage="equals 100" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Unwrap.ogg" loop="false" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnUse" target="This" Condition="-1.0">
+          <Conditional InWater="false" />
+        </StatusEffect>
+        <StatusEffect type="OnUse" target="Character" comparison="And">
+          <Conditional InWater="false" />
+          <Affliction identifier="he-stuffed" amount="1.2" />
+          <ReduceAffliction type="hunger" amount="1.2" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingCrunchy.ogg" loop="True" range="200" volume="4.0" />
+        </StatusEffect>
+        <StatusEffect type="OnUse" target="Character" comparison="And">
+          <Conditional InWater="false" />
+          <Conditional thirst="gt 0.1" />
+          <Affliction identifier="thirst" amount="0.8" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="true" />
+    </Item>
+    <!-- MRE -->
+    <Item name="MRE - Packet" identifier="he-mrepacket" category="Misc" subcategory="Food" maxstacksize="2" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_softitem" impacttolerance="5.5" canflipx="false">
+      <PreferredContainer secondary="wreckmedcab,abandonedmedcab,abandonedcrewcab" spawnprobability="0.02" />
+      <PreferredContainer secondary="crewcab" spawnprobability="0.04" />
+      <PreferredContainer primary="kitchen" secondary="crewcab" />
+      <Price baseprice="125" canbespecial="false">
+        <Price storeidentifier="merchantoutpost" minavailable="1" maxavailable="10" sold="true" />
+        <Price storeidentifier="merchantcity" minavailable="1" maxavailable="10" sold="true" />
+        <Price storeidentifier="merchantresearch" minavailable="1" maxavailable="10" sold="true" />
+        <Price storeidentifier="merchantmilitary" minavailable="5" maxavailable="20" sold="true" />
+        <Price storeidentifier="merchantmine" minavailable="1" maxavailable="10" sold="true" />
+      </Price>
+      <Fabricate suitablefabricators="vendingmachinefood" requiredtime="3" requiredmoney="125" fabricationlimitmin="0" fabricationlimitmax="7" />
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="0,139,47,67" depth="0.6" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="0,139,47,67" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="0,139,47,67" depth="0.525" origin="0.5,0.85" />
+      <Body width="41" height="67" density="11" />
+      <Throwable canbepicked="true" slots="Any,RightHand,LeftHand" holdpos="30,-15" holdangle="0" handle1="-12,-3" throwforce="4.0" aimpos="35,-10" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnSecondaryUse" target="This" delay="0.1">
+          <Use />
+        </StatusEffect>
+      </Throwable>
+      <Projectile characterusable="false" launchimpulse="0.0" sticktocharacters="false">
+        <Attack structuredamage="5">
+          <Affliction identifier="blunttrauma" strength="5" />
+          <Affliction identifier="stun" strength="0.5" />
+          <StatusEffect type="OnUse" target="UseTarget">
+            <Conditional entitytype="eq Character" />
+            <Sound file="Content/Items/Weapons/Smack1.ogg" selectionmode="random" range="500" />
+            <Sound file="Content/Items/Weapons/Smack2.ogg" range="500" />
+          </StatusEffect>
+        </Attack>
+      </Projectile>
+      <CustomInterface canbeselected="false" drawhudwhenequipped="true">
+        <GuiFrame style="ItemUI" absoluteoffset="0,0" anchor="BottomCenter" relativesize="0.12,0.08" />
+        <Button text="interaction.open">
+          <StatusEffect type="OnUse" target="This">
+            <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Unwrap.ogg" loop="false" range="200" volume="5.0" />
+            <Remove />
+            <SpawnItem identifier="he-mreration" spawnposition="SameInventory" spawnifcantbecontained="true" SpawnIfInventoryFull="true" />
+            <SpawnItem identifier="he-mreration" spawnposition="SameInventory" spawnifcantbecontained="true" SpawnIfInventoryFull="true" />
+          </StatusEffect>
+        </Button>
+      </CustomInterface>
+    </Item>
+    <Item name="MRE - Dehydrated Ration" identifier="he-mreration" health="11" category="Misc" subcategory="Food" maxstacksize="8" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem,dehydrated" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_softitem" isshootable="True" requireaimtouse="True">
+      <PreferredContainer primary="table" secondary="kitchen,crewcab" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="48,165,28,41" depth="0.6" origin="0.5,0.5" />
+      <BrokenSprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="77,168,31,38" depth="0.6" maxcondition="99" fadein="false" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="48,165,28,41" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="48,165,28,41" depth="0.525" origin="0.5,0.75" />
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Body width="28" height="39" density="10.3" />
+      <SuitableTreatment type="hungerDISABLEDFORNOW" suitability="100" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="false" slots="RightHand+LeftHand,Any" holdangle="20" holdpos="30,-30" handle1="-10,-20" handle2="0,10" aimable="false" msg="ItemMsgPickUpSelect">
+        <!--////////// BOT EATING \\\\\\\\\\-->
+        <!-- Bots "eat" by holding the food in their hands -->
+        <StatusEffect type="OnActive" target="This,Character" duration="1" condition="-1" stackable="false" comparison="And">
+          <Conditional hunger="gt 1" targetcontainer="true" />
+          <Conditional IsPlayer="false" targetcontainer="true" />
+          <Conditional IsHuman="true" targetcontainer="true" />
+          <Affliction identifier="he-stuffed" amount="2" />
+          <ReduceAffliction type="hunger" amount="2" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <!--////////// REGULAR EATING \\\\\\\\\\-->
+        <StatusEffect type="OnSecondaryUse" target="This" Condition="-1" disabledeltatime="true" stackable="false" comparison="And">
+          <Conditional HasStatusTag="neq emptyhand" />
+          <Conditional drawinventory="false" targetitemcomponent="ItemContainer" />
+          <Conditional InWater="false" />
+          <Conditional ConditionPercentage="lt 100" />
+        </StatusEffect>
+        <!-- eating fries "animation" -->
+        <StatusEffect type="OnSecondaryUse" target="This" handle2="-20,55" setvalue="true" duration="0.5" stackable="false" comparison="And">
+          <Conditional HasStatusTag="neq emptyhand" />
+          <Conditional drawinventory="false" targetitemcomponent="ItemContainer" />
+          <Conditional InWater="false" />
+          <Conditional ConditionPercentage="lt 100" />
+        </StatusEffect>
+        <StatusEffect type="OnSecondaryUse" target="This" handle2="0,10" delay="0.5" duration="0.1" setvalue="true" stackable="false" comparison="And">
+          <Conditional HasStatusTag="eq emptyhand" />
+          <Conditional drawinventory="false" targetitemcomponent="ItemContainer" />
+          <Conditional InWater="false" />
+          <Conditional ConditionPercentage="lt 100" />
+        </StatusEffect>
+        <!-- health effects -->
+        <StatusEffect type="OnSecondaryUse" target="This,Character" duration="1" stackable="false" comparison="And">
+          <Conditional HasStatusTag="neq emptyhand" />
+          <Conditional drawinventory="false" targetitemcomponent="ItemContainer" />
+          <Conditional InWater="false" />
+          <Conditional ConditionPercentage="lt 100" />
+          <Affliction identifier="he-stuffed" amount="2" />
+          <ReduceAffliction type="hunger" amount="2" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="true" range="200" volume="5.0" selectionmode="Random" />
+        </StatusEffect>
+        <!-- Prevent using this item continuously by applying the tag "emptyhand" which prevents the StatusEffect that uses the item from triggering again, effectively only allowing it to trigger once per mouse-click -->
+        <StatusEffect type="OnSecondaryUse" target="This,Character" StatusEffecttags="emptyhand" duration="0.5" stackable="false" />
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Unwrap.ogg" loop="false" range="200" volume="5.0" />
+        </StatusEffect>
+      </Holdable>
+      <ItemContainer characterusable="false" canbeselected="false" capacity="1" maxstacksize="1" hideitems="true" drawinventory="true" allowdraganddrop="true" allowswappingcontaineditems="false" autofill="false" ShowConditionInContainedStateIndicator="false" ShowContainedStateIndicator="false" removecontaineditemsondeconstruct="true">
+        <SlotIcon slotindex="0" texture="%ModDir%/Hungry Europans/Content/UI/HE-IconsAtlas.png" sourcerect="577,0,85,85" origin="0.5,0.5" />
+        <Containable items="cleanwater,emptybottle">
+          <StatusEffect type="OnInserted" target="This" condition="10" setvalue="true" disabledeltatime="true" interval="1">
+            <Conditional ConditionPercentage="eq 100" />
+            <RequiredItem items="cleanwater" type="Contained" />
+            <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Unwrap.ogg" loop="false" range="200" volume="5.0" />
+          </StatusEffect>
+          <StatusEffect type="OnInserted" target="Contained" condition="0" setvalue="true">
+            <Conditional hastag="cleanwater" />
+          </StatusEffect>
+          <StatusEffect type="OnRemoved" target="This,Contained" capacity="0" drawinventory="false" allowaccess="false" setvalue="true">
+            <Conditional ConditionPercentage="lt 100" />
+          </StatusEffect>
+        </Containable>
+      </ItemContainer>
+      <AiTarget sightrange="1000" static="true" />
+    </Item>
+    <!-- Fast Food Menus -->
+    <Item name="Meal of Madness" identifier="he-madnessmeal" category="Misc" subcategory="Food" maxstacksize="1" cargocontaineridentifier="metalcrate" description="Content: 1x Crawler Burger | 8x Crawler Nuggets | 1x Can of Couwola Cola | 1x Random Toy" Tags="ingredient,fooditem" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_softitem" isshootable="true" requireaimtouse="true" canflipx="false">
+      <PreferredContainer primary="table" secondary="crewcab,kitchen" />
+      <Fabricate suitablefabricators="cafeteria" requiredtime="10" requiredmoney="135" fabricationlimitmin="2" fabricationlimitmax="5" />
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="61,63,61,74" depth="0.6" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/InventoryIcons.Png" sourcerect="0,404,79,107" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="0,55,61,82" depth="0.525" origin="0.5,0.85" />
+      <Body width="60" height="72" density="14" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" slots="RightHand,LeftHand" holdpos="35,-40" handle1="0,30" holdangle="0" aimable="false" msg="ItemMsgPickUpSelect" />
+      <CustomInterface canbeselected="false" drawhudwhenequipped="true">
+        <GuiFrame style="ItemUI" absoluteoffset="0,0" anchor="BottomCenter" relativesize="0.12,0.08" />
+        <Button text="interaction.open">
+          <StatusEffect type="OnUse" target="This">
+            <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Unwrap.ogg" loop="false" range="200" volume="5.0" />
+            <SpawnItem identifier="he-burger" spawnposition="SameInventory" spawnifcantbecontained="true" SpawnIfInventoryFull="true" />
+            <SpawnItem identifier="he-fries" spawnposition="SameInventory" spawnifcantbecontained="true" SpawnIfInventoryFull="true" />
+            <SpawnItem identifier="he-nuggetpack" spawnposition="SameInventory" spawnifcantbecontained="true" SpawnIfInventoryFull="true" />
+            <SpawnItem identifier="he-colacan" spawnposition="SameInventory" spawnifcantbecontained="true" SpawnIfInventoryFull="true" />
+          </StatusEffect>
+          <StatusEffect type="OnUse" target="This" SpawnItemRandomly="True">
+            <SpawnItem identifier="punchgun" spawnposition="SameInventory" spawnifcantbecontained="true" SpawnIfInventoryFull="true" />
+            <SpawnItem identifier="bikehorn" spawnposition="SameInventory" spawnifcantbecontained="true" SpawnIfInventoryFull="true" />
+            <SpawnItem identifier="toyhammer" spawnposition="SameInventory" spawnifcantbecontained="true" SpawnIfInventoryFull="true" />
+            <SpawnItem identifier="he-whoopeecushion" spawnposition="SameInventory" spawnifcantbecontained="true" SpawnIfInventoryFull="true" />
+            <Remove />
+          </StatusEffect>
+        </Button>
+      </CustomInterface>
+    </Item>
+    <Item name="Pack of Nuggets" identifier="he-nuggetpack" category="Misc" subcategory="Food" maxstacksize="1" cargocontaineridentifier="metalcrate" description="A pack of 8x nuggets." Tags="smallitem,ingredient,fooditem" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_softitem" isshootable="true" requireaimtouse="true" canflipx="false">
+      <PreferredContainer primary="table" secondary="crewcab,kitchen" />
+      <Fabricate suitablefabricators="cafeteria" requiredtime="10" requiredmoney="40" fabricationlimitmin="0" fabricationlimitmax="8" />
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="123,109,49,28" depth="0.6" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="123,109,49,28" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="123,109,49,28" depth="0.525" origin="0.5,0.6" />
+      <Body width="27" height="26" density="11" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" slots="Any,RightHand,LeftHand" holdpos="35,-40" handle1="0,0" holdangle="0" aimable="false" msg="ItemMsgPickUpSelect" />
+      <CustomInterface canbeselected="false" drawhudwhenequipped="true">
+        <GuiFrame style="ItemUI" absoluteoffset="0,0" anchor="BottomCenter" relativesize="0.12,0.08" />
+        <Button text="interaction.open">
+          <StatusEffect type="OnUse" target="This">
+            <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Unwrap.ogg" loop="false" range="200" volume="5.0" />
+            <SpawnItem identifier="he-cookednugget" spawnposition="SameInventory" spawnifcantbecontained="true" SpawnIfInventoryFull="true" count="8" />
+            <Remove />
+          </StatusEffect>
+        </Button>
+      </CustomInterface>
+    </Item>
+    <Item hideinmenus="false" name="Sauerkraut" identifier="he-sauerkraut" variantof="he-poisoneffectpreset_fork" health="20" category="Misc" subcategory="Food - Crawler" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem,forkfood,foodplate,gourmetfood,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_bottle_glass" isshootable="false" requireaimtouse="false">
+      <PreferredContainer primary="table" secondary="kitchen,crewcab" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="582,60,68,29" depth="0.6" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="582,60,68,29" depth="0.525" origin="0.5,0.65" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="582,60,68,29" origin="0.5,0.5" />
+      <Fabricate suitablefabricators="cuttingboard" requiredtime="10" requiresrecipe="false" amount="1">
+        <RequiredSkill identifier="cooking" level="25" />
+        <RequiredItem identifier="he-sausage" amount="2" />
+        <RequiredItem identifier="he-fermentedcabbage" amount="1" />
+        <RequiredItem identifier="he-emptyplate" amount="1" usecondition="false" mincondition="0" />
+      </Fabricate>
+      <Deconstruct time="4" requireddeconstructor="deconstructor">
+        <Item identifier="he-dirtyplate" amount="1" />
+      </Deconstruct>
+      <Body width="60" radius="10" density="11" />
+      <SuitableTreatment type="hungerDISABLEDFORNOW" suitability="80" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="false" slots="LeftHand,RightHand" holdangle="0" holdpos="36,-20" handle1="0,-18" handle2="0,-18" aimable="false" msg="ItemMsgPickUpSelect">
+        <!-- EVERYTHING RELATED TO POISONING FOOD IS HANDLED VIA THE POISON EFFECT PRESET ITEMS DEFINED IN - variantof="" AND THEIR CODE IS LOCATED IN - "/Content/Items/#Presets/#ItemPresets.xml" -->
+        <!--////////// BOT EATING \\\\\\\\\\-->
+        <!-- Bots "eat" by holding the food in their hands -->
+        <StatusEffect type="OnActive" target="This,Character" duration="1" condition="-1" stackable="false" comparison="And">
+          <Conditional hunger="gt 1" targetcontainer="true" />
+          <Conditional IsPlayer="false" targetcontainer="true" />
+          <Conditional IsHuman="true" targetcontainer="true" />
+          <Affliction identifier="he-fiberrich" amount="60.0" />
+          <Affliction identifier="ate_salad" amount="1" />
+          <Affliction identifier="he-stuffed" amount="3" />
+          <ReduceAffliction type="hunger" amount="2" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <!--////////// REGULAR EATING \\\\\\\\\\-->
+        <!-- Use the item when it's held and the fork in the other hand is used (indicated by applying a "usingfork" tag on the character which this item checks for) -->
+        <StatusEffect type="OnActive" target="This" Condition="-1.0" disabledeltatime="true" stackable="false" comparison="And">
+          <Conditional HasStatusTag="usingfork" targetcontainer="true" />
+          <Conditional HasStatusTag="neq emptyfork" targetcontainer="true" />
+          <Conditional InWater="false" />
+        </StatusEffect>
+        <StatusEffect type="OnSecondaryUse" target="Character" disabledeltatime="true" stackable="false" comparison="And">
+          <Conditional HasStatusTag="usingfork" />
+          <Conditional HasStatusTag="neq emptyfork" />
+          <Conditional InWater="false" />
+          <Affliction identifier="he-fiberrich" amount="60.0" />
+          <Affliction identifier="ate_salad" amount="1" />
+          <Affliction identifier="he-stuffed" amount="3" />
+          <ReduceAffliction type="hunger" amount="2" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Fork1.ogg" loop="False" range="200" volume="5.0" selectionmode="Random" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Fork2.ogg" loop="False" range="200" volume="5.0" selectionmode="Random" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Fork3.ogg" loop="False" range="200" volume="5.0" selectionmode="Random" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Fork4.ogg" loop="False" range="200" volume="5.0" selectionmode="Random" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Fork5.ogg" loop="False" range="200" volume="5.0" selectionmode="Random" />
+        </StatusEffect>
+        <!-- Prevent using this item continuously by applying the tag "emptyfork" which prevents the StatusEffect that uses the item from triggering again, effectively only allowing it to trigger once per mouse-click -->
+        <StatusEffect type="OnActive" target="Character" tags="emptyfork" interval="0.1" duration="0.2">
+          <Conditional HasStatusTag="usingfork" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This" disabledeltatime="true">
+          <Remove />
+          <SpawnItem identifier="he-dirtyplate" spawnposition="SameInventory" spawnifcantbecontained="true" />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="true" />
+    </Item>
+    <Item name="Can of Special Alien Meat" identifier="he-spam" category="Misc" subcategory="Food" maxstacksize="32" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,cannedfood" scale="0.5" impactsoundtag="impact_aluminiumcan_full" impacttolerance="5.5" useinhealthinterface="false" requireaimtouse="true" isshootable="True" health="11" canflipx="false">
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Misc/Misc.png" sourcerect="96,10,51,21" depth="0.6" origin="0.5,0.5" />
+      <BrokenSprite texture="%ModDir%/Hungry Europans/Content/Items/Misc/Misc.png" sourcerect="150,0,51,31" depth="0.6" origin="0.5,0.67" maxcondition="99" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Misc/Misc.png" sourcerect="96,10,51,21" depth="0.525" origin="0.5,0.78" />
+      <Body width="51" height="21" density="11" />
+      <PreferredContainer secondary="abandonedcrewcab" minamount="1" maxamount="1" spawnprobability="0.01" />
+      <PreferredContainer secondary="crewcab" minamount="0" maxamount="1" spawnprobability="0.01" />
+      <PreferredContainer primary="kitchen" secondary="crewcab" />
+      <Fabricate suitablefabricators="vendingmachinefood" requiredtime="3" requiredmoney="32" fabricationlimitmin="0" fabricationlimitmax="3" />
+      <Fabricate suitablefabricators="blender" requiredtime="12" requiresrecipe="false" amount="1">
+        <RequiredItem tag="rawmeatpiece" amount="2" UseCondition="False" />
+        <RequiredItem identifier="he-rawoffal" amount="1" UseCondition="False" />
+        <RequiredItem identifier="he-salt" UseCondition="True" MinCondition="0.05" />
+        <RequiredItem identifier="aluminium" amount="1" />
+      </Fabricate>
+      <Deconstruct time="2">
+        <Item identifier="aluminium" amount="1" />
+      </Deconstruct>
+      <SuitableTreatment type="hungerDISABLEDFORNOW" suitability="20" />
+      <SuitableTreatment identifier="he-stomachache" suitability="-50" />
+      <Holdable canbepicked="true" canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" holdangle="30" handle1="0,-10" aimpos="35,-15" aimable="false" swingwhenaiming="true" swingamount="3,9" swingspeed="0.2" msg="ItemMsgPickUpSelect">
+        <!-- Unbottle -->
+        <StatusEffect type="OnUse" target="This" Condition="10" holdpos="30,-15" holdangle="0" setvalue="true" oneshot="true" comparison="And">
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Drinks/OpenCan.ogg" loop="false" range="200" volume="1.5" />
+          <Remove />
+          <Spawnitem identifier="he-spamopened" spawnposition="SameInventory" spawnifinventoryfull="true" equip="true" />
+        </StatusEffect>
+      </Holdable>
+    </Item>
+    <!-- different item to resolve spam bugs, it was impossible to check if the can was opened AND if the human was using fork on the same SE -->
+    <Item identifier="he-spamopened" nameidentifier="he-spam" descriptionidentifier="he-spam" category="Misc" subcategory="Food" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" Tags="smallitem,cannedfood" scale="0.5" impactsoundtag="impact_aluminiumcan_full" impacttolerance="5.5" useinhealthinterface="false" requireaimtouse="true" isshootable="True" health="11" canflipx="false" hideinmenus="true">
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Misc/Misc.png" sourcerect="96,10,51,21" depth="0.6" origin="0.5,0.5" />
+      <BrokenSprite texture="%ModDir%/Hungry Europans/Content/Items/Misc/Misc.png" sourcerect="150,0,51,31" depth="0.6" origin="0.5,0.67" maxcondition="99" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Misc/Misc.png" sourcerect="96,10,51,21" depth="0.525" origin="0.5,0.78" />
+      <Body width="51" height="21" density="11" />
+      <PreferredContainer primary="kitchen" secondary="crewcab" />
+      <Deconstruct time="2">
+        <Item identifier="aluminium" amount="1" />
+      </Deconstruct>
+      <SuitableTreatment type="hungerDISABLEDFORNOW" suitability="20" />
+      <SuitableTreatment identifier="he-stomachache" suitability="-50" />
+      <Holdable canbepicked="true" canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" holdangle="30" handle1="0,-10" aimpos="35,-15" aimable="false" swingwhenaiming="true" swingamount="3,9" swingspeed="0.2" msg="ItemMsgPickUpSelect">
+        <!-- Unbottle -->
+        <StatusEffect type="Always" target="This" Condition="10" holdpos="30,-15" holdangle="0" setvalue="true" oneshot="true">
+          <Conditional condition="gte 11" />
+        </StatusEffect>
+        <!--////////// REGULAR EATING \\\\\\\\\\-->
+        <!-- Use the item when it's held and the fork in the other hand is used (indicated by applying a "usingfork" tag on the character which this item checks for) -->
+        <StatusEffect type="OnActive" target="This" Condition="-1.0" disabledeltatime="true" stackable="false" comparison="And">
+          <Conditional condition="lte 10" />
+          <Conditional HasStatusTag="usingfork" targetcontainer="true" />
+          <Conditional HasStatusTag="neq emptyfork" targetcontainer="true" />
+          <Conditional InWater="false" />
+        </StatusEffect>
+        <StatusEffect type="OnSecondaryUse" target="Character" disabledeltatime="true" stackable="false" comparison="And">
+          <Conditional HasStatusTag="usingfork" />
+          <Conditional HasStatusTag="neq emptyfork" />
+          <Conditional InWater="false" />
+          <ReduceAffliction type="hunger" amount="1.5" />
+          <Affliction identifier="he-stuffed" amount="1.5" />
+          <Affliction identifier="applystomachache" amount="7" probability="0.25" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Fork1.ogg" loop="False" range="200" volume="5.0" selectionmode="Random" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Fork2.ogg" loop="False" range="200" volume="5.0" selectionmode="Random" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Fork3.ogg" loop="False" range="200" volume="5.0" selectionmode="Random" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Fork4.ogg" loop="False" range="200" volume="5.0" selectionmode="Random" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Fork5.ogg" loop="False" range="200" volume="5.0" selectionmode="Random" />
+        </StatusEffect>
+        <!-- Prevent using this item continuously by applying the tag "emptyfork" which prevents the StatusEffect that uses the item from triggering again, effectively only allowing it to trigger once per mouse-click -->
+        <StatusEffect type="OnActive" target="Character" tags="emptyfork" interval="0.1" duration="0.2">
+          <Conditional HasStatusTag="usingfork" />
+        </StatusEffect>
+        <!-- <StatusEffect type="OnBroken" target="This">
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Misc/CanCrush1.ogg" range="350" volume="3" selectionmode="Random" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Misc/CanCrush2.ogg" range="350" volume="3" selectionmode="Random" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Misc/CanCrush3.ogg" range="350" volume="3" selectionmode="Random" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Misc/CanCrush4.ogg" range="350" volume="3" selectionmode="Random" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Misc/CanCrush5.ogg" range="350" volume="3" selectionmode="Random" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Misc/CanCrush6.ogg" range="350" volume="3" selectionmode="Random" />
+          <Remove />
+          <Spawnitem identifier="he-emptycancola" spawnposition="SameInventory" spawnifinventoryfull="true" />
+        </StatusEffect> -->
+      </Holdable>
+    </Item>
+    <Item name="Elastin Gum" identifier="he-elastingum" health="21" category="Misc" subcategory="Food" maxstacksize="8" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_softitem" isshootable="True" requireaimtouse="True">
+      <PreferredContainer primary="table" secondary="kitchen,crewcab" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="150,200,31,6" depth="0.6" origin="0.5,0.5" />
+      <BrokenSprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="150,191,31,6" depth="0.6" maxcondition="99.99" />
+      <Body width="31" height="6" density="9.8" />
+      <Fabricate suitablefabricators="stove" requiredtime="35" requiresrecipe="false" amount="2">
+        <RequiredSkill identifier="cooking" level="40" />
+        <RequiredItem identifier="elastin" amount="4" />
+        <RequiredItem identifier="he-sugar" UseCondition="True" MinCondition="0.1" />
+        <RequiredItem tag="waterpot" UseCondition="True" MinCondition="0.1" />
+      </Fabricate>
+      <Fabricate suitablefabricators="vendingmachinefood,cafeteria" requiredtime="3" requiredmoney="45" fabricationlimitmin="0" fabricationlimitmax="2" />
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <SuitableTreatment identifier="he-hungryforhumanmeat" suitability="10" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="false" slots="Any,RightHand,LeftHand" aimpos="30,0" holdangle="270" handle1="15,-10" holdpos="0,0" aimangle="0" aimable="false" swingwhenaiming="true" swingamount="10,6" swingspeed="0.2" msg="ItemMsgPickUpSelect">
+        <!-- Unwrap -->
+        <StatusEffect type="OnUse" target="This" ConditionPercentage="99" setvalue="true" oneshot="true" comparison="And">
+          <Conditional ConditionPercentage="100" />
+          <Conditional HasTag="neq opened" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/Unwrap.ogg" loop="false" range="200" volume="5.0" />
+        </StatusEffect>
+        <!-- Apply new aimpos, aimangle and "opened" tag after a delay to avoid accidentally taking a bite instantly after unwrapping -->
+        <StatusEffect type="OnUse" target="This" aimpos="22,15" settags="opened" delay="0.5" disabledeltatime="true" setvalue="true" stackable="false" oneshot="true" />
+        <!--////////// REGULAR EATING \\\\\\\\\\-->
+        <StatusEffect type="OnUse" target="This,Character" condition="-1" comparison="And">
+          <Conditional ConditionPercentage="lt 100" />
+          <Conditional InWater="false" />
+          <Conditional HasTag="opened" />
+          <Affliction identifier="he-chewinggumbuff" amount="60.0" />
+          <ReduceAffliction identifier="mood" strength="0.2" />
+          <Affliction identifier="ate_sweet" amount="1" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <!-- reduce hunger if under 10 -->
+        <StatusEffect type="OnUse" target="Character" comparison="And">
+          <Conditional ConditionPercentage="lt 100" />
+          <Conditional InWater="false" />
+          <Conditional HasTag="opened" />
+          <Conditional hunger="lt 10" />
+          <ReduceAffliction type="hunger" amount="0.5" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+    </Item>
+    <!-- Thalamus meat -->
+    <Item hideinmenus="false" name="Thalameat" identifier="he-thalameat" health="10" category="Misc" subcategory="Misc" maxstacksize="8" maxstacksizecharacterinventory="8" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_soft" isshootable="True" requireaimtouse="True">
+      <PreferredContainer primary="kitchen" />
+      <PreferredContainer secondary="storageorgan" minamount="1" maxamount="2" spawnprobability="0.8" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Misc/Misc.png" sourcerect="154,192,49,20" depth="0.6" origin="0.5,0.5" />
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Body width="30" radius="10" density="11" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="false" slots="Any,RightHand,LeftHand" aimpos="22,15" holdangle="0" holdpos="36,-20" aimangle="0" aimable="false" swingwhenaiming="true" swingamount="10,6" swingspeed="0.2" msg="ItemMsgPickUpSelect">
+        <!--////////// REGULAR EATING \\\\\\\\\\-->
+        <StatusEffect type="OnUse" target="This,Character" Condition="-1.0" comparison="And">
+          <Conditional InWater="false" />
+          <Affliction identifier="he-fatrich" amount="30" />
+          <ReduceAffliction type="hunger" amount="1" />
+          <Affliction identifier="nausea" amount="3" probability="0.02" />
+          <Affliction identifier="applystomachache" amount="5" probability="0.02" />
+          <Affliction identifier="worminfection" amount="1" probability="0.00052" />
+          <Affliction identifier="tapeworminfection" amount="1" probability="0.00052" />
+          <ParticleEmitter particle="smallwhitechunks" particlespersecond="2" scalemin="0.15" scalemax="0.2" distancemin="0" distancemax="5" anglemin="200" anglemax="340" velocitymin="10" velocitymax="15" copyentityangle="true" colormultiplier="180,130,70,255" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="true" />
+    </Item>
+    <Item name="Thalami Salami" identifier="he-thalamisalami" category="Misc" subcategory="Food" maxstacksize="32" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem,petfood1,petfood2,petfood3,monsterfood" scale="0.5" impactsoundtag="impact_aluminiumcan_full" impacttolerance="5.5" useinhealthinterface="false" requireaimtouse="true" isshootable="True" health="10" canflipx="false">
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Misc/Misc.png" sourcerect="153,217,49,20" depth="0.6" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Misc/Misc.png" sourcerect="153,217,49,20" depth="0.525" origin="0.5,0.78" />
+      <Body width="30" radius="10" density="11" />
+      <PreferredContainer primary="kitchen" />
+      <Fabricate suitablefabricators="blender" requiredtime="12" requiresrecipe="true" hideifnorecipe="true" amount="1">
+        <RequiredItem identifier="he-thalameat" amount="1" />
+        <RequiredItem identifier="alienblood" amount="1" />
+        <RequiredItem identifier="he-pepper" UseCondition="True" MinCondition="0.1" />
+      </Fabricate>
+      <Deconstruct time="1">
+        <Item identifier="aluminium" amount="1" />
+      </Deconstruct>
+      <SuitableTreatment type="hungerDISABLEDFORNOW" suitability="20" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="false" slots="Any,RightHand,LeftHand" aimpos="28,15" holdangle="80" holdpos="-26,-30" handle1="0,0" aimangle="0" aimable="false" swingwhenaiming="true" swingamount="10,6" swingspeed="0.2" msg="ItemMsgPickUpSelect">
+        <!-- EVERYTHING RELATED TO POISONING FOOD IS HANDLED VIA THE POISON EFFECT PRESET ITEMS DEFINED IN - variantof="" AND THEIR CODE IS LOCATED IN - "/Content/Items/#Presets/#ItemPresets.xml" -->
+        <!--////////// REGULAR EATING \\\\\\\\\\-->
+        <StatusEffect type="OnUse" target="This" Condition="-1.0">
+          <Conditional InWater="false" />
+        </StatusEffect>
+        <StatusEffect type="OnUse" target="Character" comparison="And">
+          <Conditional InWater="false" />
+          <Affliction identifier="he-stuffed" amount="2.2" />
+          <ReduceAffliction type="hunger" amount="2.2" />
+          <Affliction identifier="he-fatrich" amount="26.0" />
+          <Affliction identifier="he-proteinrich" amount="20.0" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <ParticleEmitter particle="smallwhitechunks" particlespersecond="2" scalemin="0.15" scalemax="0.2" distancemin="0" distancemax="5" anglemin="200" anglemax="340" velocitymin="10" velocitymax="15" copyentityangle="true" colormultiplier="180,70,30,255" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="true" />
+    </Item>
+  </Items>
+  <!-- pierogi (raw)  -->
+  <Item name="Raw pierogi" identifier="he-pierogiraw" category="Misc" subcategory="Food" maxstacksize="4" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem,allowinfryer,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_softitem" isshootable="True" requireaimtouse="True">
+    <PreferredContainer secondary="crewcab" amount="1" spawnprobability="0.0" notcampaign="True" />
+    <PreferredContainer primary="kitchen" secondary="table,crewcab" />
+    <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="190,138,30,27" depth="0.6" origin="0.5,0.5" />
+    <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="204,72,24,29" depth="0.525" origin="0.5,0.05" />
+    <Fabricate suitablefabricators="cuttingboard" requiredtime="15" requiresrecipe="false" amount="3">
+      <RequiredSkill identifier="cooking" level="15" />
+      <RequiredItem identifier="he-rawoffal" amount="3" />
+      <RequiredItem identifier="he-jotato" amount="3" />
+      <RequiredItem identifier="he-molochcheeseslice" amount="1" />
+      <RequiredItem identifier="he-dough" mincondition="0.25" UseCondition="true" />
+    </Fabricate>
+    <Deconstruct time="1" requireddeconstructor="deconstructor" />
+    <Body width="24" height="29" density="10" />
+    <!-- ItemComponent hosts the effects for frying the item -->
+    <ItemComponent canbeselected="false" canbepicked="false" allowingameediting="false">
+      <ActiveConditional HasStatusTag="eq activefryer" targetcontainer="true" />
+      <!-- MaxValueLength is used to track the time spent in the fryer. It is increased by 1 every second the item is in a container with the "activefryer" status tag -->
+      <StatusEffect type="OnActive" target="This" MaxValueLength="1" interval="1" disabledeltatime="true" />
+      <!-- Reset the MaxValueLength when the item is no longer contained in a container with the "activefryer" status tag -->
+      <StatusEffect type="OnActive" target="This" MaxValueLength="0" setvalue="true" disabledeltatime="true">
+        <Conditional HasStatusTag="neq activefryer" targetcontainer="true" />
+      </StatusEffect>
+      <!-- Check every second if the MaxValueLength reached or exceeded a value of 45, then remove the item and spawn the fried version in its place -->
+      <StatusEffect type="OnActive" target="This" interval="1" disabledeltatime="true">
+        <Conditional MaxValueLength="gte 45" />
+        <Remove />
+        <SpawnItem identifier="he-pierogifried" spawnposition="SameInventory" spawnifcantbecontained="true" SpawnIfInventoryFull="true" count="1" />
+      </StatusEffect>
+    </ItemComponent>
+    <!-- MemoryComponent hosts the MaxValueLength attribute which we use to track the time by adjusting its value via StatusEffects each second -->
+    <MemoryComponent canbepicked="false" canbeselected="false" allowingameediting="false" drawhudwhenequipped="false" string="" MaxValueLength="0" />
+    <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="false" slots="Any,RightHand,LeftHand" aimable="false" handle1="5,-5" msg="ItemMsgPickUpSelect" />
+  </Item>
+  <!-- pierogi Tempura (fried)  -->
+  <Item hideinmenus="false" name="Pierogi" identifier="he-pierogifried" variantof="he-poisoneffectpreset_regular" category="Misc" subcategory="Food" maxstacksize="8" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem,fingerfood,allowinfryer,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_softitem" isshootable="True" requireaimtouse="True" health="10">
+    <PreferredContainer secondary="crewcab" amount="1" spawnprobability="0.0" notcampaign="True" />
+    <PreferredContainer primary="table" secondary="kitchen,crewcab" />
+    <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="222,138,28,27" depth="0.6" origin="0.5,0.5" />
+    <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="204,112,29,24" depth="0.525" origin="0.5,0.05" />
+    <Deconstruct time="1" requireddeconstructor="deconstructor" />
+    <Body width="78" radius="15" density="11" />
+    <SuitableTreatment type="hungerDISABLEDFORNOW" suitability="20" />
+    <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="false" slots="Any,RightHand,LeftHand" aimpos="20,18" holdangle="270" holdpos="36,20" handle1="5,-5" aimangle="0" aimable="false" swingwhenaiming="true" swingamount="10,6" swingspeed="0.2" msg="ItemMsgPickUpSelect">
+      <!-- EVERYTHING RELATED TO POISONING FOOD IS HANDLED VIA THE POISON EFFECT PRESET ITEMS DEFINED IN - variantof="" AND THEIR CODE IS LOCATED IN - "/Content/Items/#Presets/#ItemPresets.xml" -->
+      <!--////////// BOT EATING \\\\\\\\\\-->
+      <!-- Bots "eat" by holding the food in their hands -->
+      <StatusEffect type="OnActive" target="This,Character" duration="1" condition="-1" stackable="false" comparison="And">
+        <Conditional hunger="gt 1" targetcontainer="true" />
+        <Conditional IsPlayer="false" targetcontainer="true" />
+        <Conditional IsHuman="true" targetcontainer="true" />
+        <Affliction identifier="he-fatrich" amount="35.0" />
+        <Affliction identifier="ate_friedfood" amount="1" />
+        <Affliction identifier="he-stuffed" amount="1.5" />
+        <ReduceAffliction type="hunger" amount="1.5" />
+        <Affliction identifier="spill" amount="1000" probability="0.0005" />
+        <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingCrunchy.ogg" loop="True" range="200" volume="5.0" />
+      </StatusEffect>
+      <!--////////// REGULAR EATING \\\\\\\\\\-->
+      <StatusEffect type="OnUse" target="This" Condition="-1">
+        <Conditional InWater="false" />
+      </StatusEffect>
+      <StatusEffect type="OnUse" target="Character" comparison="And">
+        <Conditional InWater="false" />
+        <Affliction identifier="he-fatrich" amount="35.0" />
+        <Affliction identifier="ate_friedfood" amount="1" />
+        <Affliction identifier="he-stuffed" amount="1.5" />
+        <ReduceAffliction type="hunger" amount="1.5" />
+        <Affliction identifier="spill" amount="1000" probability="0.0005" />
+        <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingCrunchy.ogg" loop="True" range="200" volume="5.0" />
+        <ParticleEmitter particle="smallwhitechunks" particlespersecond="2" scalemin="0.15" scalemax="0.2" distancemin="0" distancemax="5" anglemin="200" anglemax="340" velocitymin="10" velocitymax="15" copyentityangle="true" colormultiplier="255,220,50,255" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </Holdable>
+    <AiTarget sightrange="1000" static="true" />
+  </Item>
+</Override>

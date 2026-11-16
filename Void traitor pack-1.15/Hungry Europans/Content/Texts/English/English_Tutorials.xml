@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="English" nowhitespace="false" translatedname="English">
+  <Override>
+    <!-- Display names -->
+    <tutorial.cheftutorial>Become a Chef</tutorial.cheftutorial>
+    <tutorial.cheftutorial.description>In this tutorial, Chef Booger will guide you through the daily tasks of a submarine chef and get you prepared for you to support your crew.</tutorial.cheftutorial.description>
+    <!-- EventObjectiveAction goes here - have to enter all these manually, fuck me -->
+    <tutorial_HE.objective.example>tutorialobjective</tutorial_HE.objective.example>
+    <tutorial_HE.objective.collectpot>Collect the pot</tutorial_HE.objective.collectpot>
+    <tutorial_HE.objective.cleanpot>Clean the pot in the sink</tutorial_HE.objective.cleanpot>
+    <tutorial_HE.objective.fillpot>Fill the pot with water</tutorial_HE.objective.fillpot>
+    <tutorial_HE.objective.collectflour>Collect flour, salt, sea yeast shroom and a bottle of water from the kitchen counter</tutorial_HE.objective.collectflour>
+    <tutorial_HE.objective.makedough>Make some dough at the cutting board</tutorial_HE.objective.makedough>
+    <tutorial_HE.objective.makepasta>Make some pasta at the cutting board</tutorial_HE.objective.makepasta>
+    <tutorial_HE.objective.butchercrawler>Kill the crawler and harvest all of its meat</tutorial_HE.objective.butchercrawler>
+    <tutorial_HE.objective.makecrawlermeat>Prepare raw crawler meat at the cutting board</tutorial_HE.objective.makecrawlermeat>
+    <tutorial_HE.objective.makespaghetti>Prepare a meal: Spaghetti and Minceballs</tutorial_HE.objective.makespaghetti>
+    <tutorial_HE.objective.givespaghetti>Give the meal to the hungry europan</tutorial_HE.objective.givespaghetti>
+    <tutorial_HE.objective.getfryerandwire>Collect the Fryer Installation and the Wire</tutorial_HE.objective.getfryerandwire>
+    <tutorial_HE.objective.bringfryer>Bring the Fryer Installation and Wire to the Chef</tutorial_HE.objective.bringfryer>
+    <tutorial_HE.objective.installyfryer>Connect the fryer to the power output of the kitchen counter</tutorial_HE.objective.installyfryer>
+    <tutorial_HE.objective.graboilandhammies>Grab the cooking oil and 3 hammerhead spawns</tutorial_HE.objective.graboilandhammies>
+    <tutorial_HE.objective.turnonfryer>Put the oil and hammerheads into the fryer and turn it on</tutorial_HE.objective.turnonfryer>
+    <tutorial_HE.objective.collecthammies>Collect the fried hammerhead spawns</tutorial_HE.objective.collecthammies>
+    <tutorial_HE.objective.fillbottleswater>Fill 2 bottles with water at the sink</tutorial_HE.objective.fillbottleswater>
+    <tutorial_HE.objective.openbottle>Open your bottle (Press [Aim]+[Select])</tutorial_HE.objective.openbottle>
+    <tutorial_HE.objective.drinkbottle>Drink (Hold [Aim])</tutorial_HE.objective.drinkbottle>
+    <tutorial_HE.objective.uprootplant>Uproot the dead plant and plant the seed</tutorial_HE.objective.uprootplant>
+    <tutorial_HE.objective.fertilizeplant>Use fertilizer on the new plant</tutorial_HE.objective.fertilizeplant>
+    <tutorial_HE.objective.waterplant>Water the other plant</tutorial_HE.objective.waterplant>
+    <tutorial_HE.objective.hybridizeplant>Use the research station to create a hybrid plant</tutorial_HE.objective.hybridizeplant>
+    <tutorial_HE.objective.removekeg>Remove the empty keg</tutorial_HE.objective.removekeg>
+    <tutorial_HE.objective.putkeginhydroponics>Put the sea water keg inside the Hydroponic planter</tutorial_HE.objective.putkeginhydroponics>
+    <tutorial_HE.objective.turnonsprinkler>Turn the automated sprinkler on.</tutorial_HE.objective.turnonsprinkler>
+    <tutorial_HE.objective.fillkegpool>Grab the keg and fill it with water from the pool (Hold [Aim] in water)</tutorial_HE.objective.fillkegpool>
+    <tutorial_HE.objective.keginbrewing>Put the keg inside the brewing kettle</tutorial_HE.objective.keginbrewing>
+    <tutorial_HE.objective.brewbeer>Brew a keg of Coalition Premium</tutorial_HE.objective.brewbeer>
+    <tutorial_HE.objective.loadrefill>Load the refill station with the keg of beer</tutorial_HE.objective.loadrefill>
+    <tutorial_HE.objective.grabglass>Grab some glass fragments from the cabinet</tutorial_HE.objective.grabglass>
+    <tutorial_HE.objective.glassinprinter>Put the fragments inside the bottle printer</tutorial_HE.objective.glassinprinter>
+    <tutorial_HE.objective.printbottles>Print 3 beer bottles</tutorial_HE.objective.printbottles>
+    <tutorial_HE.objective.pourbottles>Pour 3 bottles of Coalition Premium</tutorial_HE.objective.pourbottles>
+    <tutorial_HE.objective.leavebeer>Leave a beer on the table</tutorial_HE.objective.leavebeer>
+    <tutorial_HE.objective.sleepinbed>Sleep in the bed to reduce your fatigue</tutorial_HE.objective.sleepinbed>
+    <tutorial_HE.objective.playguitar>Reduce your stress by playing the guitar</tutorial_HE.objective.playguitar>
+    <tutorial_HE.objective.eathotdog>Eat the hotdog to satisfy your craving and reduce stress</tutorial_HE.objective.eathotdog>
+    <tutorial_HE.objective.drinkforstress>Get drunk to reduce your stress</tutorial_HE.objective.drinkforstress>
+    <tutorial_HE.objective.pissontoilet>Relieve your bladder on the toilet</tutorial_HE.objective.pissontoilet>
+    <tutorial_HE.objective.shitontoilet>Relieve your bowels on the toilet</tutorial_HE.objective.shitontoilet>
+    <tutorial_HE.objective.washinwater>Remove your clothes and stand in water until fully cleaned</tutorial_HE.objective.washinwater>
+    <tutorial_HE.objective.washwithsoap>Remove your clothes and scrub yourself with soap</tutorial_HE.objective.washwithsoap>
+    <tutorial_HE.objective.example>Follow the Master Chef</tutorial_HE.objective.example>
+    <tutorial_HE.objective.example>EventObjectiveGoesHere</tutorial_HE.objective.example>
+    <tutorial_HE.objective.example>EventObjectiveGoesHere</tutorial_HE.objective.example>
+    <EventText.tutorial_botany.c1>Do you know anything about plants? Most sailors have never seen a vegetable in their life.</EventText.tutorial_botany.c1>
+    <EventText.tutorial_botany.o1>I want to learn.</EventText.tutorial_botany.o1>
+    <EventText.tutorial_botany.o2>Not interested.</EventText.tutorial_botany.o2>
+    <EventText.tutorial_botany.o3>Tempskip</EventText.tutorial_botany.o3>
+    <EventText.tutorial_botany.c2>It's quite simple really, you put a seed in a pot, water it a little and watch it grow. All you have to do is not set your submarine on fire.</EventText.tutorial_botany.c2>
+    <EventText.tutorial_botany.c3>What the... it looks like one of my plants just died. Replace it for me would you? Grab this seed, uproot the weeds and plant the seed.</EventText.tutorial_botany.c3>
+    <EventText.tutorial_botany.c4>It will take a while for the plant to reach maturity. We can speed that up with a bit of fertilizer. And give it some water would you?</EventText.tutorial_botany.c4>
+    <EventText.tutorial_botany.c5>Very good. It looks like our other plant just yielded a fruit. You know they're ripe when they fall on the floor, that's just how nature works.</EventText.tutorial_botany.c5>
+    <EventText.tutorial_botany.c6>Now come over here. I need to show you a fun project I've been working on: creating new species of fruit. I call them hybrids.</EventText.tutorial_botany.c6>
+    <EventText.tutorial_botany.c7>I've put two fruits inside that research station. Personnaly, I have no idea what to expect, so I'll let you press the button.</EventText.tutorial_botany.c7>
+    <EventText.tutorial_botany.c8>Never seen this one before! I'll have to grow it later. But enough talked about the house plants...</EventText.tutorial_botany.c8>
+    <EventText.tutorial_botany.c9>Now I want to introduce you to hydroponics. These devices recreate the growth environment of Europan native plants. All it takes is a bit of water, fertilizer and electricity.</EventText.tutorial_botany.c9>
+    <EventText.tutorial_botany.c10>Looks like this one is out of sea water. Remove that empty keg and grab the one by the door.</EventText.tutorial_botany.c10>
+    <EventText.tutorial_botany.c11>And now we wait. It takes a while for plants to grow, so don't be in a rush. </EventText.tutorial_botany.c11>
+    <EventText.tutorial_botany.c12>Well it looks like you do have a green thumb after all! I've got nothing left to teach you. Before you leave, can you turn the sprinkler on?</EventText.tutorial_botany.c12>
+    <EventText.tutorial_chef.c1>Ah hello there! You must be the new chef? Welcome!</EventText.tutorial_chef.c1>
+    <EventText.tutorial_chef.c2>I'm chef Booger and I'll be teaching you how to keep your crew fed, but there's all kinds of folk around the station that can teach you things!</EventText.tutorial_chef.c2>
+    <EventText.tutorial_chef.c3>I'll be heading to the kitchen upstairs. You can meet me there if you want to start learning about preparing meals and other basic kitchen tasks.</EventText.tutorial_chef.c3>
+    <EventText.tutorial_chef.c4>Welcome to the kitchen! We will go over the equipment first, unless you're already familiar with kitchen appliances and ready to cook?</EventText.tutorial_chef.c4>
+    <EventText.tutorial_chef.o1>No, please explain.</EventText.tutorial_chef.o1>
+    <EventText.tutorial_chef.o1.c1>Gladly! Alright so...</EventText.tutorial_chef.o1.c1>
+    <EventText.tutorial_chef.o2>Yes, I'm already familiar. No need to explain.</EventText.tutorial_chef.o2>
+    <EventText.tutorial_chef.o2.c1>Very well! Let's not waste time then and onto the next lesson!</EventText.tutorial_chef.o2.c1>
+    <EventText.tutorial_chef.o3>I think I'd like to learn about other things first.</EventText.tutorial_chef.o3>
+    <EventText.tutorial_chef.o3.c1>Oh... Sure, that's fine too! Go have a look around the station. I'll be here when you want to start learning how to cook.</EventText.tutorial_chef.o3.c1>
+    <EventText.tutorial_chef.resume>Ah, you're back! Ready to learn about all things kitchen? I'll go over the equipment first, unless you're already familiar with kitchen appliances and ready to cook?</EventText.tutorial_chef.resume>
+    <EventText.tutorial_chef.o3.2>Sorry, I didn't mean to talk to you yet. I'll be back later...</EventText.tutorial_chef.o3.2>
+    <EventText.tutorial_chef.c5>This is the refrigerator! It'll keep raw meat from spoiling and ice cream from melting. I've heard about desperate medics even storing organs in there to prevent them from decaying!</EventText.tutorial_chef.c5>
+    <EventText.tutorial_chef.c6>The refrigerator has an integrated backup-power battery which will last for several minutes during a power outage. Once the backup-power battery is drained, the contents inside the refrigerator will start to spoil. Should you ever run into a power outage, make sure to restore power before the battery runs out.</EventText.tutorial_chef.c6>
+    <EventText.tutorial_chef.c7>Here we have the kitchen counter. Should be in every kitchen. In there you can store whatever you need for meal preparation. It is also where you'll install and uninstall your appliances. It comes with power connectors so you can wire newly installed equipment directly to it.</EventText.tutorial_chef.c7>
+    <EventText.tutorial_chef.c8>If you've manually installed a kitchen counter, you can disassemble it again when holding a wrench while opening it up. The same goes for the kitchen pantry.</EventText.tutorial_chef.c8>
+    <EventText.tutorial_chef.c9>Speaking of the pantry. Please come over to the left.</EventText.tutorial_chef.c9>
+    <EventText.tutorial_chef.c10>The pantry is basically the same as the kitchen counter in almost every way, except it doesn't support all installations. For example you can't put an oven in there. But what it lacks in compatibility, it makes up for by offering more storage space.</EventText.tutorial_chef.c10>
+    <EventText.tutorial_chef.c11>Here we've got a blender. Perfect for making glasses of all kinds of juice and cocktails.</EventText.tutorial_chef.c11>
+    <EventText.tutorial_chef.c12>This is an electric grill. Technically you can also grill something in a pan on a stove, but the grill allows for larger quantities grilled at once. Simply put what you want to grill onto it and wait, but don't forget to check regularly and take it off the grill before it burns!</EventText.tutorial_chef.c12>
+    <EventText.tutorial_chef.c13>Looks like the fryer is still in the storage room, we'll set it up later. You will need oil in the fryer to fry stuff, obviously.</EventText.tutorial_chef.c13>
+    <EventText.tutorial_chef.c14>Here's the oven. With it you'll do baking and roasting. Not much else to say about it.</EventText.tutorial_chef.c14>
+    <EventText.tutorial_chef.c15>This is the stove. You need a pot for boiling and a pan for searing. You can also use a kettle to brew some tea.</EventText.tutorial_chef.c15>
+    <EventText.tutorial_chef.c16>With the sink you'll be refilling bottles and pots, as well as hand-washing dirty dishes using a cleaning agent such as ethanol.</EventText.tutorial_chef.c16>
+    <EventText.tutorial_chef.c17>And finally, the cutting board. There you'll be chopping all the ingredients into shape and finalize some dishes. The knife is not going to magically continue slicing if you walk away!</EventText.tutorial_chef.c17>
+    <EventText.tutorial_chef.c18>Oh hold on a second... I believe I heard a door. I think Someone is coming. Maybe your first customer?</EventText.tutorial_chef.c18>
+    <EventText.tutorial_chef.hungryashell>Hey chef, when can we expect some meals? I'm hungry as hell!</EventText.tutorial_chef.hungryashell>
+    <EventText.tutorial_chef.whattoeat>No worries! We will have some meals prepared in just a moment. What would you like to eat?</EventText.tutorial_chef.whattoeat>
+    <EventText.tutorial_chef.spagballsplease>Uhh... I think I'd like some Spaghetti and Minceballs please.</EventText.tutorial_chef.spagballsplease>
+    <EventText.tutorial_chef.takeaseat>Very Well! Your dish will be ready shortly. Please take a seat outside while we prepare it.</EventText.tutorial_chef.takeaseat>
+    <EventText.tutorial_chef.okgreat>Ok great! Thank you!</EventText.tutorial_chef.okgreat>
+    <EventText.tutorial_chef.c19>Well, as you've heard it is time to prepare a meal. Our customer was asking for Spaghetti and Minceballs. Let's start by preparing the stove. Go and grab the pot on the pantry over there to the left.</EventText.tutorial_chef.c19>
+    <EventText.tutorial_chef.c20>Looks like the pot is dirty. We first need to clean it at the sink before we can cook with it. There should already be some ethanol in the sink for you to clean the pot with.</EventText.tutorial_chef.c20>
+    <EventText.tutorial_chef.c21>Very good! Now we should fill the pot with water from the sink. We will need it later to boil the pasta.</EventText.tutorial_chef.c21>
+    <EventText.tutorial_chef.c22>Perfect! Put the pot onto the stove for now. We'll come back to it later.</EventText.tutorial_chef.c22>
+    <EventText.tutorial_chef.c23>Ok, now we'll need to make some dough to create pasta from. Go ahead and grab the flour, the salt, a sea yeast shroom and a bottle of water from the kitchen counter.</EventText.tutorial_chef.c23>
+    <EventText.tutorial_chef.c24>Wonderful! Go ahead and use them to prepare some dough at the cutting board.</EventText.tutorial_chef.c24>
+    <EventText.tutorial_chef.c25>Very good! Now also at the cutting board you can make some pasta from that dough.</EventText.tutorial_chef.c25>
+    <EventText.tutorial_chef.c26>You're getting the hang of it! Now we need meat. Unfortunately our stock is empty, so we'll have to butcher a creature to get some fresh meat. Here, take my spare cleaver and follow me.</EventText.tutorial_chef.c26>
+    <EventText.tutorial_chef.c27>Down there you'll find a crawler. Kill it, then slash your meat cleaver on its corpse to harvest meat. If you start hearing a strange noise, it means you've harvested all the meat.</EventText.tutorial_chef.c27>
+    <EventText.tutorial_chef.c28>Very well done! Please follow me back to the kitchen so we can proceed with the meal preparation.</EventText.tutorial_chef.c28>
+    <EventText.tutorial_chef.c29>Time to chop the meat into smaller pieces! Use the cutting board to prepare some raw crawler meat which we will be using for the minceballs.</EventText.tutorial_chef.c29>
+    <EventText.tutorial_chef.c30>Now it is time to start cooking! Grab an empty plate and a bottle of ketchup from the kitchen counter and put all your ingredients into the stove, then start cooking.</EventText.tutorial_chef.c30>
+    <EventText.tutorial_chef.c31>You're a natural! Grab the meal and let's bring it to our customer. They must be ravenous by now, haha!</EventText.tutorial_chef.c31>
+    <EventText.tutorial_chef.c32>Oh finally! You got my food?</EventText.tutorial_chef.c32>
+    <EventText.tutorial_chef..o1>Yes, here you go!</EventText.tutorial_chef..o1>
+    <EventText.tutorial_chef..o1.c1>Thank you! Have a great day!</EventText.tutorial_chef..o1.c1>
+    <EventText.tutorial_chef..o1.c2>Uhm... And where exactly?</EventText.tutorial_chef..o1.c2>
+    <EventText.tutorial_chef..o1.o1>Oh, my bad! Let me go grab it real quick. I'll be right back!</EventText.tutorial_chef..o1.o1>
+    <EventText.tutorial_chef..o2>Sorry, I need a bit more time</EventText.tutorial_chef..o2>
+    <EventText.tutorial_chef..o2.c1>Ugh, fine! But please hurry! I'm starving...</EventText.tutorial_chef..o2.c1>
+    <EventText.tutorial_chef.c33>Another satisfied customer! I think I heard the door open. It might be the delivery guy...</EventText.tutorial_chef.c33>
+    <EventText.tutorial_chef.heybooger>Hey Booger, I got your delivery! Shall I stock up for you?</EventText.tutorial_chef.heybooger>
+    <EventText.tutorial_chef.yesplease>Oh hey! Yes please, that would be great!</EventText.tutorial_chef.yesplease>
+    <EventText.tutorial_chef.thisgoeshere>Alright. I believe this goes here....</EventText.tutorial_chef.thisgoeshere>
+    <EventText.tutorial_chef.thatgoesthere>And this stuff goes here...</EventText.tutorial_chef.thatgoesthere>
+    <EventText.tutorial_chef.dirtyplates>Hmm... These plates are dirty. I think something spilled during transport... I'm very sorry! I'll take them back and bring clean ones next time.</EventText.tutorial_chef.dirtyplates>
+    <EventText.tutorial_chef.leaveplateshere>It's ok. Leave them here, we will clean them later.</EventText.tutorial_chef.leaveplateshere>
+    <EventText.tutorial_chef.leavedelivery>That's ok with you? I'll leave them here then. Have a pleasant day you two!</EventText.tutorial_chef.leavedelivery>
+    <EventText.tutorial_chef.goodbye>Thanks! You too!</EventText.tutorial_chef.goodbye>
+    <EventText.tutorial_chef.c34>That was Johnny Beaver Boob. He used to be my apprentice back in the day. We got up to some silly antics like convincing our colleague Polly it was in her best interest to get her limbs removed, haha... hah... Sounds a bit messed up when I say it out loud... Hmm.</EventText.tutorial_chef.c34>
+    <EventText.tutorial_chef.c35>Well, we've got some more supplies now which is great for your training! I'm starting to get peckish, so your next task is to make me three Fried Hammerheads.</EventText.tutorial_chef.c35>
+    <EventText.tutorial_chef.c36>For this you will need a fryer and a wire. You should find these in the hallway. Please go and bring them here.</EventText.tutorial_chef.c36>
+    <EventText.tutorial_chef.c37>Very good! Now simply insert the box into the kitchen counter to install it.</EventText.tutorial_chef.c37>
+    <EventText.tutorial_chef.c38>Perfect! Now you must connect it with the wire. You can hook it up directly to the kitchen counter. Here, take this screwdriver.</EventText.tutorial_chef.c38>
+    <EventText.tutorial_chef.c39>Ok, now we can use the fryer. Go ahead and grab the cooking oil from the kitchen counter and 3 hammerhead spawns from the refrigerator.</EventText.tutorial_chef.c39>
+    <EventText.tutorial_chef.c40>Good, now put them all into the fryer and don't forget to turn it on. Then we'll wait for it to fry.</EventText.tutorial_chef.c40>
+    <EventText.tutorial_chef.c41>Seems like they're done. Time to get them out before they burn.</EventText.tutorial_chef.c41>
+    <EventText.tutorial_chef.c42>Very good! Please give them to me, I've gotten quite hungry.</EventText.tutorial_chef.c42>
+    <EventText.tutorial_chef..o3>Here you go</EventText.tutorial_chef..o3>
+    <EventText.tutorial_chef.c43>Ah, that hit the spot! But it made thirsty. You look quite thirsty too, actually...</EventText.tutorial_chef.c43>
+    <EventText.tutorial_chef.c44>Here, take these bottles and fill them at the sink. The sink has a built-in filter so the water is safe for consumption.</EventText.tutorial_chef.c44>
+    <EventText.tutorial_chef.c45>Fresh, cold water. Please hand me a bottle.</EventText.tutorial_chef.c45>
+    <EventText.tutorial_chef..o4>Here you go...</EventText.tutorial_chef..o4>
+    <EventText.tutorial_chef..o4.c1>Thanks, now go ahead and drink yours too. Hydration is important!</EventText.tutorial_chef..o4.c1>
+    <EventText.tutorial_chef.c46>Looks like you're ready to feed a whole crew! Of course, there's more to being a chef than just cooking. Visit my colleagues in their respective rooms if you haven't yet and they'll gladly teach you a thing or two.</EventText.tutorial_chef.c46>
+    <EventText.tutorial_recroom.c1>Hey I'm not slacking off okay? Just finished my shift at the red nose factory. Everyone deserves some rest and recreation. Do you never take time off?</EventText.tutorial_recroom.c1>
+    <EventText.tutorial_recroom.c2>Good. They say a happy fellow is a productive employee. If you never take a break, you'll get stressed, make mistakes, and even fall asleep from exhaustion.</EventText.tutorial_recroom.c2>
+    <EventText.tutorial_recroom.c3>Speaking of which, you look paler than a clown. You probably should take a nap. Don't just lie down, actually close your eyes and sleep those bags off your face. </EventText.tutorial_recroom.c3>
+    <EventText.tutorial_recroom.c4>Damn, you're a snorer. Hey, a quick joke for you: why did the crawler not eat the clown? Because he tasted funny!</EventText.tutorial_recroom.c4>
+    <EventText.tutorial_recroom.c5>Tough crowd... Why are you frowning? I'm no doctor, but I can sense your cortisol spiking. Try playing the guitar over there, I hear music soothes the nerves.</EventText.tutorial_recroom.c5>
+    <EventText.tutorial_recroom.c6>See, you feel better already! How about Hotdogs? Do you like Hotdogs? I can see it on your face, it's your favorite food! Here, grab the one on the table, it's my treat.</EventText.tutorial_recroom.c6>
+    <EventText.tutorial_recroom.c7>I knew you'd enjoy the meal. Now, wanna see a magic trick? I'll make this stress disappear! ...with alcohol. The magic is alcohol. You can just drink your stress away. I left you a bottle of rum. Bottoms up!</EventText.tutorial_recroom.c7>
+    <EventText.tutorial_recroom.c8>You're not walking right, which tells me you must be enjoying yourself. I've got nothing left to teach you, that's a job for the professors at the clown college. Now if you don't mind, I need to hone my honks.</EventText.tutorial_recroom.c8>
+    <EventText.tutorial_bathroom.c1>Hey settle down, I'm almost done here! What do you want?</EventText.tutorial_bathroom.c1>
+    <EventText.tutorial_bathroom.o1>I'm in a hurry.</EventText.tutorial_bathroom.o1>
+    <EventText.tutorial_bathroom.o2>My bad.</EventText.tutorial_bathroom.o2>
+    <EventText.tutorial_bathroom.c2>There, I'm finished. The throne's all yours. Don't look at me like that, do you also need me to explain how to do the deed?</EventText.tutorial_bathroom.c2>
+    <EventText.tutorial_bathroom.c3>Not only can I hear you from over here, but I can also smell you... When was the last time you took a bath?</EventText.tutorial_bathroom.c3>
+    <EventText.tutorial_bathroom.c4>Wait, do you hear this?</EventText.tutorial_bathroom.c4>
+    <EventText.tutorial_bathroom.c5>Did you just drop a depth charge in there? Can't believe I was about to drown in a bathroom...</EventText.tutorial_bathroom.c5>
+    <EventText.tutorial_bathroom.c6>Seems like the room is on lockdown... Take that opportunity to wash that grime off yourself. Take your clothes off, the water should clean the gunk away, no need to scrub.</EventText.tutorial_bathroom.c6>
+    <EventText.tutorial_bathroom.c7>The water is receeding at last... Why would anyone implement a bathroom lockdown protocol?</EventText.tutorial_bathroom.c7>
+    <EventText.tutorial_bathroom.c8>Hey, looks like you missed a spot, you're still greasier than a Psilotoad. Grab some soap and wash properly this time...</EventText.tutorial_bathroom.c8>
+    <EventText.tutorial_bathroom.c9>You don't exactly smell like roses, but it's an improvement. Now don't go and tell people we're urinal buddies. We're not.</EventText.tutorial_bathroom.c9>
+    <EventText.tutorial_brewery.c1>Hey there, you look dependable... and available. I hurt my hand the other day, wanna give brewing a try in my stead?</EventText.tutorial_brewery.c1>
+    <EventText.tutorial_brewery.c2>Alright. See that big white machine next to me? That's a state of the art industrial brewer. That's where the booze is made.</EventText.tutorial_brewery.c2>
+    <EventText.tutorial_brewery.c3>Let's gather some ingredients. A good beer starts with water. Grab that keg and fill it in that little pool. The health inspector told me ballast water is sanitary enough, so don't worry about dipping your toes in your drink.</EventText.tutorial_brewery.c3>
+    <EventText.tutorial_brewery.c4>Great, now put that in the brewer.</EventText.tutorial_brewery.c4>
+    <EventText.tutorial_brewery.c5>There should be more ingredients in that cabinet. Let's go with a simple recipe: Coalition Premium.</EventText.tutorial_brewery.c5>
+    <EventText.tutorial_brewery.c6>That's what I like to see, freshly brewed liquor. Now pour me a bottle would you? There's a refill station, just load the keg in there.</EventText.tutorial_brewery.c6>
+    <EventText.tutorial_brewery.c7>Yeah just pull on the lever and... what do you mean there are no bottles? Damnit. Don't worry, we can print some at the machine on my left.</EventText.tutorial_brewery.c7>
+    <EventText.tutorial_brewery.c8>Just rummage through the cabinet, you should be able to grab some glass fragments with your bare hands. Don't worry, insurance covers cuts and gashes.</EventText.tutorial_brewery.c8>
+    <EventText.tutorial_brewery.c9>What are you waiting for? Pour me some beers!</EventText.tutorial_brewery.c9>
+    <EventText.tutorial_brewery.c10>At last, some refreshment. I've got nothing left to teach you. Leave one on the table before you leave!</EventText.tutorial_brewery.c10>
+    <tutorial.recap.leavetutorial>Do you wish to end the tutorial and go back to main menu? \nYou can also learn about Hungry Europans in more detail before you go: </tutorial.recap.leavetutorial>
+    <tutorial.recap.testkitchen>Remember: You can always load the ‖color:100,255,100‖TestKitchen‖end‖ in submarine editor if you want to experiment with cooking.</tutorial.recap.testkitchen>
+    <tutorial.recap.goback>Go Back</tutorial.recap.goback>
+    <tutorial.recap.learnhunger>Learn about Hunger</tutorial.recap.learnhunger>
+    <tutorial.recap.learnhygiene>Learn about Hygiene</tutorial.recap.learnhygiene>
+    <tutorial.recap.learnfatigue>Learn about Fatigue</tutorial.recap.learnfatigue>
+    <tutorial.recap.learnstress>Learn about Stress</tutorial.recap.learnstress>
+    <tutorial.recap.exittutorial>Exit Tutorial</tutorial.recap.exittutorial>
+    <tutorial.recap.explainhunger>With Hunger and Thirst enabled, you slowly become hungry and thirsty over time, forcing you to eat and drink regularly.
+Being very hungry and/or thirsty reduces your skills and can potentially kill you. Eating while not hungry will protect you from hunger.
+Raw meat will decay over time and disappear after a while if not refrigerated. Eating raw food can make you sick and infect you with parasites.
+You can also gain various nutritional buffs from food; the more complicated the food the better the buffs.
+</tutorial.recap.explainhunger>
+    <tutorial.recap.explainhygiene>With Hygiene enabled, you need to regularly urinate and defecate in a toilet, as well as clean yourself.
+Holding it in will inflict various debuffs which can reduce your skills.
+Your hygiene also degrades over time, reducing skills and disturbing crewmates by causing stress due to the smell.
+</tutorial.recap.explainhygiene>
+    <tutorial.recap.explainfatigue>With Sleep enabled, fatigue slowly builds up over time.
+Fatigue reduces your skill and can eventually cause you to pass out from exhaustion.
+Coffee and stimulants can help dealing with fatigue temporarily.
+Beds and sleeping also help getting rid of secondary afflictions, such as addictions, withdrawal, concussions... at a faster rate than normal.
+</tutorial.recap.explainfatigue>
+    <tutorial.recap.explainstress>With Stress enabled, stress will build up over time, or as a result of negative events such as taking damage in combat.
+Building up too much stress will reduce your skills.
+You can reduce your stress by doing various activities, such as playing an instrument, drinking alcohol, reading a magazine or gambling.
+</tutorial.recap.explainstress>
+    <!-- ‖color:100,255,100‖green‖end‖ -->
+  </Override>
+</infotexts>

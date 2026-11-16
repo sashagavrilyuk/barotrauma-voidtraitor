@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Override>
+  <Items>
+    <!--husk-->
+    <Item name="Husk Meat Chunk" identifier="he-huskmeatchunk" category="Misc" subcategory="Ingredients" maxstacksize="8" cargocontaineridentifier="he-coolercrate" description="" Tags="smallitem,meat,meatchunk,ingredient,canspoil,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_soft" isshootable="true" requireaimtouse="true">
+      <PreferredContainer secondary="abandonedmedcab" spawnprobability="0.02" />
+      <PreferredContainer primary="refrigerator" secondary="refrigeratedcontainer" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="178,1,164,49" depth="0.6" origin="0.5,0.5" />
+      <Body width="140" radius="24" density="15" />
+      <Deconstruct time="10" requireddeconstructor="deconstructor" />
+      <!-- ItemContainer for freshness item which is spawned in at the start of a round if the inventory does not yet contain a freshness item. It represents the item spoilage | Previously meat was losing condition directly when spoiling which made it non-stackable, but with spoilage moved to freshness item, meat stays stackable -->
+      <ItemContainer capacity="1" maxstacksize="1" canbeselected="false" allowaccess="false" allowdraganddrop="false" showinventory="false" hideitems="true" slotsperrow="1" uilabel="" allowuioverlap="true" showcontentsintooltip="true" showcontainedstateindicator="true" removecontaineditemsondeconstruct="true">
+        <Containable items="freshness" />
+        <!-- StatusEffect spawning in the freshness item at the start of a round -->
+        <StatusEffect type="Always" target="This" spawnitemrandomly="true" oneshot="true">
+          <SpawnItem identifier="he-freshness" spawnposition="ThisInventory" spawnifinventoryfull="false" spawnifcantbecontained="false" />
+        </StatusEffect>
+      </ItemContainer>
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="true" slots="Any,RightHand+LeftHand" aimpos="26,20" holdangle="270" holdpos="32,28" aimangle="120" aimable="false" swingwhenusing="true" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-4.0" />
+        <StatusEffect type="OnUse" target="Character">
+          <ReduceAffliction type="hunger" amount="0.5" />
+          <Affliction identifier="huskinfection" amount="1" />
+          <Affliction identifier="he-stuffed" amount="4" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="True" />
+    </Item>
+    <Item name="Raw Husk Meat" identifier="he-rawhuskmeat" category="Misc" subcategory="Ingredients" maxstacksize="8" cargocontaineridentifier="he-coolercrate" description="" Tags="smallitem,meat,ingredient,canspoil,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_soft" isshootable="true" requireaimtouse="true">
+      <PreferredContainer secondary="wreckmedcab,abandonedmedcab" spawnprobability="0.02" />
+      <PreferredContainer secondary="abandonedcrewcab" minamount="0" maxamount="1" spawnprobability="0.02" />
+      <PreferredContainer primary="refrigerator" secondary="refrigeratedcontainer" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="244,51,43,31" depth="0.6" origin="0.5,0.5" />
+      <Fabricate suitablefabricators="cuttingboard" requiredtime="13" requiresrecipe="true" amount="4" hideifnorecipe="true">
+        <RequiredSkill identifier="butchery" level="60" />
+        <RequiredItem identifier="he-huskmeatchunk" Amount="1" MinCondition="0.5" MaxCondition="1.0" UseCondition="False" />
+      </Fabricate>
+      <Deconstruct time="3" requireddeconstructor="deconstructor" />
+      <Body width="28" radius="15" density="15" />
+      <!-- ItemContainer for freshness item which is spawned in at the start of a round if the inventory does not yet contain a freshness item. It represents the item spoilage | Previously meat was losing condition directly when spoiling which made it non-stackable, but with spoilage moved to freshness item, meat stays stackable -->
+      <ItemContainer capacity="1" maxstacksize="1" canbeselected="false" allowaccess="false" allowdraganddrop="false" showinventory="false" hideitems="true" slotsperrow="1" uilabel="" allowuioverlap="true" showcontentsintooltip="true" showcontainedstateindicator="true" removecontaineditemsondeconstruct="true">
+        <Containable items="freshness" />
+        <!-- StatusEffect spawning in the freshness item at the start of a round -->
+        <StatusEffect type="Always" target="This" spawnitemrandomly="true" oneshot="true">
+          <SpawnItem identifier="he-freshness" spawnposition="ThisInventory" spawnifinventoryfull="false" spawnifcantbecontained="false" />
+        </StatusEffect>
+      </ItemContainer>
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="28,18" holdangle="30" aimangle="0" aimable="false" swingwhenusing="true" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-4.0" />
+        <StatusEffect type="OnUse" target="Character">
+          <ReduceAffliction type="hunger" amount="0.5" />
+          <Affliction identifier="huskinfection" amount="0.5" />
+          <Affliction identifier="he-stuffed" amount="1" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="True" />
+    </Item>
+    <!-- UNUSED, simplified -->
+    <Item name="Raw husk Filets" identifier="he-rawhuskfilets" category="Misc" subcategory="Ingredients" maxstacksize="1" cargocontaineridentifier="he-coolercrate" description="" Tags="smallitem,meat,ingredient,canspoil,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_soft" isshootable="true" requireaimtouse="true">
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="178,405,61,13" depth="0.6" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="178,405,61,13" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="178,405,61,13" depth="0.525" origin="0.5,0.65" />
+      <Body width="56" radius="6" density="12" />
+      <!-- <Price baseprice="164" minavailable="4" maxavailable="16" mincondition="0.9" maxcondition="1.0" usecondition="false" sold="false">
+        <Price storeidentifier="merchantoutpost"/>
+        <Price storeidentifier="merchantcity"/>
+        <Price storeidentifier="merchantresearch"/>
+        <Price storeidentifier="merchantmilitary"/>
+        <Price storeidentifier="merchantmine"/>
+        <Price storeidentifier="merchantmedical"/>
+        <Price storeidentifier="merchantbutcher" />
+        <Price storeidentifier="merchanthusk" multiplier="2.0" minavailable="0" maxavailable="16" sold="false" />
+      </Price>
+      <Fabricate suitablefabricators="cuttingboard" requiredtime="13" requiresrecipe="true" amount="1" hideifnorecipe="true" >
+        <RequiredSkill identifier="butchery" level="35" />
+        <RequiredItem identifier="he-huskmeatchunk" MinCondition="0.5" MaxCondition="1.0" UseCondition="False" />
+        <RequiredItem identifier="he-salt" UseCondition="True" MinCondition="0.1"/>
+        <RequiredItem identifier="he-pepper" UseCondition="True" MinCondition="0.1"/>
+        <RequiredItem identifier="he-cookingoil" UseCondition="True" MinCondition="0.1"/>
+      </Fabricate> -->
+      <Deconstruct time="5" requireddeconstructor="deconstructor" />
+      <!-- ItemContainer for freshness item which is spawned in at the start of a round if the inventory does not yet contain a freshness item. It represents the item spoilage | Previously meat was losing condition directly when spoiling which made it non-stackable, but with spoilage moved to freshness item, meat stays stackable -->
+      <ItemContainer capacity="1" maxstacksize="1" canbeselected="false" allowaccess="false" allowdraganddrop="false" showinventory="false" hideitems="true" slotsperrow="1" uilabel="" allowuioverlap="true" showcontentsintooltip="true" showcontainedstateindicator="true" removecontaineditemsondeconstruct="true">
+        <Containable items="freshness" />
+        <!-- StatusEffect spawning in the freshness item at the start of a round -->
+        <StatusEffect type="Always" target="This" spawnitemrandomly="true" oneshot="true">
+          <SpawnItem identifier="he-freshness" spawnposition="ThisInventory" spawnifinventoryfull="false" spawnifcantbecontained="false" />
+        </StatusEffect>
+      </ItemContainer>
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="true" slots="Any,RightHand+LeftHand" aimpos="26,20" holdangle="270" holdpos="32,28" aimangle="120" aimable="false" swingwhenusing="true" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-4.0" />
+        <StatusEffect type="OnUse" target="Character">
+          <ReduceAffliction type="hunger" amount="0.5" />
+          <Affliction identifier="huskinfection" probability="0.05" amount="1" />
+          <Affliction identifier="nausea" amount="2" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="True" />
+    </Item>
+    <Item name="Husk Filets" identifier="he-preparedhuskfilets" category="Misc" subcategory="Ingredients" maxstacksize="1" cargocontaineridentifier="he-coolercrate" description="" Tags="smallitem,meat,ingredient,canspoil,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_soft" isshootable="true" requireaimtouse="true">
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="178,391,61,13" depth="0.6" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="178,391,61,13" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="178,391,61,13" depth="0.525" origin="0.5,0.65" />
+      <Body width="56" radius="6" density="12" />
+      <Price baseprice="164" minavailable="4" maxavailable="16" mincondition="0.9" maxcondition="1.0" usecondition="false" sold="false">
+        <Price storeidentifier="merchantoutpost" />
+        <Price storeidentifier="merchantcity" />
+        <Price storeidentifier="merchantresearch" />
+        <Price storeidentifier="merchantmilitary" />
+        <Price storeidentifier="merchantmine" />
+        <Price storeidentifier="merchantmedical" />
+        <Price storeidentifier="merchantbutcher" />
+        <Price storeidentifier="merchanthusk" multiplier="2.0" minavailable="0" maxavailable="16" sold="false" />
+      </Price>
+      <Deconstruct time="5" requireddeconstructor="deconstructor" />
+      <Fabricate suitablefabricators="stove" requiredtime="30" requiresrecipe="true" amount="1" hideifnorecipe="true">
+        <RequiredSkill identifier="cooking" level="35" />
+        <RequiredItem identifier="he-rawhuskmeat" amount="3" MinCondition="0.5" MaxCondition="1.0" UseCondition="False" />
+        <RequiredItem tag="waterpot" UseCondition="True" MinCondition="0.299" />
+        <RequiredItem identifier="he-salt" UseCondition="True" MinCondition="0.02" />
+      </Fabricate>
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="true" slots="Any,RightHand+LeftHand" aimpos="26,20" holdangle="270" holdpos="32,28" aimangle="120" aimable="false" swingwhenusing="true" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-4.0" />
+        <StatusEffect type="OnUse" target="Character">
+          <ReduceAffliction type="hunger" amount="0.5" />
+          <Affliction identifier="huskinfection" probability="0.01" amount="1" />
+          <Affliction identifier="nausea" amount="1" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="True" />
+    </Item>
+  </Items>
+</Override>

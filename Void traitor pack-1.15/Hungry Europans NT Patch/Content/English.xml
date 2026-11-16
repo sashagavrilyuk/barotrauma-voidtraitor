@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="English" nowhitespace="false" translatedname="English">
+  <Override>
+    <!-- Food Items -->
+    <entityname.he-cookedhumanbrain>Plate of Boiled Thoughts</entityname.he-cookedhumanbrain>
+    <entitydescription.he-cookedhumanbrain>A plate with a boiled brain on it and served with Bubbleberry leaves.</entitydescription.he-cookedhumanbrain>
+    <entityname.he-cookedhumanliverfries>Roasted Liver with Fries</entityname.he-cookedhumanliverfries>
+    <entitydescription.he-cookedhumanliverfries>A plate of roasted liver with fries.</entitydescription.he-cookedhumanliverfries>
+    <entityname.he-cookedhumankidneyjerky>Boiled Kidney with Jerky and Seaweed</entityname.he-cookedhumankidneyjerky>
+    <entitydescription.he-cookedhumankidneyjerky>A plate with a boiled kidney, 2 strips of jerky and some seaweed.</entitydescription.he-cookedhumankidneyjerky>
+    <entityname.he-cookedhumanroastgravy>Roast with Gravy, Mashed Pomegrenade and Seaweed</entityname.he-cookedhumanroastgravy>
+    <entitydescription.he-cookedhumanroastgravy>A plate of roast with some delicious gravy poured on top, mashed pomegrenades and some seaweed.</entitydescription.he-cookedhumanroastgravy>
+    <entityname.he-smoothbrainjuiceglass>Glass of Smooth-Brain Juice</entityname.he-smoothbrainjuiceglass>
+    <entitydescription.he-smoothbrainjuiceglass>A glass of fresh smooth-brain juice. You can still see some thoughts bubbling up. Maybe they'll help you think better? Rich in protein.</entitydescription.he-smoothbrainjuiceglass>
+    <entityname.he-bloodmilkglass>Glass of 'Strawberry Milk'</entityname.he-bloodmilkglass>
+    <entitydescription.he-bloodmilkglass>A glass of what the chef says is fresh strawberry milk. You may enjoy it as long as you don't think about the fact that strawberries don't exist on Europa. Rich in calcium and sugar.</entitydescription.he-bloodmilkglass>
+    <entityname.he-boiledhumanliver>Boiled Liver</entityname.he-boiledhumanliver>
+    <entitydescription.he-boiledhumanliver>A liver that's been roasted in a pan.</entitydescription.he-boiledhumanliver>
+    <entityname.he-boiledhumankidney>Boiled Kidney</entityname.he-boiledhumankidney>
+    <entitydescription.he-boiledhumankidney>A kidney that's been boiled in a pot.</entitydescription.he-boiledhumankidney>
+    <entityname.he-boiledhumanheart>Boiled Heart</entityname.he-boiledhumanheart>
+    <entitydescription.he-boiledhumanheart>A heart that's been boiled in a pot.</entitydescription.he-boiledhumanheart>
+    <entityname.he-boiledhumanbrain>Boiled Brain</entityname.he-boiledhumanbrain>
+    <entitydescription.he-boiledhumanbrain>A brain that's been boiled in a pot.</entitydescription.he-boiledhumanbrain>
+    <entityname.he-roastedhumanliver>Roasted Liver</entityname.he-roastedhumanliver>
+    <entitydescription.he-roastedhumanliver>A liver that's been roasted in a pan.</entitydescription.he-roastedhumanliver>
+    <entityname.he-roastedhumankidney>Roasted Kidney</entityname.he-roastedhumankidney>
+    <entitydescription.he-roastedhumankidney>A kidney that's been roasted in a pan.</entitydescription.he-roastedhumankidney>
+    <entityname.he-roastedhumanheart>Roasted Heart</entityname.he-roastedhumanheart>
+    <entitydescription.he-roastedhumanheart>A heart that's been roasted in a pan.</entitydescription.he-roastedhumanheart>
+    <entityname.he-roastedhumanbrain>Roasted Brain</entityname.he-roastedhumanbrain>
+    <entitydescription.he-roastedhumanbrain>A brain that's been roasted in a pan.</entitydescription.he-roastedhumanbrain>
+    <entityname.he-grilledhumanliver>Grilled Liver</entityname.he-grilledhumanliver>
+    <entitydescription.he-grilledhumanliver>A liver that's been grilled on a grill.</entitydescription.he-grilledhumanliver>
+    <entityname.he-grilledhumankidney>Grilled Kidney</entityname.he-grilledhumankidney>
+    <entitydescription.he-grilledhumankidney>A kidney that's been grilled on a grill.</entitydescription.he-grilledhumankidney>
+    <entityname.he-grilledhumanheart>Grilled Heart</entityname.he-grilledhumanheart>
+    <entitydescription.he-grilledhumanheart>A heart that's been grilled on a grill.</entitydescription.he-grilledhumanheart>
+    <entityname.he-grilledhumanbrain>Grilled Brain</entityname.he-grilledhumanbrain>
+    <entitydescription.he-grilledhumanbrain>A brain that's been grilled on a grill.</entitydescription.he-grilledhumanbrain>
+    <entityname.he-burnedhumanliver>Burned Liver</entityname.he-burnedhumanliver>
+    <entitydescription.he-burnedhumanliver>A liver that's been burned to a crisp.</entitydescription.he-burnedhumanliver>
+    <entityname.he-burnedhumankidney>Burned Kidney</entityname.he-burnedhumankidney>
+    <entitydescription.he-burnedhumankidney>A kidney that's been burned to a crisp.</entitydescription.he-burnedhumankidney>
+    <entityname.he-burnedhumanheart>Burned Heart</entityname.he-burnedhumanheart>
+    <entitydescription.he-burnedhumanheart>A heart that's been burned to a crisp.</entitydescription.he-burnedhumanheart>
+    <entityname.he-burnedhumanbrain>Burned Brain</entityname.he-burnedhumanbrain>
+    <entitydescription.he-burnedhumanbrain>A brain that's been burned to a crisp.</entitydescription.he-burnedhumanbrain>
+  </Override>
+</infotexts>

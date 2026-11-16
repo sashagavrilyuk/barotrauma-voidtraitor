@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Override>
+  <Afflictions>
+    <!-- NAUSEA OVERRIDE TO REMOVE STUN TO ENABLE STAYING IN BED WHILE PUKING, CAUSE LOSS OF FOOD BUFF DURATION AND TRIGGER NEUROTRAUMA'S LUA HOOK -->
+    <Affliction name="Nausea" identifier="nausea" description="The skin is clammy and the patient is vomiting periodically." type="nausea" causeofdeathdescription="Choked on vomit." selfcauseofdeathdescription="You have choked on your own vomit." limbspecific="false" maxstrength="100" affectmachines="false" treatmentthreshold="1000" karmachangeonapplied="-0.1" damageoverlayalpha="0" healcostmultiplier="2.25">
+      <Description textidentifier="afflictiondescription.nausea" target="OtherCharacter" minstrength="0" maxstrength="100" />
+      <Description textidentifier="afflictiondescription.nausea.low" target="Self" minstrength="0" maxstrength="50" />
+      <Description textidentifier="afflictiondescription.nausea.high" target="Self" minstrength="50" maxstrength="100" />
+      <Effect minstrength="0" maxstrength="100" strengthchange="-1.0" minfacetint="230,255,230,0" maxfacetint="230,255,230,100" minbodytint="230,255,230,0" maxbodytint="230,255,230,50" minspeedmultiplier="1.0" maxspeedmultiplier="0.6"></Effect>
+      <PeriodicEffect mininterval="12" maxinterval="16" minstrength="50" maxstrength="100">
+        <StatusEffect target="Character" SpeedMultiplier="0.0" setvalue="true" duration="1.7" />
+        <StatusEffect target="Character" comparison="and">
+          <Conditional ishuman="true" />
+          <Conditional hasspecifiertag="male" />
+          <Sound file="Content/Sounds/HUMAN_chokeMale1.ogg" selectionmode="Random" />
+          <Sound file="Content/Sounds/HUMAN_chokeMale2.ogg" />
+          <Sound file="Content/Sounds/HUMAN_chokeMale3.ogg" />
+        </StatusEffect>
+        <StatusEffect target="Character" comparison="and">
+          <Conditional ishuman="true" />
+          <Conditional hasspecifiertag="female" />
+          <Sound file="Content/Sounds/HUMAN_chokeFemale1.ogg" selectionmode="Random" />
+          <Sound file="Content/Sounds/HUMAN_chokeFemale2.ogg" />
+          <Sound file="Content/Sounds/HUMAN_chokeFemale3.ogg" />
+        </StatusEffect>
+        <StatusEffect target="Character" duration="2">
+          <TriggerAnimation Type="Walk" filename="Vomit" priority="10" ExpectedSpecies="Human" />
+        </StatusEffect>
+        <StatusEffect target="Character">
+          <!--<Affliction identifier="stun" strength="0.1"/>-->
+          <Affliction identifier="organdamage" strength="0.5" />
+          <LuaHook name="NT.vomit" />
+        </StatusEffect>
+        <StatusEffect target="Character" targetlimbs="Head" duration="1">
+          <ParticleEmitter particle="vomitsplash" copyentityangle="true" anglemin="-10" anglemax="10" particlespersecond="50" velocitymin="50" velocitymax="200" scalemin="0.1" scalemax="0.2" />
+          <Explosion range="0.0" structuredamage="0" itemdamage="0" force="0.0" severlimbsprobability="0.0" decal="vomitsplatter" decalsize="1.25" shockwave="false" underwaterbubble="false" />
+          <Conditional HideFace="eq False" />
+        </StatusEffect>
+        <StatusEffect target="Character" duration="1" disabledeltatime="true">
+          <ReduceAffliction identifier="he-stuffed" strength="10" />
+          <ReduceAffliction type="foodbuff" strength="300" />
+          <ReduceAffliction type="drinkbuff" strength="300" />
+        </StatusEffect>
+      </PeriodicEffect>
+      <icon texture="Content/UI/CommandUIAtlas.png" sourcerect="896,896,128,128" origin="0,0" />
+    </Affliction>
+    <!-- DRUNKNESS OVERRIDE | WHILE DRUNK, COUNTER THE PASSIVE HEALING OF LIVER DAMAGE -->
+    <Affliction name="Drunk" identifier="drunk" description="The smell of alcohol rises from them like a vapor, their speech slurs a little, and their eyes fail to focus." type="debuff" causeofdeathdescription="Alcohol poisoning" selfcauseofdeathdescription="You have died of alcohol poisoning." limbspecific="false" indicatorlimb="Torso" activationthreshold="0" hideiconafterdelay="true" showinhealthscannerthreshold="0" treatmentthreshold="1000" maxstrength="100" affectmachines="false" MedicalSkillGain="0.0">
+      <Description textidentifier="afflictiondescription.drunk.self" target="Self" minstrength="0" maxstrength="80" />
+      <Description textidentifier="afflictiondescription.drunk.lethal.self" target="Self" minstrength="80" maxstrength="100" />
+      <Description textidentifier="afflictiondescription.drunk.low" target="OtherCharacter" minstrength="0" maxstrength="40" />
+      <Description textidentifier="afflictiondescription.drunk" target="OtherCharacter" minstrength="40" maxstrength="80" />
+      <Description textidentifier="afflictiondescription.drunk.lethal" target="OtherCharacter" minstrength="80" maxstrength="100" />
+      <!-- -6 per minute -->
+      <!-- minimal effects at this point -->
+      <Effect minstrength="0" maxstrength="20" strengthchange="-0.1">
+        <StatusEffect target="Character" interval="1" disabledeltatime="true">
+          <Affliction identifier="liverdamage" amount="0.01" />
+          <!--prevent liver damage from healing-->
+          <ReduceAffliction identifier="mood" strength="0.2" />
+        </StatusEffect>
+        <StatusEffect target="Character" interval="1" disabledeltatime="true">
+          <Conditional mood="gt 1" />
+        </StatusEffect>
+      </Effect>
+      <!-- Low level of drunkenness decreases speed slightly -->
+      <!-- -3 per minute -->
+      <Effect minstrength="20" maxstrength="40" minscreendistort="0" maxscreendistort="0.2" minscreenblur="0.0" maxscreenblur="0.2" minradialdistort="0" maxradialdistort="0.2" strengthchange="-0.1" minfacetint="255,0,0,0" maxfacetint="255,0,0,50" minspeedmultiplier="1.0" maxspeedmultiplier="0.8" resistancefor="damage,radiationsickness" minresistance="0.0" maxresistance="0.1">
+        <StatusEffect target="Character" interval="1" disabledeltatime="true">
+          <Affliction identifier="alcoholaddiction" strength="0.05" probability="1.0" />
+          <Affliction identifier="liverdamage" amount="0.01" />
+          <!--prevent liver damage from healing-->
+          <ReduceAffliction identifier="alcoholwithdrawal" strength="1" probability="1" />
+          <ReduceAffliction identifier="embarrassment" strength="0.5" />
+          <ReduceAffliction identifier="mood" strength="0.3" />
+        </StatusEffect>
+        <!-- NT analgesia when drunk -->
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" disabledeltatime="true" comparison="and">
+          <Conditional ishuman="true" analgesia="lte 5" />
+          <Affliction identifier="analgesia" amount="1" />
+        </StatusEffect>
+        <!-- only increase tiredness if it's enabled -->
+        <StatusEffect target="Character" interval="1" disabledeltatime="true">
+          <Conditional fatigue="gt 0" />
+          <Affliction identifier="fatigue" strength="0.2" probability="0.1" />
+        </StatusEffect>
+      </Effect>
+      <!-- Heavier drunkenness decreases speed more -->
+      <!-- -6 per minute -->
+      <Effect minstrength="40" maxstrength="80" minscreendistort="0.2" maxscreendistort="0.5" minscreenblur="0.2" maxscreenblur="0.5" minradialdistort="0.2" maxradialdistort="0.6" strengthchange="-0.1" dialogflag="DrunkMedium" minfacetint="255,0,0,50" maxfacetint="255,0,0,75" minspeedmultiplier="0.8" maxspeedmultiplier="0.7" resistancefor="damage,radiationsickness" minresistance="0.1" maxresistance="0.2">
+        <StatusEffect target="Character" interval="1" disabledeltatime="true">
+          <Affliction identifier="alcoholaddiction" strength="0.1" probability="1.0" />
+          <Affliction identifier="liverdamage" amount="0.01" />
+          <!--prevent liver damage from healing-->
+          <ReduceAffliction identifier="alcoholwithdrawal" strength="2" probability="1" />
+          <ReduceAffliction identifier="embarrassment" strength="1" />
+          <ReduceAffliction identifier="mood" strength="0.5" />
+        </StatusEffect>
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" disabledeltatime="true" comparison="and">
+          <Conditional ishuman="true" analgesia="lte 5" />
+          <Affliction identifier="analgesia" amount="1" />
+        </StatusEffect>
+        <!-- only increase tiredness if it's enabled -->
+        <StatusEffect target="Character" interval="1" disabledeltatime="true">
+          <Conditional fatigue="gt 0" />
+          <Affliction identifier="fatigue" strength="0.2" probability="0.1" />
+        </StatusEffect>
+        <StatusEffect target="Character">
+          <TriggerAnimation Type="Walk" filename="DrunkenWalk" priority="6" ExpectedSpecies="Human" />
+          <TriggerAnimation Type="Run" filename="DrunkenRun" priority="6" ExpectedSpecies="Human" />
+        </StatusEffect>
+      </Effect>
+      <!-- After drinking enough the effect starts to get lethal -->
+      <Effect minstrength="80" maxstrength="100" minvitalitydecrease="0" maxvitalitydecrease="20" minscreendistort="0.5" maxscreendistort="1.0" minscreenblur="0.5" maxscreenblur="1" minradialdistort="0.6" maxradialdistort="1" strengthchange="-0.1" dialogflag="DrunkHigh" minfacetint="255,0,0,75" maxfacetint="255,0,0,100" minspeedmultiplier="0.8" maxspeedmultiplier="0.5" resistancefor="damage,radiationsickness" minresistance="0.2" maxresistance="0.3">
+        <StatusEffect target="Character" interval="1" disabledeltatime="true">
+          <Affliction identifier="alcoholaddiction" strength="0.1" probability="1" />
+          <Affliction identifier="liverdamage" amount="0.01" />
+          <!--prevent liver damage from healing-->
+          <ReduceAffliction identifier="alcoholwithdrawal" strength="2" probability="1" />
+          <ReduceAffliction identifier="embarrassment" strength="2" />
+          <ReduceAffliction identifier="mood" strength="1" />
+        </StatusEffect>
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" disabledeltatime="true" comparison="and">
+          <Conditional ishuman="true" analgesia="lte 5" />
+          <Affliction identifier="analgesia" amount="1" />
+        </StatusEffect>
+        <!-- only increase tiredness if it's enabled -->
+        <StatusEffect target="Character" interval="1" disabledeltatime="true">
+          <Conditional fatigue="gt 0" />
+          <Affliction identifier="fatigue" strength="0.2" probability="0.1" />
+        </StatusEffect>
+        <StatusEffect target="Character">
+          <TriggerAnimation Type="Walk" filename="DrunkenWalk" priority="6" ExpectedSpecies="Human" />
+          <TriggerAnimation Type="Run" filename="DrunkenRun" priority="6" ExpectedSpecies="Human" />
+        </StatusEffect>
+      </Effect>
+      <!-- disorient -->
+      <PeriodicEffect minstrength="20" maxstrength="40" mininterval="45" maxinterval="90">
+        <StatusEffect target="Character" duration="2" comparison="And">
+          <Conditional alcoholaddiction="lt 25" />
+          <Conditional InWater="false" />
+          <Affliction identifier="he-drunkinvertcontrols" strength="100" />
+        </StatusEffect>
+      </PeriodicEffect>
+      <PeriodicEffect minstrength="40" maxstrength="60" mininterval="35" maxinterval="70">
+        <StatusEffect target="Character" duration="2" comparison="And">
+          <Conditional alcoholaddiction="lt 50" />
+          <Conditional InWater="false" />
+          <Affliction identifier="he-drunkinvertcontrols" strength="100" />
+        </StatusEffect>
+      </PeriodicEffect>
+      <PeriodicEffect minstrength="60" maxstrength="80" mininterval="25" maxinterval="50">
+        <StatusEffect target="Character" duration="2" comparison="And">
+          <Conditional alcoholaddiction="lt 50" />
+          <Conditional InWater="false" />
+          <Affliction identifier="he-drunkinvertcontrols" strength="100" />
+        </StatusEffect>
+      </PeriodicEffect>
+      <PeriodicEffect minstrength="80" maxstrength="100" mininterval="15" maxinterval="30">
+        <StatusEffect target="Character" duration="2" comparison="And">
+          <Conditional alcoholaddiction="lt 75" />
+          <Conditional InWater="false" />
+          <Affliction identifier="he-drunkinvertcontrols" strength="100" />
+        </StatusEffect>
+      </PeriodicEffect>
+      <!-- pass out if tired -->
+      <PeriodicEffect minstrength="40" maxstrength="100" mininterval="30" maxinterval="60">
+        <StatusEffect target="Character" duration="2" comparison="And">
+          <Conditional fatigue="gt 30" />
+          <Affliction identifier="he-exhaustedsleep" strength="10" />
+        </StatusEffect>
+      </PeriodicEffect>
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="384,640,128,128" color="170,194,147,255" origin="0,0" />
+    </Affliction>
+    <!-- TRACK ALCOHOL INTAKE AFFLICTION TO CAUSE LIVER DAMAGE IF TOO MUCH ALCOHOL WAS CONSUMED IN A SHORT TIME -->
+    <Affliction name="Track Alcohol Intake" identifier="trackalcoholintake" description="Tracks how much alcohol was consumed within the last minute and applies liver damage if taken in too much." type="tracking" maxstrength="1204" limbspecific="false" indicatorlimb="Head" showiconthreshold="1000" showicontoothersthreshold="1000" showinhealthscannerthreshold="1000" healableinmedicalclinic="false">
+      <Effect minstrength="0" maxstrength="60" strengthchange="-1" />
+      <Effect minstrength="60" maxstrength="1204" strengthchange="-1">
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true">
+          <Conditional alcoholaddiction="lt 20" />
+          <Affliction identifier="liverdamage" amount="0.05" />
+        </StatusEffect>
+        <!-- deal less damage for alcoholics -->
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true">
+          <Conditional alcoholaddiction="gte 20" />
+          <Affliction identifier="liverdamage" amount="0.025" />
+        </StatusEffect>
+      </Effect>
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="896,768,128,128" color="195,136,60,255" origin="0,0" />
+    </Affliction>
+    <!-- Compatibility changes: reduces NT alcoholaddiction etc, reduces sepsis a little instead of vanilla infection -->
+    <Affliction identifier="he-bloodytobybuff" type="buff" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" showiconthreshold="1000" showicontoothersthreshold="1000" hideiconafterdelay="true" showinhealthscannerthreshold="1000" treatmentthreshold="1000" maxstrength="10" affectmachines="false" MedicalSkillGain="0.0" healableinmedicalclinic="false">
+      <Effect minstrength="0" maxstrength="10" strengthchange="-1">
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true">
+          <Affliction identifier="hallucinating" strength="8" />
+          <ReduceAffliction identifier="bloodloss" strength="4" />
+          <ReduceAffliction identifier="drunk" strength="8" />
+          <ReduceAffliction type="applydrunkeffect" strength="8" />
+          <ReduceAffliction identifier="alcoholaddiction" strength="1" />
+          <ReduceAffliction identifier="alcoholwithdrawal" strength="3" />
+          <ReduceAffliction identifier="chemaddiction" strength="3" />
+          <ReduceAffliction identifier="chemwithdrawal" strength="3" />
+          <ReduceAffliction identifier="he-tobaccoaddiction" strength="3" />
+          <ReduceAffliction identifier="sepsis" strength="2" />
+        </StatusEffect>
+      </Effect>
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="384,640,128,128" color="170,194,147,255" origin="0,0" />
+    </Affliction>
+    <!-- brain juice affliction -->
+    <Affliction identifier="he-brainjuicebuff" type="buff" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" showiconthreshold="1000" showicontoothersthreshold="1000" hideiconafterdelay="true" showinhealthscannerthreshold="1000" treatmentthreshold="1000" maxstrength="80" affectmachines="false" MedicalSkillGain="0.0" healableinmedicalclinic="false">
+      <Effect minstrength="0" maxstrength="80" strengthchange="-1" minskillmultiplier="1" maxskillmultiplier="2">
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" cangivemedicalskill="false">
+          <ReduceAffliction identifier="cerebralhypoxia" strength="1" />
+        </StatusEffect>
+      </Effect>
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="384,640,128,128" color="170,194,147,255" origin="0,0" />
+    </Affliction>
+    <!-- saline decreases thirst slightly -->
+    <Affliction name="" identifier="afsaline" description="" healableinmedicalclinic="false" targets="human" type="resistance" isbuff="true" limbspecific="false" showiconthreshold="200" showinhealthscannerthreshold="1" maxstrength="100">
+      <Effect minstrength="0" maxstrength="100" strengthchange="-0.25">
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true">
+          <Conditional ishuman="true" />
+          <Affliction identifier="acidosis" amount="0.1" />
+          <ReduceAffliction identifier="thirst" amount="0.03" />
+        </StatusEffect>
+      </Effect>
+      <icon texture="%ModDir:3190189044%/Images/AfflictionIcons.png" sheetindex="3,3" sheetelementsize="128,128" origin="0,0" />
+    </Affliction>
+    <!-- unconsciousness makes it less likely to die of hunger/thirst, reduces fatigue -->
+    <Affliction name="" identifier="sym_unconsciousness" description="" healableinmedicalclinic="false" type="gaze" isbuff="false" limbspecific="false" indicatorlimb="Head" showiconthreshold="1" showinhealthscannerthreshold="100" maxstrength="2">
+      <Effect minstrength="0" maxstrength="2" resistancefor="hunger,thirst" minresistance="0.9" maxresistance="0.9">
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" comparison="and">
+          <Conditional fatigue="gt 0" />
+          <Conditional he-exhaustedsleep="lt 3" />
+          <Affliction identifier="he-exhaustedsleep" amount="2" />
+        </StatusEffect>
+      </Effect>
+      <icon texture="%ModDir:3190189044%/Images/AfflictionIcons.png" sheetindex="3,2" sheetelementsize="128,128" origin="0,0" />
+    </Affliction>
+    <Affliction identifier="combatstimulant" type="talentbuff" isbuff="true" limbspecific="false" maxstrength="100" treatmentthreshold="1000" iconcolors="33,75,78;126,211,224;126,211,224;227,247,249" MedicalSkillGain="0.005">
+      <Effect minstrength="0" maxstrength="10" strengthchange="-1" resistancefor="stun" minresistance="0" maxresistance="0.45">
+        <StatusEffect target="Character" interval="0.1" disabledeltatime="true">
+          <ReduceAffliction type="damage" strength="0.1" />
+          <ReduceAffliction type="burn" strength="0.1" />
+          <ReduceAffliction identifier="bloodloss" strength="0.1" />
+          <ReduceAffliction type="bleeding" strength="0.1" />
+          <ReduceAffliction identifier="internalbleeding" strength="0.1" />
+          <ReduceAffliction identifier="chemwithdrawal" strength="0.1" />
+          <ReduceAffliction identifier="mood" amount="0.05" />
+        </StatusEffect>
+      </Effect>
+      <Effect minstrength="10" maxstrength="100" strengthchange="-1" resistancefor="stun" minresistance="0.45" maxresistance="0.5">
+        <StatusEffect target="Character" interval="0.1" disabledeltatime="true">
+          <ReduceAffliction type="damage" strength="0.2" />
+          <ReduceAffliction type="burn" strength="0.2" />
+          <ReduceAffliction identifier="bloodloss" strength="0.2" />
+          <ReduceAffliction identifier="bleeding" strength="0.2" />
+          <ReduceAffliction identifier="internalbleeding" strength="0.2" />
+          <ReduceAffliction identifier="chemwithdrawal" strength="0.2" />
+          <ReduceAffliction identifier="mood" amount="0.05" />
+        </StatusEffect>
+      </Effect>
+      <Icon texture="Content/UI/TalentsIcons2.png" sheetindex="2,6" sheetelementsize="128,128" color="10,193,114,255" origin="0,0" />
+    </Affliction>
+    <Affliction name="" identifier="analgesia" description="" healableinmedicalclinic="false" targets="human" type="resistance" isbuff="true" limbspecific="false" showiconthreshold="0" treatmentthreshold="0.1" maxstrength="200">
+      <Effect minstrength="0" maxstrength="5" resistancefor="damage" minresistance="0" maxresistance="0.025" strengthchange="-0.3">
+        <StatusEffect target="Character">
+          <ReduceAffliction type="pain" amount="5" />
+        </StatusEffect>
+      </Effect>
+      <Effect minstrength="5" maxstrength="20" resistancefor="damage" minresistance="0.025" maxresistance="0.25" minscreendistort="0.0" maxscreendistort="0.0" minscreenblur="0.0" maxscreenblur="0.01" minradialdistort="0.0" maxradialdistort="0.05" minchromaticaberration="0" maxchromaticaberration="2" strengthchange="-0.3">
+        <StatusEffect target="Character">
+          <ReduceAffliction type="pain" amount="10" />
+        </StatusEffect>
+      </Effect>
+      <Effect minstrength="20" maxstrength="200" resistancefor="damage,stun" minresistance="0.25" maxresistance="0.25" minscreendistort="0.0" maxscreendistort="0.0" minscreenblur="0.01" maxscreenblur="0.1" minradialdistort="0.05" maxradialdistort="0.5" minchromaticaberration="2" maxchromaticaberration="20" strengthchange="-0.3">
+        <StatusEffect target="Character">
+          <ReduceAffliction type="pain" amount="100" />
+          <ReduceAffliction identifier="mood" amount="0.2" />
+        </StatusEffect>
+      </Effect>
+      <icon texture="%ModDir:3190189044%/Images/AfflictionIcons.png" sheetindex="2,1" sheetelementsize="128,128" origin="0,0" />
+    </Affliction>
+  </Afflictions>
+</Override>

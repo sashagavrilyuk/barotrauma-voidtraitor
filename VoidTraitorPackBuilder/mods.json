@@ -94,6 +94,31 @@
       "workshop_id": "3353887060",
       "package_name": "Gravitation Grаnade",
       "target_folder": "Gravitation Grаnade"
+    },
+    {
+      "workshop_id": "2954998725",
+      "package_name": "Hungry Europans",
+      "target_folder": "Hungry Europans",
+      "exclude": [
+        "#Testkitchen.sub",
+        "Content/Submarines",
+        "Content/Tutorials",
+        "Content/Items/Gardening/plantgrowthcalculator.xls"
+      ]
+    },
+    {
+      "workshop_id": "3222593240",
+      "package_name": "Hungry Europans - Neurotrauma Compatibility Patch",
+      "target_folder": "Hungry Europans NT Patch"
+    },
+    {
+      "workshop_id": "3687222045",
+      "package_name": "Hungry Europans Rus",
+      "target_folder": "Hungry Europans Rus",
+      "exclude": [
+        "Tutorials.xml",
+        "HE-Enforced.xml"
+      ]
     }
   ],
   "lua_order": [
@@ -109,6 +134,10 @@
     {
       "winner": "Guns Enhanced Unofficial Addon",
       "loser": "Guns Enhanced"
+    },
+    {
+      "winner": "Hungry Europans NT Patch",
+      "loser": "Hungry Europans"
     }
   ]
 }

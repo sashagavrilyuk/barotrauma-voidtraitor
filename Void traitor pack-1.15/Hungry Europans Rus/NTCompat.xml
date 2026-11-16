@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="Russian" nowhitespace="false" translatedname="Русский">
+  <Override>
+    <!-- Food Items -->
+    <entityname.he-cookedhumanbrain>Тарелка варёных мыслей</entityname.he-cookedhumanbrain>
+    <entitydescription.he-cookedhumanbrain>Тарелка с варёным мозгом и листьями пузырягоды.</entitydescription.he-cookedhumanbrain>
+    <entityname.he-cookedhumanliverfries>Жареная печень с фри</entityname.he-cookedhumanliverfries>
+    <entitydescription.he-cookedhumanliverfries>Тарелка с жареной печенью и картошкой фри на гарнир.</entitydescription.he-cookedhumanliverfries>
+    <entityname.he-cookedhumankidneyjerky>Почки с рулетиками Ройчи</entityname.he-cookedhumankidneyjerky>
+    <entitydescription.he-cookedhumankidneyjerky>Тарелка с варёной почкой и вяленым мясом, завёрнутым в нори.</entitydescription.he-cookedhumankidneyjerky>
+    <entityname.he-cookedhumanroastgravy>Человеческий ростбиф с подливой</entityname.he-cookedhumanroastgravy>
+    <entitydescription.he-cookedhumanroastgravy>Ростбиф из человека, политый вкуснейшей подливой, с гранатовым пюре и морскими водорослями на гарнир.</entitydescription.he-cookedhumanroastgravy>
+    <entityname.he-smoothbrainjuiceglass>Стакан гладкомозгового сока</entityname.he-smoothbrainjuiceglass>
+    <entitydescription.he-smoothbrainjuiceglass>Стакан свежевыжатого гладкомозгового сока. Всё ещё заметно, как всплывают мысли. Может быть, они помогут вам лучше мыслить? Богатый белком.</entitydescription.he-smoothbrainjuiceglass>
+    <entityname.he-bloodmilkglass>Стакан "клубничного молока"</entityname.he-bloodmilkglass>
+    <entitydescription.he-bloodmilkglass>Стакан, как говорит повар, свежего клубничного молока. Можете наслаждаться им, пока не задумываетесь о том факте, что клубники на Европе не бывает. Богато кальцием и сахаром.</entitydescription.he-bloodmilkglass>
+    <entityname.he-boiledhumanliver>Варёная печень</entityname.he-boiledhumanliver>
+    <entitydescription.he-boiledhumanliver>Печень, сваренная в кастрюле.</entitydescription.he-boiledhumanliver>
+    <entityname.he-boiledhumankidney>Варёная почка</entityname.he-boiledhumankidney>
+    <entitydescription.he-boiledhumankidney>Почка, сваренная в кастрюле.</entitydescription.he-boiledhumankidney>
+    <entityname.he-boiledhumanheart>Варёное сердце</entityname.he-boiledhumanheart>
+    <entitydescription.he-boiledhumanheart>Сердце, сваренное в кастрюле.</entitydescription.he-boiledhumanheart>
+    <entityname.he-boiledhumanbrain>Варёный мозг</entityname.he-boiledhumanbrain>
+    <entitydescription.he-boiledhumanbrain>Мозг, сваренный в кастрюле.</entitydescription.he-boiledhumanbrain>
+    <entityname.he-roastedhumanliver>Жареная печень</entityname.he-roastedhumanliver>
+    <entitydescription.he-roastedhumanliver>Печень, прожаренная на сковороде.</entitydescription.he-roastedhumanliver>
+    <entityname.he-roastedhumankidney>Жареная почка</entityname.he-roastedhumankidney>
+    <entitydescription.he-roastedhumankidney>Почка, прожаренная на сковороде.</entitydescription.he-roastedhumankidney>
+    <entityname.he-roastedhumanheart>Жареное сердце</entityname.he-roastedhumanheart>
+    <entitydescription.he-roastedhumanheart>Сердце, прожаренное на сковороде.</entitydescription.he-roastedhumanheart>
+    <entityname.he-roastedhumanbrain>Жареный мозг</entityname.he-roastedhumanbrain>
+    <entitydescription.he-roastedhumanbrain>Мозг, прожаренный на сковороде.</entitydescription.he-roastedhumanbrain>
+    <entityname.he-grilledhumanliver>Жареная печень</entityname.he-grilledhumanliver>
+    <entitydescription.he-grilledhumanliver>Печень, прожаренная на гриле.</entitydescription.he-grilledhumanliver>
+    <entityname.he-grilledhumankidney>Жареная почка</entityname.he-grilledhumankidney>
+    <entitydescription.he-grilledhumankidney>Почка, прожаренная на гриле.</entitydescription.he-grilledhumankidney>
+    <entityname.he-grilledhumanheart>Жареное сердце</entityname.he-grilledhumanheart>
+    <entitydescription.he-grilledhumanheart>Сердце, прожаренное на гриле.</entitydescription.he-grilledhumanheart>
+    <entityname.he-grilledhumanbrain>Жареный мозг</entityname.he-grilledhumanbrain>
+    <entitydescription.he-grilledhumanbrain>Мозг, прожаренный на гриле.</entitydescription.he-grilledhumanbrain>
+    <entityname.he-burnedhumanliver>Подгоревшая печень</entityname.he-burnedhumanliver>
+    <entitydescription.he-burnedhumanliver>Печень, сожжённая дотла.</entitydescription.he-burnedhumanliver>
+    <entityname.he-burnedhumankidney>Подгоревшая почка</entityname.he-burnedhumankidney>
+    <entitydescription.he-burnedhumankidney>Почка, сожжённая дотла.</entitydescription.he-burnedhumankidney>
+    <entityname.he-burnedhumanheart>Подгоревшее сердце</entityname.he-burnedhumanheart>
+    <entitydescription.he-burnedhumanheart>Сердце, сожжённое дотла.</entitydescription.he-burnedhumanheart>
+    <entityname.he-burnedhumanbrain>Подгоревший мозг</entityname.he-burnedhumanbrain>
+    <entitydescription.he-burnedhumanbrain>Мозг, сожжённый дотла.</entitydescription.he-burnedhumanbrain>
+  </Override>
+</infotexts>

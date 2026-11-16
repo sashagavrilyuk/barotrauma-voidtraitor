@@ -1,0 +1,415 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Override>
+  <Items>
+    <!-- Patty -->
+    <Item name="Raw Meat Patty" identifier="he-rawmeatpatty" category="Misc" subcategory="Ingredients" maxstacksize="8" cargocontaineridentifier="he-coolercrate" description="" Tags="smallitem,meat,ingredient,allowongrill,canspoil,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_soft" isshootable="true" requireaimtouse="true" health="12">
+      <PreferredContainer primary="refrigerator" secondary="refrigeratedcontainer" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="243,458,35,8" depth="0.6" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="279,459,31,17" origin="0.5,0.5" />
+      <Fabricate suitablefabricators="cuttingboard" requiredtime="8" requiresrecipe="false" amount="1">
+        <RequiredSkill identifier="butchery" level="20" />
+        <RequiredItem tag="rawmeatpiece" amount="1" MinCondition="0.5" MaxCondition="1.0" UseCondition="False" />
+        <RequiredItem identifier="he-salt" UseCondition="True" MinCondition="0.025" />
+      </Fabricate>
+      <Fabricate suitablefabricators="cuttingboard" requiredtime="8" requiresrecipe="false" amount="1" displayname="alternative">
+        <RequiredSkill identifier="butchery" level="20" />
+        <RequiredItem identifier="he-rawoffal" amount="2" UseCondition="False" />
+        <RequiredItem identifier="he-salt" UseCondition="True" MinCondition="0.025" />
+      </Fabricate>
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Body width="31" height="5" density="9" />
+      <Price baseprice="20" minavailable="4" maxavailable="16" mincondition="0.9" maxcondition="1.0" usecondition="false" sold="false">
+        <Price storeidentifier="merchantoutpost" />
+        <Price storeidentifier="merchantcity" />
+        <Price storeidentifier="merchantresearch" />
+        <Price storeidentifier="merchantmilitary" />
+        <Price storeidentifier="merchantmine" />
+        <Price storeidentifier="merchantmedical" />
+        <Price storeidentifier="merchantbutcher" multiplier="1.0" minavailable="0" maxavailable="32" sold="false" />
+      </Price>
+      <!-- ItemComponent hosts the effects for grilling the item -->
+      <ItemComponent canbeselected="false" canbepicked="false" allowingameediting="false">
+        <ActiveConditional HasStatusTag="eq activegrill" targetcontainer="true" />
+        <!-- MaxValueLength is used to track the time spent on the grill. It is increased by 1 every second the item is in a container with the "activegrill" status tag -->
+        <StatusEffect type="OnActive" target="This" MaxValueLength="1" interval="1" disabledeltatime="true" />
+        <!-- Reset the MaxValueLength when the item is no longer contained in a container with the "activegrill" status tag -->
+        <StatusEffect type="OnActive" target="This" MaxValueLength="0" setvalue="true" disabledeltatime="true">
+          <Conditional HasStatusTag="neq activegrill" targetcontainer="true" />
+        </StatusEffect>
+        <!-- Check every second if the MaxValueLength reached or exceeded a value of 45, then remove the item and spawn the cooked version in its place -->
+        <StatusEffect type="OnActive" target="This" interval="1" disabledeltatime="true">
+          <Conditional MaxValueLength="gte 45" />
+          <Remove />
+          <SpawnItem identifier="he-meatpatty" spawnposition="SameInventory" spawnifcantbecontained="true" SpawnIfInventoryFull="true" />
+        </StatusEffect>
+      </ItemComponent>
+      <!-- MemoryComponent hosts the MaxValueLength attribute which we use to track the time by adjusting its value via StatusEffects each second -->
+      <MemoryComponent canbepicked="false" canbeselected="false" allowingameediting="false" drawhudwhenequipped="false" string="" MaxValueLength="0" />
+      <!-- ItemContainer for freshness item which is spawned in at the start of a round if the inventory does not yet contain a freshness item. It represents the item spoilage | Previously meat was losing condition directly when spoiling which made it non-stackable, but with spoilage moved to freshness item, meat stays stackable -->
+      <ItemContainer capacity="1" maxstacksize="1" canbeselected="false" allowaccess="false" allowdraganddrop="false" showinventory="false" hideitems="true" slotsperrow="1" uilabel="" allowuioverlap="true" showcontentsintooltip="true" showcontainedstateindicator="true" removecontaineditemsondeconstruct="true">
+        <Containable items="freshness" />
+        <!-- StatusEffect spawning in the freshness item at the start of a round -->
+        <StatusEffect type="Always" target="This" spawnitemrandomly="true" oneshot="true">
+          <SpawnItem identifier="he-freshness" spawnposition="ThisInventory" spawnifinventoryfull="false" spawnifcantbecontained="false" />
+        </StatusEffect>
+      </ItemContainer>
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="28,18" holdangle="30" aimangle="0" aimable="false" swingwhenusing="true" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-1.0" />
+        <StatusEffect type="OnUse" target="Character">
+          <ReduceAffliction type="hunger" amount="0.3" />
+          <Affliction identifier="nausea" amount="6" probability="0.25" />
+          <Affliction identifier="worminfection" amount="1" probability="0.00052" />
+          <Affliction identifier="tapeworminfection" amount="1" probability="0.00052" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <!-- When the item's condition reaches 0 (item breaks), remove the item -->
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <!-- AiTarget allows the item to be seen and interacted by non-human characters like pets and monsters. SightRange="1000" lets them see the item in a 10m range -->
+      <AiTarget sightrange="1000" static="True" />
+    </Item>
+    <Item name="Meat Patty (cooked)" identifier="he-meatpatty" category="Misc" subcategory="Ingredients" maxstacksize="8" cargocontaineridentifier="he-coolercrate" description="" Tags="smallitem,meat,ingredient,allowongrill,canspoil,petfood1,petfood2,petfood3,monsterfood" spritecolor="108,108,108,255" inventoryiconcolor="108,108,108,255" containercolor="108,108,108,255" useinhealthinterface="false" scale="0.4" impactsoundtag="impact_soft" isshootable="true" requireaimtouse="true" health="12">
+      <PreferredContainer primary="refrigerator" secondary="refrigeratedcontainer" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="243,458,35,8" depth="0.6" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="279,459,31,17" origin="0.5,0.5" />
+      <Fabricate suitablefabricators="stove" requiredtime="30" requiresrecipe="false" amount="2">
+        <RequiredSkill identifier="cooking" level="20" />
+        <RequiredItem identifier="he-rawmeatpatty" amount="2" MinCondition="0.5" MaxCondition="1.0" UseCondition="False" />
+        <RequiredItem identifier="he-cookingoil" UseCondition="True" MinCondition="0.05" />
+        <RequiredItem tag="pan" UseCondition="True" MinCondition="0.0" />
+      </Fabricate>
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Body width="31" height="5" density="9" />
+      <Price baseprice="20" minavailable="4" maxavailable="16" mincondition="0.9" maxcondition="1.0" usecondition="false" sold="false">
+        <Price storeidentifier="merchantoutpost" />
+        <Price storeidentifier="merchantcity" />
+        <Price storeidentifier="merchantresearch" />
+        <Price storeidentifier="merchantmilitary" />
+        <Price storeidentifier="merchantmine" />
+        <Price storeidentifier="merchantmedical" />
+        <Price storeidentifier="merchantbutcher" multiplier="1.0" minavailable="0" maxavailable="32" sold="true" />
+      </Price>
+      <!-- ItemComponent hosts the effects for grilling the item -->
+      <ItemComponent canbeselected="false" canbepicked="false" allowingameediting="false">
+        <ActiveConditional HasStatusTag="eq activegrill" targetcontainer="true" />
+        <!-- MaxValueLength is used to track the time spent on the grill. It is increased by 1 every second the item is in a container with the "activegrill" status tag -->
+        <StatusEffect type="OnActive" target="This" MaxValueLength="1" interval="1" disabledeltatime="true" />
+        <!-- Reset the MaxValueLength when the item is no longer contained in a container with the "activegrill" status tag -->
+        <StatusEffect type="OnActive" target="This" MaxValueLength="0" setvalue="true" disabledeltatime="true">
+          <Conditional HasStatusTag="neq activegrill" targetcontainer="true" />
+        </StatusEffect>
+        <!-- Check every second if the MaxValueLength reached or exceeded a value of 20, then remove the item and spawn the burned version in its place -->
+        <StatusEffect type="OnActive" target="This" interval="1" disabledeltatime="true">
+          <Conditional MaxValueLength="gte 20" />
+          <Remove />
+          <SpawnItem identifier="he-burnedmeatpatty" spawnposition="SameInventory" spawnifcantbecontained="true" SpawnIfInventoryFull="true" />
+        </StatusEffect>
+      </ItemComponent>
+      <!-- MemoryComponent hosts the MaxValueLength attribute which we use to track the time by adjusting its value via StatusEffects each second -->
+      <MemoryComponent canbepicked="false" canbeselected="false" allowingameediting="false" drawhudwhenequipped="false" string="" MaxValueLength="0" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="28,18" holdangle="30" aimangle="0" aimable="false" swingwhenusing="true" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-1.0" />
+        <StatusEffect type="OnUse" target="Character">
+          <ReduceAffliction type="hunger" amount="0.4" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="True" />
+    </Item>
+    <Item name="Burned Meat Patty" identifier="he-burnedmeatpatty" category="Misc" subcategory="Ingredients" maxstacksize="8" cargocontaineridentifier="he-coolercrate" description="" Tags="smallitem,meat,ingredient,allowongrill,burnedfood" spritecolor="41,41,41,255" inventoryiconcolor="41,41,41,255" containercolor="41,41,41,255" useinhealthinterface="false" scale="0.4" impactsoundtag="impact_soft" isshootable="true" requireaimtouse="true" health="12">
+      <PreferredContainer primary="refrigerator" secondary="refrigeratedcontainer" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="243,458,35,8" depth="0.6" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="279,459,31,17" origin="0.5,0.5" />
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Body width="31" height="5" density="9" />
+      <!-- ItemComponent hosts the effects for grilling the item -->
+      <ItemComponent canbeselected="false" canbepicked="false" allowingameediting="false">
+        <ActiveConditional HasStatusTag="eq activegrill" targetcontainer="true" />
+        <!-- MaxValueLength is used to track the time spent on the grill. It is increased by 1 every second the item is in a container with the "activegrill" status tag -->
+        <StatusEffect type="OnActive" target="This" MaxValueLength="1" interval="1" disabledeltatime="true" />
+        <!-- Reset the MaxValueLength when the item is no longer contained in a container with the "activegrill" status tag -->
+        <StatusEffect type="OnActive" target="This" MaxValueLength="0" setvalue="true" disabledeltatime="true">
+          <Conditional HasStatusTag="neq activegrill" targetcontainer="true" />
+        </StatusEffect>
+        <!-- Check every second if the MaxValueLength reached or exceeded a value of 12, then remove the item and spawn a fire in its place -->
+        <StatusEffect type="OnActive" target="This" interval="1" disabledeltatime="true">
+          <Conditional MaxValueLength="gte 12" />
+          <Remove />
+          <Fire size="1" />
+        </StatusEffect>
+      </ItemComponent>
+      <!-- MemoryComponent hosts the MaxValueLength attribute which we use to track the time by adjusting its value via StatusEffects each second -->
+      <MemoryComponent canbepicked="false" canbeselected="false" allowingameediting="false" drawhudwhenequipped="false" string="" MaxValueLength="0" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="28,18" holdangle="30" aimangle="0" aimable="false" swingwhenusing="true" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-1.0" />
+        <StatusEffect type="OnUse" target="Character">
+          <ReduceAffliction type="hunger" amount="0.3" />
+          <Affliction identifier="nausea" amount="6" probability="0.25" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnUse" target="Character">
+          <Conditional thirst="gt 0" />
+          <Affliction identifier="thirst" amount="0.5" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="True" />
+    </Item>
+    <!-- Sausage -->
+    <Item name="Raw Sausage" identifier="he-rawsausage" category="Misc" subcategory="Ingredients" maxstacksize="8" cargocontaineridentifier="he-coolercrate" description="" Tags="smallitem,meat,ingredient,allowongrill,canspoil,petfood1,petfood2,petfood3,monsterfood,reactoritem" useinhealthinterface="false" scale="0.4" impactsoundtag="impact_soft" isshootable="true" requireaimtouse="true" spritecolor="255,150,150,255" inventoryiconcolor="255,150,150,255" containercolor="255,150,150,255" health="12">
+      <PreferredContainer primary="refrigerator" secondary="refrigeratedcontainer" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="243,444,67,14" depth="0.6" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="243,444,67,14" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="243,444,67,14" depth="0.525" origin="0.5,0.3" />
+      <Fabricate suitablefabricators="cuttingboard" requiredtime="15" requiresrecipe="false" amount="3">
+        <RequiredSkill identifier="butchery" level="20" />
+        <RequiredItem identifier="he-rawoffal" amount="4" UseCondition="False" />
+        <RequiredItem identifier="he-salt" UseCondition="True" MinCondition="0.025" />
+      </Fabricate>
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Body width="67" radius="7" density="9" />
+      <Price baseprice="29" minavailable="4" maxavailable="16" mincondition="0.9" maxcondition="1.0" usecondition="false" sold="false">
+        <Price storeidentifier="merchantoutpost" />
+        <Price storeidentifier="merchantcity" />
+        <Price storeidentifier="merchantresearch" />
+        <Price storeidentifier="merchantmilitary" />
+        <Price storeidentifier="merchantmine" />
+        <Price storeidentifier="merchantmedical" />
+        <Price storeidentifier="merchantbutcher" multiplier="1.0" minavailable="0" maxavailable="32" sold="false" />
+      </Price>
+      <ItemComponent canbeselected="false" canbepicked="false" allowingameediting="false">
+        <ActiveConditional HasStatusTag="eq activegrill" targetcontainer="true" />
+        <StatusEffect type="OnActive" target="This" MaxValueLength="1" interval="1" disabledeltatime="true" />
+        <StatusEffect type="OnActive" target="This" MaxValueLength="0" setvalue="true" disabledeltatime="true">
+          <Conditional HasStatusTag="neq activegrill" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnActive" target="This" interval="1" disabledeltatime="true">
+          <Conditional MaxValueLength="gte 45" />
+          <Remove />
+          <SpawnItem identifier="he-sausage" spawnposition="SameInventory" spawnifcantbecontained="true" SpawnIfInventoryFull="true" />
+        </StatusEffect>
+        <!-- spawn radwurst when in reactor -->
+        <StatusEffect type="OnContained" target="This" delay="45" checkconditionalalways="true">
+          <Conditional fissionrate="gt 10" targetcontainer="true" />
+          <Remove />
+          <SpawnItem identifier="he-radsausage" spawnposition="SameInventory" spawnifcantbecontained="true" SpawnIfInventoryFull="true" />
+        </StatusEffect>
+      </ItemComponent>
+      <MemoryComponent canbepicked="false" canbeselected="false" allowingameediting="false" drawhudwhenequipped="false" string="" MaxValueLength="0" />
+      <!-- ItemContainer for freshness item which is spawned in at the start of a round if the inventory does not yet contain a freshness item. It represents the item spoilage | Previously meat was losing condition directly when spoiling which made it non-stackable, but with spoilage moved to freshness item, meat stays stackable -->
+      <ItemContainer capacity="1" maxstacksize="1" canbeselected="false" allowaccess="false" allowdraganddrop="false" showinventory="false" hideitems="true" slotsperrow="1" uilabel="" allowuioverlap="true" showcontentsintooltip="true" showcontainedstateindicator="true" removecontaineditemsondeconstruct="true">
+        <Containable items="freshness" />
+        <!-- StatusEffect spawning in the freshness item at the start of a round -->
+        <StatusEffect type="Always" target="This" spawnitemrandomly="true" oneshot="true">
+          <SpawnItem identifier="he-freshness" spawnposition="ThisInventory" spawnifinventoryfull="false" spawnifcantbecontained="false" />
+        </StatusEffect>
+      </ItemContainer>
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="28,18" holdangle="30" aimangle="0" aimable="false" swingwhenusing="true" msg="ItemMsgPickUpSelect" swingwhenaiming="true" swingamount="10,6" swingspeed="0.2">
+        <StatusEffect type="OnUse" target="This" Condition="-1.0" />
+        <StatusEffect type="OnUse" target="Character">
+          <ReduceAffliction type="hunger" amount="0.3" />
+          <Affliction identifier="nausea" amount="6" probability="0.25" />
+          <Affliction identifier="worminfection" amount="1" probability="0.00052" />
+          <Affliction identifier="tapeworminfection" amount="1" probability="0.00052" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <ParticleEmitter particle="smallwhitechunks" particlespersecond="2" scalemin="0.15" scalemax="0.2" distancemin="0" distancemax="5" anglemin="200" anglemax="340" velocitymin="10" velocitymax="15" copyentityangle="true" colormultiplier="180,100,70,255" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="True" />
+    </Item>
+    <Item name="Sausage (cooked)" identifier="he-sausage" category="Misc" subcategory="Ingredients" maxstacksize="8" cargocontaineridentifier="he-coolercrate" description="" Tags="smallitem,meat,ingredient,allowongrill,canspoil,fingerfood,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="false" scale="0.4" impactsoundtag="impact_soft" isshootable="true" requireaimtouse="true" spritecolor="255,255,255,255" inventoryiconcolor="255,255,255,255" containercolor="255,255,255,255" health="12">
+      <PreferredContainer primary="refrigerator" secondary="refrigeratedcontainer" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="243,444,67,14" depth="0.6" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="243,444,67,14" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="243,444,67,14" depth="0.525" origin="0.5,0.3" />
+      <Fabricate suitablefabricators="stove" requiredtime="100" requiresrecipe="false" amount="3">
+        <RequiredSkill identifier="cooking" level="20" />
+        <RequiredItem identifier="he-rawsausage" amount="3" MinCondition="0.5" MaxCondition="1.0" UseCondition="False" />
+        <RequiredItem tag="waterpot" UseCondition="True" MinCondition="0.299" />
+      </Fabricate>
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Body width="67" radius="7" density="9" />
+      <Price baseprice="29" minavailable="4" maxavailable="16" mincondition="0.9" maxcondition="1.0" usecondition="false" sold="false">
+        <Price storeidentifier="merchantoutpost" />
+        <Price storeidentifier="merchantcity" />
+        <Price storeidentifier="merchantresearch" />
+        <Price storeidentifier="merchantmilitary" />
+        <Price storeidentifier="merchantmine" />
+        <Price storeidentifier="merchantmedical" />
+        <Price storeidentifier="merchantbutcher" multiplier="1.0" minavailable="0" maxavailable="32" sold="true" />
+      </Price>
+      <ItemComponent canbeselected="false" canbepicked="false" allowingameediting="false">
+        <ActiveConditional HasStatusTag="eq activegrill" targetcontainer="true" />
+        <StatusEffect type="OnActive" target="This" MaxValueLength="1" interval="1" disabledeltatime="true" />
+        <StatusEffect type="OnActive" target="This" MaxValueLength="0" setvalue="true" disabledeltatime="true">
+          <Conditional HasStatusTag="neq activegrill" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnActive" target="This" interval="1" disabledeltatime="true">
+          <Conditional MaxValueLength="gte 20" />
+          <Remove />
+          <SpawnItem identifier="he-burnedsausage" spawnposition="SameInventory" spawnifcantbecontained="true" SpawnIfInventoryFull="true" />
+        </StatusEffect>
+      </ItemComponent>
+      <MemoryComponent canbepicked="false" canbeselected="false" allowingameediting="false" drawhudwhenequipped="false" string="" MaxValueLength="0" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="28,18" holdangle="30" aimangle="0" aimable="false" swingwhenusing="true" msg="ItemMsgPickUpSelect" swingwhenaiming="true" swingamount="10,6" swingspeed="0.2">
+        <StatusEffect type="OnUse" target="This" Condition="-1.0" />
+        <StatusEffect type="OnUse" target="Character">
+          <ReduceAffliction type="hunger" amount="0.4" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <ParticleEmitter particle="smallwhitechunks" particlespersecond="2" scalemin="0.15" scalemax="0.2" distancemin="0" distancemax="5" anglemin="200" anglemax="340" velocitymin="10" velocitymax="15" copyentityangle="true" colormultiplier="180,130,100,255" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="True" />
+    </Item>
+    <Item name="Burned Sausage" identifier="he-burnedsausage" category="Misc" subcategory="Ingredients" maxstacksize="8" cargocontaineridentifier="he-coolercrate" description="" Tags="smallitem,meat,ingredient,allowongrill,burnedfood" useinhealthinterface="false" scale="0.4" impactsoundtag="impact_soft" isshootable="true" requireaimtouse="true" spritecolor="41,41,41,255" inventoryiconcolor="41,41,41,255" containercolor="41,41,41,255" health="12">
+      <PreferredContainer primary="refrigerator" secondary="refrigeratedcontainer" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="243,444,67,14" depth="0.6" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="243,444,67,14" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="243,444,67,14" depth="0.525" origin="0.5,0.3" />
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Body width="67" radius="7" density="9" />
+      <ItemComponent canbeselected="false" canbepicked="false" allowingameediting="false">
+        <ActiveConditional HasStatusTag="eq activegrill" targetcontainer="true" />
+        <StatusEffect type="OnActive" target="This" MaxValueLength="1" interval="1" disabledeltatime="true" />
+        <StatusEffect type="OnActive" target="This" MaxValueLength="0" setvalue="true" disabledeltatime="true">
+          <Conditional HasStatusTag="neq activegrill" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnActive" target="This" interval="1" disabledeltatime="true">
+          <Conditional MaxValueLength="gte 12" />
+          <Remove />
+          <Fire size="1" />
+        </StatusEffect>
+      </ItemComponent>
+      <MemoryComponent canbepicked="false" canbeselected="false" allowingameediting="false" drawhudwhenequipped="false" string="" MaxValueLength="0" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="28,18" holdangle="30" aimangle="0" aimable="false" swingwhenusing="true" msg="ItemMsgPickUpSelect" swingwhenaiming="true" swingamount="10,6" swingspeed="0.2">
+        <StatusEffect type="OnUse" target="This" Condition="-1.0" />
+        <StatusEffect type="OnUse" target="Character">
+          <ReduceAffliction type="hunger" amount="0.3" />
+          <Affliction identifier="nausea" amount="6" probability="0.25" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <ParticleEmitter particle="smallwhitechunks" particlespersecond="2" scalemin="0.15" scalemax="0.2" distancemin="0" distancemax="5" anglemin="200" anglemax="340" velocitymin="10" velocitymax="15" copyentityangle="true" colormultiplier="90,65,50,255" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnUse" target="Character">
+          <Conditional thirst="gt 0" />
+          <Affliction identifier="thirst" amount="0.5" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="True" />
+    </Item>
+    <Item name="Radwurst" identifier="he-radsausage" category="Misc" subcategory="Ingredients" maxstacksize="1" cargocontaineridentifier="he-coolercrate" description="" Tags="smallitem,meat,ingredient,canspoil,fingerfood,reactoritem,fooditem" useinhealthinterface="false" scale="0.4" impactsoundtag="impact_soft" isshootable="true" requireaimtouse="true" spritecolor="255,255,255,255" inventoryiconcolor="255,255,255,255" containercolor="255,255,255,255" health="12">
+      <PreferredContainer primary="refrigerator" secondary="refrigeratedcontainer" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="211,205,67,27" depth="0.6" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="211,205,67,27" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="211,205,67,27" depth="0.525" origin="0.5,0.3" />
+      <Body width="50" radius="10" density="9" />
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="28,18" holdangle="30" aimangle="0" aimable="false" swingwhenusing="true" msg="ItemMsgPickUpSelect" swingwhenaiming="true" swingamount="10,6" swingspeed="0.2">
+        <!-- if left in reactor for too long if turbine is running, increases temperature over time -->
+        <StatusEffect type="OnContained" target="This,Parent" interval="1" duration="30" Temperature="1" checkconditionalalways="true">
+          <Conditional turbineoutput="gt 0" targetcontainer="true" />
+          <ParticleEmitter particle="steamspray" particlespersecond="3" velocitymin="15" velocitymax="30" distancemin="30" distancemax="50" anglemin="0" anglemax="360" scalemin="0.5" scalemax="0.7" colormultiplier="255,255,255,160" lifetimemultiplier="0.5" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Drinks/KettleWhistle.ogg" range="350.0" loop="true" volume="0.6" frequencymultiplier="0.45" />
+        </StatusEffect>
+        <!-- give rad when held -->
+        <StatusEffect type="OnActive" target="Character">
+          <Affliction identifier="radiationsickness" strength="0.6" />
+        </StatusEffect>
+        <StatusEffect type="OnActive" target="This">
+          <ParticleEmitter particle="steamspray" particlespersecond="3" velocitymin="15" velocitymax="30" distancemin="0" distancemax="10" anglemin="40" anglemax="130" scalemin="0.2" scalemax="0.35" colormultiplier="255,255,255,160" lifetimemultiplier="0.5" />
+        </StatusEffect>
+        <StatusEffect type="OnUse" target="This" Condition="-1.0" />
+        <StatusEffect type="OnUse" target="Character">
+          <ReduceAffliction type="hunger" amount="1" />
+          <Affliction identifier="he-stuffed" amount="1" />
+          <Affliction identifier="applyradiationsickness" strength="2" penetration="1.0" />
+          <Affliction identifier="haste" strength="25" />
+          <Affliction identifier="spill" amount="1000" probability="0.0005" />
+          <ParticleEmitter particle="smallwhitechunks" particlespersecond="2" scalemin="0.15" scalemax="0.2" distancemin="0" distancemax="5" anglemin="200" anglemax="340" velocitymin="10" velocitymax="15" copyentityangle="true" colormultiplier="180,130,100,255" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <LightComponent range="30.0" lightcolor="100,180,120,255" IsOn="true" castshadows="false" allowingameediting="false" pulseamount="0.4" pulsefrequency="0.3">
+        <!-- <sprite texture="%ModDir%/Hungry Europans/Content/Items/Gardening/GrowablePlants_crossed1.png" sourcerect="896,320,64,64" depth="0.52" origin="0.5,0.5" /> -->
+      </LightComponent>
+      <AiTarget sightrange="1000" static="True" />
+    </Item>
+    <!-- Offal -->
+    <Item name="Raw Offal" identifier="he-rawoffal" category="Misc" subcategory="Ingredients" maxstacksize="8" cargocontaineridentifier="he-coolercrate" description="" Tags="smallitem,meat,ingredient,allowongrill,canspoil,petfood1,petfood2,petfood3,monsterfood" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_soft" isshootable="true" requireaimtouse="true">
+      <PreferredContainer secondary="abandonedmedcab" spawnprobability="0.02" />
+      <PreferredContainer primary="refrigerator" secondary="refrigeratedcontainer" />
+      <Sprite texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="200,166,100,38" depth="0.6" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans/Content/Items/Food/FoodAndMeat.png" sourcerect="200,166,100,38" origin="0.5,0.5" />
+      <Deconstruct time="1" requireddeconstructor="deconstructor" />
+      <Body width="95" height="32" density="11" />
+      <Price baseprice="10" minavailable="4" maxavailable="16" mincondition="0.9" maxcondition="1.0" usecondition="false" sold="false">
+        <Price storeidentifier="merchantoutpost" />
+        <Price storeidentifier="merchantcity" />
+        <Price storeidentifier="merchantresearch" />
+        <Price storeidentifier="merchantmilitary" />
+        <Price storeidentifier="merchantmine" />
+        <Price storeidentifier="merchantmedical" />
+        <Price storeidentifier="merchantbutcher" multiplier="1.0" minavailable="0" maxavailable="32" sold="true" />
+      </Price>
+      <ItemComponent canbeselected="false" canbepicked="false" allowingameediting="false">
+        <ActiveConditional HasStatusTag="eq activegrill" targetcontainer="true" />
+        <StatusEffect type="OnActive" target="This" MaxValueLength="1" interval="1" disabledeltatime="true" />
+        <StatusEffect type="OnActive" target="This" MaxValueLength="0" setvalue="true" disabledeltatime="true">
+          <Conditional HasStatusTag="neq activegrill" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnActive" target="This" interval="1" disabledeltatime="true">
+          <Conditional MaxValueLength="gte 45" />
+          <Remove />
+          <SpawnItem identifier="he-meatpatty" spawnposition="SameInventory" spawnifcantbecontained="true" SpawnIfInventoryFull="true" />
+        </StatusEffect>
+      </ItemComponent>
+      <MemoryComponent canbepicked="false" canbeselected="false" allowingameediting="false" drawhudwhenequipped="false" string="" MaxValueLength="0" />
+      <!-- ItemContainer for freshness item which is spawned in at the start of a round if the inventory does not yet contain a freshness item. It represents the item spoilage | Previously meat was losing condition directly when spoiling which made it non-stackable, but with spoilage moved to freshness item, meat stays stackable -->
+      <ItemContainer capacity="1" maxstacksize="1" canbeselected="false" allowaccess="false" allowdraganddrop="false" showinventory="false" hideitems="true" slotsperrow="1" uilabel="" allowuioverlap="true" showcontentsintooltip="true" showcontainedstateindicator="true" removecontaineditemsondeconstruct="true">
+        <Containable items="freshness" />
+        <!-- StatusEffect spawning in the freshness item at the start of a round -->
+        <StatusEffect type="Always" target="This" spawnitemrandomly="true" oneshot="true">
+          <SpawnItem identifier="he-freshness" spawnposition="ThisInventory" spawnifinventoryfull="false" spawnifcantbecontained="false" />
+        </StatusEffect>
+      </ItemContainer>
+      <Holdable DisableWhenRangedWeaponEquipped="true" canbepicked="true" canBeCombined="false" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="28,18" holdangle="30" aimangle="0" aimable="false" swingwhenusing="true" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-8.0" />
+        <StatusEffect type="OnUse" target="Character">
+          <ReduceAffliction type="hunger" amount="0.25" />
+          <Affliction identifier="nausea" amount="6" probability="0.5" />
+          <Affliction identifier="worminfection" amount="1" probability="0.00055" />
+          <Affliction identifier="tapeworminfection" amount="1" probability="0.00055" />
+          <Affliction identifier="spill" amount="1000" probability="0.005" />
+          <Sound file="%ModDir%/Hungry Europans/Content/Sounds/Items/Food/EatingSoft.ogg" loop="True" range="200" volume="5.0" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <AiTarget sightrange="1000" static="True" />
+    </Item>
+  </Items>
+</Override>

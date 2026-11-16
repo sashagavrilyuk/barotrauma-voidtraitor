@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Randomevents>
+  <!-- SCRIPTED EVENTS -->
+  <EventPrefabs>
+    <ScriptedEvent identifier="give5mk">
+      <MoneyAction targettag="moneyrecipient" amount="5" />
+      <ClearTagAction tag="moneyrecipient" />
+    </ScriptedEvent>
+    <ScriptedEvent identifier="give25mk">
+      <MoneyAction targettag="moneyrecipient" amount="25" />
+      <ClearTagAction tag="moneyrecipient" />
+    </ScriptedEvent>
+    <ScriptedEvent identifier="give50mk">
+      <MoneyAction targettag="moneyrecipient" amount="50" />
+      <ClearTagAction tag="moneyrecipient" />
+    </ScriptedEvent>
+    <ScriptedEvent identifier="give75mk">
+      <MoneyAction targettag="moneyrecipient" amount="75" />
+      <ClearTagAction tag="moneyrecipient" />
+    </ScriptedEvent>
+    <ScriptedEvent identifier="give100mk">
+      <MoneyAction targettag="moneyrecipient" amount="100" />
+      <ClearTagAction tag="moneyrecipient" />
+    </ScriptedEvent>
+    <ScriptedEvent identifier="refreshtoilet">
+      <TagAction criteria="itemidentifier:he-toilet" tag="targettoilet" submarinetype="player" />
+      <StatusEffectAction targettag="targettoilet">
+        <StatusEffect target="This" disabledeltatime="true">
+          <SpawnItem identifier="he-toilet" spawnposition="This" spawnifcantbecontained="true" spawnifinventoryfull="true" />
+        </StatusEffect>
+        <StatusEffect target="This" delay="0.1">
+          <Remove />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <ScriptedEvent identifier="uninstallevent_oven">
+      <TagAction criteria="itemidentifier:he-oven_installation" tag="uninstalledbox" />
+      <TagAction criteria="itemidentifier:he-oven" tag="uninstalltarget" />
+      <TriggerAction target1tag="uninstalledbox" target2tag="uninstalltarget" applytotarget2="uninstallthis" radius="150" />
+      <StatusEffectAction targettag="uninstalledbox">
+        <StatusEffect target="This" disabledeltatime="true" spritecolor="0,255,0,255" setvalue="true" />
+      </StatusEffectAction>
+      <StatusEffectAction targettag="uninstalltarget">
+        <StatusEffect target="This" disabledeltatime="true" spritecolor="255,0,0,255" setvalue="true" />
+      </StatusEffectAction>
+      <WaitAction time="3" />
+      <StatusEffectAction targettag="uninstallthis">
+        <StatusEffect target="This" disabledeltatime="true">
+          <DropContainedItems />
+          <Remove />
+          <Sound file="Content/Sounds/Damage/HitMetal1.ogg" volume="1" range="350" frequencymultiplier="0.75" selectionmode="Random" />
+        </StatusEffect>
+      </StatusEffectAction>
+    </ScriptedEvent>
+    <!-- desperate attempt at making butchered sever all limbs when it hits 100 - TODO: wait for BreakLimb fix -->
+    <ScriptedEvent identifier="butcheredbreaklimbsevent">
+      <TagAction criteria="speciesname:crawler" tag="breaklimbstarget" />
+      <WaitAction time="3" />
+      <StatusEffectAction targettag="breaklimbstarget">
+        <StatusEffect target="This" targetlimbs="LeftHand,RightHand,LeftArm,RightArm,LeftForearm,RightForearm,       LeftLeg,RightLeg,LeftFoot,RightFoot,Head,Torso,Tail,Legs,RightThigh,LeftThigh,Waist,Jaw">
+          <ParticleEmitter particle="ElectricShock" DistanceMin="10" DistanceMax="25" particlespersecond="10" ScaleMin="1" ScaleMax="1" />
+          <Sound file="Content/Sounds/Damage/Electrocution1.ogg" range="1000" volume="2" loop="true" />
+          <Breaklimb />
+        </StatusEffect>
+      </StatusEffectAction>
+      <ClearTagAction tag="breaklimbstarget" />
+    </ScriptedEvent>
+    <!-- simple event to tag and find bushes using debugdraw, only for testing -->
+    <ScriptedEvent identifier="tagbushesTEST">
+      <TagAction criteria="itemidentifier:he-jotatobush" tag="jotatobush" />
+      <TagAction criteria="itemidentifier:he-eggplant" tag="eggplant" />
+      <StatusEffectAction targettag="jotatobush">
+        <StatusEffect target="This" scale="10" setvalue="true" />
+      </StatusEffectAction>
+      <StatusEffectAction targettag="eggplant">
+        <StatusEffect target="This" scale="10" setvalue="true" />
+      </StatusEffectAction>
+    </ScriptedEvent>
+  </EventPrefabs>
+</Randomevents>
