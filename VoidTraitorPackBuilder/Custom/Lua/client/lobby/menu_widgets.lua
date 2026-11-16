@@ -77,6 +77,7 @@ P.Admin = assert(loadfile(P.PackPath .. "/Lua/client/lobby/admin.lua"))(P.Common
     CreateCategoryHeader = P.CreateCategoryHeader,
     GetOkText = function() return P.UiText.Ok end,
     ShowEvents = function(tab) P.ShowEventsWindow(tab) end,
+    ShowRoleTimes = function(key) P.ShowRoleTimesWindow(key) end,
 })
 
 P.Admin.OnAvailabilityChanged = function()

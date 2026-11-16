@@ -287,6 +287,15 @@ function Admin.Build(parent)
     createPlayerValueAction(parent, "addpoint")
     createPlayerValueAction(parent, "addlife")
 
+    -- the selected player's time on Station roles, in its own window (roletimes.lua)
+    local roleTimes = CreateMenuButton(parent, language.RoleTimes, true)
+    roleTimes.ToolTip = language.RoleTimesHint
+    roleTimes.OnClicked = function()
+        if selectedPlayerKey ~= nil then UI.ShowRoleTimes(selectedPlayerKey) end
+        return true
+    end
+    table.insert(playerDependentButtons, roleTimes)
+
     local assignEntry = entryById.assignrole
     if assignEntry ~= nil then
         CreateDivider(parent)

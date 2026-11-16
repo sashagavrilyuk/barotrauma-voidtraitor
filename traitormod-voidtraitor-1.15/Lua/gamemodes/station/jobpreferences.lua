@@ -1,7 +1,8 @@
 -- The player's choice in the lobby's Station jobs window, as in SS14: a level for each role (1 low, 2 medium, 3 high,
 -- only one high) and the outfit variant of each role. The server keeps it with the player's data and sends it, with the
 -- roles of the config, on joining and after every change; station.lua hands out the roles from it.
--- The time the player has played each role is kept here too, for SS14's role timers (Requirements in the config).
+-- The time the player has played each role is kept here too, for SS14's role timers (Requirements in the config);
+-- admins see and change it in the admin menu's role time window.
 local jobs = {}
 Traitormod.StationJobs = jobs
 
@@ -9,6 +10,11 @@ local config = Traitormod.Config.GamemodeConfig.Station
 local NET_JOBS = "VoidTraitor_StationJobs"
 local NET_JOB_SET = "VoidTraitor_StationJobSet"
 local NET_OUTFIT_SET = "VoidTraitor_StationOutfitSet"
+local NET_TIMES_REQUEST = "VoidTraitor_StationRoleTimesRequest"
+local NET_TIME_CHANGE = "VoidTraitor_StationRoleTimeChange"
+local NET_TIMES = "VoidTraitor_StationRoleTimes"
+-- the most minutes an admin changes a time by at once
+local MAX_CHANGE_MINUTES = 6000
 local HIGH = 3
 -- what a role's missing time is for, as the window names it
 local OVERALL, ROLE, DEPARTMENT = 0, 1, 2
@@ -128,6 +134,62 @@ Networking.Receive(NET_OUTFIT_SET, function(message, client)
     outfits[id] = variant > 0 and variant or nil
     Traitormod.SetData(client, "StationOutfits", outfits)
     jobs.Send(client)
+end)
+
+local function findClient(accountKey)
+    for _, client in pairs(Client.ClientList) do
+        if Traitormod.GetClientAccountKey(client) == accountKey then return client end
+    end
+    return nil
+end
+
+-- a player's total time and time on each role, for an admin
+local function sendTimes(admin, target)
+    local times = Traitormod.GetData(target, "StationRoleTime") or {}
+    local roles = {}
+    for id in pairs(times) do
+        if config.Roles[id] ~= nil then roles[#roles + 1] = id end
+    end
+    local message = Networking.Start(NET_TIMES)
+    message.WriteString(Traitormod.GetClientAccountKey(target))
+    message.WriteString(target.Name)
+    message.WriteUInt32(math.floor(Traitormod.GetData(target, "Playtime") or 0))
+    message.WriteByte(#roles)
+    for _, id in ipairs(roles) do
+        message.WriteString(id)
+        message.WriteUInt32(math.floor(times[id]))
+    end
+    Networking.Send(message, admin.Connection)
+end
+
+local function isAdmin(client)
+    return client.HasPermission(ClientPermissions.ConsoleCommands)
+end
+
+Networking.Receive(NET_TIMES_REQUEST, function(message, client)
+    local target = findClient(message.ReadString())
+    if not isAdmin(client) or target == nil or not accept(client) then return end
+    sendTimes(client, target)
+end)
+
+-- an admin adds or takes minutes on a role, or on the total time when the role is ""
+Networking.Receive(NET_TIME_CHANGE, function(message, client)
+    local target, id, minutes = findClient(message.ReadString()), message.ReadString(), message.ReadInt32()
+    if not isAdmin(client) or target == nil or (id ~= "" and config.Roles[id] == nil) or minutes == 0
+        or math.abs(minutes) > MAX_CHANGE_MINUTES or not accept(client) then
+        return
+    end
+    if id == "" then
+        Traitormod.AddData(target, "Playtime", minutes * 60)
+    else
+        local times = Traitormod.GetData(target, "StationRoleTime") or {}
+        times[id] = math.max((times[id] or 0) + minutes * 60, 0)
+        Traitormod.SetData(target, "StationRoleTime", times)
+    end
+    Traitormod.Log(Traitormod.ClientLogName(client) .. ": " .. string.format(Traitormod.Language.StationRoleTimeChanged,
+        minutes, id == "" and "playtime" or id, Traitormod.ClientLogName(target)))
+    sendTimes(client, target)
+    jobs.Send(target)
 end)
 
 Hook.Add("client.disconnected", "Traitormod.StationJobs.Disconnect", function(client)
