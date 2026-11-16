@@ -55,8 +55,6 @@ function P.GetStationRoleName(id)
     return roleName(id, S.stationJobs.Roles[id])
 end
 
-P.FormatStationDuration = duration
-
 local function roleTooltip(id, role)
     local description = roleText("jobdescription.", id, role)
     if role.Karma > 0 then description = description .. "\n" .. string.format(text.StationNeedKarma, role.Karma) end

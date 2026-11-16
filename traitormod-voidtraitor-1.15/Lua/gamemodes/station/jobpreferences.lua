@@ -11,10 +11,11 @@ local NET_JOBS = "VoidTraitor_StationJobs"
 local NET_JOB_SET = "VoidTraitor_StationJobSet"
 local NET_OUTFIT_SET = "VoidTraitor_StationOutfitSet"
 local NET_TIMES_REQUEST = "VoidTraitor_StationRoleTimesRequest"
-local NET_TIME_CHANGE = "VoidTraitor_StationRoleTimeChange"
+local NET_TIME_SET = "VoidTraitor_StationRoleTimeSet"
+local NET_ROLE_UNLOCK = "VoidTraitor_StationRoleUnlock"
 local NET_TIMES = "VoidTraitor_StationRoleTimes"
--- the most minutes an admin changes a time by at once
-local MAX_CHANGE_MINUTES = 6000
+-- the most minutes an admin sets a time to
+local MAX_MINUTES = 60000
 local HIGH = 3
 -- what a role's missing time is for, as the window names it
 local OVERALL, ROLE, DEPARTMENT = 0, 1, 2
@@ -172,24 +173,60 @@ Networking.Receive(NET_TIMES_REQUEST, function(message, client)
     sendTimes(client, target)
 end)
 
--- an admin adds or takes minutes on a role, or on the total time when the role is ""
-Networking.Receive(NET_TIME_CHANGE, function(message, client)
+-- an admin sets the minutes on a role, or the total time when the role is ""
+Networking.Receive(NET_TIME_SET, function(message, client)
     local target, id, minutes = findClient(message.ReadString()), message.ReadString(), message.ReadInt32()
-    if not isAdmin(client) or target == nil or (id ~= "" and config.Roles[id] == nil) or minutes == 0
-        or math.abs(minutes) > MAX_CHANGE_MINUTES or not accept(client) then
+    if not isAdmin(client) or target == nil or (id ~= "" and config.Roles[id] == nil) or minutes < 0
+        or minutes > MAX_MINUTES or not accept(client) then
         return
     end
     if id == "" then
-        Traitormod.AddData(target, "Playtime", minutes * 60)
+        Traitormod.SetData(target, "Playtime", minutes * 60)
     else
         local times = Traitormod.GetData(target, "StationRoleTime") or {}
-        times[id] = math.max((times[id] or 0) + minutes * 60, 0)
+        times[id] = minutes * 60
         Traitormod.SetData(target, "StationRoleTime", times)
     end
-    Traitormod.Log(Traitormod.ClientLogName(client) .. ": " .. string.format(Traitormod.Language.StationRoleTimeChanged,
-        minutes, id == "" and "playtime" or id, Traitormod.ClientLogName(target)))
+    Traitormod.Log(Traitormod.ClientLogName(client) .. ": " .. string.format(Traitormod.Language.StationRoleTimeSet,
+        id == "" and "playtime" or id, minutes, Traitormod.ClientLogName(target)))
     sendTimes(client, target)
     jobs.Send(target)
+end)
+
+-- Where an admin's unlock puts the time a department lacks: on the role itself when it is in that department,
+-- otherwise on the department's first role that is not a head, or its first role when all are heads.
+local function departmentRole(id, department)
+    for _, role in ipairs(departmentRoles[department]) do
+        if role == id then return id end
+    end
+    for _, role in ipairs(departmentRoles[department]) do
+        if config.Roles[role].Head == nil then return role end
+    end
+    return departmentRoles[department][1]
+end
+
+-- an admin gives a player the time a role still lacks
+Networking.Receive(NET_ROLE_UNLOCK, function(message, client)
+    local target, id = findClient(message.ReadString()), message.ReadString()
+    if not isAdmin(client) or target == nil or config.Roles[id] == nil or not accept(client) then return end
+    local missing = jobs.MissingTime(target, id)
+    if missing ~= nil then
+        -- one requirement at a time: a role's time also counts for its department; whole seconds, so each one is met
+        while missing ~= nil do
+            local need = missing[1]
+            local seconds = math.ceil(need.Seconds)
+            if need.Kind == OVERALL then
+                Traitormod.AddData(target, "Playtime", seconds)
+            else
+                jobs.AddRoleTime(target, need.Kind == ROLE and need.Id or departmentRole(id, need.Id), seconds)
+            end
+            missing = jobs.MissingTime(target, id)
+        end
+        Traitormod.Log(Traitormod.ClientLogName(client) .. ": " .. string.format(Traitormod.Language.StationRoleUnlocked,
+            id, Traitormod.ClientLogName(target)))
+        jobs.Send(target)
+    end
+    sendTimes(client, target)
 end)
 
 Hook.Add("client.disconnected", "Traitormod.StationJobs.Disconnect", function(client)
