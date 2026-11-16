@@ -158,7 +158,7 @@ end
 local function speakerName(client)
     local character = client.Character
     local role = character ~= nil and not character.IsDead and Common.GetCardRole(character) or nil
-    return role ~= nil and role .. " " .. client.Name or client.Name
+    return role ~= nil and role .. " | " .. client.Name or client.Name
 end
 
 -- Where the row's name starts on the left, for the click area.

@@ -140,7 +140,7 @@ local function labelMessage(instance, ptable)
     -- the living speak under the role on their ID card in Station
     local role = kind ~= "Dead" and Common.GetCardRole(sender) or nil
     if kind == "Local" and role == nil then return end
-    local name = role ~= nil and role .. " " .. message.SenderName or message.SenderName
+    local name = role ~= nil and role .. " | " .. message.SenderName or message.SenderName
     local body = message.Text
     if kind ~= "Local" then body = string.format(LABEL_FORMAT, kind == "Dead" and text.Dead or radioName(sender), body) end
     -- the message's text can't be changed, so the chat gets a copy
@@ -302,7 +302,11 @@ local function fill(dropdown)
     local buttonWidth = longest + dropdown.Padding.X
     if icon ~= nil then buttonWidth = buttonWidth + icon.RectTransform.NonScaledSize.X + icon.RectTransform.AbsoluteOffset.X * 2 end
     local minSize = dropdown.RectTransform.MinSize
-    if buttonWidth > minSize.X then dropdown.RectTransform.MinSize = Point(math.ceil(buttonWidth), minSize.Y) end
+    if buttonWidth > minSize.X then
+        dropdown.RectTransform.MinSize = Point(math.ceil(buttonWidth), minSize.Y)
+        -- the row with the chat input lays itself out again only when its own size or children change
+        dropdown.Parent.Recalculate()
+    end
 
     dropdown.ClearChildren()
     tickBoxes = {}
