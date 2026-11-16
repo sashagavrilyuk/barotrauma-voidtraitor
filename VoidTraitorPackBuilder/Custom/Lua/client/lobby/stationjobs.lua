@@ -20,6 +20,9 @@ local DEPARTMENT_COLORS = {
 }
 local HINT_COLOR = Color(170, 180, 180, 255)
 local LOCKED_COLOR = Color(130, 135, 135, 255)
+-- the chosen level stands out as in SS14; the button style's own selected look is barely visible
+local LEVEL_SELECTED_COLOR = Color(170, 50, 40, 255)
+local LEVEL_SELECTED_TEXT_COLOR = Color(255, 255, 255, 255)
 
 S.stationJobs = nil
 -- the level buttons of the open jobs window by role: a head has a row in Command and one in its department
@@ -91,6 +94,8 @@ local function createRow(list, id, role, height, labels)
     local buttons = {}
     for level = 0, HIGH do
         local button = GUI.Button(Common.CreateRect(0.11, 1, row), text.StationLevels[level + 1], GUI.Alignment.Center, "GUIButtonSmall")
+        button.SelectedColor = LEVEL_SELECTED_COLOR
+        button.SelectedTextColor = LEVEL_SELECTED_TEXT_COLOR
         button.Selected = role.Level == level
         button.Enabled = not locked
         button.OnClicked = function()
