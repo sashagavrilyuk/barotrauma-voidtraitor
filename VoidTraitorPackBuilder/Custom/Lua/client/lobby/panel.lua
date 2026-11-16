@@ -26,6 +26,7 @@ S.lobbyInfoCheckTime = 0
 S.lobbyPanel = nil
 S.card = nil
 S.settingsHidden = false
+S.wideCardWindow = false
 
 local function canEditSettings()
     return Game.Client.HasPermission(ClientPermissions.ManageSettings)
@@ -61,6 +62,7 @@ local function rememberParts()
         parts[3] = S.lobbyPanel.VoteSlot
         parts[4] = S.lobbyPanel.Divider
         parts[5] = S.lobbyPanel.SettingsToggle
+        parts[6] = S.lobbyPanel.RoundDivider
     end
     for _, part in ipairs(S.card ~= nil and S.card.Parts or {}) do
         parts[#parts + 1] = part
@@ -79,6 +81,10 @@ end
 local function fitCard(panel)
     local card, content, chat = panel.Column.Parent, panel.Content, panel.Chat
     local side = card.Parent
+    -- The lobby first lays out its columns over the bottom bar in its update, after the card is built; where the bar's
+    -- minimum height (NetLobbyScreen.CreateBottomPanelContents) is more than its share, the columns end up shorter
+    -- than they were built, so they are laid out before the column is measured.
+    side.Parent.Parent.Parent.Recalculate()
     for _, part in ipairs({ card, content, chat }) do
         part.RectTransform.MinSize = Point(0, 0)
         part.RectTransform.MaxSize = Point(2147483647, 2147483647)
@@ -129,6 +135,9 @@ local function ensurePanel(screen)
     panel.NameSlot.RectTransform.SetAsFirstChild()
     spectateRow.RectTransform.SetAsFirstChild()
 
+    -- the line under the round info gets the column's spacing above and below
+    panel.RoundDivider = Common.CreateDivider(column)
+    panel.RoundDivider.RectTransform.SetAsFirstChild()
     panel.Round = GUI.LayoutGroup(Common.CreateRect(1, 1, column), false)
     panel.Round.CanBeFocused = false
     panel.Round.RectTransform.SetAsFirstChild()
@@ -143,7 +152,6 @@ local function ensurePanel(screen)
     panel.Mode = createLine(panel.Round)
     panel.Map = createLine(panel.Round)
     panel.Players = createLine(panel.Round)
-    Common.CreateDivider(panel.Round)
 
     panel.VoteSlot = createSlot()
 
@@ -178,9 +186,11 @@ function P.ApplyLobbyLayout(screen)
     ensurePanel(screen)
     local panel = S.lobbyPanel
     local canEdit = canEditSettings()
-    local visible = canEdit and not S.settingsHidden
+    local shown = canEdit and not S.settingsHidden
     panel.SettingsToggle.Visible = canEdit
-    panel.SettingsToggle.Text = visible and text.HideSettings or text.ShowSettings
+    panel.SettingsToggle.Text = shown and text.HideSettings or text.ShowSettings
+    -- a wide card window takes the panels' place under the banner while it is open
+    local visible = shown and not S.wideCardWindow
     for _, row in ipairs(panel.SettingsRows) do
         row.Visible = visible
     end
@@ -336,7 +346,7 @@ end
 
 -- A window beside the player card, with room on the left for the vanilla job grid, which opens to the left of
 -- the editor, and as tall as the vanilla card, which takes 0.55 of the right column (CreateSidePanelContents).
--- A wide window takes the whole lobby left of the card, down to the bottom of the column.
+-- A wide window takes the place of the settings panels under the server banner, which hide while it is open.
 -- Returns the window's content layout.
 function P.OpenCardWindow(kind, title, wide)
     local screen = Game.NetLobbyScreen
@@ -355,16 +365,18 @@ function P.OpenCardWindow(kind, title, wide)
     S.sharedState.CurrentMenu = root
     S.sharedState.CurrentMenuKind = S.currentMenuKind
 
-    local card = screen.playerInfoContent.Parent.Parent
-    local cardRect, columnRect = card.Rect, card.Parent.Rect
-    local gap = Common.GetGap()
     local windowRect
     if wide then
-        windowRect = GUI.RectTransform(Point(cardRect.X - root.Rect.X - 2 * gap, columnRect.Y + columnRect.Height - cardRect.Y), root.RectTransform, GUI.Anchor.TopLeft)
-        windowRect.AbsoluteOffset = Point(gap, cardRect.Y - root.Rect.Y)
+        local frameRect, top = S.lobbyPanel.LeftFrame.Rect, S.lobbyPanel.SettingsRows[1].Rect.Y
+        windowRect = GUI.RectTransform(Point(frameRect.Width, frameRect.Bottom - top), root.RectTransform, GUI.Anchor.TopLeft)
+        windowRect.AbsoluteOffset = Point(frameRect.X - root.Rect.X, top - root.Rect.Y)
+        S.wideCardWindow = true
+        P.ApplyLobbyLayout(screen)
     else
+        local card = screen.playerInfoContent.Parent.Parent
+        local cardRect, columnRect = card.Rect, card.Parent.Rect
         windowRect = GUI.RectTransform(Point(cardRect.Width, math.floor(columnRect.Height * 0.55)), root.RectTransform, GUI.Anchor.TopLeft)
-        windowRect.AbsoluteOffset = Point(cardRect.X - cardRect.Width - gap - root.Rect.X, cardRect.Y - root.Rect.Y)
+        windowRect.AbsoluteOffset = Point(cardRect.X - cardRect.Width - Common.GetGap() - root.Rect.X, cardRect.Y - root.Rect.Y)
     end
     local window = GUI.Frame(windowRect, "GUIFrame")
     local content = Common.CreateWindowContent(window)

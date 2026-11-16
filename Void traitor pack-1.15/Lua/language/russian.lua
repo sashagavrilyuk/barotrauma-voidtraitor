@@ -343,8 +343,6 @@ language.Lobby = {
     StationHours = "%d ч",
     StationHoursMinutes = "%d ч %d мин",
     StationOutfit = "Снаряжение: %s",
-    StationVariant = "Вариант %d",
-    Back = "Назад",
 }
 
 -- Оверлей админа над персонажами

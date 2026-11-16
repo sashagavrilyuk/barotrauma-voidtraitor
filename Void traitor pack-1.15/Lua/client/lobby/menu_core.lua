@@ -186,9 +186,13 @@ end
 P.CloseMenu = function()
     P.SaveVoidTraitorMenuGeometry()
     if S.currentMenuKind == "character" then P.HideJobSelection() end
-    if S.currentMenuKind == "stationoutfit" then P.RemoveStationOutfitFigures() end
+    if S.currentMenuKind == "stationjobs" then P.RemoveStationOutfitWindow() end
 
     Common.RemoveGuiComponent(S.currentMenu)
+    if S.wideCardWindow then
+        S.wideCardWindow = false
+        P.ApplyLobbyLayout(Game.NetLobbyScreen)
+    end
 
     S.currentMenu = nil
     S.currentMenuKind = ""

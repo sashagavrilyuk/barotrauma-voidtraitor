@@ -52,23 +52,27 @@ local function buildLimbs(info)
     return limbs
 end
 
--- Identifiers of the items marked outfit="true" in the job's item set of this variant (Jobs.xml), nested ones included.
-local function outfitItems(variant)
+-- Identifiers of the items the job's item set of this variant (Jobs.xml) puts on: the outfit and the other equipped
+-- items, such as a cap or a tool belt. Like the game's preview of a variant's items (JobPrefab.JobItem), it leaves out
+-- items with showpreview="false" and those given only in PvP, or only outside it.
+local function wornItems(variant, pvp)
     local identifiers = {}
-    local function collect(element)
+    local function collect(element, gameMode)
         for child in element.Elements() do
             if named(child, "item") then
-                if child.GetAttributeBool("outfit", false) then
+                local mode = string.lower(child.GetAttributeString("gamemode", gameMode))
+                if (child.GetAttributeBool("outfit", false) or child.GetAttributeBool("equip", false))
+                    and child.GetAttributeBool("showpreview", true) and mode ~= (pvp and "pve" or "pvp") then
                     identifiers[#identifiers + 1] = child.GetAttributeString("identifier", "")
                 end
-                collect(child)
+                collect(child, mode)
             end
         end
     end
     local index = 0
     for element in variant.Prefab.Element.Elements() do
         if named(element, "itemset") then
-            if index == variant.Variant then collect(element) end
+            if index == variant.Variant then collect(element, "any") end
             index = index + 1
         end
     end
@@ -116,7 +120,8 @@ local function addWearable(info, prefab, element, limbs, parts)
 end
 
 local function addOutfit(info, variant, limbs, parts)
-    for _, identifier in ipairs(outfitItems(variant)) do
+    local mode = Game.NetLobbyScreen.SelectedMode
+    for _, identifier in ipairs(wornItems(variant, mode ~= nil and mode.Identifier.Value == "pvp")) do
         -- LuaCs' lookup returns nil without an error for an item of a disabled mod
         local prefab = ItemPrefab.GetItemPrefab(identifier)
         if prefab ~= nil then

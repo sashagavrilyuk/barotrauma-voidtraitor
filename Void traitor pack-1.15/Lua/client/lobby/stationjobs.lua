@@ -15,10 +15,12 @@ local LOCKED_COLOR = Color(130, 135, 135, 255)
 -- the chosen level stands out as in SS14; the button style's own selected look is barely visible
 local LEVEL_SELECTED_COLOR = Color(170, 50, 40, 255)
 local LEVEL_SELECTED_TEXT_COLOR = Color(255, 255, 255, 255)
+local DIVIDER_WIDTH = 2 -- width of the vanilla VerticalLine style
 
 S.stationJobs = nil
 -- the level buttons of the open jobs window by role: a head has a row in Command and one in its department
 S.stationJobRows = {}
+S.stationOutfitWindow = nil
 S.stationOutfitRole = nil
 S.stationOutfitTiles = {}
 S.stationOutfitFigures = {}
@@ -118,6 +120,11 @@ local function createRow(list, id, role, height, labels)
     S.stationJobRows[id] = S.stationJobRows[id] or {}
     table.insert(S.stationJobRows[id], buttons)
 
+    -- the outfit button is not one of the levels; a fixed size keeps the line from stretching with the row
+    local lineRect = GUI.RectTransform(Point(DIVIDER_WIDTH, height), row.RectTransform)
+    lineRect.IsFixedSize = true
+    GUI.Image(lineRect, "VerticalLine").CanBeFocused = false
+
     local outfit = GUI.Button(Common.CreateRect(0.16, 1, row), text.StationLoadout, GUI.Alignment.Center, "GUIButtonSmall")
     outfit.OnClicked = function()
         P.ShowStationOutfitWindow(id)
@@ -136,6 +143,9 @@ function P.ShowStationJobsWindow()
     end
     local list = GUI.ListBox(Common.CreateRect(1, 1, content), false)
     list.Spacing = math.floor(Common.GetGap() / 2)
+    -- the outfit buttons end the rows; keep them off the list's frame
+    local padding = list.Padding
+    list.Padding = Vector4(padding.X, padding.Y, padding.Z + Common.GetGap(), padding.W)
     S.stationJobRows = {}
     local jobs = S.stationJobs
     if jobs == nil then return end
@@ -158,52 +168,75 @@ function P.ShowStationJobsWindow()
     GUI.TextBlock.AutoScaleAndNormalize(table.unpack(labels))
 end
 
--- the role's outfit variants drawn on the player's character; "Back" returns to the jobs window
+-- marks the chosen variant's tile and number button
+local function showOutfit(role)
+    for variant, parts in pairs(S.stationOutfitTiles) do
+        for _, part in ipairs(parts) do part.Selected = role ~= nil and role.Outfit == variant end
+    end
+end
+
+function P.RemoveStationOutfitWindow()
+    if S.stationOutfitWindow == nil then return end
+    for _, figure in ipairs(S.stationOutfitFigures) do
+        P.RemoveCharacterFigure(figure)
+    end
+    Common.RemoveGuiComponent(S.stationOutfitWindow)
+    Game.NetLobbyScreen.playerInfoContent.Parent.Visible = true
+    S.stationOutfitWindow, S.stationOutfitRole = nil, nil
+    S.stationOutfitFigures, S.stationOutfitTiles = {}, {}
+end
+
+-- The role's outfit variants drawn on the player's character, in a small window in place of the player card, which
+-- hides behind it, while the jobs window stays open. Each has the game's numbered variant button: the lobby shows the
+-- variant's starting items while the cursor is on it (NetLobbyScreen.UpdateJobVariantSelectionIfNeeded), above the
+-- button's parent.
 function P.ShowStationOutfitWindow(id)
     local role = S.stationJobs ~= nil and S.stationJobs.Roles[id] or nil
-    if role == nil then return end
-    local content = P.OpenCardWindow("stationoutfit", string.format(text.StationOutfit, roleName(id, role)))
+    if role == nil or S.currentMenuKind ~= "stationjobs" then return end
+    P.RemoveStationOutfitWindow()
     S.stationOutfitRole = id
-    S.stationOutfitTiles = {}
-    S.stationOutfitFigures = {}
+
+    local column = Game.NetLobbyScreen.playerInfoContent.Parent
+    column.Visible = false
+    local root, cardRect = S.currentMenu, column.Parent.Rect
+    local rect = GUI.RectTransform(Point(cardRect.Width, cardRect.Height), root.RectTransform, GUI.Anchor.TopLeft)
+    rect.AbsoluteOffset = Point(cardRect.X - root.Rect.X, cardRect.Y - root.Rect.Y)
+    local window = GUI.Frame(rect, "GUIFrame")
+    S.stationOutfitWindow = window
+    local content = Common.CreateWindowContent(window)
+    Common.CreateWindowHeader(content, window, string.format(text.StationOutfit, roleName(id, role)), P.UiText.Cancel, function()
+        P.RemoveStationOutfitWindow()
+        return true
+    end)
 
     local tiles = GUI.LayoutGroup(Common.CreateRect(1, 1, content), true)
     tiles.Stretch = true
     tiles.AbsoluteSpacing = Common.GetGap()
     local info = S.card ~= nil and S.card.Figure.Info or nil
     local job = JobPrefab.Get(role.Job)
+    local buttonSize = Common.GetStyleHeight("GUIButton")
     for variant = 0, role.Variants - 1 do
         local tile = GUI.Button(Common.CreateRect(1 / role.Variants, 1, tiles), "", GUI.Alignment.Center, "ListBoxElement")
-        tile.Selected = role.Outfit == variant
-        tile.OnClicked = function()
+        local function choose()
             sendChange(P.NET_STATION_OUTFIT_SET, id, variant)
             return true
         end
+        tile.OnClicked = choose
         if info ~= nil then
             local figure = P.CreateCharacterFigure(GUI.RectTransform(Vector2(1, 0.85), tile.RectTransform, GUI.Anchor.TopCenter), info)
             P.SetFigureJob(figure, JobVariant.__new(job, variant))
             S.stationOutfitFigures[#S.stationOutfitFigures + 1] = figure
         end
-        local caption = Common.CreateText(tile, 1, 0.15, GUI.Anchor.BottomCenter, string.format(text.StationVariant, variant + 1),
-            GUI.Alignment.Center, 1, nil, false)
+        local caption = GUI.Frame(GUI.RectTransform(Vector2(1, 0.15), tile.RectTransform, GUI.Anchor.BottomCenter), nil)
+        caption.Color = Color(0, 0, 0, 0)
         caption.CanBeFocused = false
-        S.stationOutfitTiles[variant] = tile
+        local button = GUI.Button(GUI.RectTransform(Point(buttonSize, buttonSize), caption.RectTransform, GUI.Anchor.Center),
+            tostring(variant + 1), GUI.Alignment.Center, "JobVariantButton")
+        button.UserData = JobVariant.__new(job, variant)
+        button.OnClicked = choose
+        S.stationOutfitTiles[variant] = { tile, button }
     end
-
-    local back = GUI.Button(Common.CreateRect(1, 1, content), text.Back, GUI.Alignment.Center, "GUIButton")
-    Common.SetFixedHeight(back, Common.GetStyleHeight("GUIButton"))
-    back.OnClicked = function()
-        P.ShowStationJobsWindow()
-        return true
-    end
-end
-
-function P.RemoveStationOutfitFigures()
-    for _, figure in ipairs(S.stationOutfitFigures) do
-        P.RemoveCharacterFigure(figure)
-    end
-    S.stationOutfitFigures = {}
-    S.stationOutfitTiles = {}
+    showOutfit(role)
 end
 
 Networking.Receive(P.NET_STATION_JOBS, function(message)
@@ -241,9 +274,6 @@ Networking.Receive(P.NET_STATION_JOBS, function(message)
             end
         end
     end
-    local outfitRole = S.stationOutfitRole ~= nil and jobs.Roles[S.stationOutfitRole] or nil
-    for variant, tile in pairs(S.stationOutfitTiles) do
-        tile.Selected = outfitRole ~= nil and outfitRole.Outfit == variant
-    end
+    showOutfit(S.stationOutfitRole ~= nil and jobs.Roles[S.stationOutfitRole] or nil)
     P.RefreshCardJob()
 end)
