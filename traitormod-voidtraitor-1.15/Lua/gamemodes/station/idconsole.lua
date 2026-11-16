@@ -241,7 +241,8 @@ Networking.Receive("VoidTraitor_IdConsoleAction", function(message, client)
     if ok and type(payload) == "table" then console.Action(client, item, action, payload) end
 end)
 
-function console.InitializeCard(character, passenger)
+-- presetId is the card preset of the player's role; without it the card gets the preset of the job
+function console.InitializeCard(character, passenger, presetId)
     if character.Inventory == nil or character.Info == nil or character.Info.Job == nil then return end
     local card = character.Inventory.GetItemInLimbSlot(InvSlotType.Card)
     if card == nil or card.HasTag("vt_station_card_initialized") then return end
@@ -257,8 +258,9 @@ function console.InitializeCard(character, passenger)
             card.RemoveTag(tag)
         end
     else
+        presetId = presetId or character.Info.Job.Prefab.Identifier.Value
         for _, preset in ipairs(console.Config.Presets) do
-            if preset.Id == character.Info.Job.Prefab.Identifier.Value then
+            if preset.Id == presetId then
                 for _, tag in ipairs(preset.Tags) do card.AddTag(tag) end
                 break
             end

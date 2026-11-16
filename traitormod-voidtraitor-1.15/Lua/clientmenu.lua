@@ -471,6 +471,8 @@ function cm.SendLobbyInfo(client)
     netMessage.WriteBoolean(running)
     netMessage.WriteInt32(Traitormod.RoundNumber + 1)
     netMessage.WriteString(modeKey ~= nil and Traitormod.Language[modeKey] or "")
+    -- the jobs window of a Station lobby replaces the vanilla job choice
+    netMessage.WriteBoolean(gamemode ~= nil and gamemode.Name == "Station")
     if running then
         -- the main submarine is loaded only once the round has started
         netMessage.WriteString(Submarine.MainSub ~= nil and Submarine.MainSub.Info.DisplayName.Value or "")
@@ -564,6 +566,7 @@ end)
 Networking.Receive(vtNet.Ready, function(message, client)
     cm.SendLobbyInfo(client)
     cm.SendAntagonists(client)
+    Traitormod.StationJobs.Send(client)
     return cm.SendSnapshot(client)
 end)
 

@@ -266,14 +266,15 @@ end
 
 -- Puts the common key and the keys of the character's job into its headset, once per headset;
 -- passengers get only the common key.
-function radio.InitializeHeadset(character, passenger)
+-- keys are the departments of the player's role; without them the headset gets the keys of the job
+function radio.InitializeHeadset(character, passenger, keys)
     local headset = character.Inventory.GetItemInLimbSlot(InvSlotType.Headset)
     if headset == nil or headset.OwnInventory == nil or keyedHeadsets[headset] then return end
     keyedHeadsets[headset] = true
     Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.Prefabs[config.CommonKey], headset.OwnInventory)
     if passenger then return end
     local job = character.Info ~= nil and character.Info.Job ~= nil and character.Info.Job.Prefab.Identifier.Value or ""
-    for _, id in ipairs(config.JobKeys[job] or {}) do
+    for _, id in ipairs(keys or config.JobKeys[job] or {}) do
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.Prefabs[departmentById[id].Key], headset.OwnInventory)
     end
 end

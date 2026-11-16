@@ -7,6 +7,7 @@ dofile(Traitormod.Path .. "/Lua/gamemodes/station/nuclear.lua")
 dofile(Traitormod.Path .. "/Lua/gamemodes/station/communications.lua")
 dofile(Traitormod.Path .. "/Lua/gamemodes/station/powercontroller.lua")
 dofile(Traitormod.Path .. "/Lua/gamemodes/station/radio.lua")
+dofile(Traitormod.Path .. "/Lua/gamemodes/station/jobpreferences.lua")
 local evacuation = dofile(Traitormod.Path .. "/Lua/gamemodes/station/evacuation.lua")
 local boats = dofile(Traitormod.Path .. "/Lua/gamemodes/station/boats.lua")
 local weightedRandom = dofile(Traitormod.Path .. "/Lua/weightedrandom.lua")
@@ -86,8 +87,14 @@ end
 
 function gm:PreStart()
     Traitormod.Gamemodes.Gamemode.PreStart(self)
-    self.Passengers = {}
-    self.PendingJobs = {}
+    -- the role of each account this round, and whether its character is still to spawn
+    self.AccountRoles = {}
+    self.PendingRoles = {}
+    -- the round's own seat counts, which BureaucraticError may change
+    self.RoleSlots = {}
+    for id, role in pairs(self.Roles) do
+        self.RoleSlots[id] = role.Slots or math.huge
+    end
     local settings = Game.ServerSettings
     settings.MissionTypes = "VoidTraitorStation"
     settings.RespawnMode = respawnModes.Permadeath
@@ -245,9 +252,11 @@ function gm:OnNuclearDisarmed()
     self:SetAlertCode("green")
 end
 
--- Station players take each antagonist type only if they ticked it in the lobby's Antagonists window.
+-- Station players take each antagonist type only if they ticked it in the lobby's Antagonists window; heads never.
 function gm:WantsAntagonist(client, preference)
-    return (Traitormod.GetData(client, "StationAntagonists") or {})[preference] == true
+    local role = self.Roles[self.AccountRoles[Traitormod.GetClientAccountKey(client)]]
+    return (role == nil or role.Head == nil)
+        and (Traitormod.GetData(client, "StationAntagonists") or {})[preference] == true
 end
 
 -- living crew who want this mid-round antagonist, weighted the way the round start picks traitors
@@ -304,93 +313,101 @@ function gm:CheckHuskOutbreak()
     end
 end
 
-function gm:CountJobSlots()
+-- seats taken: characters still to spawn and the living crew, by the role of their account
+function gm:CountRoleSlots()
     local counts = {}
     for _, client in pairs(Client.ClientList) do
         local account = Traitormod.GetClientAccountKey(client)
-        local job = self.PendingJobs[account]
+        local role = self.AccountRoles[account]
         local character = client.Character
-        if job == nil and not self.Passengers[account] and character ~= nil
-            and not character.IsDead and character.IsHuman
-            and character.TeamID == CharacterTeamType.Team1 and character.Info.Job ~= nil then
-            job = character.Info.Job.Prefab.Identifier.Value
-        end
-        if job ~= nil then
-            counts[job] = (counts[job] or 0) + 1
+        if role ~= nil and (self.PendingRoles[account] or character ~= nil and not character.IsDead
+            and character.IsHuman and character.TeamID == CharacterTeamType.Team1) then
+            counts[role] = (counts[role] or 0) + 1
         end
     end
     return counts
 end
 
-function gm:HasJobSlot(client, job, counts)
-    if job == nil or job.Prefab.HiddenJob or client.Karma < job.Prefab.MinKarma then
+function gm:HasRoleSeat(client, id, counts)
+    local role = self.Roles[id]
+    if role == nil or not JobPrefab.Prefabs.ContainsKey(role.Job) or client.Karma < JobPrefab.Get(role.Job).MinKarma then
         return false
     end
-    local id = job.Prefab.Identifier.Value
-    return (counts[id] or 0) < (self.JobSlots[id] or 0)
+    return (counts[id] or 0) < self.RoleSlots[id]
 end
 
-function gm:ReserveJobSlot(client, job, counts, passenger)
+-- the role the player wants most among those with a free seat, a random one of equals; a passenger otherwise
+function gm:ChooseRole(client, counts)
+    local best, choices = 0, {}
+    for id, level in pairs(Traitormod.GetData(client, "StationJobs") or {}) do
+        if level >= best and self:HasRoleSeat(client, id, counts) then
+            if level > best then best, choices = level, {} end
+            choices[#choices + 1] = id
+        end
+    end
+    return #choices > 0 and choices[math.random(#choices)] or "passenger"
+end
+
+-- takes the seat and returns the job the game gives, in the outfit the player chose for this role
+function gm:GiveRole(client, id, counts)
     local account = Traitormod.GetClientAccountKey(client)
-    local id = job.Prefab.Identifier.Value
-    self.Passengers[account] = passenger or nil
-    self.PendingJobs[account] = not passenger and id or nil
-    if not passenger then
-        counts[id] = (counts[id] or 0) + 1
-    end
-    return job
+    self.AccountRoles[account] = id
+    self.PendingRoles[account] = true
+    counts[id] = (counts[id] or 0) + 1
+    local job = JobPrefab.Get(self.Roles[id].Job)
+    local variant = (Traitormod.GetData(client, "StationOutfits") or {})[id] or 0
+    return JobVariant.__new(job, math.min(variant, job.Variants - 1))
 end
 
-function gm:ChooseStationJob(client, counts)
-    for _, job in ipairs(client.JobPreferences) do
-        if self:HasJobSlot(client, job, counts) then
-            return self:ReserveJobSlot(client, job, counts)
-        end
-    end
-    local available = {}
-    for id, limit in pairs(self.JobSlots) do
-        if limit > 0 and JobPrefab.Prefabs.ContainsKey(id) then
-            local job = Traitormod.MidRoundSpawn.GetJobVariant(id)
-            if self:HasJobSlot(client, job, counts) then
-                available[#available + 1] = job
-            end
-        end
-    end
-    if #available > 0 then
-        return self:ReserveJobSlot(client, available[math.random(#available)], counts)
-    end
-    for _, job in ipairs(client.JobPreferences) do
-        if job.Prefab.Identifier == "assistant" then
-            return self:ReserveJobSlot(client, job, counts, true)
-        end
-    end
-    return self:ReserveJobSlot(client, Traitormod.MidRoundSpawn.GetJobVariant("assistant"), counts, true)
-end
-
-function gm:ApplyJobSlots(clients)
-    local counts, overflow = self:CountJobSlots(), {}
+-- As SS14 hands out jobs at round start (ServerStationJobsSystem.Roundstart): heads first, the higher Head the
+-- earlier, each seat to a random one of those who want it most; then everyone else in random order.
+function gm:AssignRoles(clients)
+    local counts, waiting, heads = self:CountRoleSlots(), {}, {}
     for _, client in pairs(clients) do
-        if self:HasJobSlot(client, client.AssignedJob, counts) then
-            self:ReserveJobSlot(client, client.AssignedJob, counts)
-        else
-            overflow[#overflow + 1] = client
+        waiting[#waiting + 1] = client
+    end
+    for id, role in pairs(self.Roles) do
+        if role.Head ~= nil then heads[#heads + 1] = id end
+    end
+    table.sort(heads, function(a, b) return self.Roles[a].Head > self.Roles[b].Head end)
+
+    for _, id in ipairs(heads) do
+        while true do
+            local best, choices = 0, {}
+            for index, client in ipairs(waiting) do
+                local level = (Traitormod.GetData(client, "StationJobs") or {})[id] or 0
+                if level > 0 and level >= best and self:HasRoleSeat(client, id, counts) then
+                    if level > best then best, choices = level, {} end
+                    choices[#choices + 1] = index
+                end
+            end
+            if #choices == 0 then break end
+            local client = table.remove(waiting, choices[math.random(#choices)])
+            client.AssignedJob = self:GiveRole(client, id, counts)
         end
     end
-    for _, client in ipairs(overflow) do
-        client.AssignedJob = self:ChooseStationJob(client, counts)
+
+    for index = #waiting, 2, -1 do
+        local other = math.random(index)
+        waiting[index], waiting[other] = waiting[other], waiting[index]
+    end
+    for _, client in ipairs(waiting) do
+        client.AssignedJob = self:GiveRole(client, self:ChooseRole(client, counts), counts)
     end
 end
 
 function gm:InitializeIdCard(character)
     local client = Traitormod.FindClientCharacter(character)
-    local passenger = false
+    local role
     if client ~= nil then
         local account = Traitormod.GetClientAccountKey(client)
-        self.PendingJobs[account] = nil
-        passenger = self.Passengers[account] == true
+        self.PendingRoles[account] = nil
+        role = self.Roles[self.AccountRoles[account]]
     end
-    Traitormod.IdConsole.InitializeCard(character, passenger)
-    Traitormod.StationRadio.InitializeHeadset(character, passenger)
+    -- characters of no player keep the access and keys of their job
+    local passenger = role ~= nil and role.Passenger == true
+    Traitormod.IdConsole.InitializeCard(character, passenger, role and role.IdPreset)
+    Traitormod.StationRadio.InitializeHeadset(character, passenger, role and (role.Radio or {}))
 end
 
 function gm:CanShuttleRespawn(client)
@@ -405,12 +422,14 @@ end
 
 function gm:SpawnNewcomerOnShuttle(client, submarine)
     local accountKey = Traitormod.GetClientAccountKey(client)
-    local job = self:ChooseStationJob(client, self:CountJobSlots())
+    local counts = self:CountRoleSlots()
+    local job = self:GiveRole(client, self:ChooseRole(client, counts), counts)
     if Traitormod.MidRoundSpawn.SpawnClientCharacterOnSub(submarine, client, job) then
         self.SpawnedAccounts[accountKey] = true
         self.PendingShuttleArrivals[accountKey] = true
     else
-        self.PendingJobs[accountKey] = nil
+        self.AccountRoles[accountKey] = nil
+        self.PendingRoles[accountKey] = nil
     end
 end
 
@@ -501,8 +520,8 @@ function gm:End()
     Traitormod.Config.TestMode = false
     Traitormod.Communications.End()
     self.EvacuationState = nil
-    self.PendingJobs = nil
-    self.Passengers = nil
+    self.AccountRoles = nil
+    self.PendingRoles = nil
     secret.End(self)
     if Traitormod.OriginalGamemode ~= nil then
         Game.NetLobbyScreen.SelectedModeIdentifier = Traitormod.OriginalGamemode
@@ -603,10 +622,10 @@ Hook.Patch("Barotrauma.Character", "Revive", function(character)
     end
 end, Hook.HookMethodType.After)
 
-Hook.Add("jobsAssigned", "Traitormod.Station.JobSlots", function(clients)
+Hook.Add("jobsAssigned", "Traitormod.Station.Roles", function(clients)
     local selected = Traitormod.SelectedGamemode
     if selected ~= nil and selected.Name == "Station" then
-        selected:ApplyJobSlots(clients)
+        selected:AssignRoles(clients)
     end
 end)
 

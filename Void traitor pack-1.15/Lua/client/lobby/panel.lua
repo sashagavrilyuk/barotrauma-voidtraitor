@@ -383,7 +383,8 @@ end
 Networking.Receive(P.NET_LOBBY_INFO, function(message)
     if S.sharedState.Disabled then return end
 
-    local info = { Running = message.ReadBoolean(), Number = message.ReadInt32(), Mode = message.ReadString() }
+    local info = { Running = message.ReadBoolean(), Number = message.ReadInt32(), Mode = message.ReadString(),
+        Station = message.ReadBoolean() }
     if info.Running then
         info.Map = message.ReadString()
         info.StartTime = P.GetTime() - message.ReadInt32()
