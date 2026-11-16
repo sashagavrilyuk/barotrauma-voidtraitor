@@ -41,6 +41,9 @@ jobs:
           )
           for folder in (builder, pack):
               sources += tuple(p for p in folder.rglob("*") if p.is_file() and p.suffix.lower() == ".xml")
+          # this unregistered Hungry Europans guide contains only an XML comment
+          guide = pack / "Hungry Europans/Content/Items/#Presets/#Suggested_Values.xml"
+          sources = tuple(source for source in sources if source != guide)
           for source in sources:
               ET.parse(source)
 
