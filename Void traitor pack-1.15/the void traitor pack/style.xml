@@ -12,4 +12,19 @@
   <MsCookieSKillFeed_TimeBar_Stop color="255,255,255,255">
     <Sprite name="MsCookieS_KillFeed_TimeBar_Stop" texture="%ModDir%/the void traitor pack/UI/TimeBar.png" state="Stop" tile="false" sourcerect="0,40,320,40" />
   </MsCookieSKillFeed_TimeBar_Stop>
+  <!-- the SHOP and VT buttons next to the vanilla top-left HUD buttons, drawn like them (notes: top-buttons.py) -->
+  <VTShopButton color="255,255,255,255">
+    <Sprite name="VTShopButton_None" texture="%ModDir%/the void traitor pack/UI/topbuttons.png" state="None" tile="false" sourcerect="0,0,111,66" maintainaspectratio="true" origin="0.5,0.5" />
+    <Sprite name="VTShopButton_Selected" texture="%ModDir%/the void traitor pack/UI/topbuttons.png" state="Selected" tile="false" sourcerect="0,198,111,66" maintainaspectratio="true" origin="0.5,0.5" />
+    <Sprite name="VTShopButton_Hover" texture="%ModDir%/the void traitor pack/UI/topbuttons.png" state="Hover" tile="false" sourcerect="0,66,111,66" maintainaspectratio="true" origin="0.5,0.5" />
+    <Sprite name="VTShopButton_HoverSelected" texture="%ModDir%/the void traitor pack/UI/topbuttons.png" state="HoverSelected" tile="false" sourcerect="0,66,111,66" maintainaspectratio="true" origin="0.5,0.5" />
+    <Sprite name="VTShopButton_Pressed" texture="%ModDir%/the void traitor pack/UI/topbuttons.png" state="Pressed" tile="false" sourcerect="0,132,111,66" maintainaspectratio="true" origin="0.5,0.5" />
+  </VTShopButton>
+  <VTMenuButton color="255,255,255,255">
+    <Sprite name="VTMenuButton_None" texture="%ModDir%/the void traitor pack/UI/topbuttons.png" state="None" tile="false" sourcerect="111,0,111,66" maintainaspectratio="true" origin="0.5,0.5" />
+    <Sprite name="VTMenuButton_Selected" texture="%ModDir%/the void traitor pack/UI/topbuttons.png" state="Selected" tile="false" sourcerect="111,198,111,66" maintainaspectratio="true" origin="0.5,0.5" />
+    <Sprite name="VTMenuButton_Hover" texture="%ModDir%/the void traitor pack/UI/topbuttons.png" state="Hover" tile="false" sourcerect="111,66,111,66" maintainaspectratio="true" origin="0.5,0.5" />
+    <Sprite name="VTMenuButton_HoverSelected" texture="%ModDir%/the void traitor pack/UI/topbuttons.png" state="HoverSelected" tile="false" sourcerect="111,66,111,66" maintainaspectratio="true" origin="0.5,0.5" />
+    <Sprite name="VTMenuButton_Pressed" texture="%ModDir%/the void traitor pack/UI/topbuttons.png" state="Pressed" tile="false" sourcerect="111,132,111,66" maintainaspectratio="true" origin="0.5,0.5" />
+  </VTMenuButton>
 </style>

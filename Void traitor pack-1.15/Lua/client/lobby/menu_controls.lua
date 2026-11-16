@@ -75,8 +75,7 @@ function P.CreateTopButtons()
     local buttonWidth, buttonHeight = P.GetTopButtonSize()
     local padding = P.GetTopButtonSpacing()
 
-    -- Labels take the same share of the button height at every resolution.
-    local labelScale = buttonHeight * 0.5 / GUI.Style.Font.LineHeight
+    -- styles of the void traitor pack's style.xml, drawn like the vanilla buttons
     local root = GUI.LayoutGroup(P.CreateButtonAreaRect(buttonWidth, S.shopAvailable == false and 1 or 2, padding), true, GUI.Anchor.CenterLeft)
     root.AbsoluteSpacing = padding
     root.Stretch = false
@@ -85,20 +84,18 @@ function P.CreateTopButtons()
     S.sharedState.ButtonRoot = S.buttonRoot
 
     if S.shopAvailable ~= false then
-        local shop = GUI.Button(GUI.RectTransform(Point(buttonWidth, buttonHeight), root.RectTransform), P.UiText.ShopButton, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
+        local shop = GUI.Button(GUI.RectTransform(Point(buttonWidth, buttonHeight), root.RectTransform), "", GUI.Alignment.Center, "VTShopButton")
         shop.CanBeFocused = true
         shop.ToolTip = P.UiText.ShopTooltip
-        P.SetButtonTextScale(shop, labelScale)
         shop.OnClicked = function(button, userData)
             P.OpenShop()
             return true
         end
     end
 
-    local vt = GUI.Button(GUI.RectTransform(Point(buttonWidth, buttonHeight), root.RectTransform), P.UiText.MainButton, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
+    local vt = GUI.Button(GUI.RectTransform(Point(buttonWidth, buttonHeight), root.RectTransform), "", GUI.Alignment.Center, "VTMenuButton")
     vt.CanBeFocused = true
     vt.ToolTip = P.UiText.MainTooltip
-    P.SetButtonTextScale(vt, labelScale)
     vt.OnClicked = function(button, userData)
         P.ToggleMainMenu()
         return true

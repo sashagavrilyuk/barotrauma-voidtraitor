@@ -13,8 +13,6 @@ language.Common = {
 -- Основное меню Void Traitor
 language.ClientMenu = {
     Title = "VOID TRAITOR",
-    ShopButton = "SHOP",
-    MainButton = "VT",
     ShopTooltip = "Открыть магазин Void Traitor (I)",
     MainTooltip = "Открыть меню команд Void Traitor (U)",
     NoCommands = "Список команд пока не получен от сервера.",
