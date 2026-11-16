@@ -15,6 +15,9 @@ P.NET_LOBBY_INFO = "VoidTraitor_LobbyInfo"
 P.NET_LOBBY_INFO_REQUEST = "VoidTraitor_LobbyInfoRequest"
 P.NET_ANTAGONISTS = "VoidTraitor_Antagonists"
 P.NET_ANTAGONIST_SET = "VoidTraitor_AntagonistSet"
+P.NET_STATION_JOBS = "VoidTraitor_StationJobs"
+P.NET_STATION_JOB_SET = "VoidTraitor_StationJobSet"
+P.NET_STATION_OUTFIT_SET = "VoidTraitor_StationOutfitSet"
 
 P.GLOBAL_STATE_KEY = "VoidTraitorClientMenuState"
 P.HUD_PATCH_ID = "VoidTraitor.ClientMenu.Hud"
@@ -183,6 +186,7 @@ end
 P.CloseMenu = function()
     P.SaveVoidTraitorMenuGeometry()
     if S.currentMenuKind == "character" then P.HideJobSelection() end
+    if S.currentMenuKind == "stationoutfit" then P.RemoveStationOutfitFigures() end
 
     Common.RemoveGuiComponent(S.currentMenu)
 

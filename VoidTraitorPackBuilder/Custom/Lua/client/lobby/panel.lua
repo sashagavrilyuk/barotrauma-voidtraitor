@@ -242,11 +242,22 @@ function P.RefreshRoundInfo()
 end
 
 -- The card shows the first job preference: its name and the character in its outfit.
+-- in a Station lobby the role the player wants most (stationjobs.lua), otherwise the first vanilla job preference
 local function refreshCardJob(screen)
-    local slot = firstChild(screen.JobList.Content)
-    local first = slot ~= nil and slot.UserData or nil
-    S.card.JobLabel.Text = first ~= nil and first.Prefab.Name.Value or text.NoJob
-    P.SetFigureJob(S.card.Figure, first)
+    local job, label
+    if S.lobbyInfo ~= nil and S.lobbyInfo.Station then
+        job, label = P.GetStationCardRole()
+    else
+        local slot = firstChild(screen.JobList.Content)
+        job = slot ~= nil and slot.UserData or nil
+        label = job ~= nil and job.Prefab.Name.Value or nil
+    end
+    S.card.JobLabel.Text = label or text.NoJob
+    P.SetFigureJob(S.card.Figure, job)
+end
+
+function P.RefreshCardJob()
+    if S.card ~= nil then refreshCardJob(Game.NetLobbyScreen) end
 end
 
 local function arrangePlayerCard(screen)
@@ -294,7 +305,9 @@ local function arrangePlayerCard(screen)
     Common.SetFixedHeight(buttons, Common.GetStyleHeight("GUIButton"))
     local labels = {}
     for _, entry in ipairs({
-        { Label = text.Jobs, Open = function() P.ShowCharacterWindow(false) end },
+        { Label = text.Jobs, Open = function()
+            if S.lobbyInfo ~= nil and S.lobbyInfo.Station then P.ShowStationJobsWindow() else P.ShowCharacterWindow(false) end
+        end },
         { Label = text.Antagonists, Open = function() P.ShowAntagonistsWindow() end },
         { Label = text.Appearance, Open = function() P.ShowCharacterWindow(true) end },
     }) do
@@ -323,8 +336,9 @@ end
 
 -- A window beside the player card, with room on the left for the vanilla job grid, which opens to the left of
 -- the editor, and as tall as the vanilla card, which takes 0.55 of the right column (CreateSidePanelContents).
+-- A wide window takes the whole lobby left of the card, down to the bottom of the column.
 -- Returns the window's content layout.
-function P.OpenCardWindow(kind, title)
+function P.OpenCardWindow(kind, title, wide)
     local screen = Game.NetLobbyScreen
     if S.currentMenu ~= nil then P.CloseMenu() end
 
@@ -343,8 +357,15 @@ function P.OpenCardWindow(kind, title)
 
     local card = screen.playerInfoContent.Parent.Parent
     local cardRect, columnRect = card.Rect, card.Parent.Rect
-    local windowRect = GUI.RectTransform(Point(cardRect.Width, math.floor(columnRect.Height * 0.55)), root.RectTransform, GUI.Anchor.TopLeft)
-    windowRect.AbsoluteOffset = Point(cardRect.X - cardRect.Width - Common.GetGap() - root.Rect.X, cardRect.Y - root.Rect.Y)
+    local gap = Common.GetGap()
+    local windowRect
+    if wide then
+        windowRect = GUI.RectTransform(Point(cardRect.X - root.Rect.X - 2 * gap, columnRect.Y + columnRect.Height - cardRect.Y), root.RectTransform, GUI.Anchor.TopLeft)
+        windowRect.AbsoluteOffset = Point(gap, cardRect.Y - root.Rect.Y)
+    else
+        windowRect = GUI.RectTransform(Point(cardRect.Width, math.floor(columnRect.Height * 0.55)), root.RectTransform, GUI.Anchor.TopLeft)
+        windowRect.AbsoluteOffset = Point(cardRect.X - cardRect.Width - gap - root.Rect.X, cardRect.Y - root.Rect.Y)
+    end
     local window = GUI.Frame(windowRect, "GUIFrame")
     local content = Common.CreateWindowContent(window)
     Common.CreateWindowHeader(content, window, title, P.UiText.Cancel, function()
@@ -392,8 +413,11 @@ Networking.Receive(P.NET_LOBBY_INFO, function(message)
         info.Sub = Game.NetLobbyScreen.SelectedSub
         info.Preset = Game.NetLobbyScreen.SelectedMode
     end
+    local wasStation = S.lobbyInfo ~= nil and S.lobbyInfo.Station
     S.lobbyInfo = info
     P.RefreshRoundInfo()
+    -- the card shows the Station role or the vanilla job, whichever the lobby now uses
+    if info.Station ~= wasStation then P.RefreshCardJob() end
 end)
 
 -- RefreshEnabledElements runs when the lobby opens and whenever the player's permissions change.
