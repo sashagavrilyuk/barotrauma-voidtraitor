@@ -10,16 +10,6 @@ local text = Common.Language.Lobby
 local HIGH = 3
 -- what a role's missing time is for, after OVERALL = 0 (gamemodes/station/jobpreferences.lua)
 local ROLE = 1
--- SS14's department colors
-local DEPARTMENT_COLORS = {
-    command = Color(110, 151, 201, 255),
-    security = Color(217, 98, 90, 255),
-    engineering = Color(224, 162, 74, 255),
-    cargo = Color(185, 132, 84, 255),
-    medical = Color(95, 181, 201, 255),
-    science = Color(184, 138, 214, 255),
-    service = Color(143, 196, 106, 255),
-}
 local HINT_COLOR = Color(170, 180, 180, 255)
 local LOCKED_COLOR = Color(130, 135, 135, 255)
 -- the chosen level stands out as in SS14; the button style's own selected look is barely visible
@@ -95,7 +85,7 @@ local function createRow(list, id, role, height, labels)
     row.AbsoluteSpacing = Common.GetGap()
 
     local job = JobPrefab.Get(role.Job)
-    local sprite = job.IconSmall or job.Icon
+    local sprite = Common.GetRoleIcon(id, role.Job, true)
     if sprite ~= nil then
         local icon = GUI.Image(GUI.RectTransform(Point(height, height), row.RectTransform), sprite, true)
         icon.Color = job.UIColor
@@ -154,7 +144,7 @@ function P.ShowStationJobsWindow()
     local labels = {}
     for _, department in ipairs(jobs.Departments) do
         local header = Common.CreateText(list.Content, 1, 1, nil, text.StationDepartments[department.Id] or department.Id,
-            GUI.Alignment.CenterLeft, 1, DEPARTMENT_COLORS[department.Id], false)
+            GUI.Alignment.CenterLeft, 1, Common.StationDepartmentColors[department.Id], false)
         header.Font = GUI.Style.SubHeadingFont
         header.CanBeFocused = false
         Common.FitHeightToText(header)

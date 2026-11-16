@@ -156,7 +156,7 @@ local function addManifestRow(row, height)
     line.AbsoluteSpacing = Common.GetGap()
     line.CanBeFocused = false
     local job = row.Job ~= "" and JobPrefab.Prefabs.ContainsKey(row.Job) and JobPrefab.Get(row.Job) or nil
-    local sprite = job ~= nil and (job.IconSmall or job.Icon) or nil
+    local sprite = job ~= nil and Common.GetRoleIcon(row.RoleId, row.Job, true) or nil
     if sprite ~= nil then
         local icon = GUI.Image(GUI.RectTransform(Point(height, height), line.RectTransform), sprite, true)
         icon.Color = job.UIColor
@@ -367,7 +367,7 @@ Networking.Receive(NET_SUMMARY, function(message)
     lastSummary = message.ReadString()
     lastManifest = {}
     for _ = 1, message.ReadUInt16() do
-        local row = { Name = message.ReadString(), Role = message.ReadString(), Job = message.ReadString(),
+        local row = { Name = message.ReadString(), Role = message.ReadString(), RoleId = message.ReadString(), Job = message.ReadString(),
             Antagonist = message.ReadString(), Kind = message.ReadByte(), Player = message.ReadString() }
         row.Keys = { Name = Common.NormalizeSearchText(row.Name), Role = Common.NormalizeSearchText(row.Role),
             Player = Common.NormalizeSearchText(row.Player) }

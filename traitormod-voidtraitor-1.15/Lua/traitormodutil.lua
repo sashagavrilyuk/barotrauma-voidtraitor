@@ -474,6 +474,7 @@ Traitormod.SendRoundSummary = function (summary, manifest)
     for _, row in ipairs(manifest) do
         message.WriteString(row.Name)
         message.WriteString(row.Role)
+        message.WriteString(row.RoleId)
         message.WriteString(row.Job)
         message.WriteString(row.Antagonist)
         message.WriteByte(MANIFEST_KINDS[row.Kind])

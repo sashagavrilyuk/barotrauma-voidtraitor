@@ -1,5 +1,6 @@
 if SERVER then return {} end
 
+local packPath = ...
 local Common = {}
 local originalTextScales = setmetatable({}, { __mode = "k" })
 local growingRowMinimums = setmetatable({}, { __mode = "k" })
@@ -235,6 +236,46 @@ function Common.GetCardRole(character)
         end
     end
     return nil
+end
+
+-- Station heads have emblems of their own in the void traitor pack/UI/jobs/heads.png, one 160 px slot each with the
+-- 128 px emblem and the 28 px list icon side by side; the last slot is SS14's "no ID card". Other roles show their
+-- job's icon. Icons are grey and drawn in the job's colour, like the game's.
+local EMBLEM_SLOTS = { headofpersonnel = 0, headofsecurity = 1, chiefengineer = 2, chiefmedicalofficer = 3,
+    researchdirector = 4, quartermaster = 5, noidcard = 6 }
+local emblems = {}
+
+local function emblem(slot, small)
+    local key = slot * 2 + (small and 1 or 0)
+    if emblems[key] == nil then
+        local rect = small and Rectangle(slot * 160 + 128, 0, 28, 28) or Rectangle(slot * 160, 0, 128, 128)
+        emblems[key] = Sprite(packPath .. "/the void traitor pack/UI/jobs/heads.png", rect, Vector2(0.5, 0.5), 0)
+    end
+    return emblems[key]
+end
+
+-- the icon of a Station role whose job is jobId, nil when neither is known; small for lists
+function Common.GetRoleIcon(roleId, jobId, small)
+    local slot = roleId ~= "noidcard" and EMBLEM_SLOTS[roleId] or nil
+    if slot ~= nil then return emblem(slot, small) end
+    if jobId == nil or not JobPrefab.Prefabs.ContainsKey(jobId) then return nil end
+    local job = JobPrefab.Get(jobId)
+    return small and (job.IconSmall or job.Icon) or job.Icon
+end
+
+-- SS14's department colors, for the Station jobs window and crew list
+Common.StationDepartmentColors = {
+    command = Color(110, 151, 201, 255),
+    security = Color(217, 98, 90, 255),
+    engineering = Color(224, 162, 74, 255),
+    cargo = Color(185, 132, 84, 255),
+    medical = Color(95, 181, 201, 255),
+    science = Color(184, 138, 214, 255),
+    service = Color(143, 196, 106, 255),
+}
+
+function Common.GetNoIdCardIcon(small)
+    return emblem(EMBLEM_SLOTS.noidcard, small)
 end
 
 local RagdollParams = LuaUserData.CreateStatic("Barotrauma.RagdollParams", true)

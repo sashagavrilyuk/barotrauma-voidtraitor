@@ -451,13 +451,13 @@ function gm:GetManifest()
             role = JobPrefab.Get(record.Job).Name.Value
         end
         local antagonist = Traitormod.RoleManager.GetRole(record.Character)
-        manifest[#manifest + 1] = { Name = record.Name, Role = role, Job = id ~= nil and self.Roles[id].Job or record.Job,
+        manifest[#manifest + 1] = { Name = record.Name, Role = role, RoleId = id or "", Job = id ~= nil and self.Roles[id].Job or record.Job,
             Antagonist = antagonist ~= nil and antagonist.IsAntagonist and antagonist.Name or "", Player = record.Player,
             Kind = id ~= nil and "crew" or "ghost" }
     end
     for _, client in pairs(Client.ClientList) do
         if not played[Traitormod.GetClientAccountKey(client)] then
-            manifest[#manifest + 1] = { Name = client.Name, Role = "", Job = "", Antagonist = "", Player = client.Name, Kind = "observer" }
+            manifest[#manifest + 1] = { Name = client.Name, Role = "", RoleId = "", Job = "", Antagonist = "", Player = client.Name, Kind = "observer" }
         end
     end
     return manifest
