@@ -2,7 +2,7 @@
 <Talents>
   <!--COMMON TALENTS-->
   <Override>
-    <Talent identifier="he-hungryeuropan">
+    <Talent identifier="he-hungryeuropan" ishiddenextratalent="true">
       <Icon texture="%ModDir%/Hungry Europans/Content/UI/HE-IconsAtlas.png" sourcerect="0,385,119,119" origin="0.5,0.5" />
       <Description tag="talentdescription.he-hungryeuropan" />
       <AbilityGroupInterval interval="1.0">

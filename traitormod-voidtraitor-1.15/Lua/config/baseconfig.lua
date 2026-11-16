@@ -434,6 +434,8 @@ config.GamemodeConfig = {
             engineer = 5,
             scientist = 5,
         },
+        -- the Hungry Europans talent that gives players hunger and thirst when they spawn; nil turns needs off
+        NeedsTalent = "he-hungryeuropan",
         WavesEnabled = true,
         SuppressOutdoorWaves = true,
         WaveMinPlayers = 20,

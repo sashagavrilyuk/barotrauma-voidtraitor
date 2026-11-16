@@ -593,12 +593,17 @@ Hook.Add("jobsAssigned", "Traitormod.Station.JobSlots", function(clients)
     end
 end)
 
-Hook.Add("character.giveJobItems", "Traitormod.Station.IdCardAccess", function(character)
+-- Every player spawn in Station gives job items: at round start, joining mid-round and on the shuttle. A clone keeps
+-- the needs talent through its CharacterInfo (cloning.lua loads the talents).
+Hook.Add("character.giveJobItems", "Traitormod.Station.JobItems", function(character)
     local selected = Traitormod.SelectedGamemode
     if selected == nil or selected.Name ~= "Station" then return end
     Timer.Wait(function()
         if not character.Removed and Traitormod.SelectedGamemode == selected then
             selected:InitializeIdCard(character)
+            if selected.NeedsTalent ~= nil and character.IsPlayer then
+                character.GiveTalent(selected.NeedsTalent)
+            end
         end
     end, 0)
 end)
