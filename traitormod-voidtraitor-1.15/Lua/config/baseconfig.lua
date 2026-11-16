@@ -432,7 +432,8 @@ config.GamemodeConfig = {
         -- Roles as SS14's jobs: the game sees each role's Job, Slots is how many players can have it at once (none: any
         -- number). Heads are handed out first, the higher Head the earlier, and are never antagonists. IdPreset is the ID
         -- card preset (IdConsole.Presets) and Radio the department keys of the headset. Passenger is the role of everyone
-        -- who got no other: no access and only the common channel.
+        -- who got no other: no access and only the common channel. A map sets its own seats in the [traitormod] JSON of
+        -- its description, for example "RoleSlots": { "engineer": 6, "cook": 0 }; roles it leaves out keep these.
         Roles = {
             captain = { Job = "captain", Slots = 1, Head = 7, IdPreset = "captain",
                 Radio = { "command", "engineering", "medical", "security", "cargo", "science" } },

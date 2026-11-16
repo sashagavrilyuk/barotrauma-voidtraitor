@@ -90,10 +90,10 @@ function gm:PreStart()
     -- the role of each account this round, and whether its character is still to spawn
     self.AccountRoles = {}
     self.PendingRoles = {}
-    -- the round's own seat counts, which BureaucraticError may change
-    self.RoleSlots = {}
+    -- the round's own seats: the map's RoleSlots over the config's, then BureaucraticError may change them
+    self.Seats = {}
     for id, role in pairs(self.Roles) do
-        self.RoleSlots[id] = role.Slots or math.huge
+        self.Seats[id] = self.RoleSlots ~= nil and tonumber(self.RoleSlots[id]) or role.Slots or math.huge
     end
     local settings = Game.ServerSettings
     settings.MissionTypes = "VoidTraitorStation"
@@ -333,7 +333,7 @@ function gm:HasRoleSeat(client, id, counts)
     if role == nil or not JobPrefab.Prefabs.ContainsKey(role.Job) or client.Karma < JobPrefab.Get(role.Job).MinKarma then
         return false
     end
-    return (counts[id] or 0) < self.RoleSlots[id]
+    return (counts[id] or 0) < self.Seats[id]
 end
 
 -- the role the player wants most among those with a free seat, a random one of equals; a passenger otherwise

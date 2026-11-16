@@ -23,7 +23,7 @@ end
 event.Start = function ()
     local mode = Traitormod.SelectedGamemode
     -- heads stay one each, and passengers take anyone anyway
-    local slots, roles = mode.RoleSlots, {}
+    local slots, roles = mode.Seats, {}
     for id, role in pairs(mode.Roles) do
         if role.Head == nil and not role.Passenger then roles[#roles + 1] = id end
     end
