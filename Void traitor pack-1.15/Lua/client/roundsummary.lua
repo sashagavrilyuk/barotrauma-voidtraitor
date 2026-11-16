@@ -4,6 +4,8 @@ local packPath, Common = ...
 local NET_SUMMARY = "VoidTraitor_RoundSummary"
 local STATE_KEY = "VoidTraitorRoundSummaryState"
 local HUD_PATCH_ID = "VoidTraitor.RoundSummary.Hud"
+local LOBBY_PATCH_ID = "VoidTraitor.RoundSummary.Lobby"
+local VANILLA_PATCH_ID = "VoidTraitor.RoundSummary.Vanilla"
 
 local previousState = rawget(_G, STATE_KEY)
 if previousState ~= nil then
@@ -15,6 +17,8 @@ local state = { Disabled = false }
 _G[STATE_KEY] = state
 
 local currentMenu = nil
+-- the last summary the server sent, which F9 opens again
+local lastSummary = nil
 local summaryList = nil
 local resizeTopTargets = {}
 local resizeBottomTargets = {}
@@ -181,13 +185,30 @@ end
 Common.InstallHudPatch(HUD_PATCH_ID, STATE_KEY, MENU_DRAW_ORDER, MENU_DRAW_ORDER)
 
 Networking.Receive(NET_SUMMARY, function(message)
-    showSummary(message.ReadString(), Common.Language.Common.Close)
+    lastSummary = message.ReadString()
+    showSummary(lastSummary, Common.Language.Common.Close)
 end)
 
 Hook.Add("think", "VoidTraitor.RoundSummary.Think", function()
     if state.Disabled then return end
     updateResize()
+    -- F9 opens and closes the last summary, as in SS14; not while typing
+    if lastSummary ~= nil and PlayerInput.KeyHit(Keys.F9) and GUI.KeyboardDispatcher.Subscriber == nil then
+        if currentMenu ~= nil then closeSummary() else showSummary(lastSummary, Common.Language.Common.Close) end
+    end
 end)
 
-Hook.Add("roundEnd", "VoidTraitor.RoundSummary.RoundEnd", closeSummary)
+-- The summary stays open into the lobby until it is closed, as the game's own summary does.
+Hook.Patch(LOBBY_PATCH_ID, "Barotrauma.NetLobbyScreen", "AddToGUIUpdateList", function()
+    if state.Disabled or currentMenu == nil then return end
+    currentMenu:AddToGUIUpdateList(false, MENU_DRAW_ORDER)
+end, Hook.HookMethodType.After)
+
+-- This window replaces the game's round summary; a campaign keeps the game's, which shows its money and next level.
+Hook.Patch(VANILLA_PATCH_ID, "Barotrauma.GameSession", "EndRound", function(instance, ptable)
+    if state.Disabled then return end
+    if instance.GameMode ~= nil and LuaUserData.IsTargetType(instance.GameMode, "Barotrauma.CampaignMode") then return end
+    ptable["createRoundSummary"] = false
+end, Hook.HookMethodType.Before)
+
 Hook.Add("roundStart", "VoidTraitor.RoundSummary.RoundStart", closeSummary)

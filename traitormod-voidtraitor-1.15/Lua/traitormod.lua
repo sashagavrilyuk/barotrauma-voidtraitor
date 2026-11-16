@@ -254,7 +254,7 @@ Hook.Add("missionsEnded", "Traitormod.MissionsEnded", function(missions)
         endMessage = Traitormod.SelectedGamemode:RoundSummary()
 
         if not Traitormod.SelectedGamemode.UsesSecretRules or Traitormod.SelectedGamemode.FinalSummary == nil then
-            Traitormod.SendMessageEveryone(Traitormod.HighlightClientNames(endMessage, Color.Red))
+            Traitormod.SendRoundSummary(endMessage)
         end
     end
     Traitormod.LastRoundSummary = endMessage

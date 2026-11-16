@@ -462,6 +462,13 @@ Traitormod.SendMessageEveryone = function (text, popup)
     end
 end
 
+-- the round summary window of every client (Lua/client/roundsummary.lua in the pack), instead of the chat
+Traitormod.SendRoundSummary = function (summary)
+    local message = Networking.Start("VoidTraitor_RoundSummary")
+    message.WriteString(Traitormod.HighlightClientNames(summary, Color.Red))
+    Networking.Send(message)
+end
+
 Traitormod.SendMessage = function (client, text, icon)
     if not client or not text or text == "" then
         return

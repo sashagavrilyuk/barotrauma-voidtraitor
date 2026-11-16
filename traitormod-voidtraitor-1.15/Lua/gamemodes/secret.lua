@@ -10,8 +10,6 @@ local respawnManagerDescriptor = Descriptors["Barotrauma.Networking.RespawnManag
 LuaUserData.MakeFieldAccessible(respawnManagerDescriptor, "teamSpecificStates")
 LuaUserData.RegisterType("System.Collections.Generic.Dictionary`2[[Barotrauma.CharacterTeamType],[Barotrauma.Networking.RespawnManager+TeamSpecificState]], System.Collections")
 
-local summaryNetMessage = "VoidTraitor_RoundSummary"
-local lobbySummaryPending = nil
 local missionDescriptors = {}
 
 gm.Name = "Secret"
@@ -100,12 +98,6 @@ local function respawnPending()
 end
 
 
-local function sendSummaryPopup(client, summary)
-    local message = Networking.Start(summaryNetMessage)
-    message.WriteString(Traitormod.HighlightClientNames(summary, Color.Red))
-    Networking.Send(message, client.Connection)
-end
-
 function gm:CharacterDeath(character)
     if self.Ending then return end
     local client = Traitormod.FindClientCharacter(character)
@@ -168,7 +160,6 @@ function gm:Start()
     end
     -- set it here too, otherwise the crew-down check could end a solo test round before antagonists are picked
     self:UpdateTestMode(crewCount)
-    lobbySummaryPending = nil
 
     if self.EnableRandomEvents then
         Traitormod.RoundEvents.Initialize(nil, self.Name)
@@ -672,7 +663,6 @@ function gm:BeginEnding(reason, transitionType, viaCampaignTransition)
 
     self.FinalSummary = self:RoundSummary()
     Traitormod.LastRoundSummary = self.FinalSummary
-    lobbySummaryPending = self.FinalSummary
 
     local delay = self.EndGameDelaySeconds or 0
     local message = string.format(Traitormod.Language.SecretRoundEndingCountdown, delay)
@@ -684,9 +674,7 @@ function gm:BeginEnding(reason, transitionType, viaCampaignTransition)
 
     Traitormod.SendMessageEveryone(message)
 
-    for _, client in pairs(Client.ClientList) do
-        sendSummaryPopup(client, self.FinalSummary)
-    end
+    Traitormod.SendRoundSummary(self.FinalSummary)
 
     if Traitormod.Discord then
         Traitormod.Discord.AnnounceRoundEnded(Traitormod.RoundTime)
@@ -829,13 +817,6 @@ Hook.Patch("Traitormod.Secret.EndRoundTimer", "Barotrauma.Networking.GameServer"
     local remaining = selected.CrewDownEndsAt ~= nil and selected.CrewDownEndsAt - Timer.GetTime() or delay
     instance.EndRoundTimer = math.max(delay - math.max(remaining, 1), 0.01)
 end, Hook.HookMethodType.Before)
-
-Hook.Patch("Traitormod.Secret.EndGame.After", "Barotrauma.Networking.GameServer", "EndGame", function ()
-    if lobbySummaryPending == nil or Game.RoundStarted then return end
-
-    Traitormod.SendMessageEveryone(Traitormod.HighlightClientNames(lobbySummaryPending, Color.Red))
-    lobbySummaryPending = nil
-end, Hook.HookMethodType.After)
 
 
 return gm
