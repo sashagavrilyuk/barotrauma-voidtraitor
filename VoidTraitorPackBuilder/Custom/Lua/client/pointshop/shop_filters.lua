@@ -76,9 +76,6 @@ function P.ToggleFilterPopup(button)
             return true
         end
     end
-
-    -- Keep the popup above the product list in both draw and input order.
-    popup:AddToGUIUpdateList(false, P.GUI_DRAW_ORDER + 60)
 end
 
 -- A heading line above the drop-down and the text box.

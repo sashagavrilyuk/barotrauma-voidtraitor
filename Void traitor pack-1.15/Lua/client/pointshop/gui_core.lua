@@ -59,7 +59,6 @@ S.filterPopup = nil
 S.filterButton = nil
 
 P.GLOBAL_STATE_KEY = "VoidTraitorPointshopGuiState"
-P.HUD_PATCH_ID = "VoidTraitor.PointshopGui.Hud"
 P.PAUSE_PATCH_ID = "VoidTraitor.PointshopGui.Pause"
 
 local previousState = rawget(_G, P.GLOBAL_STATE_KEY)
@@ -142,7 +141,6 @@ P.ShowMenu = function()
     S.cartPanelRoot = P.BuildCartPanel(overlay)
     -- laid out now, or the list's rows show unplaced for a frame (lobby/menu_window.lua)
     S.cartPanelRoot.ForceLayoutRecalculation()
-    S.guiRoot:AddToGUIUpdateList(false, P.GUI_DRAW_ORDER)
 end
 
 function P.SendReady()
@@ -166,13 +164,11 @@ S.guiRoot.Color = Color(0, 0, 0, 0)
 S.guiRoot.CanBeFocused = false
 S.guiRoot.IgnoreLayoutGroups = true
 S.sharedState.GuiRoot = S.guiRoot
-S.guiRoot:AddToGUIUpdateList(false, P.GUI_DRAW_ORDER)
 
--- Reinsert the root when Barotrauma rebuilds the GUI update list.
-Hook.Patch(P.HUD_PATCH_ID, "Barotrauma.GameSession", "AddToGUIUpdateList", function()
+Common.AddWindowLayer(P.GUI_DRAW_ORDER, function()
     local state = rawget(_G, P.GLOBAL_STATE_KEY)
     if state ~= nil and state.GuiRoot ~= nil and not state.Disabled then
-        state.GuiRoot:AddToGUIUpdateList(false, P.GUI_DRAW_ORDER)
+        state.GuiRoot:AddToGUIUpdateList(false, 0)
     end
 end)
 

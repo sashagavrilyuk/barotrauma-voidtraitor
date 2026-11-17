@@ -49,8 +49,7 @@ local stateCheckTimer = 0
 
 local text = Common.Language.CameraTeleport
 
-local MENU_DRAW_ORDER = 122
-local BUTTON_DRAW_ORDER = 121
+local MENU_LAYER = 122
 local MENU_WIDTH_PIXELS = 370
 local DEFAULT_HEIGHT_PIXELS = 420
 local MIN_HEIGHT_PIXELS = 320
@@ -152,7 +151,6 @@ local function CreateBottomButton()
 
     buttonRoot = bottomButton
     sharedState.ButtonRoot = buttonRoot
-    buttonRoot:AddToGUIUpdateList(false, BUTTON_DRAW_ORDER)
 end
 
 local function EnsureBottomButton()
@@ -304,7 +302,6 @@ local function ShowMenu()
     BuildPanel(currentMenu)
     -- laid out now, or the list's rows show unplaced for a frame (lobby/menu_window.lua)
     currentMenu.ForceLayoutRecalculation()
-    currentMenu:AddToGUIUpdateList(false, MENU_DRAW_ORDER)
     UpdateBottomButton()
 end
 
@@ -358,7 +355,7 @@ local function UpdateMenuInteraction()
     )
 end
 
-Common.InstallHudPatch(HUD_PATCH_ID, GLOBAL_STATE_KEY, MENU_DRAW_ORDER, BUTTON_DRAW_ORDER)
+Common.InstallHudPatch(HUD_PATCH_ID, GLOBAL_STATE_KEY, MENU_LAYER)
 Common.InstallPausePatch(PAUSE_PATCH_ID, GLOBAL_STATE_KEY)
 
 Hook.Add("think", "VoidTraitor.CameraTeleportGui.Think", function(deltaTime)

@@ -63,15 +63,17 @@ Hook.Patch(P.HUD_PATCH_ID, "Barotrauma.GameSession", "AddToGUIUpdateList", funct
     if state == nil or state.Disabled then return end
     if GUI.DisableHUD then return end
 
-    if state.GuiRoot ~= nil then
-        state.GuiRoot:AddToGUIUpdateList(false, P.MENU_DRAW_ORDER)
-    end
     if state.ButtonRoot == nil and state.EnsureTopButtons ~= nil then
         state.EnsureTopButtons()
     end
     if state.ButtonRoot ~= nil then
         state.ButtonRoot:AddToGUIUpdateList(false, P.BUTTON_DRAW_ORDER)
     end
+end)
+
+P.Common.AddWindowLayer(P.MENU_LAYER, function()
+    local state = rawget(_G, P.GLOBAL_STATE_KEY)
+    if state ~= nil and not state.Disabled and state.GuiRoot ~= nil then state.GuiRoot:AddToGUIUpdateList(false, 0) end
 end)
 
 -- The respawn text normally sits in the top-left button row, where the SHOP and VT buttons are.

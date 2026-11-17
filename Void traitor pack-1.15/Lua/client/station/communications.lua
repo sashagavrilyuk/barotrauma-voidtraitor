@@ -24,7 +24,7 @@ function UI.CloseMenu()
         character.SelectedItem = nil
     end
     Common.RemoveGuiComponent(UI.MenuRoot)
-    UI.MenuRoot, UI.CurrentMenu, UI.ItemId, UI.Update, UI.Picker = nil, nil, nil, nil, nil
+    UI.MenuRoot, UI.CurrentMenu, UI.ItemId, UI.Update = nil, nil, nil, nil
     UI.SelectedItem = nil
 end
 
@@ -64,7 +64,6 @@ function UI.Show(itemId, snapshot)
     Common.CreateDivider(layout)
     local picker = GUI.DropDown(Common.CreateRect(1, 1, layout), "", 5)
     Common.SetFixedHeight(picker, Common.GetStyleHeight("GUIDropDown"))
-    UI.Picker = picker
     for _, code in ipairs(codes) do picker.AddItem(text[code], code) end
     picker.OnSelected = function(_, code) UI.Send("code", code) return true end
     Common.CreateDivider(layout)
@@ -108,10 +107,8 @@ Networking.Receive("VoidTraitor_CommunicationsSnapshot", function(message)
     if character ~= nil and UI.SelectedItem ~= nil and UI.SelectedItem.ID == itemId
         and character.SelectedItem == UI.SelectedItem then UI.Show(itemId, snapshot) end
 end)
-Hook.Patch("VoidTraitor.Communications.Hud", "Barotrauma.GameSession", "AddToGUIUpdateList", function()
-    if UI.Disabled or UI.MenuRoot == nil or GUI.DisableHUD then return end
-    UI.MenuRoot:AddToGUIUpdateList(false, 120)
-    if UI.Picker.Dropped then UI.Picker.ListBox:AddToGUIUpdateList(false, 121) end
+Common.AddWindowLayer(120, function()
+    if not UI.Disabled and UI.MenuRoot ~= nil then UI.MenuRoot:AddToGUIUpdateList(false, 0) end
 end)
 Common.InstallPausePatch("VoidTraitor.Communications.Pause", "VoidTraitorCommunicationsGuiState")
 Hook.Patch("VoidTraitor.Communications.Inventory", "Barotrauma.CharacterHUD", "LockInventory", { "Barotrauma.Character" }, function(_, parameters)

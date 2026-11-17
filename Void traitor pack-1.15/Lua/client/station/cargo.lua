@@ -331,10 +331,8 @@ Networking.Receive("VoidTraitor_CargoSnapshot", function(message)
     end
 end)
 
-Hook.Patch("VoidTraitor.Cargo.Hud", "Barotrauma.GameSession", "AddToGUIUpdateList", function()
-    if UI.Disabled or UI.MenuRoot == nil or GUI.DisableHUD then return end
-    UI.MenuRoot:AddToGUIUpdateList(false, P.GUI_DRAW_ORDER)
-    if S.filterPopup ~= nil then S.filterPopup:AddToGUIUpdateList(false, P.GUI_DRAW_ORDER + 60) end
+Common.AddWindowLayer(P.GUI_DRAW_ORDER, function()
+    if not UI.Disabled and UI.MenuRoot ~= nil then UI.MenuRoot:AddToGUIUpdateList(false, 0) end
 end)
 Common.InstallPausePatch("VoidTraitor.Cargo.Pause", "VoidTraitorCargoGuiState")
 Hook.Patch("VoidTraitor.Cargo.Inventory", "Barotrauma.CharacterHUD", "LockInventory", { "Barotrauma.Character" }, function(_, parameters)

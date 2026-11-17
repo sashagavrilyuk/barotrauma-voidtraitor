@@ -80,7 +80,8 @@ P.MenuText = menuText
 
 -- same draw order as the vanilla top-left buttons, so the debug console stays on top
 P.BUTTON_DRAW_ORDER = 0
-P.MENU_DRAW_ORDER = 125
+-- the menu's windows and the vote popups of a round (Common.AddWindowLayer)
+P.MENU_LAYER = 125
 LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.GameSession"], "deathChoiceInfoFrame")
 LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.GameSession"], "respawnInfoText")
 LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.GameSession"], "deathChoiceButtonContainer")
@@ -119,7 +120,6 @@ S.guiRoot.Color = Color(0, 0, 0, 0)
 S.guiRoot.CanBeFocused = false
 S.guiRoot.IgnoreLayoutGroups = true
 S.sharedState.GuiRoot = S.guiRoot
-S.guiRoot:AddToGUIUpdateList(false, P.MENU_DRAW_ORDER)
 
 -- The top buttons continue the row of three vanilla HUD buttons (GameSession.CreateTopLeftButtons)
 -- with the same size and spacing.

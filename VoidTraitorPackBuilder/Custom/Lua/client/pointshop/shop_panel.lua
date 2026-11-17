@@ -76,7 +76,6 @@ function P.BuildShopPanel(overlay)
             list:UpdateScrollBarSize()
             -- the list draws its new rows this frame, before their own update would lay them out (GUIListBox.Draw)
             list.ForceLayoutRecalculation()
-            S.guiRoot:AddToGUIUpdateList(false, P.GUI_DRAW_ORDER)
         end
         S.rebuildProductList = populateProductList
         populateProductList()

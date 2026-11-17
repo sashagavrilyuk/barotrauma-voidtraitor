@@ -11,7 +11,7 @@ local text = Common.Language.Speakers
 local STATE_KEY = "VoidTraitorSpeakersState"
 local RADIO_STATE_KEY = "VoidTraitorRadioState"
 local PATCH_ID = "VoidTraitor.Speakers"
-local MENU_DRAW_ORDER, HUD_DRAW_ORDER = 124, 4
+local MENU_LAYER, HUD_DRAW_ORDER = 124, 4
 local SETTINGS_FILE = "VoidTraitorSpeakers.txt"
 -- loudness (amplitude × gain × the player's volume) from which a client counts as speaking, as in the original
 local SPEAKING_THRESHOLD = 0.01
@@ -326,7 +326,6 @@ function UI.CloseMenu()
     Common.RemoveGuiComponent(UI.MenuRoot)
     UI.MenuRoot = nil
     UI.CurrentMenu = nil
-    UI.Picker = nil
 end
 
 local function openSettings()
@@ -350,7 +349,6 @@ local function openSettings()
         save()
         return true
     end
-    UI.Picker = picker
     local move = Common.CreateButton(layout, 1, text.Move)
     Common.SetFixedHeight(move, Common.GetStyleHeight("GUIButton"))
     move.ToolTip = text.MoveTooltip
@@ -404,10 +402,9 @@ end, Hook.HookMethodType.After)
 Hook.Patch(PATCH_ID, "Barotrauma.GameSession", "AddToGUIUpdateList", function()
     if UI.Disabled or GUI.DisableHUD then return end
     UI.ButtonRoot:AddToGUIUpdateList(false, HUD_DRAW_ORDER)
-    if UI.MenuRoot ~= nil then
-        UI.MenuRoot:AddToGUIUpdateList(false, MENU_DRAW_ORDER)
-        if UI.Picker.Dropped then UI.Picker.ListBox:AddToGUIUpdateList(false, MENU_DRAW_ORDER + 1) end
-    end
+end)
+Common.AddWindowLayer(MENU_LAYER, function()
+    if not UI.Disabled and UI.MenuRoot ~= nil then UI.MenuRoot:AddToGUIUpdateList(false, 0) end
 end)
 Common.InstallPausePatch(PATCH_ID .. ".Pause", STATE_KEY)
 

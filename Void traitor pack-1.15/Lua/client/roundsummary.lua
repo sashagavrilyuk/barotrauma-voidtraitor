@@ -41,7 +41,7 @@ local MANIFEST_WIDTH_PIXELS = 660
 local DEFAULT_HEIGHT_PIXELS = 630
 local MIN_WIDTH_PIXELS = 370
 local MIN_HEIGHT_PIXELS = 370
-local MENU_DRAW_ORDER = 124
+local MENU_LAYER = 124
 local ANTAGONIST_COLOR = Color(255, 95, 90, 255)
 local OBSERVER_COLOR = Color(150, 150, 145, 255)
 local PLAYER_COLOR = Color(185, 185, 175, 255)
@@ -361,10 +361,9 @@ local function showSummary(summary, manifest, closeText)
     addResizeHandles(panel)
     -- laid out now, or the lists' rows show unplaced for a frame (lobby/menu_window.lua)
     currentMenu.ForceLayoutRecalculation()
-    currentMenu:AddToGUIUpdateList(false, MENU_DRAW_ORDER)
 end
 
-Common.InstallHudPatch(HUD_PATCH_ID, STATE_KEY, MENU_DRAW_ORDER, MENU_DRAW_ORDER)
+Common.InstallHudPatch(HUD_PATCH_ID, STATE_KEY, MENU_LAYER)
 
 Networking.Receive(NET_SUMMARY, function(message)
     lastSummary = message.ReadString()
@@ -389,10 +388,11 @@ Hook.Add("think", "VoidTraitor.RoundSummary.Think", function()
     end
 end)
 
--- The summary stays open into the lobby until it is closed, as the game's own summary does.
+-- The summary stays open into the lobby until it is closed, as the game's own summary does. After the lobby's own
+-- frame and at order 0, so the game's message boxes stay above it (Common.AddWindowLayer).
 Hook.Patch(LOBBY_PATCH_ID, "Barotrauma.NetLobbyScreen", "AddToGUIUpdateList", function()
     if state.Disabled or currentMenu == nil then return end
-    currentMenu:AddToGUIUpdateList(false, MENU_DRAW_ORDER)
+    currentMenu:AddToGUIUpdateList(false, 0)
 end, Hook.HookMethodType.After)
 
 -- This window replaces the game's round summary; a campaign keeps the game's, which shows its money and next level.

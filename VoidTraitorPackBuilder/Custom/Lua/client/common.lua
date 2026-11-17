@@ -691,10 +691,11 @@ function Common.IsConnected()
     return Game.Client ~= nil
 end
 
--- How far above the bottom edge the spectator windows' buttons go: an admin ghost has its hotbar there.
+-- How far above the bottom edge the spectator windows' buttons go: on the chat input's row, or above an admin
+-- ghost's hotbar.
 function Common.GetBottomButtonLift()
-    if not Common.IsAdminGhost() then return 0 end
     local _, height = Common.GetScreenSize()
+    if not Common.IsAdminGhost() then return height - Game.Client.ChatBox.InputBox.Rect.Bottom end
     local top = height
     for position in Character.Controlled.Inventory.SlotPositions do
         if position.Y > height / 2 and position.Y < top then top = position.Y end
@@ -724,18 +725,35 @@ function Common.UpdateSelectedItemMenu(state, identifier, onSelected)
     return item
 end
 
-function Common.InstallHudPatch(patchIdentifier, stateKey, menuDrawOrder, buttonDrawOrder)
+-- The windows of a round go above the HUD and the chat but under what the game keeps on top of everything: message
+-- boxes, context menus and the pause menu, which it adds at order 0 after the screen and the client's HUD
+-- (GUI.HandlePersistingElements in GUI.Update), and drop-down lists, which it adds at order 1. A window at an order
+-- above 0 would cover them and take their clicks, so the windows are added at order 0 right after the client's HUD.
+-- Each module gives a function that adds its open windows; they run in the order of their layer, so a window of a
+-- higher layer is drawn over one of a lower layer, and ones of the same layer in the order they were given.
+local windowLayers = {}
+
+function Common.AddWindowLayer(layer, addWindows)
+    local index = #windowLayers + 1
+    while index > 1 and windowLayers[index - 1].Layer > layer do index = index - 1 end
+    table.insert(windowLayers, index, { Layer = layer, Add = addWindows })
+end
+
+Hook.Patch("VoidTraitor.WindowLayers", "Barotrauma.Networking.GameClient", "AddToGUIUpdateList", function()
+    if GUI.DisableHUD or GUI.Screen.Selected ~= Game.GameScreen then return end
+    for _, entry in ipairs(windowLayers) do entry.Add() end
+end, Hook.HookMethodType.After)
+
+-- The module's buttons go with the HUD, its window into the window layers.
+function Common.InstallHudPatch(patchIdentifier, stateKey, menuLayer)
     Hook.Patch(patchIdentifier, "Barotrauma.GameSession", "AddToGUIUpdateList", function()
         local state = rawget(_G, stateKey)
-        if state == nil or state.Disabled then return end
-        if GUI.DisableHUD then return end
-
-        if state.MenuRoot ~= nil then
-            state.MenuRoot:AddToGUIUpdateList(false, menuDrawOrder)
-        end
-        if state.ButtonRoot ~= nil then
-            state.ButtonRoot:AddToGUIUpdateList(false, buttonDrawOrder)
-        end
+        if state == nil or state.Disabled or GUI.DisableHUD or state.ButtonRoot == nil then return end
+        state.ButtonRoot:AddToGUIUpdateList(false, 0)
+    end)
+    Common.AddWindowLayer(menuLayer, function()
+        local state = rawget(_G, stateKey)
+        if state ~= nil and not state.Disabled and state.MenuRoot ~= nil then state.MenuRoot:AddToGUIUpdateList(false, 0) end
     end)
 end
 

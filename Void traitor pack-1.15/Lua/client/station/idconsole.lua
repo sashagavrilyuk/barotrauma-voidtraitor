@@ -22,7 +22,6 @@ local function removeMenu()
     UI.AwaitingOpen = false
     Common.RemoveGuiComponent(UI.MenuRoot)
     UI.MenuRoot, UI.CurrentMenu, UI.ItemId, UI.Update = nil, nil, nil, nil
-    UI.Popups = {}
     UI.ResizeState, UI.ResizeTop, UI.ResizeBottom, UI.ResizeSides, UI.Rights = nil, nil, nil, nil, nil
 end
 
@@ -45,7 +44,7 @@ function UI.Show(itemId, snapshot)
     local width = math.floor(Common.FitWindowWidth(screenWidth * 0.58, 760, screenWidth * 0.04))
     local height = math.floor(Common.FitWindowHeight(screenHeight * 0.70, 460, screenHeight * 0.04))
     local root = GUI.Frame(GUI.RectTransform(Point(width, height), nil, GUI.Anchor.Center), "GUIFrame")
-    UI.MenuRoot, UI.CurrentMenu, UI.Popups = root, root, {}
+    UI.MenuRoot, UI.CurrentMenu = root, root
     local layout, frame = Common.CreateWindowContent(root)
     local gap, buttonHeight = Common.GetGap(), Common.GetStyleHeight("GUIButton")
     -- Rows with the vanilla button height: labels stay centred on their text boxes.
@@ -82,7 +81,6 @@ function UI.Show(itemId, snapshot)
         local row = createRow(content)
         local picker = GUI.DropDown(Common.CreateRect(0.60, 1, row), text.Choose, 5)
         Common.SetFixedHeight(picker, Common.GetStyleHeight("GUIDropDown"))
-        UI.Popups[#UI.Popups + 1] = picker
         local transfer = Common.CreateButton(row, 0.38, text.Insert)
         cardHeight = math.max(cardHeight, Common.GetMinimumHeight(cardLayout))
         transfer.OnClicked = function()
@@ -112,7 +110,6 @@ function UI.Show(itemId, snapshot)
     local preset = GUI.DropDown(Common.CreateRect(0.54, 1, presetRow), text.Preset, 6)
     Common.SetFixedHeight(preset, Common.GetStyleHeight("GUIDropDown"))
     createSpacer(presetRow, 0.21)
-    UI.Popups[#UI.Popups + 1] = preset
     for _, entry in ipairs(snapshot.Presets) do preset.AddItem(entry.Name, entry.Id) end
     -- The access list is the only row that grows. Columns are as wide as the longest label,
     -- and as many fit as the window width allows.
@@ -289,11 +286,8 @@ Networking.Receive("VoidTraitor_IdConsoleSnapshot", function(message)
         and (UI.AwaitingOpen or UI.ItemId == itemId) then UI.Show(itemId, snapshot) end
 end)
 
--- Vanilla drop-downs draw their popup at order 1, under this window, so open popups are added again above it.
-Hook.Patch("VoidTraitor.IdConsole.Hud", "Barotrauma.GameSession", "AddToGUIUpdateList", function()
-    if UI.Disabled or UI.MenuRoot == nil or GUI.DisableHUD then return end
-    UI.MenuRoot:AddToGUIUpdateList(false, 120)
-    for _, popup in ipairs(UI.Popups) do if popup.Visible and popup.Dropped then popup.ListBox:AddToGUIUpdateList(false, 121) end end
+Common.AddWindowLayer(120, function()
+    if not UI.Disabled and UI.MenuRoot ~= nil then UI.MenuRoot:AddToGUIUpdateList(false, 0) end
 end)
 Common.InstallPausePatch("VoidTraitor.IdConsole.Pause", "VoidTraitorIdConsoleGuiState")
 Hook.Patch("VoidTraitor.IdConsole.Inventory", "Barotrauma.CharacterHUD", "LockInventory", { "Barotrauma.Character" }, function(_, parameters)

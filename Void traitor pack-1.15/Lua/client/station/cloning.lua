@@ -134,10 +134,11 @@ Networking.Receive("VoidTraitor_CloneConsent", function(message)
     if not message.ReadBoolean() then UI.CloseConsent() return end
     UI.ShowConsent(message.ReadString(), message.ReadString(), message.ReadString(), message.ReadString())
 end)
-Hook.Patch("VoidTraitor.Cloning.Hud", "Barotrauma.GameSession", "AddToGUIUpdateList", function()
-    if UI.Disabled or GUI.DisableHUD then return end
-    if UI.MenuRoot ~= nil then UI.MenuRoot:AddToGUIUpdateList(false, 120) end
-    if UI.ConsentRoot ~= nil then UI.ConsentRoot:AddToGUIUpdateList(false, 125) end
+Common.AddWindowLayer(120, function()
+    if not UI.Disabled and UI.MenuRoot ~= nil then UI.MenuRoot:AddToGUIUpdateList(false, 0) end
+end)
+Common.AddWindowLayer(125, function()
+    if not UI.Disabled and UI.ConsentRoot ~= nil then UI.ConsentRoot:AddToGUIUpdateList(false, 0) end
 end)
 Common.InstallPausePatch("VoidTraitor.Cloning.Pause", "VoidTraitorCloningGuiState")
 Hook.Patch("VoidTraitor.Cloning.Inventory", "Barotrauma.CharacterHUD", "LockInventory", { "Barotrauma.Character" }, function(_, parameters)
