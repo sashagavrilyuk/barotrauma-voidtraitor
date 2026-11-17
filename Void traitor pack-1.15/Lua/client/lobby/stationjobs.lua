@@ -43,13 +43,6 @@ local function roleName(id, role)
     return roleText("jobname.", id, role)
 end
 
-local function duration(minutes)
-    local hours = math.floor(minutes / 60)
-    if hours == 0 then return string.format(text.StationMinutes, minutes) end
-    if minutes % 60 == 0 then return string.format(text.StationHours, hours) end
-    return string.format(text.StationHoursMinutes, hours, minutes % 60)
-end
-
 -- for the admin's role time window (roletimes.lua)
 function P.GetStationRoleName(id)
     return roleName(id, S.stationJobs.Roles[id])
@@ -60,7 +53,7 @@ local function roleTooltip(id, role)
     if role.Karma > 0 then description = description .. "\n" .. string.format(text.StationNeedKarma, role.Karma) end
     for _, need in ipairs(role.Missing) do
         local target = need.Kind == ROLE and roleName(need.Id, S.stationJobs.Roles[need.Id]) or text.StationDepartments[need.Id]
-        description = description .. "\n" .. string.format(text.StationNeedTime[need.Kind + 1], duration(need.Minutes), target)
+        description = description .. "\n" .. string.format(text.StationNeedTime[need.Kind + 1], Common.FormatMinutes(need.Minutes), target)
     end
     return description
 end

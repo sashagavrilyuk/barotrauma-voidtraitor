@@ -1,81 +1,164 @@
 if SERVER then return end
 
--- The crew tab of the Tab menu in Station, as SS14's crew manifest on the PDA: the station's crew by department, each
--- with the role it was given and that role's icon. It shows no one else (ghost roles, creatures, spectators) and no
--- state such as death. The server sends the list (traitormod Lua/gamemodes/station/station.lua, gm:SendCrew) when it
--- changes and to a player who joins; outside Station the tab stays the game's own.
+-- The crew tab of the Tab menu in Station, as SS14's crew manifest on the PDA: the station's crew by department, heads
+-- first, each with the role it was given and that role's icon. It shows no one else (ghost roles, creatures,
+-- spectators) and no state such as death. Beside it, what the whole station knows: the shift's time, the alert code,
+-- the evacuation shuttle, the crew's size and the seats each role has left. The server sends it all (traitormod
+-- Lua/gamemodes/station/station.lua, gm:SendCrew) when it changes and to a player who joins; outside Station the tab
+-- stays the game's own.
 local _, Common = ...
 local text = Common.Language.Lobby
 
 local NET_CREW = "VoidTraitor_StationCrew"
 local PATCH_ID = "VoidTraitor.CrewManifest"
 local ROW_HEIGHT_PIXELS = 33
--- the game's crew tab columns (TabMenu.CreateMultiPlayerListContentHolder): job, name; the role takes the rest
-local JOB_COLUMN, NAME_COLUMN = 0.138, 0.45
+-- the list keeps the left part of the tab and the station panel the right, with a gap between them
+local LIST_WIDTH, PANEL_WIDTH = 0.6, 0.38
+-- the share of the list's width the names take; the role follows them
+local NAME_COLUMN = 0.4
+local MUTED_COLOR = Color(170, 168, 155, 255)
+local TRANSPARENT = Color(0, 0, 0, 0)
 
 LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.TabMenu"], "crewListArray")
-local forceUpperCase = LuaUserData.CreateEnumTable("Barotrauma.ForceUpperCase")
 
 -- { { Id, Members = { { Name, Role, Job } } } } during a Station round; Common.StationCrew tells other modules that the
 -- round is Station's
 Common.StationCrew = nil
--- the crew list of the open Tab menu, filled again when the server sends a new list
-local shownList = nil
+-- { Crew, StartTime, Alert, AlertColor, Evacuation, Free = { { Role, Job, Seats } } } from the same message
+local station = nil
+-- the crew list and the station panel of the open Tab menu, filled again when the server sends a new list
+local shownList, shownPanel = nil, nil
 
-local function addMember(list, member, height)
-    local frame = GUI.Frame(GUI.RectTransform(Point(list.Content.Rect.Width, height), list.Content.RectTransform), "ListBoxElement")
-    frame.Color = Color(0, 0, 0, 0)
-    -- not selectable: the game's character card would show the real job
-    frame.CanBeFocused = false
-    local row = GUI.LayoutGroup(GUI.RectTransform(Vector2(1, 0.9), frame.RectTransform, GUI.Anchor.Center), true, GUI.Anchor.CenterLeft)
-    row.Stretch = true
-    row.AbsoluteSpacing = 2
-    row.CanBeFocused = false
-    local jobWidth = math.floor(list.Content.Rect.Width * JOB_COLUMN)
-    local job = JobPrefab.Prefabs.ContainsKey(member.Job) and JobPrefab.Get(member.Job) or nil
-    local sprite = Common.GetRoleIcon(member.Role, member.Job, true)
-    local iconHolder = GUI.Frame(GUI.RectTransform(Point(jobWidth, row.Rect.Height), row.RectTransform), nil)
-    iconHolder.Color = Color(0, 0, 0, 0)
-    iconHolder.CanBeFocused = false
-    if sprite ~= nil then
-        local icon = GUI.Image(GUI.RectTransform(Point(row.Rect.Height, row.Rect.Height), iconHolder.RectTransform, GUI.Anchor.Center), sprite, true)
-        icon.Color = job ~= nil and job.UIColor or Color(255, 255, 255, 255)
-        icon.CanBeFocused = false
-    end
-    local name = GUI.TextBlock(GUI.RectTransform(Point(math.floor(list.Content.Rect.Width * NAME_COLUMN), row.Rect.Height), row.RectTransform),
-        member.Name, job ~= nil and job.UIColor or nil, nil, GUI.Alignment.Center)
-    name.OverflowClip = true
-    name.CanBeFocused = false
-    local role = GUI.TextBlock(GUI.RectTransform(Vector2(1, 1), row.RectTransform), TextManager.Get("jobname." .. member.Role).Value,
-        nil, nil, GUI.Alignment.Center)
-    role.OverflowClip = true
-    role.CanBeFocused = false
+-- long names and roles shrink to their column rather than lose their end
+local function createLabel(parent, size, value, color, font, alignment)
+    local label = GUI.TextBlock(GUI.RectTransform(size, parent.RectTransform), value, color, font, alignment)
+    label.CanBeFocused = false
+    Common.SetAutoScaleText(label, 1)
+    return label
 end
 
-local function fill(list)
+-- A row as wide as the list, which sizes its content only in its update, so the row is relative; it starts with the
+-- role's icon in its job's color. Returns the row and the color.
+local function addRow(list, height, roleId, jobId)
+    local job = JobPrefab.Prefabs.ContainsKey(jobId) and JobPrefab.Get(jobId) or nil
+    local color = job ~= nil and job.UIColor or nil
+    local row = GUI.LayoutGroup(Common.CreateRect(1, 1, list.Content), true, GUI.Anchor.CenterLeft)
+    Common.SetFixedHeight(row, height)
+    row.Stretch = true
+    row.AbsoluteSpacing = Common.GetGap()
+    local iconRect = GUI.RectTransform(Point(height, height), row.RectTransform)
+    iconRect.IsFixedSize = true
+    local iconHolder = GUI.Frame(iconRect, nil)
+    iconHolder.Color = TRANSPARENT
+    iconHolder.CanBeFocused = false
+    local sprite = Common.GetRoleIcon(roleId, jobId, true)
+    if sprite ~= nil then
+        local icon = GUI.Image(GUI.RectTransform(Vector2(0.9, 0.9), iconHolder.RectTransform, GUI.Anchor.Center), sprite, true)
+        icon.Color = color or Color(255, 255, 255, 255)
+        icon.CanBeFocused = false
+    end
+    return row, color
+end
+
+-- the name in the job's color, then the role in a column after it
+local function addMember(list, height, member)
+    local row, color = addRow(list, height, member.Role, member.Job)
+    createLabel(row, Vector2(NAME_COLUMN, 1), member.Name, color, nil, GUI.Alignment.CenterLeft)
+    createLabel(row, Vector2(1 - NAME_COLUMN, 1), TextManager.Get("jobname." .. member.Role).Value, MUTED_COLOR, nil, GUI.Alignment.CenterLeft)
+end
+
+-- the role in its job's color and the seats it has left at the right edge, in the small font of a side list
+local function addFreeSeat(list, height, entry)
+    local row, color = addRow(list, height, entry.Role, entry.Job)
+    local font = GUI.Style.SmallFont
+    createLabel(row, Vector2(0.8, 1), TextManager.Get("jobname." .. entry.Role).Value, color, font, GUI.Alignment.CenterLeft)
+    local count = createLabel(row, Vector2(0.2, 1), tostring(entry.Seats), nil, font, GUI.Alignment.CenterRight)
+    Common.SetFixedWidth(count, Common.GetTextHeight(font) * 2)
+end
+
+local function fillList(list)
     list.Content.ClearChildren()
     local height = Common.SafeIntScale(ROW_HEIGHT_PIXELS)
     for _, department in ipairs(Common.StationCrew) do
-        local header = GUI.TextBlock(GUI.RectTransform(Point(list.Content.Rect.Width, height), list.Content.RectTransform),
-            text.StationDepartments[department.Id] or department.Id, Common.StationDepartmentColors[department.Id], GUI.Style.SubHeadingFont, GUI.Alignment.CenterLeft)
+        local color = Common.StationDepartmentColors[department.Id]
+        local header = GUI.Frame(Common.CreateRect(1, 1, list.Content), nil)
+        Common.SetFixedHeight(header, height)
+        header.Color = TRANSPARENT
         header.CanBeFocused = false
-        for _, member in ipairs(department.Members) do addMember(list, member, height) end
+        createLabel(header, Vector2(1, 1), text.StationDepartments[department.Id] or department.Id, color, GUI.Style.SubHeadingFont, GUI.Alignment.CenterLeft)
+        createLabel(header, Vector2(1, 1), tostring(#department.Members), color, GUI.Style.SubHeadingFont, GUI.Alignment.CenterRight)
+        Common.CreateDivider(list.Content).CanBeFocused = false
+        for _, member in ipairs(department.Members) do addMember(list, height, member) end
     end
     list.RecalculateChildren()
     list.UpdateScrollBarSize()
 end
 
--- the column headers above the list, as the game's: job and name, then the role instead of the ping
+-- the station panel takes the list's height to its right
+local function createPanel(list)
+    local rect = GUI.RectTransform(Vector2(PANEL_WIDTH, list.RectTransform.RelativeSize.Y), list.Parent.RectTransform, GUI.Anchor.BottomRight)
+    local frame = GUI.Frame(rect, "GUIFrameListBox")
+    frame.IgnoreLayoutGroups = true
+    frame.CanBeFocused = false
+    local content = Common.CreateWindowContent(frame)
+    local panel = { Frame = frame }
+    local function addTitle(value)
+        local title = Common.CreateText(content, 1, 1, nil, value, GUI.Alignment.CenterLeft, 1, nil, false)
+        title.Font = GUI.Style.SubHeadingFont
+        title.CanBeFocused = false
+        Common.FitHeightToText(title)
+    end
+    -- a label on the left and its value on the right
+    local function addLine(label)
+        local line = GUI.Frame(Common.CreateRect(1, 1, content), nil)
+        line.Color = TRANSPARENT
+        line.CanBeFocused = false
+        Common.SetFixedHeight(line, Common.GetTextHeight(GUI.Style.Font))
+        createLabel(line, Vector2(1, 1), label, MUTED_COLOR, nil, GUI.Alignment.CenterLeft)
+        return createLabel(line, Vector2(1, 1), "", nil, nil, GUI.Alignment.CenterRight)
+    end
+    addTitle(text.StationInfo)
+    panel.Shift = addLine(text.StationShift)
+    panel.Alert = addLine(text.StationAlert)
+    panel.Evacuation = addLine(text.StationEvacuation)
+    panel.Crew = addLine(text.StationCrewSize)
+    Common.CreateDivider(content)
+    addTitle(text.StationFreeSeats)
+    panel.Free = GUI.ListBox(Common.CreateRect(1, 1, content), false, nil, "GUIListBoxNoBorder")
+    panel.Free.Color = TRANSPARENT
+    panel.Free.ContentBackground.Color = TRANSPARENT
+    return panel
+end
+
+local function fillPanel(panel)
+    panel.Shift.Text = Common.FormatMinutes(math.floor((Timer.GetTime() - station.StartTime) / 60))
+    panel.Alert.Text = station.Alert
+    panel.Alert.TextColor = station.AlertColor
+    panel.Evacuation.Text = text.StationEvacuationStates[station.Evacuation] or station.Evacuation
+    panel.Crew.Text = tostring(station.Crew)
+    local list = panel.Free
+    list.Content.ClearChildren()
+    local height = Common.GetTextHeight(GUI.Style.Font)
+    for _, entry in ipairs(station.Free) do addFreeSeat(list, height, entry) end
+    if #station.Free == 0 then
+        Common.FitHeightToText(Common.CreateText(list.Content, 1, 1, nil, text.StationNoFreeSeats, GUI.Alignment.CenterLeft, 1, MUTED_COLOR, false))
+    end
+    list.RecalculateChildren()
+    list.UpdateScrollBarSize()
+end
+
+-- Built in the Tab menu's own update and in a network message, and drawn this frame: laid out now, or the rows would
+-- show unplaced for a frame (lobby/menu_window.lua).
+local function fill()
+    fillList(shownList)
+    fillPanel(shownPanel)
+    shownList.ForceLayoutRecalculation()
+    shownPanel.Frame.ForceLayoutRecalculation()
+end
+
+-- no column headers above the list, as in SS14's manifest
 Hook.Patch(PATCH_ID, "Barotrauma.TabMenu", "CreateMultiPlayerListContentHolder", function(instance, ptable)
     if Common.StationCrew == nil then return end
-    local headerFrame = ptable["headerFrame"]
-    local labels = { { TextManager.Get("tabmenu.job"), JOB_COLUMN }, { TextManager.Get("name"), NAME_COLUMN }, { text.StationCrewRole, 1 - JOB_COLUMN - NAME_COLUMN } }
-    for _, label in ipairs(labels) do
-        local button = GUI.Button(GUI.RectTransform(Vector2(label[2], 1), headerFrame.RectTransform), label[1], GUI.Alignment.Center, "GUIButtonSmallFreeScale")
-        button.TextBlock.Font = GUI.Style.HotkeyFont
-        button.CanBeFocused = false
-        button.ForceUpperCase = forceUpperCase.Yes
-    end
     ptable.PreventExecution = true
 end, Hook.HookMethodType.Before)
 
@@ -84,11 +167,19 @@ end, Hook.HookMethodType.Before)
 Hook.Patch(PATCH_ID, "Barotrauma.TabMenu", "CreateMultiPlayerList", function(instance, ptable)
     if Common.StationCrew == nil then return end
     -- Station has one team, so one list
-    for list in instance.crewListArray do
-        shownList = list
+    local list
+    for teamList in instance.crewListArray do
+        list = teamList
         break
     end
-    fill(shownList)
+    if list ~= shownList then
+        shownList = list
+        -- the list box sizes its content only in its update, as the game's own crew tab does after a resize
+        list.RectTransform.RelativeSize = Vector2(LIST_WIDTH, list.RectTransform.RelativeSize.Y)
+        list.UpdateDimensions()
+        shownPanel = createPanel(list)
+    end
+    fill()
     ptable.PreventExecution = true
 end, Hook.HookMethodType.Before)
 
@@ -101,11 +192,17 @@ Networking.Receive(NET_CREW, function(message)
         end
         crew[#crew + 1] = department
     end
+    station = { Crew = message.ReadUInt16(), StartTime = Timer.GetTime() - message.ReadInt32(), Alert = message.ReadString(),
+        AlertColor = Color(message.ReadByte(), message.ReadByte(), message.ReadByte(), 255), Evacuation = message.ReadString(), Free = {} }
+    for _ = 1, message.ReadByte() do
+        station.Free[#station.Free + 1] = { Role = message.ReadString(), Job = message.ReadString(), Seats = message.ReadByte() }
+    end
     Common.StationCrew = crew
-    if shownList ~= nil then fill(shownList) end
+    if shownList ~= nil then fill() end
 end)
 
 Hook.Add("roundEnd", PATCH_ID, function()
     Common.StationCrew = nil
-    shownList = nil
+    station = nil
+    shownList, shownPanel = nil, nil
 end)

@@ -331,8 +331,24 @@ language.Lobby = {
     StationLoadout = "Снаряжение",
     StationPassengerHint = "Если ни одна из выбранных профессий не достанется, вы станете пассажиром.",
     StationHighHint = "«Высокий» можно поставить только одной профессии.",
-    -- столбец роли во вкладке экипажа (Tab) в Станции
-    StationCrewRole = "Должность",
+    -- панель станции рядом с экипажем во вкладке Tab
+    StationInfo = "Станция",
+    StationShift = "Смена идёт",
+    StationAlert = "Код тревоги",
+    StationEvacuation = "Эвакуация",
+    StationCrewSize = "Экипаж",
+    StationFreeSeats = "Свободные должности",
+    StationNoFreeSeats = "Нет",
+    -- состояние шаттла эвакуации на сервере (traitormod gamemodes/station/evacuation.lua)
+    StationEvacuationStates = {
+        Unavailable = "недоступна",
+        Parked = "не вызвана",
+        Inbound = "вызвана",
+        Boarding = "у станции",
+        Departing = "у станции",
+        Outbound = "улетела",
+        Returning = "отозвана",
+    },
     StationNeedKarma = "Нужно %d кармы",
     -- time a role still needs: in total, on a role, in a department
     StationNeedTime = {

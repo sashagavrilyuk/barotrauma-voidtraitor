@@ -263,6 +263,15 @@ function Common.GetRoleIcon(roleId, jobId, small)
     return small and (job.IconSmall or job.Icon) or job.Icon
 end
 
+-- minutes as "5 мин", "2 ч" or "2 ч 5 мин"
+function Common.FormatMinutes(minutes)
+    local text = Common.Language.Lobby
+    local hours = math.floor(minutes / 60)
+    if hours == 0 then return string.format(text.StationMinutes, minutes) end
+    if minutes % 60 == 0 then return string.format(text.StationHours, hours) end
+    return string.format(text.StationHoursMinutes, hours, minutes % 60)
+end
+
 -- SS14's department colors, for the Station jobs window and crew list
 Common.StationDepartmentColors = {
     command = Color(110, 151, 201, 255),

@@ -39,6 +39,8 @@ event.Start = function ()
         end
     end
 
+    -- the crew list shows the seats each role has left
+    mode.CrewChanged = true
     mode:SendCoalitionAnnouncement(Traitormod.GetText("BureaucraticError"), "green")
     event.End()
 end

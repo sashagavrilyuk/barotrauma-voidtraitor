@@ -96,7 +96,8 @@ function gm:PreStart()
     -- Player } in the order they were taken; for the round-end manifest and the crew records to come
     self.Records = {}
     self.RecordOf = {}
-    -- the crew list of the Tab menu (crewmanifest.lua in the pack) is sent again when a crew member is added
+    -- the crew list of the Tab menu (crewmanifest.lua in the pack) is sent again when a crew member is added, or when
+    -- the alert code, the evacuation shuttle or the seats change
     self.CrewChanged = false
     self.NextCrewSend = 0
     -- the round's own seats: the map's RoleSlots over the config's, then BureaucraticError may change them
@@ -229,6 +230,7 @@ end
 function gm:SetAlertCode(code)
     if alertCodes[code] == nil or self.AlertCode == code then return false end
     self.AlertCode = code
+    self.CrewChanged = true
     self:SendAlertMessage(Traitormod.GetText(alertCodes[code]), alertColors[code])
     self:PlayAlertSound(code)
     return true
@@ -444,9 +446,12 @@ function gm:RecordCharacter(client, character)
 end
 
 -- SS14's crew manifest, which its PDA shows: the latest crew character of each player with the role it was given, by
--- department; no one else and no state, so it tells no more than the station's records would. Everyone may read it.
+-- department in the order of its roles, so heads first; no one else and no state, so it tells no more than the
+-- station's records would. Everyone may read it, with what the whole station knows: the shift's time, the alert code,
+-- the evacuation shuttle and the seats each role has left. Those are counted from this list, not from the living crew,
+-- as a death, which frees a seat for newcomers, must not show.
 function gm:SendCrew(client)
-    local latest, order = {}, {}
+    local latest, order, taken = {}, {}, {}
     for _, record in ipairs(self.Records) do
         local id = self.RoleCharacters[record.Character]
         if id ~= nil then
@@ -454,13 +459,23 @@ function gm:SendCrew(client)
             latest[record.Account] = { Name = record.Name, Role = id }
         end
     end
-    local departments = {}
+    for _, account in ipairs(order) do
+        local role = latest[account].Role
+        taken[role] = (taken[role] or 0) + 1
+    end
+    local departments, free, listed = {}, {}, {}
     for _, department in ipairs(self.Departments) do
         local members = {}
-        for _, account in ipairs(order) do
-            local member = latest[account]
-            for _, role in ipairs(department.Roles) do
+        for _, role in ipairs(department.Roles) do
+            for _, account in ipairs(order) do
+                local member = latest[account]
                 if member.Role == role then members[#members + 1] = member end
+            end
+            local seats = self.Seats[role]
+            if not listed[role] and seats ~= nil and seats ~= math.huge and not self.Roles[role].Passenger
+                and seats > (taken[role] or 0) then
+                listed[role] = true
+                free[#free + 1] = { Role = role, Seats = seats - (taken[role] or 0) }
             end
         end
         if #members > 0 then departments[#departments + 1] = { Id = department.Id, Members = members } end
@@ -475,6 +490,18 @@ function gm:SendCrew(client)
             message.WriteString(member.Role)
             message.WriteString(self.Roles[member.Role].Job)
         end
+    end
+    message.WriteUInt16(#order)
+    message.WriteInt32(math.floor(Traitormod.RoundTime))
+    message.WriteString(Traitormod.GetText("Comms" .. self.AlertCode))
+    writeColor(message, alertColors[self.AlertCode])
+    self.SentEvacuation = self.EvacuationState.Status
+    message.WriteString(self.SentEvacuation)
+    message.WriteByte(#free)
+    for _, entry in ipairs(free) do
+        message.WriteString(entry.Role)
+        message.WriteString(self.Roles[entry.Role].Job)
+        message.WriteByte(math.min(entry.Seats, 255))
     end
     Networking.Send(message, client ~= nil and client.Connection or nil)
 end
@@ -533,7 +560,7 @@ function gm:Think(deltaTime)
     if not Game.RoundStarted then return end
     self:UpdateCrewDown()
     -- at most once a second, as players spawn in groups
-    if self.CrewChanged and Timer.GetTime() >= self.NextCrewSend then
+    if (self.CrewChanged or self.EvacuationState.Status ~= self.SentEvacuation) and Timer.GetTime() >= self.NextCrewSend then
         self.CrewChanged = false
         self.NextCrewSend = Timer.GetTime() + 1
         self:SendCrew()
