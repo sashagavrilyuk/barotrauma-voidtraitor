@@ -555,13 +555,20 @@ function cm.SendAntagonists(client)
     Networking.Send(netMessage, client.Connection)
 end
 
--- One option per message, at most five a second; the reply carries all of them, so the window shows what is stored.
-local nextAntagonistSetTime = {}
+-- One option per message; the reply carries all of them, so the window shows what is stored. Each one a player sends is
+-- stored: a dropped one would stay ticked in the window until a later reply cleared it. The window has seven options,
+-- so more than ten changes a second is not a player clicking.
+local antagonistSetCounts = {}
 Networking.Receive(vtNet.AntagonistSet, function(message, client)
     local category, key, value = message.ReadString(), message.ReadString(), message.ReadBoolean()
     local now = Timer.GetTime()
-    if (nextAntagonistSetTime[client.SessionId] or 0) > now or not isAntagonistOption(category, key) then return end
-    nextAntagonistSetTime[client.SessionId] = now + 0.2
+    local count = antagonistSetCounts[client.SessionId]
+    if count == nil or now >= count.Ends then
+        count = { Ends = now + 1, Sets = 0 }
+        antagonistSetCounts[client.SessionId] = count
+    end
+    count.Sets = count.Sets + 1
+    if count.Sets > 10 or not isAntagonistOption(category, key) then return end
 
     if category == "Secret" then
         Traitormod.SetData(client, "NonTraitor", not value)
@@ -712,7 +719,7 @@ Hook.Add("client.disconnected", "Traitormod.ClientMenu.Disconnect", function(cli
         Traitormod.Pointshop.ForgetGuiClient(client)
     end
     nextLobbyInfoTime[client.SessionId] = nil
-    nextAntagonistSetTime[client.SessionId] = nil
+    antagonistSetCounts[client.SessionId] = nil
     nextVoteRequest[client.SessionId] = nil
 end)
 
