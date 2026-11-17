@@ -56,6 +56,11 @@ local function buildCommands(parent, entries)
 end
 
 P.ShowVoidTraitorMenu = function()
+local function getMenuWidth(adminTabActive)
+    return P.Common.FitWindowWidth(P.SafeIntScale(adminTabActive and P.VT_ADMIN_MENU_WIDTH_PIXELS or P.VT_MENU_WIDTH_PIXELS),
+        440, P.SafeIntScale(P.VT_MENU_MARGIN_PIXELS))
+end
+
     if S.currentMenu ~= nil then
         P.CloseMenu()
         return
@@ -73,8 +78,7 @@ P.ShowVoidTraitorMenu = function()
     local margin = P.SafeIntScale(P.VT_MENU_MARGIN_PIXELS)
     local minHeight = P.GetVoidTraitorMenuMinHeight()
     local maxHeight = math.max(minHeight, screenHeight - margin * 2)
-    local width = P.Common.FitWindowWidth(P.SafeIntScale(adminTabActive and P.VT_ADMIN_MENU_WIDTH_PIXELS or P.VT_MENU_WIDTH_PIXELS),
-        440, margin)
+    local width = getMenuWidth(adminTabActive)
     local height = P.Clamp(S.vtMenuHeight or P.SafeIntScale(P.VT_MENU_DEFAULT_HEIGHT_PIXELS), minHeight, maxHeight)
     local x = S.vtMenuX or math.floor((screenWidth - width) / 2)
     local y = S.vtMenuY or math.floor((screenHeight - height) / 2)
@@ -117,12 +121,14 @@ P.ShowVoidTraitorMenu = function()
         P.SetButtonTextScale(adminTab, 0.82)
         mainTab.Selected = not adminTabActive
         adminTab.Selected = adminTabActive
-        -- the admin tab is wider, so the window is built again for the other tab
+        -- the admin tab is wider, so the window is built again for the other tab, around the same middle
         local function switchTo(tab)
             if S.vtActiveTab ~= tab then
                 S.vtActiveTab = tab
+                local oldWidth = root.Rect.Width
                 P.CloseMenu()
                 P.ShowVoidTraitorMenu()
+                S.vtMenuX = S.vtMenuX + math.floor((oldWidth - getMenuWidth(tab == "admin")) / 2)
             end
             return true
         end

@@ -375,8 +375,15 @@ local function arrangePlayerCard(screen)
     }) do
         local button = GUI.Button(Common.CreateRect(1 / 3, 1, buttons), entry.Label, GUI.Alignment.Center, "GUIButton")
         labels[#labels + 1] = button.TextBlock
+        -- a second click closes the window the button opened
+        local opened
         button.OnClicked = function()
-            entry.Open()
+            if opened ~= nil and S.currentMenu == opened then
+                P.CloseMenu()
+            else
+                entry.Open()
+                opened = S.currentMenu
+            end
             return true
         end
     end

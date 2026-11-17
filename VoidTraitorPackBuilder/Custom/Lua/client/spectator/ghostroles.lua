@@ -209,6 +209,10 @@ local function CreateBottomButton()
     end
     ApplyBottomButtonAlertStyle(false)
     bottomButton.OnClicked = function()
+        if currentMenu ~= nil then
+            CloseMenu()
+            return true
+        end
         ClearBottomButtonAlert()
         RequestSnapshot()
         return true

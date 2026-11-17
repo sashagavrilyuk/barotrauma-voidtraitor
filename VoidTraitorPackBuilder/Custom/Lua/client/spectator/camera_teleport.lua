@@ -145,6 +145,10 @@ local function CreateBottomButton()
     UpdateBottomButtonPosition()
 
     bottomButton.OnClicked = function()
+        if currentMenu ~= nil then
+            CloseMenu()
+            return true
+        end
         RequestSnapshot(true)
         return true
     end
