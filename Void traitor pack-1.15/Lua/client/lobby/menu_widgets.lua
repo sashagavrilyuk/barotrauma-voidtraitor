@@ -69,7 +69,7 @@ function P.SetDangerButton(button)
 end
 
 -- Buttons in rows of `columns`; a short last row keeps the width of the other rows' cells.
--- Each item has a Label, a ToolTip, Enabled and OnClicked.
+-- Each item has a Label, a ToolTip, Enabled and OnClicked, which gets the button.
 function P.CreateButtonGrid(parent, columns, items)
     local buttons = {}
     for first = 1, #items, columns do
@@ -88,7 +88,7 @@ function P.CreateButtonGrid(parent, columns, items)
                 local button = P.CreateMenuButton(row, item.Label, item.Enabled)
                 button.ToolTip = item.ToolTip or ""
                 button.OnClicked = function()
-                    item.OnClicked()
+                    item.OnClicked(button)
                     return true
                 end
                 buttons[index] = button

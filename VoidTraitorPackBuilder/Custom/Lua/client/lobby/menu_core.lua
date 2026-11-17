@@ -194,7 +194,7 @@ P.CloseMenu = function()
 
     S.currentMenu = nil
     S.currentMenuKind = ""
-    S.voteMenuUi = nil
+    P.CloseVoteList()
     S.vtMenuList = nil
     S.vtMainList = nil
     S.vtMainListFrame = nil

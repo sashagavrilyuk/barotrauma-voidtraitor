@@ -22,7 +22,6 @@ local adminNet = {
 
 local voteNet = {
     Ready = "VoidTraitor_LobbyVoteGuiReady",
-    Request = "VoidTraitor_LobbyVoteRequest",
     Snapshot = "VoidTraitor_LobbyVoteSnapshot",
     Start = "VoidTraitor_LobbyVoteStart",
     Cast = "VoidTraitor_LobbyVoteCast",
@@ -611,7 +610,9 @@ end)
 
 local function writeVoteSnapshot(netMessage, client)
     local snapshot = Traitormod.Voting.GetGuiSnapshot(client)
-    netMessage.WriteBoolean(snapshot.CanStart)
+    netMessage.WriteBoolean(snapshot.CanStartGame)
+    netMessage.WriteBoolean(snapshot.CanStartMap)
+    netMessage.WriteBoolean(snapshot.CanStartCustom)
     netMessage.WriteBoolean(snapshot.StationMap)
     netMessage.WriteInt32(snapshot.GameCooldownRemaining)
     netMessage.WriteInt32(snapshot.MapCooldownRemaining)
@@ -648,10 +649,6 @@ function cm.SendVoteSnapshotEveryone()
 end
 
 Networking.Receive(voteNet.Ready, function(message, client)
-    return cm.SendVoteSnapshot(client)
-end)
-
-Networking.Receive(voteNet.Request, function(message, client)
     return cm.SendVoteSnapshot(client)
 end)
 

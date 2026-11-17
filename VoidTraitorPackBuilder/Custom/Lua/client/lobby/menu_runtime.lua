@@ -30,9 +30,9 @@ Networking.Receive(P.NET_SNAPSHOT, function(message)
         })
     end
 
-    -- the vote window opens on the client, first of the round's commands
+    -- the vote button's list is the client's, first of the round's commands; it opens in the menu's window
     local vote = { Label = P.VoteUiText.Button, Hint = P.VoteUiText.Tooltip, Category = P.MenuText.Categories.Round,
-        InputType = "", Enabled = true, Open = P.ShowVoteMenu }
+        InputType = "", Enabled = true, Open = function(button) P.ToggleVoteList(button, S.currentMenu) end }
     local at = #entries + 1
     for index, entry in ipairs(entries) do
         if entry.Category == vote.Category then
@@ -187,13 +187,12 @@ Hook.Add("think", "VoidTraitor.ClientMenu.UiState", function(deltaTime)
     P.EnsureTopButtons()
 
     P.UpdateVotePopups()
-    P.RefreshVoteMenu()
+    P.RefreshVoteList()
     if P.IsLobbyScreenAvailable() then
         P.RefreshRoundInfo()
         P.UpdateLateJoin()
     elseif S.currentMenuKind == "character" or S.currentMenuKind == "antagonists" or S.currentMenuKind == "stationjobs"
-        or S.currentMenuKind == "latejoin" or ((S.currentMenuKind == "votes" or S.currentMenuKind == "customvote")
-        and S.voteWindowInLobby) then
+        or S.currentMenuKind == "latejoin" or (S.currentMenuKind == "customvote" and S.voteWindowInLobby) then
         P.CloseMenu()
     end
 end)

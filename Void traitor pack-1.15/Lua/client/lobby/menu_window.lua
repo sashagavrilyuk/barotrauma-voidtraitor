@@ -1,9 +1,10 @@
 local P = ...
 local S = P.State
 
-local function runEntry(entry)
+-- an entry with Open is the client's own and gets the entry's button
+local function runEntry(entry, button)
     if entry.Open ~= nil then
-        entry.Open()
+        entry.Open(button)
     elseif tostring(entry.ConfirmText or "") ~= "" then
         P.ShowConfirm(entry.ConfirmTitle ~= "" and entry.ConfirmTitle or P.UiText.DefaultConfirmTitle, entry.ConfirmText,
             function() P.SendCommand(entry.Command) end)
@@ -22,7 +23,7 @@ local function buildCommands(parent, entries)
     local groups, separate = {}, {}
     for _, entry in ipairs(entries) do
         local item = { Label = getLabel(entry), ToolTip = tostring(entry.Hint or ""), Enabled = entry.Enabled ~= false,
-            OnClicked = function() runEntry(entry) end }
+            OnClicked = function(button) runEntry(entry, button) end }
         if tostring(entry.ConfirmText or "") ~= "" then
             separate[#separate + 1] = item
         else
@@ -55,12 +56,12 @@ local function buildCommands(parent, entries)
     end
 end
 
-P.ShowVoidTraitorMenu = function()
 local function getMenuWidth(adminTabActive)
     return P.Common.FitWindowWidth(P.SafeIntScale(adminTabActive and P.VT_ADMIN_MENU_WIDTH_PIXELS or P.VT_MENU_WIDTH_PIXELS),
         440, P.SafeIntScale(P.VT_MENU_MARGIN_PIXELS))
 end
 
+P.ShowVoidTraitorMenu = function()
     if S.currentMenu ~= nil then
         P.CloseMenu()
         return
@@ -124,11 +125,11 @@ end
         -- the admin tab is wider, so the window is built again for the other tab, around the same middle
         local function switchTo(tab)
             if S.vtActiveTab ~= tab then
-                S.vtActiveTab = tab
                 local oldWidth = root.Rect.Width
+                S.vtActiveTab = tab
                 P.CloseMenu()
-                P.ShowVoidTraitorMenu()
                 S.vtMenuX = S.vtMenuX + math.floor((oldWidth - getMenuWidth(tab == "admin")) / 2)
+                P.ShowVoidTraitorMenu()
             end
             return true
         end

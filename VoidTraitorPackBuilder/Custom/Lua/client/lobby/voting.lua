@@ -2,17 +2,18 @@ local P = ...
 local S = P.State
 
 P.NET_VOTE_READY = "VoidTraitor_LobbyVoteGuiReady"
-P.NET_VOTE_REQUEST = "VoidTraitor_LobbyVoteRequest"
 P.NET_VOTE_SNAPSHOT = "VoidTraitor_LobbyVoteSnapshot"
 P.NET_VOTE_START = "VoidTraitor_LobbyVoteStart"
 P.NET_VOTE_CAST = "VoidTraitor_LobbyVoteCast"
 P.NET_VOTE_CUSTOM = "VoidTraitor_LobbyVoteCustom"
 
--- the server's latest vote snapshot and the ids of its votes, to hear a new one (voting_runtime.lua)
+-- the server's latest vote snapshot and the end of each of its votes by id, to hear a new one (voting_runtime.lua)
 S.voteSnapshot = nil
-S.voteIds = {}
+S.voteEndTimes = {}
 -- the side popups of the running votes (voting_display.lua)
 S.votePopups = nil
+-- the open list of votes to start under a vote button (voting_menu.lua)
+S.voteList = nil
 -- the draft of an admin's own vote, kept while its editor is rebuilt (voting_menu.lua)
 S.customVoteDraft = nil
 

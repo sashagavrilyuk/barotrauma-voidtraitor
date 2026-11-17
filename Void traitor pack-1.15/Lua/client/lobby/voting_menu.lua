@@ -3,12 +3,12 @@ local S = P.State
 local Common = P.Common
 local text = P.VoteUiText
 
--- SS14's call vote menu: the votes a player may start, from the lobby's vote button (panel.lua) or the VT menu in a
--- round. Mode and map votes show when they can be started again; an admin also gets their own vote, which opens its
--- editor. The server checks every start again (voting.lua).
+-- SS14's call vote menu as a list under the vote button, in the lobby (panel.lua) and in a round's VT menu: the votes a
+-- player may start, a mode or map vote with the time until it can be started again, and for an admin their own vote,
+-- which opens its editor. The server checks every start again (voting.lua).
 
--- in 1920x1080 pixels
-local MENU_WIDTH = 360
+-- in 1920x1080 pixels; the vote list is at least this wide
+local LIST_WIDTH = 190
 local CUSTOM_WIDTH = 460
 local CUSTOM_HEIGHT = 560
 local WINDOW_MARGIN = 10
@@ -47,60 +47,76 @@ local function openWindow(kind, width, height, title)
     return root, content, outer
 end
 
-function P.ShowVoteMenu()
-    local root, content, outer = openWindow("votes", Common.FitWindowWidth(P.SafeIntScale(MENU_WIDTH), 300,
-        P.SafeIntScale(WINDOW_MARGIN)), 1, text.MenuTitle)
-    if root == nil then return end
-
-    local ui = { Shown = {} }
-    ui.Mode = P.CreateMenuButton(content, text.StartMode)
-    ui.Mode.OnClicked = function()
-        P.SendVoteStart("game")
-        P.CloseMenu()
-        return true
-    end
-    ui.Map = P.CreateMenuButton(content, text.StartMap)
-    ui.Map.OnClicked = function()
-        P.SendVoteStart("map")
-        P.CloseMenu()
-        return true
-    end
+-- the votes the player may start now: one of each kind runs at a time
+local function getVoteChoices()
+    local snapshot = S.voteSnapshot or {}
+    local choices = {
+        { Type = "game", Label = text.StartMode, CanStart = snapshot.CanStartGame, CooldownEndTime = snapshot.GameCooldownEndTime },
+        { Type = "map", Label = snapshot.StationMap and text.StartStation or text.StartMap, CanStart = snapshot.CanStartMap,
+            CooldownEndTime = snapshot.MapCooldownEndTime },
+    }
     if P.Admin.IsAvailable() then
-        local custom = P.CreateMenuButton(content, text.StartCustom)
-        custom.ToolTip = text.CustomTooltip
-        custom.OnClicked = function()
-            P.ShowCustomVoteWindow()
-            return true
-        end
+        choices[3] = { Type = "custom", Label = text.StartCustom, ToolTip = text.CustomTooltip, CanStart = snapshot.CanStartCustom }
     end
-    S.voteMenuUi = ui
-
-    root.RectTransform.Resize(Point(root.Rect.Width, Common.GetMinimumHeight(outer)), true)
-    root.ForceLayoutRecalculation()
-    P.RefreshVoteMenu()
-    -- the cooldowns may have changed since the last snapshot
-    P.RequestVoteSnapshot()
+    return choices
 end
 
--- on each snapshot and from the menu's tick, for the cooldowns' time
-function P.RefreshVoteMenu()
-    if S.currentMenuKind ~= "votes" then return end
-    local snapshot, ui, now = S.voteSnapshot, S.voteMenuUi, P.GetTime()
-    local canStart = snapshot ~= nil and snapshot.CanStart
-
-    local function refresh(button, label, cooldownEndTime)
-        local left = math.ceil(cooldownEndTime - now)
-        button.Enabled = canStart and left <= 0
-        button.ToolTip = (snapshot ~= nil and not canStart) and text.Busy or ""
-        local shown = left > 0 and string.format(text.Cooldown, label, P.FormatVoteTime(left)) or label
-        if ui.Shown[button] ~= shown then
-            ui.Shown[button] = shown
+-- The open list's labels and which of them can be picked, on each snapshot and from the menu's tick for the
+-- cooldowns' time.
+function P.RefreshVoteList()
+    local ui, now = S.voteList, P.GetTime()
+    if ui == nil then return end
+    for index, choice in ipairs(getVoteChoices()) do
+        local button = ui.Buttons[index]
+        if button == nil then break end
+        local left = math.ceil((choice.CooldownEndTime or 0) - now)
+        button.Enabled = choice.CanStart == true and left <= 0
+        button.ToolTip = choice.CanStart == false and text.Busy or choice.ToolTip or ""
+        local shown = left > 0 and string.format(text.Cooldown, choice.Label, P.FormatVoteTime(left)) or choice.Label
+        if ui.Shown[index] ~= shown then
+            ui.Shown[index] = shown
             button.Text = shown
         end
     end
-    refresh(ui.Mode, text.StartMode, snapshot ~= nil and snapshot.GameCooldownEndTime or 0)
-    refresh(ui.Map, snapshot ~= nil and snapshot.StationMap and text.StartStation or text.StartMap,
-        snapshot ~= nil and snapshot.MapCooldownEndTime or 0)
+end
+
+function P.CloseVoteList()
+    if S.voteList == nil then return end
+    Common.RemoveGuiComponent(S.voteList.Panel)
+    S.voteList = nil
+end
+
+-- The list of votes to start, as before the lobby's rework: small buttons in a frame right under the vote button, in
+-- the lobby's frame or the VT menu's window (host). The vote button opens and closes it, and so do picking a vote and
+-- closing the menu's window (P.CloseMenu).
+function P.ToggleVoteList(button, host)
+    local own = S.voteList ~= nil and S.voteList.Button == button
+    P.CloseVoteList()
+    if own or host == nil then return end
+
+    local ui, choices = { Button = button, Buttons = {}, Shown = {} }, getVoteChoices()
+    local rowHeight, gap = Common.GetStyleHeight("GUIButtonSmall"), Common.GetButtonSpacing()
+    local width = math.max(button.Rect.Width, P.SafeIntScale(LIST_WIDTH))
+    local height = #choices * rowHeight + (#choices + 1) * gap
+    -- right edge on the button's, so it stays on the screen beside the lobby's right edge
+    local rect = GUI.RectTransform(Point(width, height), host.RectTransform, GUI.Anchor.TopLeft)
+    rect.AbsoluteOffset = Point(button.Rect.Right - width - host.Rect.X, button.Rect.Bottom + gap - host.Rect.Y)
+    ui.Panel = GUI.Frame(rect, "GUIFrame")
+    ui.Panel.IgnoreLayoutGroups = true
+    for index, choice in ipairs(choices) do
+        local optionRect = GUI.RectTransform(Point(width - gap * 2, rowHeight), ui.Panel.RectTransform, GUI.Anchor.TopCenter)
+        optionRect.AbsoluteOffset = Point(0, gap + (index - 1) * (rowHeight + gap))
+        local option = GUI.Button(optionRect, choice.Label, GUI.Alignment.Center, "GUIButtonSmall")
+        Common.SetAutoScaleText(option.TextBlock, 1)
+        option.OnClicked = function()
+            P.CloseVoteList()
+            if choice.Type == "custom" then P.ShowCustomVoteWindow() else P.SendVoteStart(choice.Type) end
+            return true
+        end
+        ui.Buttons[index] = option
+    end
+    S.voteList = ui
+    P.RefreshVoteList()
 end
 
 -- The editor of an admin's own vote: a title and two to ten options. It is built again when an option is added or

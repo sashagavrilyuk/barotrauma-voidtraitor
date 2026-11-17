@@ -57,10 +57,13 @@ local function createPopup(column, vote, width)
     local buttonHeight, spacing = Common.GetStyleHeight("GUIButtonSmall"), Common.GetButtonSpacing()
     local rows = math.min(#vote.Options, VISIBLE_OPTIONS)
     local list = GUI.ListBox(Common.CreateRect(1, 1, content), false, nil, "GUIListBoxNoBorder")
-    -- the list style pads its content, and the list counts the spacing after every row (GUIListBox.TotalSize)
-    Common.SetFixedHeight(list, rows * (buttonHeight + spacing) + math.ceil(list.Padding.Y + list.Padding.W))
+    -- The list style pads its content; the rows get no spacing after the last one, so the list's black is as wide
+    -- below them as above. The list counts that spacing too (GUIListBox.TotalSize) and would scroll by it, so it scrolls
+    -- only when there are more rows than it shows.
+    Common.SetFixedHeight(list, rows * buttonHeight + (rows - 1) * spacing + math.ceil(list.Padding.Y + list.Padding.W))
     list.Spacing = spacing
     list.KeepSpaceForScrollBar = #vote.Options > VISIBLE_OPTIONS
+    list.ScrollBarEnabled = #vote.Options > VISIBLE_OPTIONS
     local buttons = {}
     for index, option in ipairs(vote.Options) do
         local button = GUI.Button(Common.CreateRect(1, 1, list.Content),

@@ -5,10 +5,6 @@ function P.SendVoteReady()
     P.SendNetMessage(P.NET_VOTE_READY)
 end
 
-function P.RequestVoteSnapshot()
-    P.SendNetMessage(P.NET_VOTE_REQUEST)
-end
-
 function P.SendVoteStart(voteType)
     P.SendNetMessage(P.NET_VOTE_START, function(msg)
         msg.WriteString(voteType)

@@ -10,6 +10,8 @@ vt.GameVoteCooldownUntil = 0
 vt.MapVoteCooldownUntil = 0
 -- results of mode and map votes that ended during a round, applied once back in the lobby
 vt.PendingResults = {}
+-- the result of a map vote that ended while a mode vote ran, applied after the mode's (finishGameVote)
+vt.AfterGameVote = nil
 
 -- an admin's own vote: a title and up to this many options, in bytes at most 4 per character of the client's limits
 local CUSTOM_VOTE_OPTIONS = 10
@@ -626,10 +628,13 @@ local function finishGameVote()
 
     vt.GameVote = nil
     vt.GameVoteCooldownUntil = Timer.GetTime() + getVoteCooldownSeconds()
+    local afterMode = vt.AfterGameVote
+    vt.AfterGameVote = nil
 
     local gameVoteModes = getConfiguredGameVoteModes()
     if #gameVoteModes == 0 then
         Traitormod.SendMessageEveryone(getVoteText("GameVoteApplyFailed"))
+        if afterMode ~= nil then applyInLobby(afterMode) end
         notifyGuiVoteChanged()
         return
     end
@@ -672,6 +677,7 @@ local function finishGameVote()
         Traitormod.SendMessageEveryone(selectionText)
         -- the mode can change on the same submarine, which the lobby panels would not notice
         if success then Traitormod.ClientMenu.SendLobbyInfoEveryone() end
+        if afterMode ~= nil then afterMode() end
     end)
     notifyGuiVoteChanged()
 end
@@ -730,10 +736,17 @@ local function finishMapVote(cancelledText)
         ))
     end
 
-    applyInLobby(function()
+    local function apply()
+        -- a mode vote may have changed the mission since this vote started
+        if vt.IsStationLobby() ~= vote.StationMap then
+            Traitormod.SendMessageEveryone(getVoteText("LobbyVoteCancelledMissionChanged"))
+            return
+        end
         local _, selectionText = applySubmarineSelection(winner)
         Traitormod.SendMessageEveryone(selectionText)
-    end)
+    end
+    -- a mode vote picks a submarine too, so a running one goes first
+    if vt.GameVote ~= nil then vt.AfterGameVote = apply else applyInLobby(apply) end
     notifyGuiVoteChanged()
 end
 
@@ -842,8 +855,8 @@ Hook.Add("think", "Traitormod.Voting.Think", function()
     end
 end)
 
-vt.StartGameVote = function(client, silent)
-    if vt.GameVote ~= nil or vt.MapVote ~= nil then
+vt.StartGameVote = function(client)
+    if vt.GameVote ~= nil then
         Traitormod.SendMessage(client, getVoteText("LobbyVoteAlreadyActive"))
         return true
     end
@@ -869,27 +882,18 @@ vt.StartGameVote = function(client, silent)
     vt.GameVote = {
         Time = Timer.GetTime() + voteDuration,
         Duration = voteDuration,
+        Started = Timer.GetTime(),
         GuiId = "game:" .. tostring(Timer.GetTime()),
         StartedBy = client and client.Name or getVoteText("GameVoteStartedByServer"),
         Results = results,
         ClientVotes = {}
     }
-
-    if not silent then
-        local startedText = string.format(
-            getVoteText("GameVoteStarted"),
-            vt.GameVote.StartedBy,
-            tostring(voteDuration)
-        )
-        Traitormod.SendMessageEveryone(startedText)
-    end
-
     notifyGuiVoteChanged()
     return true
 end
 
-vt.StartMapVote = function(client, silent)
-    if vt.GameVote ~= nil or vt.MapVote ~= nil then
+vt.StartMapVote = function(client)
+    if vt.MapVote ~= nil then
         Traitormod.SendMessage(client, getVoteText("LobbyVoteAlreadyActive"))
         return true
     end
@@ -919,6 +923,7 @@ vt.StartMapVote = function(client, silent)
         StationMap = stationMap,
         Time = Timer.GetTime() + voteDuration,
         Duration = voteDuration,
+        Started = Timer.GetTime(),
         GuiId = "map:" .. tostring(Timer.GetTime()),
         StartedBy = client and client.Name or getVoteText("GameVoteStartedByServer"),
         Results = results,
@@ -926,15 +931,6 @@ vt.StartMapVote = function(client, silent)
         ClientVotes = {},
         PlayerCount = playerCount
     }
-
-    if not silent then
-        Traitormod.SendMessageEveryone(string.format(
-            getVoteText("MapVoteStarted"),
-            vt.MapVote.StartedBy,
-            tostring(voteDuration)
-        ))
-    end
-
     notifyGuiVoteChanged()
     return true
 end
@@ -978,6 +974,7 @@ vt.StartCustomVote = function(client, title, options)
     vt.CustomVote = {
         Time = Timer.GetTime() + duration,
         Duration = duration,
+        Started = Timer.GetTime(),
         GuiId = "custom:" .. tostring(Timer.GetTime()),
         StartedBy = client.Name,
         Title = title,
@@ -985,7 +982,6 @@ vt.StartCustomVote = function(client, title, options)
         Results = results,
         ClientVotes = {}
     }
-    Traitormod.SendMessageEveryone(string.format(getVoteText("CustomVoteStarted"), client.Name, title, tostring(duration)))
     notifyGuiVoteChanged()
 end
 
@@ -999,7 +995,7 @@ local function buildGuiVote(client, vote, voteType, title, texts)
     for index, text in ipairs(texts) do
         options[index] = { Text = text, Votes = vote.Results[index] or 0, Selected = vote.ClientVotes[client] == index }
     end
-    return { Id = vote.GuiId, Type = voteType, Title = title, StartedBy = vote.StartedBy,
+    return { Id = vote.GuiId, Type = voteType, Title = title, StartedBy = vote.StartedBy, Started = vote.Started,
         Remaining = getRemainingSeconds(vote), Duration = vote.Duration, Options = options }
 end
 
@@ -1024,9 +1020,13 @@ vt.GetGuiSnapshot = function(client)
     if vt.CustomVote ~= nil then
         votes[#votes + 1] = buildGuiVote(client, vt.CustomVote, "custom", vt.CustomVote.Title, vt.CustomVote.Options)
     end
+    -- the clients stack the popups in this order, so a new vote comes last
+    table.sort(votes, function(a, b) return a.Started < b.Started end)
 
     return {
-        CanStart = vt.GameVote == nil and vt.MapVote == nil,
+        CanStartGame = vt.GameVote == nil,
+        CanStartMap = vt.MapVote == nil,
+        CanStartCustom = vt.CustomVote == nil,
         StationMap = vt.IsStationLobby(),
         GameCooldownRemaining = getVoteCooldownRemaining("game", client),
         MapCooldownRemaining = getVoteCooldownRemaining("map", client),
@@ -1037,9 +1037,9 @@ end
 vt.StartGuiVote = function(client, voteType)
     voteType = string.lower(tostring(voteType or ""))
     if voteType == "game" then
-        return vt.StartGameVote(client, false)
+        return vt.StartGameVote(client)
     elseif voteType == "map" then
-        return vt.StartMapVote(client, false)
+        return vt.StartMapVote(client)
     end
 
     return true

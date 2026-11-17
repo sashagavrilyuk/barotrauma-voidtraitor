@@ -195,7 +195,7 @@ local function ensurePanel(screen)
     end
     panel.Players, panel.Vote = createButtonLine(panel.Round, P.VoteUiText.Button, P.VoteUiText.Tooltip)
     panel.Vote.OnClicked = function()
-        P.ShowVoteMenu()
+        P.ToggleVoteList(panel.Vote, P.GetLobbyGuiFrame())
         return true
     end
 

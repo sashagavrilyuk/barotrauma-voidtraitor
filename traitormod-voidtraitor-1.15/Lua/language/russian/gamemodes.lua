@@ -39,7 +39,6 @@ language.SubmarineRoyaleEnd = "Раунд заканчивается."
 -- Голосование за игровой режим
 language.LobbyVoteAlreadyActive = "Голосование за режим или карту уже идёт. Дождитесь его завершения."
 language.GameVoteCooldown = "Голосование за режим недавно уже проводилось. Повторно можно начать через %s."
-language.GameVoteStarted = "%s начал голосование за режим. У вас %s секунд."
 language.GameVoteOptionSecret = "Миссии с предателями"
 language.GameVoteOptionStation = "Станция с предателями"
 language.GameVoteNoStation = "Не найдены доступные станции VoidTraitor. Нужна карта с меткой Gamemode: Station."
@@ -61,7 +60,6 @@ language.GameVoteStartedByServer = "Сервер"
 
 -- Голосование за подлодку
 language.MapVoteCooldown = "Голосование за подлодку недавно уже проводилось. Повторно можно начать через %s."
-language.MapVoteStarted = "%s начал голосование за подлодку. У вас %s секунд."
 language.MapVoteFinished = "Голосование завершено. Победила подлодка: %s."
 language.LobbyVoteCancelledMissionChanged = "Голосование отменено: изменена миссия станции. Начните новое голосование за карту."
 language.MapVoteNoCandidates = "Не удалось найти подходящие подлодки для %s игроков."
@@ -70,7 +68,6 @@ language.MapVoteNoVotes = "Никто не проголосовал, выбир�
 language.MapVoteTie = "Ничья между подлодками: %s. Выбирается случайный победитель: %s."
 
 language.StationMapVoteCooldown = "Голосование за станцию недавно уже проводилось. Повторно можно начать через %s."
-language.StationMapVoteStarted = "%s начал голосование за станцию. У вас %s секунд."
 language.StationMapVoteFinished = "Голосование завершено. Победила станция: %s."
 language.StationMapVoteNoCandidates = "Не найдены доступные станции для %s игроков."
 language.StationMapVoteSelected = "Выбрана станция: %s (%s мест)."
@@ -79,7 +76,6 @@ language.StationMapVoteTie = "Ничья между станциями: %s. Вы
 
 -- Итог посреди раунда и своё голосование администратора
 language.VoteAppliesAfterRound = "Итог голосования вступит в силу после окончания раунда."
-language.CustomVoteStarted = "%s начал голосование «%s». У вас %s секунд."
 language.CustomVoteAlreadyActive = "Своё голосование уже идёт. Дождитесь его завершения."
 language.CustomVoteInvalid = "Нужны заголовок и от 2 до 10 непустых вариантов."
 
