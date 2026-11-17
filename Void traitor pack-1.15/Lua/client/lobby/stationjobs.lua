@@ -58,6 +58,11 @@ local function roleTooltip(id, role)
     return description
 end
 
+-- for the late-join window (latejoin.lua)
+function P.GetStationRoleTooltip(id)
+    return roleTooltip(id, S.stationJobs.Roles[id])
+end
+
 -- the role with the high level, or the passenger, in the outfit chosen for it
 function P.GetStationCardRole()
     local jobs = S.stationJobs

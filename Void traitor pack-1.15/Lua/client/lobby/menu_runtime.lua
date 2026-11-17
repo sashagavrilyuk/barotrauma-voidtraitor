@@ -179,9 +179,11 @@ Hook.Add("think", "VoidTraitor.ClientMenu.UiState", function(deltaTime)
         P.EnsureVoteButton()
         P.RefreshActiveVoteUi()
         P.RefreshRoundInfo()
+        P.UpdateLateJoin()
     else
         if S.currentMenuKind == "votestart" or S.currentMenuKind == "voteactive" or S.currentMenuKind == "character"
-            or S.currentMenuKind == "antagonists" or S.currentMenuKind == "stationjobs" then
+            or S.currentMenuKind == "antagonists" or S.currentMenuKind == "stationjobs"
+            or S.currentMenuKind == "latejoin" then
             P.CloseMenu()
         end
         P.DestroyVoteButton()

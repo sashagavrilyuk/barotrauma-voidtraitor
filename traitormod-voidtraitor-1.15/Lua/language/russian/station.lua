@@ -47,6 +47,8 @@ language.StationRoleTimeSet = "поставил время игры %s = %d ми
 -- in the server log: role, player
 language.StationRoleUnlocked = "открыл роль %s игроку %s, добавив недостающее время"
 language.SmugglerStashPoints = "Заначка контрабандистов."
+-- the role a newcomer picked in the late-join window had no seat left when the shuttle came
+language.StationLateJoinTaken = "Место «%s» успели занять, роль выдана по вашим предпочтениям."
 language.IceSpear = "Внимание! Высокоскоростной неопознанный объект приближается к станции. Столкновение неизбежно."
 language.VentClog = "Внимание! Вентиляционная сеть станции испытывает скачок обратного давления. Возможен выброс содержимого."
 language.Visitors = "Внимание! Сенсоры станции засекли неопознанное судно, идущее к станции."

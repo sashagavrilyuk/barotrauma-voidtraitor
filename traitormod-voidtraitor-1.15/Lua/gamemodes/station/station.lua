@@ -90,6 +90,8 @@ function gm:PreStart()
     -- the role of each account this round, and whether its character is still to spawn
     self.AccountRoles = {}
     self.PendingRoles = {}
+    -- the role each newcomer picked in the lobby's late-join window, given on the shuttle while a seat is left
+    self.LateJoinChoices = {}
     -- the role of each character spawned with one; the character keeps it, its player may later play others
     self.RoleCharacters = {}
     -- every character a player controlled this round, like SS14's minds: { Character, Name, Job, GhostRole, Account,
@@ -376,7 +378,19 @@ end
 function gm:AssignRoles(clients)
     local counts, waiting, heads = self:CountRoleSlots(), {}, {}
     for _, client in pairs(clients) do
-        waiting[#waiting + 1] = client
+        -- a newcomer who picked a role in the late-join window gets it first; it held no seat while they waited
+        local account = Traitormod.GetClientAccountKey(client)
+        local chosen = self.LateJoinChoices[account]
+        self.LateJoinChoices[account] = nil
+        if chosen ~= nil and self:HasRoleSeat(client, chosen, counts) then
+            client.AssignedJob = self:GiveRole(client, chosen, counts)
+        else
+            if chosen ~= nil then
+                local name = TextManager.Get("jobname." .. chosen).Value
+                Traitormod.SendChatMessage(client, Traitormod.FormatText("StationLateJoinTaken", name))
+            end
+            waiting[#waiting + 1] = client
+        end
     end
     for id, role in pairs(self.Roles) do
         if role.Head ~= nil then heads[#heads + 1] = id end
@@ -445,13 +459,10 @@ function gm:RecordCharacter(client, character)
     self.CrewChanged = true
 end
 
--- SS14's crew manifest, which its PDA shows: the latest crew character of each player with the role it was given, by
--- department in the order of its roles, so heads first; no one else and no state, so it tells no more than the
--- station's records would. Everyone may read it, with what the whole station knows: the shift's time, the alert code,
--- the evacuation shuttle and the seats each role has left. Those are counted from this list, not from the living crew,
--- as a death, which frees a seat for newcomers, must not show.
-function gm:SendCrew(client)
-    local latest, order, taken = {}, {}, {}
+-- the crew list: the latest crew character of each player with the role it was given, by account, and the accounts in
+-- the order their players first took one
+function gm:GetCrew()
+    local latest, order = {}, {}
     for _, record in ipairs(self.Records) do
         local id = self.RoleCharacters[record.Character]
         if id ~= nil then
@@ -459,23 +470,43 @@ function gm:SendCrew(client)
             latest[record.Account] = { Name = record.Name, Role = id }
         end
     end
+    return latest, order
+end
+
+-- The seats each role has left, math.huge for one with no limit, in the order of the departments' roles. They are
+-- counted from the crew list, not from the living crew, as a death, which frees a seat for newcomers, must not show.
+function gm:GetFreeSeats(latest, order)
+    local taken, free, listed = {}, {}, {}
     for _, account in ipairs(order) do
         local role = latest[account].Role
         taken[role] = (taken[role] or 0) + 1
     end
-    local departments, free, listed = {}, {}, {}
+    for _, department in ipairs(self.Departments) do
+        for _, role in ipairs(department.Roles) do
+            local seats = self.Seats[role]
+            if not listed[role] and seats ~= nil and seats > (taken[role] or 0) then
+                listed[role] = true
+                free[#free + 1] = { Role = role, Seats = seats - (taken[role] or 0) }
+            end
+        end
+    end
+    return free
+end
+
+-- SS14's crew manifest, which its PDA shows: the crew list by department in the order of its roles, so heads first; no
+-- one else and no state, so it tells no more than the station's records would. Everyone may read it, with what the
+-- whole station knows: the shift's time, the alert code, the evacuation shuttle and the seats each role has left (255
+-- for no limit), which the lobby's late-join window offers too.
+function gm:SendCrew(client)
+    local latest, order = self:GetCrew()
+    local free = self:GetFreeSeats(latest, order)
+    local departments = {}
     for _, department in ipairs(self.Departments) do
         local members = {}
         for _, role in ipairs(department.Roles) do
             for _, account in ipairs(order) do
                 local member = latest[account]
                 if member.Role == role then members[#members + 1] = member end
-            end
-            local seats = self.Seats[role]
-            if not listed[role] and seats ~= nil and seats ~= math.huge and not self.Roles[role].Passenger
-                and seats > (taken[role] or 0) then
-                listed[role] = true
-                free[#free + 1] = { Role = role, Seats = seats - (taken[role] or 0) }
             end
         end
         if #members > 0 then departments[#departments + 1] = { Id = department.Id, Members = members } end
@@ -537,6 +568,16 @@ function gm:CanShuttleRespawn(client)
     return not self.SpawnedAccounts[Traitormod.GetClientAccountKey(client)]
         and client.InGame and not client.SpectateOnly
         and (client.Character == nil or client.Character.IsDead)
+end
+
+-- a player who was not on the station when the round began and has controlled no character since
+function gm:IsNewcomer(client)
+    local account = Traitormod.GetClientAccountKey(client)
+    if self.SpawnedAccounts[account] then return false end
+    for _, record in ipairs(self.Records) do
+        if record.Account == account then return false end
+    end
+    return true
 end
 
 function gm:ShouldStartShuttleRespawn(pending)
@@ -770,6 +811,30 @@ Hook.Add("jobsAssigned", "Traitormod.Station.Roles", function(clients)
     if selected ~= nil and selected.Name == "Station" then
         selected:AssignRoles(clients)
     end
+end)
+
+-- The lobby's late-join window (Void traitor pack Lua/client/lobby/latejoin.lua): a newcomer picks the role to arrive
+-- with on the shuttle. Only what the window offers: a role with a seat left in the crew list that the player has the
+-- karma and time for. The answer lets the client join the round.
+local nextLateJoin = {}
+Networking.Receive("VoidTraitor_StationLateJoin", function(message, client)
+    local id = message.ReadString()
+    local selected = Traitormod.SelectedGamemode
+    local now = Timer.GetTime()
+    local allowed = (nextLateJoin[client.SessionId] or 0) <= now and Game.RoundStarted and selected ~= nil
+        and selected.Name == "Station" and not client.InGame and selected:IsNewcomer(client)
+    nextLateJoin[client.SessionId] = now + 0.5
+    if allowed then
+        allowed = false
+        local latest, order = selected:GetCrew()
+        for _, entry in ipairs(selected:GetFreeSeats(latest, order)) do
+            if entry.Role == id then allowed = selected:HasRoleSeat(client, id, selected:CountRoleSlots()) end
+        end
+    end
+    if allowed then selected.LateJoinChoices[Traitormod.GetClientAccountKey(client)] = id end
+    local reply = Networking.Start("VoidTraitor_StationLateJoinResult")
+    reply.WriteBoolean(allowed)
+    Networking.Send(reply, client.Connection)
 end)
 
 -- Every player spawn in Station gives job items: at round start, joining mid-round and on the shuttle. A clone keeps

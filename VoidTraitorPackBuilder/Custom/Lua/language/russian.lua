@@ -360,6 +360,12 @@ language.Lobby = {
     StationHours = "%d ч",
     StationHoursMinutes = "%d ч %d мин",
     StationOutfit = "Снаряжение: %s",
+    -- окно входа посреди раунда Станции, как late join в SS14
+    LateJoinTitle = "Присоединиться к смене",
+    LateJoinNoSeats = "нет мест",
+    LateJoinUnlimited = "∞",
+    LateJoinObserve = "Наблюдать",
+    LateJoinObserveTooltip = "Зайти в раунд наблюдателем, без персонажа",
 }
 
 -- Оверлей админа над персонажами

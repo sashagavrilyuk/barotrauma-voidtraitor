@@ -24,6 +24,11 @@ LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.TabMenu"], "crewListArra
 -- { { Id, Members = { { Name, Role, Job } } } } during a Station round; Common.StationCrew tells other modules that the
 -- round is Station's
 Common.StationCrew = nil
+-- the seats each role has left by role id, Common.NO_SEAT_LIMIT for a role with no limit, for the lobby's late-join
+-- window, which sets Common.OnStationCrew to show a new list at once
+Common.NO_SEAT_LIMIT = 255
+Common.StationFreeSeats = nil
+Common.OnStationCrew = nil
 -- { Crew, StartTime, Alert, AlertColor, Evacuation, Free = { { Role, Job, Seats } } } from the same message
 local station = nil
 -- the crew list and the station panel of the open Tab menu, filled again when the server sends a new list
@@ -139,8 +144,15 @@ local function fillPanel(panel)
     local list = panel.Free
     list.Content.ClearChildren()
     local height = Common.GetTextHeight(GUI.Style.Font)
-    for _, entry in ipairs(station.Free) do addFreeSeat(list, height, entry) end
-    if #station.Free == 0 then
+    -- roles with no limit, the passengers' among them, are no news here
+    local shown = 0
+    for _, entry in ipairs(station.Free) do
+        if entry.Seats ~= Common.NO_SEAT_LIMIT then
+            addFreeSeat(list, height, entry)
+            shown = shown + 1
+        end
+    end
+    if shown == 0 then
         Common.FitHeightToText(Common.CreateText(list.Content, 1, 1, nil, text.StationNoFreeSeats, GUI.Alignment.CenterLeft, 1, MUTED_COLOR, false))
     end
     list.RecalculateChildren()
@@ -198,11 +210,15 @@ Networking.Receive(NET_CREW, function(message)
         station.Free[#station.Free + 1] = { Role = message.ReadString(), Job = message.ReadString(), Seats = message.ReadByte() }
     end
     Common.StationCrew = crew
+    Common.StationFreeSeats = {}
+    for _, entry in ipairs(station.Free) do Common.StationFreeSeats[entry.Role] = entry.Seats end
     if shownList ~= nil then fill() end
+    if Common.OnStationCrew ~= nil then Common.OnStationCrew() end
 end)
 
 Hook.Add("roundEnd", PATCH_ID, function()
     Common.StationCrew = nil
+    Common.StationFreeSeats = nil
     station = nil
     shownList, shownPanel = nil, nil
 end)
