@@ -3,10 +3,11 @@ local S = P.State
 local Common = P.Common
 local text = Common.Language.Lobby
 
--- Station's late join, as SS14's: during a Station round the lobby's join button opens a small window with every role
--- and the seats it has left (the crew list, station/crewmanifest.lua), and a button to join as an observer. A role is
--- taken only once the server has checked it (traitormod Lua/gamemodes/station/station.lua); the player then joins as
--- the game's own button would and arrives with it on the shuttle.
+-- Station's late join, as SS14's: during a Station round the lobby's join button first asks the server (traitormod
+-- Lua/gamemodes/station/station.lua). A player who has already been on the station this round joins straight away and
+-- the game gives them back their character. A newcomer gets a small window with every role and the seats it has left
+-- (the crew list, station/crewmanifest.lua), and a button to join as an observer. A role is taken only once the server
+-- has checked it; the player then joins as the game's own button would and arrives with it on the shuttle.
 
 local NET_CHOOSE = "VoidTraitor_StationLateJoin"
 local NET_RESULT = "VoidTraitor_StationLateJoinResult"
@@ -18,7 +19,8 @@ local LOCKED_COLOR = Color(130, 135, 135, 255)
 LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.NetLobbyScreen"], "joinOnGoingRoundButton")
 
 S.lateJoinList = nil
--- the role sent to the server and not yet answered; the window waits with its buttons off
+-- the role sent to the server and not yet answered, "" for the join button's question; the window waits with its
+-- buttons off
 S.lateJoinPending = nil
 -- set while this file joins the round itself, so the patch below lets the request through
 local joining = false
@@ -169,9 +171,13 @@ end
 Networking.Receive(NET_RESULT, function(message)
     if S.sharedState.Disabled then return end
     local accepted = message.ReadBoolean()
+    local asked = S.lateJoinPending
     S.lateJoinPending = nil
-    if S.currentMenuKind ~= "latejoin" then return end
-    if accepted then
+    if asked == "" then
+        if accepted then join(false) else P.ShowLateJoinWindow() end
+    elseif S.currentMenuKind ~= "latejoin" then
+        return
+    elseif accepted then
         P.CloseMenu()
         join(false)
     elseif S.stationJobs ~= nil then
@@ -179,12 +185,15 @@ Networking.Receive(NET_RESULT, function(message)
     end
 end)
 
--- The game's join button opens the window during a Station round; the window's buttons join themselves.
+-- The game's join button asks the server during a Station round; the window's buttons join themselves.
 local clientType = "Barotrauma.Networking.GameClient"
 Hook.Patch("VoidTraitor.Lobby.LateJoin", clientType, "SendJoinOngoingRequest", function(_, ptable)
     if joining or S.sharedState.Disabled or not stationRunning()
         or ptable["joinButton"] ~= Game.NetLobbyScreen.joinOnGoingRoundButton then return end
-    P.ShowLateJoinWindow()
+    if S.lateJoinPending == nil then
+        S.lateJoinPending = ""
+        P.SendNetMessage(NET_CHOOSE, function(message) message.WriteString("") end)
+    end
     ptable.ReturnValue = false
     ptable.PreventExecution = true
 end, Hook.HookMethodType.Before)

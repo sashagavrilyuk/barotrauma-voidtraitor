@@ -813,27 +813,32 @@ Hook.Add("jobsAssigned", "Traitormod.Station.Roles", function(clients)
     end
 end)
 
--- The lobby's late-join window (Void traitor pack Lua/client/lobby/latejoin.lua): a newcomer picks the role to arrive
--- with on the shuttle. Only what the window offers: a role with a seat left in the crew list that the player has the
--- karma and time for. The answer lets the client join the round.
+-- The lobby's late join (Void traitor pack Lua/client/lobby/latejoin.lua). The join button asks with no role: a player
+-- who has been on the station this round joins straight away, and the game gives them back their character; a newcomer
+-- gets the window. There a newcomer picks the role to arrive with on the shuttle, only what the window offers: a role
+-- with a seat left in the crew list that the player has the karma and time for. A true answer lets the client join.
 local nextLateJoin = {}
 Networking.Receive("VoidTraitor_StationLateJoin", function(message, client)
     local id = message.ReadString()
     local selected = Traitormod.SelectedGamemode
     local now = Timer.GetTime()
-    local allowed = (nextLateJoin[client.SessionId] or 0) <= now and Game.RoundStarted and selected ~= nil
-        and selected.Name == "Station" and not client.InGame and selected:IsNewcomer(client)
+    local valid = (nextLateJoin[client.SessionId] or 0) <= now and Game.RoundStarted and selected ~= nil
+        and selected.Name == "Station" and not client.InGame
     nextLateJoin[client.SessionId] = now + 0.5
-    if allowed then
-        allowed = false
+    local join = valid and not selected:IsNewcomer(client)
+    if valid and not join and id ~= "" then
         local latest, order = selected:GetCrew()
         for _, entry in ipairs(selected:GetFreeSeats(latest, order)) do
-            if entry.Role == id then allowed = selected:HasRoleSeat(client, id, selected:CountRoleSlots()) end
+            if entry.Role == id then join = selected:HasRoleSeat(client, id, selected:CountRoleSlots()) end
         end
+        if join then selected.LateJoinChoices[Traitormod.GetClientAccountKey(client)] = id end
+    elseif valid and not join then
+        -- a client drops the crew list when it leaves the round for the lobby (crewmanifest.lua on roundEnd), so the
+        -- window gets the seats again
+        selected:SendCrew(client)
     end
-    if allowed then selected.LateJoinChoices[Traitormod.GetClientAccountKey(client)] = id end
     local reply = Networking.Start("VoidTraitor_StationLateJoinResult")
-    reply.WriteBoolean(allowed)
+    reply.WriteBoolean(join)
     Networking.Send(reply, client.Connection)
 end)
 
