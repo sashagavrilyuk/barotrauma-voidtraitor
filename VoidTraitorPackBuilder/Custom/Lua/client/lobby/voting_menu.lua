@@ -11,6 +11,8 @@ function P.ShowActiveVoteMenu()
     end
 
     if not P.IsLobbyScreenAvailable() then return end
+    -- a vote someone else started opens here too; the window it replaces would be left with no way to close it
+    if S.currentMenu ~= nil then P.CloseMenu() end
 
     local target = P.GetVoteTargetComponent(active.Type)
     local panel = P.CreateVoteOverlayOnComponent(target)

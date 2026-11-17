@@ -352,12 +352,13 @@ function P.OpenCardWindow(kind, title, wide)
     local screen = Game.NetLobbyScreen
     if S.currentMenu ~= nil then P.CloseMenu() end
 
-    -- An invisible frame over the lobby takes its clicks, so nothing behind the window can rebuild the card while
-    -- its editor is here. All its state colors are set: it counts as hovered while the cursor is over the window.
+    -- The window's holder covers the lobby but takes no clicks, so the chat and the lobby's buttons stay usable.
+    -- All its state colors are set: it counts as hovered while the cursor is over the window.
     local root = GUI.Frame(Common.CreateRect(1, 1, P.GetLobbyGuiFrame()), nil)
     for _, key in ipairs(FRAME_COLORS) do
         root[key] = TRANSPARENT
     end
+    root.CanBeFocused = false
     root.IgnoreLayoutGroups = true
     P.SafeSetAsLastChild(root)
     S.currentMenu = root
@@ -450,6 +451,9 @@ Hook.Patch("VoidTraitor.Lobby.PlayerCard", "Barotrauma.NetLobbyScreen", "UpdateP
 -- Spectating replaces the card with a single vanilla line; the chat takes the space that frees.
 Hook.Patch("VoidTraitor.Lobby.Spectate", "Barotrauma.NetLobbyScreen", "SetSpectate", function(instance, ptable)
     if S.sharedState.Disabled or Game.Client == nil or not ptable["spectate"] or S.lobbyPanel == nil then return end
+    -- the card's buttons are gone, so are the windows they opened
+    local kind = S.currentMenuKind
+    if kind == "character" or kind == "antagonists" or kind == "stationjobs" then P.CloseMenu() end
     for line in instance.playerInfoContent.Children do
         Common.FitHeightToText(line)
     end
