@@ -29,7 +29,7 @@ Common.StationCrew = nil
 Common.NO_SEAT_LIMIT = 255
 Common.StationFreeSeats = nil
 Common.OnStationCrew = nil
--- { Crew, StartTime, Alert, AlertColor, Evacuation, Free = { { Role, Job, Seats } } } from the same message
+-- { Crew, StartTime, Alert, AlertColor, Evacuation, Free = { { Role, Job, Department, Seats } } } from the same message
 local station = nil
 -- the crew list and the station panel of the open Tab menu, filled again when the server sends a new list
 local shownList, shownPanel = nil, nil
@@ -77,7 +77,8 @@ local function addFreeSeat(list, height, entry)
     local row, color = addRow(list, height, entry.Role, entry.Job)
     local font = GUI.Style.SmallFont
     createLabel(row, Vector2(0.8, 1), TextManager.Get("jobname." .. entry.Role).Value, color, font, GUI.Alignment.CenterLeft)
-    local count = createLabel(row, Vector2(0.2, 1), tostring(entry.Seats), nil, font, GUI.Alignment.CenterRight)
+    local seats = entry.Seats == Common.NO_SEAT_LIMIT and text.LateJoinUnlimited or tostring(entry.Seats)
+    local count = createLabel(row, Vector2(0.2, 1), seats, nil, font, GUI.Alignment.CenterRight)
     Common.SetFixedWidth(count, Common.GetTextHeight(font) * 2)
 end
 
@@ -144,15 +145,18 @@ local function fillPanel(panel)
     local list = panel.Free
     list.Content.ClearChildren()
     local height = Common.GetTextHeight(GUI.Style.Font)
-    -- roles with no limit, the passengers' among them, are no news here
-    local shown = 0
+    -- under the heading of their department, as the crew list beside it; the roles come in the departments' order
+    local department
     for _, entry in ipairs(station.Free) do
-        if entry.Seats ~= Common.NO_SEAT_LIMIT then
-            addFreeSeat(list, height, entry)
-            shown = shown + 1
+        if entry.Department ~= department then
+            department = entry.Department
+            local header = createLabel(list.Content, Vector2(1, 1), text.StationDepartments[department] or department,
+                Common.StationDepartmentColors[department], GUI.Style.Font, GUI.Alignment.BottomLeft)
+            Common.SetFixedHeight(header, height)
         end
+        addFreeSeat(list, height, entry)
     end
-    if shown == 0 then
+    if #station.Free == 0 then
         Common.FitHeightToText(Common.CreateText(list.Content, 1, 1, nil, text.StationNoFreeSeats, GUI.Alignment.CenterLeft, 1, MUTED_COLOR, false))
     end
     list.RecalculateChildren()
@@ -186,6 +190,9 @@ Hook.Patch(PATCH_ID, "Barotrauma.TabMenu", "CreateMultiPlayerList", function(ins
     end
     if list ~= shownList then
         shownList = list
+        -- the game's list has no margin, so the icons would touch its frame; the rows keep the station panel's
+        local padding = Common.GetWindowPadding()
+        list.Padding = Vector4(padding, list.Padding.Y, padding, list.Padding.W)
         -- the list box sizes its content only in its update, as the game's own crew tab does after a resize
         list.RectTransform.RelativeSize = Vector2(LIST_WIDTH, list.RectTransform.RelativeSize.Y)
         list.UpdateDimensions()
@@ -207,7 +214,8 @@ Networking.Receive(NET_CREW, function(message)
     station = { Crew = message.ReadUInt16(), StartTime = Timer.GetTime() - message.ReadInt32(), Alert = message.ReadString(),
         AlertColor = Color(message.ReadByte(), message.ReadByte(), message.ReadByte(), 255), Evacuation = message.ReadString(), Free = {} }
     for _ = 1, message.ReadByte() do
-        station.Free[#station.Free + 1] = { Role = message.ReadString(), Job = message.ReadString(), Seats = message.ReadByte() }
+        station.Free[#station.Free + 1] = { Role = message.ReadString(), Job = message.ReadString(), Department = message.ReadString(),
+            Seats = message.ReadByte() }
     end
     Common.StationCrew = crew
     Common.StationFreeSeats = {}

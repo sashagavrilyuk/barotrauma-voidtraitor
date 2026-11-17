@@ -473,20 +473,27 @@ function gm:GetCrew()
     return latest, order
 end
 
--- The seats each role has left, math.huge for one with no limit, in the order of the departments' roles. They are
--- counted from the crew list, not from the living crew, as a death, which frees a seat for newcomers, must not show.
-function gm:GetFreeSeats(latest, order)
-    local taken, free, listed = {}, {}, {}
+-- the seats each role has taken in the crew list (gm:GetCrew)
+function gm:CountCrewSeats(latest, order)
+    local taken = {}
     for _, account in ipairs(order) do
         local role = latest[account].Role
         taken[role] = (taken[role] or 0) + 1
     end
+    return taken
+end
+
+-- The seats each role has left, math.huge for one with no limit, in the order of the departments' roles, each role
+-- under the first department that lists it. They are counted from the crew list, not from the living crew, as a
+-- death, which frees a seat for newcomers, must not show.
+function gm:GetFreeSeats(latest, order)
+    local taken, free, listed = self:CountCrewSeats(latest, order), {}, {}
     for _, department in ipairs(self.Departments) do
         for _, role in ipairs(department.Roles) do
             local seats = self.Seats[role]
             if not listed[role] and seats ~= nil and seats > (taken[role] or 0) then
                 listed[role] = true
-                free[#free + 1] = { Role = role, Seats = seats - (taken[role] or 0) }
+                free[#free + 1] = { Role = role, Department = department.Id, Seats = seats - (taken[role] or 0) }
             end
         end
     end
@@ -532,6 +539,7 @@ function gm:SendCrew(client)
     for _, entry in ipairs(free) do
         message.WriteString(entry.Role)
         message.WriteString(self.Roles[entry.Role].Job)
+        message.WriteString(entry.Department)
         message.WriteByte(math.min(entry.Seats, 255))
     end
     Networking.Send(message, client ~= nil and client.Connection or nil)

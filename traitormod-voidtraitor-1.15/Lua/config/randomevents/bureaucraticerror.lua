@@ -27,15 +27,18 @@ event.Start = function ()
     for id, role in pairs(mode.Roles) do
         if role.Head == nil and not role.Passenger then roles[#roles + 1] = id end
     end
+    -- SS14 changes the seats left, so the crew's seats stay and a cut can't leave a debt that eats a later rise
+    local taken = mode:CountCrewSeats(mode:GetCrew())
 
     if math.random() < closeAllButOneChance then
         local open = table.remove(roles, math.random(#roles))
         slots[open] = math.huge
-        for _, id in ipairs(roles) do slots[id] = 0 end
+        for _, id in ipairs(roles) do slots[id] = taken[id] or 0 end
     else
         for _ = 1, math.floor(#roles * (minShare + math.random() * (maxShare - minShare))) do
             local id = table.remove(roles, math.random(#roles))
-            slots[id] = math.max(0, slots[id] + math.random(minChange, maxChange))
+            local crew = taken[id] or 0
+            slots[id] = math.max(crew, math.max(slots[id], crew) + math.random(minChange, maxChange))
         end
     end
 
