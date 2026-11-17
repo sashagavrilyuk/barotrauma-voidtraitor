@@ -60,6 +60,11 @@ local function GetRowHeight()
     return math.max(Common.GetTextHeight(GUI.Style.Font) * 2, Common.GetStyleHeight("GUIButton"), P.ITEM_ICON_PIXELS, P.ACTION_BUTTON_PIXELS)
 end
 
+-- A request needs a filled cart and a reason.
+local function RefreshSubmit()
+    UI.Submit.Enabled = not UI.SubmitPending and #S.cart > 0 and string.find(tostring(UI.Reason.Text), "%S") ~= nil
+end
+
 -- The window never gets shorter than its rows need.
 function UI.FitMinimumHeight()
     UI.MinimumHeight = Common.GetMinimumHeight(UI.WindowLayout)
@@ -143,7 +148,7 @@ function P.RefreshCartOnly()
     UI.Details.Text = S.lastMessage ~= "" and S.lastMessage or (selected ~= nil and selected.Name .. "\n" .. P.GetProductDescriptionText(selected) or "")
     UI.FitDetails()
     UI.Reason.Enabled = not UI.SubmitPending
-    UI.Submit.Enabled = not UI.SubmitPending and #S.cart > 0 and string.find(tostring(UI.Reason.Text), "%S") ~= nil
+    RefreshSubmit()
 end
 
 function UI.UpdateOrders()
@@ -290,7 +295,7 @@ function UI.Show(itemId, snapshot)
     Common.FitHeightToText(P.CreateText(cart, 1, 1, nil, snapshot.Text.Reason, GUI.Alignment.Left, 1, nil, false))
     UI.Reason = GUI.TextBox(P.CreateRect(1, 1, cart), "")
     UI.Reason.MaxTextLength = 300
-    UI.Reason.OnTextChangedDelegate = function() P.RefreshCartOnly() return true end
+    UI.Reason.OnTextChangedDelegate = function() RefreshSubmit() return true end
     UI.Submit = P.CreateButton(cart, 1, 1, nil, snapshot.Text.Submit, false)
     Common.SetMinimumHeight(cartFrame, Common.GetMinimumHeight(cartLayout))
     Common.SetAutoScaleText(UI.Submit.TextBlock, 1)
