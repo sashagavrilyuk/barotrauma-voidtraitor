@@ -5,8 +5,16 @@ local textPromptUtils = require("textpromptutils")
 vt.Votes = {}
 vt.GameVote = nil
 vt.MapVote = nil
+vt.CustomVote = nil
 vt.GameVoteCooldownUntil = 0
 vt.MapVoteCooldownUntil = 0
+-- results of mode and map votes that ended during a round, applied once back in the lobby
+vt.PendingResults = {}
+
+-- an admin's own vote: a title and up to this many options, in bytes at most 4 per character of the client's limits
+local CUSTOM_VOTE_OPTIONS = 10
+local CUSTOM_VOTE_TITLE_BYTES = 400
+local CUSTOM_VOTE_OPTION_BYTES = 240
 
 local serverSettingsDescriptor = Descriptors["Barotrauma.Networking.ServerSettings"] or LuaUserData.RegisterType("Barotrauma.Networking.ServerSettings")
 LuaUserData.MakePropertyAccessible(serverSettingsDescriptor, "SelectedOutpostName")
@@ -604,18 +612,20 @@ local function applySubmarineSelection(submarine)
     )
 end
 
-local function finishGameVote(cancelledText)
+-- A mode or map vote that ends during a round picks the next round's. The lobby settings it changes (respawn mode,
+-- mission types) would act on the running round, so it is applied once back in the lobby.
+local function applyInLobby(apply)
+    if not Game.RoundStarted then return apply() end
+    table.insert(vt.PendingResults, apply)
+    Traitormod.SendMessageEveryone(getVoteText("VoteAppliesAfterRound"))
+end
+
+local function finishGameVote()
     local vote = vt.GameVote
     if vote == nil then return end
 
     vt.GameVote = nil
     vt.GameVoteCooldownUntil = Timer.GetTime() + getVoteCooldownSeconds()
-
-    if cancelledText ~= nil then
-        Traitormod.SendMessageEveryone(cancelledText)
-        notifyGuiVoteChanged()
-        return
-    end
 
     local gameVoteModes = getConfiguredGameVoteModes()
     if #gameVoteModes == 0 then
@@ -638,7 +648,6 @@ local function finishGameVote(cancelledText)
 
     local winnerId = winners[math.random(1, #winners)]
     local winner = gameVoteModes[winnerId]
-    local playerCount = countVotePlayers()
 
     if highest <= 0 then
         Traitormod.SendMessageEveryone(string.format(
@@ -658,17 +667,13 @@ local function finishGameVote(cancelledText)
         ))
     end
 
-    local success, selectionText = winner.Apply(playerCount)
-    if not success then
+    applyInLobby(function()
+        local success, selectionText = winner.Apply(countVotePlayers())
         Traitormod.SendMessageEveryone(selectionText)
-        notifyGuiVoteChanged()
-        return
-    end
-
-    Traitormod.SendMessageEveryone(selectionText)
+        -- the mode can change on the same submarine, which the lobby panels would not notice
+        if success then Traitormod.ClientMenu.SendLobbyInfoEveryone() end
+    end)
     notifyGuiVoteChanged()
-    -- the mode can change on the same submarine, which the lobby panels would not notice
-    Traitormod.ClientMenu.SendLobbyInfoEveryone()
 end
 
 local function finishMapVote(cancelledText)
@@ -725,14 +730,22 @@ local function finishMapVote(cancelledText)
         ))
     end
 
-    local success, selectionText = applySubmarineSelection(winner)
-    if not success then
+    applyInLobby(function()
+        local _, selectionText = applySubmarineSelection(winner)
         Traitormod.SendMessageEveryone(selectionText)
-        notifyGuiVoteChanged()
-        return
-    end
+    end)
+    notifyGuiVoteChanged()
+end
 
-    Traitormod.SendMessageEveryone(selectionText)
+local function finishCustomVote()
+    local vote = vt.CustomVote
+    vt.CustomVote = nil
+    local message = Traitormod.StringBuilder:new()
+    message(Traitormod.GetText("CMDVoteResultsHeader"), vote.Title)
+    for index, option in ipairs(vote.Options) do
+        message(Traitormod.GetText("CMDVoteResultsLine"), option, vote.Results[index])
+    end
+    Traitormod.SendMessageEveryone(message:concat())
     notifyGuiVoteChanged()
 end
 
@@ -806,31 +819,30 @@ Hook.Add("think", "Traitormod.Voting.Think", function()
         end
     end
 
-    if vt.GameVote ~= nil then
-        if Game.RoundStarted then
-            finishGameVote(getVoteText("GameVoteCancelledRoundStarted"))
-        elseif Timer.GetTime() > vt.GameVote.Time then
-            finishGameVote()
-        end
+    if #vt.PendingResults > 0 and isLobbyState() then
+        local pending = vt.PendingResults
+        vt.PendingResults = {}
+        for _, apply in ipairs(pending) do apply() end
+    end
+
+    if vt.GameVote ~= nil and Timer.GetTime() > vt.GameVote.Time then
+        finishGameVote()
     end
 
     if vt.MapVote ~= nil then
-        if Game.RoundStarted then
-            finishMapVote(getVoteText("MapVoteCancelledRoundStarted"))
-        elseif stationLobby ~= nil and vt.MapVote.StationMap ~= stationLobby then
+        if stationLobby ~= nil and vt.MapVote.StationMap ~= stationLobby then
             finishMapVote(getVoteText("LobbyVoteCancelledMissionChanged"))
         elseif Timer.GetTime() > vt.MapVote.Time then
             finishMapVote()
         end
     end
+
+    if vt.CustomVote ~= nil and Timer.GetTime() > vt.CustomVote.Time then
+        finishCustomVote()
+    end
 end)
 
 vt.StartGameVote = function(client, silent)
-    if not isLobbyState() then
-        Traitormod.SendMessage(client, getVoteText("GameVoteLobbyOnly"))
-        return true
-    end
-
     if vt.GameVote ~= nil or vt.MapVote ~= nil then
         Traitormod.SendMessage(client, getVoteText("LobbyVoteAlreadyActive"))
         return true
@@ -877,11 +889,6 @@ vt.StartGameVote = function(client, silent)
 end
 
 vt.StartMapVote = function(client, silent)
-    if not isLobbyState() then
-        Traitormod.SendMessage(client, getVoteText("GameVoteLobbyOnly"))
-        return true
-    end
-
     if vt.GameVote ~= nil or vt.MapVote ~= nil then
         Traitormod.SendMessage(client, getVoteText("LobbyVoteAlreadyActive"))
         return true
@@ -932,8 +939,8 @@ vt.StartMapVote = function(client, silent)
     return true
 end
 
-local function castLobbyVote(client, voteData, options, optionId)
-    if voteData == nil or options[optionId] == nil then return false end
+local function castLobbyVote(client, voteData, optionCount, optionId)
+    if optionId < 1 or optionId > optionCount or voteData.ClientVotes[client] == optionId then return end
 
     local previousVote = voteData.ClientVotes[client]
     if previousVote ~= nil then
@@ -943,43 +950,57 @@ local function castLobbyVote(client, voteData, options, optionId)
     voteData.ClientVotes[client] = optionId
     voteData.Results[optionId] = (voteData.Results[optionId] or 0) + 1
     notifyGuiVoteChanged()
-    return true
 end
 
-vt.TryHandleGuiVote = function(client, optionId)
-    if vt.GameVote ~= nil then
-        return castLobbyVote(client, vt.GameVote, getConfiguredGameVoteModes(), optionId)
+-- An admin's own vote, as SS14's custom votes: a title and its options, the result only told in the chat. It can run
+-- beside a mode or map vote.
+vt.StartCustomVote = function(client, title, options)
+    if not client.HasPermission(ClientPermissions.ConsoleCommands) then return end
+    if vt.CustomVote ~= nil then
+        Traitormod.SendMessage(client, getVoteText("CustomVoteAlreadyActive"))
+        return
     end
 
-    if vt.MapVote ~= nil then
-        return castLobbyVote(client, vt.MapVote, vt.MapVote.Candidates or {}, optionId)
+    title = trim(title)
+    local valid = title ~= "" and #title <= CUSTOM_VOTE_TITLE_BYTES and #options >= 2 and #options <= CUSTOM_VOTE_OPTIONS
+    for index, option in ipairs(options) do
+        options[index] = trim(option)
+        valid = valid and options[index] ~= "" and #options[index] <= CUSTOM_VOTE_OPTION_BYTES
+    end
+    if not valid then
+        Traitormod.SendMessage(client, getVoteText("CustomVoteInvalid"))
+        return
     end
 
-    return false
-end
-
-local function buildGuiVoteOption(index, text, votes, selected)
-    return {
-        Index = index,
-        Text = tostring(text or ""),
-        Votes = math.max(0, tonumber(votes or 0) or 0),
-        Selected = selected == true
+    local duration = getVoteDurationSeconds()
+    local results = {}
+    for index = 1, #options do results[index] = 0 end
+    vt.CustomVote = {
+        Time = Timer.GetTime() + duration,
+        Duration = duration,
+        GuiId = "custom:" .. tostring(Timer.GetTime()),
+        StartedBy = client.Name,
+        Title = title,
+        Options = options,
+        Results = results,
+        ClientVotes = {}
     }
+    Traitormod.SendMessageEveryone(string.format(getVoteText("CustomVoteStarted"), client.Name, title, tostring(duration)))
+    notifyGuiVoteChanged()
 end
 
 local function getRemainingSeconds(vote)
-    if vote == nil or vote.Time == nil then return 0 end
     return math.max(0, math.ceil(vote.Time - Timer.GetTime()))
 end
 
-local function getGuiStartBlockedReason()
-    if not isLobbyState() then
-        return getVoteText("LobbyVoteLobbyOnly")
+-- a vote as the client shows it; the client names mode and map votes itself, a custom vote brings its title
+local function buildGuiVote(client, vote, voteType, title, texts)
+    local options = {}
+    for index, text in ipairs(texts) do
+        options[index] = { Text = text, Votes = vote.Results[index] or 0, Selected = vote.ClientVotes[client] == index }
     end
-    if vt.GameVote ~= nil or vt.MapVote ~= nil then
-        return getVoteText("LobbyVoteAlreadyActive")
-    end
-    return ""
+    return { Id = vote.GuiId, Type = voteType, Title = title, StartedBy = vote.StartedBy,
+        Remaining = getRemainingSeconds(vote), Duration = vote.Duration, Options = options }
 end
 
 vt.HasActiveGuiVote = function()
@@ -987,57 +1008,30 @@ vt.HasActiveGuiVote = function()
 end
 
 vt.GetGuiSnapshot = function(client)
-    local snapshot = {
-        StartBlockedReason = getGuiStartBlockedReason(),
-        CanStart = isLobbyState() and vt.GameVote == nil and vt.MapVote == nil,
+    local votes = {}
+    if vt.GameVote ~= nil then
+        local texts = {}
+        for index, mode in ipairs(getConfiguredGameVoteModes()) do texts[index] = mode.Text() end
+        votes[#votes + 1] = buildGuiVote(client, vt.GameVote, "game", "", texts)
+    end
+    if vt.MapVote ~= nil then
+        local texts = {}
+        for index, submarine in ipairs(vt.MapVote.Candidates) do
+            texts[index] = string.format("%s (%s)", tostring(submarine.Name), getCapacityText(submarine))
+        end
+        votes[#votes + 1] = buildGuiVote(client, vt.MapVote, vt.MapVote.StationMap and "station" or "map", "", texts)
+    end
+    if vt.CustomVote ~= nil then
+        votes[#votes + 1] = buildGuiVote(client, vt.CustomVote, "custom", vt.CustomVote.Title, vt.CustomVote.Options)
+    end
+
+    return {
+        CanStart = vt.GameVote == nil and vt.MapVote == nil,
         StationMap = vt.IsStationLobby(),
         GameCooldownRemaining = getVoteCooldownRemaining("game", client),
         MapCooldownRemaining = getVoteCooldownRemaining("map", client),
-        Active = nil
+        Votes = votes
     }
-
-    if vt.GameVote ~= nil then
-        local options = {}
-        local modes = getConfiguredGameVoteModes()
-        for index, mode in ipairs(modes) do
-            table.insert(options, buildGuiVoteOption(
-                index,
-                mode.Text(),
-                vt.GameVote.Results[index] or 0,
-                vt.GameVote.ClientVotes[client] == index
-            ))
-        end
-
-        snapshot.Active = {
-            Id = vt.GameVote.GuiId or "game",
-            Type = "game",
-            StartedBy = tostring(vt.GameVote.StartedBy or ""),
-            Remaining = getRemainingSeconds(vt.GameVote),
-            Duration = tonumber(vt.GameVote.Duration or getVoteDurationSeconds()) or 1,
-            Options = options
-        }
-    elseif vt.MapVote ~= nil then
-        local options = {}
-        for index, submarine in ipairs(vt.MapVote.Candidates or {}) do
-            table.insert(options, buildGuiVoteOption(
-                index,
-                string.format("%s (%s)", tostring(submarine.Name or ""), getCapacityText(submarine)),
-                vt.MapVote.Results[index] or 0,
-                vt.MapVote.ClientVotes[client] == index
-            ))
-        end
-
-        snapshot.Active = {
-            Id = vt.MapVote.GuiId or "map",
-            Type = "map",
-            StartedBy = tostring(vt.MapVote.StartedBy or ""),
-            Remaining = getRemainingSeconds(vt.MapVote),
-            Duration = tonumber(vt.MapVote.Duration or getVoteDurationSeconds()) or 1,
-            Options = options
-        }
-    end
-
-    return snapshot
 end
 
 vt.StartGuiVote = function(client, voteType)
@@ -1051,10 +1045,15 @@ vt.StartGuiVote = function(client, voteType)
     return true
 end
 
-vt.CastGuiVote = function(client, optionId)
-    optionId = tonumber(optionId)
-    if optionId == nil then return true end
-    return vt.TryHandleGuiVote(client, optionId)
+vt.CastGuiVote = function(client, voteId, optionId)
+    local game, map, custom = vt.GameVote, vt.MapVote, vt.CustomVote
+    if game ~= nil and game.GuiId == voteId then
+        castLobbyVote(client, game, #getConfiguredGameVoteModes(), optionId)
+    elseif map ~= nil and map.GuiId == voteId then
+        castLobbyVote(client, map, #map.Candidates, optionId)
+    elseif custom ~= nil and custom.GuiId == voteId then
+        castLobbyVote(client, custom, #custom.Options, optionId)
+    end
 end
 
 return vt

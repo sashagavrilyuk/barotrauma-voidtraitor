@@ -1,165 +1,199 @@
 local P = ...
 local S = P.State
+local Common = P.Common
+local text = P.VoteUiText
 
-function P.ShowActiveVoteMenu()
-    if P.IsWelcomeMenuOpen ~= nil and P.IsWelcomeMenuOpen() then return end
+-- SS14's call vote menu: the votes a player may start, from the lobby's vote button (panel.lua) or the VT menu in a
+-- round. Mode and map votes show when they can be started again; an admin also gets their own vote, which opens its
+-- editor. The server checks every start again (voting.lua).
 
-    local active = S.voteSnapshot and S.voteSnapshot.Active or nil
-    if active == nil then
-        P.ShowVoteStartMenu()
-        return
-    end
+-- in 1920x1080 pixels
+local MENU_WIDTH = 360
+local CUSTOM_WIDTH = 460
+local CUSTOM_HEIGHT = 560
+local WINDOW_MARGIN = 10
+-- the editor's limits in characters; the server's are in bytes (voting.lua)
+local TITLE_LENGTH = 100
+local OPTION_LENGTH = 60
+local MAX_OPTIONS = 10
 
-    if not P.IsLobbyScreenAvailable() then return end
-    -- a vote someone else started opens here too; the window it replaces would be left with no way to close it
-    if S.currentMenu ~= nil then P.CloseMenu() end
-
-    local target = P.GetVoteTargetComponent(active.Type)
-    local panel = P.CreateVoteOverlayOnComponent(target)
-    if panel == nil then
-        if not P.AttachVoteGuiRoot() then return end
-        panel = GUI.Frame(P.CreateRect(0.36, 0.30, S.guiRoot, GUI.Anchor.Center), "GUIFrame")
-        panel.Color = Color(255, 255, 255, 255)
-    end
-
-    panel.CanBeFocused = true
-    panel.IgnoreLayoutGroups = true
-    S.currentMenu = panel
-    S.currentMenuKind = "voteactive"
-    S.sharedState.CurrentMenu = panel
-    S.sharedState.CurrentMenuKind = S.currentMenuKind
-    P.SafeSetAsLastChild(panel)
-
-    S.activeVoteUi = { Panel = panel, ActiveId = tostring(active.Id or ""), OptionButtons = {} }
-
-    local content = GUI.LayoutGroup(P.CreateRect(0.985, 0.985, panel, GUI.Anchor.Center), false, GUI.Anchor.TopCenter)
-    content.Stretch = true
-    content.RelativeSpacing = 0.008
-
-    local header = GUI.LayoutGroup(P.CreateRect(1, 0.10, content, nil), true, GUI.Anchor.CenterLeft)
-    header.Stretch = true
-    header.RelativeSpacing = 0.012
-
-    local title = P.CreateText(header, 0.70, 1, nil, active.Title or P.VoteUiText.StartTitle, GUI.Alignment.Left, 0.95, Color(255, 235, 170, 255), false)
-    title.Font = GUI.Style.SubHeadingFont
-
-    S.activeVoteUi.TimerText = P.CreateText(header, 0.30, 1, nil, P.GetVoteTimeText(active), GUI.Alignment.CenterRight, 1.125, Color(210, 220, 200, 255), false)
-
-    local progressFrame = GUI.Frame(P.CreateRect(1, 0.035, content, nil), "GUIFrame")
-    progressFrame.Color = Color(25, 35, 30, 230)
-    S.activeVoteUi.ProgressFill = GUI.Frame(P.CreateRect(P.GetVoteProgress(active), 1, progressFrame, GUI.Anchor.CenterLeft), nil)
-    S.activeVoteUi.ProgressFill.Color = Color(120, 170, 130, 230)
-
-    local listArea = GUI.Frame(P.CreateRect(1, 0.855, content, nil), nil)
-    listArea.Color = Color(0, 0, 0, 0)
-    listArea.CanBeFocused = false
-
-    -- Чёрный фон под ванильной рамкой списка; сам ListBox прозрачный и только держит кнопки вариантов.
-    local listBackground = GUI.Frame(P.CreateRect(0.984, 0.944, listArea, GUI.Anchor.Center), nil)
-    listBackground.Color = Color(0, 0, 0, 255)
-    listBackground.CanBeFocused = false
-
-    local listFrame = GUI.Frame(P.CreateRect(1, 1, listArea, GUI.Anchor.Center), "GUIFrameListBox")
-    listFrame.CanBeFocused = false
-
-    local list = GUI.ListBox(P.CreateRect(0.984, 0.944, listFrame, GUI.Anchor.Center), false, Color(0, 0, 0, 0), nil)
-    list.Color = Color(0, 0, 0, 0)
-    if list.ContentBackground ~= nil then
-        list.ContentBackground.Color = Color(0, 0, 0, 0)
-    end
-    list.KeepSpaceForScrollBar = false
-
-    for _, option in ipairs(active.Options or {}) do
-        local label = P.FormatVoteOptionLabel(option)
-        local button = GUI.Button(P.CreateRect(1, 0.105, list.Content, nil), label, GUI.Alignment.Center, "GUIButtonSmall")
-        P.SetButtonTextScale(button, 0.73)
-        S.activeVoteUi.OptionButtons[option.Index] = button
-        button.OnClicked = function()
-            P.SendVoteCast(option.Index)
-            if S.voteSnapshot ~= nil and S.voteSnapshot.Active ~= nil then
-                for _, localOption in ipairs(S.voteSnapshot.Active.Options or {}) do
-                    localOption.Selected = localOption.Index == option.Index
-                end
-                P.RefreshActiveVoteUi()
-            end
-            return true
-        end
-    end
-
-    P.RefreshActiveVoteUi()
-    -- laid out now, or the options show unplaced for a frame (menu_window.lua)
-    panel.ForceLayoutRecalculation()
+local function trim(value)
+    return (value:gsub("^%s+", ""):gsub("%s+$", ""))
 end
 
-P.CreateVoteButton = function()
-    P.DestroyVoteButton()
+-- a window in the middle of the screen, in the lobby's frame or the menu's root as the votes' popups are
+local function openWindow(kind, width, height, title)
+    local parent = P.GetVoteParent()
+    if parent == nil then return nil end
+    P.CloseMenu()
 
-    if not P.IsLobbyScreenAvailable() then return end
-
-    local parent = P.GetVoteButtonParent()
-    if parent == nil or parent.RectTransform == nil then return end
-
-    local root = GUI.Frame(P.GetVoteButtonRect(parent), nil)
+    local root = GUI.Frame(P.CreatePixelRect(width, height, parent, GUI.Anchor.Center), nil)
     root.Color = Color(0, 0, 0, 0)
-    root.CanBeFocused = true
+    root.CanBeFocused = false
     root.IgnoreLayoutGroups = true
-    S.voteButtonRoot = root
-    S.voteButtonParent = parent
-    S.sharedState.VoteButtonRoot = S.voteButtonRoot
-
     P.SafeSetAsLastChild(root)
+    S.currentMenu = root
+    S.currentMenuKind = kind
+    S.sharedState.CurrentMenu = root
+    S.sharedState.CurrentMenuKind = kind
+    S.voteWindowInLobby = parent ~= S.guiRoot
 
-    local button = GUI.Button(P.CreateRect(1, 1, root, GUI.Anchor.Center), P.VoteUiText.Button, GUI.Alignment.Center, "GUIButton")
-    button.CanBeFocused = true
-    button.ToolTip = P.VoteUiText.Tooltip
-    P.SetButtonTextScale(button, 1.0)
-    button.OnClicked = function()
-        if S.currentMenuKind == "votestart" then
-            P.CloseMenu()
-            return true
-        end
-        P.RequestVoteSnapshot(true)
+    local panel = GUI.Frame(P.CreateRect(1, 1, root, GUI.Anchor.TopLeft), "GUIFrame")
+    local content, outer = Common.CreateWindowContent(panel)
+    Common.CreateWindowHeader(content, root, title, text.Close, function()
+        P.CloseMenu()
+        return true
+    end)
+    return root, content, outer
+end
+
+function P.ShowVoteMenu()
+    local root, content, outer = openWindow("votes", Common.FitWindowWidth(P.SafeIntScale(MENU_WIDTH), 300,
+        P.SafeIntScale(WINDOW_MARGIN)), 1, text.MenuTitle)
+    if root == nil then return end
+
+    local ui = { Shown = {} }
+    ui.Mode = P.CreateMenuButton(content, text.StartMode)
+    ui.Mode.OnClicked = function()
+        P.SendVoteStart("game")
+        P.CloseMenu()
         return true
     end
-end
-
-P.IsWelcomeMenuOpen = function()
-    local welcomeRoot = rawget(_G, "VoidTraitorWelcomeMenuRoot")
-    if welcomeRoot == nil or welcomeRoot.RectTransform == nil then
-        return rawget(_G, "VoidTraitorWelcomeMenuOpen") == true
-    end
-
-    local hasParent = welcomeRoot.RectTransform.Parent ~= nil
-    if not hasParent then _G.VoidTraitorWelcomeMenuOpen = false end
-    return hasParent
-end
-
-function P.EnsureVoteButton()
-    if S.sharedState.Disabled then return end
-
-    -- the button stays in the player card under the welcome window; only the vote's own popups make way
-    if P.IsWelcomeMenuOpen() and (S.currentMenuKind == "votestart" or S.currentMenuKind == "voteactive") then
+    ui.Map = P.CreateMenuButton(content, text.StartMap)
+    ui.Map.OnClicked = function()
+        P.SendVoteStart("map")
         P.CloseMenu()
+        return true
     end
+    if P.Admin.IsAvailable() then
+        local custom = P.CreateMenuButton(content, text.StartCustom)
+        custom.ToolTip = text.CustomTooltip
+        custom.OnClicked = function()
+            P.ShowCustomVoteWindow()
+            return true
+        end
+    end
+    S.voteMenuUi = ui
 
-    if not P.IsLobbyScreenAvailable() then
-        if S.currentMenuKind == "votestart" or S.currentMenuKind == "voteactive" then P.CloseMenu() end
-        P.DestroyVoteButton()
-        return
-    end
-
-    local parent = P.GetVoteButtonParent()
-    if parent == nil or parent.RectTransform == nil then
-        P.DestroyVoteButton()
-        return
-    end
-
-    local width, height = P.GetScreenSize()
-    if S.voteButtonRoot == nil or S.voteButtonParent ~= parent or width ~= S.lastVoteButtonResolutionX or height ~= S.lastVoteButtonResolutionY then
-        S.lastVoteButtonResolutionX = width
-        S.lastVoteButtonResolutionY = height
-        P.CreateVoteButton()
-    end
+    root.RectTransform.Resize(Point(root.Rect.Width, Common.GetMinimumHeight(outer)), true)
+    root.ForceLayoutRecalculation()
+    P.RefreshVoteMenu()
+    -- the cooldowns may have changed since the last snapshot
+    P.RequestVoteSnapshot()
 end
 
-S.sharedState.EnsureVoteButton = P.EnsureVoteButton
+-- on each snapshot and from the menu's tick, for the cooldowns' time
+function P.RefreshVoteMenu()
+    if S.currentMenuKind ~= "votes" then return end
+    local snapshot, ui, now = S.voteSnapshot, S.voteMenuUi, P.GetTime()
+    local canStart = snapshot ~= nil and snapshot.CanStart
+
+    local function refresh(button, label, cooldownEndTime)
+        local left = math.ceil(cooldownEndTime - now)
+        button.Enabled = canStart and left <= 0
+        button.ToolTip = (snapshot ~= nil and not canStart) and text.Busy or ""
+        local shown = left > 0 and string.format(text.Cooldown, label, P.FormatVoteTime(left)) or label
+        if ui.Shown[button] ~= shown then
+            ui.Shown[button] = shown
+            button.Text = shown
+        end
+    end
+    refresh(ui.Mode, text.StartMode, snapshot ~= nil and snapshot.GameCooldownEndTime or 0)
+    refresh(ui.Map, snapshot ~= nil and snapshot.StationMap and text.StartStation or text.StartMap,
+        snapshot ~= nil and snapshot.MapCooldownEndTime or 0)
+end
+
+-- The editor of an admin's own vote: a title and two to ten options. It is built again when an option is added or
+-- removed; the draft keeps what was typed until the vote is started.
+function P.ShowCustomVoteWindow()
+    local draft = S.customVoteDraft or { Title = "", Options = { "", "" } }
+    S.customVoteDraft = draft
+    local margin = P.SafeIntScale(WINDOW_MARGIN)
+    local root, content = openWindow("customvote", Common.FitWindowWidth(P.SafeIntScale(CUSTOM_WIDTH), 320, margin),
+        Common.FitWindowHeight(P.SafeIntScale(CUSTOM_HEIGHT), 320, margin), text.CustomTitle)
+    if root == nil then return end
+
+    local start
+    local function refreshStart()
+        local filled = 0
+        for _, option in ipairs(draft.Options) do
+            if trim(option) ~= "" then filled = filled + 1 end
+        end
+        start.Enabled = trim(draft.Title) ~= "" and filled >= 2
+    end
+
+    local rowHeight = Common.GetStyleHeight("GUIButton")
+    local function addLabel(value)
+        local label = Common.CreateText(content, 1, 1, nil, value, GUI.Alignment.CenterLeft, 1, nil, false)
+        Common.FitHeightToText(label)
+        label.CanBeFocused = false
+    end
+
+    addLabel(text.Question)
+    local title = GUI.TextBox(Common.CreateRect(1, 1, content), draft.Title)
+    Common.SetFixedHeight(title, rowHeight)
+    title.MaxTextLength = TITLE_LENGTH
+    title.OnTextChangedDelegate = function(_, value)
+        draft.Title = value
+        refreshStart()
+        return true
+    end
+
+    addLabel(text.Options)
+    -- the only row without a fixed height: it takes the rest of the window
+    local listHost = GUI.Frame(Common.CreateRect(1, 1, content), nil)
+    listHost.Color = Color(0, 0, 0, 0)
+    listHost.CanBeFocused = false
+    local _, list = P.CreateMenuList(listHost)
+    for index, option in ipairs(draft.Options) do
+        local row = GUI.LayoutGroup(Common.CreateRect(1, 1, list.Content), true, GUI.Anchor.CenterLeft)
+        Common.SetFixedHeight(row, rowHeight)
+        row.Stretch = true
+        row.AbsoluteSpacing = Common.GetGap()
+        row.CanBeFocused = false
+        local number = Common.CreateText(row, 0.08, 1, nil, tostring(index), GUI.Alignment.Center, 1, nil, false)
+        number.CanBeFocused = false
+        local box = GUI.TextBox(Common.CreateRect(0.8, 1, row), option)
+        box.MaxTextLength = OPTION_LENGTH
+        box.OnTextChangedDelegate = function(_, value)
+            draft.Options[index] = value
+            refreshStart()
+            return true
+        end
+        local remove = GUI.Button(GUI.RectTransform(Point(rowHeight, rowHeight), row.RectTransform), "", GUI.Alignment.Center,
+            "GUICancelButton")
+        remove.RectTransform.IsFixedSize = true
+        remove.ToolTip = text.RemoveOption
+        remove.Enabled = #draft.Options > 2
+        remove.OnClicked = function()
+            table.remove(draft.Options, index)
+            P.ShowCustomVoteWindow()
+            return true
+        end
+    end
+
+    local add = P.CreateMenuButton(content, text.AddOption, #draft.Options < MAX_OPTIONS)
+    add.OnClicked = function()
+        table.insert(draft.Options, "")
+        P.ShowCustomVoteWindow()
+        return true
+    end
+
+    start = P.CreateMenuButton(content, text.Start)
+    start.OnClicked = function()
+        local options = {}
+        for _, option in ipairs(draft.Options) do
+            if trim(option) ~= "" then options[#options + 1] = trim(option) end
+        end
+        P.SendCustomVote(trim(draft.Title), options)
+        S.customVoteDraft = nil
+        P.CloseMenu()
+        return true
+    end
+    refreshStart()
+
+    -- laid out now, or the rows show unplaced for a frame (menu_window.lua)
+    root.ForceLayoutRecalculation()
+    list.RecalculateChildren()
+    list.UpdateScrollBarSize()
+end

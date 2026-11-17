@@ -30,7 +30,7 @@ if previousState ~= nil then
     previousState.Disabled = true
     if previousState.CloseMenu ~= nil then previousState.CloseMenu() end
     Common.RemoveGuiComponent(previousState.ButtonRoot)
-    Common.RemoveGuiComponent(previousState.VoteButtonRoot)
+    Common.RemoveGuiComponent(previousState.VotePopupRoot)
     Common.RemoveGuiComponent(previousState.GuiRoot)
     for _, part in ipairs(previousState.LobbyParts or {}) do
         Common.RemoveGuiComponent(part)
@@ -194,7 +194,7 @@ P.CloseMenu = function()
 
     S.currentMenu = nil
     S.currentMenuKind = ""
-    S.activeVoteUi = nil
+    S.voteMenuUi = nil
     S.vtMenuList = nil
     S.vtMainList = nil
     S.vtAdminList = nil
@@ -213,10 +213,6 @@ S.sharedState.CloseMenu = P.CloseMenu
 
 function P.RequestEscapeClose()
     if S.currentMenu == nil or S.escapeClosePending then return end
-
-    if S.currentMenuKind == "voteactive" then
-        return
-    end
 
     S.escapeClosePending = true
     S.sharedState.BlockPauseMenu = true

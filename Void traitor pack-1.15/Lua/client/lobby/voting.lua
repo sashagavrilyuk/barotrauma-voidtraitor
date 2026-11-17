@@ -6,20 +6,17 @@ P.NET_VOTE_REQUEST = "VoidTraitor_LobbyVoteRequest"
 P.NET_VOTE_SNAPSHOT = "VoidTraitor_LobbyVoteSnapshot"
 P.NET_VOTE_START = "VoidTraitor_LobbyVoteStart"
 P.NET_VOTE_CAST = "VoidTraitor_LobbyVoteCast"
+P.NET_VOTE_CUSTOM = "VoidTraitor_LobbyVoteCustom"
 
-S.voteButtonRoot = nil
-S.voteButtonParent = nil
-S.activeVoteUi = nil
+-- the server's latest vote snapshot and the ids of its votes, to hear a new one (voting_runtime.lua)
 S.voteSnapshot = nil
-S.pendingVoteMenuOpen = false
-S.lastActiveVoteId = ""
-S.lastShownActiveVoteId = ""
-S.lastVoteButtonResolutionX = -1
-S.lastVoteButtonResolutionY = -1
+S.voteIds = {}
+-- the side popups of the running votes (voting_display.lua)
+S.votePopups = nil
+-- the draft of an admin's own vote, kept while its editor is rebuilt (voting_menu.lua)
+S.customVoteDraft = nil
 
 P.VoteUiText = P.Common.Language.Voting
-P.VoteUiText.StartBlockedReason = ""
-
 
 local base = P.PackPath .. "/Lua/client/lobby/"
 assert(loadfile(base .. "voting_layout.lua"))(P)

@@ -37,9 +37,7 @@ language.SecretTraitorAssigned = "Вы выбраны на роль антаго
 language.SubmarineRoyaleEnd = "Раунд заканчивается."
 
 -- Голосование за игровой режим
-language.GameVoteLobbyOnly = "Голосование за режим можно начать только в лобби."
-language.LobbyVoteAlreadyActive = "Голосование в лобби уже идёт. Дождитесь его завершения."
-language.LobbyVoteLobbyOnly = "Голосования за режим и подлодку можно запускать только в лобби."
+language.LobbyVoteAlreadyActive = "Голосование за режим или карту уже идёт. Дождитесь его завершения."
 language.GameVoteCooldown = "Голосование за режим недавно уже проводилось. Повторно можно начать через %s."
 language.GameVoteStarted = "%s начал голосование за режим. У вас %s секунд."
 language.GameVoteOptionSecret = "Миссии с предателями"
@@ -49,7 +47,6 @@ language.GameVoteSelectedStation = "Выбран режим станции: %s (
 language.GameVoteOptionAttackDefend = "Attack & Defends"
 language.GameVoteOptionHideAndSeek = "Прятки"
 language.GameVoteFinished = "Голосование завершено. Победил режим: %s."
-language.GameVoteCancelledRoundStarted = "Голосование за режим отменено, потому что раунд уже начался."
 language.GameVoteNoSecretSub = "Не удалось подобрать подлодку для режима «Миссии с предателями»."
 language.GameVoteNoAttackDefendSub = "Не удалось подобрать подлодку для режима «Attack & Defends»."
 language.GameVoteSelectedSecret = "Выбран режим «Миссии с предателями». Подлодка: %s (%s мест)."
@@ -66,7 +63,6 @@ language.GameVoteStartedByServer = "Сервер"
 language.MapVoteCooldown = "Голосование за подлодку недавно уже проводилось. Повторно можно начать через %s."
 language.MapVoteStarted = "%s начал голосование за подлодку. У вас %s секунд."
 language.MapVoteFinished = "Голосование завершено. Победила подлодка: %s."
-language.MapVoteCancelledRoundStarted = "Голосование за подлодку отменено, потому что раунд уже начался."
 language.LobbyVoteCancelledMissionChanged = "Голосование отменено: изменена миссия станции. Начните новое голосование за карту."
 language.MapVoteNoCandidates = "Не удалось найти подходящие подлодки для %s игроков."
 language.MapVoteSelected = "Выбрана подлодка: %s (%s мест)."
@@ -76,11 +72,16 @@ language.MapVoteTie = "Ничья между подлодками: %s. Выби�
 language.StationMapVoteCooldown = "Голосование за станцию недавно уже проводилось. Повторно можно начать через %s."
 language.StationMapVoteStarted = "%s начал голосование за станцию. У вас %s секунд."
 language.StationMapVoteFinished = "Голосование завершено. Победила станция: %s."
-language.StationMapVoteCancelledRoundStarted = "Голосование за станцию отменено, потому что раунд уже начался."
 language.StationMapVoteNoCandidates = "Не найдены доступные станции для %s игроков."
 language.StationMapVoteSelected = "Выбрана станция: %s (%s мест)."
 language.StationMapVoteNoVotes = "Никто не проголосовал, выбирается случайная станция: %s."
 language.StationMapVoteTie = "Ничья между станциями: %s. Выбирается случайный победитель: %s."
+
+-- Итог посреди раунда и своё голосование администратора
+language.VoteAppliesAfterRound = "Итог голосования вступит в силу после окончания раунда."
+language.CustomVoteStarted = "%s начал голосование «%s». У вас %s секунд."
+language.CustomVoteAlreadyActive = "Своё голосование уже идёт. Дождитесь его завершения."
+language.CustomVoteInvalid = "Нужны заголовок и от 2 до 10 непустых вариантов."
 
 -- Attack & Defend
 language.AttackDefendClassFull = "В этом классе нет свободных мест."

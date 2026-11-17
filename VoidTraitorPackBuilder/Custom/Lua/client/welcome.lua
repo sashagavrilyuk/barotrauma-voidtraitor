@@ -23,14 +23,12 @@ if previousWelcomeRoot ~= nil and previousWelcomeRoot.RectTransform ~= nil then
 end
 
 local currentWelcomeMenu = nil
-_G.VoidTraitorWelcomeMenuOpen = false
 _G.VoidTraitorWelcomeMenuRoot = nil
 local ShowCustomWelcomeMenu, ShowGuidesMenu, ShowGuidePage
 
 local function SetWelcomeMenuState(root)
     currentWelcomeMenu = root
     _G.VoidTraitorWelcomeMenuRoot = root
-    _G.VoidTraitorWelcomeMenuOpen = root ~= nil
 end
 
 local function ApplyButtonStyle(btn)

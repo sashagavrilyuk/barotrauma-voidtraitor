@@ -26,6 +26,7 @@ local voteNet = {
     Snapshot = "VoidTraitor_LobbyVoteSnapshot",
     Start = "VoidTraitor_LobbyVoteStart",
     Cast = "VoidTraitor_LobbyVoteCast",
+    Custom = "VoidTraitor_LobbyVoteCustom",
 }
 
 local function runCommand(commandName, client, input)
@@ -600,37 +601,26 @@ Networking.Receive(adminNet.RunV2, function(message, client)
 end)
 
 local function writeVoteSnapshot(netMessage, client)
-    local snapshot = nil
-    if Traitormod.Voting ~= nil and Traitormod.Voting.GetGuiSnapshot ~= nil then
-        snapshot = Traitormod.Voting.GetGuiSnapshot(client)
-    end
-
-    snapshot = snapshot or {}
-    netMessage.WriteString(tostring(snapshot.StartBlockedReason or ""))
-    netMessage.WriteBoolean(snapshot.CanStart == true)
-
-    local active = snapshot.Active
-    netMessage.WriteBoolean(active ~= nil)
-    if active ~= nil then
-        netMessage.WriteString(tostring(active.Id or ""))
-        netMessage.WriteString(tostring(active.Type or ""))
-        netMessage.WriteString(tostring(active.StartedBy or ""))
-        netMessage.WriteInt32(math.max(0, math.floor(tonumber(active.Remaining or 0) or 0)))
-        netMessage.WriteInt32(math.max(1, math.floor(tonumber(active.Duration or 1) or 1)))
-
-        local options = active.Options or {}
-        netMessage.WriteInt32(#options)
-        for _, option in ipairs(options) do
-            netMessage.WriteInt32(tonumber(option.Index or 0) or 0)
-            netMessage.WriteString(tostring(option.Text or ""))
-            netMessage.WriteInt32(math.max(0, math.floor(tonumber(option.Votes or 0) or 0)))
-            netMessage.WriteBoolean(option.Selected == true)
+    local snapshot = Traitormod.Voting.GetGuiSnapshot(client)
+    netMessage.WriteBoolean(snapshot.CanStart)
+    netMessage.WriteBoolean(snapshot.StationMap)
+    netMessage.WriteInt32(snapshot.GameCooldownRemaining)
+    netMessage.WriteInt32(snapshot.MapCooldownRemaining)
+    netMessage.WriteByte(#snapshot.Votes)
+    for _, vote in ipairs(snapshot.Votes) do
+        netMessage.WriteString(vote.Id)
+        netMessage.WriteString(vote.Type)
+        netMessage.WriteString(vote.Title)
+        netMessage.WriteString(vote.StartedBy)
+        netMessage.WriteInt32(vote.Remaining)
+        netMessage.WriteInt32(vote.Duration)
+        netMessage.WriteUInt16(#vote.Options)
+        for _, option in ipairs(vote.Options) do
+            netMessage.WriteString(option.Text)
+            netMessage.WriteInt32(option.Votes)
+            netMessage.WriteBoolean(option.Selected)
         end
     end
-
-    netMessage.WriteInt32(math.max(0, math.floor(tonumber(snapshot.GameCooldownRemaining or 0) or 0)))
-    netMessage.WriteInt32(math.max(0, math.floor(tonumber(snapshot.MapCooldownRemaining or 0) or 0)))
-    netMessage.WriteBoolean(snapshot.StationMap == true)
 end
 
 function cm.SendVoteSnapshot(client)
@@ -656,21 +646,35 @@ Networking.Receive(voteNet.Request, function(message, client)
     return cm.SendVoteSnapshot(client)
 end)
 
+-- Each change of a vote goes out to every client, so a client may start a vote or vote twice a second at most.
+local nextVoteRequest = {}
+local function allowVoteRequest(client)
+    local now = Timer.GetTime()
+    if (nextVoteRequest[client.SessionId] or 0) > now then return false end
+    nextVoteRequest[client.SessionId] = now + 0.5
+    return true
+end
+
 Networking.Receive(voteNet.Start, function(message, client)
     local voteType = message.ReadString()
-    if Traitormod.Voting ~= nil and Traitormod.Voting.StartGuiVote ~= nil then
-        Traitormod.Voting.StartGuiVote(client, voteType)
-    end
+    if allowVoteRequest(client) then Traitormod.Voting.StartGuiVote(client, voteType) end
     return cm.SendVoteSnapshot(client)
 end)
 
 Networking.Receive(voteNet.Cast, function(message, client)
-    local optionId = message.ReadInt32()
-    if Traitormod.Voting ~= nil and Traitormod.Voting.CastGuiVote ~= nil then
-        Traitormod.Voting.CastGuiVote(client, optionId)
-    end
+    local voteId = message.ReadString()
+    local optionId = message.ReadByte()
+    if allowVoteRequest(client) then Traitormod.Voting.CastGuiVote(client, voteId, optionId) end
     -- everyone else already gets the vote through Voting's change notification
     return cm.SendVoteSnapshot(client)
+end)
+
+-- an admin's own vote; Voting.StartCustomVote checks the permission and the limits
+Networking.Receive(voteNet.Custom, function(message, client)
+    local title = message.ReadString()
+    local options = {}
+    for index = 1, message.ReadByte() do options[index] = message.ReadString() end
+    if allowVoteRequest(client) then Traitormod.Voting.StartCustomVote(client, title, options) end
 end)
 
 local pointshopNet = Traitormod.Pointshop and Traitormod.Pointshop.GuiNet or nil
@@ -703,6 +707,7 @@ Hook.Add("client.disconnected", "Traitormod.ClientMenu.Disconnect", function(cli
     end
     nextLobbyInfoTime[client.SessionId] = nil
     nextAntagonistSetTime[client.SessionId] = nil
+    nextVoteRequest[client.SessionId] = nil
 end)
 
 return cm

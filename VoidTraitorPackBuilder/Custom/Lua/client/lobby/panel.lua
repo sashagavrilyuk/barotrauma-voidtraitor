@@ -3,8 +3,8 @@ local S = P.State
 local Common = P.Common
 local text = Common.Language.Lobby
 
--- The right column of the lobby, laid out like SS14: round info on top, then the vanilla spectate/AFK row,
--- the player's name, character and buttons, and the vote button at the bottom. The vanilla job and appearance
+-- The right column of the lobby, laid out like SS14: round info on top, with the map preview and vote buttons on its
+-- lines, then the vanilla spectate/AFK row and the player's name, character and buttons. The vanilla job and appearance
 -- editor moves into a window while it is open. Settings panels under the server banner are left only to those
 -- who can change them, and they can hide them with a button next to the banner's description button.
 
@@ -48,8 +48,8 @@ local function findSettings(screen)
     for child in firstChild(frame).Children do
         rows[#rows + 1] = child
     end
-    table.remove(rows, 1)
-    return frame, rows
+    local banner = table.remove(rows, 1)
+    return frame, rows, banner
 end
 
 local FRAME_COLORS = { "Color", "HoverColor", "SelectedColor", "PressedColor" }
@@ -61,10 +61,9 @@ local function rememberParts()
     if S.lobbyPanel ~= nil then
         parts[1] = S.lobbyPanel.Round
         parts[2] = S.lobbyPanel.NameSlot
-        parts[3] = S.lobbyPanel.VoteSlot
-        parts[4] = S.lobbyPanel.Divider
-        parts[5] = S.lobbyPanel.SettingsToggle
-        parts[6] = S.lobbyPanel.RoundDivider
+        parts[3] = S.lobbyPanel.Divider
+        parts[4] = S.lobbyPanel.SettingsToggle
+        parts[5] = S.lobbyPanel.RoundDivider
     end
     for _, part in ipairs(S.card ~= nil and S.card.Parts or {}) do
         parts[#parts + 1] = part
@@ -76,6 +75,21 @@ local function createLine(parent, anchor, alignment, color)
     local block = Common.CreateText(parent, 1, 1, anchor, "", alignment, 1, color, false)
     Common.FitHeightToText(block)
     return block
+end
+
+-- a round info line with a small button at its right end
+local function createButtonLine(parent, label, tooltip)
+    local row = GUI.LayoutGroup(Common.CreateRect(1, 1, parent), true, GUI.Anchor.CenterLeft)
+    row.Stretch = true
+    row.AbsoluteSpacing = Common.GetGap()
+    row.CanBeFocused = false
+    Common.SetFixedHeight(row, Common.GetStyleHeight("GUIButtonSmall"))
+    local line = Common.CreateText(row, 0.7, 1, nil, "", GUI.Alignment.CenterLeft, 1, nil, false)
+    Common.SetAutoScaleText(line, 1)
+    local button = GUI.Button(Common.CreateRect(0.3, 1, row), label, GUI.Alignment.Center, "GUIButtonSmall")
+    button.ToolTip = tooltip
+    Common.SetAutoScaleText(button.TextBlock, 1)
+    return line, button
 end
 
 -- The card keeps the height its rows need and the chat below takes the rest. A card without editing
@@ -96,8 +110,8 @@ local function fitCard(panel)
     if S.card ~= nil then
         Common.SetFixedHeight(content, Common.GetMinimumHeight(content))
         Common.SetFixedHeight(card, Common.GetMinimumHeight(panel.Column))
-        -- the right column only has relative spacing, between its three rows
-        local spacing = math.floor(2 * side.RelativeSpacing * side.Rect.Height + 0.5)
+        -- the right column's two gaps, between its three rows
+        local spacing = 2 * side.AbsoluteSpacing
         Common.SetFixedHeight(chat, side.Rect.Height - card.RectTransform.MinSize.Y - panel.Divider.RectTransform.MinSize.Y - spacing)
     end
     side.Recalculate()
@@ -139,7 +153,7 @@ local function ensurePanel(screen)
     if S.lobbyPanel ~= nil and S.lobbyPanel.Column == column then return end
 
     local panel = { Column = column, Content = screen.playerInfoContent, Shown = {} }
-    panel.LeftFrame, panel.SettingsRows = findSettings(screen)
+    panel.LeftFrame, panel.SettingsRows, panel.Banner = findSettings(screen)
     column.AbsoluteSpacing = Common.GetGap()
     local spectateRow = firstChild(column)
     Common.SetFixedHeight(spectateRow, spectateRow.RectTransform.MinSize.Y)
@@ -148,7 +162,7 @@ local function ensurePanel(screen)
         local slot = GUI.Frame(Common.CreateRect(1, 1, column), nil)
         slot.Color = TRANSPARENT
         slot.CanBeFocused = false
-        Common.SetFixedHeight(slot, Common.GetStyleHeight("GUIButton"))
+        Common.SetFixedHeight(slot, Common.GetStyleHeight("GUITextBox"))
         return slot
     end
 
@@ -172,31 +186,26 @@ local function ensurePanel(screen)
     panel.Status = createLine(titleRow, GUI.Anchor.CenterRight, GUI.Alignment.CenterRight, STATUS_COLOR)
     Common.SetFixedHeight(titleRow, Common.GetTextHeight(panel.Title.Font))
     panel.Mode = createLine(panel.Round)
-    -- the map's name and a button that opens its preview: the vanilla one is in the settings panels, which few see
-    local mapRow = GUI.LayoutGroup(Common.CreateRect(1, 1, panel.Round), true, GUI.Anchor.CenterLeft)
-    mapRow.Stretch = true
-    mapRow.AbsoluteSpacing = Common.GetGap()
-    mapRow.CanBeFocused = false
-    Common.SetFixedHeight(mapRow, Common.GetStyleHeight("GUIButtonSmall"))
-    panel.Map = Common.CreateText(mapRow, 0.7, 1, nil, "", GUI.Alignment.CenterLeft, 1, nil, false)
-    Common.SetAutoScaleText(panel.Map, 1)
-    panel.MapPreview = GUI.Button(Common.CreateRect(0.3, 1, mapRow), text.MapPreview, GUI.Alignment.Center, "GUIButtonSmall")
-    panel.MapPreview.ToolTip = text.MapPreviewTooltip
+    -- the map's name and a button that opens its preview, as the vanilla one is in the settings panels, which few see
+    panel.Map, panel.MapPreview = createButtonLine(panel.Round, text.MapPreview, text.MapPreviewTooltip)
     panel.MapPreview.Enabled = false
-    Common.SetAutoScaleText(panel.MapPreview.TextBlock, 1)
     panel.MapPreview.OnClicked = function()
         showMapPreview(panel.PreviewSub)
         return true
     end
-    panel.Players = createLine(panel.Round)
+    panel.Players, panel.Vote = createButtonLine(panel.Round, P.VoteUiText.Button, P.VoteUiText.Tooltip)
+    panel.Vote.OnClicked = function()
+        P.ShowVoteMenu()
+        return true
+    end
 
-    panel.VoteSlot = createSlot()
-
-    -- the right column holds the card and the chat; the line between them gets the column's spacing on both sides
+    -- the right column holds the card and the chat; the line between them keeps the card's row gap on both sides
     local card = column.Parent
     for child in card.Parent.Children do
         if child ~= card then panel.Chat = child end
     end
+    card.Parent.RelativeSpacing = 0
+    card.Parent.AbsoluteSpacing = Common.GetGap()
     panel.Divider = Common.CreateDivider(card.Parent)
     panel.Chat.RectTransform.SetAsLastChild()
 

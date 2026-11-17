@@ -1,184 +1,164 @@
 local P = ...
 local S = P.State
+local Common = P.Common
+local text = P.VoteUiText
 
-function P.GetVoteProgress(active)
-    if active == nil then return 0 end
-    local duration = math.max(1, tonumber(active.Duration or 1) or 1)
-    local remaining = math.max(0, tonumber(active.Remaining or 0) or 0)
-    return math.max(0, math.min(1, remaining / duration))
-end
+-- The running votes as SS14's vote popups, stacked at the top left: in the lobby under the server banner, in a round
+-- under the SHOP and VT buttons. Each tells who started it, its title, its options as buttons with their votes and the
+-- time left, and stays until the vote ends.
 
-function P.GetVoteTimeText(active)
-    local remaining = 0
-    if active ~= nil then remaining = math.max(0, tonumber(active.Remaining or 0) or 0) end
-    return string.format("%s: %s", P.VoteUiText.Timer, tostring(math.floor(remaining)))
-end
+-- in 1920x1080 pixels; SS14's popups are 300 to 500 pixels wide
+local POPUP_WIDTH = 300
+-- a map vote can have many options; more than this many scroll
+local VISIBLE_OPTIONS = 6
+local CALLER_COLOR = Color(170, 175, 165, 255)
+local TITLE_COLOR = Color(235, 205, 145, 255)
+local BAR_COLOR = Color(120, 170, 130, 255)
 
-local function getStartCooldownRemaining(cooldownEndTime)
-    return math.max(0, math.ceil((tonumber(cooldownEndTime) or 0) - P.GetTime()))
-end
-
-local function formatStartCooldown(seconds)
-    seconds = math.max(0, math.ceil(tonumber(seconds) or 0))
+function P.FormatVoteTime(seconds)
+    seconds = math.max(0, math.ceil(seconds))
     return string.format("%d:%02d", math.floor(seconds / 60), seconds % 60)
 end
 
-function P.ShowVoteStartMenu()
-    if P.IsWelcomeMenuOpen ~= nil and P.IsWelcomeMenuOpen() then return end
-    if not P.IsLobbyScreenAvailable() then return end
-    if S.voteButtonRoot == nil then P.CreateVoteButton() end
-    if S.voteButtonRoot == nil then return end
-
-    local panel = GUI.Frame(P.GetVoteStartPanelRect(S.voteButtonRoot), "GUIFrame")
-    panel.CanBeFocused = true
-    panel.IgnoreLayoutGroups = true
-    S.currentMenu = panel
-    S.currentMenuKind = "votestart"
-    S.sharedState.CurrentMenu = panel
-    S.sharedState.CurrentMenuKind = S.currentMenuKind
-    P.SafeSetAsLastChild(panel)
-
-    local width, optionHeight, spacing = P.GetVoteStartOptionMetrics()
-    local modeRect = GUI.RectTransform(Point(width, optionHeight), panel.RectTransform, GUI.Anchor.TopCenter)
-    modeRect.AbsoluteOffset = Point(0, 0)
-    local modeRow = GUI.Frame(modeRect, nil)
-    modeRow.Color = Color(0, 0, 0, 0)
-    local modeButton = GUI.Button(P.CreateRect(1, 1, modeRow, GUI.Anchor.CenterLeft), P.VoteUiText.StartMode, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
-    P.SetButtonTextScale(modeButton, 0.70)
-    modeButton.OnClicked = function()
-        P.SendVoteStart("game")
-        P.CloseMenu()
-        return true
-    end
-
-    local mapRect = GUI.RectTransform(Point(width, optionHeight), panel.RectTransform, GUI.Anchor.TopCenter)
-    mapRect.AbsoluteOffset = Point(0, optionHeight + spacing)
-    local mapRow = GUI.Frame(mapRect, nil)
-    mapRow.Color = Color(0, 0, 0, 0)
-    local mapButton = GUI.Button(P.CreateRect(1, 1, mapRow, GUI.Anchor.CenterLeft), P.VoteUiText.StartMap, GUI.Alignment.Center, "GUIButtonSmallFreeScale")
-    P.SetButtonTextScale(mapButton, 0.70)
-    mapButton.OnClicked = function()
-        P.SendVoteStart("map")
-        P.CloseMenu()
-        return true
-    end
-
-    S.voteStartUi = {
-        ModeButton = modeButton,
-        MapButton = mapButton,
-    }
-    P.RefreshActiveVoteUi()
+local function getVoteTitle(vote)
+    if vote.Type == "custom" then return vote.Title end
+    if vote.Type == "station" then return text.StationTitle end
+    if vote.Type == "map" then return text.MapTitle end
+    return text.GameTitle
 end
 
-function P.GetActiveVoteRemaining(active)
-    if active == nil then return 0 end
-    if active.LocalEndTime ~= nil then
-        return math.max(0, math.ceil((tonumber(active.LocalEndTime) or 0) - P.GetTime()))
+-- the popups' top left corner within their parent
+local function getPopupOrigin(parent)
+    if parent == S.guiRoot then
+        if S.buttonRoot == nil then return nil end
+        local spacing = P.GetTopButtonSpacing()
+        return spacing, S.buttonRoot.Rect.Y + S.buttonRoot.Rect.Height + spacing
     end
-    return math.max(0, tonumber(active.Remaining or 0) or 0)
+    local banner = S.lobbyPanel ~= nil and S.lobbyPanel.Banner or nil
+    if banner == nil then return nil end
+    return banner.Rect.X - parent.Rect.X, banner.Rect.Y + banner.Rect.Height - parent.Rect.Y + Common.GetGap()
 end
 
-function P.FormatVoteOptionLabel(option)
-    local selectedPrefix = option.Selected and "✓ " or ""
-    return string.format("%s%s — %s %s", selectedPrefix, tostring(option.Text or ""), tostring(option.Votes or 0), P.VoteUiText.Votes)
-end
+local function createPopup(column, vote, width)
+    local frame = GUI.Frame(GUI.RectTransform(Point(width, 1), column.RectTransform), "GUIFrame")
+    local content, outer = Common.CreateWindowContent(frame)
 
-function P.CreateVoteOverlayOnComponent(target)
-    if target == nil or target.RectTransform == nil then return nil end
+    local caller = Common.CreateText(content, 1, 1, nil, string.format(text.StartedBy, vote.StartedBy),
+        GUI.Alignment.Left, 1, CALLER_COLOR, false)
+    caller.Font = GUI.Style.SmallFont
+    Common.FitHeightToText(caller)
+    Common.SetAutoScaleText(caller, 1)
+    caller.CanBeFocused = false
 
-    local overlayRect = nil
-    if target.RectTransform.Parent ~= nil then
-        overlayRect = target.RectTransform.Parent.Rect
-    end
-    if overlayRect == nil then
-        overlayRect = P.GetComponentRect(target)
-    end
-    if overlayRect == nil then return nil end
+    local title = Common.CreateText(content, 1, 1, nil, getVoteTitle(vote), GUI.Alignment.Left, 1, TITLE_COLOR, true)
+    title.CanBeFocused = false
 
-    local x = P.ReadRectValue(overlayRect, "X", 0)
-    local y = P.ReadRectValue(overlayRect, "Y", 0)
-    local width = P.ReadRectValue(overlayRect, "Width", 0)
-    local height = P.ReadRectValue(overlayRect, "Height", 0)
-    if width <= 0 or height <= 0 then return nil end
-
-    -- Панель голосования выравниваем по границам соседних блоков лобби (выбор режима и подлодки).
-    local topY = y
-    local bottomY = y + height
-
-    local function includeTopVotePanelBounds(componentName)
-        local component = P.GetLobbyComponent(componentName)
-        if component == nil or component.RectTransform == nil then return end
-
-        local siblingRect = nil
-        if component.RectTransform.Parent ~= nil then
-            siblingRect = component.RectTransform.Parent.Rect
+    -- the small buttons of the lobby's round lines (panel.lua)
+    local buttonHeight, spacing = Common.GetStyleHeight("GUIButtonSmall"), Common.GetButtonSpacing()
+    local rows = math.min(#vote.Options, VISIBLE_OPTIONS)
+    local list = GUI.ListBox(Common.CreateRect(1, 1, content), false, nil, "GUIListBoxNoBorder")
+    -- the list style pads its content, and the list counts the spacing after every row (GUIListBox.TotalSize)
+    Common.SetFixedHeight(list, rows * (buttonHeight + spacing) + math.ceil(list.Padding.Y + list.Padding.W))
+    list.Spacing = spacing
+    list.KeepSpaceForScrollBar = #vote.Options > VISIBLE_OPTIONS
+    local buttons = {}
+    for index, option in ipairs(vote.Options) do
+        local button = GUI.Button(Common.CreateRect(1, 1, list.Content),
+            string.format(text.OptionVotes, option.Text, option.Votes), GUI.Alignment.Center, "GUIButtonSmall")
+        Common.SetAutoScaleText(button.TextBlock, 1)
+        -- the player's choice stays selected, as SS14 keeps its button pressed; the vanilla fonts have no check mark
+        button.Selected = option.Selected
+        button.TextBlock.SelectedTextColor = TITLE_COLOR
+        button.TextBlock.HoverSelectedTextColor = TITLE_COLOR
+        button.OnClicked = function()
+            P.SendVoteCast(vote.Id, index)
+            -- the choice moves at once; the server's snapshot with the new counts follows
+            for other, otherButton in ipairs(buttons) do otherButton.Selected = other == index end
+            return true
         end
-        if siblingRect == nil then return end
-
-        local siblingY = P.ReadRectValue(siblingRect, "Y", topY)
-        local siblingHeight = P.ReadRectValue(siblingRect, "Height", 0)
-        if siblingHeight <= 0 then return end
-
-        topY = math.min(topY, siblingY)
-        bottomY = math.max(bottomY, siblingY + siblingHeight)
+        buttons[index] = button
     end
 
-    includeTopVotePanelBounds("ModeList")
-    includeTopVotePanelBounds("SubList")
+    local timeRow = GUI.LayoutGroup(Common.CreateRect(1, 1, content), true, GUI.Anchor.CenterLeft)
+    timeRow.Stretch = true
+    timeRow.AbsoluteSpacing = Common.GetGap()
+    timeRow.CanBeFocused = false
+    Common.SetFixedHeight(timeRow, Common.GetTextHeight(GUI.Style.Font))
+    local bar = GUI.ProgressBar(Common.CreateRect(0.8, 1, timeRow), 1, BAR_COLOR)
+    local time = Common.CreateText(timeRow, 0.2, 1, nil, "", GUI.Alignment.CenterRight, 1, nil, false)
+    time.CanBeFocused = false
 
-    y = topY + 1
-    height = math.max(1, bottomY - topY)
-
-    -- Небольшой нахлёст снизу (как PanelSpacing = 0.005 в лобби), чтобы не было видно нижнюю линию блока под панелью.
-    local seamCover = math.max(P.SafeIntScale(2), math.floor(height * 0.005 + 0.5))
-    height = height + seamCover
-
-    local rectTransform = P.CreateLobbyAbsoluteRect(x, y, width, height)
-    if rectTransform == nil then return nil end
-
-    local panel = GUI.Frame(rectTransform, "GUIFrame")
-    panel.Color = Color(255, 255, 255, 255)
-    panel.IgnoreLayoutGroups = true
-    return panel
+    -- laid out first, so the title wraps at the popup's width and the frame can take the rows' height
+    frame.ForceLayoutRecalculation()
+    title.CalculateHeightFromText()
+    Common.SetFixedHeight(title, title.Rect.Height)
+    frame.RectTransform.Resize(Point(width, Common.GetMinimumHeight(outer)), true)
+    frame.ForceLayoutRecalculation()
+    list.RecalculateChildren()
+    list.UpdateScrollBarSize()
+    return { Frame = frame, Bar = bar, Time = time, EndTime = vote.EndTime, Duration = vote.Duration,
+        Shown = "" }
 end
 
-function P.RefreshActiveVoteUi()
-    if S.currentMenuKind == "votestart" and S.voteStartUi ~= nil then
-        local snapshot = S.voteSnapshot or {}
-        local canStart = snapshot.CanStart ~= false
-        local gameRemaining = getStartCooldownRemaining(snapshot.GameCooldownEndTime)
-        local mapRemaining = getStartCooldownRemaining(snapshot.MapCooldownEndTime)
+function P.RemoveVotePopups()
+    Common.RemoveGuiComponent(S.votePopups)
+    S.votePopups = nil
+    S.sharedState.VotePopupRoot = nil
+end
 
-        S.voteStartUi.ModeButton.Enabled = canStart and gameRemaining <= 0
-        S.voteStartUi.MapButton.Enabled = canStart and mapRemaining <= 0
-        local mapText = snapshot.StationMap and P.VoteUiText.StartStation or P.VoteUiText.StartMap
-        S.voteStartUi.ModeButton.Text = P.VoteUiText.StartMode
-            .. (gameRemaining > 0 and " (" .. formatStartCooldown(gameRemaining) .. ")" or "")
-        S.voteStartUi.MapButton.Text = mapText
-            .. (mapRemaining > 0 and " (" .. formatStartCooldown(mapRemaining) .. ")" or "")
+-- rebuilt on each snapshot, which comes only when a vote starts, ends or gets a vote
+function P.BuildVotePopups()
+    P.RemoveVotePopups()
+    local votes = S.voteSnapshot ~= nil and S.voteSnapshot.Votes or {}
+    local parent = P.GetVoteParent()
+    if #votes == 0 or parent == nil then return end
+    local x, y = getPopupOrigin(parent)
+    if x == nil then return end
+
+    local width = P.SafeIntScale(POPUP_WIDTH)
+    local column = GUI.LayoutGroup(GUI.RectTransform(Point(width, 1), parent.RectTransform, GUI.Anchor.TopLeft), false)
+    column.RectTransform.AbsoluteOffset = Point(math.floor(x), math.floor(y))
+    column.AbsoluteSpacing = Common.GetGap()
+    column.IgnoreLayoutGroups = true
+    column.CanBeFocused = false
+
+    local popups = {}
+    local height = 0
+    for index, vote in ipairs(votes) do
+        popups[index] = createPopup(column, vote, width)
+        height = height + popups[index].Frame.Rect.Height + (index > 1 and column.AbsoluteSpacing or 0)
+    end
+    -- the popups keep their own size: resizing children would scale them from the column's first height
+    column.RectTransform.Resize(Point(width, height), false)
+    P.SafeSetAsLastChild(column)
+
+    S.votePopups = column
+    S.votePopupParent = parent
+    S.votePopupScreenWidth, S.votePopupScreenHeight = P.GetScreenSize()
+    S.votePopupRows = popups
+    S.sharedState.VotePopupRoot = column
+    P.UpdateVotePopups()
+end
+
+-- called from the menu's tick: the time left, and the popups move along when the screen or its size changes
+function P.UpdateVotePopups()
+    local votes = S.voteSnapshot ~= nil and S.voteSnapshot.Votes or {}
+    local width, height = P.GetScreenSize()
+    if (S.votePopups == nil and #votes > 0) or (S.votePopups ~= nil and (S.votePopupParent ~= P.GetVoteParent()
+        or S.votePopupScreenWidth ~= width or S.votePopupScreenHeight ~= height)) then
+        P.BuildVotePopups()
         return
     end
+    if S.votePopups == nil then return end
 
-    if S.currentMenuKind ~= "voteactive" or S.activeVoteUi == nil then return end
-    local active = S.voteSnapshot and S.voteSnapshot.Active or nil
-    if active == nil then return end
-
-    local remaining = P.GetActiveVoteRemaining(active)
-    local duration = math.max(1, tonumber(active.Duration or 1) or 1)
-    local progress = math.max(0, math.min(1, remaining / duration))
-
-    if S.activeVoteUi.TimerText ~= nil then
-        S.activeVoteUi.TimerText.Text = string.format("%s: %s", P.VoteUiText.Timer, tostring(math.floor(remaining)))
-    end
-    if S.activeVoteUi.ProgressFill ~= nil and S.activeVoteUi.ProgressFill.RectTransform ~= nil then
-        S.activeVoteUi.ProgressFill.RectTransform.RelativeSize = Vector2(progress, 1)
-    end
-
-    local buttons = S.activeVoteUi.OptionButtons or {}
-    for _, option in ipairs(active.Options or {}) do
-        local button = buttons[option.Index]
-        if button ~= nil and button.TextBlock ~= nil then
-            button.TextBlock.Text = P.FormatVoteOptionLabel(option)
+    local now = P.GetTime()
+    for _, popup in ipairs(S.votePopupRows) do
+        local left = popup.EndTime - now
+        popup.Bar.BarSize = math.max(0, math.min(1, left / popup.Duration))
+        local shown = P.FormatVoteTime(left)
+        if popup.Shown ~= shown then
+            popup.Shown = shown
+            popup.Time.Text = shown
         end
     end
 end

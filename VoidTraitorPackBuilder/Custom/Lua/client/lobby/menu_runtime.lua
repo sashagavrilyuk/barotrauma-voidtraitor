@@ -30,6 +30,15 @@ Networking.Receive(P.NET_SNAPSHOT, function(message)
         })
     end
 
+    -- the vote window opens on the client, under the round's commands
+    local vote = { Label = P.VoteUiText.Button, Hint = P.VoteUiText.Tooltip, Category = P.MenuText.Categories.Round,
+        InputType = "", Enabled = true, Open = P.ShowVoteMenu }
+    local at = #entries + 1
+    for index, entry in ipairs(entries) do
+        if entry.Category == vote.Category then at = index + 1 end
+    end
+    table.insert(entries, at, vote)
+
     S.shopAvailable = message.BitPosition >= message.LengthBits or message.ReadBoolean()
     S.menuEntries = entries
     if S.buttonRoot ~= nil then
@@ -123,9 +132,6 @@ end, Hook.HookMethodType.After)
 Hook.Patch(P.PAUSE_PATCH_ID, "Barotrauma.GUI", "TogglePauseMenu", {}, function(instance, params)
     local state = rawget(_G, P.GLOBAL_STATE_KEY)
     if state ~= nil and not state.Disabled and (state.CurrentMenu ~= nil or state.BlockPauseMenu == true) then
-        if state.CurrentMenuKind == "voteactive" and state.BlockPauseMenu ~= true then
-            return
-        end
         if state.CurrentMenu ~= nil and state.CloseMenu ~= nil then
             state.CloseMenu()
         end
@@ -175,17 +181,14 @@ Hook.Add("think", "VoidTraitor.ClientMenu.UiState", function(deltaTime)
 
     P.EnsureTopButtons()
 
+    P.UpdateVotePopups()
+    P.RefreshVoteMenu()
     if P.IsLobbyScreenAvailable() then
-        P.EnsureVoteButton()
-        P.RefreshActiveVoteUi()
         P.RefreshRoundInfo()
         P.UpdateLateJoin()
-    else
-        if S.currentMenuKind == "votestart" or S.currentMenuKind == "voteactive" or S.currentMenuKind == "character"
-            or S.currentMenuKind == "antagonists" or S.currentMenuKind == "stationjobs"
-            or S.currentMenuKind == "latejoin" then
-            P.CloseMenu()
-        end
-        P.DestroyVoteButton()
+    elseif S.currentMenuKind == "character" or S.currentMenuKind == "antagonists" or S.currentMenuKind == "stationjobs"
+        or S.currentMenuKind == "latejoin" or ((S.currentMenuKind == "votes" or S.currentMenuKind == "customvote")
+        and S.voteWindowInLobby) then
+        P.CloseMenu()
     end
 end)

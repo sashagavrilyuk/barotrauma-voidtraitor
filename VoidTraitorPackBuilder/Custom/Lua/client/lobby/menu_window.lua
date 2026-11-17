@@ -95,7 +95,9 @@ P.ShowVoidTraitorMenu = function()
             local button = P.CreateMenuButton(S.vtMainList.Content, entry.Label or entry.Command or P.UiText.GenericCommand, enabled)
             button.ToolTip = tooltip
             button.OnClicked = function()
-                if tostring(entry.ConfirmText or "") ~= "" then
+                if entry.Open ~= nil then
+                    entry.Open()
+                elseif tostring(entry.ConfirmText or "") ~= "" then
                     P.ShowConfirm(entry.ConfirmTitle ~= "" and entry.ConfirmTitle or P.UiText.DefaultConfirmTitle, entry.ConfirmText,
                         function() P.SendCommand(entry.Command) end)
                 else
