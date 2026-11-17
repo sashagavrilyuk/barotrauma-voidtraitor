@@ -477,6 +477,8 @@ function cm.SendLobbyInfo(client)
         -- the main submarine is loaded only once the round has started
         netMessage.WriteString(Submarine.MainSub ~= nil and Submarine.MainSub.Info.DisplayName.Value or "")
         netMessage.WriteInt32(math.floor(Traitormod.RoundTime))
+        -- the client finds its own copy of the map by this name for the lobby's preview button
+        netMessage.WriteString(Submarine.MainSub ~= nil and Submarine.MainSub.Info.Name or "")
     end
     Networking.Send(netMessage, client.Connection)
 end

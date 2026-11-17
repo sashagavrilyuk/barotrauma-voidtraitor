@@ -15,6 +15,8 @@ LuaUserData.MakeFieldAccessible(screenType, "jobPreferencesButton")
 LuaUserData.MakeFieldAccessible(screenType, "appearanceButton")
 LuaUserData.MakeMethodAccessible(screenType, "SelectJobPreferencesTab")
 LuaUserData.MakeMethodAccessible(screenType, "SelectAppearanceTab")
+LuaUserData.RegisterType("Barotrauma.SubmarinePreview")
+local SubmarinePreview = LuaUserData.CreateStatic("Barotrauma.SubmarinePreview")
 
 local STATUS_COLOR = Color(170, 175, 165, 255)
 -- height of the character picture in 1920x1080 pixels; a picture scales with the screen like the vanilla HUD,
@@ -103,6 +105,26 @@ local function fitCard(panel)
     content.Recalculate()
 end
 
+-- The game's preview of a map's structure, with its description. A mode's settings follow "[traitormod]" in the
+-- description (Traitormod.ParseSubmarineConfig on the server), so the preview shows only the text before them: the
+-- preview reads the description only while it is built (the SubmarinePreview constructor), and it is put back after.
+local function showMapPreview(sub)
+    local description = sub.Description
+    local settings = description.Value:find("[traitormod]", 1, true)
+    if settings ~= nil then
+        sub.Description = RawLString((description.Value:sub(1, settings - 1):gsub("%s+$", "")))
+    end
+    SubmarinePreview.Create(sub, true)
+    sub.Description = description
+end
+
+-- the client's own copy of the round's map
+local function findSavedSub(name)
+    for sub in SubmarineInfo.SavedSubmarines do
+        if sub.Name == name then return sub end
+    end
+end
+
 local function layoutRound(panel)
     local height = 0
     for child in panel.Round.RectTransform.Children do
@@ -150,7 +172,22 @@ local function ensurePanel(screen)
     panel.Status = createLine(titleRow, GUI.Anchor.CenterRight, GUI.Alignment.CenterRight, STATUS_COLOR)
     Common.SetFixedHeight(titleRow, Common.GetTextHeight(panel.Title.Font))
     panel.Mode = createLine(panel.Round)
-    panel.Map = createLine(panel.Round)
+    -- the map's name and a button that opens its preview: the vanilla one is in the settings panels, which few see
+    local mapRow = GUI.LayoutGroup(Common.CreateRect(1, 1, panel.Round), true, GUI.Anchor.CenterLeft)
+    mapRow.Stretch = true
+    mapRow.AbsoluteSpacing = Common.GetGap()
+    mapRow.CanBeFocused = false
+    Common.SetFixedHeight(mapRow, Common.GetStyleHeight("GUIButtonSmall"))
+    panel.Map = Common.CreateText(mapRow, 0.7, 1, nil, "", GUI.Alignment.CenterLeft, 1, nil, false)
+    Common.SetAutoScaleText(panel.Map, 1)
+    panel.MapPreview = GUI.Button(Common.CreateRect(0.3, 1, mapRow), text.MapPreview, GUI.Alignment.Center, "GUIButtonSmall")
+    panel.MapPreview.ToolTip = text.MapPreviewTooltip
+    panel.MapPreview.Enabled = false
+    Common.SetAutoScaleText(panel.MapPreview.TextBlock, 1)
+    panel.MapPreview.OnClicked = function()
+        showMapPreview(panel.PreviewSub)
+        return true
+    end
     panel.Players = createLine(panel.Round)
 
     panel.VoteSlot = createSlot()
@@ -219,14 +256,14 @@ function P.RefreshRoundInfo()
     local panel, info = S.lobbyPanel, S.lobbyInfo
     if panel == nil or info == nil then return end
 
-    local map
+    local map, sub
     if info.Running then
         setText(panel, "Status", string.format(text.Running, formatDuration(P.GetTime() - info.StartTime)))
-        map = info.Map
+        map, sub = info.Map, info.MapInfo
     else
         setText(panel, "Status", text.Waiting)
         local screen = Game.NetLobbyScreen
-        local sub = screen.SelectedSub
+        sub = screen.SelectedSub
         map = sub ~= nil and sub.DisplayName.Value or ""
         -- the server names the next round's mode; ask again once the lobby's submarine or mode has changed
         local now = P.GetTime()
@@ -242,6 +279,12 @@ function P.RefreshRoundInfo()
     setText(panel, "Mode", string.format(text.Mode, info.Mode))
     setText(panel, "Map", string.format(text.Map, map))
     setText(panel, "Players", string.format(text.Players, #Client.ClientList))
+    -- checked only when the map changes, as reading SubmarineElement loads the file of a lazily loaded map; a map not
+    -- downloaded yet has nothing to show
+    if panel.PreviewSub ~= sub then
+        panel.PreviewSub = sub
+        panel.MapPreview.Enabled = sub ~= nil and sub.SubmarineElement ~= nil
+    end
 
     local showMode = info.Mode ~= ""
     if panel.Mode.Visible ~= showMode then
@@ -424,6 +467,7 @@ Networking.Receive(P.NET_LOBBY_INFO, function(message)
     if info.Running then
         info.Map = message.ReadString()
         info.StartTime = P.GetTime() - message.ReadInt32()
+        info.MapInfo = findSavedSub(message.ReadString())
     else
         info.Sub = Game.NetLobbyScreen.SelectedSub
         info.Preset = Game.NetLobbyScreen.SelectedMode
