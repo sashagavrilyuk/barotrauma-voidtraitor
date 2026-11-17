@@ -44,6 +44,8 @@ function P.ShowAntagonistsWindow()
             end
         end
     end
+    -- laid out now, or the list's rows show unplaced for a frame (menu_window.lua)
+    S.currentMenu.ForceLayoutRecalculation()
 end
 
 Networking.Receive(P.NET_ANTAGONISTS, function(message)

@@ -498,6 +498,8 @@ ShowMenu = function()
         BuildDetailsPanel(currentMenu, selectedRole, groupWidth, listWidth, gapWidth, detailsWidth)
     end
 
+    -- laid out now, or the list's rows show unplaced for a frame (lobby/menu_window.lua)
+    currentMenu.ForceLayoutRecalculation()
     currentMenu:AddToGUIUpdateList(false, MENU_DRAW_ORDER)
     UpdateBottomButton()
 end

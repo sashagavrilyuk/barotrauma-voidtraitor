@@ -404,6 +404,8 @@ function P.ShowCharacterWindow(showAppearance)
     else
         screen.SelectJobPreferencesTab(screen.jobPreferencesButton, nil)
     end
+    -- laid out now, or the editor's lists show unplaced for a frame (menu_window.lua)
+    S.currentMenu.ForceLayoutRecalculation()
 end
 
 -- The job grid is drawn on the canvas, outside the window.

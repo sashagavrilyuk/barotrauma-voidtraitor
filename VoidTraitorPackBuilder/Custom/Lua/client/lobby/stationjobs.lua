@@ -161,8 +161,10 @@ function P.ShowStationJobsWindow()
             if role ~= nil then createRow(list, id, role, height, labels) end
         end
     end
-    -- once the rows have their width: one text size for all buttons, the one the longest label needs
+    -- laid out now, or the rows show unplaced for a frame (menu_window.lua); then the rows have their width for one
+    -- text size for all buttons, the one the longest label needs
     list.RecalculateChildren()
+    S.currentMenu.ForceLayoutRecalculation()
     GUI.TextBlock.AutoScaleAndNormalize(table.unpack(labels))
 end
 

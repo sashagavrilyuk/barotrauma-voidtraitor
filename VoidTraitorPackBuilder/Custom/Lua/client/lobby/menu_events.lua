@@ -256,6 +256,8 @@ function P.ShowEventsWindow(tab)
     view.ResizeSides = { left = {}, right = {}, minimumWidth = minimumWidth }
     P.Common.AddResizeHandles(panel, view.ResizeTop, view.ResizeBottom, view.ResizeSides)
 
+    -- laid out before the rows, which wrap to the list's width, or they show unplaced for a frame (menu_window.lua)
+    root.ForceLayoutRecalculation()
     buildRows(false)
     -- the states may be old by now; the answer rebuilds the list
     P.Admin.RefreshData()

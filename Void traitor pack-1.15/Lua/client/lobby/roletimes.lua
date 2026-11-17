@@ -165,4 +165,6 @@ Networking.Receive(NET_TIMES, function(message)
     view.List.RecalculateChildren()
     view.List.UpdateScrollBarSize()
     view.List.BarScroll = scroll
+    -- the list draws its new rows this frame, before their own update would lay them out (GUIListBox.Draw)
+    view.List.ForceLayoutRecalculation()
 end)

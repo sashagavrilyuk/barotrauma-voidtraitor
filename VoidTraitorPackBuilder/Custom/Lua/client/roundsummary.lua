@@ -201,6 +201,7 @@ local function fillManifest(query)
     for _, row in ipairs(rows) do addManifestRow(row, height) end
     manifestList:RecalculateChildren()
     manifestList:UpdateScrollBarSize()
+    manifestList.ForceLayoutRecalculation()
 end
 
 -- SS14's player manifest: search, column headers that sort, one row per character a player controlled
@@ -358,6 +359,8 @@ local function showSummary(summary, manifest, closeText)
     end
 
     addResizeHandles(panel)
+    -- laid out now, or the lists' rows show unplaced for a frame (lobby/menu_window.lua)
+    currentMenu.ForceLayoutRecalculation()
     currentMenu:AddToGUIUpdateList(false, MENU_DRAW_ORDER)
 end
 

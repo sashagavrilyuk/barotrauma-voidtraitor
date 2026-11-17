@@ -140,6 +140,8 @@ P.ShowMenu = function()
 
     P.BuildShopPanel(overlay)
     S.cartPanelRoot = P.BuildCartPanel(overlay)
+    -- laid out now, or the list's rows show unplaced for a frame (lobby/menu_window.lua)
+    S.cartPanelRoot.ForceLayoutRecalculation()
     S.guiRoot:AddToGUIUpdateList(false, P.GUI_DRAW_ORDER)
 end
 

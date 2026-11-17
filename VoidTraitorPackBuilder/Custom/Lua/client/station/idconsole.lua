@@ -162,6 +162,7 @@ function UI.Show(itemId, snapshot)
         Common.RestoreAutoScaledText(rights)
         rights:RecalculateChildren()
         rights:UpdateScrollBarSize()
+        rights.ForceLayoutRecalculation()
     end
     UI.UpdateRights = function() ArrangeRights(GetColumns(rights.Rect.Width)) end
     local minimumWidth = math.max(Common.SafeIntScale(650), columnWidth + listExtras + Common.GetWindowPadding() * 2)
@@ -277,6 +278,8 @@ function UI.Show(itemId, snapshot)
         preset.ButtonEnabled = updated.CanEdit
     end
     UI.Update(snapshot)
+    -- laid out now, or the access list's rows show unplaced for a frame (lobby/menu_window.lua)
+    root.ForceLayoutRecalculation()
 end
 
 Networking.Receive("VoidTraitor_IdConsoleSnapshot", function(message)

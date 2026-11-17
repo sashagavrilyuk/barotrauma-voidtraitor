@@ -152,5 +152,7 @@ P.RefreshCartOnly = function()
     P.Common.RemoveGuiComponent(S.cartPanelRoot)
 
     S.cartPanelRoot = P.BuildCartPanel(S.currentMenu)
+    -- laid out now, or the list's rows show unplaced for a frame (lobby/menu_window.lua)
+    S.cartPanelRoot.ForceLayoutRecalculation()
     S.guiRoot:AddToGUIUpdateList(false, P.GUI_DRAW_ORDER)
 end

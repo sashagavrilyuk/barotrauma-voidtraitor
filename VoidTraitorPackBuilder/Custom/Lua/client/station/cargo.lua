@@ -143,6 +143,8 @@ function P.RefreshCartOnly()
     UI.CartList:RecalculateChildren()
     UI.CartList:UpdateScrollBarSize()
     UI.CartList.BarScroll = scroll
+    -- the list draws its new rows this frame, before their own update would lay them out (GUIListBox.Draw)
+    UI.CartList.ForceLayoutRecalculation()
     UI.Total.Text = P.GetText("Total") .. ": " .. UI.Money(P.GetCartTotal())
     local selected = P.GetSelectedProduct()
     UI.Details.Text = S.lastMessage ~= "" and S.lastMessage or (selected ~= nil and selected.Name .. "\n" .. P.GetProductDescriptionText(selected) or "")
@@ -184,6 +186,7 @@ function UI.UpdateOrders()
     list:RecalculateChildren()
     list:UpdateScrollBarSize()
     list.BarScroll = scroll
+    list.ForceLayoutRecalculation()
 end
 
 function UI.Update(snapshot)

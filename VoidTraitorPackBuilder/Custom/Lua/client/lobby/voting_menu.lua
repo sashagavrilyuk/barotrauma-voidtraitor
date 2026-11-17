@@ -87,6 +87,8 @@ function P.ShowActiveVoteMenu()
     end
 
     P.RefreshActiveVoteUi()
+    -- laid out now, or the options show unplaced for a frame (menu_window.lua)
+    panel.ForceLayoutRecalculation()
 end
 
 P.CreateVoteButton = function()
