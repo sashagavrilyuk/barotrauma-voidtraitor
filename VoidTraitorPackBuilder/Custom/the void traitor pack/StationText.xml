@@ -29,4 +29,22 @@
   <jobdescription.janitor>Следит за чистотой и порядком на станции.</jobdescription.janitor>
   <jobname.passenger>Пассажир</jobname.passenger>
   <jobdescription.passenger>Пассажир станции: без доступов и обязанностей.</jobdescription.passenger>
+  <!-- the sub editor's container tags (ContainerTags.xml); what each gets is set in traitormod Lua/config/station.lua -->
+  <tagcategory.station>Станция</tagcategory.station>
+  <tagname.vt_maintloot>Техтоннели: случайный лут</tagname.vt_maintloot>
+  <tagdescription.vt_maintloot>В начале раунда Station сюда кладётся несколько случайных предметов из списка техтоннелей (StationLoot.vt_maintloot).</tagdescription.vt_maintloot>
+  <tagname.vt_emergencyloot>Аварийный шкаф</tagname.vt_emergencyloot>
+  <tagdescription.vt_emergencyloot>В начале раунда Station сюда кладутся маски и баллоны с кислородом (StationLoot.vt_emergencyloot).</tagdescription.vt_emergencyloot>
+  <tagname.vt_fireloot>Пожарный шкаф</tagname.vt_fireloot>
+  <tagdescription.vt_fireloot>В начале раунда Station сюда кладутся огнетушитель, маска и баллон (StationLoot.vt_fireloot).</tagdescription.vt_fireloot>
+  <tagname.vt_toolloot>Шкаф с инструментами</tagname.vt_toolloot>
+  <tagdescription.vt_toolloot>В начале раунда Station сюда кладутся случайные инструменты (StationLoot.vt_toolloot).</tagdescription.vt_toolloot>
+  <tagname.vt_securityloot>Шкаф службы безопасности</tagname.vt_securityloot>
+  <tagdescription.vt_securityloot>В начале раунда Station сюда кладётся снаряжение офицера (StationLoot.vt_securityloot).</tagdescription.vt_securityloot>
+  <tagname.vt_medicalloot>Медицинский шкаф</tagname.vt_medicalloot>
+  <tagdescription.vt_medicalloot>В начале раунда Station сюда кладутся бинты и лекарства (StationLoot.vt_medicalloot).</tagdescription.vt_medicalloot>
+  <tagname.vt_engineeringloot>Инженерный шкаф</tagname.vt_engineeringloot>
+  <tagdescription.vt_engineeringloot>В начале раунда Station сюда кладутся инструменты инженера (StationLoot.vt_engineeringloot).</tagdescription.vt_engineeringloot>
+  <tagname.vt_smugglerstash>Тайник контрабанды</tagname.vt_smugglerstash>
+  <tagdescription.vt_smugglerstash>Место для тайника: в начале раунда Station в один случайный из таких контейнеров прячутся ценности (SmugglerStash). Если на карте нет ни одного, тайник прячется в обычный шкаф.</tagdescription.vt_smugglerstash>
 </infotexts>

@@ -122,12 +122,40 @@ return {
         LoneOperative = "vt_loneop_helm",
         Visitors = "vt_visitor_helm",
     },
-    -- SS14's smuggler stash: at round start valuables are hidden in a random one of these cabinets of the station
+    -- SS14's smuggler stash: at round start valuables are hidden in a random one of the containers the map tags with
+    -- Tag in the sub editor, or on a map that tags none, of these cabinets of the station
     SmugglerStash = {
+        Tag = "vt_smugglerstash",
         Containers = { "suppliescabinet", "mediumsteelcabinet", "mediumwindowedsteelcabinet", "steelcabinet" },
         Items = { "physicorium", "incendium", "fulgurium", "dementonite", "combatstimulantsyringe", "fulguriumbatterycell" },
         ItemCount = 3,
         Points = 1000,
+    },
+    -- What a round puts into the station's containers at its start, by the tag the map gives a container in the sub
+    -- editor (the category "Станция", the pack's ContainerTags.xml). Fixed: these items and how many of each; Random:
+    -- from Count[1] to Count[2] items drawn by their weights. A base after SS14's filled lockers and maintenance spawners.
+    StationLoot = {
+        -- SS14's maintenance spawners: odds and ends in the tunnels, tools most of all
+        vt_maintloot = { Count = { 1, 3 }, Random = {
+            wrench = 4, screwdriver = 4, wire = 4, crowbar = 3, flashlight = 3, batterycell = 3, flare = 3, glowstick = 3,
+            weldingtool = 2, weldingfueltank = 2, oxygentank = 2, antibleeding1 = 2, divingmask = 1, toolbelt = 1,
+            handheldsonar = 1, fixfoamgrenade = 1, plasmacutter = 1, harmonica = 1, cigar = 1,
+        } },
+        -- ClosetEmergencyFilled: air for two
+        vt_emergencyloot = { Fixed = { divingmask = 2, oxygentank = 2 } },
+        -- ClosetFireFilled
+        vt_fireloot = { Fixed = { extinguisher = 1, divingmask = 1, oxygentank = 1 } },
+        -- ClosetToolFilled
+        vt_toolloot = { Count = { 2, 4 }, Random = {
+            wrench = 3, screwdriver = 3, wire = 3, crowbar = 2, weldingtool = 2, weldingfueltank = 2, flashlight = 2,
+            batterycell = 2, toolbelt = 1, plasmacutter = 1,
+        } },
+        -- LockerSecurityFilled
+        vt_securityloot = { Fixed = { handcuffs = 2, stunbaton = 1, batterycell = 1, bodyarmor = 1, ballistichelmet1 = 1 } },
+        -- LockerMedicineFilled
+        vt_medicalloot = { Fixed = { antibleeding1 = 4, antibleeding2 = 2, antidama1 = 2, antibiotics = 1, healthscanner = 1 } },
+        -- LockerEngineerFilled
+        vt_engineeringloot = { Fixed = { toolbelt = 1, wrench = 1, screwdriver = 1, weldingtool = 1, weldingfueltank = 1, wire = 2 } },
     },
     PointshopCategories = {"traitor", "cultist", "saboteur", "clown"},
     -- antagonist products that start a random event; Station runs its own events

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContainerTags>
+  <!-- Station: what a VoidTraitor Station round puts into the containers a map tags in the sub editor (traitormod
+       Lua/config/station.lua, StationLoot and SmugglerStash). The tags are only for the editor, so the container
+       panel never names them to players. -->
+  <ContainerTag identifier="vt_maintloot" category="Station" ShowInContainerUI="false" />
+  <ContainerTag identifier="vt_emergencyloot" category="Station" ShowInContainerUI="false" />
+  <ContainerTag identifier="vt_fireloot" category="Station" ShowInContainerUI="false" />
+  <ContainerTag identifier="vt_toolloot" category="Station" ShowInContainerUI="false" />
+  <ContainerTag identifier="vt_securityloot" category="Station" ShowInContainerUI="false" />
+  <ContainerTag identifier="vt_medicalloot" category="Station" ShowInContainerUI="false" />
+  <ContainerTag identifier="vt_engineeringloot" category="Station" ShowInContainerUI="false" />
+  <ContainerTag identifier="vt_smugglerstash" category="Station" ShowInContainerUI="false" />
+</ContainerTags>

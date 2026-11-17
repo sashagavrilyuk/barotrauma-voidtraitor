@@ -67,6 +67,7 @@
   <Text file="%ModDir%/the void traitor pack/PowerControllerText.xml" />
   <Item file="%ModDir%/the void traitor pack/items/radio.xml" />
   <Text file="%ModDir%/the void traitor pack/RadioText.xml" />
+  <ContainerTag file="%ModDir%/the void traitor pack/ContainerTags.xml" />
   <RandomEvents file="%ModDir%/Sounds/Station/Alerts.xml" />
   <RandomEvents file="%ModDir%/Sounds/Station/Nuclear/NuclearEvents.xml" />
 </contentpackage>

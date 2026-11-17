@@ -168,12 +168,14 @@ function gm:Start()
     boats.Start(self)
     Traitormod.Communications.Start()
     self:HideSmugglerStash()
+    self:FillStationLoot()
 end
 
 function gm:HideSmugglerStash()
     local stash = self.SmugglerStash
-    local cabinets = {}
+    local tagged, cabinets = {}, {}
     for _, item in pairs(Submarine.MainSub.GetItems(false)) do
+        if item.HasTag(stash.Tag) then table.insert(tagged, item) end
         for _, identifier in ipairs(stash.Containers) do
             if item.Prefab.Identifier.Value == identifier then
                 table.insert(cabinets, item)
@@ -181,6 +183,7 @@ function gm:HideSmugglerStash()
             end
         end
     end
+    if #tagged > 0 then cabinets = tagged end
     if #cabinets == 0 then return end
 
     local cabinet = cabinets[math.random(#cabinets)]
@@ -188,6 +191,36 @@ function gm:HideSmugglerStash()
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(stash.Items[math.random(#stash.Items)]), cabinet.OwnInventory)
     end
     Traitormod.SpawnPointItem(cabinet.OwnInventory, stash.Points, Traitormod.GetText("SmugglerStashPoints"))
+end
+
+-- by identifier only: ItemPrefab.GetItemPrefab first searches every prefab by name, about a millisecond per item
+local function spawnLoot(identifier, inventory)
+    if not ItemPrefab.Prefabs.ContainsKey(identifier) then
+        Traitormod.Error("StationLoot: no item " .. tostring(identifier))
+        return
+    end
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.Prefabs[identifier], inventory)
+end
+
+-- Fills the containers the map tags with a StationLoot tag, once at the start.
+function gm:FillStationLoot()
+    for _, item in pairs(Submarine.MainSub.GetItems(false)) do
+        local inventory = item.OwnInventory
+        if inventory ~= nil then
+            for tag, loot in pairs(self.StationLoot) do
+                if item.HasTag(tag) then
+                    for identifier, amount in pairs(loot.Fixed or {}) do
+                        for _ = 1, amount do spawnLoot(identifier, inventory) end
+                    end
+                    if loot.Random ~= nil then
+                        for _ = 1, math.random(loot.Count[1], loot.Count[2]) do
+                            spawnLoot(weightedRandom.Choose(loot.Random), inventory)
+                        end
+                    end
+                end
+            end
+        end
+    end
 end
 
 -- Test mode is set in Start (a single admin), not by the player count.
