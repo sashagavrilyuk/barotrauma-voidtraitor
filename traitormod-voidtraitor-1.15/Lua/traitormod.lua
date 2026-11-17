@@ -36,8 +36,17 @@ end
 dofile(Traitormod.Path .. "/Lua/features/discordwebhooks.lua")
 Game.OverrideTraitors(true)
 
-if Traitormod.Config.RagdollOnDisconnect ~= nil then
-    Game.DisableDisconnectCharacter(not Traitormod.Config.RagdollOnDisconnect)
+-- Without RagdollOnDisconnect a character whose player has left stays on its feet and alive until they come back, as
+-- Game.DisableDisconnectCharacter did before 1.15; the plugin still has that switch, but nothing reads it. Every update
+-- the server adds to the character's KillDisconnectedTimer and calls SetStun(1) on it (GameServer.Update), so that call
+-- is skipped and the timer kept at zero, which still lets the game give the character back to its player.
+if Traitormod.Config.RagdollOnDisconnect == false then
+    Hook.Patch("Traitormod.KeepDisconnectedCharacter", "Barotrauma.Character", "SetStun", function(character, ptable)
+        if not character.ClientDisconnected or ptable["newStun"] ~= 1 or ptable["allowStunDecrease"]
+            or ptable["isNetworkMessage"] then return end
+        character.KillDisconnectedTimer = 0
+        ptable.PreventExecution = true
+    end, Hook.HookMethodType.Before)
 end
 
 if Traitormod.Config.EnableControlHusk ~= nil then
