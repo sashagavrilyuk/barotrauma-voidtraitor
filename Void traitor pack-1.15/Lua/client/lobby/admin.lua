@@ -10,9 +10,8 @@ local NET_DATA_REQUEST = "VoidTraitor_ClientMenuAdminDataRequest"
 local NET_DATA = "VoidTraitor_ClientMenuAdminData"
 local NET_RUN = "VoidTraitor_ClientMenuAdminRunV2"
 
-local PLAYER_LIST_HEIGHT = 120
-local OPTION_LIST_HEIGHT = 100
 local ROW_HEIGHT = 32
+local MAX_ROLES_SHOWN = 8
 
 local language = Common.Language.AdminMenu
 local available = false
@@ -21,31 +20,22 @@ local adminTabText = language.AdminTab
 local entryById = {}
 local players = {}
 local playerByKey = {}
+local maxLives = 0
 local roles = {}
 local events = {}
 local stationRound = false
 local selectedPlayerKey = nil
 local selectedRoleId = nil
-local ghostCharacters = {}
 local selectedGhostCharacterName = nil
+-- the open page and the player search, kept while the window is closed
+local activePage = "Main"
+local playerSearch = ""
 local dataLoaded = false
 local dataRequestPending = false
 local pendingReady = nil
 
-local text = {
-    SelectedPlayer = language.SelectedPlayer,
-    NoPlayers = language.NoPlayers,
-    Alive = language.Alive,
-    Dead = language.Dead,
-    NoCharacter = language.NoCharacter,
-    SelectRole = language.SelectRole,
-    NoRoles = language.NoRoles,
-    SelectCharacter = language.SelectCharacter,
-    NoCharacters = language.NoCharacters,
-}
-
+-- the open page's widgets that show the selection
 local playerButtons = {}
-local roleButtons = {}
 local ghostCharacterButtons = {}
 local selectedPlayerText = nil
 local playerDependentButtons = {}
@@ -56,9 +46,6 @@ local CreateRect = UI.CreateRect
 local CreateText = Common.CreateText
 local SetFixedHeight = UI.SetFixedHeight
 local SetButtonTextScale = UI.SetButtonTextScale
-local CreateMenuButton = UI.CreateMenuButton
-local CreateDivider = UI.CreateDivider
-local CreateCategoryHeader = UI.CreateCategoryHeader
 
 local function send(identifier, writer)
     local msg = Networking.Start(identifier)
@@ -88,12 +75,17 @@ local function validateSelections()
     end
 end
 
-local function playerLabel(player)
-    local stateText = text.NoCharacter
+local function getPlayerState(player)
+    local state = language.NoCharacter
     if player.HasCharacter then
-        stateText = player.IsDead and text.Dead or text.Alive
+        state = player.IsDead and language.Dead or language.Alive
     end
-    return tostring(player.Name) .. " — " .. stateText
+    if player.Role ~= "" then state = state .. " · " .. player.Role end
+    return state
+end
+
+local function playerLabel(player)
+    return tostring(player.Name) .. " — " .. getPlayerState(player)
 end
 
 local function refreshSelection()
@@ -106,11 +98,11 @@ local function refreshSelection()
             button.TextBlock.Text = playerLabel(player)
         end
     end
-    for id, button in pairs(roleButtons) do button.Selected = id == selectedRoleId end
     for characterName, button in pairs(ghostCharacterButtons) do button.Selected = characterName == selectedGhostCharacterName end
 
     if selectedPlayerText ~= nil then
-        selectedPlayerText.Text = selectedPlayer ~= nil and string.format(text.SelectedPlayer, selectedPlayer.Name) or text.NoPlayers
+        selectedPlayerText.Text = selectedPlayer ~= nil and string.format(language.PlayerInfo, selectedPlayer.Name,
+            getPlayerState(selectedPlayer), selectedPlayer.Points, selectedPlayer.Lives, maxLives) or language.NoPlayers
     end
 
     local hasPlayer = selectedPlayer ~= nil
@@ -119,9 +111,9 @@ local function refreshSelection()
     if ghostRoleButton ~= nil then ghostRoleButton.Enabled = selectedGhostCharacterName ~= nil end
 end
 
-local function createFixedList(parent, heightPixels)
-    local frame = GUI.Frame(CreateRect(1, 0.20, parent, nil), "GUIFrameListBox")
-    SetFixedHeight(frame, heightPixels)
+-- A list in a frame that takes the rest of its column's height.
+local function createList(parent)
+    local frame = GUI.Frame(CreateRect(1, 1, parent, nil), "GUIFrameListBox")
     frame.CanBeFocused = false
 
     local list = GUI.ListBox(CreateRect(1, 0.96, frame, GUI.Anchor.Center), false, nil, "GUIListBoxNoBorder")
@@ -131,35 +123,190 @@ local function createFixedList(parent, heightPixels)
     return list
 end
 
-local function createPlayerValueAction(parent, actionId)
-    local entry = entryById[actionId]
-    if entry == nil then return end
-
-    local label = CreateText(parent, 1, 1, nil, entry.Label, GUI.Alignment.Left, 0.86, Color(210, 220, 200, 255), false)
-    label.Font = GUI.Style.SubHeadingFont
-    Common.FitHeightToText(label)
-    label.ToolTip = tostring(entry.Hint or "")
-
-    local row = GUI.Frame(CreateRect(1, 1, parent, nil), nil)
-    Common.SetFixedHeight(row, Common.GetStyleHeight("GUIButton"))
-    row.Color = Color(0, 0, 0, 0)
-    row.CanBeFocused = false
-
-    local input = GUI.TextBox(CreateRect(0.68, 1, row, GUI.Anchor.CenterLeft), entry.InputHint or "")
-    if input.TextBlock ~= nil then input.TextBlock.TextScale = 0.86 end
-    input.ToolTip = tostring(entry.Hint or "")
-
-    local button = Common.CreateButton(row, 0.30, UI.GetOkText(), GUI.Anchor.CenterRight)
-    button.ToolTip = tostring(entry.Hint or "")
-    button.Enabled = playerByKey[selectedPlayerKey] ~= nil
+local function createListRow(list, label, onClicked)
+    local button = GUI.Button(CreateRect(1, 0.12, list.Content, nil), label, GUI.Alignment.Left, "ListBoxElement")
+    SetFixedHeight(button, ROW_HEIGHT)
+    SetButtonTextScale(button, 0.82)
     button.OnClicked = function()
-        if selectedPlayerKey ~= nil then
-            sendAction(actionId, selectedPlayerKey, input.Text or "")
-        end
+        onClicked()
         return true
     end
+    return button
+end
 
-    table.insert(playerDependentButtons, button)
+local function createColumn(parent, width, stretch)
+    local column = GUI.LayoutGroup(CreateRect(width, 1, parent, nil), false)
+    column.Stretch = stretch
+    column.AbsoluteSpacing = Common.GetGap()
+    column.CanBeFocused = false
+    return column
+end
+
+local function actionItem(actionId, onClicked)
+    local entry = entryById[actionId]
+    if entry == nil then return nil end
+    return { Label = entry.Label, ToolTip = tostring(entry.Hint or ""), Enabled = true,
+        OnClicked = onClicked or function() sendAction(actionId, "", "") end }
+end
+
+-- One page for the players and the round: the players on the left, found by name, the selected one's state and actions
+-- on the right, and the round's commands under them. The player list takes the height the window has to spare.
+local function buildMainPage(page)
+    local layout = createColumn(page, 1, true)
+    local columns = GUI.LayoutGroup(CreateRect(1, 1, layout, nil), true)
+    columns.Stretch = true
+    columns.AbsoluteSpacing = Common.GetGap()
+    columns.CanBeFocused = false
+
+    local left = createColumn(columns, 0.4, true)
+    local search = GUI.TextBox(CreateRect(1, 1, left, nil), playerSearch)
+    Common.SetFixedHeight(search, Common.GetStyleHeight("GUITextBox"))
+    local list = createList(left)
+    if #players == 0 then
+        CreateText(list.Content, 1, 0.70, nil, language.NoPlayers, GUI.Alignment.Center, 0.86, Color(195, 195, 185, 255), true)
+    end
+    for _, player in ipairs(players) do
+        playerButtons[player.Key] = createListRow(list, playerLabel(player), function()
+            if selectedPlayerKey ~= player.Key then
+                selectedPlayerKey = player.Key
+                refreshSelection()
+            end
+        end)
+    end
+    local function filter(value)
+        playerSearch = value
+        local query = Common.NormalizeSearchText(value)
+        for key, button in pairs(playerButtons) do
+            button.Visible = query == "" or Common.NormalizeSearchText(playerByKey[key].Name):find(query, 1, true) ~= nil
+        end
+    end
+    UI.SetTextBoxHint(search, language.FindPlayer, filter)
+    filter(playerSearch)
+
+    local right = createColumn(columns, 0.6, false)
+    selectedPlayerText = CreateText(right, 1, 1, nil, "", GUI.Alignment.Left, 1, Color(225, 220, 195, 255), false)
+    Common.FitHeightToText(selectedPlayerText)
+    Common.SetAutoScaleText(selectedPlayerText, 1)
+
+    local items = {}
+    for _, actionId in ipairs({ "revive", "void", "unvoid" }) do
+        items[#items + 1] = actionItem(actionId, function()
+            if selectedPlayerKey ~= nil then sendAction(actionId, selectedPlayerKey, "") end
+        end)
+    end
+    for _, button in pairs(UI.CreateButtonGrid(right, 3, items)) do table.insert(playerDependentButtons, button) end
+
+    -- the player's time on Station roles, in its own window (roletimes.lua), then the role to give them
+    local row = GUI.LayoutGroup(CreateRect(1, 1, right, nil), true, GUI.Anchor.CenterLeft)
+    Common.SetFixedHeight(row, Common.GetStyleHeight("GUIButton"))
+    row.Stretch = true
+    row.AbsoluteSpacing = Common.GetButtonSpacing()
+    row.CanBeFocused = false
+    local roleTimes = Common.CreateButton(row, 1, language.RoleTimes)
+    roleTimes.ToolTip = language.RoleTimesHint
+    roleTimes.OnClicked = function()
+        if selectedPlayerKey ~= nil then UI.ShowRoleTimes(selectedPlayerKey) end
+        return true
+    end
+    table.insert(playerDependentButtons, roleTimes)
+    local assignEntry = entryById.assignrole
+    if assignEntry ~= nil then
+        local picker = GUI.DropDown(CreateRect(1, 1, row, nil), language.SelectRole, math.max(1, math.min(#roles, MAX_ROLES_SHOWN)))
+        for _, role in ipairs(roles) do picker.AddItem(role.Name, role.Id) end
+        if selectedRoleId ~= nil then picker.SelectItem(selectedRoleId) end
+        picker.OnSelected = function(_, roleId)
+            selectedRoleId = roleId
+            refreshSelection()
+            return true
+        end
+        assignRoleButton = Common.CreateButton(row, 1, assignEntry.Label)
+        assignRoleButton.ToolTip = tostring(assignEntry.Hint or "")
+        assignRoleButton.OnClicked = function()
+            if selectedPlayerKey ~= nil and selectedRoleId ~= nil then
+                sendAction("assignrole", selectedPlayerKey, selectedRoleId)
+            end
+            return true
+        end
+    end
+
+    for _, actionId in ipairs({ "addpoint", "addlife" }) do
+        local entry = entryById[actionId]
+        if entry ~= nil then
+            local _, button = UI.CreateTextInputRow(right, entry.Label, entry.InputHint or "", function(value)
+                if selectedPlayerKey ~= nil then sendAction(actionId, selectedPlayerKey, value) end
+            end, true, tostring(entry.Hint or ""))
+            table.insert(playerDependentButtons, button)
+        end
+    end
+
+    -- what the round's commands report goes to the chat, as it did as chat commands
+    Common.CreateDivider(layout)
+    local roundItems = {}
+    for _, actionId in ipairs({ "roundinfo", "roles", "traitoralive", "allpoints", "ongoingevents", "aghost", "aoverlay" }) do
+        roundItems[#roundItems + 1] = actionItem(actionId)
+    end
+    roundItems[#roundItems + 1] = actionItem("triggerevent", function() UI.ShowEvents(stationRound and "station" or "secret") end)
+    local endRound = actionItem("endroundnow")
+    roundItems[#roundItems + 1] = endRound
+    local buttons = UI.CreateButtonGrid(layout, 3, roundItems)
+    if endRound ~= nil then UI.SetDangerButton(buttons[#roundItems]) end
+end
+
+-- A ghost role is made from any living character the client knows, a bot or a creature too.
+local function buildGhostRolesPage(page)
+    local layout = createColumn(page, 1, true)
+
+    local characterNames = {}
+    for character in Character.CharacterList do
+        if not character.IsDead and tostring(character.Name or "") ~= "" then
+            table.insert(characterNames, tostring(character.Name))
+        end
+    end
+    table.sort(characterNames, function(a, b) return string.lower(a) < string.lower(b) end)
+
+    local selectedFound = false
+    for _, characterName in ipairs(characterNames) do
+        if characterName == selectedGhostCharacterName then selectedFound = true break end
+    end
+    if not selectedFound then selectedGhostCharacterName = characterNames[1] end
+
+    local label = CreateText(layout, 1, 1, nil, language.SelectCharacter, GUI.Alignment.Left, 0.82, Color(210, 220, 200, 255), false)
+    Common.FitHeightToText(label)
+
+    local list = createList(layout)
+    if #characterNames == 0 then
+        CreateText(list.Content, 1, 0.70, nil, language.NoCharacters, GUI.Alignment.Center, 0.82, Color(195, 195, 185, 255), true)
+    end
+    for _, characterName in ipairs(characterNames) do
+        ghostCharacterButtons[characterName] = createListRow(list, characterName, function()
+            if selectedGhostCharacterName ~= characterName then
+                selectedGhostCharacterName = characterName
+                refreshSelection()
+            end
+        end)
+    end
+
+    local entry = entryById.giveghostrole
+    if entry ~= nil then
+        local _, button = UI.CreateTextInputRow(layout, entry.Label, entry.InputHint or "", function(value)
+            if selectedGhostCharacterName ~= nil then sendAction("giveghostrole", selectedGhostCharacterName, value) end
+        end, true, tostring(entry.Hint or ""))
+        ghostRoleButton = button
+    end
+end
+
+local PAGES = {
+    { Id = "Main", Build = buildMainPage },
+    { Id = "GhostRoles", Build = buildGhostRolesPage },
+}
+
+local function clearWidgets()
+    playerButtons = {}
+    ghostCharacterButtons = {}
+    selectedPlayerText = nil
+    playerDependentButtons = {}
+    assignRoleButton = nil
+    ghostRoleButton = nil
 end
 
 function Admin.RequestMetadata()
@@ -209,206 +356,45 @@ function Admin.GetAdminTabText()
 end
 
 function Admin.ClearView()
-    playerButtons = {}
-    roleButtons = {}
-    ghostCharacterButtons = {}
-    selectedPlayerText = nil
-    playerDependentButtons = {}
-    assignRoleButton = nil
-    ghostRoleButton = nil
+    clearWidgets()
     pendingReady = nil
 end
 
-function Admin.Build(parent)
+-- The admin tab: a row of page tabs over the open page, which is built again when another tab is picked.
+function Admin.Build(host)
     Admin.ClearView()
 
-    local infoEntry = entryById.roundinfo
-    if infoEntry ~= nil then
-        CreateCategoryHeader(parent, infoEntry.Category)
-        for _, actionId in ipairs({ "roundinfo", "roles", "traitoralive", "allpoints", "ongoingevents", "endroundnow", "aghost", "aoverlay" }) do
-            local entry = entryById[actionId]
-            if entry ~= nil then
-                local button = CreateMenuButton(parent, entry.Label, true)
-                button.ToolTip = tostring(entry.Hint or "")
-                button.OnClicked = function()
-                    sendAction(actionId, "", "")
-                    return true
-                end
-            end
+    local layout = createColumn(host, 1, true)
+    local tabRow = GUI.LayoutGroup(CreateRect(1, 1, layout, nil), true)
+    Common.SetFixedHeight(tabRow, Common.GetStyleHeight("GUIButtonSmall"))
+    tabRow.Stretch = true
+    tabRow.CanBeFocused = false
+    local page = GUI.Frame(CreateRect(1, 1, layout, nil), nil)
+    page.Color = Color(0, 0, 0, 0)
+    page.CanBeFocused = false
+
+    local tabs = {}
+    local function show(pageId)
+        activePage = pageId
+        clearWidgets()
+        page.ClearChildren()
+        for _, entry in ipairs(PAGES) do
+            tabs[entry.Id].Selected = entry.Id == pageId
+            if entry.Id == pageId then entry.Build(page) end
         end
-        CreateDivider(parent)
+        page.ForceLayoutRecalculation()
+        refreshSelection()
     end
-
-    local playerEntry = entryById.revive
-    if playerEntry ~= nil then CreateCategoryHeader(parent, playerEntry.Category) end
-
-    local playerList = createFixedList(parent, PLAYER_LIST_HEIGHT)
-    if #players == 0 then
-        CreateText(playerList.Content, 1, 0.70, nil, text.NoPlayers, GUI.Alignment.Center, 0.86, Color(195, 195, 185, 255), true)
-    else
-        for _, player in ipairs(players) do
-            local button = GUI.Button(CreateRect(1, 0.12, playerList.Content, nil), playerLabel(player), GUI.Alignment.Left, "ListBoxElement")
-            SetFixedHeight(button, ROW_HEIGHT)
-            SetButtonTextScale(button, 0.82)
-            playerButtons[player.Key] = button
-            button.OnClicked = function()
-                if selectedPlayerKey ~= player.Key then
-                    selectedPlayerKey = player.Key
-                    refreshSelection()
-                end
-                return true
-            end
-        end
-        playerList:RecalculateChildren()
-        playerList:UpdateScrollBarSize()
-    end
-
-    selectedPlayerText = CreateText(parent, 1, 1, nil, "", GUI.Alignment.Left, 0.82, Color(225, 220, 195, 255), false)
-    Common.FitHeightToText(selectedPlayerText)
-
-    local playerActions = GUI.LayoutGroup(CreateRect(1, 1, parent, nil), true, GUI.Anchor.CenterLeft)
-    Common.SetFixedHeight(playerActions, Common.GetStyleHeight("GUIButton"))
-    playerActions.Stretch = true
-    playerActions.AbsoluteSpacing = Common.GetGap()
-
-    for _, actionId in ipairs({ "revive", "void", "unvoid" }) do
-        local entry = entryById[actionId]
-        if entry ~= nil then
-            local button = Common.CreateButton(playerActions, 0.325, entry.Label)
-            button.ToolTip = tostring(entry.Hint or "")
-            table.insert(playerDependentButtons, button)
-            button.OnClicked = function()
-                if selectedPlayerKey ~= nil then sendAction(actionId, selectedPlayerKey, "") end
-                return true
-            end
-        end
-    end
-
-    createPlayerValueAction(parent, "addpoint")
-    createPlayerValueAction(parent, "addlife")
-
-    -- the selected player's time on Station roles, in its own window (roletimes.lua)
-    local roleTimes = CreateMenuButton(parent, language.RoleTimes, true)
-    roleTimes.ToolTip = language.RoleTimesHint
-    roleTimes.OnClicked = function()
-        if selectedPlayerKey ~= nil then UI.ShowRoleTimes(selectedPlayerKey) end
-        return true
-    end
-    table.insert(playerDependentButtons, roleTimes)
-
-    local assignEntry = entryById.assignrole
-    if assignEntry ~= nil then
-        CreateDivider(parent)
-        CreateCategoryHeader(parent, assignEntry.Category)
-        local roleLabel = CreateText(parent, 1, 1, nil, text.SelectRole, GUI.Alignment.Left, 0.82, Color(210, 220, 200, 255), false)
-        Common.FitHeightToText(roleLabel)
-
-        local roleList = createFixedList(parent, OPTION_LIST_HEIGHT)
-        if #roles == 0 then
-            CreateText(roleList.Content, 1, 0.70, nil, text.NoRoles, GUI.Alignment.Center, 0.82, Color(195, 195, 185, 255), true)
-        else
-            for _, role in ipairs(roles) do
-                local button = GUI.Button(CreateRect(1, 0.12, roleList.Content, nil), role.Name, GUI.Alignment.Left, "ListBoxElement")
-                SetFixedHeight(button, ROW_HEIGHT)
-                SetButtonTextScale(button, 0.82)
-                roleButtons[role.Id] = button
-                button.OnClicked = function()
-                    if selectedRoleId ~= role.Id then
-                        selectedRoleId = role.Id
-                        refreshSelection()
-                    end
-                    return true
-                end
-            end
-            roleList:RecalculateChildren()
-            roleList:UpdateScrollBarSize()
-        end
-
-        assignRoleButton = CreateMenuButton(parent, assignEntry.Label, false)
-        assignRoleButton.ToolTip = tostring(assignEntry.Hint or "")
-        assignRoleButton.OnClicked = function()
-            if selectedPlayerKey ~= nil and selectedRoleId ~= nil then
-                sendAction("assignrole", selectedPlayerKey, selectedRoleId)
-            end
+    for _, entry in ipairs(PAGES) do
+        local tab = GUI.Button(CreateRect(1, 1, tabRow, nil), language.Pages[entry.Id], GUI.Alignment.Center, "GUITabButton")
+        SetButtonTextScale(tab, 0.82)
+        tab.OnClicked = function()
+            if activePage ~= entry.Id then show(entry.Id) end
             return true
         end
+        tabs[entry.Id] = tab
     end
-
-    local ghostEntry = entryById.giveghostrole
-    if ghostEntry ~= nil then
-        CreateDivider(parent)
-        CreateCategoryHeader(parent, ghostEntry.Category)
-
-        ghostCharacters = {}
-        for character in Character.CharacterList do
-            if not character.IsDead and tostring(character.Name or "") ~= "" then
-                table.insert(ghostCharacters, tostring(character.Name))
-            end
-        end
-        table.sort(ghostCharacters, function(a, b) return string.lower(a) < string.lower(b) end)
-
-        local selectedFound = false
-        for _, characterName in ipairs(ghostCharacters) do
-            if characterName == selectedGhostCharacterName then selectedFound = true break end
-        end
-        if not selectedFound then selectedGhostCharacterName = ghostCharacters[1] end
-
-        local characterLabel = CreateText(parent, 1, 1, nil, text.SelectCharacter, GUI.Alignment.Left, 0.82, Color(210, 220, 200, 255), false)
-        Common.FitHeightToText(characterLabel)
-
-        local characterList = createFixedList(parent, OPTION_LIST_HEIGHT)
-        if #ghostCharacters == 0 then
-            CreateText(characterList.Content, 1, 0.70, nil, text.NoCharacters, GUI.Alignment.Center, 0.82, Color(195, 195, 185, 255), true)
-        else
-            for _, characterName in ipairs(ghostCharacters) do
-                local button = GUI.Button(CreateRect(1, 0.12, characterList.Content, nil), characterName, GUI.Alignment.Left, "ListBoxElement")
-                SetFixedHeight(button, ROW_HEIGHT)
-                SetButtonTextScale(button, 0.82)
-                ghostCharacterButtons[characterName] = button
-                button.OnClicked = function()
-                    if selectedGhostCharacterName ~= characterName then
-                        selectedGhostCharacterName = characterName
-                        refreshSelection()
-                    end
-                    return true
-                end
-            end
-            characterList:RecalculateChildren()
-            characterList:UpdateScrollBarSize()
-        end
-
-        local row = GUI.Frame(CreateRect(1, 1, parent, nil), nil)
-        Common.SetFixedHeight(row, Common.GetStyleHeight("GUIButton"))
-        row.Color = Color(0, 0, 0, 0)
-        row.CanBeFocused = false
-
-        local input = GUI.TextBox(CreateRect(0.68, 1, row, GUI.Anchor.CenterLeft), ghostEntry.InputHint or "")
-        if input.TextBlock ~= nil then input.TextBlock.TextScale = 0.86 end
-        input.ToolTip = tostring(ghostEntry.Hint or "")
-
-        ghostRoleButton = Common.CreateButton(row, 0.30, UI.GetOkText(), GUI.Anchor.CenterRight)
-        ghostRoleButton.ToolTip = tostring(ghostEntry.Hint or "")
-        ghostRoleButton.OnClicked = function()
-            if selectedGhostCharacterName ~= nil then
-                sendAction("giveghostrole", selectedGhostCharacterName, input.Text or "")
-            end
-            return true
-        end
-    end
-
-    local eventEntry = entryById.triggerevent
-    if eventEntry ~= nil then
-        CreateDivider(parent)
-        CreateCategoryHeader(parent, eventEntry.Category)
-        local button = CreateMenuButton(parent, eventEntry.Label, true)
-        button.ToolTip = tostring(eventEntry.Hint or "")
-        button.OnClicked = function()
-            UI.ShowEvents(stationRound and "station" or "secret")
-            return true
-        end
-    end
-
-    refreshSelection()
+    show(activePage)
 end
 
 Networking.Receive(NET_SNAPSHOT, function(message)
@@ -421,12 +407,10 @@ Networking.Receive(NET_SNAPSHOT, function(message)
         local command = message.ReadString()
         message.ReadString() -- input type is enforced by the server action
         local actionText = language.Actions[command] or {}
-        local categoryKey = tostring(actionText.Category or "")
         entries[command] = {
             Command = command,
             Label = actionText.Label or command,
             Hint = actionText.Hint or "",
-            Category = language.Categories[categoryKey] or categoryKey,
             InputHint = actionText.InputHint or "",
         }
     end
@@ -464,6 +448,7 @@ Networking.Receive(NET_DATA, function(message)
         return
     end
 
+    maxLives = message.ReadInt32()
     local newPlayers = {}
     local newPlayerByKey = {}
     for _ = 1, message.ReadInt32() do
@@ -475,6 +460,9 @@ Networking.Receive(NET_DATA, function(message)
             Name = name,
             HasCharacter = message.ReadBoolean(),
             IsDead = message.ReadBoolean(),
+            Role = message.ReadString(),
+            Points = message.ReadInt32(),
+            Lives = message.ReadInt32(),
         }
         table.insert(newPlayers, player)
         newPlayerByKey[key] = player

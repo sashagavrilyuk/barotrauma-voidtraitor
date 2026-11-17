@@ -156,7 +156,7 @@ end)
 
 addAction("locatesub", 31, function(client, input)
     return runCommand("!locatesub", client, input)
-end, nil, canLocateSub)
+end, nil, canLocateSub, true)
 
 addAction("alive", 32, function(client, input)
     return runCommand("!alive", client, input)
@@ -188,7 +188,7 @@ addAction("players", 33, function(client)
 
     Game.SendDirectChatMessage("", text, nil, ChatMessageType.Error, client)
     return true
-end, nil, canLocatePlayers)
+end, nil, canLocatePlayers, true)
 
 addAction("info", 40, function(client, input)
     return runCommand("!info", client, input)
@@ -321,16 +321,21 @@ function cm.SendAdminData(client)
     if hasAccess then
         local players = {}
         for _, target in pairs(Client.ClientList) do
+            local role = target.Character ~= nil and Traitormod.RoleManager.RoundRoles[target.Character] or nil
             table.insert(players, {
                 Key = Traitormod.GetClientAccountKey(target),
                 Name = tostring(target.Name or ""),
                 CharacterName = target.Character ~= nil and tostring(target.Character.Name or "") or "",
                 HasCharacter = target.Character ~= nil,
                 IsDead = target.Character ~= nil and target.Character.IsDead == true,
+                Role = role ~= nil and tostring(role.Name or "") or "",
+                Points = math.floor(Traitormod.GetData(target, "Points") or 0),
+                Lives = math.floor(Traitormod.GetData(target, "Lives") or Traitormod.Config.MaxLives),
             })
         end
         table.sort(players, function(a, b) return string.lower(a.Name) < string.lower(b.Name) end)
 
+        netMessage.WriteInt32(Traitormod.Config.MaxLives)
         netMessage.WriteInt32(#players)
         for _, target in ipairs(players) do
             netMessage.WriteString(target.Key)
@@ -338,6 +343,9 @@ function cm.SendAdminData(client)
             netMessage.WriteString(target.CharacterName)
             netMessage.WriteBoolean(target.HasCharacter)
             netMessage.WriteBoolean(target.IsDead)
+            netMessage.WriteString(target.Role)
+            netMessage.WriteInt32(target.Points)
+            netMessage.WriteInt32(target.Lives)
         end
 
         local roles = {}
@@ -428,7 +436,8 @@ function cm.RunAdminActionV2(client, actionId, targetKey, value)
 
     sendActionLog(client, "admin:" .. action.Id)
     local result = runCommand(action.Command, client, args)
-    if action.Id == "revive" or action.Id == "triggerevent" then cm.SendAdminData(client) end
+    -- the admin's player panel shows the target's state, role, points and lives
+    if target ~= nil or action.Id == "triggerevent" then cm.SendAdminData(client) end
     return result
 end
 

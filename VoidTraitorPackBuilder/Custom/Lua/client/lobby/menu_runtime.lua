@@ -30,12 +30,15 @@ Networking.Receive(P.NET_SNAPSHOT, function(message)
         })
     end
 
-    -- the vote window opens on the client, under the round's commands
+    -- the vote window opens on the client, first of the round's commands
     local vote = { Label = P.VoteUiText.Button, Hint = P.VoteUiText.Tooltip, Category = P.MenuText.Categories.Round,
         InputType = "", Enabled = true, Open = P.ShowVoteMenu }
     local at = #entries + 1
     for index, entry in ipairs(entries) do
-        if entry.Category == vote.Category then at = index + 1 end
+        if entry.Category == vote.Category then
+            at = index
+            break
+        end
     end
     table.insert(entries, at, vote)
 

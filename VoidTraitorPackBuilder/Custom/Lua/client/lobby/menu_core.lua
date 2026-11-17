@@ -53,11 +53,8 @@ S.pendingMenuOpen = false
 S.uiStateCheckTimer = 0
 S.vtMenuList = nil
 S.vtMainList = nil
-S.vtAdminList = nil
 S.vtMainListFrame = nil
-S.vtAdminListFrame = nil
 S.vtMenuScroll = 0
-S.vtAdminScroll = 0
 S.vtMenuX = nil
 S.vtMenuY = nil
 S.vtMenuHeight = nil
@@ -89,8 +86,12 @@ LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.GameSession"], "respawnI
 LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.GameSession"], "deathChoiceButtonContainer")
 LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.CrewManager"] or LuaUserData.RegisterType("Barotrauma.CrewManager"), "crewArea")
 P.VT_MENU_WIDTH_PIXELS = 370
+-- the admin tab has the player list beside the actions
+P.VT_ADMIN_MENU_WIDTH_PIXELS = 640
 P.VT_MENU_DEFAULT_HEIGHT_PIXELS = 580
 P.VT_MENU_MIN_HEIGHT_PIXELS = 340
+-- the admin tab doesn't scroll, so its window keeps the height of its rows
+P.VT_ADMIN_MENU_MIN_HEIGHT_PIXELS = 470
 P.VT_MENU_MARGIN_PIXELS = 0
 P.VT_LIST_SIDE_PADDING_PIXELS = 6
 
@@ -178,7 +179,6 @@ function P.SaveVoidTraitorMenuGeometry()
     S.vtMenuY = rect.Y
     S.vtMenuHeight = rect.Height
     if S.vtMainList ~= nil then S.vtMenuScroll = S.vtMainList.BarScroll end
-    if S.vtAdminList ~= nil then S.vtAdminScroll = S.vtAdminList.BarScroll end
 end
 
 P.CloseMenu = function()
@@ -197,9 +197,7 @@ P.CloseMenu = function()
     S.voteMenuUi = nil
     S.vtMenuList = nil
     S.vtMainList = nil
-    S.vtAdminList = nil
     S.vtMainListFrame = nil
-    S.vtAdminListFrame = nil
     S.vtResizeTopTargets = {}
     S.vtResizeBottomTargets = {}
     S.vtResizeState = nil

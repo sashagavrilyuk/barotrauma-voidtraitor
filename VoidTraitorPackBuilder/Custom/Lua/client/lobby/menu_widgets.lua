@@ -22,34 +22,80 @@ function P.CreateCategoryHeader(parent, label)
     return text
 end
 
-function P.CreateTextInputRow(parent, label, placeholder, action, enabled, tooltip)
-    local isEnabled = enabled ~= false
-    local labelBlock = P.CreateText(parent, 1, 1, nil, label, GUI.Alignment.Left, 0.86, Color(210, 220, 200, 255), false)
-    labelBlock.Font = GUI.Style.SubHeadingFont
-    P.Common.FitHeightToText(labelBlock)
-    labelBlock.ToolTip = tooltip or ""
+-- Vanilla text boxes have no placeholder: like the lobby's submarine filter, a text block lies over the box while it
+-- is empty. onChanged, if given, also gets each new text.
+function P.SetTextBoxHint(input, hintText, onChanged)
+    local hint = P.CreateText(input, 1, 1, nil, hintText, GUI.Alignment.CenterLeft, 0.86, Color(140, 150, 140, 255), false)
+    hint.Padding = input.TextBlock.Padding
+    hint.CanBeFocused = false
+    hint.Visible = input.Text == ""
+    input.OnTextChangedDelegate = function(_, value)
+        hint.Visible = value == ""
+        if onChanged ~= nil then onChanged(value) end
+        return true
+    end
+end
 
+-- A command that takes a value: the box, with its hint while it is empty, and the command's button beside it, which
+-- hands the value to onSubmit and clears the box. Returns the box and the button.
+function P.CreateTextInputRow(parent, label, placeholder, onSubmit, enabled, tooltip)
+    local isEnabled = enabled ~= false
     local row = GUI.LayoutGroup(P.CreateRect(1, 1, parent, nil), true, GUI.Anchor.CenterLeft)
     P.Common.SetFixedHeight(row, P.Common.GetStyleHeight("GUIButton"))
     row.Stretch = true
-    row.AbsoluteSpacing = P.Common.GetGap()
+    row.AbsoluteSpacing = P.Common.GetButtonSpacing()
 
-    local input = GUI.TextBox(P.CreateRect(0.66, 1, row, nil), placeholder or "")
+    local input = GUI.TextBox(P.CreateRect(1, 1, row, nil), "")
     input.Enabled = isEnabled
     input.ToolTip = tooltip or ""
     if input.TextBlock ~= nil then input.TextBlock.TextScale = 0.86 end
+    P.SetTextBoxHint(input, placeholder or "")
 
-    local sendButton = P.Common.CreateButton(row, 0.32, P.UiText.Ok)
+    local sendButton = P.Common.CreateButton(row, 1, label)
     sendButton.Enabled = isEnabled
     sendButton.ToolTip = tooltip or ""
     sendButton.OnClicked = function()
-        local value = input.Text or ""
-        P.SendCommand(action, value)
+        onSubmit(input.Text or "")
         input.Text = ""
         return true
     end
 
-    return input
+    return input, sendButton
+end
+
+-- A button for an action that can't be undone, red like the nuclear console's arm button (station/nuclear.lua).
+function P.SetDangerButton(button)
+    button.Color, button.HoverColor, button.PressedColor = Color(200, 70, 70, 255), Color(235, 100, 100, 255), Color(160, 50, 50, 255)
+end
+
+-- Buttons in rows of `columns`; a short last row keeps the width of the other rows' cells.
+-- Each item has a Label, a ToolTip, Enabled and OnClicked.
+function P.CreateButtonGrid(parent, columns, items)
+    local buttons = {}
+    for first = 1, #items, columns do
+        local row = GUI.LayoutGroup(P.CreateRect(1, 1, parent, nil), true, GUI.Anchor.CenterLeft)
+        P.Common.SetFixedHeight(row, P.Common.GetStyleHeight("GUIButton"))
+        row.Stretch = true
+        row.AbsoluteSpacing = P.Common.GetButtonSpacing()
+        row.CanBeFocused = false
+        for index = first, first + columns - 1 do
+            local item = items[index]
+            if item == nil then
+                local cell = GUI.Frame(P.CreateRect(1, 1, row, nil), nil)
+                cell.Color = Color(0, 0, 0, 0)
+                cell.CanBeFocused = false
+            else
+                local button = P.CreateMenuButton(row, item.Label, item.Enabled)
+                button.ToolTip = item.ToolTip or ""
+                button.OnClicked = function()
+                    item.OnClicked()
+                    return true
+                end
+                buttons[index] = button
+            end
+        end
+    end
+    return buttons
 end
 
 function P.CreateMenuList(parent)
@@ -72,10 +118,11 @@ P.Admin = assert(loadfile(P.PackPath .. "/Lua/client/lobby/admin.lua"))(P.Common
     CreateRect = P.CreateRect,
     SetFixedHeight = P.SetFixedHeight,
     SetButtonTextScale = P.SetButtonTextScale,
-    CreateMenuButton = P.CreateMenuButton,
-    CreateDivider = P.CreateDivider,
-    CreateCategoryHeader = P.CreateCategoryHeader,
-    GetOkText = function() return P.UiText.Ok end,
+    CreateMenuList = P.CreateMenuList,
+    CreateButtonGrid = P.CreateButtonGrid,
+    CreateTextInputRow = P.CreateTextInputRow,
+    SetTextBoxHint = P.SetTextBoxHint,
+    SetDangerButton = P.SetDangerButton,
     ShowEvents = function(tab) P.ShowEventsWindow(tab) end,
     ShowRoleTimes = function(key) P.ShowRoleTimesWindow(key) end,
 })
@@ -100,6 +147,10 @@ function P.AddVoidTraitorResizeHandles(panel)
     P.Common.AddResizeHandles(panel, S.vtResizeTopTargets, S.vtResizeBottomTargets)
 end
 
+function P.GetVoidTraitorMenuMinHeight()
+    return P.SafeIntScale(S.vtActiveTab == "admin" and P.VT_ADMIN_MENU_MIN_HEIGHT_PIXELS or P.VT_MENU_MIN_HEIGHT_PIXELS)
+end
+
 function P.UpdateVoidTraitorMenuInteraction()
     if S.currentMenu == nil or S.currentMenuKind ~= "vt" then
         S.vtResizeState = nil
@@ -111,7 +162,7 @@ function P.UpdateVoidTraitorMenuInteraction()
         S.vtResizeState,
         S.vtResizeTopTargets,
         S.vtResizeBottomTargets,
-        P.SafeIntScale(P.VT_MENU_MIN_HEIGHT_PIXELS),
+        P.GetVoidTraitorMenuMinHeight(),
         S.vtMenuList,
         S.vtMenuX,
         S.vtMenuY,
