@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <infotexts language="Russian" nowhitespace="false" translatedname="Русский">
-  <entityname.vt_autolathe>Автолат</entityname.vt_autolathe>
-  <entitydescription.vt_autolathe>Печатает простые инструменты, детали и расходники станции.</entitydescription.vt_autolathe>
-  <entityname.vt_protolathe>Протолат</entityname.vt_protolathe>
-  <entitydescription.vt_protolathe>Станок научного отдела. Печатает то, что открыли исследования.</entitydescription.vt_protolathe>
-  <entityname.vt_sectechfab>Техфаб СБ</entityname.vt_sectechfab>
-  <entitydescription.vt_sectechfab>Станок службы безопасности: снаряжение, боеприпасы и оружие, открытое исследованиями.</entitydescription.vt_sectechfab>
-  <entityname.vt_medtechfab>Медицинский техфаб</entityname.vt_medtechfab>
-  <entitydescription.vt_medtechfab>Станок медицинского отдела: лекарства и медснаряжение.</entitydescription.vt_medtechfab>
+  <entityname.vt_protolathe>Научный фабрикатор</entityname.vt_protolathe>
+  <entitydescription.vt_protolathe>Фабрикатор научного отдела. Печатает то, что открыли исследования.</entitydescription.vt_protolathe>
+  <entityname.vt_sectechfab>Фабрикатор СБ</entityname.vt_sectechfab>
+  <entitydescription.vt_sectechfab>Фабрикатор службы безопасности: снаряжение, боеприпасы и оружие, открытое исследованиями.</entitydescription.vt_sectechfab>
   <entityname.vt_rnd_server>Сервер РНД</entityname.vt_rnd_server>
   <entitydescription.vt_rnd_server>Хранит очки исследований станции. Сломанный сервер теряет их.</entitydescription.vt_rnd_server>
   <entityname.vt_rnd_console>Консоль РНД</entityname.vt_rnd_console>

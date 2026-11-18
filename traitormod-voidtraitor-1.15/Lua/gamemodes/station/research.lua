@@ -93,13 +93,15 @@ function research.SendRecipes(client)
     Networking.Send(message, client ~= nil and client.Connection or nil)
 end
 
--- A working server, as SS14 consoles need one: not broken and powered. Without one the station has no points; a broken
--- server loses them.
+-- A working server on the station, as SS14 consoles and lathes reach their station's server without wires: not broken
+-- and powered. Without one the station has no points; a broken server loses them.
 local function serverState()
     local found
     for item in pairs(state.Servers) do
         if item.Removed then
             state.Servers[item] = nil
+        elseif item.Submarine ~= Submarine.MainSub then
+            found = found or "ResearchServerMissing"
         elseif item.Condition > 0 then
             if item.GetComponentString("Powered").Voltage >= 0.5 then return "ok" end
             found = "ResearchServerNoPower"

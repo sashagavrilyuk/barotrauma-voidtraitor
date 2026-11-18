@@ -158,9 +158,9 @@ return {
         vt_engineeringloot = { Fixed = { toolbelt = 1, wrench = 1, screwdriver = 1, weldingtool = 1, weldingfueltank = 1, wire = 2 } },
     },
     -- Research, as SS14's with Goob Station's tree (gamemodes/station/research.lua). Costs are SS14's; Position is the
-    -- technology's cell in Goob's tree and Requires its arrows. A lathe prints its Static recipes and those of its
-    -- Tags' vanilla fabricator (StaticFrom) from the start; a technology adds Recipes by lathe. Names: language
-    -- ResearchTechnologies.
+    -- technology's cell in Goob's tree and Requires its arrows. A fabricator prints its Static recipes and those of
+    -- the vanilla fabricator StaticFrom names from the start; a technology adds Recipes by fabricator. The vanilla
+    -- fabricator is SS14's autolathe, the medical fabricator its medical techfab. Names: language ResearchTechnologies.
     Research = {
         StartPoints = 0,
         -- the ID card access a player needs to research at the console; anyone can look at the tree
@@ -174,7 +174,7 @@ return {
             { Id = "CivilianServices", Color = { 126, 205, 72 } },
         },
         Lathes = {
-            vt_autolathe = { Static = {
+            fabricator = { Static = {
                 "screwdriver", "wrench", "crowbar", "weldingtool", "weldingfueltank", "flashlight", "flare", "glowstick",
                 "extinguisher", "toolbox", "toolbelt", "batterycell", "oxygentank", "divingmask", "headset", "sprayer",
                 "electriciansgoggles", "steel", "plastic", "rubber", "titaniumaluminiumalloy", "ballisticfiber",
@@ -184,11 +184,11 @@ return {
                 "subtractcomponent", "multiplycomponent", "dividecomponent", "relaycomponent", "delaycomponent",
                 "memorycomponent", "signalcheckcomponent", "regexcomponent", "oscillator", "wificomponent",
                 "multiplexercomponent", "demultiplexercomponent", "concatcomponent", "colorcomponent", "oxygendetector",
-                "waterdetector", "smokedetector", "motiondetector", "emergencysiren", "alarmbuzzer",
+                "waterdetector", "smokedetector", "motiondetector", "emergencysiren", "alarmbuzzer", "healthscanner",
             } },
             vt_protolathe = { Static = {} },
             vt_sectechfab = { Static = { "handcuffs", "stunbaton", "bodyarmor", "ballistichelmet1", "divingknife" } },
-            vt_medtechfab = { StaticFrom = "medicalfabricator", Static = { "healthscanner" } },
+            medicalfabricator = { StaticFrom = "medicalfabricator", Static = {} },
         },
         Technologies = {
             { Id = "PowerGeneration", Discipline = "Industrial", Tier = 1, Cost = 7500, Position = { 0, -2 }, Icon = "fuelrod",
@@ -247,13 +247,13 @@ return {
                 Icon = "largeplanter", Recipes = { vt_protolathe = { "smallplanter", "largeplanter", "seedbag", "fertilizer",
                     "wateringcan", "plantergoggles", "growlight" } } },
             { Id = "AccessibilityTech", Discipline = "CivilianServices", Tier = 1, Cost = 4500, Position = { 3, 4 }, Requires = { "AdvancedEntertainment" },
-                Icon = "autoinjectorheadset", Recipes = { vt_medtechfab = { "autoinjectorheadset" } } },
+                Icon = "autoinjectorheadset", Recipes = { vt_protolathe = { "autoinjectorheadset" } } },
             { Id = "MechanizedTreatment", Discipline = "CivilianServices", Tier = 2, Cost = 5000, Position = { -2, 4 }, Requires = { "AdvancedEntertainment", "BasicRobotics" },
-                Icon = "syringegun", Recipes = { vt_medtechfab = { "syringegun", "advancedsyringegun" } } },
+                Icon = "syringegun", Recipes = { vt_protolathe = { "syringegun", "advancedsyringegun" } } },
             { Id = "BiochemicalStasis", Discipline = "CivilianServices", Tier = 2, Cost = 7500, Position = { 3, 5 }, Requires = { "AccessibilityTech" },
-                Icon = "combatstimulantsyringe", Recipes = { vt_medtechfab = { "combatstimulantsyringe", "pressurestabilizer", "endocrinebooster" } } },
+                Icon = "combatstimulantsyringe", Recipes = { medicalfabricator = { "combatstimulantsyringe", "pressurestabilizer", "endocrinebooster" } } },
             { Id = "BluespaceChemistry", Discipline = "CivilianServices", Tier = 3, Cost = 10000, Position = { 4, 5 }, Requires = { "BiochemicalStasis" },
-                Icon = "sulphuricacidsyringe", Recipes = { vt_medtechfab = { "sulphuricacidsyringe", "europabrew" } } },
+                Icon = "sulphuricacidsyringe", Recipes = { medicalfabricator = { "sulphuricacidsyringe", "europabrew" } } },
         },
     },
     PointshopCategories = {"traitor", "cultist", "saboteur", "clown"},

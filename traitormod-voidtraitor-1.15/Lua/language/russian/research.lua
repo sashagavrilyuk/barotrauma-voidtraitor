@@ -19,7 +19,7 @@ language.ResearchMissingRequired = "Сначала изучите техноло
 language.ResearchNotEnough = "Не хватает очков"
 language.ResearchSelect = "Выберите технологию на дереве"
 language.ResearchDone = "Исследовано: %s"
-language.ResearchLathes = { vt_autolathe = "автолат", vt_protolathe = "протолат", vt_sectechfab = "техфаб СБ", vt_medtechfab = "медтехфаб" }
+language.ResearchLathes = { fabricator = "фабрикатор", medicalfabricator = "медфабрикатор", vt_protolathe = "научный фабрикатор", vt_sectechfab = "фабрикатор СБ" }
 language.ResearchDisciplines = {
     Industrial = "Промышленность",
     Arsenal = "Арсенал",
