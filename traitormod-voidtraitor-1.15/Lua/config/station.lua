@@ -157,6 +157,63 @@ return {
         -- LockerEngineerFilled
         vt_engineeringloot = { Fixed = { toolbelt = 1, wrench = 1, screwdriver = 1, weldingtool = 1, weldingfueltank = 1, wire = 2 } },
     },
+    -- Xenoarchaeology, as SS14's before its 2025 rework (gamemodes/station/xenoarch.lua; SS14 e9d13ea
+    -- Content.Server/Xenoarchaeology). Depth is a trigger's or effect's target depth in the node tree: the closer to a
+    -- node's depth, the likelier. Effects: gamemodes/station/xenoarch_effects.lua; texts: language Xenoarch*.
+    Xenoarch = {
+        -- nodes in a tree: SS14 takes random.Next(3, 9)
+        NodesMin = 3,
+        NodesMax = 8,
+        Cooldown = 5,
+        -- research points of a node: PointsPerNode * DangerMultiplier ^ danger, danger being the mean depth of the
+        -- node, its trigger and its effect; a node seen but never triggered gives a quarter; a fully explored tree 1.25x
+        PointsPerNode = 6500,
+        DangerMultiplier = 1.35,
+        FullyExploredBonus = 1.25,
+        AnalysisSeconds = 30,
+        -- how far the analysis console reaches its analyzer
+        AnalyzerRange = 500,
+        -- triggers: damage taken in total, the timer's period, how far a death is felt
+        DamageThreshold = 50,
+        HighDamageThreshold = 500,
+        TimerSeconds = 5,
+        DeathRange = 1500,
+        Triggers = {
+            { Id = "timer", Depth = 0 },
+            { Id = "examine", Depth = 0 },
+            { Id = "damage", Depth = 1 },
+            { Id = "landed", Depth = 1 },
+            { Id = "heat", Depth = 1 },
+            { Id = "water", Depth = 1 },
+            { Id = "death", Depth = 2 },
+            { Id = "highdamage", Depth = 3 },
+        },
+        Effects = {
+            { Id = "GoodFeeling", Depth = 0 },
+            { Id = "JunkSpawn", Depth = 0, Items = { "scrap" }, Max = 10 },
+            { Id = "BananaSpawn", Depth = 0, Items = { "bananapeel" }, Max = 6 },
+            { Id = "ChemicalPuddle", Depth = 0, Items = { "chlorine", "ethanol", "sulphuricacid", "adrenaline", "antibiotics", "opium", "stabilozine" }, Max = 2 },
+            { Id = "FloraSpawn", Depth = 1, Items = { "aquaticpoppy", "elastinplant", "fiberplant", "yeastshroom" }, Max = 4 },
+            { Id = "InstrumentSpawn", Depth = 1, Items = { "harmonica", "guitar", "accordion" }, Max = 1 },
+            { Id = "MonkeySpawn", Depth = 1, Species = { "peanut", "orangeboy", "psilotoad" }, Max = 1 },
+            { Id = "Radiate", Depth = 1, Affliction = "radiationsickness", Strength = 15, Range = 400 },
+            { Id = "Knock", Depth = 1, Range = 600 },
+            { Id = "ExplosionScary", Depth = 2, Range = 300, Force = 3, Damage = 0, Stun = 0 },
+            { Id = "RareMaterialSpawn", Depth = 2, Items = { "uranium", "incendium", "fulgurium", "physicorium" }, Max = 3 },
+            { Id = "AngryCarpSpawn", Depth = 2, Species = { "crawler", "spineling" }, Max = 2 },
+            { Id = "FaunaSpawn", Depth = 2, Species = { "peanut", "orangeboy", "psilotoad", "crawler", "mudraptor_unarmored" }, Max = 3 },
+            { Id = "CashSpawn", Depth = 2, Points = { 100, 500 } },
+            { Id = "Blink", Depth = 2, Range = 600 },
+            { Id = "Emp", Depth = 2, Range = 600, Strength = 1 },
+            { Id = "HealAll", Depth = 3, Amount = 100, Range = 800 },
+            { Id = "RadiateStrong", Depth = 3, Affliction = "radiationsickness", Strength = 50, Range = 600 },
+            { Id = "MaterialSpawn", Depth = 3, Items = { "steel", "plastic", "titaniumaluminiumalloy" }, Max = 5 },
+            { Id = "Ignite", Depth = 3, Range = 700 },
+            { Id = "Mitosis", Depth = 3 },
+            { Id = "Boom", Depth = 3, Range = 500, Force = 20, Damage = 60, StructureDamage = 60 },
+            { Id = "Singulo", Depth = 10, Item = "Sthal_singularity" },
+        },
+    },
     -- Research, as SS14's with Goob Station's tree (gamemodes/station/research.lua). Costs are SS14's; Position is the
     -- technology's cell in Goob's tree and Requires its arrows. A fabricator prints its Static recipes and those of
     -- the vanilla fabricator StaticFrom names from the start; a technology adds Recipes by fabricator. The vanilla

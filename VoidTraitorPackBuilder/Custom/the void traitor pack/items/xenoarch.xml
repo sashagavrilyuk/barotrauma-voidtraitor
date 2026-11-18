@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Station xenoarchaeology (traitormod Lua/gamemodes/station/xenoarch.lua): an artifact goes onto the analyzer, and the
+     analysis console nearby reads its node and extracts its research points. Sprites: xenoarch.png (ATTRIBUTION.txt). -->
+<Items>
+  <Item name="" identifier="vt_artifact_analyzer" category="Machine" tags="vt_artifact_analyzer" scale="1">
+    <Sprite texture="%ModDir%/the void traitor pack/items/xenoarch.png" sourcerect="0,0,128,128" depth="0.85" />
+    <Powered powerconsumption="200" minvoltage="0.5" isactive="true" />
+    <ItemContainer capacity="1" canbeselected="true" hideitems="false" itempos="0,0" msg="ItemMsgInteractSelect">
+      <Containable items="vt_artifact" />
+    </ItemContainer>
+    <ConnectionPanel canbeselected="true" selectkey="Action" msg="ItemMsgRewireScrewdriver">
+      <GuiFrame relativesize="0.2,0.25" anchor="Center" style="ConnectionPanel" />
+      <RequiredItem items="screwdriver" type="Equipped" />
+      <input name="power_in" displayname="connection.powerin" />
+    </ConnectionPanel>
+  </Item>
+  <Item name="" identifier="vt_analysis_console" category="Electrical" scale="1" interactdistance="150" grabwhenselected="true" tags="vt_analysis_console">
+    <Sprite texture="%ModDir%/the void traitor pack/items/xenoarch.png" sourcerect="128,0,128,128" depth="0.8" />
+    <Powered powerconsumption="50" minvoltage="0.5" isactive="true" />
+    <ItemComponent canbeselected="true" msg="ItemMsgInteractSelect" />
+    <ConnectionPanel canbeselected="true" selectkey="Action" msg="ItemMsgRewireScrewdriver">
+      <GuiFrame relativesize="0.2,0.25" anchor="Center" style="ConnectionPanel" />
+      <RequiredItem items="screwdriver" type="Equipped" />
+      <input name="power_in" displayname="connection.powerin" />
+    </ConnectionPanel>
+  </Item>
+</Items>

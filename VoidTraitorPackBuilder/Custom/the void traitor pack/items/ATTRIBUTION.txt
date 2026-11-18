@@ -37,3 +37,14 @@ Changes: layers merged, scaled 4x without smoothing, put side by side.
 
 License: Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)
 https://creativecommons.org/licenses/by-sa/3.0/
+
+xenoarch.png — artifact analyzer and analysis console
+====================================================
+Space Station 14 (commit 466d11300ca0c60c24932441102795716e1466bf):
+- Structures/Machines/artifact_analyzer.rsi, state icon: created by EmoGarbage404
+- Structures/Machines/computers.rsi, states computer + generic_keyboard + artifact + tech_key (south frame): taken from
+  tgstation at commit https://github.com/tgstation/tgstation/commit/bd6873fd4dd6a61d7e46f1d75cd4d90f64c40894
+Changes: layers merged, scaled 4x without smoothing, put side by side.
+
+License: Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)
+https://creativecommons.org/licenses/by-sa/3.0/

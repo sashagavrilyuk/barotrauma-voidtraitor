@@ -1,0 +1,12 @@
+VOIDTRAITOR — XENOARCHAEOLOGY SOUNDS (Space Station 14, commit e9d13ea5650a0ec635683fdd03a8acf79560a5ce)
+
+artifact1.ogg … artifact7.ogg — artifact activation
+Source: https://github.com/space-wizards/space-station-14/tree/e9d13ea5650a0ec635683fdd03a8acf79560a5ce/Resources/Audio/Items/Artifact
+Created by Garuda1982 (https://freesound.org/people/Garuda1982/sounds/560310/), split into individual files and
+converted to OGG and mono by EmoGarbage404.
+License: Creative Commons Attribution 4.0 (CC BY 4.0) https://creativecommons.org/licenses/by/4.0/
+
+scan_finish.ogg — analysis finished
+Source: https://github.com/space-wizards/space-station-14/tree/e9d13ea5650a0ec635683fdd03a8acf79560a5ce/Resources/Audio/Machines
+pan14 on freesound.org (https://freesound.org/people/steaq/sounds/509249/).
+License: CC0 1.0

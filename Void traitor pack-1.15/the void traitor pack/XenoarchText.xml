@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="Russian" nowhitespace="false" translatedname="Русский">
+  <entityname.vt_artifact>Инопланетный артефакт</entityname.vt_artifact>
+  <entitydescription.vt_artifact>Что он делает, никто не знает, пока его не изучат.</entitydescription.vt_artifact>
+  <entityname.vt_trinket>Инопланетная безделушка</entityname.vt_trinket>
+  <entitydescription.vt_trinket>Небольшая вещица из инопланетных руин. Что она умеет, станет ясно только после изучения.</entitydescription.vt_trinket>
+  <entityname.vt_artifact_analyzer>Анализатор артефактов</entityname.vt_artifact_analyzer>
+  <entitydescription.vt_artifact_analyzer>Положите на него артефакт, чтобы консоль анализа прочитала его узел.</entitydescription.vt_artifact_analyzer>
+  <entityname.vt_analysis_console>Консоль анализа</entityname.vt_analysis_console>
+  <entitydescription.vt_analysis_console>Сканирует артефакт на ближайшем анализаторе и извлекает из него очки исследований.</entitydescription.vt_analysis_console>
+</infotexts>
