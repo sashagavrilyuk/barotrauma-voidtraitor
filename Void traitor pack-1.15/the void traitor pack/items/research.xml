@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Station research, as SS14's (traitormod Lua/gamemodes/station/research.lua). Each lathe takes the recipes of the
+     vanilla fabricators it shares a tag with and prints only what config/station.lua (Research) gives it from the start
+     plus what research opened. The server keeps the points; the console holds the tree. Sprites: research.png
+     (ATTRIBUTION.txt). -->
+<Items>
+  <Item name="" identifier="vt_autolathe" category="Machine" tags="fabricator,vt_autolathe,donttakeitems,dontsellitems" scale="1" damagedbyexplosions="true" explosiondamagemultiplier="0.2">
+    <Sprite texture="%ModDir%/the void traitor pack/items/research.png" sourcerect="0,0,128,128" depth="0.8" />
+    <Fabricator canbeselected="true" powerconsumption="500.0" msg="ItemMsgInteractSelect">
+      <GuiFrame relativesize="0.4,0.6" style="ItemUI" anchor="Center" />
+      <sound file="Content/Items/Fabricators/Fabricator.ogg" type="OnActive" range="1000.0" volumeproperty="RelativeVoltage" loop="true" />
+      <poweronsound file="Content/Items/PowerOnLight1.ogg" range="600" loop="false" />
+      <StatusEffect type="InWater" target="This" condition="-0.5" />
+    </Fabricator>
+    <ConnectionPanel canbeselected="true" selectkey="Action" msg="ItemMsgRewireScrewdriver">
+      <GuiFrame relativesize="0.2,0.25" anchor="Center" style="ConnectionPanel" />
+      <RequiredItem items="screwdriver" type="Equipped" />
+      <input name="power_in" displayname="connection.powerin" />
+    </ConnectionPanel>
+    <Repairable selectkey="Action" header="mechanicalrepairsheader" deteriorationspeed="0" RepairThreshold="80" fixDurationHighSkill="5" fixDurationLowSkill="25" msg="ItemMsgRepairWrench" hudpriority="10">
+      <GuiFrame relativesize="0.2,0.16" minsize="400,180" maxsize="480,280" anchor="Center" relativeoffset="0.1,0.27" style="ItemUI" />
+      <RequiredSkill identifier="mechanical" level="40" />
+      <RequiredItem items="wrench" type="Equipped" />
+    </Repairable>
+    <ItemContainer capacity="5" canbeselected="true" hideitems="true" slotsperrow="5" uilabel="" allowuioverlap="true" />
+    <ItemContainer capacity="1" canbeselected="true" hideitems="true" slotsperrow="1" uilabel="" allowuioverlap="true" />
+  </Item>
+  <Item identifier="vt_protolathe" variantof="vt_autolathe" tags="fabricator,vt_protolathe,donttakeitems,dontsellitems">
+    <Sprite sourcerect="128,0,128,128" />
+  </Item>
+  <Item identifier="vt_sectechfab" variantof="vt_autolathe" tags="fabricator,vt_sectechfab,donttakeitems,dontsellitems">
+    <Sprite sourcerect="256,0,128,128" />
+  </Item>
+  <Item identifier="vt_medtechfab" variantof="vt_autolathe" tags="medicalfabricator,fabricator,vt_medtechfab,donttakeitems,dontsellitems">
+    <Sprite sourcerect="384,0,128,128" />
+  </Item>
+  <!-- Its points are lost when it breaks, as an SS14 server's are when it is destroyed. -->
+  <Item name="" identifier="vt_rnd_server" category="Machine" tags="vt_rnd_server" scale="1" health="150" damagedbyexplosions="true" damagedbyprojectiles="true" damagedbymeleeweapons="true">
+    <Sprite texture="%ModDir%/the void traitor pack/items/research.png" sourcerect="512,0,128,128" depth="0.8" />
+    <Powered powerconsumption="200" minvoltage="0.5" isactive="true" />
+    <ConnectionPanel canbeselected="true" selectkey="Action" msg="ItemMsgRewireScrewdriver">
+      <GuiFrame relativesize="0.2,0.25" anchor="Center" style="ConnectionPanel" />
+      <RequiredItem items="screwdriver" type="Equipped" />
+      <input name="power_in" displayname="connection.powerin" />
+    </ConnectionPanel>
+    <Repairable selectkey="Action" header="electricalrepairsheader" deteriorationspeed="0" RepairThreshold="80" fixDurationHighSkill="10" fixDurationLowSkill="30" msg="ItemMsgRepairScrewdriver" hudpriority="10">
+      <GuiFrame relativesize="0.2,0.16" minsize="400,180" maxsize="480,280" anchor="Center" relativeoffset="0.1,0.27" style="ItemUI" />
+      <RequiredSkill identifier="electrical" level="40" />
+      <RequiredItem items="screwdriver" type="Equipped" />
+    </Repairable>
+  </Item>
+  <Item name="" identifier="vt_rnd_console" category="Electrical" scale="1" interactdistance="150" grabwhenselected="true" tags="vt_rnd_console">
+    <Sprite texture="%ModDir%/the void traitor pack/items/research.png" sourcerect="640,0,128,128" depth="0.8" />
+    <Powered powerconsumption="50" minvoltage="0.5" isactive="true" />
+    <ItemComponent canbeselected="true" msg="ItemMsgInteractSelect" />
+    <ConnectionPanel canbeselected="true" selectkey="Action" msg="ItemMsgRewireScrewdriver">
+      <GuiFrame relativesize="0.2,0.25" anchor="Center" style="ConnectionPanel" />
+      <RequiredItem items="screwdriver" type="Equipped" />
+      <input name="power_in" displayname="connection.powerin" />
+    </ConnectionPanel>
+  </Item>
+</Items>
