@@ -9,11 +9,14 @@ local effects = dofile(Traitormod.Path .. "/Lua/gamemodes/station/xenoarch_effec
 local json = require("json")
 
 local config, artifacts
+-- artifacts that appeared since the last second; their trees are made then, as SS14 makes them on spawn, once the item
+-- has reached the clients the node's effects may tell
+local pending = {}
 local consoles, sessions = {}, {}
 local consoleTexts = { "XenoarchTitle", "XenoarchClose", "XenoarchNoAnalyzer", "XenoarchNoArtifact", "XenoarchNoPower",
     "XenoarchScan", "XenoarchScanning", "XenoarchNode", "XenoarchDepth", "XenoarchEdges", "XenoarchTriggered",
     "XenoarchUntriggered", "XenoarchTrigger", "XenoarchEffect", "XenoarchPoints", "XenoarchExtract", "XenoarchNotScanned",
-    "XenoarchUnknown", "XenoarchCurrent" }
+    "XenoarchUnknown", "XenoarchCurrent", "XenoarchBiasUp", "XenoarchBiasDown" }
 
 local function entryOf(list, id)
     for _, entry in ipairs(list) do
@@ -70,11 +73,17 @@ local function generateTree()
     return nodes, root.Id
 end
 
-local function enterNode(state, id)
+-- the effects the artifact keeps while on a node go with the node (effects.Passive)
+local function enterNode(item, state, id)
+    local leaving = state.Current ~= nil and effects.Passive[state.Nodes[state.Current].Effect] or nil
+    if leaving ~= nil and leaving.Exit ~= nil then leaving.Exit(item, entryOf(config.Effects, state.Nodes[state.Current].Effect)) end
     state.Current = id
     state.Damage = 0
     state.TimerAt = Timer.GetTime() + config.TimerSeconds
-    state.Nodes[id].Discovered = true
+    local node = state.Nodes[id]
+    node.Discovered = true
+    local entering = effects.Passive[node.Effect]
+    if entering ~= nil and entering.Enter ~= nil then entering.Enter(item, entryOf(config.Effects, node.Effect)) end
 end
 
 local function stateOf(item)
@@ -82,15 +91,16 @@ local function stateOf(item)
     if state == nil then
         local nodes, root = generateTree()
         state = { Nodes = nodes, LastActivation = -math.huge, Consumed = 0 }
-        enterNode(state, root)
         artifacts[item] = state
+        enterNode(item, state, root)
     end
     return state
 end
 
--- shown to the clients near the artifact: its activation sound, a blast's flash
+-- shown to the clients near the artifact: its own sound and sparkles when it goes off, a blast, a flash
 function xenoarch.Fx(item, kind, range)
     local message = Networking.Start("VoidTraitor_ArtifactFx")
+    message.WriteUInt16(UShort(item.ID))
     message.WriteString(kind)
     message.WriteSingle(item.WorldPosition.X)
     message.WriteSingle(item.WorldPosition.Y)
@@ -113,6 +123,16 @@ end
 
 local refreshConsoles
 
+-- The analyzer an artifact lies on and the direction it steers the artifact, as SS14's traversal distorter on the
+-- analyzer: only while powered.
+local function biasOf(item)
+    local analyzer = item.Container
+    if analyzer == nil or consoles.Analyzers[analyzer] == nil then return nil end
+    local powered = analyzer.GetComponentString("Powered")
+    if powered == nil or powered.Voltage < 0.5 then return nil end
+    return consoles.Bias[analyzer] or "up"
+end
+
 -- SS14's TryActivateArtifact: the node's effect, then on to a neighbour, unseen ones three times in four
 local function activate(item, state, activator)
     local now = Timer.GetTime()
@@ -124,13 +144,22 @@ local function activate(item, state, activator)
     node.Triggered = true
     Traitormod.Log("Artifact " .. item.ID .. " node " .. node.Id .. ": " .. node.Trigger .. " -> " .. node.Effect)
     if #node.Edges > 0 then
+        local edges, bias = node.Edges, biasOf(item)
+        if bias ~= nil then
+            local steered = {}
+            for _, id in ipairs(node.Edges) do
+                local depth = state.Nodes[id].Depth
+                if (bias == "up" and depth < node.Depth) or (bias == "down" and depth > node.Depth) then steered[#steered + 1] = id end
+            end
+            if #steered > 0 then edges = steered end
+        end
         local unseen = {}
-        for _, id in ipairs(node.Edges) do
+        for _, id in ipairs(edges) do
             if not state.Nodes[id].Discovered then unseen[#unseen + 1] = id end
         end
-        local nextId = node.Edges[math.random(#node.Edges)]
+        local nextId = edges[math.random(#edges)]
         if #unseen > 0 and math.random() < 0.75 then nextId = unseen[math.random(#unseen)] end
-        enterNode(state, nextId)
+        enterNode(item, state, nextId)
     end
     refreshConsoles()
 end
@@ -149,6 +178,23 @@ Hook.Add("VoidTraitor.ArtifactTrigger", "Traitormod.Xenoarch.Trigger", function(
     elseif trigger == current then
         local holder = item.ParentInventory ~= nil and item.ParentInventory.Owner or nil
         activate(item, state, holder ~= nil and LuaUserData.IsTargetType(holder, "Barotrauma.Character") and holder or nil)
+    end
+end)
+
+-- an instrument played near the artifact, as SS14's music trigger
+local instruments
+Hook.Add("item.use", "Traitormod.Xenoarch.Music", function(used)
+    if artifacts == nil or used == nil then return end
+    if instruments == nil then
+        instruments = {}
+        for _, id in ipairs(config.Instruments) do instruments[id] = true end
+    end
+    if not instruments[used.Prefab.Identifier.Value] then return end
+    for item, state in pairs(artifacts) do
+        if not item.Removed and state.Nodes[state.Current].Trigger == "music"
+            and Vector2.Distance(item.WorldPosition, used.WorldPosition) <= config.MusicRange then
+            activate(item, state)
+        end
     end
 end)
 
@@ -200,7 +246,7 @@ function xenoarch.Snapshot(console)
     local analyzer, artifact = analyzerOf(console)
     local scan = consoles.Scans[console]
     local snapshot = { Analyzer = analyzer ~= nil, Artifact = artifact ~= nil, Powered = analyzer ~= nil and powered(analyzer) and powered(console),
-        Text = {} }
+        Bias = analyzer ~= nil and (consoles.Bias[analyzer] or "up") or nil, Text = {} }
     if scan ~= nil and scan.Artifact == artifact and artifact ~= nil then
         local elapsed = Timer.GetTime() - scan.Started
         snapshot.Progress = math.min(1, elapsed / config.AnalysisSeconds)
@@ -244,6 +290,14 @@ end
 
 local function consoleAction(client, console, action)
     local analyzer, artifact = analyzerOf(console)
+    if analyzer ~= nil and powered(analyzer) and powered(console) and (action == "up" or action == "down") then
+        -- SS14 lets the direction change once a second
+        local now = Timer.GetTime()
+        if (consoles.BiasChanged[analyzer] or 0) + 1 <= now then
+            consoles.Bias[analyzer], consoles.BiasChanged[analyzer] = action, now
+        end
+        return
+    end
     if artifact == nil or not powered(analyzer) or not powered(console) then return end
     if action == "scan" then
         consoles.Scans[console] = { Artifact = artifact, Started = Timer.GetTime() }
@@ -261,29 +315,52 @@ end
 
 function xenoarch.Start(mode)
     config, artifacts, sessions = mode.Xenoarch, {}, {}
-    consoles = { Analyzers = {}, Scans = {}, Elapsed = 0 }
+    consoles = { Analyzers = {}, Scans = {}, Bias = {}, BiasChanged = {}, Elapsed = 0 }
+    pending = {}
     for item in Item.ItemList do
         if item.Prefab.Identifier == "vt_artifact_analyzer" then consoles.Analyzers[item] = true end
+        if item.HasTag("vt_artifact") then pending[item] = true end
     end
 end
 
-Hook.Add("item.created", "Traitormod.Xenoarch.NewDevice", function(item)
-    if artifacts ~= nil and item.Prefab.Identifier == "vt_artifact_analyzer" then consoles.Analyzers[item] = true end
+Hook.Add("item.created", "Traitormod.Xenoarch.NewItem", function(item)
+    if artifacts == nil then return end
+    if item.Prefab.Identifier == "vt_artifact_analyzer" then consoles.Analyzers[item] = true end
+    if item.HasTag("vt_artifact") then pending[item] = true end
 end)
 
--- the timer trigger and open consoles, once a second
+-- in a powered machine, as SS14's electricity trigger; the analyzer and the artifact holder are made for artifacts
+local function electrified(item)
+    local machine = item.Container
+    if machine == nil or consoles.Analyzers[machine] ~= nil or machine.HasTag("artifactcontainer") then return false end
+    local powered = machine.GetComponentString("Powered")
+    return powered ~= nil and powered.Voltage >= 0.5
+end
+
+-- the timer and electricity triggers, the effects kept on a node, open consoles: once a second
 Hook.Add("think", "Traitormod.Xenoarch.Update", function(deltaTime)
     if artifacts == nil then return end
     consoles.Elapsed = consoles.Elapsed + deltaTime
     if consoles.Elapsed < 1 then return end
     consoles.Elapsed = 0
     local now = Timer.GetTime()
+    for item in pairs(pending) do
+        if not item.Removed then stateOf(item) end
+    end
+    pending = {}
     for item, state in pairs(artifacts) do
         if item.Removed then
             artifacts[item] = nil
-        elseif state.Nodes[state.Current].Trigger == "timer" and now >= state.TimerAt then
-            state.TimerAt = now + config.TimerSeconds
-            activate(item, state)
+        else
+            local node = state.Nodes[state.Current]
+            local passive = effects.Passive[node.Effect]
+            if passive ~= nil and passive.Tick ~= nil and not suppressed(item) then passive.Tick(item, entryOf(config.Effects, node.Effect)) end
+            if node.Trigger == "timer" and now >= state.TimerAt then
+                state.TimerAt = now + config.TimerSeconds
+                activate(item, state)
+            elseif node.Trigger == "electricity" and electrified(item) then
+                activate(item, state)
+            end
         end
     end
     if next(sessions) ~= nil then refreshConsoles() end
@@ -304,7 +381,7 @@ Networking.Receive("VoidTraitor_AnalysisAction", function(message, client)
     consoleAction(client, console, action)
     sendConsole(client, console)
 end)
-Hook.Add("roundEnd", "Traitormod.Xenoarch.End", function() artifacts, sessions = nil, {} end)
+Hook.Add("roundEnd", "Traitormod.Xenoarch.End", function() artifacts, sessions, pending = nil, {}, {} end)
 Hook.Add("client.disconnected", "Traitormod.Xenoarch.Disconnect", function(client) sessions[client] = nil end)
 
 return xenoarch

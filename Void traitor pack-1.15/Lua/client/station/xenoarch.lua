@@ -21,24 +21,43 @@ local NODE_COLORS = {
 local CURRENT_COLOR, LINE_COLOR, TEXT_COLOR = Color(235, 190, 80, 255), Color(100, 100, 92, 255), Color(230, 230, 220, 255)
 local MUTED_COLOR, PROBLEM_COLOR = Color(160, 160, 150, 255), Color(225, 185, 80, 255)
 
-local sounds
-local function activationSound()
-    if sounds == nil then
-        sounds = {}
-        for index = 1, 7 do sounds[index] = gameMain.SoundManager.LoadSound(packPath .. "/Sounds/Xenoarch/artifact" .. index .. ".ogg") end
+-- An artifact sounds and sparkles as its own vanilla or More Arts item did (vtsound and vtparticle in
+-- items/artifacts.xml); one without a sound of its own has SS14's activation sounds. The game loads a sound in the
+-- background and skips playing it until then, so all of them load with the module.
+local function loadSound(file)
+    return gameMain.SoundManager.LoadSound((string.gsub(file, "%%ModDir%%", packPath)))
+end
+local fallbackSounds, ownSounds = {}, {}
+for index = 1, 7 do fallbackSounds[index] = loadSound(packPath .. "/Sounds/Xenoarch/artifact" .. index .. ".ogg") end
+for prefab in ItemPrefab.Prefabs do
+    local file = prefab.ConfigElement.GetAttributeString("vtsound", "")
+    if file ~= "" and ownSounds[file] == nil then ownSounds[file] = loadSound(file) end
+end
+local scanSound = loadSound(packPath .. "/Sounds/Xenoarch/scan_finish.ogg")
+
+local function activationSound(prefab)
+    local file = prefab.ConfigElement.GetAttributeString("vtsound", "")
+    return ownSounds[file] or fallbackSounds[math.random(#fallbackSounds)]
+end
+
+local function sparkle(prefab, position, amount)
+    local particle = prefab.ConfigElement.GetAttributeString("vtparticle", "")
+    if particle == "" then return end
+    for _ = 1, amount do
+        gameMain.ParticleManager.CreateParticle(particle, position, Vector2(math.random(-60, 60), math.random(-20, 80)), 0, nil)
     end
-    return sounds[math.random(#sounds)]
 end
 
 Networking.Receive("VoidTraitor_ArtifactFx", function(message)
-    local kind = message.ReadString()
+    local artifact, kind = Entity.FindEntityByID(message.ReadUInt16()), message.ReadString()
     local position = Vector2(message.ReadSingle(), message.ReadSingle())
     local range = message.ReadSingle()
     if kind == "explosion" then
         -- only the look: the server already dealt the damage
         Explosion(range, 0, 0, 0, 0, 0).Explode(position, nil)
-    else
-        activationSound().Play(SOUND_GAIN, SOUND_RANGE, position)
+    elseif artifact ~= nil and not artifact.Removed then
+        sparkle(artifact.Prefab, position, kind == "flash" and 25 or 10)
+        if kind == "activation" then activationSound(artifact.Prefab).Play(SOUND_GAIN, SOUND_RANGE, position) end
     end
 end)
 
@@ -203,6 +222,15 @@ function UI.Show(itemId, snapshot)
     local points = createLine(info)
     local progress = GUI.ProgressBar(Common.CreateRect(1, 1, info), 0, Color(80, 210, 240, 255))
     Common.SetFixedHeight(progress, math.floor(Common.GetTextHeight(GUI.Style.Font) * 0.6))
+    -- where the artifact goes when it next goes off, as the up/down buttons of SS14's analysis console
+    local biasRow = GUI.LayoutGroup(Common.CreateRect(1, 1, info), true)
+    biasRow.Stretch = true
+    biasRow.AbsoluteSpacing = Common.GetGap()
+    Common.SetFixedHeight(biasRow, Common.GetStyleHeight("GUIButton"))
+    local up = Common.CreateButton(biasRow, 0.5, text.XenoarchBiasUp)
+    up.OnClicked = function() UI.Send("up") return true end
+    local down = Common.CreateButton(biasRow, 0.5, text.XenoarchBiasDown)
+    down.OnClicked = function() UI.Send("down") return true end
     local scan = Common.CreateButton(info, 1, text.XenoarchScan)
     scan.OnClicked = function() UI.Send("scan") return true end
     local extract = Common.CreateButton(info, 1, text.XenoarchExtract)
@@ -217,12 +245,13 @@ function UI.Show(itemId, snapshot)
         progress.BarSize = state.Progress or 0
         scan.Enabled = problem == nil and (state.Progress == nil or UI.Result ~= nil)
         extract.Enabled = UI.Result ~= nil and UI.Result.Points > 0
+        up.Enabled, down.Enabled = state.Analyzer and state.Powered, state.Analyzer and state.Powered
+        up.Selected, down.Selected = state.Bias == "up", state.Bias == "down"
         UI.ShowNode()
         -- the scan's end, once, as SS14's analyzer chimes
         if UI.Result ~= nil and not UI.Done then
             UI.Done = true
-            if UI.FinishSound == nil then UI.FinishSound = gameMain.SoundManager.LoadSound(packPath .. "/Sounds/Xenoarch/scan_finish.ogg") end
-            UI.FinishSound.Play(SOUND_GAIN)
+            scanSound.Play(SOUND_GAIN)
         elseif UI.Result == nil then
             UI.Done = false
         end

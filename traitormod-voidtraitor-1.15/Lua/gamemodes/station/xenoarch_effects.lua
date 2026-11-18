@@ -1,12 +1,14 @@
 -- What an artifact's node does when its trigger happens, by the effect's id in config/station.lua (Xenoarch.Effects),
 -- after SS14's old artifact effects (SS14 e9d13ea Resources/Prototypes/XenoArch/Effects). Each takes the artifact, its
 -- entry in the config and the character who set it off, if any. Effects runs on the server; xenoarch.Fx shows the
--- clients what only they need to see.
-local effects = {}
+-- clients what only they need to see. effects.Passive are those SS14 gives the artifact as components while it sits
+-- on their node: Enter and Exit as it comes and goes, Tick once a second in between.
+local effects = { Passive = {} }
 
 -- SS14's effect hints, which the analysis console shows for a node's effect
 effects.Hints = {
-    GoodFeeling = "mental", JunkSpawn = "creation", BananaSpawn = "creation", ChemicalPuddle = "biochemical",
+    GoodFeeling = "mental", PointLight = "visual", Throw = "environment", Heat = "release", Magnet = "magnet",
+    AntiMagnet = "magnet", Invisibility = "visual", FoamGood = "biochemical", Shuffle = "displacement", JunkSpawn = "creation", BananaSpawn = "creation", ChemicalPuddle = "biochemical",
     FloraSpawn = "creation", InstrumentSpawn = "creation", MonkeySpawn = "creation", Radiate = "release",
     Knock = "electricalinterference", ExplosionScary = "environment", RareMaterialSpawn = "creation",
     AngryCarpSpawn = "creation", FaunaSpawn = "creation", CashSpawn = "creation", Blink = "displacement",
@@ -62,7 +64,7 @@ effects.GoodFeeling = function(item)
     local lines = Traitormod.Language.XenoarchFeelings
     for _, character in ipairs(charactersNear(item, 1000)) do
         local client = Traitormod.FindClientCharacter(character)
-        if client ~= nil then Traitormod.SendMessage(client, lines[math.random(#lines)]) end
+        if client ~= nil then Traitormod.SendChatMessage(client, lines[math.random(#lines)], Color(200, 170, 255, 255)) end
     end
 end
 effects.JunkSpawn = spawnItems
@@ -75,8 +77,78 @@ effects.MaterialSpawn = spawnItems
 effects.MonkeySpawn = spawnCreatures
 effects.AngryCarpSpawn = spawnCreatures
 effects.FaunaSpawn = spawnCreatures
-effects.Radiate = afflict
-effects.RadiateStrong = afflict
+-- a property the game syncs to every client, as pointitems.lua does
+local function setProperty(item, owner, name, value)
+    owner[name] = value
+    Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(owner.SerializableProperties[Identifier(name)], owner))
+end
+
+-- pushes physics bodies near the artifact away from it, or towards it when the force is negative
+local function push(item, range, force, characters)
+    for character in Character.CharacterList do
+        if characters and not character.IsDead and character.AnimController.MainLimb ~= nil then
+            local offset = character.WorldPosition - item.WorldPosition
+            local distance = offset.Length()
+            if distance > 1 and distance <= range then
+                character.AnimController.MainLimb.body.ApplyLinearImpulse(offset / distance * force * character.Mass / 10)
+            end
+        end
+    end
+    for other in Item.ItemList do
+        if other ~= item and other.body ~= nil and other.body.Enabled and other.ParentInventory == nil then
+            local offset = other.WorldPosition - item.WorldPosition
+            local distance = offset.Length()
+            if distance > 1 and distance <= range then other.body.ApplyLinearImpulse(offset / distance * force * other.body.Mass) end
+        end
+    end
+end
+
+-- nothing on the trigger itself: the radiation comes off the artifact while it sits on the node
+effects.Radiate = function() end
+effects.RadiateStrong = effects.Radiate
+effects.Passive.Radiate = { Tick = afflict }
+effects.Passive.RadiateStrong = { Tick = afflict }
+
+-- glows while on the node and flashes when triggered, as SS14's PointLight with FlashOnTrigger
+effects.PointLight = function(item) Traitormod.Xenoarch.Fx(item, "flash", 0) end
+effects.Passive.PointLight = {
+    Enter = function(item) setProperty(item, item.GetComponentString("LightComponent"), "IsOn", true) end,
+    Exit = function(item) setProperty(item, item.GetComponentString("LightComponent"), "IsOn", false) end,
+}
+
+effects.Magnet = function() end
+effects.AntiMagnet = effects.Magnet
+effects.Passive.Magnet = { Tick = function(item, entry) push(item, entry.Range, -entry.Force, false) end }
+effects.Passive.AntiMagnet = { Tick = function(item, entry) push(item, entry.Range, -entry.Force, false) end }
+
+-- all but invisible while on the node, as SS14's Stealth
+effects.Invisibility = function() end
+effects.Passive.Invisibility = {
+    Enter = function(item) setProperty(item, item, "SpriteColor", Color(255, 255, 255, 12)) end,
+    Exit = function(item) setProperty(item, item, "SpriteColor", Color(255, 255, 255, 255)) end,
+}
+
+effects.Throw = function(item, entry) push(item, entry.Range, entry.Force, true) end
+effects.Heat = afflict
+
+-- SS14's healing foam, milder than HealAll
+effects.FoamGood = function(item, entry) effects.HealAll(item, entry) end
+
+-- the people nearby swap places, as SS14's ShuffleArtifact
+effects.Shuffle = function(item, entry)
+    local people, places = {}, {}
+    for _, character in ipairs(charactersNear(item, entry.Range)) do
+        if character.IsHuman then
+            people[#people + 1] = character
+            places[#places + 1] = character.WorldPosition
+        end
+    end
+    for index = #places, 2, -1 do
+        local other = math.random(index)
+        places[index], places[other] = places[other], places[index]
+    end
+    for index, character in ipairs(people) do character.TeleportTo(places[index]) end
+end
 
 effects.Knock = function(item, entry)
     for other in Item.ItemList do

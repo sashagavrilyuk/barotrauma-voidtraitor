@@ -29,10 +29,15 @@ language.XenoarchPoints = "Очки к извлечению: %d"
 language.XenoarchExtract = "Извлечь очки"
 language.XenoarchUnknown = "Узел не открыт: о нём ничего не известно"
 language.XenoarchCurrent = "Артефакт сейчас на этом узле"
+-- исказитель обхода SS14: куда артефакт на анализаторе перейдёт при срабатывании
+language.XenoarchBiasUp = "Вверх, к корню"
+language.XenoarchBiasDown = "Вниз, вглубь"
 -- подсказки, как в SS14 (artifact-trigger-hint-*, artifact-effect-hint-*)
 language.XenoarchTriggerHints = {
     timer = "периодичность",
     examine = "внимательное изучение",
+    electricity = "электричество",
+    music = "гармоничные звуковые колебания",
     damage = "физическое воздействие",
     landed = "падение после броска",
     heat = "высокая температура",
@@ -49,4 +54,6 @@ language.XenoarchEffectHints = {
     environment = "воздействие на окружение",
     displacement = "перемещение",
     destruction = "разрушение",
+    magnet = "магнетизм",
+    visual = "визуальное",
 }
