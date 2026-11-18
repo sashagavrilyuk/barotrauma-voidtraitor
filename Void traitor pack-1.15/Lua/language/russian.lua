@@ -347,6 +347,16 @@ language.Lobby = {
     StationCrewSize = "Экипаж",
     StationFreeSeats = "Свободные должности",
     StationNoFreeSeats = "Нет",
+    -- там, где полное название не влезает в строку свободных должностей
+    StationRoleShortNames = {
+        headofpersonnel = "Глава перс.",
+        headofsecurity = "Глава СБ",
+        chiefengineer = "Ст. инженер",
+        chiefmedicalofficer = "Главврач",
+        researchdirector = "Научрук",
+        quartermaster = "Ст. механик",
+        securityofficer = "Офицер СБ",
+    },
     -- состояние шаттла эвакуации на сервере (traitormod gamemodes/station/evacuation.lua)
     StationEvacuationStates = {
         Unavailable = "недоступна",

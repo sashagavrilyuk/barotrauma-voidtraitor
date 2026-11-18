@@ -33,6 +33,8 @@ Common.OnStationCrew = nil
 local station = nil
 -- the crew list and the station panel of the open Tab menu, filled again when the server sends a new list
 local shownList, shownPanel = nil, nil
+-- the short names of the roles in the panel's free seats, by their label
+local shortNames = {}
 
 -- long names and roles shrink to their column rather than lose their end
 local function createLabel(parent, size, value, color, font, alignment)
@@ -76,7 +78,8 @@ end
 local function addFreeSeat(list, height, entry)
     local row, color = addRow(list, height, entry.Role, entry.Job)
     local font = GUI.Style.SmallFont
-    createLabel(row, Vector2(0.8, 1), TextManager.Get("jobname." .. entry.Role).Value, color, font, GUI.Alignment.CenterLeft)
+    local name = createLabel(row, Vector2(0.8, 1), TextManager.Get("jobname." .. entry.Role).Value, color, font, GUI.Alignment.CenterLeft)
+    shortNames[name] = text.StationRoleShortNames[entry.Role]
     local seats = entry.Seats == Common.NO_SEAT_LIMIT and text.LateJoinUnlimited or tostring(entry.Seats)
     local count = createLabel(row, Vector2(0.2, 1), seats, nil, font, GUI.Alignment.CenterRight)
     Common.SetFixedWidth(count, Common.GetTextHeight(font) * 2)
@@ -144,6 +147,7 @@ local function fillPanel(panel)
     panel.Crew.Text = tostring(station.Crew)
     local list = panel.Free
     list.Content.ClearChildren()
+    shortNames = {}
     local height = Common.GetTextHeight(GUI.Style.Font)
     -- under the heading of their department, as the crew list beside it; the roles come in the departments' order
     local department
@@ -170,6 +174,12 @@ local function fill()
     fillPanel(shownPanel)
     shownList.ForceLayoutRecalculation()
     shownPanel.Frame.ForceLayoutRecalculation()
+    -- the labels know their width only now: those shrunk to the narrower rects before can grow back, and in the
+    -- narrow panel of a small screen a long name that would shrink to tiny letters takes its short one
+    Common.RestoreAutoScaledText(shownPanel.Frame)
+    for label, short in pairs(shortNames) do
+        if label.TextSize.X > label.Rect.Width - label.Padding.X - label.Padding.Z then label.Text = short end
+    end
 end
 
 -- no column headers above the list, as in SS14's manifest
@@ -229,4 +239,5 @@ Hook.Add("roundEnd", PATCH_ID, function()
     Common.StationFreeSeats = nil
     station = nil
     shownList, shownPanel = nil, nil
+    shortNames = {}
 end)
