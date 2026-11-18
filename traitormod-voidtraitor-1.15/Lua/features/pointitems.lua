@@ -28,10 +28,10 @@ local function setupPointItem(item, amount, text, onUsed)
 end
 
 Traitormod.SpawnPointItem = function(inventory, amount, text, onSpawn, onUsed)
-    local prefab = ItemPrefab.GetItemPrefab("handheldterminal")
-    if prefab == nil then return false end
+    -- by identifier: ItemPrefab.GetItemPrefab first searches every prefab by name, about a millisecond
+    if not ItemPrefab.Prefabs.ContainsKey("handheldterminal") then return false end
 
-    Entity.Spawner.AddItemToSpawnQueue(prefab, inventory, nil, nil, function(item)
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.Prefabs["handheldterminal"], inventory, nil, nil, function(item)
         setupPointItem(item, amount, text, onUsed)
         if onSpawn then
             onSpawn(item)

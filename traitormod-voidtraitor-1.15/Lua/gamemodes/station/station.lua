@@ -171,28 +171,6 @@ function gm:Start()
     self:FillStationLoot()
 end
 
-function gm:HideSmugglerStash()
-    local stash = self.SmugglerStash
-    local tagged, cabinets = {}, {}
-    for _, item in pairs(Submarine.MainSub.GetItems(false)) do
-        if item.HasTag(stash.Tag) then table.insert(tagged, item) end
-        for _, identifier in ipairs(stash.Containers) do
-            if item.Prefab.Identifier.Value == identifier then
-                table.insert(cabinets, item)
-                break
-            end
-        end
-    end
-    if #tagged > 0 then cabinets = tagged end
-    if #cabinets == 0 then return end
-
-    local cabinet = cabinets[math.random(#cabinets)]
-    for _ = 1, stash.ItemCount do
-        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(stash.Items[math.random(#stash.Items)]), cabinet.OwnInventory)
-    end
-    Traitormod.SpawnPointItem(cabinet.OwnInventory, stash.Points, Traitormod.GetText("SmugglerStashPoints"))
-end
-
 -- by identifier only: ItemPrefab.GetItemPrefab first searches every prefab by name, about a millisecond per item
 local function spawnLoot(identifier, inventory)
     if not ItemPrefab.Prefabs.ContainsKey(identifier) then
@@ -200,6 +178,31 @@ local function spawnLoot(identifier, inventory)
         return
     end
     Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.Prefabs[identifier], inventory)
+end
+
+-- In a container the map tags for the stash, or without one in a random cabinet of the listed kinds.
+function gm:HideSmugglerStash()
+    local stash = self.SmugglerStash
+    local kinds = {}
+    for _, identifier in ipairs(stash.Containers) do kinds[identifier] = true end
+    local tagged, cabinets = {}, {}
+    for _, item in pairs(Submarine.MainSub.GetItems(false)) do
+        if item.OwnInventory ~= nil then
+            if item.HasTag(stash.Tag) then
+                table.insert(tagged, item)
+            elseif kinds[item.Prefab.Identifier.Value] then
+                table.insert(cabinets, item)
+            end
+        end
+    end
+    if #tagged > 0 then cabinets = tagged end
+    if #cabinets == 0 then return end
+
+    local inventory = cabinets[math.random(#cabinets)].OwnInventory
+    for _ = 1, stash.ItemCount do
+        spawnLoot(stash.Items[math.random(#stash.Items)], inventory)
+    end
+    Traitormod.SpawnPointItem(inventory, stash.Points, Traitormod.GetText("SmugglerStashPoints"))
 end
 
 -- Fills the containers the map tags with a StationLoot tag, once at the start.
