@@ -116,6 +116,8 @@ local function createPanel(list)
         title.Font = GUI.Style.SubHeadingFont
         title.CanBeFocused = false
         Common.FitHeightToText(title)
+        -- the vanilla heading font keeps its size on a small screen, where the panel is narrower than a long heading
+        Common.SetAutoScaleText(title, 1)
     end
     -- a label on the left and its value on the right
     local function addLine(label)
