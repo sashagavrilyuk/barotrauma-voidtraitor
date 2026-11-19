@@ -519,6 +519,7 @@ dofile(Traitormod.Path .. "/Lua/features/deathlogbook.lua")
 dofile(Traitormod.Path .. "/Lua/features/killfeed.lua")
 dofile(Traitormod.Path .. "/Lua/features/serverlogs.lua")
 dofile(Traitormod.Path .. "/Lua/features/piratemissionghostroles.lua")
+dofile(Traitormod.Path .. "/Lua/features/throwing.lua")
 
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/gamemode.lua"))
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/secret.lua"))
