@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="Russian" nowhitespace="false" translatedname="Русский">
+  <entityname.vt_anomaly_pyro>Пирокластическая аномалия</entityname.vt_anomaly_pyro>
+  <entitydescription.vt_anomaly_pyro>Невозможный объект. Стоит ли подходить к нему так близко?</entitydescription.vt_anomaly_pyro>
+  <entityname.vt_anomaly_electric>Электрическая аномалия</entityname.vt_anomaly_electric>
+  <entitydescription.vt_anomaly_electric>Невозможный объект. Стоит ли подходить к нему так близко?</entitydescription.vt_anomaly_electric>
+  <entityname.vt_anomaly_gravity>Гравитационная аномалия</entityname.vt_anomaly_gravity>
+  <entitydescription.vt_anomaly_gravity>Невозможный объект. Стоит ли подходить к нему так близко?</entitydescription.vt_anomaly_gravity>
+  <entityname.vt_anomaly_liquid>Жидкостная аномалия</entityname.vt_anomaly_liquid>
+  <entitydescription.vt_anomaly_liquid>Невозможный объект. Стоит ли подходить к нему так близко?</entitydescription.vt_anomaly_liquid>
+  <vt_anomalyneedsscanner>Нужен сканер аномалий в руке</vt_anomalyneedsscanner>
+  <entityname.vt_anomaly_scanner>Сканер аномалий</entityname.vt_anomaly_scanner>
+  <entitydescription.vt_anomaly_scanner>Возьмите в руку и осмотрите аномалию, чтобы узнать её показатели. Запоминает последнюю аномалию для сосуда.</entitydescription.vt_anomaly_scanner>
+  <entityname.vt_anomaly_vessel>Сосуд аномалий</entityname.vt_anomaly_vessel>
+  <entitydescription.vt_anomaly_vessel>Превращает излучение присвоенной аномалии в очки исследований. Если аномалия перейдёт в сверхкритическое состояние, сосуд взорвётся.</entitydescription.vt_anomaly_vessel>
+  <entityname.vt_anomaly_generator>Генератор аномалий</entityname.vt_anomaly_generator>
+  <entitydescription.vt_anomaly_generator>Создаёт аномалию где-то на станции. Работает на инцендиуме.</entitydescription.vt_anomaly_generator>
+  <entityname.vt_ape>Излучатель частиц A.P.E.</entityname.vt_ape>
+  <entitydescription.vt_ape>Стреляет аномальными частицами из вставленной ячейки. Частицы меняют стабильность, опасность и здоровье аномалии.</entitydescription.vt_ape>
+  <entityname.vt_particle_cell_delta>Ячейка дельта-частиц</entityname.vt_particle_cell_delta>
+  <entitydescription.vt_particle_cell_delta>Заряд для излучателя частиц A.P.E.</entitydescription.vt_particle_cell_delta>
+  <entityname.vt_particle_cell_epsilon>Ячейка эпсилон-частиц</entityname.vt_particle_cell_epsilon>
+  <entitydescription.vt_particle_cell_epsilon>Заряд для излучателя частиц A.P.E.</entitydescription.vt_particle_cell_epsilon>
+  <entityname.vt_particle_cell_zeta>Ячейка зета-частиц</entityname.vt_particle_cell_zeta>
+  <entitydescription.vt_particle_cell_zeta>Заряд для излучателя частиц A.P.E.</entitydescription.vt_particle_cell_zeta>
+  <entityname.vt_particle_cell_sigma>Ячейка сигма-частиц</entityname.vt_particle_cell_sigma>
+  <entitydescription.vt_particle_cell_sigma>Заряд для излучателя частиц A.P.E.</entitydescription.vt_particle_cell_sigma>
+  <entityname.vt_particle_delta>Дельта-частицы</entityname.vt_particle_delta>
+  <entityname.vt_particle_epsilon>Эпсилон-частицы</entityname.vt_particle_epsilon>
+  <entityname.vt_particle_zeta>Зета-частицы</entityname.vt_particle_zeta>
+  <entityname.vt_particle_sigma>Сигма-частицы</entityname.vt_particle_sigma>
+  <entityname.vt_anomaly_core_pyro>Ядро пирокластической аномалии</entityname.vt_anomaly_core_pyro>
+  <entitydescription.vt_anomaly_core_pyro>Всё, что осталось от аномалии после сверхкритического состояния. Ещё тёплое.</entitydescription.vt_anomaly_core_pyro>
+  <entityname.vt_anomaly_core_electric>Ядро электрической аномалии</entityname.vt_anomaly_core_electric>
+  <entitydescription.vt_anomaly_core_electric>Всё, что осталось от аномалии после сверхкритического состояния. Слегка искрит.</entitydescription.vt_anomaly_core_electric>
+  <entityname.vt_anomaly_core_gravity>Ядро гравитационной аномалии</entityname.vt_anomaly_core_gravity>
+  <entitydescription.vt_anomaly_core_gravity>Всё, что осталось от аномалии после сверхкритического состояния. Тяжелее, чем выглядит.</entitydescription.vt_anomaly_core_gravity>
+  <entityname.vt_anomaly_core_liquid>Ядро жидкостной аномалии</entityname.vt_anomaly_core_liquid>
+  <entitydescription.vt_anomaly_core_liquid>Всё, что осталось от аномалии после сверхкритического состояния. Всегда влажное.</entitydescription.vt_anomaly_core_liquid>
+  <entityname.vt_anomaly_core_pyro_inert>Инертное ядро пирокластической аномалии</entityname.vt_anomaly_core_pyro_inert>
+  <entitydescription.vt_anomaly_core_pyro_inert>Остаток угасшей аномалии.</entitydescription.vt_anomaly_core_pyro_inert>
+  <entityname.vt_anomaly_core_electric_inert>Инертное ядро электрической аномалии</entityname.vt_anomaly_core_electric_inert>
+  <entitydescription.vt_anomaly_core_electric_inert>Остаток угасшей аномалии.</entitydescription.vt_anomaly_core_electric_inert>
+  <entityname.vt_anomaly_core_gravity_inert>Инертное ядро гравитационной аномалии</entityname.vt_anomaly_core_gravity_inert>
+  <entitydescription.vt_anomaly_core_gravity_inert>Остаток угасшей аномалии.</entitydescription.vt_anomaly_core_gravity_inert>
+  <entityname.vt_anomaly_core_liquid_inert>Инертное ядро жидкостной аномалии</entityname.vt_anomaly_core_liquid_inert>
+  <entitydescription.vt_anomaly_core_liquid_inert>Остаток угасшей аномалии.</entitydescription.vt_anomaly_core_liquid_inert>
+</infotexts>

@@ -20,6 +20,7 @@
       <Item identifier="researcherclothes" equip="true" outfit="true" />
       <Item identifier="headset" equip="true" showpreview="false" />
       <Item identifier="screwdriver" />
+      <Item identifier="vt_anomaly_scanner" />
     </ItemSet>
     <AutonomousObjectives>
       <Order identifier="extinguishfires" prioritymodifier="1" />

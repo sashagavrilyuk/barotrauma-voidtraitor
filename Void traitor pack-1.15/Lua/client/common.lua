@@ -711,8 +711,8 @@ function Common.UpdateSelectedItemMenu(state, identifier, onSelected)
     if state.Disabled then return nil end
     local character = Character.Controlled
     local item = character ~= nil and not character.IsDead and not character.IsIncapacitated and character.SelectedItem or nil
-    if not Networking.IsActive or item == nil or item.Removed or item.Prefab.Identifier ~= identifier
-        or not character.CanInteractWith(item) then
+    if not Networking.IsActive or item == nil or item.Removed
+        or (item.Prefab.Identifier ~= identifier and not item.HasTag(identifier)) or not character.CanInteractWith(item) then
         if state.SelectedItem ~= nil then state.CloseMenu() end
         state.SelectedItem = nil
         return nil

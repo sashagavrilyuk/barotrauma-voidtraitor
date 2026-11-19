@@ -48,3 +48,20 @@ Changes: layers merged, scaled 4x without smoothing, put side by side.
 
 License: Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)
 https://creativecommons.org/licenses/by-sa/3.0/
+
+anomalies.png — anomaly vessel, anomaly generator, anomaly scanner and anomaly cores
+===================================================================================
+Space Station 14 (commit f00a9721556baf7f4d31ba8aae66afb7317c8e54):
+- Structures/Machines/Anomaly/anomaly_vessel.rsi, states base + powered-1 + anomaly-1: created by EmoGarbage404 (CC0 1.0)
+- Structures/Machines/Anomaly/anomaly_generator.rsi, state base + the first frame of unshaded: created by EmoGarbage
+  (CC0 1.0)
+- Structures/Specific/Anomalies/Cores/pyro_core.rsi, electric_core.rsi, gravity_core.rsi, liquid_core.rsi, state core:
+  created by TheShuEd (CC0 1.0)
+- Objects/Specific/Research/anomalyscanner.rsi, state icon: created by EmoGarbage, based off of /tg station's health
+  analyzer at https://github.com/tgstation/tgstation/commit/c7e5ca401c91cb1351c2f68cda3fe35634c4dba2
+Source: https://github.com/space-wizards/space-station-14/tree/f00a9721556baf7f4d31ba8aae66afb7317c8e54/Resources/Textures
+Changes: layers merged; the vessel scaled 4x, the generator, scanner and cores 2x, without smoothing; put side by side.
+
+License of the scanner: Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)
+https://creativecommons.org/licenses/by-sa/3.0/
+The vessel, generator and cores: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/

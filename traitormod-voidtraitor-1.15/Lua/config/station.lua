@@ -229,6 +229,72 @@ return {
             { Id = "Singulo", Depth = 10, Item = "Sthal_singularity" },
         },
     },
+    -- Anomalies, as SS14's (gamemodes/station/anomalies.lua; SS14 Content.Shared/Anomaly and Content.Server/Anomaly at
+    -- f00a972). The numbers are SS14's; ranges are in Barotrauma units, an SS14 tile counted as 100. Texts: language
+    -- Anomaly*.
+    Anomalies = {
+        InitialStability = { 0.4, 0.6 },
+        InitialSeverity = { 0.1, 0.5 },
+        -- below DecayThreshold an anomaly loses health every second; above GrowthThreshold it grows at each pulse
+        DecayThreshold = 0.15,
+        GrowthThreshold = 0.5,
+        HealthPerSecond = -0.01,
+        SeverityGrowth = 0.07,
+        -- a pulse every 2-4 minutes, the more stable the rarer; the first one three times later
+        PulseSeconds = { 120, 240 },
+        PulseVariation = 0.1,
+        PulseStability = { -0.1, 0.15 },
+        SupercriticalSeconds = 10,
+        -- research points a second through a vessel; an unstable (growing) anomaly gives more
+        PointsPerSecond = { 10, 70 },
+        GrowingPointMultiplier = 1.5,
+        -- the chance that a transformation particle changes the anomaly's behaviour
+        Continuity = { 0.1, 1 },
+        -- what one APE particle does (SS14 AnomalousParticleComponent), each time varied by 0.8-1.2
+        Particle = { Severity = 0.025, Stability = 0.04, Health = -0.05, WeakeningStability = -0.1, Variation = { 0.8, 1.2 } },
+        Particles = { "delta", "epsilon", "zeta", "sigma" },
+        -- how many of the scanner's readings an anomaly hides (SS14 SecretDataAnomaly, the upper bound excluded)
+        Secrets = { 0, 2 },
+        -- the vessel of an anomaly that went supercritical blows up
+        VesselExplosion = { Range = 300, Force = 5, Damage = 40, StructureDamage = 40 },
+        -- SS14 takes half a stack of plasma; incendium is the nearest Barotrauma has
+        Generator = { Material = "incendium", CooldownSeconds = 300, GenerationSeconds = 8 },
+        -- SS14's behaviours (Prototypes/Anomaly/behaviours.yml) but those that move or hide the anomaly; drawn by weight
+        Behaviors = {
+            { Id = "Balanced", Weight = 3 },
+            { Id = "FullSafe", Weight = 0.1, PulseFrequency = 3, PulsePower = 0.5, Points = 0.05 },
+            { Id = "Slow", Weight = 0.5, PulseFrequency = 2, Points = 0.5 },
+            { Id = "Light", Weight = 0.5, PulsePower = 0.5, Points = 0.5 },
+            { Id = "DelayedForce", Weight = 1, PulseFrequency = 2, PulsePower = 2, Points = 1.15 },
+            { Id = "Rapid", Weight = 1, PulseFrequency = 0.5, PulsePower = 0.5, Points = 1.15 },
+            { Id = "BalancedSecret", Weight = 1, Points = 1.2, Secrets = { 2, 3 } },
+            { Id = "NonSensivity", Weight = 1, Points = 0.8, Sensitivity = 0.5 },
+            { Id = "Sensivity", Weight = 1, Points = 1.2, Sensitivity = 1.5 },
+            { Id = "Fast", Weight = 0.5, PulseFrequency = 0.5, Points = 1.9 },
+            { Id = "Strenght", Weight = 0.5, PulsePower = 1.5, Points = 1.4 },
+            { Id = "Inconstancy", Weight = 0.5, Points = 1.7, ShuffleOnPulse = 1 },
+            { Id = "InconstancyParticle", Weight = 0.5, Points = 1.8, ShuffleOnHit = 0.8 },
+            { Id = "FullUnknown", Weight = 0.5, Points = 1.9, Secrets = { 4, 6 } },
+            { Id = "FastUnknown", Weight = 0.2, PulseFrequency = 0.5, Points = 1.9, Secrets = { 3, 5 } },
+            { Id = "InconstancyParticleUnknown", Weight = 0.1, Points = 1.95, ShuffleOnHit = 0.5, Secrets = { 3, 5 } },
+        },
+        -- the kinds an event or the generator brings, each with its core after a supercritical end and its inert core
+        -- after it decayed (effects: gamemodes/station/anomaly_effects.lua)
+        Types = {
+            -- sets people on fire, Burn for each of SS14's fire stacks (SS14 PyroclasticAnomaly)
+            { Id = "pyro", Item = "vt_anomaly_pyro", Core = "vt_anomaly_core_pyro", InertCore = "vt_anomaly_core_pyro_inert",
+                IgnitionRange = 500, Burn = 5 },
+            -- lightning bolts and shocks, an EMP at the end (SS14 ElectricityAnomaly)
+            { Id = "electric", Item = "vt_anomaly_electric", Core = "vt_anomaly_core_electric", InertCore = "vt_anomaly_core_electric_inert",
+                Range = 700, Bolts = { 2, 5 }, ShockChance = 0.05, Burn = 20, Stun = 8 },
+            -- throws and pulls, radiates, tears the hull at the end (SS14 GravityAnomaly)
+            { Id = "gravity", Item = "vt_anomaly_gravity", Core = "vt_anomaly_core_gravity", InertCore = "vt_anomaly_core_gravity_inert",
+                ThrowRange = 500, ThrowForce = 10, PullRange = 1000, PullForce = 2, Radiation = 1.5, TearRange = 300, TearDamage = 200 },
+            -- floods its room (SS14's liquid anomaly spills reagents; the sea is Barotrauma's)
+            { Id = "liquid", Item = "vt_anomaly_liquid", Core = "vt_anomaly_core_liquid", InertCore = "vt_anomaly_core_liquid_inert",
+                Flood = 0.3 },
+        },
+    },
     -- Research, as SS14's with Goob Station's tree (gamemodes/station/research.lua). Costs are SS14's; Position is the
     -- technology's cell in Goob's tree and Requires its arrows. A fabricator prints its Static recipes and those of
     -- the vanilla fabricator StaticFrom names from the start; a technology adds Recipes by fabricator. The vanilla
@@ -308,6 +374,9 @@ return {
                 Recipes = { vt_protolathe = { "defensebotspawner" } } },
             { Id = "BasicXenoArcheology", Discipline = "Experimental", Tier = 1, Cost = 5000, Position = { -2, 2 }, Requires = { "BasicRobotics" },
                 Icon = "artifacttransportcase", Recipes = { vt_protolathe = { "artifacttransportcase" } } },
+            { Id = "BasicAnomalousResearch", Discipline = "Experimental", Tier = 1, Cost = 5000, Position = { -2, 0 }, Requires = { "BasicRobotics" },
+                Icon = "vt_anomaly_scanner", Recipes = { vt_protolathe = { "vt_anomaly_scanner", "vt_ape", "vt_particle_cell_delta",
+                    "vt_particle_cell_epsilon", "vt_particle_cell_zeta", "vt_particle_cell_sigma" } } },
             { Id = "DeterrenceTechnologies", Discipline = "Experimental", Tier = 2, Cost = 7500, Position = { -3, -2 }, Requires = { "BasicRobotics" },
                 Icon = "empgrenade", Recipes = { vt_protolathe = { "empgrenade" } } },
             { Id = "GravityManipulation", Discipline = "Experimental", Tier = 2, Cost = 10000, Position = { -4, 2 }, Requires = { "BasicXenoArcheology" },

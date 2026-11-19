@@ -56,6 +56,7 @@ return {
                 BureaucraticError = { Weight = 3, MinPlayers = 25 }, -- bureaucratic error
                 Stowaway = { Weight = 5, MinPlayers = 10 }, -- closet skeleton
                 CritterMigration = { Weight = 6, EarliestMinute = 15 }, -- mouse migration
+                AnomalySpawn = { Weight = 8 }, -- anomaly spawn
             },
         },
     },
@@ -168,6 +169,7 @@ return {
         dofile(Traitormod.Path .. "/Lua/config/randomevents/bureaucraticerror.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/stowaway.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/crittermigration.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/randomevents/anomalyspawn.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/superballastflora.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/maintenancetoolsdelivery.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/medicaldelivery.lua"),

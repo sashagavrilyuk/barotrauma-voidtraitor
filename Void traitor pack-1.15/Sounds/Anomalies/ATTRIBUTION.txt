@@ -1,0 +1,11 @@
+VOIDTRAITOR — ANOMALY SOUNDS (Space Station 14, commit f00a9721556baf7f4d31ba8aae66afb7317c8e54)
+Source: https://github.com/space-wizards/space-station-14/tree/f00a9721556baf7f4d31ba8aae66afb7317c8e54/Resources/Audio/Machines
+
+anomaly_generate.ogg — the anomaly generator at work
+Created by szegvari (https://freesound.org/people/szegvari/sounds/536794/), converted to mono and OGG by EmoGarbage404.
+License: CC0 1.0
+
+vessel_warning.ogg — the vessel's beep while its anomaly is unstable
+Created by AUDACITIER (https://freesound.org/people/AUDACITIER/sounds/629196/), converted to mono and OGG and edited by
+EmoGarbage404; click at the beginning and end removed with a fade in and out by Pancake.
+License: Creative Commons Attribution 4.0 (CC BY 4.0) https://creativecommons.org/licenses/by/4.0/

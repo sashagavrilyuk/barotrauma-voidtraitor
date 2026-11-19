@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Station anomalies, as SS14's (traitormod Lua/gamemodes/station/anomalies.lua). An anomaly is the vanilla anomaly's
+     sphere in its kind's colour; it stops projectiles so that the APE's particles reach it, but nothing hurts it. Only
+     the anomaly scanner in hand reads it. The vessel and the generator are machines of science; the APE is SS14's
+     handheld particle gun with a cell for each kind of particle. Sprites of the scanner, vessel, generator and cores:
+     anomalies.png (ATTRIBUTION.txt). -->
+<Items>
+  <Item name="" identifier="vt_anomaly_pyro" category="Alien" tags="vt_anomaly,vt_anomaly_panel" scale="0.3" spritecolor="255,150,90,190" damagedbyprojectiles="true" indestructible="true" hideinmenus="true" interactdistance="150">
+    <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.8" origin="0.5,0.5" />
+    <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="21,1367,395,395" depth="0.75" origin="0.5,0.5" scale="1.2" rotationspeed="300" />
+    <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.7" origin="0.5,0.5" rotationspeed="-350" />
+    <Body radius="150" bodytype="Static" />
+    <ItemComponent canbeselected="true" msg="ItemMsgInteractSelect">
+      <RequiredItem items="vt_anomaly_scanner" type="Equipped" msg="vt_anomalyneedsscanner" />
+    </ItemComponent>
+    <LightComponent range="500" lightcolor="226,88,34,255" IsOn="true" castshadows="false" allowingameediting="false" flicker="0.1" flickerspeed="5" pulseamount="0.3" pulsefrequency="1">
+      <StatusEffect type="Always" target="This">
+        <Sound file="Content/Items/Alien/ALIEN_gravitySphereLoop.ogg" range="700" loop="true" />
+        <ParticleEmitter particle="anomaly" particlespersecond="10" anglemin="0" anglemax="360" velocitymin="0" velocitymax="120" scalemin="0.05" scalemax="0.1" colormultiplier="255,140,80,255" />
+      </StatusEffect>
+    </LightComponent>
+  </Item>
+  <Item name="" identifier="vt_anomaly_electric" category="Alien" tags="vt_anomaly,vt_anomaly_panel" scale="0.3" spritecolor="255,255,160,190" damagedbyprojectiles="true" indestructible="true" hideinmenus="true" interactdistance="150">
+    <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.8" origin="0.5,0.5" />
+    <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="21,1367,395,395" depth="0.75" origin="0.5,0.5" scale="1.2" rotationspeed="300" />
+    <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.7" origin="0.5,0.5" rotationspeed="-350" />
+    <Body radius="150" bodytype="Static" />
+    <ItemComponent canbeselected="true" msg="ItemMsgInteractSelect">
+      <RequiredItem items="vt_anomaly_scanner" type="Equipped" msg="vt_anomalyneedsscanner" />
+    </ItemComponent>
+    <LightComponent range="400" lightcolor="255,255,170,255" IsOn="true" castshadows="false" allowingameediting="false" flicker="0.3" flickerspeed="10" pulseamount="0.3" pulsefrequency="1">
+      <StatusEffect type="Always" target="This">
+        <Sound file="Content/Items/Alien/ALIEN_gravitySphereLoop.ogg" range="700" loop="true" />
+        <ParticleEmitter particle="anomaly" particlespersecond="10" anglemin="0" anglemax="360" velocitymin="0" velocitymax="120" scalemin="0.05" scalemax="0.1" colormultiplier="255,255,150,255" />
+      </StatusEffect>
+    </LightComponent>
+  </Item>
+  <Item name="" identifier="vt_anomaly_gravity" category="Alien" tags="vt_anomaly,vt_anomaly_panel" scale="0.3" spritecolor="170,120,220,190" damagedbyprojectiles="true" indestructible="true" hideinmenus="true" interactdistance="150">
+    <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.8" origin="0.5,0.5" />
+    <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="21,1367,395,395" depth="0.75" origin="0.5,0.5" scale="1.2" rotationspeed="300" />
+    <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.7" origin="0.5,0.5" rotationspeed="-350" />
+    <Body radius="150" bodytype="Static" />
+    <ItemComponent canbeselected="true" msg="ItemMsgInteractSelect">
+      <RequiredItem items="vt_anomaly_scanner" type="Equipped" msg="vt_anomalyneedsscanner" />
+    </ItemComponent>
+    <LightComponent range="500" lightcolor="150,90,200,255" IsOn="true" castshadows="false" allowingameediting="false" flicker="0.1" flickerspeed="3" pulseamount="0.5" pulsefrequency="0.5">
+      <StatusEffect type="Always" target="This">
+        <Sound file="Content/Items/Alien/ALIEN_gravitySphereLoop.ogg" range="700" loop="true" />
+        <ParticleEmitter particle="anomaly" particlespersecond="10" anglemin="0" anglemax="360" velocitymin="0" velocitymax="120" scalemin="0.05" scalemax="0.1" colormultiplier="160,100,220,255" />
+      </StatusEffect>
+    </LightComponent>
+  </Item>
+  <Item name="" identifier="vt_anomaly_liquid" category="Alien" tags="vt_anomaly,vt_anomaly_panel" scale="0.3" spritecolor="120,180,255,190" damagedbyprojectiles="true" indestructible="true" hideinmenus="true" interactdistance="150">
+    <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.8" origin="0.5,0.5" />
+    <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="21,1367,395,395" depth="0.75" origin="0.5,0.5" scale="1.2" rotationspeed="300" />
+    <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.7" origin="0.5,0.5" rotationspeed="-350" />
+    <Body radius="150" bodytype="Static" />
+    <ItemComponent canbeselected="true" msg="ItemMsgInteractSelect">
+      <RequiredItem items="vt_anomaly_scanner" type="Equipped" msg="vt_anomalyneedsscanner" />
+    </ItemComponent>
+    <LightComponent range="500" lightcolor="45,140,255,255" IsOn="true" castshadows="false" allowingameediting="false" flicker="0.1" flickerspeed="5" pulseamount="0.3" pulsefrequency="1">
+      <StatusEffect type="Always" target="This">
+        <Sound file="Content/Items/Alien/ALIEN_gravitySphereLoop.ogg" range="700" loop="true" />
+        <ParticleEmitter particle="anomaly" particlespersecond="10" anglemin="0" anglemax="360" velocitymin="0" velocitymax="120" scalemin="0.05" scalemax="0.1" colormultiplier="100,170,255,255" />
+      </StatusEffect>
+    </LightComponent>
+  </Item>
+
+  <Item name="" identifier="vt_anomaly_scanner" category="Equipment" tags="smallitem,vt_anomaly_scanner" scale="0.6" impactsoundtag="impact_metal_light">
+    <Fabricate suitablefabricators="vt_protolathe" requiredtime="10">
+      <RequiredItem identifier="fpgacircuit" />
+      <RequiredItem identifier="plastic" />
+    </Fabricate>
+    <Deconstruct time="10">
+      <Item identifier="plastic" />
+    </Deconstruct>
+    <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="320,0,64,64" depth="0.6" origin="0.5,0.5" />
+    <Body width="40" height="30" density="15" />
+    <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,0" msg="ItemMsgPickUpSelect" />
+  </Item>
+
+  <Item name="" identifier="vt_anomaly_vessel" category="Machine" tags="vt_anomaly_panel" scale="1" interactdistance="150">
+    <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="0,0,128,128" depth="0.8" />
+    <Powered powerconsumption="200" minvoltage="0.5" isactive="true" />
+    <ItemComponent canbeselected="true" msg="ItemMsgInteractSelect" />
+    <LightComponent range="200" lightcolor="90,220,120,255" IsOn="false" castshadows="false" allowingameediting="false" />
+    <ConnectionPanel canbeselected="true" selectkey="Action" msg="ItemMsgRewireScrewdriver">
+      <GuiFrame relativesize="0.2,0.25" anchor="Center" style="ConnectionPanel" />
+      <RequiredItem items="screwdriver" type="Equipped" />
+      <input name="power_in" displayname="connection.powerin" />
+    </ConnectionPanel>
+  </Item>
+  <Item name="" identifier="vt_anomaly_generator" category="Machine" tags="vt_anomaly_panel" scale="1" interactdistance="200">
+    <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="128,0,192,192" depth="0.8" />
+    <Powered powerconsumption="1500" minvoltage="0.5" isactive="true" />
+    <ItemContainer capacity="1" maxstacksize="8" canbeselected="true" hideitems="true" msg="ItemMsgInteractSelect">
+      <!-- beside the generator's window (Lua/client/station/anomalies.lua) -->
+      <GuiFrame relativesize="0.12,0.18" anchor="Center" relativeoffset="0.3,0" style="ItemUI" />
+      <Containable items="incendium" />
+    </ItemContainer>
+    <ConnectionPanel canbeselected="true" selectkey="Action" msg="ItemMsgRewireScrewdriver">
+      <GuiFrame relativesize="0.2,0.25" anchor="Center" style="ConnectionPanel" />
+      <RequiredItem items="screwdriver" type="Equipped" />
+      <input name="power_in" displayname="connection.powerin" />
+    </ConnectionPanel>
+  </Item>
+
+  <!-- SS14's C.H.I.M.P. handcannon: each shot a particle of the cell inside -->
+  <Item name="" identifier="vt_ape" category="Equipment" tags="smallitem,weapon" scale="0.5" spritecolor="210,170,255,255" impactsoundtag="impact_metal_light">
+    <Fabricate suitablefabricators="vt_protolathe" requiredtime="30">
+      <RequiredItem identifier="steel" amount="2" />
+      <RequiredItem identifier="fpgacircuit" />
+      <RequiredItem identifier="plastic" />
+    </Fabricate>
+    <Deconstruct time="20">
+      <Item identifier="steel" />
+      <Item identifier="plastic" />
+    </Deconstruct>
+    <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="0,1875,104,58" depth="0.55" />
+    <Body radius="15" width="15" density="25" />
+    <Holdable slots="Any,RightHand,LeftHand" controlpose="true" aimpos="90,10" handle1="2,-7" msg="ItemMsgPickUpSelect" />
+    <ItemContainer capacity="1" maxstacksize="1" hideitems="true" itempos="20,-20">
+      <Containable items="vt_particle_cell" />
+    </ItemContainer>
+    <RangedWeapon reload="0.7" barrelpos="34,6" spread="0" unskilledspread="2" drawhudwhenequipped="true" crosshairscale="0.2">
+      <Sound file="Content/Items/Alien/AlienTurret2.ogg" type="OnUse" range="800.0" />
+      <Crosshair texture="Content/Items/Weapons/Crosshairs.png" sourcerect="0,256,256,256" />
+      <CrosshairPointer texture="Content/Items/Weapons/Crosshairs.png" sourcerect="256,256,256,256" />
+      <StatusEffect type="OnUse" target="Contained">
+        <Use />
+      </StatusEffect>
+      <RequiredItems items="vt_particle_cell" type="Contained" msg="ItemMsgAmmoRequired" />
+    </RangedWeapon>
+  </Item>
+  <Item name="" identifier="vt_particle_cell_delta" category="Equipment" maxstacksize="8" tags="smallitem,vt_particle_cell" scale="0.3" spritecolor="194,56,93,255" impactsoundtag="impact_metal_light">
+    <Fabricate suitablefabricators="vt_protolathe" requiredtime="10">
+      <RequiredItem identifier="copper" />
+      <RequiredItem identifier="plastic" />
+    </Fabricate>
+    <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="0,1952,34,77" depth="0.7" origin="0.5,0.5" />
+    <Body radius="15" height="40" density="30" />
+    <Holdable slots="RightHand,LeftHand,Any" msg="ItemMsgPickUpSelect" />
+    <ItemContainer hideitems="true" capacity="1" drawinventory="false" canbeselected="false" ShowConditionInContainedStateIndicator="true" SpawnWithId="vt_particle_delta" removecontaineditemsondeconstruct="true" containedstateindicatorstyle="battery">
+      <Containable items="vt_particle_delta" />
+      <StatusEffect type="OnUse" target="This" condition="-4.0" disabledeltatime="true">
+        <SpawnItem identifiers="vt_particle_delta" spawnposition="ThisInventory" />
+      </StatusEffect>
+    </ItemContainer>
+  </Item>
+  <Item name="" identifier="vt_particle_cell_epsilon" category="Equipment" maxstacksize="8" tags="smallitem,vt_particle_cell" scale="0.3" spritecolor="56,194,150,255" impactsoundtag="impact_metal_light">
+    <Fabricate suitablefabricators="vt_protolathe" requiredtime="10">
+      <RequiredItem identifier="copper" />
+      <RequiredItem identifier="plastic" />
+    </Fabricate>
+    <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="0,1952,34,77" depth="0.7" origin="0.5,0.5" />
+    <Body radius="15" height="40" density="30" />
+    <Holdable slots="RightHand,LeftHand,Any" msg="ItemMsgPickUpSelect" />
+    <ItemContainer hideitems="true" capacity="1" drawinventory="false" canbeselected="false" ShowConditionInContainedStateIndicator="true" SpawnWithId="vt_particle_epsilon" removecontaineditemsondeconstruct="true" containedstateindicatorstyle="battery">
+      <Containable items="vt_particle_epsilon" />
+      <StatusEffect type="OnUse" target="This" condition="-4.0" disabledeltatime="true">
+        <SpawnItem identifiers="vt_particle_epsilon" spawnposition="ThisInventory" />
+      </StatusEffect>
+    </ItemContainer>
+  </Item>
+  <Item name="" identifier="vt_particle_cell_zeta" category="Equipment" maxstacksize="8" tags="smallitem,vt_particle_cell" scale="0.3" spritecolor="185,194,56,255" impactsoundtag="impact_metal_light">
+    <Fabricate suitablefabricators="vt_protolathe" requiredtime="10">
+      <RequiredItem identifier="copper" />
+      <RequiredItem identifier="plastic" />
+    </Fabricate>
+    <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="0,1952,34,77" depth="0.7" origin="0.5,0.5" />
+    <Body radius="15" height="40" density="30" />
+    <Holdable slots="RightHand,LeftHand,Any" msg="ItemMsgPickUpSelect" />
+    <ItemContainer hideitems="true" capacity="1" drawinventory="false" canbeselected="false" ShowConditionInContainedStateIndicator="true" SpawnWithId="vt_particle_zeta" removecontaineditemsondeconstruct="true" containedstateindicatorstyle="battery">
+      <Containable items="vt_particle_zeta" />
+      <StatusEffect type="OnUse" target="This" condition="-4.0" disabledeltatime="true">
+        <SpawnItem identifiers="vt_particle_zeta" spawnposition="ThisInventory" />
+      </StatusEffect>
+    </ItemContainer>
+  </Item>
+  <Item name="" identifier="vt_particle_cell_sigma" category="Equipment" maxstacksize="8" tags="smallitem,vt_particle_cell" scale="0.3" spritecolor="141,56,194,255" impactsoundtag="impact_metal_light">
+    <Fabricate suitablefabricators="vt_protolathe" requiredtime="10">
+      <RequiredItem identifier="copper" />
+      <RequiredItem identifier="plastic" />
+    </Fabricate>
+    <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="0,1952,34,77" depth="0.7" origin="0.5,0.5" />
+    <Body radius="15" height="40" density="30" />
+    <Holdable slots="RightHand,LeftHand,Any" msg="ItemMsgPickUpSelect" />
+    <ItemContainer hideitems="true" capacity="1" drawinventory="false" canbeselected="false" ShowConditionInContainedStateIndicator="true" SpawnWithId="vt_particle_sigma" removecontaineditemsondeconstruct="true" containedstateindicatorstyle="battery">
+      <Containable items="vt_particle_sigma" />
+      <StatusEffect type="OnUse" target="This" condition="-4.0" disabledeltatime="true">
+        <SpawnItem identifiers="vt_particle_sigma" spawnposition="ThisInventory" />
+      </StatusEffect>
+    </ItemContainer>
+  </Item>
+  <!-- The particles: a hit on an anomaly goes to the server's anomalies.lua; people get SS14's heat damage. -->
+  <Item name="" identifier="vt_particle_delta" category="Weapon" tags="vt_particle" hideinmenus="true" scale="0.5">
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="195,282,17,6" depth="0.55" origin="0.5,0.5" />
+    <Body width="40" height="14" density="40" />
+    <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
+    <Projectile characterusable="false" hitscan="true" removeonhit="true">
+      <ParticleEmitter particle="tracernucleargun" particleamount="1" velocitymin="0" velocitymax="0" colormultiplier="194,56,93,255" />
+      <Attack structuredamage="0" itemdamage="0">
+        <Affliction identifier="burn" strength="5" />
+      </Attack>
+      <StatusEffect type="OnImpact" target="UseTarget">
+        <ParticleEmitter particle="muzzleflashnucleargun" anglemin="0" anglemax="360" particleamount="10" velocitymin="0" scalemin="0.0" scalemax="0.6" colormultiplier="194,56,93,255" />
+        <LuaHook name="VoidTraitor.AnomalyParticle" particle="delta" />
+      </StatusEffect>
+    </Projectile>
+  </Item>
+  <Item name="" identifier="vt_particle_epsilon" category="Weapon" tags="vt_particle" hideinmenus="true" scale="0.5">
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="195,282,17,6" depth="0.55" origin="0.5,0.5" />
+    <Body width="40" height="14" density="40" />
+    <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
+    <Projectile characterusable="false" hitscan="true" removeonhit="true">
+      <ParticleEmitter particle="tracernucleargun" particleamount="1" velocitymin="0" velocitymax="0" colormultiplier="56,194,150,255" />
+      <Attack structuredamage="0" itemdamage="0">
+        <Affliction identifier="burn" strength="5" />
+      </Attack>
+      <StatusEffect type="OnImpact" target="UseTarget">
+        <ParticleEmitter particle="muzzleflashnucleargun" anglemin="0" anglemax="360" particleamount="10" velocitymin="0" scalemin="0.0" scalemax="0.6" colormultiplier="56,194,150,255" />
+        <LuaHook name="VoidTraitor.AnomalyParticle" particle="epsilon" />
+      </StatusEffect>
+    </Projectile>
+  </Item>
+  <Item name="" identifier="vt_particle_zeta" category="Weapon" tags="vt_particle" hideinmenus="true" scale="0.5">
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="195,282,17,6" depth="0.55" origin="0.5,0.5" />
+    <Body width="40" height="14" density="40" />
+    <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
+    <Projectile characterusable="false" hitscan="true" removeonhit="true">
+      <ParticleEmitter particle="tracernucleargun" particleamount="1" velocitymin="0" velocitymax="0" colormultiplier="185,194,56,255" />
+      <Attack structuredamage="0" itemdamage="0">
+        <Affliction identifier="burn" strength="5" />
+      </Attack>
+      <StatusEffect type="OnImpact" target="UseTarget">
+        <ParticleEmitter particle="muzzleflashnucleargun" anglemin="0" anglemax="360" particleamount="10" velocitymin="0" scalemin="0.0" scalemax="0.6" colormultiplier="185,194,56,255" />
+        <LuaHook name="VoidTraitor.AnomalyParticle" particle="zeta" />
+      </StatusEffect>
+    </Projectile>
+  </Item>
+  <Item name="" identifier="vt_particle_sigma" category="Weapon" tags="vt_particle" hideinmenus="true" scale="0.5">
+    <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="195,282,17,6" depth="0.55" origin="0.5,0.5" />
+    <Body width="40" height="14" density="40" />
+    <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
+    <Projectile characterusable="false" hitscan="true" removeonhit="true">
+      <ParticleEmitter particle="tracernucleargun" particleamount="1" velocitymin="0" velocitymax="0" colormultiplier="141,56,194,255" />
+      <Attack structuredamage="0" itemdamage="0">
+        <Affliction identifier="burn" strength="5" />
+      </Attack>
+      <StatusEffect type="OnImpact" target="UseTarget">
+        <ParticleEmitter particle="muzzleflashnucleargun" anglemin="0" anglemax="360" particleamount="10" velocitymin="0" scalemin="0.0" scalemax="0.6" colormultiplier="141,56,194,255" />
+        <LuaHook name="VoidTraitor.AnomalyParticle" particle="sigma" />
+      </StatusEffect>
+    </Projectile>
+  </Item>
+
+  <!-- What an anomaly leaves: its core after a supercritical end, an inert core after it decayed -->
+  <Item name="" identifier="vt_anomaly_core_pyro" category="Material" tags="smallitem,vt_anomaly_core" scale="0.6">
+    <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="384,0,64,64" depth="0.6" origin="0.5,0.5" />
+    <Body radius="12" density="20" />
+    <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
+    <LightComponent range="120" lightcolor="226,88,34,255" IsOn="true" castshadows="false" allowingameediting="false" pulseamount="0.4" pulsefrequency="1" />
+  </Item>
+  <Item name="" identifier="vt_anomaly_core_electric" category="Material" tags="smallitem,vt_anomaly_core" scale="0.6">
+    <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="448,0,64,64" depth="0.6" origin="0.5,0.5" />
+    <Body radius="12" density="20" />
+    <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
+    <LightComponent range="120" lightcolor="255,255,170,255" IsOn="true" castshadows="false" allowingameediting="false" pulseamount="0.4" pulsefrequency="1" />
+  </Item>
+  <Item name="" identifier="vt_anomaly_core_gravity" category="Material" tags="smallitem,vt_anomaly_core" scale="0.6">
+    <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="320,64,64,64" depth="0.6" origin="0.5,0.5" />
+    <Body radius="12" density="20" />
+    <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
+    <LightComponent range="120" lightcolor="150,90,200,255" IsOn="true" castshadows="false" allowingameediting="false" pulseamount="0.4" pulsefrequency="1" />
+  </Item>
+  <Item name="" identifier="vt_anomaly_core_liquid" category="Material" tags="smallitem,vt_anomaly_core" scale="0.6">
+    <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="384,64,64,64" depth="0.6" origin="0.5,0.5" />
+    <Body radius="12" density="20" />
+    <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
+    <LightComponent range="120" lightcolor="45,140,255,255" IsOn="true" castshadows="false" allowingameediting="false" pulseamount="0.4" pulsefrequency="1" />
+  </Item>
+  <Item name="" identifier="vt_anomaly_core_pyro_inert" category="Material" tags="smallitem,vt_anomaly_core_inert" scale="0.6" spritecolor="130,130,130,255">
+    <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="384,0,64,64" depth="0.6" origin="0.5,0.5" />
+    <Body radius="12" density="20" />
+    <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
+  </Item>
+  <Item name="" identifier="vt_anomaly_core_electric_inert" category="Material" tags="smallitem,vt_anomaly_core_inert" scale="0.6" spritecolor="130,130,130,255">
+    <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="448,0,64,64" depth="0.6" origin="0.5,0.5" />
+    <Body radius="12" density="20" />
+    <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
+  </Item>
+  <Item name="" identifier="vt_anomaly_core_gravity_inert" category="Material" tags="smallitem,vt_anomaly_core_inert" scale="0.6" spritecolor="130,130,130,255">
+    <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="320,64,64,64" depth="0.6" origin="0.5,0.5" />
+    <Body radius="12" density="20" />
+    <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
+  </Item>
+  <Item name="" identifier="vt_anomaly_core_liquid_inert" category="Material" tags="smallitem,vt_anomaly_core_inert" scale="0.6" spritecolor="130,130,130,255">
+    <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="384,64,64,64" depth="0.6" origin="0.5,0.5" />
+    <Body radius="12" density="20" />
+    <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
+  </Item>
+</Items>
