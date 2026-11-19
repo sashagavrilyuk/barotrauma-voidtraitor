@@ -2,7 +2,7 @@
 <!-- Station xenoarchaeology (traitormod Lua/gamemodes/station/xenoarch.lua): an artifact goes onto the analyzer, and the
      analysis console nearby reads its node and extracts its research points. Sprites: xenoarch.png (ATTRIBUTION.txt). -->
 <Items>
-  <Item name="" identifier="vt_artifact_analyzer" category="Machine" tags="vt_artifact_analyzer" scale="1">
+  <Item name="" identifier="vt_artifact_analyzer" subcategory="vt_research" category="Machine" tags="vt_artifact_analyzer" scale="1">
     <Sprite texture="%ModDir%/the void traitor pack/items/xenoarch.png" sourcerect="0,0,128,128" depth="0.85" />
     <Powered powerconsumption="200" minvoltage="0.5" isactive="true" />
     <ItemContainer capacity="1" canbeselected="true" hideitems="false" itempos="0,0" msg="ItemMsgInteractSelect">
@@ -14,7 +14,7 @@
       <input name="power_in" displayname="connection.powerin" />
     </ConnectionPanel>
   </Item>
-  <Item name="" identifier="vt_analysis_console" category="Electrical" scale="1" interactdistance="150" grabwhenselected="true" tags="vt_analysis_console">
+  <Item name="" identifier="vt_analysis_console" subcategory="vt_research" category="Electrical" scale="1" interactdistance="150" grabwhenselected="true" tags="vt_analysis_console">
     <Sprite texture="%ModDir%/the void traitor pack/items/xenoarch.png" sourcerect="128,0,128,128" depth="0.8" />
     <Powered powerconsumption="50" minvoltage="0.5" isactive="true" />
     <ItemComponent canbeselected="true" msg="ItemMsgInteractSelect" />

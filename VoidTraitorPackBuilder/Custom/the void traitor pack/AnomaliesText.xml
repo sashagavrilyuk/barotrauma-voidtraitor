@@ -55,4 +55,5 @@
   <entitydescription.vt_anomaly_core_liquid_inert>Остаток угасшей аномалии.</entitydescription.vt_anomaly_core_liquid_inert>
   <entityname.vt_anomaly_core_bluespace_inert>Инертное ядро блюспейс-аномалии</entityname.vt_anomaly_core_bluespace_inert>
   <entitydescription.vt_anomaly_core_bluespace_inert>Остаток угасшей аномалии.</entitydescription.vt_anomaly_core_bluespace_inert>
+  <subcategory.vt_anomalies>Аномалии (VoidTraitor)</subcategory.vt_anomalies>
 </infotexts>

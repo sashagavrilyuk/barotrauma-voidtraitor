@@ -5,7 +5,7 @@
      the APE is SS14's handheld particle gun with a cell for each kind of particle. Sprites of the scanner, locators,
      vessel, generator and cores: anomalies.png (ATTRIBUTION.txt). -->
 <Items>
-  <Item name="" identifier="vt_anomaly_pyro" category="Alien" tags="vt_anomaly,vt_anomaly_panel" scale="0.3" spritecolor="255,150,90,190" damagedbyprojectiles="true" indestructible="true" hideinmenus="true" interactdistance="150">
+  <Item name="" identifier="vt_anomaly_pyro" subcategory="vt_anomalies" category="Alien" tags="vt_anomaly,vt_anomaly_panel" scale="0.3" spritecolor="255,150,90,190" damagedbyprojectiles="true" indestructible="true" interactdistance="150">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.8" origin="0.5,0.5" />
     <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="21,1367,395,395" depth="0.75" origin="0.5,0.5" scale="1.2" rotationspeed="300" />
     <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.7" origin="0.5,0.5" rotationspeed="-350" />
@@ -20,7 +20,7 @@
       </StatusEffect>
     </LightComponent>
   </Item>
-  <Item name="" identifier="vt_anomaly_electric" category="Alien" tags="vt_anomaly,vt_anomaly_panel" scale="0.3" spritecolor="255,255,160,190" damagedbyprojectiles="true" indestructible="true" hideinmenus="true" interactdistance="150">
+  <Item name="" identifier="vt_anomaly_electric" subcategory="vt_anomalies" category="Alien" tags="vt_anomaly,vt_anomaly_panel" scale="0.3" spritecolor="255,255,160,190" damagedbyprojectiles="true" indestructible="true" interactdistance="150">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.8" origin="0.5,0.5" />
     <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="21,1367,395,395" depth="0.75" origin="0.5,0.5" scale="1.2" rotationspeed="300" />
     <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.7" origin="0.5,0.5" rotationspeed="-350" />
@@ -35,7 +35,7 @@
       </StatusEffect>
     </LightComponent>
   </Item>
-  <Item name="" identifier="vt_anomaly_gravity" category="Alien" tags="vt_anomaly,vt_anomaly_panel" scale="0.3" spritecolor="170,120,220,190" damagedbyprojectiles="true" indestructible="true" hideinmenus="true" interactdistance="150">
+  <Item name="" identifier="vt_anomaly_gravity" subcategory="vt_anomalies" category="Alien" tags="vt_anomaly,vt_anomaly_panel" scale="0.3" spritecolor="170,120,220,190" damagedbyprojectiles="true" indestructible="true" interactdistance="150">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.8" origin="0.5,0.5" />
     <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="21,1367,395,395" depth="0.75" origin="0.5,0.5" scale="1.2" rotationspeed="300" />
     <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.7" origin="0.5,0.5" rotationspeed="-350" />
@@ -50,7 +50,7 @@
       </StatusEffect>
     </LightComponent>
   </Item>
-  <Item name="" identifier="vt_anomaly_liquid" category="Alien" tags="vt_anomaly,vt_anomaly_panel" scale="0.3" spritecolor="120,180,255,190" damagedbyprojectiles="true" indestructible="true" hideinmenus="true" interactdistance="150">
+  <Item name="" identifier="vt_anomaly_liquid" subcategory="vt_anomalies" category="Alien" tags="vt_anomaly,vt_anomaly_panel" scale="0.3" spritecolor="120,180,255,190" damagedbyprojectiles="true" indestructible="true" interactdistance="150">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.8" origin="0.5,0.5" />
     <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="21,1367,395,395" depth="0.75" origin="0.5,0.5" scale="1.2" rotationspeed="300" />
     <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.7" origin="0.5,0.5" rotationspeed="-350" />
@@ -66,7 +66,7 @@
     </LightComponent>
   </Item>
 
-  <Item name="" identifier="vt_anomaly_bluespace" category="Alien" tags="vt_anomaly,vt_anomaly_panel" scale="0.3" spritecolor="110,220,255,190" damagedbyprojectiles="true" indestructible="true" hideinmenus="true" interactdistance="150">
+  <Item name="" identifier="vt_anomaly_bluespace" subcategory="vt_anomalies" category="Alien" tags="vt_anomaly,vt_anomaly_panel" scale="0.3" spritecolor="110,220,255,190" damagedbyprojectiles="true" indestructible="true" interactdistance="150">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.8" origin="0.5,0.5" />
     <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="21,1367,395,395" depth="0.75" origin="0.5,0.5" scale="1.2" rotationspeed="300" />
     <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.7" origin="0.5,0.5" rotationspeed="-350" />
@@ -81,7 +81,7 @@
       </StatusEffect>
     </LightComponent>
   </Item>
-  <Item name="" identifier="vt_anomaly_scanner" category="Equipment" tags="smallitem,vt_anomaly_scanner" scale="0.6" impactsoundtag="impact_metal_light">
+  <Item name="" identifier="vt_anomaly_scanner" subcategory="vt_research" category="Equipment" tags="smallitem,vt_anomaly_scanner" scale="0.6" impactsoundtag="impact_metal_light">
     <Fabricate suitablefabricators="vt_protolathe" requiredtime="10">
       <RequiredItem identifier="fpgacircuit" />
       <RequiredItem identifier="plastic" />
@@ -96,7 +96,7 @@
 
   <!-- SS14's anomaly locators: held with a charged battery they beep, the faster the nearer the closest anomaly within
        vtrange; the wide one reaches twice as far but beeps alike at any distance (Lua/client/station/anomalies.lua) -->
-  <Item name="" identifier="vt_anomaly_locator" category="Equipment" tags="smallitem,vt_anomaly_locator" scale="0.6" impactsoundtag="impact_metal_light" vtrange="2000" vtbeepmin="0.15" vtbeepmax="1">
+  <Item name="" identifier="vt_anomaly_locator" subcategory="vt_research" category="Equipment" tags="smallitem,vt_anomaly_locator" scale="0.6" impactsoundtag="impact_metal_light" vtrange="2000" vtbeepmin="0.15" vtbeepmax="1">
     <Fabricate suitablefabricators="vt_protolathe" requiredtime="10">
       <RequiredItem identifier="fpgacircuit" />
       <RequiredItem identifier="plastic" />
@@ -116,7 +116,7 @@
       <Containable items="mobilebattery" />
     </ItemContainer>
   </Item>
-  <Item name="" identifier="vt_anomaly_locator_wide" category="Equipment" tags="smallitem,vt_anomaly_locator" scale="0.6" impactsoundtag="impact_metal_light" vtrange="4000" vtbeepmin="0.5" vtbeepmax="0.5">
+  <Item name="" identifier="vt_anomaly_locator_wide" subcategory="vt_research" category="Equipment" tags="smallitem,vt_anomaly_locator" scale="0.6" impactsoundtag="impact_metal_light" vtrange="4000" vtbeepmin="0.5" vtbeepmax="0.5">
     <Fabricate suitablefabricators="vt_protolathe" requiredtime="10">
       <RequiredItem identifier="fpgacircuit" />
       <RequiredItem identifier="plastic" />
@@ -138,7 +138,7 @@
     </ItemContainer>
   </Item>
 
-  <Item name="" identifier="vt_anomaly_vessel" category="Machine" tags="vt_anomaly_panel" scale="1" interactdistance="150">
+  <Item name="" identifier="vt_anomaly_vessel" subcategory="vt_research" category="Machine" tags="vt_anomaly_panel" scale="1" interactdistance="150">
     <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="0,0,128,128" depth="0.8" />
     <Powered powerconsumption="200" minvoltage="0.5" isactive="true" />
     <ItemComponent canbeselected="true" msg="ItemMsgInteractSelect" />
@@ -149,7 +149,7 @@
       <input name="power_in" displayname="connection.powerin" />
     </ConnectionPanel>
   </Item>
-  <Item name="" identifier="vt_anomaly_generator" category="Machine" tags="vt_anomaly_panel" scale="1" interactdistance="200">
+  <Item name="" identifier="vt_anomaly_generator" subcategory="vt_research" category="Machine" tags="vt_anomaly_panel" scale="1" interactdistance="200">
     <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="128,0,192,192" depth="0.8" />
     <Powered powerconsumption="1500" minvoltage="0.5" isactive="true" />
     <ItemContainer capacity="1" maxstacksize="8" canbeselected="true" hideitems="true" msg="ItemMsgInteractSelect">
@@ -165,7 +165,7 @@
   </Item>
 
   <!-- SS14's C.H.I.M.P. handcannon: each shot a particle of the cell inside -->
-  <Item name="" identifier="vt_ape" category="Equipment" tags="smallitem,weapon" scale="0.5" spritecolor="210,170,255,255" impactsoundtag="impact_metal_light">
+  <Item name="" identifier="vt_ape" subcategory="vt_research" category="Equipment" tags="smallitem,weapon" scale="0.5" spritecolor="210,170,255,255" impactsoundtag="impact_metal_light">
     <Fabricate suitablefabricators="vt_protolathe" requiredtime="30">
       <RequiredItem identifier="steel" amount="2" />
       <RequiredItem identifier="fpgacircuit" />
@@ -191,7 +191,7 @@
       <RequiredItems items="vt_particle_cell" type="Contained" msg="ItemMsgAmmoRequired" />
     </RangedWeapon>
   </Item>
-  <Item name="" identifier="vt_particle_cell_delta" category="Equipment" maxstacksize="8" tags="smallitem,vt_particle_cell" scale="0.3" spritecolor="194,56,93,255" impactsoundtag="impact_metal_light">
+  <Item name="" identifier="vt_particle_cell_delta" subcategory="vt_research" category="Equipment" maxstacksize="8" tags="smallitem,vt_particle_cell" scale="0.3" spritecolor="194,56,93,255" impactsoundtag="impact_metal_light">
     <Fabricate suitablefabricators="vt_protolathe" requiredtime="10">
       <RequiredItem identifier="copper" />
       <RequiredItem identifier="plastic" />
@@ -206,7 +206,7 @@
       </StatusEffect>
     </ItemContainer>
   </Item>
-  <Item name="" identifier="vt_particle_cell_epsilon" category="Equipment" maxstacksize="8" tags="smallitem,vt_particle_cell" scale="0.3" spritecolor="56,194,150,255" impactsoundtag="impact_metal_light">
+  <Item name="" identifier="vt_particle_cell_epsilon" subcategory="vt_research" category="Equipment" maxstacksize="8" tags="smallitem,vt_particle_cell" scale="0.3" spritecolor="56,194,150,255" impactsoundtag="impact_metal_light">
     <Fabricate suitablefabricators="vt_protolathe" requiredtime="10">
       <RequiredItem identifier="copper" />
       <RequiredItem identifier="plastic" />
@@ -221,7 +221,7 @@
       </StatusEffect>
     </ItemContainer>
   </Item>
-  <Item name="" identifier="vt_particle_cell_zeta" category="Equipment" maxstacksize="8" tags="smallitem,vt_particle_cell" scale="0.3" spritecolor="185,194,56,255" impactsoundtag="impact_metal_light">
+  <Item name="" identifier="vt_particle_cell_zeta" subcategory="vt_research" category="Equipment" maxstacksize="8" tags="smallitem,vt_particle_cell" scale="0.3" spritecolor="185,194,56,255" impactsoundtag="impact_metal_light">
     <Fabricate suitablefabricators="vt_protolathe" requiredtime="10">
       <RequiredItem identifier="copper" />
       <RequiredItem identifier="plastic" />
@@ -236,7 +236,7 @@
       </StatusEffect>
     </ItemContainer>
   </Item>
-  <Item name="" identifier="vt_particle_cell_sigma" category="Equipment" maxstacksize="8" tags="smallitem,vt_particle_cell" scale="0.3" spritecolor="141,56,194,255" impactsoundtag="impact_metal_light">
+  <Item name="" identifier="vt_particle_cell_sigma" subcategory="vt_research" category="Equipment" maxstacksize="8" tags="smallitem,vt_particle_cell" scale="0.3" spritecolor="141,56,194,255" impactsoundtag="impact_metal_light">
     <Fabricate suitablefabricators="vt_protolathe" requiredtime="10">
       <RequiredItem identifier="copper" />
       <RequiredItem identifier="plastic" />
@@ -252,7 +252,7 @@
     </ItemContainer>
   </Item>
   <!-- The particles: a hit on an anomaly goes to the server's anomalies.lua; people get SS14's heat damage. -->
-  <Item name="" identifier="vt_particle_delta" category="Weapon" tags="vt_particle" hideinmenus="true" scale="0.5">
+  <Item name="" identifier="vt_particle_delta" subcategory="vt_research" category="Weapon" tags="vt_particle" hideinmenus="true" scale="0.5">
     <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="195,282,17,6" depth="0.55" origin="0.5,0.5" />
     <Body width="40" height="14" density="40" />
     <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
@@ -267,7 +267,7 @@
       </StatusEffect>
     </Projectile>
   </Item>
-  <Item name="" identifier="vt_particle_epsilon" category="Weapon" tags="vt_particle" hideinmenus="true" scale="0.5">
+  <Item name="" identifier="vt_particle_epsilon" subcategory="vt_research" category="Weapon" tags="vt_particle" hideinmenus="true" scale="0.5">
     <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="195,282,17,6" depth="0.55" origin="0.5,0.5" />
     <Body width="40" height="14" density="40" />
     <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
@@ -282,7 +282,7 @@
       </StatusEffect>
     </Projectile>
   </Item>
-  <Item name="" identifier="vt_particle_zeta" category="Weapon" tags="vt_particle" hideinmenus="true" scale="0.5">
+  <Item name="" identifier="vt_particle_zeta" subcategory="vt_research" category="Weapon" tags="vt_particle" hideinmenus="true" scale="0.5">
     <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="195,282,17,6" depth="0.55" origin="0.5,0.5" />
     <Body width="40" height="14" density="40" />
     <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
@@ -297,7 +297,7 @@
       </StatusEffect>
     </Projectile>
   </Item>
-  <Item name="" identifier="vt_particle_sigma" category="Weapon" tags="vt_particle" hideinmenus="true" scale="0.5">
+  <Item name="" identifier="vt_particle_sigma" subcategory="vt_research" category="Weapon" tags="vt_particle" hideinmenus="true" scale="0.5">
     <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="195,282,17,6" depth="0.55" origin="0.5,0.5" />
     <Body width="40" height="14" density="40" />
     <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
@@ -314,57 +314,57 @@
   </Item>
 
   <!-- What an anomaly leaves: its core after a supercritical end, an inert core after it decayed -->
-  <Item name="" identifier="vt_anomaly_core_pyro" category="Material" tags="smallitem,vt_anomaly_core" scale="0.6">
+  <Item name="" identifier="vt_anomaly_core_pyro" subcategory="vt_research" category="Material" tags="smallitem,vt_anomaly_core" scale="0.6">
     <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="384,0,64,64" depth="0.6" origin="0.5,0.5" />
     <Body radius="12" density="20" />
     <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
     <LightComponent range="120" lightcolor="226,88,34,255" IsOn="true" castshadows="false" allowingameediting="false" pulseamount="0.4" pulsefrequency="1" />
   </Item>
-  <Item name="" identifier="vt_anomaly_core_electric" category="Material" tags="smallitem,vt_anomaly_core" scale="0.6">
+  <Item name="" identifier="vt_anomaly_core_electric" subcategory="vt_research" category="Material" tags="smallitem,vt_anomaly_core" scale="0.6">
     <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="448,0,64,64" depth="0.6" origin="0.5,0.5" />
     <Body radius="12" density="20" />
     <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
     <LightComponent range="120" lightcolor="255,255,170,255" IsOn="true" castshadows="false" allowingameediting="false" pulseamount="0.4" pulsefrequency="1" />
   </Item>
-  <Item name="" identifier="vt_anomaly_core_gravity" category="Material" tags="smallitem,vt_anomaly_core" scale="0.6">
+  <Item name="" identifier="vt_anomaly_core_gravity" subcategory="vt_research" category="Material" tags="smallitem,vt_anomaly_core" scale="0.6">
     <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="320,64,64,64" depth="0.6" origin="0.5,0.5" />
     <Body radius="12" density="20" />
     <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
     <LightComponent range="120" lightcolor="150,90,200,255" IsOn="true" castshadows="false" allowingameediting="false" pulseamount="0.4" pulsefrequency="1" />
   </Item>
-  <Item name="" identifier="vt_anomaly_core_liquid" category="Material" tags="smallitem,vt_anomaly_core" scale="0.6">
+  <Item name="" identifier="vt_anomaly_core_liquid" subcategory="vt_research" category="Material" tags="smallitem,vt_anomaly_core" scale="0.6">
     <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="384,64,64,64" depth="0.6" origin="0.5,0.5" />
     <Body radius="12" density="20" />
     <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
     <LightComponent range="120" lightcolor="45,140,255,255" IsOn="true" castshadows="false" allowingameediting="false" pulseamount="0.4" pulsefrequency="1" />
   </Item>
-  <Item name="" identifier="vt_anomaly_core_bluespace" category="Material" tags="smallitem,vt_anomaly_core" scale="0.6">
+  <Item name="" identifier="vt_anomaly_core_bluespace" subcategory="vt_research" category="Material" tags="smallitem,vt_anomaly_core" scale="0.6">
     <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="384,128,64,64" depth="0.6" origin="0.5,0.5" />
     <Body radius="12" density="20" />
     <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
     <LightComponent range="120" lightcolor="0,204,255,255" IsOn="true" castshadows="false" allowingameediting="false" pulseamount="0.4" pulsefrequency="1" />
   </Item>
-  <Item name="" identifier="vt_anomaly_core_pyro_inert" category="Material" tags="smallitem,vt_anomaly_core_inert" scale="0.6" spritecolor="130,130,130,255">
+  <Item name="" identifier="vt_anomaly_core_pyro_inert" subcategory="vt_research" category="Material" tags="smallitem,vt_anomaly_core_inert" scale="0.6" spritecolor="130,130,130,255">
     <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="384,0,64,64" depth="0.6" origin="0.5,0.5" />
     <Body radius="12" density="20" />
     <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
   </Item>
-  <Item name="" identifier="vt_anomaly_core_electric_inert" category="Material" tags="smallitem,vt_anomaly_core_inert" scale="0.6" spritecolor="130,130,130,255">
+  <Item name="" identifier="vt_anomaly_core_electric_inert" subcategory="vt_research" category="Material" tags="smallitem,vt_anomaly_core_inert" scale="0.6" spritecolor="130,130,130,255">
     <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="448,0,64,64" depth="0.6" origin="0.5,0.5" />
     <Body radius="12" density="20" />
     <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
   </Item>
-  <Item name="" identifier="vt_anomaly_core_gravity_inert" category="Material" tags="smallitem,vt_anomaly_core_inert" scale="0.6" spritecolor="130,130,130,255">
+  <Item name="" identifier="vt_anomaly_core_gravity_inert" subcategory="vt_research" category="Material" tags="smallitem,vt_anomaly_core_inert" scale="0.6" spritecolor="130,130,130,255">
     <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="320,64,64,64" depth="0.6" origin="0.5,0.5" />
     <Body radius="12" density="20" />
     <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
   </Item>
-  <Item name="" identifier="vt_anomaly_core_liquid_inert" category="Material" tags="smallitem,vt_anomaly_core_inert" scale="0.6" spritecolor="130,130,130,255">
+  <Item name="" identifier="vt_anomaly_core_liquid_inert" subcategory="vt_research" category="Material" tags="smallitem,vt_anomaly_core_inert" scale="0.6" spritecolor="130,130,130,255">
     <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="384,64,64,64" depth="0.6" origin="0.5,0.5" />
     <Body radius="12" density="20" />
     <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
   </Item>
-  <Item name="" identifier="vt_anomaly_core_bluespace_inert" category="Material" tags="smallitem,vt_anomaly_core_inert" scale="0.6" spritecolor="130,130,130,255">
+  <Item name="" identifier="vt_anomaly_core_bluespace_inert" subcategory="vt_research" category="Material" tags="smallitem,vt_anomaly_core_inert" scale="0.6" spritecolor="130,130,130,255">
     <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="384,128,64,64" depth="0.6" origin="0.5,0.5" />
     <Body radius="12" density="20" />
     <Pickable slots="Any" msg="ItemMsgPickUpSelect" />

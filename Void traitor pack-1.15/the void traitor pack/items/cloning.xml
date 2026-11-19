@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
-  <Item identifier="vt_cloning_scanner" name="" category="Machine" scale="0.5" interactdistance="180" tags="vt_cloning_scanner">
+  <Item identifier="vt_cloning_scanner" subcategory="vt_station" name="" category="Machine" scale="0.5" interactdistance="180" tags="vt_cloning_scanner">
     <Sprite texture="Content/Items/Fabricators/FabricatorsAndDeconstructors.png" sourcerect="0,304,256,320" depth="0.8" />
     <TriggerComponent radius="360" triggeredby="Character">
       <StatusEffect type="Always" target="Character" IsContainable="true" LockHands="true" setvalue="true">
@@ -29,7 +29,7 @@
       <output name="scan" displayname="CloneScannerConnection" />
     </ConnectionPanel>
   </Item>
-  <Item identifier="vt_cloning_pod" name="" category="Machine" scale="0.5" interactdistance="180" health="150" tags="vt_cloning_pod,vt_itemprompt">
+  <Item identifier="vt_cloning_pod" subcategory="vt_station" name="" category="Machine" scale="0.5" interactdistance="180" health="150" tags="vt_cloning_pod,vt_itemprompt">
     <Sprite texture="Content/Items/Fabricators/FabricatorsAndDeconstructors.png" sourcerect="256,0,256,288" depth="0.8" color="120,170,200,255" />
     <Powered powerconsumption="500" minvoltage="0.5" isactive="true" />
     <Controller canbeselected="false" canbeselectedbycharacters="true" allowputtinginothercharacters="false" selectingkickscharacterout="false" forceusertostayattached="true" drawuserbehind="true" allowingameediting="false" userpos="0,0">
@@ -48,7 +48,7 @@
       <output name="status" displayname="ClonePodConnection" />
     </ConnectionPanel>
   </Item>
-  <Item identifier="vt_cloning_console" name="" category="Electrical" scale="0.5" interactdistance="150" grabwhenselected="true" tags="vt_cloning_console">
+  <Item identifier="vt_cloning_console" subcategory="vt_station" name="" category="Electrical" scale="0.5" interactdistance="150" grabwhenselected="true" tags="vt_cloning_console">
     <Sprite texture="Content/Items/Electricity/signalcomp.png" sourcerect="0,368,144,128" depth="0.8" origin="0.5,0.3" />
     <Powered powerconsumption="50" minvoltage="0.5" isactive="true" />
     <ItemComponent canbeselected="true" msg="ItemMsgInteractSelect" />
@@ -60,7 +60,7 @@
       <input name="pod" displayname="ClonePodConnection" />
     </ConnectionPanel>
   </Item>
-  <Item identifier="vt_biomass_reclaimer" name="" nameidentifier="deconstructor" variantof="deconstructor">
+  <Item identifier="vt_biomass_reclaimer" subcategory="vt_station" name="" nameidentifier="deconstructor" variantof="deconstructor">
     <ItemContainer>
       <Containable items="unidentifiedbiologicalmaterial" />
     </ItemContainer>
@@ -71,7 +71,7 @@
       </StatusEffect>
     </TriggerComponent>
   </Item>
-  <Item identifier="vt_biomass" name="" category="Material" tags="smallitem,vt_biomass" maxstacksize="64" maxstacksizecharacterinventory="64" scale="0.5" cargocontaineridentifier="metalcrate">
+  <Item identifier="vt_biomass" subcategory="vt_station" name="" category="Material" tags="smallitem,vt_biomass" maxstacksize="64" maxstacksizecharacterinventory="64" scale="0.5" cargocontaineridentifier="metalcrate">
     <Sprite texture="Content/Items/InventoryIconAtlas2.png" sourcerect="576,64,64,64" origin="0.5,0.5" color="170,90,110,255" />
     <Price baseprice="10" />
     <Body width="32" height="24" density="1" />

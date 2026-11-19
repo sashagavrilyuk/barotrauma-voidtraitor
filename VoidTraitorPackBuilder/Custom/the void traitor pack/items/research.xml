@@ -5,14 +5,14 @@
      vanilla fabricator in the department's colour. The server keeps the points; the console holds the tree. Sprites of
      the server and the console: research.png (ATTRIBUTION.txt). -->
 <Items>
-  <Item identifier="vt_protolathe" variantof="fabricator" tags="fabricator,vt_protolathe,donttakeitems,dontsellitems,largeswappabledevice">
+  <Item identifier="vt_protolathe" subcategory="vt_research" variantof="fabricator" tags="fabricator,vt_protolathe,donttakeitems,dontsellitems,largeswappabledevice">
     <Sprite color="205,180,255,255" />
   </Item>
-  <Item identifier="vt_sectechfab" variantof="fabricator" tags="fabricator,vt_sectechfab,donttakeitems,dontsellitems,largeswappabledevice">
+  <Item identifier="vt_sectechfab" subcategory="vt_research" variantof="fabricator" tags="fabricator,vt_sectechfab,donttakeitems,dontsellitems,largeswappabledevice">
     <Sprite color="255,165,160,255" />
   </Item>
   <!-- Its points are lost when it breaks, as an SS14 server's are when it is destroyed. -->
-  <Item name="" identifier="vt_rnd_server" category="Machine" tags="vt_rnd_server" scale="1" health="150" damagedbyexplosions="true" damagedbyprojectiles="true" damagedbymeleeweapons="true">
+  <Item name="" identifier="vt_rnd_server" subcategory="vt_research" category="Machine" tags="vt_rnd_server" scale="1" health="150" damagedbyexplosions="true" damagedbyprojectiles="true" damagedbymeleeweapons="true">
     <Sprite texture="%ModDir%/the void traitor pack/items/research.png" sourcerect="0,0,128,128" depth="0.8" />
     <Powered powerconsumption="200" minvoltage="0.5" isactive="true" />
     <ConnectionPanel canbeselected="true" selectkey="Action" msg="ItemMsgRewireScrewdriver">
@@ -26,7 +26,7 @@
       <RequiredItem items="screwdriver" type="Equipped" />
     </Repairable>
   </Item>
-  <Item name="" identifier="vt_rnd_console" category="Electrical" scale="1" interactdistance="150" grabwhenselected="true" tags="vt_rnd_console">
+  <Item name="" identifier="vt_rnd_console" subcategory="vt_research" category="Electrical" scale="1" interactdistance="150" grabwhenselected="true" tags="vt_rnd_console">
     <Sprite texture="%ModDir%/the void traitor pack/items/research.png" sourcerect="128,0,128,128" depth="0.8" />
     <Powered powerconsumption="50" minvoltage="0.5" isactive="true" />
     <ItemComponent canbeselected="true" msg="ItemMsgInteractSelect" />

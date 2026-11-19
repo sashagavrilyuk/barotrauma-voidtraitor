@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
-  <Item identifier="vt_communications_console" name="" category="Electrical" tags="vt_communications_console" scale="0.5" isshootable="true" interactdistance="150" grabwhenselected="true">
+  <Item identifier="vt_communications_console" subcategory="vt_station" name="" category="Electrical" tags="vt_communications_console" scale="0.5" isshootable="true" interactdistance="150" grabwhenselected="true">
     <Sprite texture="Content/Items/Electricity/signalcomp.png" depth="0.8" sourcerect="0,368,144,128" origin="0.5,0.3" canflipx="false" />
     <Powered powerconsumption="50" minvoltage="0.5" isactive="true" />
     <ItemComponent canbeselected="true" msg="ItemMsgInteractSelect" />

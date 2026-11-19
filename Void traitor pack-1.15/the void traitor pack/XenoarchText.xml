@@ -8,4 +8,5 @@
   <entitydescription.vt_artifact_analyzer>Положите на него артефакт, чтобы консоль анализа прочитала его узел.</entitydescription.vt_artifact_analyzer>
   <entityname.vt_analysis_console>Консоль анализа</entityname.vt_analysis_console>
   <entitydescription.vt_analysis_console>Сканирует артефакт на ближайшем анализаторе и извлекает из него очки исследований.</entitydescription.vt_analysis_console>
+  <subcategory.vt_artifacts>Артефакты (VoidTraitor)</subcategory.vt_artifacts>
 </infotexts>

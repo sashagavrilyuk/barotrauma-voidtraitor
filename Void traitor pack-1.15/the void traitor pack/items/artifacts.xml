@@ -3,7 +3,7 @@
      look. What they do comes from the nodes of traitormod Lua/gamemodes/station/xenoarch.lua, as SS14's old
      xenoarchaeology; the status effects below only tell it what happened to the artifact. -->
 <Items>
-  <Item name="" identifier="vt_artifact_skyholder" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="Content/Items/Alien/AlienPump.ogg" vtparticle="skyholderfx2">
+  <Item name="" identifier="vt_artifact_skyholder" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="Content/Items/Alien/AlienPump.ogg" vtparticle="skyholderfx2">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" depth="0.6" sourcerect="630,0,82,108" origin="0.5,0.5" />
     <Body width="80" height="95" density="40" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -25,7 +25,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_thermal" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="Content/Items/Alien/AlienTurret1.ogg" vtparticle="thermalSetFire">
+  <Item name="" identifier="vt_artifact_thermal" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="Content/Items/Alien/AlienTurret1.ogg" vtparticle="thermalSetFire">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" depth="0.6" sourcerect="542,112,102,99" origin="0.5,0.5" />
     <Body width="80" height="95" density="13" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -47,7 +47,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_faraday" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="Content/Items/Alien/AlienCoil1.ogg" vtparticle="faradayfx">
+  <Item name="" identifier="vt_artifact_faraday" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="Content/Items/Alien/AlienCoil1.ogg" vtparticle="faradayfx">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" depth="0.6" sourcerect="645,108,93,103" origin="0.5,0.5" />
     <Body width="80" height="95" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -69,7 +69,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_nasonov" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="Content/Items/Alien/AlienArtifactLoop1.ogg" vtparticle="nasonovsparkles">
+  <Item name="" identifier="vt_artifact_nasonov" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="Content/Items/Alien/AlienArtifactLoop1.ogg" vtparticle="nasonovsparkles">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" depth="0.6" sourcerect="718,6,78,102" origin="0.5,0.5" />
     <Body width="80" height="95" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -91,7 +91,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_psychosis" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/Alien/Alienpump.ogg" vtparticle="psychosisfx">
+  <Item name="" identifier="vt_artifact_psychosis" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/Alien/Alienpump.ogg" vtparticle="psychosisfx">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" depth="0.6" sourcerect="541,0,88,108" origin="0.5,0.5" />
     <Body width="80" height="95" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -113,7 +113,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_vanilla1" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="">
+  <Item name="" identifier="vt_trinket_vanilla1" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" depth="0.7" sourcerect="48,1952,73,76" origin="0.5,0.5" />
     <Body width="70" height="70" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -135,7 +135,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_vanilla2" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="">
+  <Item name="" identifier="vt_trinket_vanilla2" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" depth="0.7" sourcerect="128,1953,82,74" origin="0.5,0.5" />
     <Body width="80" height="72" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -157,7 +157,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_vanilla3" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="">
+  <Item name="" identifier="vt_trinket_vanilla3" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" depth="0.7" sourcerect="232,1953,82,79" origin="0.5,0.5" />
     <Body width="80" height="75" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -179,7 +179,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_vampire" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/DT-2.ogg" vtparticle="artmod_alienvampireartfx">
+  <Item name="" identifier="vt_artifact_vampire" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/DT-2.ogg" vtparticle="artmod_alienvampireartfx">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Artifacts/HealArt.png" depth="0.6" sourcerect="0,0,88,101" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -201,7 +201,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_theheaven" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/heavenartifact1.ogg" vtparticle="artmod_alienvampireartfx">
+  <Item name="" identifier="vt_artifact_theheaven" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/heavenartifact1.ogg" vtparticle="artmod_alienvampireartfx">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Artifacts/HealArt.png" depth="0.6" sourcerect="0,0,88,101" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -223,7 +223,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_oasis" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/DT-1.ogg" vtparticle="artmod_alienvampireartfx">
+  <Item name="" identifier="vt_artifact_oasis" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/DT-1.ogg" vtparticle="artmod_alienvampireartfx">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Artifacts/HealArt.png" depth="0.6" sourcerect="0,0,88,101" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -245,7 +245,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_rust1" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/MechanicalRepairFail.ogg" vtparticle="thermalfx">
+  <Item name="" identifier="vt_artifact_rust1" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/MechanicalRepairFail.ogg" vtparticle="thermalfx">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Artifacts/AlienArttermoRust.png" depth="0.6" sourcerect="0,0,72,101" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -267,7 +267,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_rust2" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/MechanicalRepairFail.ogg" vtparticle="">
+  <Item name="" identifier="vt_artifact_rust2" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/MechanicalRepairFail.ogg" vtparticle="">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Artifacts/AlienArtsoxygenRust.png" depth="0.6" sourcerect="0,0,95,118" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -289,7 +289,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_rust3" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/AlienArtifactLoopC1.ogg" vtparticle="artmod_spark2">
+  <Item name="" identifier="vt_artifact_rust3" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/AlienArtifactLoopC1.ogg" vtparticle="artmod_spark2">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Artifacts/AlienArtnasonovRust.png" depth="0.6" sourcerect="0,0,85,107" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -311,7 +311,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_silent" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/Endworm_Attack_2.ogg" vtparticle="psychosisfx">
+  <Item name="" identifier="vt_artifact_silent" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/Endworm_Attack_2.ogg" vtparticle="psychosisfx">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" depth="0.6" sourcerect="541,0,88,108" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -333,7 +333,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_zombie" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="" vtparticle="psychosisfx">
+  <Item name="" identifier="vt_artifact_zombie" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="" vtparticle="psychosisfx">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" depth="0.6" sourcerect="541,0,88,108" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -355,7 +355,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_mindbent" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/Endworm_Attack_1.ogg" vtparticle="psychosisfx">
+  <Item name="" identifier="vt_artifact_mindbent" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/Endworm_Attack_1.ogg" vtparticle="psychosisfx">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" depth="0.6" sourcerect="541,0,88,108" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -377,7 +377,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_incubator" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/AlienArtifactLoopC1.ogg" vtparticle="artmod_spark2">
+  <Item name="" identifier="vt_artifact_incubator" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/AlienArtifactLoopC1.ogg" vtparticle="artmod_spark2">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Artifacts/AlienArtnasonovRust.png" depth="0.6" sourcerect="0,0,85,107" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -399,7 +399,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_heartoftheswarm" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/AlienArtifactNasonov2.ogg" vtparticle="artmod_nasonovfx2">
+  <Item name="" identifier="vt_artifact_heartoftheswarm" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/AlienArtifactNasonov2.ogg" vtparticle="artmod_nasonovfx2">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Artifacts/AlienArtnanosovTIR3.png" depth="0.6" sourcerect="0,0,79,105" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -421,7 +421,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_heartofEurope" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/AlienArtifactNasonov3.ogg" vtparticle="artmod_blooddrop">
+  <Item name="" identifier="vt_artifact_heartofEurope" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/AlienArtifactNasonov3.ogg" vtparticle="artmod_blooddrop">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Artifacts/AlienArtnanosovTIR4.png" depth="0.6" sourcerect="0,0,83,106" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -443,7 +443,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_pulse" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/pulse.ogg" vtparticle="faradayfx">
+  <Item name="" identifier="vt_artifact_pulse" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="%ModDir%/More Arts (AOCS)/Artifacts/pulse.ogg" vtparticle="faradayfx">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" depth="0.6" sourcerect="645,108,93,103" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -465,7 +465,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_spark" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/Alien/AlienArtifactLoop1.ogg" vtparticle="artmod_faradayfx">
+  <Item name="" identifier="vt_artifact_spark" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/Alien/AlienArtifactLoop1.ogg" vtparticle="artmod_faradayfx">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" depth="0.6" sourcerect="645,108,93,103" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -487,7 +487,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_electrodeath" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/Weapons/ExplosionMedium1.ogg" vtparticle="artmod_faradayfx">
+  <Item name="" identifier="vt_artifact_electrodeath" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/Weapons/ExplosionMedium1.ogg" vtparticle="artmod_faradayfx">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" depth="0.6" sourcerect="645,108,93,103" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -509,7 +509,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_vacuum" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/Alien/AlienArtifactLoop1.ogg" vtparticle="artmod_skyholderfx2">
+  <Item name="" identifier="vt_artifact_vacuum" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/Alien/AlienArtifactLoop1.ogg" vtparticle="artmod_skyholderfx2">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" depth="0.6" sourcerect="630,0,82,108" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -531,7 +531,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_biohazard" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/Alien/AlienArtifactLoop1.ogg" vtparticle="artmod_skyholderfx4">
+  <Item name="" identifier="vt_artifact_biohazard" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/Alien/AlienArtifactLoop1.ogg" vtparticle="artmod_skyholderfx4">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Artifacts/AlienArtoxygenTIR3.png" depth="0.6" sourcerect="0,0,87,113" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -553,7 +553,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_brazier" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/Alien/AlienArtifactLoop1.ogg" vtparticle="thermalfx">
+  <Item name="" identifier="vt_artifact_brazier" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/Alien/AlienArtifactLoop1.ogg" vtparticle="thermalfx">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" depth="0.6" sourcerect="542,112,102,99" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -575,7 +575,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_melting" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/Alien/AlienArtifactLoop1.ogg" vtparticle="thermalfx">
+  <Item name="" identifier="vt_artifact_melting" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/Alien/AlienArtifactLoop1.ogg" vtparticle="thermalfx">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" depth="0.6" sourcerect="542,112,102,99" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -597,7 +597,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_artifact_inferno" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/Alien/AlienArtifactLoop1.ogg" vtparticle="thermalfx">
+  <Item name="" identifier="vt_artifact_inferno" nameidentifier="vt_artifact" descriptionidentifier="vt_artifact" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" spritecolor="200,200,200,255" vtsound="Content/Items/Alien/AlienArtifactLoop1.ogg" vtparticle="thermalfx">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" depth="0.6" sourcerect="542,112,102,99" origin="0.5,0.5" />
     <Body radius="45" density="50" friction="0.95" />
     <Holdable slots="RightHand+LeftHand" holdpos="30,-15" handle1="0,10" handle2="0,-10" msg="ItemMsgPickUpSelect">
@@ -619,7 +619,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_1_shock" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.3" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="Content/Items/Weapons/WEAPONS_electricalDischarge1.ogg" vtparticle="faradayfx">
+  <Item name="" identifier="vt_trinket_1_shock" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.3" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="Content/Items/Weapons/WEAPONS_electricalDischarge1.ogg" vtparticle="faradayfx">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/alientrinket_unnamed1.png" depth="0.7" sourcerect="0,0,72,77" origin="0.5,0.5" />
     <Body width="70" height="70" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -641,7 +641,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_2_wax" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="">
+  <Item name="" identifier="vt_trinket_2_wax" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/alientrinket_unnamed2.png" depth="0.7" sourcerect="0,0,78,81" origin="0.5,0.5" />
     <Body width="70" height="70" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -663,7 +663,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_3_brainbreaker" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="artmod_alienvampireartfx">
+  <Item name="" identifier="vt_trinket_3_brainbreaker" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="artmod_alienvampireartfx">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/Artmod_AlienRuins_Items.png" sourcerect="2,92,89,89" depth="0.7" origin="0.5,0.5" />
     <Body width="70" height="70" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -685,7 +685,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_4_eyes" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="%ModDir%/More Arts (AOCS)/Items/trinketcrush1.ogg" vtparticle="">
+  <Item name="" identifier="vt_trinket_4_eyes" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="%ModDir%/More Arts (AOCS)/Items/trinketcrush1.ogg" vtparticle="">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/Artmod_AlienRuins_Items.png" depth="0.7" sourcerect="88,93,103,84" origin="0.5,0.5" />
     <Body width="70" height="70" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -707,7 +707,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_5_figure" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="Content/Items/Weapons/ExplosionSmall1.ogg" vtparticle="underwaterexplosion">
+  <Item name="" identifier="vt_trinket_5_figure" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="Content/Items/Weapons/ExplosionSmall1.ogg" vtparticle="underwaterexplosion">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/Artmod_AlienRuins_Items.png" depth="0.7" sourcerect="196,78,104,103" origin="0.5,0.5" />
     <Body width="70" height="70" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" msg="ItemMsgPickUpSelect">
@@ -729,7 +729,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_6_hugebracelet" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.25" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="Content/Sounds/Damage/Gore1.ogg" vtparticle="bloodsplash">
+  <Item name="" identifier="vt_trinket_6_hugebracelet" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.25" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="Content/Sounds/Damage/Gore1.ogg" vtparticle="bloodsplash">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/Artmod_AlienRuins_Items.png" depth="0.45" sourcerect="304,93,118,86" origin="0.5,0.5" />
     <Body width="70" height="70" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" msg="ItemMsgPickUpSelect">
@@ -751,7 +751,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_7_piece" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="artmod_smoke1">
+  <Item name="" identifier="vt_trinket_7_piece" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="artmod_smoke1">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/Artmod_AlienRuins_Items.png" depth="0.7" sourcerect="440,102,97,69" origin="0.5,0.5" />
     <Body width="70" height="70" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -773,7 +773,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_8_psihealsphere" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.3" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="psychosisfx">
+  <Item name="" identifier="vt_trinket_8_psihealsphere" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.3" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="psychosisfx">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/Artmod_AlienRuins_Items.png" depth="0.7" sourcerect="9,189,65,155" origin="0.5,0.5" />
     <Body width="70" height="70" density="10" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="40,15" handle1="0,-45" msg="ItemMsgPickUpSelect">
@@ -795,7 +795,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_9_slowdownsphere" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="artmod_clownsparklesmod1">
+  <Item name="" identifier="vt_trinket_9_slowdownsphere" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="artmod_clownsparklesmod1">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/Artmod_AlienRuins_Items.png" depth="0.7" sourcerect="95,219,125,103" origin="0.5,0.5" />
     <Body width="70" height="70" density="10" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="40,-15" handle1="-15,5" msg="ItemMsgPickUpSelect" pickingtime="4" pickingrange="5">
@@ -817,7 +817,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_10_lamp" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.4" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="">
+  <Item name="" identifier="vt_trinket_10_lamp" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.4" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/Artmod_AlienRuins_Items.png" depth="0.7" sourcerect="326,241,91,95" origin="0.5,0.5" />
     <Body width="70" height="70" density="10" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="50,-15" handle1="-25,-10" msg="ItemMsgPickUpSelect">
@@ -839,7 +839,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_11_chief" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.3" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="faradayfx">
+  <Item name="" identifier="vt_trinket_11_chief" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.3" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="faradayfx">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/alientrinket_unnamed3.png" depth="0.7" sourcerect="0,0,80,65" origin="0.5,0.5" />
     <Body width="70" height="70" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -861,7 +861,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_12_animation" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.25" impactsoundtag="antigravitytrinket" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="">
+  <Item name="" identifier="vt_trinket_12_animation" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.25" impactsoundtag="antigravitytrinket" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/animation_trinket.png" depth="0.7" sourcerect="26,0,88,152" origin="0.5,0.5" />
     <Body width="80" height="172" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-5" handle1="0,-35" handle2="0,-35" msg="ItemMsgPickUpSelect">
@@ -883,7 +883,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_13_nomnom" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.45" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="%ModDir%/More Arts (AOCS)/Items/trinketcrush1.ogg" vtparticle="">
+  <Item name="" identifier="vt_trinket_13_nomnom" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.45" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="%ModDir%/More Arts (AOCS)/Items/trinketcrush1.ogg" vtparticle="">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/Artmod_AlienRuins_Items.png" depth="0.7" sourcerect="25,353,120,113" origin="0.5,0.5" />
     <Body width="70" height="70" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -905,7 +905,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_14_whereisit" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.4" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="%ModDir%/More Arts (AOCS)/Items/teleportbefore.ogg" vtparticle="artmod_teleportart">
+  <Item name="" identifier="vt_trinket_14_whereisit" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.4" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="%ModDir%/More Arts (AOCS)/Items/teleportbefore.ogg" vtparticle="artmod_teleportart">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/Artmod_AlienRuins_Items.png" depth="0.7" sourcerect="180,344,89,119" origin="0.5,0.5" />
     <Body radius="35" density="10" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -927,7 +927,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_15_mimic" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="">
+  <Item name="" identifier="vt_trinket_15_mimic" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/Artmod_AlienRuins_Items.png" sourcerect="2,92,89,89" depth="0.7" origin="0.5,0.5" />
     <Body width="40" height="35" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -949,7 +949,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_16_invisible" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="1.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="artmod_clownsparklesmod">
+  <Item name="" identifier="vt_trinket_16_invisible" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="1.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="artmod_clownsparklesmod">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/Artmod_AlienRuins_Items.png" depth="0.1" sourcerect="0,0,25,25" origin="0.5,0.5" />
     <Body width="40" height="40" density="20" />
     <Holdable slots="Any" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -971,7 +971,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_17_blind" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="%ModDir%/More Arts (AOCS)/Items/trinketcrush1.ogg" vtparticle="">
+  <Item name="" identifier="vt_trinket_17_blind" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="%ModDir%/More Arts (AOCS)/Items/trinketcrush1.ogg" vtparticle="">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/Artmod_AlienRuins_Items.png" depth="0.7" sourcerect="159,475,89,89" origin="0.5,0.5" />
     <Body width="70" height="70" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -993,7 +993,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_18_wrongbox" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="">
+  <Item name="" identifier="vt_trinket_18_wrongbox" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/Artmod_AlienRuins_Items.png" depth="0.7" sourcerect="34,469,104,98" origin="0.5,0.5" />
     <Body width="70" height="70" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -1015,7 +1015,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_19_anotherlamp" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="%ModDir%/More Arts (AOCS)/Items/antigravitytrinket.ogg" vtparticle="">
+  <Item name="" identifier="vt_trinket_19_anotherlamp" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="%ModDir%/More Arts (AOCS)/Items/antigravitytrinket.ogg" vtparticle="">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/Artmod_AlienRuins_Items.png" depth="0.7" sourcerect="335,757,67,79" origin="0.5,0.5" />
     <Body width="70" height="70" density="20" />
     <Holdable slots="RightHand,LeftHand,Any" aimable="false" controlpose="true" aimpos="30,-15" aimangle="0" holdangle="0" handle1="-10,-15" msg="ItemMsgPickUpSelect">
@@ -1037,7 +1037,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_11_browtube" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="artmod_psychosisfx">
+  <Item name="" identifier="vt_trinket_11_browtube" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="artmod_psychosisfx">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/alientrinket11.png" depth="0.6" sourcerect="0,0,28,68" origin="0.5,0.5" />
     <Body width="30" height="55" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -1059,7 +1059,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_12_greentube" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="artmod_psychosisfx">
+  <Item name="" identifier="vt_trinket_12_greentube" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="artmod_psychosisfx">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/alientrinket13.png" depth="0.6" sourcerect="0,0,28,68" origin="0.5,0.5" />
     <Body width="30" height="55" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -1081,7 +1081,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_13_pinktube" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="artmod_psychosisfx">
+  <Item name="" identifier="vt_trinket_13_pinktube" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="artmod_psychosisfx">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/alientrinket12.png" depth="0.6" sourcerect="0,0,28,68" origin="0.5,0.5" />
     <Body width="30" height="55" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -1103,7 +1103,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_14_bluetube" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="artmod_psychosisfx">
+  <Item name="" identifier="vt_trinket_14_bluetube" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="artmod_psychosisfx">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/alientrinket14.png" depth="0.6" sourcerect="0,0,28,68" origin="0.5,0.5" />
     <Body width="30" height="55" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -1125,7 +1125,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_15_redtube" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="%ModDir%/More Arts (AOCS)/Items/AlienTubus1.ogg" vtparticle="artmod_shockwave">
+  <Item name="" identifier="vt_trinket_15_redtube" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="%ModDir%/More Arts (AOCS)/Items/AlienTubus1.ogg" vtparticle="artmod_shockwave">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/alientrinket15.png" depth="0.6" sourcerect="0,0,28,68" origin="0.5,0.5" />
     <Body width="30" height="55" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -1147,7 +1147,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_16_rottube" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="">
+  <Item name="" identifier="vt_trinket_16_rottube" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="" vtparticle="">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/alientrinket16.png" depth="0.6" sourcerect="0,0,28,68" origin="0.5,0.5" />
     <Body width="30" height="55" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">
@@ -1169,7 +1169,7 @@
     </Holdable>
     <LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />
   </Item>
-  <Item name="" identifier="vt_trinket_17_lightbluetube" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="%ModDir%/More Arts (AOCS)/Items/trinketrain.ogg" vtparticle="artmod_rain">
+  <Item name="" identifier="vt_trinket_17_lightbluetube" nameidentifier="vt_trinket" descriptionidentifier="vt_trinket" category="Alien" subcategory="vt_artifacts" tags="alien,vt_artifact,smallitem" scale="0.5" impactsoundtag="impact_metal_heavy" hideconditionbar="true" damagedbyprojectiles="true" damagedbymeleeweapons="true" damagedbyexplosions="true" impacttolerance="6" vtsound="%ModDir%/More Arts (AOCS)/Items/trinketrain.ogg" vtparticle="artmod_rain">
     <Sprite texture="%ModDir%/More Arts (AOCS)/Items/alientrinket17.png" depth="0.6" sourcerect="0,0,28,68" origin="0.5,0.5" />
     <Body width="30" height="55" density="20" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,5" handle2="0,-5" msg="ItemMsgPickUpSelect">

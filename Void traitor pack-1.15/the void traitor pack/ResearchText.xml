@@ -8,4 +8,5 @@
   <entitydescription.vt_rnd_server>Хранит очки исследований станции. Сломанный сервер теряет их.</entitydescription.vt_rnd_server>
   <entityname.vt_rnd_console>Консоль РНД</entityname.vt_rnd_console>
   <entitydescription.vt_rnd_console>Дерево исследований: здесь очки сервера тратят на технологии.</entitydescription.vt_rnd_console>
+  <subcategory.vt_research>РНД (VoidTraitor)</subcategory.vt_research>
 </infotexts>

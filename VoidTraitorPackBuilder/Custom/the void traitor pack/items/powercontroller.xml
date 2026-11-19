@@ -2,7 +2,7 @@
 <Items>
   <!-- The vanilla power distributor with a power switch for engineering access (traitormod Lua/gamemodes/station/powercontroller.lua).
        There are no supply ratio signal inputs, so a wired signal cannot bring power back past the switch. -->
-  <Item identifier="vt_powercontroller" name="" tags="junctionbox,vt_powercontroller" category="Electrical,Machine" scale="0.5" spritecolor="190,210,235,255" linkable="true" allowedlinks="reactor" damagedbyexplosions="true" explosiondamagemultiplier="0.2" GrabWhenSelected="true">
+  <Item identifier="vt_powercontroller" subcategory="vt_station" name="" tags="junctionbox,vt_powercontroller" category="Electrical,Machine" scale="0.5" spritecolor="190,210,235,255" linkable="true" allowedlinks="reactor" damagedbyexplosions="true" explosiondamagemultiplier="0.2" GrabWhenSelected="true">
     <Sprite texture="Content/Items/Electricity/PowerDistributor.png" sourcerect="0,0,112,128" depth="0.8" canflipx="false" origin="0.5,0.5" />
     <UpgradePreviewSprite texture="Content/UI/WeaponUI.png" sourcerect="99,961,28,32" origin="0.5,0.45" />
     <BrokenSprite texture="Content/Items/Electricity/PowerDistributor.png" sourcerect="128,0,112,128" depth="0.8" maxcondition="80" fadein="true" />

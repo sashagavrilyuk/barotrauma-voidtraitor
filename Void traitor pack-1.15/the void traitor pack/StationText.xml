@@ -47,4 +47,5 @@
   <tagdescription.vt_engineeringloot>В начале раунда Station сюда кладутся инструменты инженера (StationLoot.vt_engineeringloot).</tagdescription.vt_engineeringloot>
   <tagname.vt_smugglerstash>Тайник контрабанды</tagname.vt_smugglerstash>
   <tagdescription.vt_smugglerstash>Место для тайника: в начале раунда Station в один случайный из таких контейнеров прячутся ценности (SmugglerStash). Если на карте нет ни одного, тайник прячется в обычный шкаф.</tagdescription.vt_smugglerstash>
+  <subcategory.vt_station>Станция (VoidTraitor)</subcategory.vt_station>
 </infotexts>
