@@ -74,6 +74,7 @@
   <Text file="%ModDir%/the void traitor pack/XenoarchText.xml" />
   <Item file="%ModDir%/the void traitor pack/items/anomalies.xml" />
   <Text file="%ModDir%/the void traitor pack/AnomaliesText.xml" />
+  <Text file="%ModDir%/the void traitor pack/DetachableText.xml" />
   <ContainerTag file="%ModDir%/the void traitor pack/ContainerTags.xml" />
   <RandomEvents file="%ModDir%/Sounds/Station/Alerts.xml" />
   <RandomEvents file="%ModDir%/Sounds/Station/Nuclear/NuclearEvents.xml" />
