@@ -118,4 +118,38 @@ effects.liquid = {
     Supercritical = function(item, kind, power) flood(item, power) end,
 }
 
+-- SS14 BluespaceAnomaly: a pulse swaps the places of the anomaly and everyone near it, the further the more severe;
+-- whoever touches it ends up elsewhere in the station (its portal), and at the end everyone near it is scattered
+local function teleport(item, character, position)
+    Traitormod.Anomalies.Fx(item, "teleport", 0, character.WorldPosition)
+    character.TeleportTo(position)
+    Traitormod.Anomalies.Fx(item, "teleport", 0, position)
+end
+effects.bluespace = {
+    Pulse = function(item, kind, stability, severity, power)
+        local people = charactersNear(item.WorldPosition, kind.ShuffleRange * severity * power)
+        local places = { item.WorldPosition }
+        for _, character in ipairs(people) do places[#places + 1] = character.WorldPosition end
+        for index = #places, 2, -1 do
+            local other = math.random(index)
+            places[index], places[other] = places[other], places[index]
+        end
+        for index, character in ipairs(people) do teleport(item, character, places[index + 1]) end
+        if Vector2.Distance(places[1], item.WorldPosition) > 1 then Traitormod.Anomalies.MoveTo(item, places[1]) end
+    end,
+    Tick = function(item, kind, stability, severity)
+        local range = kind.PortalRange
+        for _, character in ipairs(charactersNear(item.WorldPosition, kind.TouchRange)) do
+            local spot = Traitormod.Anomalies.RandomSpot(item.WorldPosition, range[1], range[1] + (range[2] - range[1]) * severity)
+            if spot ~= nil then teleport(item, character, spot) end
+        end
+    end,
+    Supercritical = function(item, kind, power)
+        for _, character in ipairs(charactersNear(item.WorldPosition, kind.ShuffleRange)) do
+            local spot = Traitormod.Anomalies.RandomSpot(item.WorldPosition, 0, kind.ScatterRange * power)
+            if spot ~= nil then teleport(item, character, spot) end
+        end
+    end,
+}
+
 return effects

@@ -73,6 +73,7 @@ end
 local function setBehavior(state, behavior)
     state.Behavior = behavior
     if behavior.Secrets ~= nil then hideReadings(state) end
+    state.NextJump = behavior.Jump ~= nil and Timer.GetTime() + between(behavior.Jump.Seconds) or nil
 end
 
 local startSupercritical, finish
@@ -112,6 +113,46 @@ local function pointValue(state)
     local severity = 1 / (1 + math.exp(-7 * (state.Severity - 0.5)))
     local range = config.PointsPerSecond
     return math.floor((range[2] - range[1]) * severity * multiplier) + range[1]
+end
+
+-- SS14's SpawnOnRandomGridLocation: somewhere inside the station, here a dry room big enough for the anomaly; with a
+-- centre, a room between the two distances from it
+function anomalies.RandomSpot(center, minDistance, maxDistance)
+    local station, rooms = Submarine.MainSub, {}
+    for hull in Hull.HullList do
+        if hull.Submarine == station and not hull.IsAirlock and not hull.IsWetRoom and not hull.AvoidStaying
+            and hull.Rect.Width >= 200 and hull.Rect.Height >= 150 and hull.WaterPercentage < 30 then
+            local distance = center ~= nil and Vector2.Distance(hull.WorldPosition, center) or 0
+            if center == nil or (distance >= minDistance and distance <= maxDistance) then rooms[#rooms + 1] = hull end
+        end
+    end
+    if #rooms == 0 then return nil end
+    local rect = rooms[math.random(#rooms)].WorldRect
+    return Vector2(rect.X + rect.Width * (0.2 + 0.6 * math.random()), rect.Y - rect.Height * (0.3 + 0.3 * math.random()))
+end
+
+-- a teleport of the anomaly; the clients learn where a resting item went only when the server sends it at once
+function anomalies.MoveTo(item, position)
+    anomalies.Fx(item, "teleport", 0, item.WorldPosition)
+    local station = item.Submarine
+    item.SetTransform(ConvertUnits.ToSimUnits(station ~= nil and position - station.Position or position), 0, true, true, station)
+    item.PositionUpdateInterval = 0
+    anomalies.Fx(item, "teleport", 0, position)
+end
+
+-- SS14's ChaoticJump: a short jump in a random direction, onto a spot inside the station
+local function jump(item, state)
+    local jumpConfig = state.Behavior.Jump
+    state.NextJump = Timer.GetTime() + between(jumpConfig.Seconds)
+    for _ = 1, 10 do
+        local angle = math.random() * math.pi * 2
+        local target = item.WorldPosition + Vector2(math.cos(angle), math.sin(angle)) * between(jumpConfig.Distance)
+        local hull = Hull.FindHull(target, nil, true)
+        if hull ~= nil and hull.Submarine == item.Submarine then
+            anomalies.MoveTo(item, target)
+            return
+        end
+    end
 end
 
 local update
@@ -202,27 +243,13 @@ Hook.Add("VoidTraitor.AnomalyParticle", "Traitormod.Anomalies.Particle", functio
     end
 end)
 
--- SS14's SpawnOnRandomGridLocation: somewhere inside the station, here a dry room big enough for the anomaly
-local function randomSpot()
-    local station, rooms = Submarine.MainSub, {}
-    for hull in Hull.HullList do
-        if hull.Submarine == station and not hull.IsAirlock and not hull.IsWetRoom and not hull.AvoidStaying
-            and hull.Rect.Width >= 200 and hull.Rect.Height >= 150 and hull.WaterPercentage < 30 then
-            rooms[#rooms + 1] = hull
-        end
-    end
-    if #rooms == 0 then return nil end
-    local rect = rooms[math.random(#rooms)].WorldRect
-    return Vector2(rect.X + rect.Width * (0.2 + 0.6 * math.random()), rect.Y - rect.Height * (0.3 + 0.3 * math.random()))
-end
-
 function anomalies.CanSpawn()
-    return states ~= nil and Submarine.MainSub ~= nil and randomSpot() ~= nil
+    return states ~= nil and Submarine.MainSub ~= nil and anomalies.RandomSpot() ~= nil
 end
 
 -- an anomaly of a random kind at a random spot of the station
 function anomalies.Spawn()
-    local position = randomSpot()
+    local position = anomalies.RandomSpot()
     if states == nil or position == nil then return false end
     local station = Submarine.MainSub
     local kind = config.Types[math.random(#config.Types)]
@@ -411,6 +438,7 @@ local function tick()
             if state.Stability < config.DecayThreshold then changeHealth(item, state, config.HealthPerSecond) end
             if states[item] ~= nil then
                 if now >= state.NextPulse then pulse(item, state) end
+                if state.NextJump ~= nil and now >= state.NextJump then jump(item, state) end
                 local passive = effects[state.Type.Id].Tick
                 if passive ~= nil then passive(item, state.Type, state.Stability, state.Severity) end
             end

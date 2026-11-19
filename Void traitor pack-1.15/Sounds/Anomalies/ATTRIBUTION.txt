@@ -1,11 +1,20 @@
 VOIDTRAITOR — ANOMALY SOUNDS (Space Station 14, commit f00a9721556baf7f4d31ba8aae66afb7317c8e54)
-Source: https://github.com/space-wizards/space-station-14/tree/f00a9721556baf7f4d31ba8aae66afb7317c8e54/Resources/Audio/Machines
+Source: https://github.com/space-wizards/space-station-14/tree/f00a9721556baf7f4d31ba8aae66afb7317c8e54/Resources/Audio
 
-anomaly_generate.ogg — the anomaly generator at work
+anomaly_generate.ogg — the anomaly generator at work (Resources/Audio/Machines)
 Created by szegvari (https://freesound.org/people/szegvari/sounds/536794/), converted to mono and OGG by EmoGarbage404.
 License: CC0 1.0
 
-vessel_warning.ogg — the vessel's beep while its anomaly is unstable
+vessel_warning.ogg — the vessel's beep while its anomaly is unstable (Resources/Audio/Machines)
 Created by AUDACITIER (https://freesound.org/people/AUDACITIER/sounds/629196/), converted to mono and OGG and edited by
 EmoGarbage404; click at the beginning and end removed with a fade in and out by Pancake.
 License: Creative Commons Attribution 4.0 (CC BY 4.0) https://creativecommons.org/licenses/by/4.0/
+
+locator_beep.ogg — the anomaly locator's beep (Resources/Audio/Items)
+Created by MATRIXXX_ (https://freesound.org/people/MATRIXXX_/sounds/657947/), converted to OGG, shortened, sped up and
+pitched up by EmoGarbage404.
+License: CC0 1.0
+
+teleport_arrival.ogg — a bluespace teleport (Resources/Audio/Effects)
+From tgstation (https://github.com/tgstation/tgstation/commit/906fb0682bab6a0975b45036001c54f021f58ae7).
+License: Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0) https://creativecommons.org/licenses/by-sa/3.0/

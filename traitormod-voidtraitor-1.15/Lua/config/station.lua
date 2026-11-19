@@ -259,7 +259,8 @@ return {
         VesselExplosion = { Range = 300, Force = 5, Damage = 40, StructureDamage = 40 },
         -- SS14 takes half a stack of plasma; incendium is the nearest Barotrauma has
         Generator = { Material = "incendium", CooldownSeconds = 300, GenerationSeconds = 8 },
-        -- SS14's behaviours (Prototypes/Anomaly/behaviours.yml) but those that move or hide the anomaly; drawn by weight
+        -- SS14's behaviours (Prototypes/Anomaly/behaviours.yml) but those that hide the anomaly; drawn by weight. Jump:
+        -- every Seconds the anomaly jumps Distance away (SS14 ChaoticJump)
         Behaviors = {
             { Id = "Balanced", Weight = 3 },
             { Id = "FullSafe", Weight = 0.1, PulseFrequency = 3, PulsePower = 0.5, Points = 0.05 },
@@ -277,6 +278,8 @@ return {
             { Id = "FullUnknown", Weight = 0.5, Points = 1.9, Secrets = { 4, 6 } },
             { Id = "FastUnknown", Weight = 0.2, PulseFrequency = 0.5, Points = 1.9, Secrets = { 3, 5 } },
             { Id = "InconstancyParticleUnknown", Weight = 0.1, Points = 1.95, ShuffleOnHit = 0.5, Secrets = { 3, 5 } },
+            { Id = "Jumping", Weight = 0.3, Points = 1.8, Jump = { Seconds = { 15, 25 }, Distance = { 100, 400 } } },
+            { Id = "JumpingUnknown", Weight = 0.1, Points = 1.9, Jump = { Seconds = { 15, 25 }, Distance = { 100, 100 } }, Secrets = { 3, 5 } },
         },
         -- the kinds an event or the generator brings, each with its core after a supercritical end and its inert core
         -- after it decayed (effects: gamemodes/station/anomaly_effects.lua)
@@ -293,6 +296,10 @@ return {
             -- floods its room (SS14's liquid anomaly spills reagents; the sea is Barotrauma's)
             { Id = "liquid", Item = "vt_anomaly_liquid", Core = "vt_anomaly_core_liquid", InertCore = "vt_anomaly_core_liquid_inert",
                 Flood = 0.3 },
+            -- swaps places with the people near it, sends whoever touches it elsewhere in the station, scatters everyone
+            -- near it across the station at the end (SS14 BluespaceAnomaly and its portal)
+            { Id = "bluespace", Item = "vt_anomaly_bluespace", Core = "vt_anomaly_core_bluespace", InertCore = "vt_anomaly_core_bluespace_inert",
+                ShuffleRange = 1000, TouchRange = 100, PortalRange = { 1000, 2500 }, ScatterRange = 5000 },
         },
     },
     -- Research, as SS14's with Goob Station's tree (gamemodes/station/research.lua). Costs are SS14's; Position is the
@@ -375,8 +382,9 @@ return {
             { Id = "BasicXenoArcheology", Discipline = "Experimental", Tier = 1, Cost = 5000, Position = { -2, 2 }, Requires = { "BasicRobotics" },
                 Icon = "artifacttransportcase", Recipes = { vt_protolathe = { "artifacttransportcase" } } },
             { Id = "BasicAnomalousResearch", Discipline = "Experimental", Tier = 1, Cost = 5000, Position = { -2, 0 }, Requires = { "BasicRobotics" },
-                Icon = "vt_anomaly_scanner", Recipes = { vt_protolathe = { "vt_anomaly_scanner", "vt_ape", "vt_particle_cell_delta",
-                    "vt_particle_cell_epsilon", "vt_particle_cell_zeta", "vt_particle_cell_sigma" } } },
+                Icon = "vt_anomaly_scanner", Recipes = { vt_protolathe = { "vt_anomaly_scanner", "vt_anomaly_locator",
+                    "vt_anomaly_locator_wide", "vt_ape", "vt_particle_cell_delta", "vt_particle_cell_epsilon",
+                    "vt_particle_cell_zeta", "vt_particle_cell_sigma" } } },
             { Id = "DeterrenceTechnologies", Discipline = "Experimental", Tier = 2, Cost = 7500, Position = { -3, -2 }, Requires = { "BasicRobotics" },
                 Icon = "empgrenade", Recipes = { vt_protolathe = { "empgrenade" } } },
             { Id = "GravityManipulation", Discipline = "Experimental", Tier = 2, Cost = 10000, Position = { -4, 2 }, Requires = { "BasicXenoArcheology" },

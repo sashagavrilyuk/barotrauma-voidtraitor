@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Station anomalies, as SS14's (traitormod Lua/gamemodes/station/anomalies.lua). An anomaly is the vanilla anomaly's
      sphere in its kind's colour; it stops projectiles so that the APE's particles reach it, but nothing hurts it. Only
-     the anomaly scanner in hand reads it. The vessel and the generator are machines of science; the APE is SS14's
-     handheld particle gun with a cell for each kind of particle. Sprites of the scanner, vessel, generator and cores:
-     anomalies.png (ATTRIBUTION.txt). -->
+     the anomaly scanner in hand reads it; the locators find it. The vessel and the generator are machines of science;
+     the APE is SS14's handheld particle gun with a cell for each kind of particle. Sprites of the scanner, locators,
+     vessel, generator and cores: anomalies.png (ATTRIBUTION.txt). -->
 <Items>
   <Item name="" identifier="vt_anomaly_pyro" category="Alien" tags="vt_anomaly,vt_anomaly_panel" scale="0.3" spritecolor="255,150,90,190" damagedbyprojectiles="true" indestructible="true" hideinmenus="true" interactdistance="150">
     <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.8" origin="0.5,0.5" />
@@ -66,6 +66,21 @@
     </LightComponent>
   </Item>
 
+  <Item name="" identifier="vt_anomaly_bluespace" category="Alien" tags="vt_anomaly,vt_anomaly_panel" scale="0.3" spritecolor="110,220,255,190" damagedbyprojectiles="true" indestructible="true" hideinmenus="true" interactdistance="150">
+    <Sprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.8" origin="0.5,0.5" />
+    <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="21,1367,395,395" depth="0.75" origin="0.5,0.5" scale="1.2" rotationspeed="300" />
+    <DecorativeSprite texture="Content/Items/Alien/AlienRuins_Items.png" sourcerect="1075,1367,395,395" depth="0.7" origin="0.5,0.5" rotationspeed="-350" />
+    <Body radius="150" bodytype="Static" />
+    <ItemComponent canbeselected="true" msg="ItemMsgInteractSelect">
+      <RequiredItem items="vt_anomaly_scanner" type="Equipped" msg="vt_anomalyneedsscanner" />
+    </ItemComponent>
+    <LightComponent range="400" lightcolor="0,204,255,255" IsOn="true" castshadows="false" allowingameediting="false" flicker="0.2" flickerspeed="8" pulseamount="0.4" pulsefrequency="1.5">
+      <StatusEffect type="Always" target="This">
+        <Sound file="Content/Items/Alien/ALIEN_gravitySphereLoop.ogg" range="700" loop="true" />
+        <ParticleEmitter particle="anomaly" particlespersecond="10" anglemin="0" anglemax="360" velocitymin="0" velocitymax="120" scalemin="0.05" scalemax="0.1" colormultiplier="80,200,255,255" />
+      </StatusEffect>
+    </LightComponent>
+  </Item>
   <Item name="" identifier="vt_anomaly_scanner" category="Equipment" tags="smallitem,vt_anomaly_scanner" scale="0.6" impactsoundtag="impact_metal_light">
     <Fabricate suitablefabricators="vt_protolathe" requiredtime="10">
       <RequiredItem identifier="fpgacircuit" />
@@ -77,6 +92,50 @@
     <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="320,0,64,64" depth="0.6" origin="0.5,0.5" />
     <Body width="40" height="30" density="15" />
     <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,0" msg="ItemMsgPickUpSelect" />
+  </Item>
+
+  <!-- SS14's anomaly locators: held with a charged battery they beep, the faster the nearer the closest anomaly within
+       vtrange; the wide one reaches twice as far but beeps alike at any distance (Lua/client/station/anomalies.lua) -->
+  <Item name="" identifier="vt_anomaly_locator" category="Equipment" tags="smallitem,vt_anomaly_locator" scale="0.6" impactsoundtag="impact_metal_light" vtrange="2000" vtbeepmin="0.15" vtbeepmax="1">
+    <Fabricate suitablefabricators="vt_protolathe" requiredtime="10">
+      <RequiredItem identifier="fpgacircuit" />
+      <RequiredItem identifier="plastic" />
+    </Fabricate>
+    <Deconstruct time="10">
+      <Item identifier="plastic" />
+    </Deconstruct>
+    <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="448,64,64,64" depth="0.6" origin="0.5,0.5" />
+    <Body width="30" height="40" density="15" />
+    <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnActive" targettype="Contained" Condition="-0.1">
+        <RequiredItem items="mobilebattery" type="Contained" />
+      </StatusEffect>
+    </Holdable>
+    <ItemContainer capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery">
+      <SlotIcon slotindex="0" texture="Content/UI/StatusMonitorUI.png" sourcerect="128,448,64,64" origin="0.5,0.5" />
+      <Containable items="mobilebattery" />
+    </ItemContainer>
+  </Item>
+  <Item name="" identifier="vt_anomaly_locator_wide" category="Equipment" tags="smallitem,vt_anomaly_locator" scale="0.6" impactsoundtag="impact_metal_light" vtrange="4000" vtbeepmin="0.5" vtbeepmax="0.5">
+    <Fabricate suitablefabricators="vt_protolathe" requiredtime="10">
+      <RequiredItem identifier="fpgacircuit" />
+      <RequiredItem identifier="plastic" />
+      <RequiredItem identifier="copper" />
+    </Fabricate>
+    <Deconstruct time="10">
+      <Item identifier="plastic" />
+    </Deconstruct>
+    <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="320,128,64,64" depth="0.6" origin="0.5,0.5" />
+    <Body width="30" height="40" density="15" />
+    <Holdable slots="Any,RightHand,LeftHand" holdpos="30,-15" handle1="0,0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnActive" targettype="Contained" Condition="-0.1">
+        <RequiredItem items="mobilebattery" type="Contained" />
+      </StatusEffect>
+    </Holdable>
+    <ItemContainer capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery">
+      <SlotIcon slotindex="0" texture="Content/UI/StatusMonitorUI.png" sourcerect="128,448,64,64" origin="0.5,0.5" />
+      <Containable items="mobilebattery" />
+    </ItemContainer>
   </Item>
 
   <Item name="" identifier="vt_anomaly_vessel" category="Machine" tags="vt_anomaly_panel" scale="1" interactdistance="150">
@@ -279,6 +338,12 @@
     <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
     <LightComponent range="120" lightcolor="45,140,255,255" IsOn="true" castshadows="false" allowingameediting="false" pulseamount="0.4" pulsefrequency="1" />
   </Item>
+  <Item name="" identifier="vt_anomaly_core_bluespace" category="Material" tags="smallitem,vt_anomaly_core" scale="0.6">
+    <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="384,128,64,64" depth="0.6" origin="0.5,0.5" />
+    <Body radius="12" density="20" />
+    <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
+    <LightComponent range="120" lightcolor="0,204,255,255" IsOn="true" castshadows="false" allowingameediting="false" pulseamount="0.4" pulsefrequency="1" />
+  </Item>
   <Item name="" identifier="vt_anomaly_core_pyro_inert" category="Material" tags="smallitem,vt_anomaly_core_inert" scale="0.6" spritecolor="130,130,130,255">
     <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="384,0,64,64" depth="0.6" origin="0.5,0.5" />
     <Body radius="12" density="20" />
@@ -296,6 +361,11 @@
   </Item>
   <Item name="" identifier="vt_anomaly_core_liquid_inert" category="Material" tags="smallitem,vt_anomaly_core_inert" scale="0.6" spritecolor="130,130,130,255">
     <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="384,64,64,64" depth="0.6" origin="0.5,0.5" />
+    <Body radius="12" density="20" />
+    <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
+  </Item>
+  <Item name="" identifier="vt_anomaly_core_bluespace_inert" category="Material" tags="smallitem,vt_anomaly_core_inert" scale="0.6" spritecolor="130,130,130,255">
+    <Sprite texture="%ModDir%/the void traitor pack/items/anomalies.png" sourcerect="384,128,64,64" depth="0.6" origin="0.5,0.5" />
     <Body radius="12" density="20" />
     <Pickable slots="Any" msg="ItemMsgPickUpSelect" />
   </Item>

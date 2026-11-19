@@ -1,7 +1,8 @@
 if SERVER then return end
--- Anomalies on the client (traitormod Lua/gamemodes/station/anomalies.lua): what pulses, bolts, a supercritical
--- anomaly and the vessel's beeping look and sound like, and the window of the anomaly scanner, the vessel and the
--- generator. The server writes the window's lines and buttons; this only shows them and sends the button pressed.
+-- Anomalies on the client (traitormod Lua/gamemodes/station/anomalies.lua): what pulses, bolts, teleports, a
+-- supercritical anomaly and the vessel's beeping look and sound like, the locator's beeping, and the window of the
+-- anomaly scanner, the vessel and the generator. The server writes the window's lines and buttons; this only shows them
+-- and sends the button pressed.
 local packPath, Common = ...
 local previous = rawget(_G, "VoidTraitorAnomalyGuiState")
 if previous ~= nil then
@@ -12,7 +13,7 @@ local UI = {}
 _G.VoidTraitorAnomalyGuiState = UI
 local inputTypes = LuaUserData.CreateEnumTable("Barotrauma.InputType")
 local gameMain = LuaUserData.CreateStatic("Barotrauma.GameMain")
-local SOUND_RANGE, SOUND_GAIN = 1500, 0.8
+local SOUND_RANGE, SOUND_GAIN, LOCATOR_GAIN = 1500, 0.8, 0.5
 local TEXT_COLOR = Color(230, 230, 220, 255)
 local LINE_COLORS = {
     good = Color(90, 200, 110, 255),
@@ -32,7 +33,9 @@ local sounds = {
     bolt = loadSound("Content/Items/Electricity/MACHINERY_zap1.ogg"),
     beep = loadSound(packPath .. "/Sounds/Anomalies/vessel_warning.ogg"),
     generate = loadSound(packPath .. "/Sounds/Anomalies/anomaly_generate.ogg"),
+    teleport = loadSound(packPath .. "/Sounds/Anomalies/teleport_arrival.ogg"),
 }
+local locatorSound = loadSound(packPath .. "/Sounds/Anomalies/locator_beep.ogg")
 
 local function particle(name, position, velocity, size, color)
     local created = gameMain.ParticleManager.CreateParticle(name, position, velocity, 0, nil)
@@ -76,8 +79,55 @@ Networking.Receive("VoidTraitor_AnomalyFx", function(message)
         burst(item, position, 60)
     elseif kind == "bolt" then
         bolt(position, target)
+    elseif kind == "teleport" then
+        burst(item, target, 20)
     end
 end)
+
+-- SS14's anomaly locator, all on this client: every client already has the anomalies, and only the one holding the
+-- locator hears it. Held with a charged battery, it beeps the faster the nearer the closest anomaly within vtrange,
+-- between vtbeepmin and vtbeepmax seconds (items/anomalies.xml).
+local anomalyItems, nextBeep = {}, 0
+for item in Item.ItemList do
+    if item.HasTag("vt_anomaly") then anomalyItems[item] = true end
+end
+Hook.Add("item.created", "VoidTraitor.Anomaly.Track", function(item)
+    if item.HasTag("vt_anomaly") then anomalyItems[item] = true end
+end)
+
+local function chargedLocator(character)
+    for held in character.HeldItems do
+        if held.HasTag("vt_anomaly_locator") then
+            for battery in held.OwnInventory.AllItems do
+                if battery.Condition > 0 then return held end
+            end
+        end
+    end
+end
+
+local function updateLocator()
+    local now = Timer.GetTime()
+    if now < nextBeep then return end
+    nextBeep = now + 0.2
+    local character = Character.Controlled
+    local locator = character ~= nil and not character.IsDead and chargedLocator(character) or nil
+    if locator == nil then return end
+    local element = locator.Prefab.ConfigElement
+    local range = element.GetAttributeFloat("vtrange", 2000)
+    local nearest
+    for anomaly in pairs(anomalyItems) do
+        if anomaly.Removed then
+            anomalyItems[anomaly] = nil
+        else
+            local distance = Vector2.Distance(anomaly.WorldPosition, character.WorldPosition)
+            if distance <= range and (nearest == nil or distance < nearest) then nearest = distance end
+        end
+    end
+    if nearest == nil then return end
+    local fastest, slowest = element.GetAttributeFloat("vtbeepmin", 0.15), element.GetAttributeFloat("vtbeepmax", 1)
+    nextBeep = now + fastest + (slowest - fastest) * nearest / range
+    locatorSound.Play(LOCATOR_GAIN)
+end
 
 function UI.Send(action)
     if UI.ItemId == nil or not Networking.IsActive then return end
@@ -178,11 +228,12 @@ Common.AddWindowLayer(120, function()
 end)
 Common.InstallPausePatch("VoidTraitor.Anomaly.Pause", "VoidTraitorAnomalyGuiState")
 Hook.Add("roundEnd", "VoidTraitor.Anomaly.End", function() UI.CloseMenu() end)
-Hook.Add("think", "VoidTraitor.Anomaly.Selection", function()
+Hook.Add("think", "VoidTraitor.Anomaly.Update", function()
     -- the anomalies, the vessel and the generator share the tag
     Common.UpdateSelectedItemMenu(UI, "vt_anomaly_panel", function(selected)
         local message = Networking.Start("VoidTraitor_AnomalyOpen")
         message.WriteUInt16(UShort(selected.ID))
         Networking.Send(message)
     end)
+    if not UI.Disabled then updateLocator() end
 end)

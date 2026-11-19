@@ -8,9 +8,15 @@
   <entitydescription.vt_anomaly_gravity>Невозможный объект. Стоит ли подходить к нему так близко?</entitydescription.vt_anomaly_gravity>
   <entityname.vt_anomaly_liquid>Жидкостная аномалия</entityname.vt_anomaly_liquid>
   <entitydescription.vt_anomaly_liquid>Невозможный объект. Стоит ли подходить к нему так близко?</entitydescription.vt_anomaly_liquid>
+  <entityname.vt_anomaly_bluespace>Блюспейс-аномалия</entityname.vt_anomaly_bluespace>
+  <entitydescription.vt_anomaly_bluespace>Невозможный объект. Стоит ли подходить к нему так близко?</entitydescription.vt_anomaly_bluespace>
   <vt_anomalyneedsscanner>Нужен сканер аномалий в руке</vt_anomalyneedsscanner>
   <entityname.vt_anomaly_scanner>Сканер аномалий</entityname.vt_anomaly_scanner>
   <entitydescription.vt_anomaly_scanner>Возьмите в руку и осмотрите аномалию, чтобы узнать её показатели. Запоминает последнюю аномалию для сосуда.</entitydescription.vt_anomaly_scanner>
+  <entityname.vt_anomaly_locator>Локатор аномалий</entityname.vt_anomaly_locator>
+  <entitydescription.vt_anomaly_locator>Держите в руке с заряженной батареей: пищит тем чаще, чем ближе аномалия.</entitydescription.vt_anomaly_locator>
+  <entityname.vt_anomaly_locator_wide>Широкополосный локатор аномалий</entityname.vt_anomaly_locator_wide>
+  <entitydescription.vt_anomaly_locator_wide>Ищет аномалии вдвое дальше обычного, но не умеет определять расстояние до них.</entitydescription.vt_anomaly_locator_wide>
   <entityname.vt_anomaly_vessel>Сосуд аномалий</entityname.vt_anomaly_vessel>
   <entitydescription.vt_anomaly_vessel>Превращает излучение присвоенной аномалии в очки исследований. Если аномалия перейдёт в сверхкритическое состояние, сосуд взорвётся.</entitydescription.vt_anomaly_vessel>
   <entityname.vt_anomaly_generator>Генератор аномалий</entityname.vt_anomaly_generator>
@@ -37,6 +43,8 @@
   <entitydescription.vt_anomaly_core_gravity>Всё, что осталось от аномалии после сверхкритического состояния. Тяжелее, чем выглядит.</entitydescription.vt_anomaly_core_gravity>
   <entityname.vt_anomaly_core_liquid>Ядро жидкостной аномалии</entityname.vt_anomaly_core_liquid>
   <entitydescription.vt_anomaly_core_liquid>Всё, что осталось от аномалии после сверхкритического состояния. Всегда влажное.</entitydescription.vt_anomaly_core_liquid>
+  <entityname.vt_anomaly_core_bluespace>Ядро блюспейс-аномалии</entityname.vt_anomaly_core_bluespace>
+  <entitydescription.vt_anomaly_core_bluespace>Всё, что осталось от аномалии после сверхкритического состояния. Иногда оказывается не там, где его оставили.</entitydescription.vt_anomaly_core_bluespace>
   <entityname.vt_anomaly_core_pyro_inert>Инертное ядро пирокластической аномалии</entityname.vt_anomaly_core_pyro_inert>
   <entitydescription.vt_anomaly_core_pyro_inert>Остаток угасшей аномалии.</entitydescription.vt_anomaly_core_pyro_inert>
   <entityname.vt_anomaly_core_electric_inert>Инертное ядро электрической аномалии</entityname.vt_anomaly_core_electric_inert>
@@ -45,4 +53,6 @@
   <entitydescription.vt_anomaly_core_gravity_inert>Остаток угасшей аномалии.</entitydescription.vt_anomaly_core_gravity_inert>
   <entityname.vt_anomaly_core_liquid_inert>Инертное ядро жидкостной аномалии</entityname.vt_anomaly_core_liquid_inert>
   <entitydescription.vt_anomaly_core_liquid_inert>Остаток угасшей аномалии.</entitydescription.vt_anomaly_core_liquid_inert>
+  <entityname.vt_anomaly_core_bluespace_inert>Инертное ядро блюспейс-аномалии</entityname.vt_anomaly_core_bluespace_inert>
+  <entitydescription.vt_anomaly_core_bluespace_inert>Остаток угасшей аномалии.</entitydescription.vt_anomaly_core_bluespace_inert>
 </infotexts>

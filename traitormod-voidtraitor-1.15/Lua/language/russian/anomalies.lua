@@ -35,6 +35,8 @@ language.AnomalyBehaviors = {
     FullUnknown = "Обнаружены помехи. Часть данных не считывается.",
     FastUnknown = "Импульсы заметно чаще.",
     InconstancyParticleUnknown = "Непостоянство: со временем типы частиц меняются.",
+    Jumping = "Координатная нестабильность: аномалия перемещается.",
+    JumpingUnknown = "Координатная нестабильность: аномалия перемещается.",
 }
 language.AnomalyPulseTimer = "До следующего импульса: %s"
 language.AnomalySupercritical = "Аномалия переходит в сверхкритическое состояние!"

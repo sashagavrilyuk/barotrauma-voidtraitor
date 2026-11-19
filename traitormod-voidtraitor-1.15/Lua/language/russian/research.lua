@@ -48,7 +48,7 @@ language.ResearchTechnologies = {
     PortableMicrofusionWeaponry = { Name = "Ядерное оружие", Description = "Ядерное ружьё." },
     BasicRobotics = { Name = "Основы робототехники", Description = "Боевой дрон-защитник." },
     BasicXenoArcheology = { Name = "Основы ксеноархеологии", Description = "Контейнер для перевозки артефактов." },
-    BasicAnomalousResearch = { Name = "Основы исследования аномалий", Description = "Сканер аномалий, излучатель частиц A.P.E. и его ячейки." },
+    BasicAnomalousResearch = { Name = "Основы исследования аномалий", Description = "Сканер и локаторы аномалий, излучатель частиц A.P.E. и его ячейки." },
     DeterrenceTechnologies = { Name = "Средства сдерживания", Description = "ЭМИ-гранаты." },
     GravityManipulation = { Name = "Управление гравитацией", Description = "Гравитационные снаряды." },
     AdvancedEntertainment = { Name = "Развлечения", Description = "Тарелки и сигары." },
