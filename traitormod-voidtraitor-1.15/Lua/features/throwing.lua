@@ -1,12 +1,14 @@
 -- Throwing and placing any item (client half: Void traitor pack-1.15 Lua/client/throwing.lua). Holding F winds up and
 -- releasing it throws the item in hand, or the one under the cursor in the inventory; holding X reaches out with the
--- item in hand and releasing it lets the item go where the hand is. The server times the wind-up itself, aims along
--- the cursor direction the game already syncs and checks every request; nearby clients get a short start/stop message
--- and animate the arms themselves.
+-- item in hand and releasing it lets the item go where the hand is. Grenades and other items the game throws itself
+-- keep its controls, but the longer the player aims before throwing, the farther they fly. The server times every
+-- wind-up itself, aims along the cursor direction the game already syncs and checks every request; nearby clients get
+-- a short start/stop message and animate the arms themselves.
 local NET_REQUEST = "VoidTraitor_Throw"
 local NET_STATE = "VoidTraitor_ThrowState"
 
 local ACTION_THROW, ACTION_PLACE, ACTION_RELEASE, ACTION_CANCEL = 0, 1, 2, 3
+local ACTION_AIM, ACTION_AIM_THROW, ACTION_AIM_END = 4, 5, 6
 
 local COOLDOWN = 0.4
 -- the wind-up, the speed and the mass and arm penalties must match the trajectory the client draws
@@ -30,6 +32,9 @@ local REACH_TOLERANCE = 60
 -- clients farther away than this cannot see the character and get no arm animation
 local VIEW_DISTANCE = 3000
 local FLIGHT_CHECK_MS = 100
+local AIM_CHECK_MS = 100
+-- after the click a grenade still finishes the game's swing before it leaves the hand
+local GRENADE_SWING_TIME = 1
 -- ServerLog.MessageType.ItemInteraction
 local LOG_ITEM_INTERACTION = 1
 
@@ -44,6 +49,9 @@ local lastStart = {}
 -- thrown item -> the collisions it had before, restored once it comes to rest
 local flying = {}
 local watchingFlight = false
+-- client -> { Character, Item, Throwable, BaseForce, Start, Charge, Thrown } while it aims a grenade
+local aiming = {}
+local watchingAim = false
 
 local function canAct(character)
     return character ~= nil and not character.Removed and not character.IsDead and character.AllowInput
@@ -78,10 +86,13 @@ local function armDamage(character, item)
     return math.min(damage, 1)
 end
 
+local function windUp(charge)
+    return MIN_CHARGE + (1 - MIN_CHARGE) * charge
+end
+
 local function throwSpeed(character, item, charge)
     local massFactor = math.max(MIN_MASS_FACTOR, math.min(1, math.sqrt(LIGHT_MASS / item.body.Mass)))
-    return MAX_SPEED * (MIN_CHARGE + (1 - MIN_CHARGE) * charge) * massFactor
-        * (1 - ARM_DAMAGE_PENALTY * armDamage(character, item))
+    return MAX_SPEED * windUp(charge) * massFactor * (1 - ARM_DAMAGE_PENALTY * armDamage(character, item))
 end
 
 local function sendState(character, action, itemId)
@@ -170,6 +181,8 @@ local function start(client, action, itemId)
     local item = Entity.FindEntityByID(itemId)
     if item == nil or not LuaUserData.IsTargetType(item, "Barotrauma.Item") or not ownsItem(character, item) then return end
     if action == ACTION_PLACE and not isHeld(character, item) then return end
+    -- the game throws grenades itself; F leaves them to it
+    if action == ACTION_THROW and item.GetComponentString("Throwable") ~= nil then return end
 
     if pending[client] ~= nil then sendState(pending[client].Character, ACTION_CANCEL, 0) end
     lastStart[client] = now
@@ -194,11 +207,75 @@ local function release(client, state, point)
     end
 end
 
+local function endAim(client)
+    local state = aiming[client]
+    if not state.Item.Removed then state.Throwable.ThrowForce = state.BaseForce end
+    aiming[client] = nil
+end
+
+-- The game throws a grenade with the force it finds when the swing ends, so while the player aims it follows the
+-- wind-up so far, until the click fixes it; once the grenade has left the hand it gets its own force back. The client
+-- reports the aim itself: the game's aim input can reach the server after this message.
+local function watchAim()
+    local now = Timer.GetTime()
+    for client, state in pairs(aiming) do
+        local character = state.Character
+        if state.Item.Removed or character.Removed or not isHeld(character, state.Item)
+            or (state.Charge ~= nil and now - state.Thrown > GRENADE_SWING_TIME) then
+            endAim(client)
+        elseif state.Charge == nil then
+            state.Throwable.ThrowForce = state.BaseForce * windUp(math.min(1, (now - state.Start) / CHARGE_TIME))
+        end
+    end
+    if next(aiming) == nil then
+        watchingAim = false
+        return
+    end
+    Timer.Wait(watchAim, AIM_CHECK_MS)
+end
+
+local function startAim(client, itemId)
+    local character = client.Character
+    local item = Entity.FindEntityByID(itemId)
+    if not canAct(character) or item == nil or not LuaUserData.IsTargetType(item, "Barotrauma.Item")
+        or item.Removed or not isHeld(character, item) then
+        return
+    end
+    local throwable = item.GetComponentString("Throwable")
+    if throwable == nil then return end
+    if aiming[client] ~= nil then endAim(client) end
+    aiming[client] = { Character = character, Item = item, Throwable = throwable, BaseForce = throwable.ThrowForce,
+        Start = Timer.GetTime() }
+    throwable.ThrowForce = throwable.ThrowForce * windUp(0)
+    if not watchingAim then
+        watchingAim = true
+        Timer.Wait(watchAim, AIM_CHECK_MS)
+    end
+end
+
+local function aimThrow(client)
+    local state = aiming[client]
+    if state == nil or state.Charge ~= nil then return end
+    local now = Timer.GetTime()
+    state.Charge = math.min(1, (now - state.Start) / CHARGE_TIME)
+    state.Thrown = now
+    state.Throwable.ThrowForce = state.BaseForce * windUp(state.Charge)
+end
+
 Networking.Receive(NET_REQUEST, function(message, client)
     if not Game.RoundStarted then return end
     local action = message.ReadByte()
     if action == ACTION_THROW or action == ACTION_PLACE then
         start(client, action, message.ReadUInt16())
+        return
+    elseif action == ACTION_AIM then
+        startAim(client, message.ReadUInt16())
+        return
+    elseif action == ACTION_AIM_THROW then
+        aimThrow(client)
+        return
+    elseif action == ACTION_AIM_END then
+        if aiming[client] ~= nil and aiming[client].Charge == nil then endAim(client) end
         return
     end
     local state = pending[client]
@@ -216,9 +293,11 @@ Hook.Add("roundEnd", "Traitormod.Throwing.RoundEnd", function()
     pending = {}
     lastStart = {}
     flying = {}
+    aiming = {}
 end)
 
 Hook.Add("client.disconnected", "Traitormod.Throwing.Disconnect", function(client)
     pending[client] = nil
     lastStart[client] = nil
+    if aiming[client] ~= nil then endAim(client) end
 end)
