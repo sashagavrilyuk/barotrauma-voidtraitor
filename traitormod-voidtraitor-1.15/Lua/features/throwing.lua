@@ -1,9 +1,9 @@
--- Throwing and placing any item (client half: Void traitor pack-1.15 Lua/client/throwing.lua). Holding F winds up and
--- releasing it throws the item in hand, or the one under the cursor in the inventory; holding X reaches out with the
--- item in hand and releasing it lets the item go where the hand is. Grenades and other items the game throws itself
--- keep its controls, but the longer the player aims before throwing, the farther they fly. The server times every
--- wind-up itself, aims along the cursor direction the game already syncs and checks every request; nearby clients get
--- a short start/stop message and animate the arms themselves.
+-- Throwing and placing any item (client half: Void traitor pack-1.15 Lua/client/throwing.lua). F starts winding up the
+-- item in hand, or the one under the cursor in the inventory, and the left mouse button throws it; X reaches out with
+-- the item in hand and the left mouse button lets it go where the hand is. Grenades and other items the game throws
+-- itself keep its controls, but the longer the player aims before throwing, the farther they fly. The server times
+-- every wind-up itself, aims along the cursor direction the game already syncs and checks every request; nearby
+-- clients get a short start/stop message and animate the arms themselves.
 local NET_REQUEST = "VoidTraitor_Throw"
 local NET_STATE = "VoidTraitor_ThrowState"
 
@@ -179,7 +179,9 @@ local function start(client, action, itemId)
     local now = Timer.GetTime()
     if not canAct(character) or now - (lastStart[client] or -COOLDOWN) < COOLDOWN then return end
     local item = Entity.FindEntityByID(itemId)
-    if item == nil or not LuaUserData.IsTargetType(item, "Barotrauma.Item") or not ownsItem(character, item) then return end
+    if item == nil or not LuaUserData.IsTargetType(item, "Barotrauma.Item") or not ownsItem(character, item) then
+        return
+    end
     if action == ACTION_PLACE and not isHeld(character, item) then return end
     -- the game throws grenades itself; F leaves them to it
     if action == ACTION_THROW and item.GetComponentString("Throwable") ~= nil then return end

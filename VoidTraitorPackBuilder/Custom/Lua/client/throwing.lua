@@ -1,14 +1,17 @@
 if SERVER then return end
 
--- Client half of throwing and placing (traitormod Lua/features/throwing.lua). Holding F winds up and releasing it
--- throws the item in hand, or the one under the cursor in the inventory; holding X reaches out with the item in hand and
--- releasing it lets the item go where the hand is. Grenades and other items the game throws itself keep its controls,
--- but the longer the player aims before throwing, the farther they fly. The server decides what happens; this file
--- sends the keys, draws the own trajectory and moves the arms of every nearby character the server reports.
+-- Client half of throwing and placing (traitormod Lua/features/throwing.lua). F starts winding up the item in hand, or
+-- the one under the cursor in the inventory, and the left mouse button throws it; X reaches out with the item in hand
+-- and the left mouse button lets it go where the hand is. F, X or the right mouse button cancels. Grenades and other
+-- items the game throws itself keep its controls, but the longer the player aims before throwing, the farther they fly.
+-- The server decides what happens; this file sends the keys, draws the own trajectory and moves the arms of every
+-- nearby character the server reports.
 local NET_REQUEST = "VoidTraitor_Throw"
 local NET_STATE = "VoidTraitor_ThrowState"
 local THINK_HOOK = "VoidTraitor.Throwing"
 local PATCH_ID = "VoidTraitor.Throwing.Draw"
+local POSE_PATCH_ID = "VoidTraitor.Throwing.Pose"
+local INPUT_PATCH_ID = "VoidTraitor.Throwing.Input"
 
 local ACTION_THROW, ACTION_PLACE, ACTION_RELEASE, ACTION_CANCEL = 0, 1, 2, 3
 local ACTION_AIM, ACTION_AIM_THROW, ACTION_AIM_END = 4, 5, 6
@@ -23,10 +26,16 @@ local LIGHT_MASS = 1.5
 local MIN_MASS_FACTOR = 0.1
 local ARM_DAMAGE_PENALTY = 0.5
 
--- the hand travels from the aim direction to this angle above and behind the head while winding up
-local WINDUP_ANGLE = math.rad(160)
+-- the arm swings the item around the shoulder as in the game's grenade throw: from pointing down to straight up while
+-- winding up, then forward on release
+local WINDUP_START_ANGLE = -math.pi / 2
+local WINDUP_END_ANGLE = math.pi / 2
 local SWING_TIME = 0.2
 local SWING_END_ANGLE = math.rad(-20)
+-- where the hand holds the item relative to the shoulder, in sim units: Throwable's default aim position
+local HOLD_OFFSET = Vector2(0.45, 0.1)
+-- the arm speed limit the game's hold pose uses
+local MAX_ARM_SPIN = 15
 -- a thrown item counts as landed once it is this slow, as in the server's check
 local REST_SPEED_SQUARED = 0.01
 -- the drop reaches this client separately from the throw message: wait a moment before checking whether it is held
@@ -48,14 +57,19 @@ local HANDS = {
 }
 
 local inventory = LuaUserData.CreateStatic("Barotrauma.Inventory")
-local noMove = Vector2(0, 0)
+-- each component type has its own Lua descriptor, so the field is opened on both types that hold items this way
+LuaUserData.MakeFieldAccessible(LuaUserData.RegisterType("Barotrauma.Items.Components.Holdable"), "scaledHandlePos")
+LuaUserData.MakeFieldAccessible(LuaUserData.RegisterType("Barotrauma.Items.Components.MeleeWeapon"), "handlePos")
+local zero = Vector2(0, 0)
 local flightCollisions = bit32.bor(Physics.CollisionWall, Physics.CollisionLevel)
 
--- character -> { Action, Item, Start, Swing } for every character whose arms move, the own one included
+-- character -> { Action, Item, Start, Charge, Swing } for every character whose arms move, the own one included
 local posers = {}
--- the own action between the key press and its release
+-- the own action between the key press and the click
 local own = nil
 local lastStart = -COOLDOWN
+-- the click that threw or placed keeps away from the game until the button is released
+local holdingClick = false
 -- the own grenade while aiming: { Item, Throwable, BaseForce, Start, Charge, Thrown }; Charge is fixed by the click
 local aim = nil
 -- thrown item -> { CollidesWith, Since }
@@ -126,23 +140,48 @@ local function send(action, item, point)
     Networking.Send(message)
 end
 
--- The hand target for the arm pose: the game's own reach pose (as when repairing or picking an item up) pulls both
--- hands to it, never farther than the arm, and the held item follows the hand.
-local function handTarget(character, state, now)
-    if state.Action == ACTION_PLACE then return character.CursorWorldPosition end
-    local anim = character.AnimController
-    local facing = anim.Dir
-    local direction = aimDirection(character)
-    local aimAngle = math.atan2(direction.Y, direction.X * facing)
-    local angle
-    if state.Swing ~= nil then
-        local from = aimAngle + (WINDUP_ANGLE - aimAngle) * state.Charge
-        angle = from + (aimAngle + SWING_END_ANGLE - from) * math.min(1, (now - state.Swing) / SWING_TIME)
-    else
-        angle = aimAngle + (WINDUP_ANGLE - aimAngle) * chargeOf(state, now)
+local function windUpAngle(charge)
+    return WINDUP_START_ANGLE + (WINDUP_END_ANGLE - WINDUP_START_ANGLE) * charge
+end
+
+-- The arm angle from facing forward: towards the cursor when placing, along the wind-up and the swing when throwing.
+local function poseAngle(character, state, now)
+    if state.Action == ACTION_PLACE then
+        local direction = aimDirection(character)
+        local angle = math.atan2(direction.Y, direction.X * character.AnimController.Dir)
+        return math.max(WINDUP_START_ANGLE, math.min(WINDUP_END_ANGLE, angle))
     end
-    local torso = anim.GetLimb(LimbType.Torso) or anim.MainLimb
-    return torso.WorldPosition + Vector2(facing * math.cos(angle), math.sin(angle)) * ConvertUnits.ToDisplayUnits(anim.ArmLength)
+    if state.Swing ~= nil then
+        local from = windUpAngle(state.Charge)
+        return from + (SWING_END_ANGLE - from) * math.min(1, (now - state.Swing) / SWING_TIME)
+    end
+    return windUpAngle(chargeOf(state, now))
+end
+
+local function holdableOf(item)
+    for component in item.Components do
+        if LuaUserData.IsTargetType(component, "Barotrauma.Items.Components.Holdable") then return component end
+    end
+    return nil
+end
+
+-- A held item is posed through the game's own hold pose, as a grenade is while it is thrown: both hands stay on its
+-- handles. An empty hand (an item thrown from the inventory) is moved along the same arc.
+local function pose(character, state, angle, deltaTime)
+    local anim = character.AnimController
+    local holdable = isHeld(character, state.Item) and holdableOf(state.Item) or nil
+    -- an item that follows the hand's rotation gets no arm pose from the game, so its hand is moved below
+    if holdable ~= nil and not holdable.UseHandRotationForHoldAngle then
+        -- a melee weapon holds the item by its unscaled handles and never fills the scaled ones (MeleeWeapon.Update)
+        local handles = LuaUserData.IsTargetType(holdable, "Barotrauma.Items.Components.MeleeWeapon")
+            and holdable.handlePos or holdable.scaledHandlePos
+        anim.HoldItem(deltaTime, state.Item, handles, HOLD_OFFSET, false, angle)
+        return
+    end
+    local params = anim.CurrentAnimationParams
+    anim.HandIK(anim.GetLimb(LimbType.RightHand),
+        anim.AimSourceSimPos + Vector2(anim.Dir * math.cos(angle), math.sin(angle)) * anim.ArmLength,
+        params.ArmIKStrength, params.HandIKStrength, MAX_ARM_SPIN)
 end
 
 local function heldItem(character)
@@ -187,6 +226,7 @@ local function finish(character, now)
         send(ACTION_RELEASE, nil, own.Item.WorldPosition)
     end
     own = nil
+    holdingClick = true
 end
 
 local function cancel(character)
@@ -196,8 +236,9 @@ local function cancel(character)
 end
 
 local function updateKeys(character, now)
+    local typing = GUI.KeyboardDispatcher.Subscriber ~= nil
     if own == nil then
-        if GUI.KeyboardDispatcher.Subscriber ~= nil or not canAct(character) or now - lastStart < COOLDOWN then return end
+        if typing or not canAct(character) or now - lastStart < COOLDOWN then return end
         if PlayerInput.KeyHit(THROW_KEY) then
             begin(character, ACTION_THROW, hoveredItem(character) or heldItem(character), now)
         elseif PlayerInput.KeyHit(PLACE_KEY) then
@@ -206,21 +247,11 @@ local function updateKeys(character, now)
         return
     end
     if not canAct(character) or own.Item.Removed or own.Item.GetRootInventoryOwner() ~= character
-        or PlayerInput.SecondaryMouseButtonDown() then
+        or PlayerInput.SecondaryMouseButtonDown()
+        or (not typing and (PlayerInput.KeyHit(THROW_KEY) or PlayerInput.KeyHit(PLACE_KEY))) then
         cancel(character)
-    elseif not PlayerInput.KeyDown(own.Action == ACTION_THROW and THROW_KEY or PLACE_KEY) then
+    elseif PlayerInput.PrimaryMouseButtonDown() and GUI.MouseOn == nil and not inventory.IsMouseOnInventory then
         finish(character, now)
-    end
-end
-
-local function updatePosers(now)
-    for character, state in pairs(posers) do
-        if character.Removed or character.IsDead or state.Item.Removed
-            or (state.Swing ~= nil and now - state.Swing > SWING_TIME) then
-            posers[character] = nil
-        else
-            character.AnimController.UpdateUseItem(true, handTarget(character, state, now), noMove)
-        end
     end
 end
 
@@ -274,21 +305,45 @@ local function think()
     local now = Timer.GetTime()
     local character = Character.Controlled
     if own ~= nil and character ~= own.Character then cancel(own.Character) end
+    if holdingClick and not PlayerInput.PrimaryMouseButtonHeld() then holdingClick = false end
     if character ~= nil then
         updateKeys(character, now)
         updateAim(character, now)
     elseif aim ~= nil then
         endAim()
     end
-    if next(posers) ~= nil then updatePosers(now) end
     if next(flying) ~= nil then updateFlying(now) end
 end
+
+-- While a throw or a placement waits for the click, the click must not shoot, use or select anything too. The game
+-- resets the same inputs itself while the cursor is over the inventory (Character.ControlLocalPlayer).
+Hook.Patch(INPUT_PATCH_ID, "Barotrauma.Character", "ControlLocalPlayer", function(instance)
+    if own == nil and not holdingClick then return end
+    instance.ClearInput(InputType.Shoot)
+    instance.ClearInput(InputType.Use)
+    instance.ClearInput(InputType.Select)
+end, Hook.HookMethodType.After)
+
+-- Items queue their hold pose while they update and the game applies it after the physics step; queuing the throw
+-- pose here, once every item has updated, replaces theirs for the characters that are throwing or placing.
+Hook.Patch(POSE_PATCH_ID, "Barotrauma.Character", "UpdateAnimAll", function(instance, ptable)
+    if next(posers) == nil then return end
+    local now = Timer.GetTime()
+    for character, state in pairs(posers) do
+        if character.Removed or character.IsDead or state.Item.Removed
+            or (state.Swing ~= nil and now - state.Swing > SWING_TIME) then
+            posers[character] = nil
+        else
+            pose(character, state, poseAngle(character, state, now), ptable["deltaTime"])
+        end
+    end
+end, Hook.HookMethodType.After)
 
 -- The flight both throws take: from the start along the velocity (in m/s), through platforms, until the first wall.
 local function drawTrajectory(spriteBatch, cam, character, start, velocity)
     velocity = ConvertUnits.ToDisplayUnits(velocity)
     local gravity = ConvertUnits.ToDisplayUnits(GRAVITY)
-    local offset = character.Submarine ~= nil and character.Submarine.SimPosition or noMove
+    local offset = character.Submarine ~= nil and character.Submarine.SimPosition or zero
     local previous = start
     for step = 1, math.floor(TRAJECTORY_TIME / TRAJECTORY_STEP) do
         local t = step * TRAJECTORY_STEP
@@ -311,7 +366,8 @@ end
 local function drawItemsInHand(spriteBatch, cam)
     for character, state in pairs(posers) do
         local item = state.Item
-        if state.Action == ACTION_THROW and state.Swing == nil and item.Sprite ~= nil and not isHeld(character, item) then
+        if state.Action == ACTION_THROW and state.Swing == nil and item.Sprite ~= nil
+            and not isHeld(character, item) then
             local hand = character.AnimController.GetLimb(LimbType.RightHand)
             item.Sprite.Draw(spriteBatch, cam.WorldToScreen(hand.DrawPosition), item.SpriteColor, -hand.Rotation,
                 item.Scale * cam.Zoom)
@@ -360,6 +416,7 @@ local function stop()
     Hook.Remove("think", THINK_HOOK)
     posers = {}
     own = nil
+    holdingClick = false
     aim = nil
     flying = {}
 end
