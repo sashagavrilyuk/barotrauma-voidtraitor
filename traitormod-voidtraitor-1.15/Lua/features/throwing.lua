@@ -9,6 +9,8 @@ local NET_STATE = "VoidTraitor_ThrowState"
 
 local ACTION_THROW, ACTION_PLACE, ACTION_RELEASE, ACTION_CANCEL = 0, 1, 2, 3
 local ACTION_AIM, ACTION_AIM_THROW, ACTION_AIM_END = 4, 5, 6
+-- one item per hand
+local MAX_ITEMS = 2
 
 local COOLDOWN = 0.4
 -- the wind-up, the speed and the mass and arm penalties must match the trajectory the client draws
@@ -43,7 +45,7 @@ local HANDS = {
     { Slot = InvSlotType.LeftHand, Limb = LimbType.LeftHand },
 }
 
--- client -> { Action, Character, Item, Start } between the key press and its release
+-- client -> { Action, Character, Items, Start } between the key press and the click
 local pending = {}
 local lastStart = {}
 -- thrown item -> the collisions it had before, restored once it comes to rest
@@ -95,7 +97,7 @@ local function throwSpeed(character, item, charge)
     return MAX_SPEED * windUp(charge) * massFactor * (1 - ARM_DAMAGE_PENALTY * armDamage(character, item))
 end
 
-local function sendState(character, action, itemId)
+local function sendState(character, action, items)
     for _, client in pairs(Client.ClientList) do
         local viewer = client.Character
         if viewer == nil or viewer.IsDead
@@ -103,7 +105,8 @@ local function sendState(character, action, itemId)
             local message = Networking.Start(NET_STATE)
             message.WriteUInt16(character.ID)
             message.WriteByte(action)
-            message.WriteUInt16(itemId)
+            message.WriteByte(#items)
+            for _, item in ipairs(items) do message.WriteUInt16(item.ID) end
             Networking.Send(message, client.Connection)
         end
     end
@@ -127,20 +130,22 @@ local function watchFlight()
     Timer.Wait(watchFlight, FLIGHT_CHECK_MS)
 end
 
--- Like Throwable: drop the item, then push it from the hand; until it comes to rest it flies through platforms.
+-- Like Throwable: drop the item and push it; until it comes to rest it flies through platforms. It starts from the
+-- shoulder along the cursor angle the client sends (measured from the shoulder), the same start and direction as the
+-- line the client draws: the server's own arm is not in the wind-up pose.
 local function throw(character, item, charge)
-    local direction = character.CursorWorldPosition - character.WorldPosition
+    local anim = character.AnimController
+    local direction = character.CursorWorldPosition - anim.AimSourceWorldPos
     if direction.LengthSquared() < 1 then
         direction = Vector2(0, 1)
     else
         direction = Vector2.Normalize(direction)
     end
     local speed = throwSpeed(character, item, charge)
-    local hand = character.AnimController.GetLimb(LimbType.RightHand).SimPosition
 
     item.Drop(character)
     if item.ParentInventory ~= nil then return false end
-    item.SetTransform(hand, 0)
+    item.SetTransform(anim.AimSourceSimPos, 0)
     flying[item] = item.body.CollidesWith
     item.body.CollidesWith = bit32.bor(Physics.CollisionWall, Physics.CollisionLevel)
     item.body.FarseerBody.IsBullet = true
@@ -174,38 +179,51 @@ local function place(character, item, point)
     return true
 end
 
-local function start(client, action, itemId)
+local function start(client, action, ids)
     local character = client.Character
     local now = Timer.GetTime()
     if not canAct(character) or now - (lastStart[client] or -COOLDOWN) < COOLDOWN then return end
-    local item = Entity.FindEntityByID(itemId)
-    if item == nil or not LuaUserData.IsTargetType(item, "Barotrauma.Item") or not ownsItem(character, item) then
-        return
+    local items = {}
+    for _, id in ipairs(ids) do
+        local item = Entity.FindEntityByID(id)
+        if item == nil or not LuaUserData.IsTargetType(item, "Barotrauma.Item") or not ownsItem(character, item)
+            or item == items[1] then
+            return
+        end
+        -- only a single item comes straight from the inventory; placing and two items need them in the hands
+        if (action == ACTION_PLACE or #ids > 1) and not isHeld(character, item) then return end
+        -- the game throws grenades itself; F leaves them to it
+        if action == ACTION_THROW and item.GetComponentString("Throwable") ~= nil then return end
+        items[#items + 1] = item
     end
-    if action == ACTION_PLACE and not isHeld(character, item) then return end
-    -- the game throws grenades itself; F leaves them to it
-    if action == ACTION_THROW and item.GetComponentString("Throwable") ~= nil then return end
 
-    if pending[client] ~= nil then sendState(pending[client].Character, ACTION_CANCEL, 0) end
+    if pending[client] ~= nil then sendState(pending[client].Character, ACTION_CANCEL, {}) end
     lastStart[client] = now
-    pending[client] = { Action = action, Character = character, Item = item, Start = now }
-    sendState(character, action, item.ID)
+    pending[client] = { Action = action, Character = character, Items = items, Start = now }
+    sendState(character, action, items)
 end
 
-local function release(client, state, point)
-    local character, item = state.Character, state.Item
-    local done = false
-    if client.Character == character and canAct(character) and ownsItem(character, item) then
-        if state.Action == ACTION_THROW then
-            done = throw(character, item, math.min(1, (Timer.GetTime() - state.Start) / CHARGE_TIME))
-        elseif isHeld(character, item) then
-            done = place(character, item, point)
+-- Throws every item of the action, or lets each go at the point the client saw it in the hand (points in item order).
+local function release(client, state, points)
+    local character = state.Character
+    local done = {}
+    if client.Character == character and canAct(character) then
+        local charge = math.min(1, (Timer.GetTime() - state.Start) / CHARGE_TIME)
+        for index, item in ipairs(state.Items) do
+            if ownsItem(character, item) then
+                if state.Action == ACTION_THROW then
+                    if throw(character, item, charge) then done[#done + 1] = item end
+                elseif isHeld(character, item) and place(character, item, points[index]) then
+                    done[#done + 1] = item
+                end
+            end
         end
     end
-    if done and state.Action == ACTION_THROW then
-        sendState(character, ACTION_RELEASE, item.ID)
+    if #done == 0 then
+        sendState(character, ACTION_CANCEL, {})
     else
-        sendState(character, done and ACTION_RELEASE or ACTION_CANCEL, 0)
+        -- clients make thrown items fly through platforms too
+        sendState(character, ACTION_RELEASE, state.Action == ACTION_THROW and done or {})
     end
 end
 
@@ -268,7 +286,11 @@ Networking.Receive(NET_REQUEST, function(message, client)
     if not Game.RoundStarted then return end
     local action = message.ReadByte()
     if action == ACTION_THROW or action == ACTION_PLACE then
-        start(client, action, message.ReadUInt16())
+        local count = message.ReadByte()
+        if count < 1 or count > MAX_ITEMS then return end
+        local ids = {}
+        for index = 1, count do ids[index] = message.ReadUInt16() end
+        start(client, action, ids)
         return
     elseif action == ACTION_AIM then
         startAim(client, message.ReadUInt16())
@@ -284,10 +306,13 @@ Networking.Receive(NET_REQUEST, function(message, client)
     if state == nil then return end
     pending[client] = nil
     if action == ACTION_RELEASE then
-        local point = state.Action == ACTION_PLACE and Vector2(message.ReadSingle(), message.ReadSingle()) or nil
-        release(client, state, point)
+        local points = {}
+        if state.Action == ACTION_PLACE then
+            for index = 1, #state.Items do points[index] = Vector2(message.ReadSingle(), message.ReadSingle()) end
+        end
+        release(client, state, points)
     else
-        sendState(state.Character, ACTION_CANCEL, 0)
+        sendState(state.Character, ACTION_CANCEL, {})
     end
 end)
 
