@@ -44,7 +44,21 @@ local HOLDABLE = [[<Holdable selectkey="Select" pickkey="Use" slots="RightHand+L
 -- prefab identifier -> the elements added to its XML
 local added = {}
 
+-- items that effects create during the round, like the radiation a shot leaves where it hits, are no fixtures to pry
+-- off, even where they have a light
+local spawnedByEffects = {}
+for prefab in ItemPrefab.Prefabs do
+    for element in prefab.ConfigElement.Descendants() do
+        if string.lower(element.Name.LocalName) == "spawnitem" then
+            local identifier = element.GetAttributeString("identifier", "")
+            if identifier == "" then identifier = element.GetAttributeString("identifiers", "") end
+            spawnedByEffects[string.lower(identifier)] = true
+        end
+    end
+end
+
 local function isDevice(prefab)
+    if spawnedByEffects[string.lower(prefab.Identifier.Value)] then return false end
     local config = prefab.ConfigElement
     local category = string.lower(config.GetAttributeString("category", ""))
     for _, excluded in ipairs(EXCLUDED_CATEGORIES) do
