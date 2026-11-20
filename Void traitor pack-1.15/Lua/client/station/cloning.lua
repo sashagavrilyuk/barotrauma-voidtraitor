@@ -144,6 +144,16 @@ Common.InstallPausePatch("VoidTraitor.Cloning.Pause", "VoidTraitorCloningGuiStat
 Hook.Patch("VoidTraitor.Cloning.Inventory", "Barotrauma.CharacterHUD", "LockInventory", { "Barotrauma.Character" }, function(_, parameters)
     if not UI.Disabled and UI.CurrentMenu ~= nil and parameters["character"] == Character.Controlled then return true end
 end, Hook.HookMethodType.After)
+-- the server lets only dead bodies, of any weight, into the scanner and the reclaimer (traitormod station/cloning.lua);
+-- the client needs the same answer to offer putting one inside
+local canEnterSubmarine = LuaUserData.CreateEnumTable("Barotrauma.CanEnterSubmarine")
+Hook.Patch("VoidTraitor.Cloning.Corpses", "Barotrauma.Items.Components.Controller", "CanPutSelectedCharacterInside", function(instance, parameters)
+    local identifier = instance.Item.Prefab.Identifier
+    if identifier ~= "vt_cloning_scanner" and identifier ~= "vt_biomass_reclaimer" then return end
+    local character = parameters["character"]
+    parameters.ReturnValue = character ~= nil and character.IsDead
+        and character.AnimController.RagdollParams.CanEnterSubmarine == canEnterSubmarine.True
+end, Hook.HookMethodType.After)
 Hook.Add("roundEnd", "VoidTraitor.Cloning.End", function() UI.CloseMenu() UI.CloseConsent() end)
 Hook.Add("think", "VoidTraitor.Cloning.Selection", function()
     Common.UpdateSelectedItemMenu(UI, "vt_cloning_console", function(selected)

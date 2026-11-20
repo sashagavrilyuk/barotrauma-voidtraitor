@@ -5,6 +5,7 @@ local json = require("json")
 local textPromptUtils = require("textpromptutils")
 LuaUserData.RegisterType("Barotrauma.ContentXElement")
 local contentElement = LuaUserData.CreateStatic("Barotrauma.ContentXElement")
+local canEnterSubmarine = LuaUserData.CreateEnumTable("Barotrauma.CanEnterSubmarine")
 local state
 local sessions = {}
 local consoleTexts = { "CloneTitle", "CloneClose", "CloneScanner", "ClonePod", "CloneLinked", "CloneNotLinked", "CloneBody",
@@ -333,6 +334,15 @@ Hook.Patch("Traitormod.Cloning.DeadOnly", "Barotrauma.Items.Components.Controlle
         character.DeselectCharacter()
     end
 end, Hook.HookMethodType.Before)
+-- the game lets anyone light enough (Character.IsContainable) be put inside once knocked out or cuffed; these two take
+-- only the dead, of any weight. The pack's client answers the same for its hint and its interaction
+Hook.Patch("Traitormod.Cloning.Corpses", "Barotrauma.Items.Components.Controller", "CanPutSelectedCharacterInside", function(instance, parameters)
+    local identifier = instance.Item.Prefab.Identifier
+    if identifier ~= "vt_cloning_scanner" and identifier ~= "vt_biomass_reclaimer" then return end
+    local character = parameters["character"]
+    parameters.ReturnValue = character ~= nil and character.IsDead
+        and character.AnimController.RagdollParams.CanEnterSubmarine == canEnterSubmarine.True
+end, Hook.HookMethodType.After)
 Hook.Add("think", "Traitormod.Cloning.Update", cloning.Update)
 Networking.Receive("VoidTraitor_CloningOpen", function(message, client)
     local console = Entity.FindEntityByID(message.ReadUInt16())

@@ -2,14 +2,6 @@
 <Items>
   <Item identifier="vt_cloning_scanner" subcategory="vt_station" name="" category="Machine" scale="0.5" interactdistance="180" tags="vt_cloning_scanner">
     <Sprite texture="Content/Items/Fabricators/FabricatorsAndDeconstructors.png" sourcerect="0,304,256,320" depth="0.8" />
-    <TriggerComponent radius="360" triggeredby="Character">
-      <StatusEffect type="Always" target="Character" IsContainable="true" LockHands="true" setvalue="true">
-        <Conditional IsDead="true" />
-      </StatusEffect>
-      <StatusEffect type="Always" target="Character" IsContainable="false" setvalue="true">
-        <Conditional IsDead="false" />
-      </StatusEffect>
-    </TriggerComponent>
     <ItemContainer capacity="1" maxstacksize="1" canbeselected="false" hideitems="true" drawinventory="false">
       <Containable items="unidentifiedbiologicalmaterial" />
     </ItemContainer>
@@ -65,11 +57,6 @@
       <Containable items="unidentifiedbiologicalmaterial" />
     </ItemContainer>
     <ItemContainer maxstacksize="64" />
-    <TriggerComponent radius="360" triggeredby="Character">
-      <StatusEffect type="Always" target="Character" IsContainable="true" LockHands="true" setvalue="true">
-        <Conditional IsDead="true" />
-      </StatusEffect>
-    </TriggerComponent>
   </Item>
   <Item identifier="vt_biomass" subcategory="vt_station" name="" category="Material" tags="smallitem,vt_biomass" maxstacksize="64" maxstacksizecharacterinventory="64" scale="0.5" cargocontaineridentifier="metalcrate">
     <Sprite texture="Content/Items/InventoryIconAtlas2.png" sourcerect="576,64,64,64" origin="0.5,0.5" color="170,90,110,255" />
