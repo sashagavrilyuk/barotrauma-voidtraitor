@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="Russian" nowhitespace="false" translatedname="Русский">
+  <entityname.vt_circuitimprinter>Принтер плат</entityname.vt_circuitimprinter>
+  <entitydescription.vt_circuitimprinter>Печатает платы устройств. Плата задаёт, что получится из каркаса.</entitydescription.vt_circuitimprinter>
+  <entityname.vt_engitechfab>Инженерный техфаб</entityname.vt_engitechfab>
+  <entitydescription.vt_engitechfab>Фабрикатор инженерного отдела: каркасы, детали, светильники и инженерные платы.</entitydescription.vt_engitechfab>
+  <entityname.vt_frame_wall>Настенный каркас</entityname.vt_frame_wall>
+  <entitydescription.vt_frame_wall>Повесьте его, вложите плату и детали, затем соберите устройство отвёрткой.</entitydescription.vt_frame_wall>
+  <entityname.vt_capacitor>Конденсатор</entityname.vt_capacitor>
+  <entitydescription.vt_capacitor>Деталь для сборки устройств.</entitydescription.vt_capacitor>
+  <entityname.vt_board_junctionbox>Плата: кабельная коробка</entityname.vt_board_junctionbox>
+  <entitydescription.vt_board_junctionbox>Вложите в настенный каркас вместе с двумя проводами и конденсатором.</entitydescription.vt_board_junctionbox>
+  <entityname.vt_lamppack_lamp>Лампа (в упаковке)</entityname.vt_lamppack_lamp>
+  <entitydescription.vt_lamppack_lamp>Повесьте на стену — станет лампой.</entitydescription.vt_lamppack_lamp>
+  <subcategory.vt_assembly>Сборка устройств (VoidTraitor)</subcategory.vt_assembly>
+  <vt.assembly.assemble>Собрать</vt.assembly.assemble>
+  <vt.assembly.disassemble>Разобрать</vt.assembly.disassemble>
+  <vt.assembly.needboard>Вложите плату</vt.assembly.needboard>
+  <vt.assembly.need>Нужно: [parts]</vt.assembly.need>
+  <vt.assembly.ready>Можно собирать отвёрткой</vt.assembly.ready>
+</infotexts>

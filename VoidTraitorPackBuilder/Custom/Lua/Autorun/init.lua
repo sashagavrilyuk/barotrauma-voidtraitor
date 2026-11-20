@@ -4,6 +4,7 @@ assert(loadfile(packPath .. "/Lua/extensions/nt_surgery_access_fix.lua"))(packPa
 assert(loadfile(packPath .. "/Lua/extensions/station_ragdoll_platforms.lua"))()
 assert(loadfile(packPath .. "/Lua/extensions/station_boats.lua"))()
 assert(loadfile(packPath .. "/Lua/extensions/detachable_devices.lua"))()
+assert(loadfile(packPath .. "/Lua/extensions/device_assembly.lua"))()
 
 if SERVER then
     assert(loadfile(packPath .. "/Lua/extensions/headset_stun.lua"))(packPath)

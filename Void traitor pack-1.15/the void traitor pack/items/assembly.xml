@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Devices built from frames, as SS14's machine frames (Lua/extensions/device_assembly.lua). A frame holds a board and
+     the parts its device needs, and a screwdriver turns it into the device; the device's own window turns it back into
+     the frame with its board and parts. Boards are printed only by the circuit imprinter and, for engineering, by the
+     engineering techfab, as Goob Station's; frames, parts and lamp packs by the vanilla fabricator and that techfab.
+     The sprites are vanilla ones in other colours for now. -->
+<Items>
+  <!-- without the fabricator tag they list only the recipes that name them -->
+  <Item identifier="vt_circuitimprinter" subcategory="vt_assembly" variantof="fabricator" tags="vt_circuitimprinter,donttakeitems,dontsellitems,largeswappabledevice">
+    <Sprite color="140,230,170,255" />
+  </Item>
+  <Item identifier="vt_engitechfab" subcategory="vt_assembly" variantof="fabricator" tags="vt_engitechfab,donttakeitems,dontsellitems,largeswappabledevice">
+    <Sprite color="255,205,120,255" />
+  </Item>
+  <Item identifier="vt_frame_wall" category="Electrical" subcategory="vt_assembly" tags="vt_frame" scale="0.5" cargocontaineridentifier="metalcrate" impactsoundtag="impact_metal_heavy">
+    <Sprite texture="Content/Items/Electricity/signalcomp.png" sourcerect="264,1,110,176" depth="0.8" origin="0.5,0.5" color="130,130,130,170" />
+    <Fabricate suitablefabricators="fabricator,vt_engitechfab" requiredtime="10">
+      <RequiredSkill identifier="mechanical" level="20" />
+      <RequiredItem identifier="steel" amount="2" />
+    </Fabricate>
+    <Deconstruct time="10">
+      <Item identifier="steel" />
+      <Item identifier="steel" />
+    </Deconstruct>
+    <Body width="110" height="176" density="30" />
+    <Holdable selectkey="Select" pickkey="Use" slots="RightHand+LeftHand" msg="vt.detach.crowbar" MsgWhenDropped="ItemMsgPickupSelect" PickingTime="5" aimpos="65,-10" handle1="0,0" attachable="true" aimable="true" AllowAttachInsideDoors="false">
+      <RequiredItem items="crowbar" type="Equipped" />
+    </Holdable>
+    <ItemContainer capacity="1" canbeselected="true" hideitems="true" slotsperrow="7" msg="ItemMsgInteractSelect">
+      <GuiFrame relativesize="0.25,0.12" anchor="Center" style="ItemUI" />
+      <Containable items="vt_board" />
+      <SubContainer capacity="6" maxstacksize="1">
+        <Containable items="wire,fpgacircuit,batterycell,vt_part" />
+      </SubContainer>
+    </ItemContainer>
+    <CustomInterface canbeselected="true" allowuioverlap="true">
+      <GuiFrame relativesize="0.12,0.07" anchor="Center" relativeoffset="0,0.1" style="ItemUI" />
+      <RequiredItem items="screwdriver" type="Equipped" />
+      <!-- the game shows a button only with an effect, a property or a wire -->
+      <Button text="vt.assembly.assemble">
+        <StatusEffect type="OnUse" target="This" />
+      </Button>
+    </CustomInterface>
+  </Item>
+  <Item identifier="vt_capacitor" category="Electrical" subcategory="vt_assembly" tags="smallitem,vt_part" maxstacksize="16" maxstacksizecharacterinventory="8" scale="0.5" cargocontaineridentifier="metalcrate" impactsoundtag="impact_metal_light">
+    <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="512,64,64,64" origin="0.5,0.5" color="120,190,255,255" />
+    <Sprite texture="Content/Items/Electricity/signalcomp.png" sourcerect="225,33,36,36" depth="0.8" origin="0.5,0.5" color="120,190,255,255" />
+    <Fabricate suitablefabricators="fabricator,vt_engitechfab" requiredtime="5">
+      <RequiredSkill identifier="electrical" level="15" />
+      <RequiredItem identifier="aluminium" />
+      <RequiredItem identifier="plastic" />
+    </Fabricate>
+    <Deconstruct time="5">
+      <Item identifier="aluminium" />
+    </Deconstruct>
+    <Body width="36" height="36" density="15" />
+    <Holdable slots="Any,RightHand,LeftHand" msg="ItemMsgPickUpSelect" />
+  </Item>
+  <Item identifier="vt_board_junctionbox" category="Electrical" subcategory="vt_assembly" tags="smallitem,vt_board" maxstacksize="1" scale="0.5" cargocontaineridentifier="metalcrate" impactsoundtag="impact_metal_light">
+    <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="512,64,64,64" origin="0.5,0.5" color="110,230,130,255" />
+    <Sprite texture="Content/Items/Electricity/signalcomp.png" sourcerect="225,33,36,36" depth="0.8" origin="0.5,0.5" color="110,230,130,255" />
+    <Fabricate suitablefabricators="vt_circuitimprinter,vt_engitechfab" requiredtime="10">
+      <RequiredSkill identifier="electrical" level="30" />
+      <RequiredItem identifier="fpgacircuit" />
+      <RequiredItem identifier="copper" />
+    </Fabricate>
+    <Deconstruct time="5">
+      <Item identifier="copper" />
+      <Item identifier="silicon" />
+    </Deconstruct>
+    <Body width="36" height="36" density="15" />
+    <Holdable slots="Any,RightHand,LeftHand" msg="ItemMsgPickUpSelect" />
+  </Item>
+  <!-- hung on a wall it becomes the vanilla lamp; recipe after BaroCraftables -->
+  <Item identifier="vt_lamppack_lamp" category="Electrical" subcategory="vt_assembly" tags="mediumitem,vt_lamppack" scale="0.5" cargocontaineridentifier="metalcrate" impactsoundtag="impact_metal_light">
+    <Sprite texture="Content/Items/Electricity/signalcomp.png" sourcerect="304,528,64,96" depth="0.8" origin="0.5,0.5" />
+    <Fabricate suitablefabricators="fabricator,vt_engitechfab" requiredtime="10">
+      <RequiredSkill identifier="electrical" level="15" />
+      <RequiredItem identifier="tin" />
+      <RequiredItem identifier="aluminium" />
+      <RequiredItem identifier="lightcomponent" />
+    </Fabricate>
+    <Deconstruct time="5">
+      <Item identifier="tin" />
+      <Item identifier="aluminium" />
+    </Deconstruct>
+    <Body width="64" height="96" density="20" />
+    <Holdable selectkey="Select" pickkey="Use" slots="RightHand+LeftHand" msg="ItemMsgPickUpSelect" aimpos="65,-10" handle1="0,0" attachable="true" aimable="true" AllowAttachInsideDoors="false" AttachAsIdentifier="lamp" />
+  </Item>
+</Items>
