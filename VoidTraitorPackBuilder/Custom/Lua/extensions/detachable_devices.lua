@@ -22,7 +22,7 @@ local EXCLUDED = {
     meleeweapon = true, rangedweapon = true, door = true, ladder = true, dockingport = true, wire = true,
     levelresource = true, projectile = true, turret = true, triggercomponent = true,
 }
--- in alien ruins only the decor comes off: buttons, terminals, pumps, chests and vents are the ruin's puzzles and traps
+-- alien terminals run the ruin's doors and traps and toxin vents are traps, so they stay
 local ALIEN_MECHANISMS = { buttonterminal = true, vent = true }
 local EXCLUDED_CATEGORIES = { "legacy", "thalamus" }
 -- in display units: the reactor (2.6 m) and the shuttle engine are carried, the main engines (3.3 and 8 m) are not
@@ -55,12 +55,9 @@ local function isDevice(prefab)
     local interactive = false
     for element in config.Elements() do
         local name = string.lower(element.Name.LocalName)
-        if EXCLUDED[name] then return false end
-        local part = INTERACTIVE[name] or (SELECTABLE_ONLY[name] and element.GetAttributeBool("canbeselected", false))
-        if alien and name ~= "lightcomponent" and (part or SELECTABLE_ONLY[name] or ALIEN_MECHANISMS[name]) then
-            return false
-        end
-        interactive = interactive or part
+        if EXCLUDED[name] or (alien and ALIEN_MECHANISMS[name]) then return false end
+        interactive = interactive or INTERACTIVE[name]
+            or (SELECTABLE_ONLY[name] and element.GetAttributeBool("canbeselected", false))
     end
     local width, height = prefab.Size.X * prefab.Scale, prefab.Size.Y * prefab.Scale
     return interactive and width >= 1 and height >= 1 and math.max(width, height) <= MAX_SIZE
@@ -119,6 +116,32 @@ Hook.Patch("VoidTraitorPack.DetachableDevices.Block", "Barotrauma.Items.Componen
             ptable.ReturnValue = false
         end
     end, Hook.HookMethodType.After)
+
+-- with a crowbar in hand the pry key only pries: a device's own action on that key, like putting a body into the
+-- scanner, would select the device, and the game stops prying an item its picker has selected (Pickable.WaitForPick)
+local yielding = {}
+
+Hook.Patch("VoidTraitorPack.DetachableDevices.PryKey", "Barotrauma.Item", "TryInteract", function(item, ptable)
+    if added[item.Prefab.Identifier.Value] == nil then return end
+    local user, holdable = ptable["user"], item.GetComponentString("Holdable")
+    if not holdable.Attached or not user.IsKeyHit(holdable.PickKey) or not holdable.HasRequiredItems(user, false)
+        or not holdable.CanBeDeattached() then
+        return
+    end
+    for component in item.Components do
+        if component ~= holdable and component.CanBeSelected and component.SelectKey == holdable.PickKey then
+            component.CanBeSelected = false
+            yielding[#yielding + 1] = component
+        end
+    end
+end, Hook.HookMethodType.Before)
+
+Hook.Patch("VoidTraitorPack.DetachableDevices.PryKeyEnd", "Barotrauma.Item", "TryInteract", function()
+    for index, component in ipairs(yielding) do
+        component.CanBeSelected = true
+        yielding[index] = nil
+    end
+end, Hook.HookMethodType.After)
 
 -- a player who joins mid-round gets every device at its map spot, and the game ignores the attach position for an item
 -- that is already attached (Holdable.ClientEventRead), so the server tells them where moved devices hang
