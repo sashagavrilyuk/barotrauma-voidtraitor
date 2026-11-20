@@ -155,7 +155,7 @@ local function sendStart(action, items)
     Networking.Send(message)
 end
 
--- A placement sends where each item was, in the order the start named them.
+-- The release sends where each item was in the hand, in the order the start named them.
 local function sendRelease(points)
     local message = Networking.Start(NET_REQUEST)
     message.WriteByte(ACTION_RELEASE)
@@ -256,17 +256,33 @@ local function begin(character, action, candidates, now)
     sendStart(action, items)
 end
 
+-- Where an item is during the action: in the hand, or drawn there when it is thrown straight from the inventory.
+local function itemPoint(character, item)
+    if isHeld(character, item) then return item.WorldPosition end
+    return character.AnimController.GetLimb(LimbType.RightHand).WorldPosition
+end
+
+-- Where the server lets a thrown item go: from the hand, or from the shoulder when a wall is in between.
+local function throwStart(character, item)
+    local point = itemPoint(character, item)
+    local target = ConvertUnits.ToSimUnits(point)
+    if character.Submarine ~= nil then target = target - character.Submarine.SimPosition end
+    if Submarine.PickBody(character.SimPosition, target, nil, Physics.CollisionWall) ~= nil then
+        return character.AnimController.AimSourceWorldPos
+    end
+    return point
+end
+
 local function finish(character, now)
+    local points = {}
+    for index, item in ipairs(own.Items) do points[index] = itemPoint(character, item) end
     if own.Action == ACTION_THROW then
         own.Charge = chargeOf(own, now)
         own.Swing = now
-        sendRelease({})
     else
         posers[character] = nil
-        local points = {}
-        for index, item in ipairs(own.Items) do points[index] = item.WorldPosition end
-        sendRelease(points)
     end
+    sendRelease(points)
     own = nil
     holdingClick = true
 end
@@ -425,8 +441,8 @@ local function drawItemsInHand(spriteBatch, cam)
     end
 end
 
--- Runs before the HUD, so the drawing covers the world but not the interface. Thrown items start from the shoulder,
--- where the server lets them go.
+-- Runs before the HUD, so the drawing covers the world but not the interface. Thrown items start from the hand, where
+-- the server lets them go.
 Hook.Patch(PATCH_ID, "Barotrauma.CharacterHUD", "Draw", function (instance, ptable)
     local aiming = aim ~= nil and aim.Charge == nil
     if next(posers) == nil and not aiming then return end
@@ -435,7 +451,7 @@ Hook.Patch(PATCH_ID, "Barotrauma.CharacterHUD", "Draw", function (instance, ptab
     if own ~= nil and own.Action == ACTION_THROW and own.Character == character then
         local charge = chargeOf(own, Timer.GetTime())
         for _, item in ipairs(own.Items) do
-            drawTrajectory(spriteBatch, cam, character, character.AnimController.AimSourceWorldPos,
+            drawTrajectory(spriteBatch, cam, character, throwStart(character, item),
                 aimDirection(character) * throwSpeed(character, item, charge))
         end
     elseif aiming then

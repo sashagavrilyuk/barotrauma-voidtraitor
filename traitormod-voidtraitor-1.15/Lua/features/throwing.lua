@@ -130,10 +130,26 @@ local function watchFlight()
     Timer.Wait(watchFlight, FLIGHT_CHECK_MS)
 end
 
--- Like Throwable: drop the item and push it; until it comes to rest it flies through platforms. It starts from the
--- shoulder along the cursor angle the client sends (measured from the shoulder), the same start and direction as the
--- line the client draws: the server's own arm is not in the wind-up pose.
-local function throw(character, item, charge)
+-- The point where the client saw the item in the hand, in sim units, if it is within arm's reach and no wall is in
+-- between: the server's own arm is not in the wind-up or placing pose.
+local function handPosition(character, item, point)
+    local anim = character.AnimController
+    local torso = anim.GetLimb(LimbType.Torso) or anim.MainLimb
+    -- the held item's centre may stick out past the hand by half its length
+    local reach = ConvertUnits.ToDisplayUnits(anim.ArmLength) + math.max(item.Rect.Width, item.Rect.Height) / 2
+        + REACH_TOLERANCE
+    -- written as "not <=" so that a NaN from the client is refused too
+    if not (Vector2.Distance(point, torso.WorldPosition) <= reach) then return nil end
+    local target = ConvertUnits.ToSimUnits(point)
+    if character.Submarine ~= nil then target = target - character.Submarine.SimPosition end
+    if Submarine.PickBody(character.SimPosition, target, nil, Physics.CollisionWall) ~= nil then return nil end
+    return target
+end
+
+-- Like Throwable: drop the item and push it; until it comes to rest it flies through platforms. It leaves from the
+-- hand, or from the shoulder when the hand is beyond a wall, along the cursor angle the client sends (measured from
+-- the shoulder): the same start and direction as the line the client draws.
+local function throw(character, item, charge, point)
     local anim = character.AnimController
     local direction = character.CursorWorldPosition - anim.AimSourceWorldPos
     if direction.LengthSquared() < 1 then
@@ -142,10 +158,11 @@ local function throw(character, item, charge)
         direction = Vector2.Normalize(direction)
     end
     local speed = throwSpeed(character, item, charge)
+    local start = handPosition(character, item, point) or anim.AimSourceSimPos
 
     item.Drop(character)
     if item.ParentInventory ~= nil then return false end
-    item.SetTransform(anim.AimSourceSimPos, 0)
+    item.SetTransform(start, 0)
     flying[item] = item.body.CollidesWith
     item.body.CollidesWith = bit32.bor(Physics.CollisionWall, Physics.CollisionLevel)
     item.body.FarseerBody.IsBullet = true
@@ -160,18 +177,10 @@ local function throw(character, item, charge)
     return true
 end
 
--- Lets the item go where the client saw it in the hand, if that is within arm's reach and no wall is in between.
+-- Lets the item go where the client saw it in the hand.
 local function place(character, item, point)
-    local anim = character.AnimController
-    local torso = anim.GetLimb(LimbType.Torso) or anim.MainLimb
-    -- the held item's centre may stick out past the hand by half its length
-    local reach = ConvertUnits.ToDisplayUnits(anim.ArmLength) + math.max(item.Rect.Width, item.Rect.Height) / 2
-        + REACH_TOLERANCE
-    -- written as "not <=" so that a NaN from the client is refused too
-    if not (Vector2.Distance(point, torso.WorldPosition) <= reach) then return false end
-    local target = ConvertUnits.ToSimUnits(point)
-    if character.Submarine ~= nil then target = target - character.Submarine.SimPosition end
-    if Submarine.PickBody(character.SimPosition, target, nil, Physics.CollisionWall) ~= nil then return false end
+    local target = handPosition(character, item, point)
+    if target == nil then return false end
 
     item.Drop(character)
     if item.ParentInventory ~= nil then return false end
@@ -203,7 +212,7 @@ local function start(client, action, ids)
     sendState(character, action, items)
 end
 
--- Throws every item of the action, or lets each go at the point the client saw it in the hand (points in item order).
+-- Throws or lets go every item of the action from the point the client saw it in the hand (points in item order).
 local function release(client, state, points)
     local character = state.Character
     local done = {}
@@ -212,7 +221,7 @@ local function release(client, state, points)
         for index, item in ipairs(state.Items) do
             if ownsItem(character, item) then
                 if state.Action == ACTION_THROW then
-                    if throw(character, item, charge) then done[#done + 1] = item end
+                    if throw(character, item, charge, points[index]) then done[#done + 1] = item end
                 elseif isHeld(character, item) and place(character, item, points[index]) then
                     done[#done + 1] = item
                 end
@@ -307,9 +316,7 @@ Networking.Receive(NET_REQUEST, function(message, client)
     pending[client] = nil
     if action == ACTION_RELEASE then
         local points = {}
-        if state.Action == ACTION_PLACE then
-            for index = 1, #state.Items do points[index] = Vector2(message.ReadSingle(), message.ReadSingle()) end
-        end
+        for index = 1, #state.Items do points[index] = Vector2(message.ReadSingle(), message.ReadSingle()) end
         release(client, state, points)
     else
         sendState(state.Character, ACTION_CANCEL, {})
