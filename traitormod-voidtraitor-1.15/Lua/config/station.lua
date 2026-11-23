@@ -173,7 +173,9 @@ return {
         AnalysisSeconds = 30,
         -- how far the analysis console reaches its analyzer
         AnalyzerRange = 500,
-        -- triggers: damage taken in total, the timer's period, how far a death is felt
+        -- triggers: physical damage taken in total (DamageTypes, as SS14's brute damage), the timer's period, how far a
+        -- death is felt
+        DamageTypes = { "blunttrauma", "lacerations", "gunshotwound", "explosiondamage" },
         DamageThreshold = 50,
         HighDamageThreshold = 500,
         TimerSeconds = 5,

@@ -8,9 +8,9 @@ Traitormod.Xenoarch = xenoarch
 local effects = dofile(Traitormod.Path .. "/Lua/gamemodes/station/xenoarch_effects.lua")
 local json = require("json")
 
-local config, artifacts
--- artifacts that appeared since the last second; their trees are made then, as SS14 makes them on spawn, once the item
--- has reached the clients the node's effects may tell
+local config, artifacts, damageTypes
+-- artifacts that appeared since the last frame; their trees are made on the next one, as SS14 makes them on spawn,
+-- once the item has reached the clients the node's effects may tell
 local pending = {}
 local consoles, sessions = {}, {}
 local consoleTexts = { "XenoarchTitle", "XenoarchClose", "XenoarchNoAnalyzer", "XenoarchNoArtifact", "XenoarchNoPower",
@@ -73,17 +73,45 @@ local function generateTree()
     return nodes, root.Id
 end
 
+-- SS14 checks its triggers every frame. Here the game watches heat, water and power itself (pack items/artifacts.xml)
+-- and calls back only while the artifact carries the tag of its node's trigger, given once the cooldown is over.
+local ARMED_TAGS = { heat = "vt_xenoarch_heat", water = "vt_xenoarch_water", electricity = "vt_xenoarch_electricity" }
+
+local activate
+
+local function armTrigger(item, state)
+    local visit, trigger = state.Visit, state.Nodes[state.Current].Trigger
+    local function stillHere()
+        return artifacts ~= nil and artifacts[item] == state and state.Visit == visit and not item.Removed
+    end
+    if trigger == "timer" then
+        local function tick()
+            if not stillHere() then return end
+            activate(item, state)
+            if stillHere() then Timer.Wait(tick, config.TimerSeconds * 1000) end
+        end
+        Timer.Wait(tick, config.TimerSeconds * 1000)
+    elseif ARMED_TAGS[trigger] ~= nil then
+        local function arm() if stillHere() then item.AddTag(ARMED_TAGS[trigger]) end end
+        local wait = state.LastActivation + config.Cooldown - Timer.GetTime()
+        if wait > 0 then Timer.Wait(arm, math.ceil(wait * 1000)) else arm() end
+    end
+end
+
 -- the effects the artifact keeps while on a node go with the node (effects.Passive)
 local function enterNode(item, state, id)
     local leaving = state.Current ~= nil and effects.Passive[state.Nodes[state.Current].Effect] or nil
     if leaving ~= nil and leaving.Exit ~= nil then leaving.Exit(item, entryOf(config.Effects, state.Nodes[state.Current].Effect)) end
+    local armed = state.Current ~= nil and ARMED_TAGS[state.Nodes[state.Current].Trigger] or nil
+    if armed ~= nil then item.RemoveTag(armed) end
     state.Current = id
+    state.Visit = (state.Visit or 0) + 1
     state.Damage = 0
-    state.TimerAt = Timer.GetTime() + config.TimerSeconds
     local node = state.Nodes[id]
     node.Discovered = true
     local entering = effects.Passive[node.Effect]
     if entering ~= nil and entering.Enter ~= nil then entering.Enter(item, entryOf(config.Effects, node.Effect)) end
+    armTrigger(item, state)
 end
 
 local function stateOf(item)
@@ -134,7 +162,7 @@ local function biasOf(item)
 end
 
 -- SS14's TryActivateArtifact: the node's effect, then on to a neighbour, unseen ones three times in four
-local function activate(item, state, activator)
+function activate(item, state, activator)
     local now = Timer.GetTime()
     if now - state.LastActivation < config.Cooldown or suppressed(item) then return end
     state.LastActivation = now
@@ -167,19 +195,57 @@ end
 -- the artifact's status effects (items/artifacts.xml) report what happened to it
 Hook.Add("VoidTraitor.ArtifactTrigger", "Traitormod.Xenoarch.Trigger", function(_, _, item, _, _, element)
     if artifacts == nil or item == nil or item.Removed then return end
-    local state, trigger = stateOf(item), element.GetAttributeString("trigger", "")
-    local current = state.Nodes[state.Current].Trigger
-    if trigger == "damage" then
-        -- blows add up, as SS14's ArtifactDamageTrigger; the artifact itself never breaks
-        state.Damage = state.Damage + item.MaxCondition - item.Condition
-        item.Condition = item.MaxCondition
-        local threshold = current == "damage" and config.DamageThreshold or current == "highdamage" and config.HighDamageThreshold
-        if threshold and state.Damage >= threshold then activate(item, state) end
-    elseif trigger == current then
-        local holder = item.ParentInventory ~= nil and item.ParentInventory.Owner or nil
-        activate(item, state, holder ~= nil and LuaUserData.IsTargetType(holder, "Barotrauma.Character") and holder or nil)
-    end
+    local state = stateOf(item)
+    if element.GetAttributeString("trigger", "") ~= state.Nodes[state.Current].Trigger then return end
+    local holder = item.ParentInventory ~= nil and item.ParentInventory.Owner or nil
+    activate(item, state, holder ~= nil and LuaUserData.IsTargetType(holder, "Barotrauma.Character") and holder or nil)
 end)
+
+-- SS14's damage triggers count brute damage (blunt, slash, piercing); here the physical afflictions of a hit or a blast
+local function physicalDamage(attack)
+    local total = 0
+    for affliction in attack.GetMultipliedAfflictions(attack.DamageMultiplier) do
+        if damageTypes[affliction.Identifier.Value] then total = total + affliction.Strength end
+    end
+    return total
+end
+
+-- blows add up while the node waits for them, as SS14's ArtifactDamageTrigger
+local function addDamage(item, state, amount)
+    local trigger = state.Nodes[state.Current].Trigger
+    local threshold = trigger == "damage" and config.DamageThreshold or trigger == "highdamage" and config.HighDamageThreshold
+    if not threshold or amount <= 0 then return end
+    state.Damage = state.Damage + amount
+    if state.Damage >= threshold then activate(item, state) end
+end
+
+-- Patched on the first Station round and kept for the session, as station/radio.lua does; outside Station rounds they
+-- return at once. A blast lowers an item's condition without OnDamaged, so it is counted where it goes off.
+local damagePatched = false
+local function patchDamage()
+    if damagePatched then return end
+    damagePatched = true
+    Hook.Patch("Traitormod.Xenoarch.Hit", "Barotrauma.Item", "AddDamage", function(item, ptable)
+        local state = artifacts ~= nil and artifacts[item] or nil
+        if state == nil then return end
+        -- the artifact itself never breaks: it gets back what the blow took
+        local attack, taken = ptable["attack"], ptable.ReturnValue.Damage
+        if taken > 0 then item.Condition = item.Condition + taken end
+        addDamage(item, state, physicalDamage(attack) * (attack.Duration ~= 0 and ptable["deltaTime"] or 1))
+    end, Hook.HookMethodType.After)
+    Hook.Patch("Traitormod.Xenoarch.Blast", "Barotrauma.Explosion", "Explode", function(explosion, ptable)
+        if artifacts == nil then return end
+        local damage = physicalDamage(explosion.Attack)
+        if damage <= 0 then return end
+        local center, range = ptable["worldPosition"], explosion.Attack.Range
+        for item, state in pairs(artifacts) do
+            local distance = not item.Removed and Vector2.Distance(item.WorldPosition, center)
+            if distance and distance < range then
+                addDamage(item, state, damage * (explosion.DistanceFalloff and 1 - distance / range or 1))
+            end
+        end
+    end, Hook.HookMethodType.After)
+end
 
 -- an instrument played near the artifact, as SS14's music trigger
 local instruments
@@ -315,6 +381,9 @@ end
 
 function xenoarch.Start(mode)
     config, artifacts, sessions = mode.Xenoarch, {}, {}
+    damageTypes = {}
+    for _, id in ipairs(config.DamageTypes) do damageTypes[id] = true end
+    patchDamage()
     consoles = { Analyzers = {}, Scans = {}, Bias = {}, BiasChanged = {}, Elapsed = 0 }
     pending = {}
     for item in Item.ItemList do
@@ -329,25 +398,18 @@ Hook.Add("item.created", "Traitormod.Xenoarch.NewItem", function(item)
     if item.HasTag("vt_artifact") then pending[item] = true end
 end)
 
--- in a powered machine, as SS14's electricity trigger; the analyzer and the artifact holder are made for artifacts
-local function electrified(item)
-    local machine = item.Container
-    if machine == nil or consoles.Analyzers[machine] ~= nil or machine.HasTag("artifactcontainer") then return false end
-    local powered = machine.GetComponentString("Powered")
-    return powered ~= nil and powered.Voltage >= 0.5
-end
-
--- the timer and electricity triggers, the effects kept on a node, open consoles: once a second
+-- new artifacts' trees on the next frame; the effects kept on a node and open consoles once a second
 Hook.Add("think", "Traitormod.Xenoarch.Update", function(deltaTime)
     if artifacts == nil then return end
+    if next(pending) ~= nil then
+        for item in pairs(pending) do
+            if not item.Removed then stateOf(item) end
+        end
+        pending = {}
+    end
     consoles.Elapsed = consoles.Elapsed + deltaTime
     if consoles.Elapsed < 1 then return end
     consoles.Elapsed = 0
-    local now = Timer.GetTime()
-    for item in pairs(pending) do
-        if not item.Removed then stateOf(item) end
-    end
-    pending = {}
     for item, state in pairs(artifacts) do
         if item.Removed then
             artifacts[item] = nil
@@ -355,12 +417,6 @@ Hook.Add("think", "Traitormod.Xenoarch.Update", function(deltaTime)
             local node = state.Nodes[state.Current]
             local passive = effects.Passive[node.Effect]
             if passive ~= nil and passive.Tick ~= nil and not suppressed(item) then passive.Tick(item, entryOf(config.Effects, node.Effect)) end
-            if node.Trigger == "timer" and now >= state.TimerAt then
-                state.TimerAt = now + config.TimerSeconds
-                activate(item, state)
-            elseif node.Trigger == "electricity" and electrified(item) then
-                activate(item, state)
-            end
         end
     end
     if next(sessions) ~= nil then refreshConsoles() end
