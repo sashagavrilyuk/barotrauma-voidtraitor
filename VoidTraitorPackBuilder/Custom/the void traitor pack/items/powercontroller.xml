@@ -15,8 +15,9 @@
         <Conditional voltage="gt 0.1" />
       </StatusEffect>
     </PowerDistributor>
-    <CustomInterface canbeselected="true" elementstates="True">
-      <GuiFrame relativesize="0.2,0.06" minsize="450,50" anchor="Center" relativeoffset="0.0,-0.29" style="ItemUI" />
+    <!-- linked to the distributor's window: the game moves it along with that window (Item.SetHUDLayout) -->
+    <CustomInterface canbeselected="true" elementstates="True" linkuitocomponent="PowerDistributor">
+      <GuiFrame relativesize="0.2,0.06" minsize="450,50" anchor="Center" relativeoffset="0.0,0.29" style="ItemUI" />
       <!-- The game hides interface elements that set no property, run no effect and have no wire, so the switch names
            a property no component has: the game shows it and sets nothing. The starting signal keeps the game from
            reading a missing one. -->
