@@ -115,10 +115,15 @@ local function watchFlight()
         if item.Removed or item.body == nil then
             flying[item] = nil
         elseif item.ParentInventory ~= nil or item.body.LinearVelocity.LengthSquared() < 0.01 then
-            item.body.CollidesWith = collidesWith
-            item.body.FarseerBody.IsBullet = false
+            -- a grenade keeps the flight the game gave it (false)
+            if collidesWith then
+                item.body.CollidesWith = collidesWith
+                item.body.FarseerBody.IsBullet = false
+            end
+            -- SS14's artifacts react to landing after a throw (gamemodes/station/xenoarch.lua)
+            if item.ParentInventory == nil then Hook.Call("VoidTraitor.ThrownItemLanded", item) end
             flying[item] = nil
-        elseif item.InWater then
+        elseif collidesWith and item.InWater then
             -- water holds a bullet body back ten times less (Item.ApplyWaterForces); in water it moves as any item
             item.body.FarseerBody.IsBullet = false
         end
@@ -128,6 +133,15 @@ local function watchFlight()
         return
     end
     Timer.Wait(watchFlight, FLIGHT_CHECK_MS)
+end
+
+-- collidesWith: what the item collided with before the throw, false for a grenade the game threw itself
+local function watchLanding(item, collidesWith)
+    flying[item] = collidesWith
+    if not watchingFlight then
+        watchingFlight = true
+        Timer.Wait(watchFlight, FLIGHT_CHECK_MS)
+    end
 end
 
 -- The point where the client saw the item in the hand, in sim units, if it is within arm's reach and no wall is in
@@ -163,16 +177,11 @@ local function throw(character, item, charge, point)
     item.Drop(character)
     if item.ParentInventory ~= nil then return false end
     item.SetTransform(start, 0)
-    flying[item] = item.body.CollidesWith
+    watchLanding(item, item.body.CollidesWith)
     item.body.CollidesWith = bit32.bor(Physics.CollisionWall, Physics.CollisionLevel)
     item.body.FarseerBody.IsBullet = true
     item.body.ApplyLinearImpulse(direction * (speed * item.body.Mass), MAX_BODY_VELOCITY)
     Game.Log(character.Name .. " threw " .. item.Name, LOG_ITEM_INTERACTION)
-
-    if not watchingFlight then
-        watchingFlight = true
-        Timer.Wait(watchFlight, FLIGHT_CHECK_MS)
-    end
     return true
 end
 
@@ -250,6 +259,9 @@ local function watchAim()
         local character = state.Character
         if state.Item.Removed or character.Removed or not isHeld(character, state.Item)
             or (state.Charge ~= nil and now - state.Thrown > GRENADE_SWING_TIME) then
+            if state.Charge ~= nil and not state.Item.Removed and state.Item.ParentInventory == nil then
+                watchLanding(state.Item, false)
+            end
             endAim(client)
         elseif state.Charge == nil then
             state.Throwable.ThrowForce = state.BaseForce * windUp(math.min(1, (now - state.Start) / CHARGE_TIME))

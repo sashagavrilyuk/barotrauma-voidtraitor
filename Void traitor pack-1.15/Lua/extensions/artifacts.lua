@@ -30,9 +30,9 @@ local TRINKETS = {
     "artmod_alientrinket15_redtube", "artmod_alientrinket16_rottube", "artmod_alientrinket17_lightbluetube",
 }
 
--- What happens to the artifact, for its node's trigger; damage the server counts itself. The lasting ones call it only
--- while the server has armed the artifact with that trigger's tag. A status effect passes when any of its conditionals
--- does, unless told otherwise.
+-- What happens to the artifact, for its node's trigger; damage and landing after a throw the server sees itself. The
+-- lasting ones call it only while the server has armed the artifact with that trigger's tag. A status effect passes when
+-- any of its conditionals does, unless told otherwise.
 local TRIGGERS = {
     '<StatusEffect type="OnPicked" target="This"><LuaHook name="VoidTraitor.ArtifactTrigger" trigger="examine" /></StatusEffect>',
     '<StatusEffect type="OnFire" target="This"><Conditional hastag="vt_xenoarch_heat" /><LuaHook name="VoidTraitor.ArtifactTrigger" trigger="heat" /></StatusEffect>',
@@ -44,7 +44,6 @@ local TRIGGERS = {
         <Conditional voltage="gte 0.5" targetcontainer="true" />
         <LuaHook name="VoidTraitor.ArtifactTrigger" trigger="electricity" />
     </StatusEffect>]],
-    '<StatusEffect type="OnImpact" target="This"><LuaHook name="VoidTraitor.ArtifactTrigger" trigger="landed" /></StatusEffect>',
 }
 local GLOW = '<LightComponent range="300" lightcolor="180,220,255,180" IsOn="false" castshadows="false" allowingameediting="false" />'
 local HOSTS = { holdable = true, throwable = true, wearable = true }

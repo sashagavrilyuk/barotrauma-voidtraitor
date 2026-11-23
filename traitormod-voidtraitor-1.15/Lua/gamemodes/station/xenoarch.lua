@@ -153,8 +153,6 @@ local function stateOf(item)
     if state == nil then
         local nodes, root = generateTree(item.Prefab.ConfigElement.GetAttributeInt("vttiers", 0))
         state = { Nodes = nodes, LastActivation = -math.huge, Consumed = 0 }
-        -- only the server registers impacts, and only past this (Item.ReceiveImpact)
-        if item.ImpactTolerance <= 0 then item.ImpactTolerance = config.LandingImpact end
         artifacts[item] = state
         enterNode(item, state, root)
     end
@@ -235,6 +233,13 @@ Hook.Add("VoidTraitor.ArtifactTrigger", "Traitormod.Xenoarch.Trigger", function(
     if element.GetAttributeString("trigger", "") ~= state.Nodes[state.Current].Trigger then return end
     local holder = item.ParentInventory ~= nil and item.ParentInventory.Owner or nil
     activate(item, state, holder ~= nil and LuaUserData.IsTargetType(holder, "Barotrauma.Character") and holder or nil)
+end)
+
+-- SS14's landed trigger: the artifact was thrown and has come down (features/throwing.lua)
+Hook.Add("VoidTraitor.ThrownItemLanded", "Traitormod.Xenoarch.Landed", function(item)
+    if artifacts == nil or artifactKind(item) == "" then return end
+    local state = stateOf(item)
+    if state.Nodes[state.Current].Trigger == "landed" then activate(item, state) end
 end)
 
 -- SS14's damage triggers count brute damage (blunt, slash, piercing); here the physical afflictions of a hit or a blast

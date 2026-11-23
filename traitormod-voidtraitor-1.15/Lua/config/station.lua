@@ -183,8 +183,6 @@ return {
         HighDamageThreshold = 500,
         TimerSeconds = 5,
         DeathRange = 1500,
-        -- how hard an artifact has to hit something to have landed (Item.ImpactTolerance)
-        LandingImpact = 6,
         -- music: an instrument played this close
         Instruments = { "harmonica", "guitar", "accordion" },
         MusicRange = 600,
