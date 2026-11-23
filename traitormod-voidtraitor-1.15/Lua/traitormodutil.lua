@@ -396,6 +396,19 @@ Traitormod.SaveData = function ()
     end
 end
 
+-- Data is otherwise written only when a round ends, so lobby choices (station roles, outfits, antagonists) were lost
+-- when the server closed before that. One write a few seconds after a change covers a burst of clicks. During a round
+-- nothing is written early: points and lives are still saved only at round end, and so are choices made then.
+local preferenceSaveQueued = false
+Traitormod.QueuePreferenceSave = function ()
+    if preferenceSaveQueued then return end
+    preferenceSaveQueued = true
+    Timer.Wait(function ()
+        preferenceSaveQueued = false
+        if not Game.RoundStarted then Traitormod.SaveData() end
+    end, 3000)
+end
+
 Traitormod.SetMasterData = function (name, value)
     Traitormod.ClientData[name] = value
 end

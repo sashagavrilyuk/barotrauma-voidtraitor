@@ -577,6 +577,7 @@ Networking.Receive(vtNet.AntagonistSet, function(message, client)
         wanted[key] = value or nil
         Traitormod.SetData(client, "StationAntagonists", wanted)
     end
+    Traitormod.QueuePreferenceSave()
     Traitormod.Log(Traitormod.ClientLogName(client) .. " antagonist option " .. category .. "." .. key .. ": " .. tostring(value))
     cm.SendAntagonists(client)
 end)

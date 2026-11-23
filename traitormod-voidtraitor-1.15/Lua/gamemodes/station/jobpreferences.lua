@@ -124,6 +124,7 @@ Networking.Receive(NET_JOB_SET, function(message, client)
     end
     levels[id] = level > 0 and level or nil
     Traitormod.SetData(client, "StationJobs", levels)
+    Traitormod.QueuePreferenceSave()
     jobs.Send(client)
 end)
 
@@ -134,6 +135,7 @@ Networking.Receive(NET_OUTFIT_SET, function(message, client)
     local outfits = Traitormod.GetData(client, "StationOutfits") or {}
     outfits[id] = variant > 0 and variant or nil
     Traitormod.SetData(client, "StationOutfits", outfits)
+    Traitormod.QueuePreferenceSave()
     jobs.Send(client)
 end)
 
