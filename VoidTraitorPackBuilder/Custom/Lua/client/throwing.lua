@@ -1,8 +1,8 @@
 if SERVER then return end
 
 -- Client half of throwing and placing (traitormod Lua/features/throwing.lua). F starts winding up the items in the
--- hands, or the one under the cursor in the inventory, and the left mouse button throws them; X reaches out with the
--- items in the hands and the left mouse button lets them go where they are. F, X or the right mouse button cancels.
+-- hands, or the one under the cursor in the inventory, and the left mouse button throws them; X reaches out with them
+-- the same way and the left mouse button lets them go where they are. F, X or the right mouse button cancels.
 -- Grenades and other items the game throws itself keep its controls, but the longer the player aims before throwing,
 -- the farther they fly. The server decides what happens; this file sends the keys, draws the own trajectories and moves
 -- the arms of every nearby character the server reports.
@@ -203,7 +203,9 @@ local function pose(character, state, angle, deltaTime)
             -- (MeleeWeapon.Update)
             local handles = LuaUserData.IsTargetType(holdable, "Barotrauma.Items.Components.MeleeWeapon")
                 and holdable.handlePos or holdable.scaledHandlePos
-            anim.HoldItem(deltaTime, item, handles, HOLD_OFFSET, false, angle)
+            -- placing holds the item at the end of the straight arm, as far as the hand reaches
+            local offset = state.Action == ACTION_PLACE and Vector2(anim.ArmLength, HOLD_OFFSET.Y) or HOLD_OFFSET
+            anim.HoldItem(deltaTime, item, handles, offset, false, angle)
         else
             local leftOnly = character.Inventory.IsInLimbSlot(item, InvSlotType.LeftHand)
                 and not character.Inventory.IsInLimbSlot(item, InvSlotType.RightHand)
@@ -304,11 +306,10 @@ local function updateKeys(character, now)
     local typing = GUI.KeyboardDispatcher.Subscriber ~= nil
     if own == nil then
         if typing or not canAct(character) or now - lastStart < COOLDOWN then return end
-        if PlayerInput.KeyHit(THROW_KEY) then
+        local action = PlayerInput.KeyHit(THROW_KEY) and ACTION_THROW or PlayerInput.KeyHit(PLACE_KEY) and ACTION_PLACE
+        if action then
             local hovered = hoveredItem(character)
-            begin(character, ACTION_THROW, hovered ~= nil and { hovered } or heldItems(character), now)
-        elseif PlayerInput.KeyHit(PLACE_KEY) then
-            begin(character, ACTION_PLACE, heldItems(character), now)
+            begin(character, action, hovered ~= nil and { hovered } or heldItems(character), now)
         end
         return
     end
@@ -426,10 +427,10 @@ local function drawTrajectory(spriteBatch, cam, character, start, velocity)
     end
 end
 
--- An item thrown straight from the inventory is not in the hand, so it is drawn there while the arm winds up.
+-- An item thrown or placed straight from the inventory is not in the hand, so it is drawn there until it leaves.
 local function drawItemsInHand(spriteBatch, cam)
     for character, state in pairs(posers) do
-        if state.Action == ACTION_THROW and state.Swing == nil then
+        if state.Swing == nil then
             for _, item in ipairs(state.Items) do
                 if item.Sprite ~= nil and not isHeld(character, item) then
                     local hand = character.AnimController.GetLimb(LimbType.RightHand)

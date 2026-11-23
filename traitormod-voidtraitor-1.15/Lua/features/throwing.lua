@@ -1,6 +1,6 @@
 -- Throwing and placing any item (client half: Void traitor pack-1.15 Lua/client/throwing.lua). F starts winding up the
 -- item in hand, or the one under the cursor in the inventory, and the left mouse button throws it; X reaches out with
--- the item in hand and the left mouse button lets it go where the hand is. Grenades and other items the game throws
+-- it the same way and the left mouse button lets it go where the hand is. Grenades and other items the game throws
 -- itself keep its controls, but the longer the player aims before throwing, the farther they fly. The server times
 -- every wind-up itself, aims along the cursor direction the game already syncs and checks every request; nearby
 -- clients get a short start/stop message and animate the arms themselves.
@@ -199,8 +199,8 @@ local function start(client, action, ids)
             or item == items[1] then
             return
         end
-        -- only a single item comes straight from the inventory; placing and two items need them in the hands
-        if (action == ACTION_PLACE or #ids > 1) and not isHeld(character, item) then return end
+        -- only a single item comes straight from the inventory; two items need them in the hands
+        if #ids > 1 and not isHeld(character, item) then return end
         -- the game throws grenades itself; F leaves them to it
         if action == ACTION_THROW and item.GetComponentString("Throwable") ~= nil then return end
         items[#items + 1] = item
@@ -222,7 +222,7 @@ local function release(client, state, points)
             if ownsItem(character, item) then
                 if state.Action == ACTION_THROW then
                     if throw(character, item, charge, points[index]) then done[#done + 1] = item end
-                elseif isHeld(character, item) and place(character, item, points[index]) then
+                elseif place(character, item, points[index]) then
                     done[#done + 1] = item
                 end
             end
