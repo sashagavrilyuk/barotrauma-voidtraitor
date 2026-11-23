@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <infotexts language="Russian" nowhitespace="false" translatedname="Русский">
   <vt.detach.crowbar>[[use]] Отодрать (Лом)</vt.detach.crowbar>
-  <vt.detach.wires>Сначала отсоедините все провода</vt.detach.wires>
-  <vt.detach.fuel>Сначала выньте топливо</vt.detach.fuel>
-  <vt.detach.fixed>Закреплено намертво</vt.detach.fixed>
+  <vt.detach.wires>Отодрать (Лом): сначала отсоедините все провода</vt.detach.wires>
+  <vt.detach.fuel>Отодрать (Лом): сначала выньте топливо</vt.detach.fuel>
+  <vt.detach.fixed>Отодрать (Лом) нельзя: закреплено намертво</vt.detach.fixed>
 </infotexts>

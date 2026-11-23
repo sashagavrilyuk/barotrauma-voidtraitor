@@ -252,3 +252,16 @@ Hook.Patch("VoidTraitorPack.DetachableDevices.Hint", "Barotrauma.Item", "GetHUDT
         holdable.DisplayMsg = blockedTexts[blockedBy(item)] or fixedText
     end
 end, Hook.HookMethodType.Before)
+
+-- the game leaves out the hint of a Holdable that cannot be detached (Item.GetComponentInteractionVisibility), so a
+-- blocked device shows it greyed out like a hint with a missing tool: players see that it comes off with a crowbar
+local missingRequirement = LuaUserData.CreateEnumTable("Barotrauma.Item+InteractionVisibility").MissingRequirement
+
+Hook.Patch("VoidTraitorPack.DetachableDevices.HintBlocked", "Barotrauma.Item", "GetComponentInteractionVisibility",
+    function(_, ptable)
+        local holdable = ptable["itemComponent"]
+        if LuaUserData.IsTargetType(holdable, "Barotrauma.Items.Components.Holdable") and holdable.Attached
+            and added[holdable.Item.Prefab.Identifier.Value] ~= nil and not holdable.CanBeDeattached() then
+            return missingRequirement
+        end
+    end, Hook.HookMethodType.After)
