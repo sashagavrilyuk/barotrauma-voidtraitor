@@ -27,8 +27,6 @@ local MIN_MASS_FACTOR = 0.1
 local ARM_DAMAGE_PENALTY = 0.5
 -- NetConfig.MaxPhysicsBodyVelocity: the server reports an error for faster bodies when it syncs them
 local MAX_BODY_VELOCITY = 64
--- Throwable.WaterDragCoefficient, used while a thrown item flies
-local THROWN_WATER_DRAG = 0.5
 -- slack for the hand position the client measured a moment ago, in world units
 local REACH_TOLERANCE = 60
 -- clients farther away than this cannot see the character and get no arm animation
@@ -119,8 +117,10 @@ local function watchFlight()
         elseif item.ParentInventory ~= nil or item.body.LinearVelocity.LengthSquared() < 0.01 then
             item.body.CollidesWith = collidesWith
             item.body.FarseerBody.IsBullet = false
-            item.ResetWaterDragCoefficient()
             flying[item] = nil
+        elseif item.InWater then
+            -- water holds a bullet body back ten times less (Item.ApplyWaterForces); in water it moves as any item
+            item.body.FarseerBody.IsBullet = false
         end
     end
     if next(flying) == nil then
@@ -166,7 +166,6 @@ local function throw(character, item, charge, point)
     flying[item] = item.body.CollidesWith
     item.body.CollidesWith = bit32.bor(Physics.CollisionWall, Physics.CollisionLevel)
     item.body.FarseerBody.IsBullet = true
-    item.WaterDragCoefficient = THROWN_WATER_DRAG
     item.body.ApplyLinearImpulse(direction * (speed * item.body.Mass), MAX_BODY_VELOCITY)
     Game.Log(character.Name .. " threw " .. item.Name, LOG_ITEM_INTERACTION)
 

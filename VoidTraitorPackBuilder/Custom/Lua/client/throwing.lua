@@ -330,6 +330,9 @@ local function updateFlying(now)
             item.body.CollidesWith = flight.CollidesWith
             item.body.FarseerBody.IsBullet = false
             flying[item] = nil
+        elseif item.InWater then
+            -- as on the server: in water the item moves as any item, not with a bullet's tenth of the drag
+            item.body.FarseerBody.IsBullet = false
         end
     end
 end
