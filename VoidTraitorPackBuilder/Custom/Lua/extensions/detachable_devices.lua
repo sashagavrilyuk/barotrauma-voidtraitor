@@ -107,8 +107,11 @@ Hook.Add("stop", "VoidTraitorPack.DetachableDevices", function()
     added = {}
 end)
 
--- vanilla drops a device's wires when it is picked up; here they have to be disconnected first
+-- vanilla drops a device's wires when it is picked up; here they have to be disconnected first. the hint names the
+-- first reason, so the one players cannot undo comes first
 local function blockedBy(item)
+    -- picking an item up breaks its links (Pickable.OnPicked), and they cannot be made again in the game
+    for _ in item.linkedTo do return "linked" end
     for component in item.Components do
         if LuaUserData.IsTargetType(component, "Barotrauma.Items.Components.ConnectionPanel") then
             for connection in component.Connections do
@@ -116,15 +119,18 @@ local function blockedBy(item)
             end
         end
     end
-    -- picking an item up breaks its links (Pickable.OnPicked), and they cannot be made again in the game
-    for _ in item.linkedTo do return "linked" end
     if item.GetComponentString("Reactor") ~= nil then
         for _ in item.OwnInventory.AllItems do return "fuel" end
     end
 end
 
+-- the game's own answer in the last check: a device it keeps, like one with a locked connection panel, stays whatever
+-- players disconnect
+local gameAllowed = false
+
 Hook.Patch("VoidTraitorPack.DetachableDevices.Block", "Barotrauma.Items.Components.Holdable", "CanBeDeattached",
     function(holdable, ptable)
+        gameAllowed = ptable.ReturnValue
         if ptable.ReturnValue and holdable.Attached and added[holdable.Item.Prefab.Identifier.Value] ~= nil
             and blockedBy(holdable.Item) ~= nil then
             ptable.ReturnValue = false
@@ -249,7 +255,7 @@ Hook.Patch("VoidTraitorPack.DetachableDevices.Hint", "Barotrauma.Item", "GetHUDT
     if holdable.CanBeDeattached() then
         holdable.DisplayMsg = detachText
     else
-        holdable.DisplayMsg = blockedTexts[blockedBy(item)] or fixedText
+        holdable.DisplayMsg = gameAllowed and blockedTexts[blockedBy(item)] or fixedText
     end
 end, Hook.HookMethodType.Before)
 
