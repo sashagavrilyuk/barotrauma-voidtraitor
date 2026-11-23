@@ -21,8 +21,8 @@ local NODE_COLORS = {
 local CURRENT_COLOR, LINE_COLOR, TEXT_COLOR = Color(235, 190, 80, 255), Color(100, 100, 92, 255), Color(230, 230, 220, 255)
 local MUTED_COLOR, PROBLEM_COLOR = Color(160, 160, 150, 255), Color(225, 185, 80, 255)
 
--- An artifact sounds and sparkles as its own vanilla or More Arts item did (vtsound and vtparticle in
--- items/artifacts.xml); one without a sound of its own has SS14's activation sounds. The game loads a sound in the
+-- An artifact sounds and sparkles as its own vanilla or More Arts item does (vtsound and vtparticle,
+-- Lua/extensions/artifacts.lua); one without a sound of its own has SS14's activation sounds. The game loads a sound in the
 -- background and skips playing it until then, so all of them load with the module.
 local function loadSound(file)
     return gameMain.SoundManager.LoadSound((string.gsub(file, "%%ModDir%%", packPath)))

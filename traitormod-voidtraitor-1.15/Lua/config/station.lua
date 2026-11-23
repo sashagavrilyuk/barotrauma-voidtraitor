@@ -165,6 +165,9 @@ return {
         NodesMin = 3,
         NodesMax = 8,
         Cooldown = 5,
+        -- how often a big artifact's node below the root is its own (pack Lua/extensions/artifacts.lua): there its
+        -- family's effects run, the vanilla artifact's at depth 1 and stronger ones deeper
+        OwnNodeChance = 0.4,
         -- research points of a node: PointsPerNode * DangerMultiplier ^ danger, danger being the mean depth of the
         -- node, its trigger and its effect; a node seen but never triggered gives a quarter; a fully explored tree 1.25x
         PointsPerNode = 6500,
@@ -180,6 +183,8 @@ return {
         HighDamageThreshold = 500,
         TimerSeconds = 5,
         DeathRange = 1500,
+        -- how hard an artifact has to hit something to have landed (Item.ImpactTolerance)
+        LandingImpact = 6,
         -- music: an instrument played this close
         Instruments = { "harmonica", "guitar", "accordion" },
         MusicRange = 600,

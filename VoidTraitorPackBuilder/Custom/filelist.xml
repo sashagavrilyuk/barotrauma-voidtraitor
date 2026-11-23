@@ -69,7 +69,6 @@
   <Text file="%ModDir%/the void traitor pack/RadioText.xml" />
   <Item file="%ModDir%/the void traitor pack/items/research.xml" />
   <Text file="%ModDir%/the void traitor pack/ResearchText.xml" />
-  <Item file="%ModDir%/the void traitor pack/items/artifacts.xml" />
   <Item file="%ModDir%/the void traitor pack/items/xenoarch.xml" />
   <Text file="%ModDir%/the void traitor pack/XenoarchText.xml" />
   <Item file="%ModDir%/the void traitor pack/items/anomalies.xml" />

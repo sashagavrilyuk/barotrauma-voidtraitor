@@ -56,4 +56,5 @@ language.XenoarchEffectHints = {
     destruction = "разрушение",
     magnet = "магнетизм",
     visual = "визуальное",
+    own = "собственное свойство",
 }

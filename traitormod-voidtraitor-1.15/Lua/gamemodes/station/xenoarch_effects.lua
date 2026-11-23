@@ -13,7 +13,7 @@ effects.Hints = {
     Knock = "electricalinterference", ExplosionScary = "environment", RareMaterialSpawn = "creation",
     AngryCarpSpawn = "creation", FaunaSpawn = "creation", CashSpawn = "creation", Blink = "displacement",
     Emp = "electricalinterference", HealAll = "environment", RadiateStrong = "release", MaterialSpawn = "creation",
-    Ignite = "release", Mitosis = "creation", Boom = "environment", Singulo = "destruction",
+    Ignite = "release", Mitosis = "creation", Boom = "environment", Singulo = "destruction", Own = "own",
 }
 
 local function around(item, spread)
@@ -109,11 +109,20 @@ effects.RadiateStrong = effects.Radiate
 effects.Passive.Radiate = { Tick = afflict }
 effects.Passive.RadiateStrong = { Tick = afflict }
 
+-- the light the pack adds after the artifact's own ones (pack Lua/extensions/artifacts.lua)
+local function glowOf(item)
+    local glow
+    for component in item.Components do
+        if component.Name == "LightComponent" then glow = component end
+    end
+    return glow
+end
+
 -- glows while on the node and flashes when triggered, as SS14's PointLight with FlashOnTrigger
 effects.PointLight = function(item) Traitormod.Xenoarch.Fx(item, "flash", 0) end
 effects.Passive.PointLight = {
-    Enter = function(item) setProperty(item, item.GetComponentString("LightComponent"), "IsOn", true) end,
-    Exit = function(item) setProperty(item, item.GetComponentString("LightComponent"), "IsOn", false) end,
+    Enter = function(item) setProperty(item, glowOf(item), "IsOn", true) end,
+    Exit = function(item) setProperty(item, glowOf(item), "IsOn", false) end,
 }
 
 effects.Magnet = function() end
@@ -125,7 +134,15 @@ effects.Passive.AntiMagnet = { Tick = function(item, entry) push(item, entry.Ran
 effects.Invisibility = function() end
 effects.Passive.Invisibility = {
     Enter = function(item) setProperty(item, item, "SpriteColor", Color(255, 255, 255, 12)) end,
-    Exit = function(item) setProperty(item, item, "SpriteColor", Color(255, 255, 255, 255)) end,
+    Exit = function(item) setProperty(item, item, "SpriteColor", item.Prefab.SpriteColor) end,
+}
+
+-- a big artifact's own node keeps its family's tier for the node's depth awake (pack Lua/extensions/artifacts.lua);
+-- going off adds nothing to it
+effects.Own = function() end
+effects.Passive.Own = {
+    Enter = function(item, _, node) Hook.Call("VoidTraitor.ArtifactTier", item, node.Tier) end,
+    Exit = function(item) Hook.Call("VoidTraitor.ArtifactTier", item, 0) end,
 }
 
 effects.Throw = function(item, entry) push(item, entry.Range, entry.Force, true) end
@@ -202,7 +219,7 @@ effects.Mitosis = function(item)
     if artifactKinds == nil then
         artifactKinds = {}
         for prefab in ItemPrefab.Prefabs do
-            if string.sub(prefab.Identifier.Value, 1, 12) == "vt_artifact_" then artifactKinds[#artifactKinds + 1] = prefab end
+            if prefab.ConfigElement.GetAttributeString("vtartifact", "") == "big" then artifactKinds[#artifactKinds + 1] = prefab end
         end
     end
     Entity.Spawner.AddItemToSpawnQueue(artifactKinds[math.random(#artifactKinds)], around(item, 80))

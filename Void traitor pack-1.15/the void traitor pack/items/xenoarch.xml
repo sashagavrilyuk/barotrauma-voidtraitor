@@ -6,7 +6,7 @@
     <Sprite texture="%ModDir%/the void traitor pack/items/xenoarch.png" sourcerect="0,0,128,128" depth="0.85" />
     <Powered powerconsumption="200" minvoltage="0.5" isactive="true" />
     <ItemContainer capacity="1" canbeselected="true" hideitems="false" itempos="0,0" msg="ItemMsgInteractSelect">
-      <Containable items="vt_artifact" />
+      <Containable items="alienartifact,smallalienartifact" />
     </ItemContainer>
     <ConnectionPanel canbeselected="true" selectkey="Action" msg="ItemMsgRewireScrewdriver">
       <GuiFrame relativesize="0.2,0.25" anchor="Center" style="ConnectionPanel" />

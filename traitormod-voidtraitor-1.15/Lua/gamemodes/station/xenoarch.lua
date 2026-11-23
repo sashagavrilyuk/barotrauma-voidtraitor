@@ -1,8 +1,9 @@
 -- Station xenoarchaeology, as SS14's before its 2025 rework (SS14 e9d13ea Content.Server/Xenoarchaeology/XenoArtifacts;
--- config/station.lua Xenoarch; pack items/artifacts.xml and Lua/client/station/xenoarch.lua). An artifact has a tree of
--- nodes, each with a trigger and an effect. It sits on one node; when that node's trigger happens, the effect fires and
--- the artifact moves to a neighbouring node, most often one not seen yet. The analyzer reads the node an artifact sits
--- on, and its console turns what was explored into research points.
+-- config/station.lua Xenoarch; pack Lua/extensions/artifacts.lua and Lua/client/station/xenoarch.lua). An artifact has a
+-- tree of nodes, each with a trigger and an effect. It sits on one node; when that node's trigger happens, the effect
+-- fires and the artifact moves to a neighbouring node, most often one not seen yet. A big artifact's own effects sleep
+-- but on nodes of its own. The analyzer reads the node an artifact sits on, and its console turns what was explored into
+-- research points.
 local xenoarch = {}
 Traitormod.Xenoarch = xenoarch
 local effects = dofile(Traitormod.Path .. "/Lua/gamemodes/station/xenoarch_effects.lua")
@@ -17,6 +18,20 @@ local consoleTexts = { "XenoarchTitle", "XenoarchClose", "XenoarchNoAnalyzer", "
     "XenoarchScan", "XenoarchScanning", "XenoarchNode", "XenoarchDepth", "XenoarchEdges", "XenoarchTriggered",
     "XenoarchUntriggered", "XenoarchTrigger", "XenoarchEffect", "XenoarchPoints", "XenoarchExtract", "XenoarchNotScanned",
     "XenoarchUnknown", "XenoarchCurrent", "XenoarchBiasUp", "XenoarchBiasDown" }
+
+-- prefab identifier -> "big", "trinket" or "" for any other item (pack Lua/extensions/artifacts.lua)
+local kinds = {}
+local function artifactKind(item)
+    local id = item.Prefab.Identifier.Value
+    if kinds[id] == nil then kinds[id] = item.Prefab.ConfigElement.GetAttributeString("vtartifact", "") end
+    return kinds[id]
+end
+
+local prefabDescriptor = Descriptors["Barotrauma.ItemPrefab"] or LuaUserData.RegisterType("Barotrauma.ItemPrefab")
+LuaUserData.MakePropertyAccessible(prefabDescriptor, "DamagedByProjectiles")
+LuaUserData.MakePropertyAccessible(prefabDescriptor, "DamagedByMeleeWeapons")
+-- artifact prefab -> whether shots and blows reached it before the round
+local damageable = {}
 
 local function entryOf(list, id)
     for _, entry in ipairs(list) do
@@ -46,8 +61,9 @@ local function pickByDepth(list, nodeDepth)
     return candidates[math.random(#candidates)]
 end
 
--- SS14's GenerateArtifactNodeTree: from the root down, each node gets one or two children until the count is reached
-local function generateTree()
+-- SS14's GenerateArtifactNodeTree: from the root down, each node gets one or two children until the count is reached.
+-- Below the root a big artifact's node is now and then its own, with the tier of its family the node's depth gives.
+local function generateTree(tiers)
     local count, used = math.random(config.NodesMin, config.NodesMax), {}
     local function newId()
         local id
@@ -60,7 +76,11 @@ local function generateTree()
     while #queue > 0 do
         local node = table.remove(queue, 1)
         node.Trigger = pickByDepth(config.Triggers, node.Depth).Id
-        node.Effect = pickByDepth(config.Effects, node.Depth).Id
+        if tiers > 0 and node.Depth > 0 and math.random() < config.OwnNodeChance then
+            node.Effect, node.Tier = "Own", math.min(node.Depth, tiers)
+        else
+            node.Effect = pickByDepth(config.Effects, node.Depth).Id
+        end
         for _ = 1, math.random(1, 2) do
             if created >= count then break end
             local child = { Id = newId(), Depth = node.Depth + 1, Edges = { node.Id } }
@@ -73,7 +93,7 @@ local function generateTree()
     return nodes, root.Id
 end
 
--- SS14 checks its triggers every frame. Here the game watches heat, water and power itself (pack items/artifacts.xml)
+-- SS14 checks its triggers every frame. Here the game watches heat, water and power itself (pack extensions/artifacts.lua)
 -- and calls back only while the artifact carries the tag of its node's trigger, given once the cooldown is over.
 local ARMED_TAGS = { heat = "vt_xenoarch_heat", water = "vt_xenoarch_water", electricity = "vt_xenoarch_electricity" }
 
@@ -110,15 +130,17 @@ local function enterNode(item, state, id)
     local node = state.Nodes[id]
     node.Discovered = true
     local entering = effects.Passive[node.Effect]
-    if entering ~= nil and entering.Enter ~= nil then entering.Enter(item, entryOf(config.Effects, node.Effect)) end
+    if entering ~= nil and entering.Enter ~= nil then entering.Enter(item, entryOf(config.Effects, node.Effect), node) end
     armTrigger(item, state)
 end
 
 local function stateOf(item)
     local state = artifacts[item]
     if state == nil then
-        local nodes, root = generateTree()
+        local nodes, root = generateTree(item.Prefab.ConfigElement.GetAttributeInt("vttiers", 0))
         state = { Nodes = nodes, LastActivation = -math.huge, Consumed = 0 }
+        -- only the server registers impacts, and only past this (Item.ReceiveImpact)
+        if item.ImpactTolerance <= 0 then item.ImpactTolerance = config.LandingImpact end
         artifacts[item] = state
         enterNode(item, state, root)
     end
@@ -192,7 +214,7 @@ function activate(item, state, activator)
     refreshConsoles()
 end
 
--- the artifact's status effects (items/artifacts.xml) report what happened to it
+-- the artifact's status effects (pack Lua/extensions/artifacts.lua) report what happened to it
 Hook.Add("VoidTraitor.ArtifactTrigger", "Traitormod.Xenoarch.Trigger", function(_, _, item, _, _, element)
     if artifacts == nil or item == nil or item.Removed then return end
     local state = stateOf(item)
@@ -279,7 +301,9 @@ local function pointsOf(state)
     local total, all = 0, true
     for _, node in pairs(state.Nodes) do
         if node.Discovered then
-            local danger = (node.Depth + entryOf(config.Triggers, node.Trigger).Depth + entryOf(config.Effects, node.Effect).Depth) / 3
+            -- an own node is as dangerous as it is deep
+            local effectDepth = node.Effect == "Own" and node.Depth or entryOf(config.Effects, node.Effect).Depth
+            local danger = (node.Depth + entryOf(config.Triggers, node.Trigger).Depth + effectDepth) / 3
             total = total + config.PointsPerNode * config.DangerMultiplier ^ danger * (node.Triggered and 1 or 0.25)
         end
         if not node.Triggered then all = false end
@@ -303,7 +327,7 @@ local function analyzerOf(console)
     end
     if best == nil then return nil, nil end
     for contained in best.OwnInventory.AllItems do
-        if contained.HasTag("vt_artifact") then return best, contained end
+        if artifactKind(contained) ~= "" then return best, contained end
     end
     return best, nil
 end
@@ -388,14 +412,21 @@ function xenoarch.Start(mode)
     pending = {}
     for item in Item.ItemList do
         if item.Prefab.Identifier == "vt_artifact_analyzer" then consoles.Analyzers[item] = true end
-        if item.HasTag("vt_artifact") then pending[item] = true end
+        if artifactKind(item) ~= "" then pending[item] = true end
+    end
+    -- shots and blows reach an item (Item.AddDamage) only if its prefab lets them
+    for prefab in ItemPrefab.Prefabs do
+        if prefab.ConfigElement.GetAttributeString("vtartifact", "") ~= "" then
+            damageable[prefab] = { prefab.DamagedByProjectiles, prefab.DamagedByMeleeWeapons }
+            prefab.DamagedByProjectiles, prefab.DamagedByMeleeWeapons = true, true
+        end
     end
 end
 
 Hook.Add("item.created", "Traitormod.Xenoarch.NewItem", function(item)
     if artifacts == nil then return end
     if item.Prefab.Identifier == "vt_artifact_analyzer" then consoles.Analyzers[item] = true end
-    if item.HasTag("vt_artifact") then pending[item] = true end
+    if artifactKind(item) ~= "" then pending[item] = true end
 end)
 
 -- new artifacts' trees on the next frame; the effects kept on a node and open consoles once a second
@@ -437,7 +468,11 @@ Networking.Receive("VoidTraitor_AnalysisAction", function(message, client)
     consoleAction(client, console, action)
     sendConsole(client, console)
 end)
-Hook.Add("roundEnd", "Traitormod.Xenoarch.End", function() artifacts, sessions, pending = nil, {}, {} end)
+Hook.Add("roundEnd", "Traitormod.Xenoarch.End", function()
+    artifacts, sessions, pending = nil, {}, {}
+    for prefab, before in pairs(damageable) do prefab.DamagedByProjectiles, prefab.DamagedByMeleeWeapons = before[1], before[2] end
+    damageable = {}
+end)
 Hook.Add("client.disconnected", "Traitormod.Xenoarch.Disconnect", function(client) sessions[client] = nil end)
 
 return xenoarch
