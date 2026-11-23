@@ -14,6 +14,7 @@ _G.VoidTraitorResearchGuiState = UI
 -- read without this, the dictionary of a fabricator's recipes turns into a Lua table that cannot be put back
 LuaUserData.RegisterType("System.Collections.Immutable.ImmutableDictionary`2[[System.UInt32],[Barotrauma.FabricationRecipe]]")
 LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.Items.Components.Fabricator"], "fabricationRecipes")
+LuaUserData.MakeMethodAccessible(Descriptors["Barotrauma.Items.Components.Fabricator"], "OnResolutionChangedPrivate")
 local inputTypes = LuaUserData.CreateEnumTable("Barotrauma.InputType")
 local teams = LuaUserData.CreateEnumTable("Barotrauma.CharacterTeamType")
 
@@ -29,7 +30,7 @@ local NODE_BACKGROUND = Color(18, 22, 24, 240)
 local LINE_COLOR = Color(110, 110, 100, 255)
 local MUTED_COLOR = Color(160, 160, 150, 255)
 
--- What each kind of lathe prints, from the server, and each lathe's full recipes, put back before every new filter.
+-- What each kind of lathe prints, from the server, and each lathe's full recipes, which every new filter starts from.
 local allowedRecipes, fullRecipes = nil, {}
 
 local function needsRecipe(identifier)
@@ -45,10 +46,18 @@ local function filterLathe(item)
     if list == nil then return end
     local fabricator = item.GetComponentString("Fabricator")
     if fullRecipes[item] == nil then fullRecipes[item] = fabricator.fabricationRecipes end
-    fabricator.fabricationRecipes = fullRecipes[item]
-    local ids = {}
-    for _, id in ipairs(list) do ids[#ids + 1] = Identifier(id) end
-    fabricator.RemoveFabricationRecipes(ids)
+    local allowed = {}
+    for _, id in ipairs(list) do allowed[string.lower(id)] = true end
+    local recipes = fullRecipes[item]
+    for recipe in fullRecipes[item].Values do
+        if not allowed[string.lower(recipe.TargetItemPrefabIdentifier.Value)] then
+            recipes = recipes.Remove(recipe.RecipeHash)
+        end
+    end
+    fabricator.fabricationRecipes = recipes
+    -- the game's RemoveFabricationRecipes rebuilds only the recipe rows and drops the window's other lines, so the window
+    -- is built again as on a resolution change; a lathe loaded with the map builds its window later by itself
+    if item.FullyInitialized then fabricator.OnResolutionChangedPrivate() end
 end
 
 -- recipes that need an unlock open for the crew without the game's message over every crew member's head
