@@ -99,6 +99,14 @@ local ARMED_TAGS = { heat = "vt_xenoarch_heat", water = "vt_xenoarch_water", ele
 
 local activate
 
+-- what the electricity trigger's effect asks of the container: a powered machine, not a holder or the analyzer
+local function inPoweredMachine(item)
+    local container = item.Container
+    if container == nil or container.HasTag("artifactcontainer") or container.HasTag("vt_artifact_analyzer") then return false end
+    local powered = container.GetComponentString("Powered")
+    return powered ~= nil and powered.Voltage >= 0.5
+end
+
 local function armTrigger(item, state)
     local visit, trigger = state.Visit, state.Nodes[state.Current].Trigger
     local function stillHere()
@@ -112,7 +120,13 @@ local function armTrigger(item, state)
         end
         Timer.Wait(tick, config.TimerSeconds * 1000)
     elseif ARMED_TAGS[trigger] ~= nil then
-        local function arm() if stillHere() then item.AddTag(ARMED_TAGS[trigger]) end end
+        local function arm()
+            if not stillHere() then return end
+            item.AddTag(ARMED_TAGS[trigger])
+            -- an item applies its contained effects only while it updates (Item.Update), and what lies in an idle
+            -- machine does not, so one already in a powered machine goes off here
+            if trigger == "electricity" and inPoweredMachine(item) then activate(item, state) end
+        end
         local wait = state.LastActivation + config.Cooldown - Timer.GetTime()
         if wait > 0 then Timer.Wait(arm, math.ceil(wait * 1000)) else arm() end
     end
