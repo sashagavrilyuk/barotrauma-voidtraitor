@@ -863,6 +863,30 @@ Hook.Add("jobsAssigned", "Traitormod.Station.Roles", function(clients)
     end
 end)
 
+-- Some roles have a hidden job (scientist, he-chef). GameServer.StartGame then calls AssignBotJobs, which counts each
+-- player's job in a table of the jobs that are not hidden and throws KeyNotFoundException on a hidden one, so the round
+-- never starts (DedicatedServer 1.15.32). It skips a player without a job, so those jobs are taken away for that call.
+local hiddenJobs = {}
+Hook.Patch("Barotrauma.Networking.GameServer", "AssignBotJobs", function()
+    hiddenJobs = {}
+    local selected = Traitormod.SelectedGamemode
+    if selected == nil or selected.Name ~= "Station" then return end
+    for _, client in pairs(Client.ClientList) do
+        local info = client.CharacterInfo
+        if info ~= nil and info.Job ~= nil and info.Job.Prefab.HiddenJob then
+            hiddenJobs[#hiddenJobs + 1] = { Info = info, Job = info.Job }
+            info.Job = nil
+        end
+    end
+end, Hook.HookMethodType.Before)
+
+Hook.Patch("Barotrauma.Networking.GameServer", "AssignBotJobs", function()
+    for _, entry in ipairs(hiddenJobs) do
+        entry.Info.Job = entry.Job
+    end
+    hiddenJobs = {}
+end, Hook.HookMethodType.After)
+
 -- The lobby's late join (Void traitor pack Lua/client/lobby/latejoin.lua). The join button asks with no role: a player
 -- who has been on the station this round joins straight away, and the game gives them back their character; a newcomer
 -- gets the window. There a newcomer picks the role to arrive with on the shuttle, only what the window offers: a role
