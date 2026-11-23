@@ -11,7 +11,8 @@ local json = require("json")
 
 local config, artifacts, damageTypes
 -- artifacts that appeared since the last frame; their trees are made on the next one, as SS14 makes them on spawn,
--- once the item has reached the clients the node's effects may tell
+-- once the item has reached the clients the node's effects may tell. Only the station's: the level's ruins hold a
+-- hundred more, which get their trees when someone handles them (stateOf in the triggers and the analyzer).
 local pending = {}
 local consoles, sessions = {}, {}
 local consoleTexts = { "XenoarchTitle", "XenoarchClose", "XenoarchNoAnalyzer", "XenoarchNoArtifact", "XenoarchNoPower",
@@ -267,8 +268,9 @@ local function patchDamage()
     if damagePatched then return end
     damagePatched = true
     Hook.Patch("Traitormod.Xenoarch.Hit", "Barotrauma.Item", "AddDamage", function(item, ptable)
-        local state = artifacts ~= nil and artifacts[item] or nil
-        if state == nil then return end
+        if artifacts == nil or artifactKind(item) == "" then return end
+        -- a blow handles the artifact as picking it up does, so one from the ruins gets its tree here too
+        local state = stateOf(item)
         -- the artifact itself never breaks: it gets back what the blow took
         local attack, taken = ptable["attack"], ptable.ReturnValue.Damage
         if taken > 0 then item.Condition = item.Condition + taken end
@@ -453,7 +455,7 @@ Hook.Add("think", "Traitormod.Xenoarch.Update", function(deltaTime)
     if artifacts == nil then return end
     if next(pending) ~= nil then
         for item in pairs(pending) do
-            if not item.Removed then stateOf(item) end
+            if not item.Removed and item.Submarine == Submarine.MainSub then stateOf(item) end
         end
         pending = {}
     end
