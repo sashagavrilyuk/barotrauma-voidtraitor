@@ -2,7 +2,7 @@
 -- item in hand, or the one under the cursor in the inventory, and the left mouse button throws it; X reaches out with
 -- it the same way and the left mouse button lets it go where the hand is. Grenades and other items the game throws
 -- itself keep its controls, but the longer the player aims before throwing, the farther they fly. A thrown item flies
--- to the point the player aims at, as far as the wind-up reaches. The server times every wind-up itself and checks
+-- to the point the player aims at with just the force that takes, as far as the wind-up reaches. The server times every wind-up itself and checks
 -- every request; nearby clients get a short start/stop message and animate the arms themselves.
 local NET_REQUEST = "VoidTraitor_Throw"
 local NET_STATE = "VoidTraitor_ThrowState"
@@ -93,17 +93,15 @@ local function windUp(charge)
     return MIN_CHARGE + (1 - MIN_CHARGE) * charge
 end
 
--- The velocity (m/s) that carries an item from start to target (world positions) at this speed along the lower of the
--- two arcs, so the longer the wind-up the flatter it flies; a target beyond its reach gets the arc that would just
--- reach it, and the item falls short.
-local function launchVelocity(start, target, speed)
+-- The velocity (m/s) of the gentlest throw from start that reaches target (world positions): the nearer the point, the
+-- softer the throw. It leaves half way between straight up and the point, at the speed that needs; the wind-up only
+-- limits that speed, and a point beyond it is fallen short of.
+local function launchVelocity(start, target, maxSpeed)
     local offset = ConvertUnits.ToSimUnits(target - start)
-    local dx, g = math.abs(offset.X), -GRAVITY
-    if dx < 0.01 then return Vector2(0, offset.Y >= 0 and speed or -speed) end
-    local squared = speed * speed
-    local discriminant = squared * squared - g * (g * dx * dx + 2 * offset.Y * squared)
-    local tangent = (discriminant >= 0 and squared - math.sqrt(discriminant) or squared) / (g * dx)
-    return Vector2.Normalize(Vector2(offset.X >= 0 and 1 or -1, tangent)) * speed
+    local rise = offset.Y + offset.Length()
+    local angle = math.atan2(rise, math.abs(offset.X))
+    local speed = math.min(math.sqrt(-GRAVITY * rise), maxSpeed)
+    return Vector2((offset.X >= 0 and 1 or -1) * math.cos(angle), math.sin(angle)) * speed
 end
 
 local function throwSpeed(character, item, charge)
