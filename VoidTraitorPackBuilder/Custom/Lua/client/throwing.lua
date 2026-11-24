@@ -48,6 +48,8 @@ local GRENADE_DOWN_PENALTY = 0.7
 -- the server rebuilds a client's cursor this far from the shoulder along the aim angle it gets (CharacterNetworking)
 local SYNCED_CURSOR_DISTANCE = 500
 local TRAJECTORY_STEP = 0.05
+-- the physics world's step, which applies gravity and then the body's damping
+local PHYSICS_STEP = 1 / 60
 local TRAJECTORY_TIME = 2.5
 local GRAVITY = -9.82
 local TRAJECTORY_COLOR = Color(255, 255, 255, 150)
@@ -110,13 +112,17 @@ local function windUp(charge)
 end
 
 -- The velocity (m/s) of the gentlest throw from start that reaches target (world positions): the nearer the point, the
--- softer the throw. It leaves half way between straight up and the point, at the speed that needs; the wind-up only
--- limits that speed, and a point beyond it is fallen short of.
-local function launchVelocity(start, target, maxSpeed)
+-- softer the throw. It leaves half way between straight up and the point, at the speed that needs, made up for the
+-- body's damping (an item's lineardamping) over the time it takes; the wind-up only limits that speed, and a point
+-- beyond it is fallen short of.
+local function launchVelocity(start, target, maxSpeed, damping)
     local offset = ConvertUnits.ToSimUnits(target - start)
     local rise = offset.Y + offset.Length()
     local angle = math.atan2(rise, math.abs(offset.X))
-    local speed = math.min(math.sqrt(-GRAVITY * rise), maxSpeed)
+    local speed = math.sqrt(-GRAVITY * rise)
+    local across = speed * math.cos(angle)
+    local time = across > 0.01 and math.abs(offset.X) / across or speed * math.sin(angle) / -GRAVITY
+    speed = math.min(speed / math.max(0.5, 1 - damping * time / 2), maxSpeed)
     return Vector2((offset.X >= 0 and 1 or -1) * math.cos(angle), math.sin(angle)) * speed
 end
 
@@ -437,15 +443,20 @@ Hook.Patch(POSE_PATCH_ID, "Barotrauma.Character", "UpdateAnimAll", function(inst
     end
 end, Hook.HookMethodType.After)
 
--- The flight every throw takes: from the start along the velocity (in m/s), through platforms, until the first wall.
-local function drawTrajectory(spriteBatch, cam, character, start, velocity)
+-- The flight every throw takes: from the start along the velocity (in m/s), slowed by the body's damping as the
+-- physics does it every step, through platforms, until the first wall.
+local function drawTrajectory(spriteBatch, cam, character, start, velocity, damping)
     velocity = ConvertUnits.ToDisplayUnits(velocity)
-    local gravity = ConvertUnits.ToDisplayUnits(GRAVITY)
+    local fall = Vector2(0, ConvertUnits.ToDisplayUnits(GRAVITY) * PHYSICS_STEP)
+    local substeps = math.floor(TRAJECTORY_STEP / PHYSICS_STEP + 0.5)
     local offset = character.Submarine ~= nil and character.Submarine.SimPosition or zero
     local previous = start
-    for step = 1, math.floor(TRAJECTORY_TIME / TRAJECTORY_STEP) do
-        local t = step * TRAJECTORY_STEP
-        local point = start + velocity * t + Vector2(0, gravity * t * t / 2)
+    for _ = 1, math.floor(TRAJECTORY_TIME / TRAJECTORY_STEP) do
+        local point = previous
+        for _ = 1, substeps do
+            velocity = (velocity + fall) / (1 + PHYSICS_STEP * damping)
+            point = point + velocity * PHYSICS_STEP
+        end
         if Submarine.PickBody(ConvertUnits.ToSimUnits(previous) - offset, ConvertUnits.ToSimUnits(point) - offset,
             nil, flightCollisions) ~= nil then
             point = ConvertUnits.ToDisplayUnits(Submarine.LastPickedPosition + offset)
@@ -486,12 +497,13 @@ Hook.Patch(PATCH_ID, "Barotrauma.CharacterHUD", "Draw", function (instance, ptab
         local charge = chargeOf(own, Timer.GetTime())
         for _, item in ipairs(own.Items) do
             local start = throwStart(character, item)
+            local damping = item.body.FarseerBody.LinearDamping
             drawTrajectory(spriteBatch, cam, character, start,
-                launchVelocity(start, character.CursorWorldPosition, throwSpeed(character, item, charge)))
+                launchVelocity(start, character.CursorWorldPosition, throwSpeed(character, item, charge), damping), damping)
         end
     elseif aiming then
         drawTrajectory(spriteBatch, cam, character, grenadeStart(character, aim.Throwable),
-            grenadeVelocity(character, aim.Throwable.ThrowForce))
+            grenadeVelocity(character, aim.Throwable.ThrowForce), aim.Item.body.FarseerBody.LinearDamping)
     end
 end, Hook.HookMethodType.Before)
 

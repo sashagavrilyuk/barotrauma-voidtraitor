@@ -94,13 +94,17 @@ local function windUp(charge)
 end
 
 -- The velocity (m/s) of the gentlest throw from start that reaches target (world positions): the nearer the point, the
--- softer the throw. It leaves half way between straight up and the point, at the speed that needs; the wind-up only
--- limits that speed, and a point beyond it is fallen short of.
-local function launchVelocity(start, target, maxSpeed)
+-- softer the throw. It leaves half way between straight up and the point, at the speed that needs, made up for the
+-- body's damping (an item's lineardamping) over the time it takes; the wind-up only limits that speed, and a point
+-- beyond it is fallen short of.
+local function launchVelocity(start, target, maxSpeed, damping)
     local offset = ConvertUnits.ToSimUnits(target - start)
     local rise = offset.Y + offset.Length()
     local angle = math.atan2(rise, math.abs(offset.X))
-    local speed = math.min(math.sqrt(-GRAVITY * rise), maxSpeed)
+    local speed = math.sqrt(-GRAVITY * rise)
+    local across = speed * math.cos(angle)
+    local time = across > 0.01 and math.abs(offset.X) / across or speed * math.sin(angle) / -GRAVITY
+    speed = math.min(speed / math.max(0.5, 1 - damping * time / 2), maxSpeed)
     return Vector2((offset.X >= 0 and 1 or -1) * math.cos(angle), math.sin(angle)) * speed
 end
 
@@ -205,7 +209,7 @@ local function throw(character, item, charge, point, target)
     local anim = character.AnimController
     local start = handPosition(character, item, point)
     local velocity = launchVelocity(start ~= nil and point or anim.AimSourceWorldPos, target,
-        throwSpeed(character, item, charge))
+        throwSpeed(character, item, charge), item.body.FarseerBody.LinearDamping)
     start = start or anim.AimSourceSimPos
 
     item.Drop(character)
