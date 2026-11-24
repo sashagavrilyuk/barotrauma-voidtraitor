@@ -154,8 +154,8 @@ local function componentsOf(root)
     return components
 end
 
--- lower-case identifier -> for a big artifact its tier and how many its family has, for a trinket nothing
-local artifacts = {}
+-- lower-case identifier -> its tier and how many its family has
+local big = {}
 for _, family in ipairs(FAMILIES) do
     local members = {}
     for tier, identifier in ipairs(family) do
@@ -163,7 +163,7 @@ for _, family in ipairs(FAMILIES) do
         local root = prefab.ConfigElement.Element
         members[tier] = { Prefab = prefab, Root = root, Components = componentsOf(root), Sound = ownSound(root, identifier),
             Particle = ownParticle(root) }
-        artifacts[string.lower(identifier)] = { Tier = tier, Tiers = #family }
+        big[string.lower(identifier)] = { Tier = tier, Tiers = #family }
     end
     for tier, member in ipairs(members) do
         local host = hostOf(member.Root)
@@ -200,7 +200,6 @@ end
 for _, identifier in ipairs(TRINKETS) do
     local root = ItemPrefab.Prefabs[identifier].ConfigElement.Element
     finish(root, "trinket", ownSound(root, identifier), ownParticle(root))
-    artifacts[string.lower(identifier)] = {}
 end
 
 Hook.Add("stop", "VoidTraitorPack.Artifacts", function()
@@ -253,16 +252,9 @@ local stationRound = false
 -- item -> the tier a Station node woke, for the clients that load the round later
 local awake = {}
 
--- An artifact no node has woken: a big one runs its own tier, or none in a Station round. There artifacts are for
--- research and the deconstructor does not take them apart.
-local function rest(item, artifact)
-    if artifact.Tier ~= nil then setTier(item, stationRound and 0 or artifact.Tier) end
-    if stationRound then item.AllowDeconstruct = false end
-end
-
 Hook.Add("item.created", "VoidTraitorPack.Artifacts", function(item)
-    local artifact = artifacts[string.lower(item.Prefab.Identifier.Value)]
-    if artifact ~= nil then rest(item, artifact) end
+    local artifact = big[string.lower(item.Prefab.Identifier.Value)]
+    if artifact ~= nil then setTier(item, stationRound and 0 or artifact.Tier) end
 end)
 
 -- the map's items are made before the round is known to be the Station's
@@ -271,8 +263,7 @@ Hook.Patch("VoidTraitorPack.Artifacts", "Barotrauma.GameSession", "StartRound", 
         stationRound, awake = isStationRound(session), {}
         if not stationRound then return end
         for item in Item.ItemList do
-            local artifact = artifacts[string.lower(item.Prefab.Identifier.Value)]
-            if artifact ~= nil then rest(item, artifact) end
+            if big[string.lower(item.Prefab.Identifier.Value)] ~= nil then setTier(item, 0) end
         end
         if CLIENT then Networking.Send(Networking.Start(NET_REQUEST)) end
     end, Hook.HookMethodType.After)
@@ -281,8 +272,7 @@ Hook.Add("roundEnd", "VoidTraitorPack.Artifacts", function() stationRound, awake
 if CLIENT then
     Networking.Receive(NET_TIER, function(message)
         local item, tier = Entity.FindEntityByID(message.ReadUInt16()), message.ReadByte()
-        local artifact = item ~= nil and artifacts[string.lower(item.Prefab.Identifier.Value)] or nil
-        if artifact ~= nil and artifact.Tier ~= nil then setTier(item, tier) end
+        if item ~= nil and big[string.lower(item.Prefab.Identifier.Value)] ~= nil then setTier(item, tier) end
     end)
     return
 end
