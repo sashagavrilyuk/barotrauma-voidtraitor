@@ -455,7 +455,9 @@ Hook.Add("think", "Traitormod.Xenoarch.Update", function(deltaTime)
     if artifacts == nil then return end
     if next(pending) ~= nil then
         for item in pairs(pending) do
-            if not item.Removed and item.Submarine == Submarine.MainSub then stateOf(item) end
+            -- by its hull: a spawned item learns its submarine only a frame later
+            local hull = not item.Removed and Hull.FindHull(item.WorldPosition, nil, true, true) or nil
+            if hull ~= nil and hull.Submarine == Submarine.MainSub then stateOf(item) end
         end
         pending = {}
     end
