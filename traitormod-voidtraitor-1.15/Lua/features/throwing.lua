@@ -31,7 +31,6 @@ local MAX_BODY_VELOCITY = 64
 local REACH_TOLERANCE = 60
 -- clients farther away than this cannot see the character and get no arm animation
 local VIEW_DISTANCE = 3000
-local FLIGHT_CHECK_MS = 100
 local AIM_CHECK_MS = 100
 -- after the click a grenade still finishes the game's swing before it leaves the hand
 local GRENADE_SWING_TIME = 1
@@ -46,7 +45,7 @@ local HANDS = {
 -- client -> { Action, Character, Items, Start } between the key press and the click
 local pending = {}
 local lastStart = {}
--- thrown item -> the collisions it had before, restored once it comes to rest
+-- thrown item -> the collisions it had before, given back once it hits something; false once it flies as any item
 local flying = {}
 local watchingFlight = false
 -- client -> { Character, Item, Throwable, BaseForce, Start, Charge, Thrown } while it aims a grenade
@@ -110,19 +109,39 @@ local function sendState(character, action, items)
     end
 end
 
+-- Lua reaches a body's contacts only once their types are registered
+LuaUserData.RegisterType("FarseerPhysics.Dynamics.Contacts.ContactEdge")
+LuaUserData.RegisterType("FarseerPhysics.Dynamics.Contacts.Contact")
+-- whether the item touches something: in flight it collides with walls and the level alone
+local function touchesSomething(item)
+    local edge = item.body.FarseerBody.ContactList
+    while edge ~= nil do
+        if edge.Contact.IsTouching and edge.Contact.Enabled then return true end
+        edge = edge.Next
+    end
+    return false
+end
+
+local function endFlight(item, collidesWith)
+    item.body.CollidesWith = collidesWith
+    item.body.FarseerBody.IsBullet = false
+end
+
+-- Every frame while something flies, so that an item that has hit a wall stops on the very next platform below.
 local function watchFlight()
     for item, collidesWith in pairs(flying) do
         if item.Removed or item.body == nil then
             flying[item] = nil
-        elseif item.ParentInventory ~= nil or item.body.LinearVelocity.LengthSquared() < 0.01 then
-            -- a grenade keeps the flight the game gave it (false)
-            if collidesWith then
-                item.body.CollidesWith = collidesWith
-                item.body.FarseerBody.IsBullet = false
-            end
+        elseif item.ParentInventory ~= nil
+            or (item.body.LinearVelocity.LengthSquared() < 0.01 and touchesSomething(item)) then
+            if collidesWith then endFlight(item, collidesWith) end
             -- SS14's artifacts react to landing after a throw (gamemodes/station/xenoarch.lua)
             if item.ParentInventory == nil then Hook.Call("VoidTraitor.ThrownItemLanded", item) end
             flying[item] = nil
+        elseif collidesWith and touchesSomething(item) then
+            -- past the first wall it falls as anything does, onto the next platform
+            endFlight(item, collidesWith)
+            flying[item] = false
         elseif collidesWith and item.InWater then
             -- water holds a bullet body back ten times less (Item.ApplyWaterForces); in water it moves as any item
             item.body.FarseerBody.IsBullet = false
@@ -130,9 +149,8 @@ local function watchFlight()
     end
     if next(flying) == nil then
         watchingFlight = false
-        return
+        Hook.Remove("think", "Traitormod.Throwing.Flight")
     end
-    Timer.Wait(watchFlight, FLIGHT_CHECK_MS)
 end
 
 -- collidesWith: what the item collided with before the throw, false for a grenade the game threw itself
@@ -140,7 +158,7 @@ local function watchLanding(item, collidesWith)
     flying[item] = collidesWith
     if not watchingFlight then
         watchingFlight = true
-        Timer.Wait(watchFlight, FLIGHT_CHECK_MS)
+        Hook.Add("think", "Traitormod.Throwing.Flight", watchFlight)
     end
 end
 
@@ -160,7 +178,7 @@ local function handPosition(character, item, point)
     return target
 end
 
--- Like Throwable: drop the item and push it; until it comes to rest it flies through platforms. It leaves from the
+-- Like Throwable: drop the item and push it; until it hits something it flies through platforms. It leaves from the
 -- hand, or from the shoulder when the hand is beyond a wall, along the cursor angle the client sends (measured from
 -- the shoulder): the same start and direction as the line the client draws.
 local function throw(character, item, charge, point)

@@ -321,12 +321,27 @@ local function updateKeys(character, now)
     end
 end
 
+-- Lua reaches a body's contacts only once their types are registered
+LuaUserData.RegisterType("FarseerPhysics.Dynamics.Contacts.ContactEdge")
+LuaUserData.RegisterType("FarseerPhysics.Dynamics.Contacts.Contact")
+-- whether the item touches something: in flight it collides with walls and the level alone
+local function touchesSomething(item)
+    local edge = item.body.FarseerBody.ContactList
+    while edge ~= nil do
+        if edge.Contact.IsTouching and edge.Contact.Enabled then return true end
+        edge = edge.Next
+    end
+    return false
+end
+
 local function updateFlying(now)
     for item, flight in pairs(flying) do
         if item.Removed or item.body == nil then
             flying[item] = nil
-        elseif now - flight.Since > FLIGHT_MIN_TIME
-            and (item.ParentInventory ~= nil or item.body.LinearVelocity.LengthSquared() < REST_SPEED_SQUARED) then
+        elseif (now - flight.Since > FLIGHT_MIN_TIME
+            and (item.ParentInventory ~= nil or item.body.LinearVelocity.LengthSquared() < REST_SPEED_SQUARED))
+            or (item.ParentInventory == nil and touchesSomething(item)) then
+            -- as on the server: past the first wall it falls as anything does, onto the next platform
             item.body.CollidesWith = flight.CollidesWith
             item.body.FarseerBody.IsBullet = false
             flying[item] = nil
