@@ -1,9 +1,9 @@
 -- Throwing and placing any item (client half: Void traitor pack-1.15 Lua/client/throwing.lua). F starts winding up the
 -- item in hand, or the one under the cursor in the inventory, and the left mouse button throws it; X reaches out with
 -- it the same way and the left mouse button lets it go where the hand is. Grenades and other items the game throws
--- itself keep its controls, but the longer the player aims before throwing, the farther they fly. The server times
--- every wind-up itself, aims along the cursor direction the game already syncs and checks every request; nearby
--- clients get a short start/stop message and animate the arms themselves.
+-- itself keep its controls, but the longer the player aims before throwing, the farther they fly. A thrown item flies
+-- to the point the player aims at, as far as the wind-up reaches. The server times every wind-up itself and checks
+-- every request; nearby clients get a short start/stop message and animate the arms themselves.
 local NET_REQUEST = "VoidTraitor_Throw"
 local NET_STATE = "VoidTraitor_ThrowState"
 
@@ -27,6 +27,10 @@ local MIN_MASS_FACTOR = 0.1
 local ARM_DAMAGE_PENALTY = 0.5
 -- NetConfig.MaxPhysicsBodyVelocity: the server reports an error for faster bodies when it syncs them
 local MAX_BODY_VELOCITY = 64
+-- the physics world's gravity in m/s^2, as the client's trajectory line
+local GRAVITY = -9.82
+-- a point a client may name as its aim, in world units: anything beyond is not a place in the level
+local MAX_COORDINATE = 10000000
 -- slack for the hand position the client measured a moment ago, in world units
 local REACH_TOLERANCE = 60
 -- clients farther away than this cannot see the character and get no arm animation
@@ -87,6 +91,19 @@ end
 
 local function windUp(charge)
     return MIN_CHARGE + (1 - MIN_CHARGE) * charge
+end
+
+-- The velocity (m/s) that carries an item from start to target (world positions) at this speed along the lower of the
+-- two arcs, so the longer the wind-up the flatter it flies; a target beyond its reach gets the arc that would just
+-- reach it, and the item falls short.
+local function launchVelocity(start, target, speed)
+    local offset = ConvertUnits.ToSimUnits(target - start)
+    local dx, g = math.abs(offset.X), -GRAVITY
+    if dx < 0.01 then return Vector2(0, offset.Y >= 0 and speed or -speed) end
+    local squared = speed * speed
+    local discriminant = squared * squared - g * (g * dx * dx + 2 * offset.Y * squared)
+    local tangent = (discriminant >= 0 and squared - math.sqrt(discriminant) or squared) / (g * dx)
+    return Vector2.Normalize(Vector2(offset.X >= 0 and 1 or -1, tangent)) * speed
 end
 
 local function throwSpeed(character, item, charge)
@@ -184,18 +201,14 @@ local function handPosition(character, item, point)
 end
 
 -- Like Throwable: drop the item and push it; until it hits something it flies through platforms. It leaves from the
--- hand, or from the shoulder when the hand is beyond a wall, along the cursor angle the client sends (measured from
--- the shoulder): the same start and direction as the line the client draws.
-local function throw(character, item, charge, point)
+-- hand, or from the shoulder when the hand is beyond a wall, towards the point the client aims at: the same start and
+-- arc as the line the client draws.
+local function throw(character, item, charge, point, target)
     local anim = character.AnimController
-    local direction = character.CursorWorldPosition - anim.AimSourceWorldPos
-    if direction.LengthSquared() < 1 then
-        direction = Vector2(0, 1)
-    else
-        direction = Vector2.Normalize(direction)
-    end
-    local speed = throwSpeed(character, item, charge)
-    local start = handPosition(character, item, point) or anim.AimSourceSimPos
+    local start = handPosition(character, item, point)
+    local velocity = launchVelocity(start ~= nil and point or anim.AimSourceWorldPos, target,
+        throwSpeed(character, item, charge))
+    start = start or anim.AimSourceSimPos
 
     item.Drop(character)
     if item.ParentInventory ~= nil then return false end
@@ -203,7 +216,7 @@ local function throw(character, item, charge, point)
     watchLanding(item, item.body.CollidesWith)
     item.body.CollidesWith = bit32.bor(Physics.CollisionWall, Physics.CollisionLevel)
     item.body.FarseerBody.IsBullet = true
-    item.body.ApplyLinearImpulse(direction * (speed * item.body.Mass), MAX_BODY_VELOCITY)
+    item.body.ApplyLinearImpulse(velocity * item.body.Mass, MAX_BODY_VELOCITY)
     Game.Log(character.Name .. " threw " .. item.Name, LOG_ITEM_INTERACTION)
     return true
 end
@@ -244,7 +257,7 @@ local function start(client, action, ids)
 end
 
 -- Throws or lets go every item of the action from the point the client saw it in the hand (points in item order).
-local function release(client, state, points)
+local function release(client, state, points, target)
     local character = state.Character
     local done = {}
     if client.Character == character and canAct(character) then
@@ -252,7 +265,7 @@ local function release(client, state, points)
         for index, item in ipairs(state.Items) do
             if ownsItem(character, item) then
                 if state.Action == ACTION_THROW then
-                    if throw(character, item, charge, points[index]) then done[#done + 1] = item end
+                    if throw(character, item, charge, points[index], target) then done[#done + 1] = item end
                 elseif place(character, item, points[index]) then
                     done[#done + 1] = item
                 end
@@ -351,7 +364,12 @@ Networking.Receive(NET_REQUEST, function(message, client)
     if action == ACTION_RELEASE then
         local points = {}
         for index = 1, #state.Items do points[index] = Vector2(message.ReadSingle(), message.ReadSingle()) end
-        release(client, state, points)
+        local target = Vector2(message.ReadSingle(), message.ReadSingle())
+        -- written as "not <" so that a NaN is refused too; then the game's own idea of the aim is used
+        if not (math.abs(target.X) < MAX_COORDINATE and math.abs(target.Y) < MAX_COORDINATE) then
+            target = state.Character.CursorWorldPosition
+        end
+        release(client, state, points, target)
     else
         sendState(state.Character, ACTION_CANCEL, {})
     end

@@ -109,6 +109,19 @@ local function windUp(charge)
     return MIN_CHARGE + (1 - MIN_CHARGE) * charge
 end
 
+-- The velocity (m/s) that carries an item from start to target (world positions) at this speed along the lower of the
+-- two arcs, so the longer the wind-up the flatter it flies; a target beyond its reach gets the arc that would just
+-- reach it, and the item falls short.
+local function launchVelocity(start, target, speed)
+    local offset = ConvertUnits.ToSimUnits(target - start)
+    local dx, g = math.abs(offset.X), -GRAVITY
+    if dx < 0.01 then return Vector2(0, offset.Y >= 0 and speed or -speed) end
+    local squared = speed * speed
+    local discriminant = squared * squared - g * (g * dx * dx + 2 * offset.Y * squared)
+    local tangent = (discriminant >= 0 and squared - math.sqrt(discriminant) or squared) / (g * dx)
+    return Vector2.Normalize(Vector2(offset.X >= 0 and 1 or -1, tangent)) * speed
+end
+
 local function throwSpeed(character, item, charge)
     local massFactor = math.max(MIN_MASS_FACTOR, math.min(1, math.sqrt(LIGHT_MASS / item.body.Mass)))
     return MAX_SPEED * windUp(charge) * massFactor * (1 - ARM_DAMAGE_PENALTY * armDamage(character, item))
@@ -155,14 +168,17 @@ local function sendStart(action, items)
     Networking.Send(message)
 end
 
--- The release sends where each item was in the hand, in the order the start named them.
-local function sendRelease(points)
+-- The release sends where each item was in the hand, in the order the start named them, and the point aimed at: the
+-- server knows only the aim's angle.
+local function sendRelease(points, target)
     local message = Networking.Start(NET_REQUEST)
     message.WriteByte(ACTION_RELEASE)
     for _, point in ipairs(points) do
         message.WriteSingle(point.X)
         message.WriteSingle(point.Y)
     end
+    message.WriteSingle(target.X)
+    message.WriteSingle(target.Y)
     Networking.Send(message)
 end
 
@@ -284,7 +300,7 @@ local function finish(character, now)
     else
         posers[character] = nil
     end
-    sendRelease(points)
+    sendRelease(points, character.CursorWorldPosition)
     own = nil
     holdingClick = true
 end
@@ -471,8 +487,9 @@ Hook.Patch(PATCH_ID, "Barotrauma.CharacterHUD", "Draw", function (instance, ptab
     if own ~= nil and own.Action == ACTION_THROW and own.Character == character then
         local charge = chargeOf(own, Timer.GetTime())
         for _, item in ipairs(own.Items) do
-            drawTrajectory(spriteBatch, cam, character, throwStart(character, item),
-                aimDirection(character) * throwSpeed(character, item, charge))
+            local start = throwStart(character, item)
+            drawTrajectory(spriteBatch, cam, character, start,
+                launchVelocity(start, character.CursorWorldPosition, throwSpeed(character, item, charge)))
         end
     elseif aiming then
         drawTrajectory(spriteBatch, cam, character, grenadeStart(character, aim.Throwable),
