@@ -263,10 +263,10 @@ end
 
 -- Patched on the first Station round and kept for the session, as station/radio.lua does; outside Station rounds they
 -- return at once. A blast lowers an item's condition without OnDamaged, so it is counted where it goes off.
-local damagePatched = false
-local function patchDamage()
-    if damagePatched then return end
-    damagePatched = true
+local triggersPatched = false
+local function patchTriggers()
+    if triggersPatched then return end
+    triggersPatched = true
     Hook.Patch("Traitormod.Xenoarch.Hit", "Barotrauma.Item", "AddDamage", function(item, ptable)
         if artifacts == nil or artifactKind(item) == "" then return end
         -- a blow handles the artifact as picking it up does, so one from the ruins gets its tree here too
@@ -287,6 +287,17 @@ local function patchDamage()
                 addDamage(item, state, damage * (explosion.DistanceFalloff and 1 - distance / range or 1))
             end
         end
+    end, Hook.HookMethodType.After)
+    -- SS14's heat trigger also takes a lit welder: here the flame of a tool that burns (welder, plasma cutter, flamer)
+    -- reaching the artifact, which the game hands to the tool's FixBody while it is used
+    Hook.Patch("Traitormod.Xenoarch.Flame", "Barotrauma.Items.Components.RepairTool", "FixBody", function(tool, ptable)
+        if artifacts == nil or tool.FireDamage <= 0 or not tool.HitItems then return end
+        local body = ptable["targetBody"]
+        local target = body ~= nil and body.UserData or nil
+        if target ~= nil and LuaUserData.IsTargetType(target, "Barotrauma.Items.Components.Holdable") then target = target.Item end
+        if target == nil or not LuaUserData.IsTargetType(target, "Barotrauma.Item") or artifactKind(target) == "" then return end
+        local state = stateOf(target)
+        if state.Nodes[state.Current].Trigger == "heat" then activate(target, state, ptable["user"]) end
     end, Hook.HookMethodType.After)
 end
 
@@ -428,7 +439,7 @@ function xenoarch.Start(mode)
     config, artifacts, sessions = mode.Xenoarch, {}, {}
     damageTypes = {}
     for _, id in ipairs(config.DamageTypes) do damageTypes[id] = true end
-    patchDamage()
+    patchTriggers()
     consoles = { Analyzers = {}, Scans = {}, Bias = {}, BiasChanged = {}, Elapsed = 0 }
     pending = {}
     for item in Item.ItemList do
