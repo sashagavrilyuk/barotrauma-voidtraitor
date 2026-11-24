@@ -340,8 +340,9 @@ local function updateFlying(now)
             flying[item] = nil
         elseif (now - flight.Since > FLIGHT_MIN_TIME
             and (item.ParentInventory ~= nil or item.body.LinearVelocity.LengthSquared() < REST_SPEED_SQUARED))
-            or (item.ParentInventory == nil and touchesSomething(item)) then
-            -- as on the server: past the first wall it falls as anything does, onto the next platform
+            or (item.ParentInventory == nil and (item.CurrentHull == nil or touchesSomething(item))) then
+            -- as on the server: past the first wall it falls as anything does, onto the next platform, and out at sea
+            -- there is no platform left to pass
             item.body.CollidesWith = flight.CollidesWith
             item.body.FarseerBody.IsBullet = false
             flying[item] = nil
