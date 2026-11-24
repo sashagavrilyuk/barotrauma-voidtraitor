@@ -310,23 +310,22 @@ textPromptUtils.ItemPrompts.vt_cloning_pod = function(client, pod)
     textPromptUtils.Prompt(Traitormod.FormatText("ClonePodBiomass", data.Biomass), { Traitormod.GetText("CloneTakeBiomass") },
         client, function() takeBiomass(client, pod) end, pod)
 end
+-- a body taken apart in a deconstructor leaves biomass; the game lets the living in as well and kills them at the end
 Hook.Patch("Traitormod.Cloning.Biomass", "Barotrauma.Items.Components.Deconstructor", "ApplyDeconstructionStatusEffects", function(instance, parameters)
-    if state == nil or instance.Item.Prefab.Identifier ~= "vt_biomass_reclaimer" or parameters["type"] ~= ActionType.OnDeconstructed then return end
+    if state == nil or parameters["type"] ~= ActionType.OnDeconstructed then return end
     local linked = parameters["targetItem"].GetComponentString("LinkedControllerCharacterComponent")
-    local corpse = linked ~= nil and linked.Character or nil
-    if corpse == nil or corpse.Removed or not corpse.IsDead or state.Reclaimed[corpse] then return end
-    state.Reclaimed[corpse] = true
-    local amount = corpse.IsHuman and config.HumanBiomassYield or math.max(5, math.min(58, math.floor(corpse.Mass * config.HumanBiomassYield / 80)))
+    local body = linked ~= nil and linked.Character or nil
+    if body == nil or body.Removed or state.Reclaimed[body] then return end
+    state.Reclaimed[body] = true
+    local amount = body.IsHuman and config.HumanBiomassYield or math.max(5, math.min(58, math.floor(body.Mass * config.HumanBiomassYield / 80)))
     for _ = 1, amount do
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("vt_biomass"), instance.OutputContainer.Inventory)
     end
 end, Hook.HookMethodType.Before)
 Hook.Patch("Traitormod.Cloning.DeadOnly", "Barotrauma.Items.Components.Controller", "Select", function(instance, parameters)
-    local identifier = instance.Item.Prefab.Identifier
-    if identifier ~= "vt_cloning_scanner" and identifier ~= "vt_biomass_reclaimer" then return end
+    if instance.Item.Prefab.Identifier ~= "vt_cloning_scanner" then return end
     local character = parameters["activator"]
-    if character == nil then return end
-    if identifier == "vt_cloning_scanner" and instance.User == character then return end
+    if character == nil or instance.User == character then return end
     local selected = character.SelectedCharacter
     if selected ~= nil and not selected.IsDead then
         parameters.PreventExecution = true
@@ -334,11 +333,10 @@ Hook.Patch("Traitormod.Cloning.DeadOnly", "Barotrauma.Items.Components.Controlle
         character.DeselectCharacter()
     end
 end, Hook.HookMethodType.Before)
--- the game lets anyone light enough (Character.IsContainable) be put inside once knocked out or cuffed; these two take
--- only the dead, of any weight. The pack's client answers the same for its hint and its interaction
+-- the game lets anyone light enough (Character.IsContainable) be put inside once knocked out or cuffed; the scanner
+-- takes only the dead, of any weight. The pack's client answers the same for its hint and its interaction
 Hook.Patch("Traitormod.Cloning.Corpses", "Barotrauma.Items.Components.Controller", "CanPutSelectedCharacterInside", function(instance, parameters)
-    local identifier = instance.Item.Prefab.Identifier
-    if identifier ~= "vt_cloning_scanner" and identifier ~= "vt_biomass_reclaimer" then return end
+    if instance.Item.Prefab.Identifier ~= "vt_cloning_scanner" then return end
     local character = parameters["character"]
     parameters.ReturnValue = character ~= nil and character.IsDead
         and character.AnimController.RagdollParams.CanEnterSubmarine == canEnterSubmarine.True

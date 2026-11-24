@@ -52,12 +52,6 @@
       <input name="pod" displayname="ClonePodConnection" />
     </ConnectionPanel>
   </Item>
-  <Item identifier="vt_biomass_reclaimer" subcategory="vt_station" name="" nameidentifier="deconstructor" variantof="deconstructor">
-    <ItemContainer>
-      <Containable items="unidentifiedbiologicalmaterial" />
-    </ItemContainer>
-    <ItemContainer maxstacksize="64" />
-  </Item>
   <Item identifier="vt_biomass" subcategory="vt_station" name="" category="Material" tags="smallitem,vt_biomass" maxstacksize="64" maxstacksizecharacterinventory="64" scale="0.5" cargocontaineridentifier="metalcrate">
     <Sprite texture="Content/Items/InventoryIconAtlas2.png" sourcerect="576,64,64,64" origin="0.5,0.5" color="170,90,110,255" />
     <Price baseprice="10" />

@@ -2,5 +2,4 @@
 <infotexts language="Russian" translatedname="Русский">
   <entityname.vt_station_access>Консоль управления ID-картами</entityname.vt_station_access>
   <entitydescription.vt_station_access>Два слота: карта авторизации и редактируемая карта. Выдаёт и отзывает только доступы с карты авторизации.</entitydescription.vt_station_access>
-  <entityname.vt_station_reactordoor>Дверь реакторной</entityname.vt_station_reactordoor>
 </infotexts>

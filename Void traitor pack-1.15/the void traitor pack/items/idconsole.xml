@@ -11,11 +11,4 @@
       <input name="power_in" displayname="connection.powerin" />
     </ConnectionPanel>
   </Item>
-  <Item identifier="vt_station_reactordoor" subcategory="vt_station" name="" variantof="door" category="Machine">
-    <Door>
-      <RequiredItem items="vt_access_reactor" type="Picked" characterinventoryslottype="Card" msg="ItemMsgUnauthorizedAccess" />
-      <!-- Full path: the sub preview looks for a bare door.png in this pack's folder. -->
-      <Sprite texture="Content/Items/Door/door.png" />
-    </Door>
-  </Item>
 </Items>
