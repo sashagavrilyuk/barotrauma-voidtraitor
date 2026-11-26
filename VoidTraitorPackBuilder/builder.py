@@ -318,31 +318,6 @@ def find_case_insensitive(root: Path, relative: str) -> Path | None:
     return current
 
 
-def write_neurotrauma_human_override(workshop_root: Path, output: Path, manifest: ET.Element) -> None:
-    dependency = manifest.find("./Dependency[@identifier='neurotrauma']")
-    workshop_id = dependency.attrib["ids"]
-    source = workshop_root / workshop_id / "Characters" / "Human"
-    override = Path("Neurotrauma")
-    ragdoll_path = Path("Ragdolls") / "HumanDefaultRagdoll.xml"
-    workshop_path = f"%ModDir:{workshop_id}%"
-
-    for relative in (Path("Human.xml"), ragdoll_path):
-        path = source / relative
-        if not path.is_file():
-            fail(f"Установи Neurotrauma Lua из Мастерской ({workshop_id}): не найден {path}")
-        contents, encoding = read_text_preserve_encoding(path)
-        contents = contents.replace("%ModDir:Neurotrauma%", workshop_path).replace("%ModDir%", workshop_path)
-        if relative.name == "Human.xml":
-            ragdolls = ET.fromstring(contents).find("./Character[@SpeciesName='Human']/ragdolls")
-            if ragdolls is None or not ragdolls.get("folder"):
-                fail(f"Изменилась структура XML персонажа Neurotrauma: {path}")
-            folder = ragdolls.attrib["folder"]
-            contents = contents.replace(f'folder="{folder}"', f'path="%ModDir%/{(override / ragdoll_path).as_posix()}"', 1)
-        destination = output / override / relative
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        write_text_preserve_encoding(destination, contents, encoding)
-
-
 def normalize_filelist_case(root: ET.Element, output: Path) -> None:
     prefix = "%ModDir%/"
     for node in root.iter():
@@ -898,7 +873,6 @@ def main() -> None:
             suffix = f" ... +{len(identifiers) - 8}" if len(identifiers) > 8 else ""
             print(f"  - {winner} > {loser}: {preview}{suffix}")
 
-    write_neurotrauma_human_override(workshop_root, output, final_root)
     normalize_filelist_case(final_root, output)
     save_filelist(final_root, output / "filelist.xml")
 
