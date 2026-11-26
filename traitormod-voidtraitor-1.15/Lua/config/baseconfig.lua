@@ -220,7 +220,7 @@ config.GameVote = {
     SecretModeIdentifier = "mission",
     SecretTraitorProbability = 100,
     SecretDifficulty = 50,
-    SecretRespawnMode = "MidRound", -- None | MidRound | BetweenRounds | Permadeath; Station sets Permadeath itself
+    SecretRespawnMode = "BetweenRounds", -- None | MidRound | BetweenRounds | Permadeath; Station sets Permadeath itself
     SecretMissionTypes = {
         "Pirate",
         "Salvage",
