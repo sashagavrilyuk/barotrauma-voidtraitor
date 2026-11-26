@@ -483,7 +483,8 @@ function gm:PreStart()
 
     Hook.Add("character.applyAffliction", "Traitormod.HideAndSeekV2.SeekerNeurotrauma", function(characterHealth, _, affliction)
         if self.IsEnding or characterHealth.Character.TeamID ~= TeamID2 then return end
-        if affliction.Prefab.ContentPackage.Name == "Neurotrauma" then
+        local workshopId = affliction.Prefab.ContentPackage.UgcId
+        if workshopId and workshopId.ToString() == "3190189044" then
             return true
         end
     end)

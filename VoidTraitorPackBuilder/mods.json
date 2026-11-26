@@ -96,6 +96,11 @@
       "target_folder": "Gravitation Grаnade"
     },
     {
+      "workshop_id": "3222593240",
+      "package_name": "Hungry Europans - Neurotrauma Compatibility Patch",
+      "target_folder": "Hungry Europans NT Patch"
+    },
+    {
       "workshop_id": "2954998725",
       "package_name": "Hungry Europans",
       "target_folder": "Hungry Europans",
@@ -105,11 +110,6 @@
         "Content/Tutorials",
         "Content/Items/Gardening/plantgrowthcalculator.xls"
       ]
-    },
-    {
-      "workshop_id": "3222593240",
-      "package_name": "Hungry Europans - Neurotrauma Compatibility Patch",
-      "target_folder": "Hungry Europans NT Patch"
     },
     {
       "workshop_id": "3687222045",
