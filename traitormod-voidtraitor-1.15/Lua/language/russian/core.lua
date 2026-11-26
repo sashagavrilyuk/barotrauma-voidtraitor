@@ -278,31 +278,7 @@ language.CMDDropPointsFailed = "Не удалось выбросить очки.
 language.CMDDropPointsDropped = "Выброшено %s очков."
 
 -- Системные сообщения сервера
-language.ChatSenderServer = "Сервер"
 language.ClientLuaMissing = "Для этого нужен клиентский Lua. Подпишитесь на LuaCsForBarotraumaPlugin в Steam Workshop (https://steamcommunity.com/sharedfiles/filedetails/?id=3693624471), включите его в списке модов и перезайдите на сервер."
-language.WelcomeMessage = [=[Добро пожаловать в Void Traitor!
-
-Это сервер с собственным Traitor Mod, особыми ролями, целями, магазином и отдельными игровыми режимами.
-Здесь мы играем в «Миссии с предателями», «Attack & Defends», «Прятки» и другие режимы.
-
-У сервера есть Discord-сообщество, где публикуются сообщения о запусках, гайды и новости. Там же можно предложить идеи для сервера:
-наш сервер — https://discord.gg/rFrwmXg8DQ
-сервер партнёров Project Encelada — https://discord.gg/encelada
-
-Для игры на сервере нужен клиентский Lua: подпишитесь на LuaCsForBarotraumaPlugin в Steam Workshop и включите его в списке модов:
-https://steamcommunity.com/sharedfiles/filedetails/?id=3693624471
-
-Команды вводятся в чат без «/»:
-!help — список основных команд
-!points / !point — очки, жизни и шанс стать антагонистом
-!pointshop / !shop / !ps — магазин
-!traitor / !role — текущая роль и задачи
-!suicide / !kill — покинуть гост-роль или совершить самоубийство.
-
-Правила:
-Запрещено быть мудаком.
-Запрещено гриферить и убивать игроков вне правил текущего режима или своей роли.
-В Secret капитан и офицеры службы безопасности не выбираются антагонистами.]=]
 
 -- Описания специальных предметов
 language.ItemDescriptionCultistBeacon = "‖color:160, 32, 240, 255‖Модифицированный сонарный маяк. На нём написано: \"Оставь активным на 30 секунд для сюрприза.\"‖color:end‖"

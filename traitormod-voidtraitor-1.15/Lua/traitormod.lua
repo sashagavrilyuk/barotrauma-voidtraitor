@@ -514,7 +514,6 @@ Traitormod.AdminOverlay = dofile(Traitormod.Path .. "/Lua/features/adminoverlay.
 Traitormod.Stats = dofile(Traitormod.Path .. "/Lua/statistics.lua")
 dofile(Traitormod.Path .. "/Lua/features/pointitems.lua")
 dofile(Traitormod.Path .. "/Lua/features/respawnshuttle.lua")
-dofile(Traitormod.Path .. "/Lua/features/welcome.lua")
 dofile(Traitormod.Path .. "/Lua/features/deathlogbook.lua")
 dofile(Traitormod.Path .. "/Lua/features/killfeed.lua")
 dofile(Traitormod.Path .. "/Lua/features/serverlogs.lua")

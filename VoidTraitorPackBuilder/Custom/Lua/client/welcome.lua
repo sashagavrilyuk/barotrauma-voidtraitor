@@ -1,15 +1,5 @@
 if SERVER then return end 
 
--- сообщаем серверу, что у клиента есть Lua пака
-local function SendHandshake()
-    if not Game.IsMultiplayer or not Networking.IsActive then return end
-
-    local msg = Networking.Start("VoidTraitor_LuaCheck")
-    Networking.Send(msg)
-end
-SendHandshake()
-Hook.Add("roundStart", "VoidTraitor.LuaCheck.RoundStart", SendHandshake)
-
 local packPath, Common = ...
 local language = dofile(packPath .. "/Lua/language/welcome_russian.lua")
 local menuText = language.MenuText
