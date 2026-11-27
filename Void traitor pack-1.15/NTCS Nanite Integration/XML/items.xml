@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Override>
+  <Items>
+    <NaniteBase identifier="nanitebase" category="Medical" cargocontaineridentifier="medicalcrate" Tags="smallitem,medical" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_metal_light" maxstacksize="4">
+      <Upgrade gameversion="0.10.0.0" scale="0.5" />
+      <PreferredContainer primary="ruinstoragelarge,ruinstorage,ruinstoragesmall" minamount="1" maxamount="3" spawnprobability="0.1" />
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="20" amount="1">
+        <RequiredSkill identifier="electrical" level="40" />
+        <RequiredSkill identifier="medical" level="60" />
+        <RequiredItem identifier="stabilozine" />
+        <RequiredItem identifier="fulgurium" amount="1" />
+        <RequiredItem identifier="aliencircuitry" amount="2" />
+      </Fabricate>
+      <Deconstruct time="15">
+        <RequiredItem identifier="tin" />
+      </Deconstruct>
+      <InventoryIcon texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="0,128,64,64" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="0,384,64,64" depth="0.6" origin="0.5,0.5" />
+      <Body width="35" height="65" density="15" />
+      <Holdable handle1="0,0" slots="Any,RightHand,LeftHand" msg="ItemMsgPickUpSelect"></Holdable>
+    </NaniteBase>
+    <!-- <NanitePrecursor identifier="naniteprecursor" category="Medical" cargocontaineridentifier="medicalcrate" Tags="smallitem,medical,syringue" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_metal_light" maxstacksize="4">
+    <Upgrade gameversion="0.10.0.0" scale="0.5" />
+    <Fabricate suitablefabricators="medicalfabricator" requiredtime="30" amount="1">
+      <RequiredSkill identifier="electrical" level="40" />
+      <RequiredSkill identifier="medical" level="60" />
+      <RequiredItem identifier="nanitebase" />
+      <RequiredItem identifier="lithium" amount="3" />
+      <RequiredItem identifier="fpgacircuit" />
+    </Fabricate>
+    <Deconstruct time="15">
+      <RequiredItem identifier="nanitebase" />
+    </Deconstruct>
+    <InventoryIcon texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="0,0,64,64" origin="0.5,0.5" />
+    <Sprite texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="0,256,64,64" depth="0.6" origin="0.5,0.5" />
+    <Body width="35" height="65" density="15" />
+    <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="5,0" handle1="-5,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
+      <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+      <StatusEffect statuseffecttags="medical" type="OnUse" target="UseTarget" checkconditionalalways="true">
+        <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+        <Hook name="NTNanApplyNanite" id="precursor" amount="2" />
+         <Affliction identifier="precursor" amount="1" />
+      </StatusEffect>
+      <StatusEffect type="OnBroken" target="This">
+        <Remove />
+      </StatusEffect>
+    </MeleeWeapon>
+  </NanitePrecursor> -->
+    <NaniteRemover identifier="naniteremover" category="Medical" cargocontaineridentifier="medicalcrate" Tags="smallitem,medical,syringue" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_metal_light" maxstacksize="4">
+      <Upgrade gameversion="0.10.0.0" scale="0.5" />
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="30" amount="1">
+        <RequiredSkill identifier="electrical" level="40" />
+        <RequiredSkill identifier="medical" level="60" />
+        <RequiredItem identifier="nanitebase" />
+        <RequiredItem identifier="sulphuricacid" />
+      </Fabricate>
+      <Deconstruct time="15">
+        <RequiredItem identifier="nanitebase" />
+        <RequiredItem identifier="sulphuricacid" />
+      </Deconstruct>
+      <InventoryIcon texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="0,64,64,64" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="0,320,64,64" depth="0.6" origin="0.5,0.5" />
+      <Body width="35" height="65" density="15" />
+      <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="5,0" handle1="-5,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+        <StatusEffect tags="medical" type="OnUse" target="UseTarget" checkconditionalalways="true" duration="12">
+          <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+          <Affliction identifier="naniteremover" amount="1" />
+          <Affliction identifier="burn" amount="1" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </MeleeWeapon>
+    </NaniteRemover>
+    <Recontructor identifier="reconstructornanite" category="Material" cargocontaineridentifier="chemicalcrate" Tags="smallitem,chem,medical,syringe" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_metal_light" maxstacksize="8">
+      <Upgrade gameversion="0.10.0.0" scale="0.5" />
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="70">
+        <RequiredSkill identifier="electrical" level="40" />
+        <RequiredSkill identifier="medical" level="60" />
+        <RequiredItem identifier="nanitebase" />
+        <RequiredItem identifier="antibleeding3" />
+        <RequiredItem identifier="antibleeding2" />
+      </Fabricate>
+      <Deconstruct time="15">
+        <RequiredItem identifier="nanitebase" />
+      </Deconstruct>
+      <InventoryIcon texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="64,0,64,64" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="64,256,64,64" depth="0.6" origin="0.5,0.5" />
+      <Body width="35" height="65" density="15" />
+      <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="5,0" handle1="-5,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+        <StatusEffect tags="medical" type="OnUse" target="UseTarget" checkconditionalalways="true" duration="1">
+          <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+          <Hook name="NTNanApplyNanite" id="reconstructornanite" amount="2" />
+          <!-- <Affliction identifier="reconstructornanite" amount="1" /> -->
+          <Affliction identifier="lacerations" amount="10" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </MeleeWeapon>
+    </Recontructor>
+    <Deepfix identifier="deepfixnanite" category="Material" cargocontaineridentifier="chemicalcrate" Tags="smallitem,chem,medical,syringe" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_metal_light" maxstacksize="8">
+      <Upgrade gameversion="0.10.0.0" scale="0.5" />
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="70">
+        <RequiredSkill identifier="electrical" level="40" />
+        <RequiredSkill identifier="medical" level="60" />
+        <RequiredItem identifier="nanitebase" />
+        <RequiredItem identifier="antidama1" />
+        <RequiredItem identifier="thiamine" amount="2" />
+      </Fabricate>
+      <Deconstruct time="15">
+        <RequiredItem identifier="nanitebase" />
+      </Deconstruct>
+      <InventoryIcon texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="128,0,64,64" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="128,256,64,64" depth="0.6" origin="0.5,0.5" />
+      <Body width="35" height="65" density="15" />
+      <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="5,0" handle1="-5,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+        <StatusEffect tags="medical" type="OnUse" target="UseTarget" checkconditionalalways="true" duration="1">
+          <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+          <Hook name="NTNanApplyNanite" id="deepfixnanite" amount="2" />
+          <!-- <Affliction identifier="deepfixnanite" amount="1" /> -->
+          <Affliction identifier="blunttrauma" amount="10" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </MeleeWeapon>
+    </Deepfix>
+    <Bonefix identifier="bonefixnanite" category="Material" cargocontaineridentifier="chemicalcrate" Tags="smallitem,chem,medical,syringe" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_metal_light" maxstacksize="8">
+      <Upgrade gameversion="0.10.0.0" scale="0.5" />
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="70">
+        <RequiredSkill identifier="electrical" level="40" />
+        <RequiredSkill identifier="medical" level="60" />
+        <RequiredItem identifier="nanitebase" />
+        <RequiredItem identifier="calcium" amount="5" />
+        <RequiredItem identifier="titaniumaluminiumalloy" amount="2" />
+      </Fabricate>
+      <Deconstruct time="15">
+        <RequiredItem identifier="nanitebase" />
+      </Deconstruct>
+      <InventoryIcon texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="64,64,64,64" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="128,320,64,64" depth="0.6" origin="0.5,0.5" />
+      <Body width="35" height="65" density="15" />
+      <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="5,0" handle1="-5,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+        <StatusEffect tags="medical" type="OnUse" target="UseTarget" checkconditionalalways="true" duration="1">
+          <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+          <Hook name="NTNanApplyNanite" id="bonefixnanite" amount="2" />
+          <!-- <Affliction identifier="bonefixnanite" amount="2" /> -->
+          <Affliction identifier="blunttrauma" amount="10" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </MeleeWeapon>
+    </Bonefix>
+    <Antitox identifier="antitoxnanite" category="Material" cargocontaineridentifier="chemicalcrate" Tags="smallitem,chem,medical,syringe" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_metal_light" maxstacksize="8">
+      <Upgrade gameversion="0.10.0.0" scale="0.5" />
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="75">
+        <RequiredSkill identifier="electrical" level="40" />
+        <RequiredSkill identifier="medical" level="60" />
+        <RequiredItem identifier="nanitebase" />
+        <RequiredItem identifier="ethanol" />
+        <RequiredItem identifier="antinarc" />
+      </Fabricate>
+      <Deconstruct time="15">
+        <RequiredItem identifier="nanitebase" />
+      </Deconstruct>
+      <InventoryIcon texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="192,0,64,64" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="192,256,64,64" depth="0.6" origin="0.5,0.5" />
+      <Body width="35" height="65" density="15" />
+      <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="5,0" handle1="-5,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+        <StatusEffect tags="medical" type="OnUse" target="UseTarget" checkconditionalalways="true" duration="1">
+          <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+          <Hook name="NTNanApplyNanite" id="antitoxnanite" amount="2" />
+          <!-- <Affliction identifier="antitoxnanite" amount="2" /> -->
+          <Affliction identifier="opiateoverdose" amount="10" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </MeleeWeapon>
+    </Antitox>
+    <Oxyblood identifier="oxybloodnanite" category="Material" cargocontaineridentifier="chemicalcrate" Tags="smallitem,chem,medical,syringe" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_metal_light" maxstacksize="8">
+      <Upgrade gameversion="0.10.0.0" scale="0.5" />
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="110">
+        <RequiredSkill identifier="electrical" level="40" />
+        <RequiredSkill identifier="medical" level="60" />
+        <RequiredItem identifier="nanitebase" />
+        <RequiredItem identifier="liquidoxygenite" />
+        <RequiredItem identifier="antibloodloss2" amount="2" />
+        <RequiredItem identifier="bvm" />
+        <RequiredItem identifier="autocpr" />
+      </Fabricate>
+      <Deconstruct time="15">
+        <RequiredItem identifier="nanitebase" />
+      </Deconstruct>
+      <InventoryIcon texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="256,0,64,64" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="256,256,64,64" depth="0.6" origin="0.5,0.5" />
+      <Body width="35" height="65" density="15" />
+      <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="5,0" handle1="-5,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+        <StatusEffect tags="medical" type="OnUse" target="UseTarget" checkconditionalalways="true" duration="1">
+          <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+          <Hook name="NTNanApplyNanite" id="oxybloodnanite" amount="2" />
+          <!-- <Affliction identifier="oxybloodnanite" amount="2" /> -->
+          <Affliction identifier="oxygenlow" amount="90" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </MeleeWeapon>
+    </Oxyblood>
+    <Neural identifier="neuralnanite" category="Material" cargocontaineridentifier="chemicalcrate" Tags="smallitem,chem,medical,syringe" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_metal_light" maxstacksize="8">
+      <Upgrade gameversion="0.10.0.0" scale="0.5" />
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="70">
+        <RequiredSkill identifier="electrical" level="40" />
+        <RequiredSkill identifier="medical" level="60" />
+        <RequiredItem identifier="nanitebase" />
+        <RequiredItem identifier="dementonite" amount="2" />
+      </Fabricate>
+      <Deconstruct time="15">
+        <RequiredItem identifier="nanitebase" />
+      </Deconstruct>
+      <InventoryIcon texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="320,0,64,64" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="320,256,64,64" depth="0.6" origin="0.5,0.5" />
+      <Body width="35" height="65" density="15" />
+      <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="5,0" handle1="-5,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+        <StatusEffect tags="medical" type="OnUse" target="UseTarget" checkconditionalalways="true" duration="1">
+          <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+          <Hook name="NTNanApplyNanite" id="neuralnanite" amount="2" />
+          <!-- <Affliction identifier="neuralnanite" amount="2" /> -->
+          <Affliction identifier="hallucinating" amount="20" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </MeleeWeapon>
+    </Neural>
+    <Paral identifier="husknanite" category="Material" cargocontaineridentifier="chemicalcrate" Tags="smallitem,chem,medical,syringe" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_metal_light" maxstacksize="8">
+      <Upgrade gameversion="0.10.0.0" scale="0.5" />
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="160">
+        <RequiredSkill identifier="electrical" level="40" />
+        <RequiredSkill identifier="medical" level="60" />
+        <RequiredItem identifier="nanitebase" />
+        <RequiredItem identifier="calyxanide" />
+        <RequiredItem identifier="antibiotics" ammout="2" />
+      </Fabricate>
+      <Deconstruct time="15">
+        <RequiredItem identifier="nanitebase" />
+      </Deconstruct>
+      <InventoryIcon texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="384,0,64,64" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="384,256,64,64" depth="0.6" origin="0.5,0.5" />
+      <Body width="35" height="65" density="15" />
+      <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="5,0" handle1="-5,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+        <StatusEffect tags="medical" type="OnUse" target="UseTarget" checkconditionalalways="true" duration="1">
+          <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+          <Hook name="NTNanApplyNanite" id="husknanite" amount="2" />
+          <!-- <Affliction identifier="husknanite" amount="2" /> -->
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </MeleeWeapon>
+    </Paral>
+    <Vigor identifier="vigorbuffnanite" category="Material" cargocontaineridentifier="chemicalcrate" Tags="smallitem,chem,medical,syringe" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_metal_light" maxstacksize="8">
+      <Upgrade gameversion="0.10.0.0" scale="0.5" />
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="90">
+        <RequiredSkill identifier="electrical" level="40" />
+        <RequiredSkill identifier="medical" level="60" />
+        <RequiredItem identifier="nanitebase" />
+        <RequiredItem identifier="steroids" amount="2" />
+        <RequiredItem identifier="physicorium" />
+      </Fabricate>
+      <Deconstruct time="15">
+        <RequiredItem identifier="nanitebase" />
+      </Deconstruct>
+      <InventoryIcon texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="448,0,64,64" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="448,256,64,64" depth="0.6" origin="0.5,0.5" />
+      <Body width="35" height="65" density="15" />
+      <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="5,0" handle1="-5,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+        <StatusEffect tags="medical" type="OnUse" target="UseTarget" checkconditionalalways="true" duration="1">
+          <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+          <Hook name="NTNanApplyNanite" id="vigorbuffnanite" amount="2" />
+          <!-- <Affliction identifier="vigorbuffnanite" amount="2" /> -->
+          <Affliction identifier="chemaddiction" amount="7" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </MeleeWeapon>
+    </Vigor>
+    <Hyper identifier="hyperbuffnanite" category="Material" cargocontaineridentifier="chemicalcrate" Tags="smallitem,chem,medical,syringe" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_metal_light" maxstacksize="8">
+      <Upgrade gameversion="0.10.0.0" scale="0.5" />
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="90">
+        <RequiredSkill identifier="electrical" level="40" />
+        <RequiredSkill identifier="medical" level="60" />
+        <RequiredItem identifier="nanitebase" />
+        <RequiredItem identifier="meth" />
+        <RequiredItem identifier="incendium" />
+      </Fabricate>
+      <Deconstruct time="15">
+        <RequiredItem identifier="nanitebase" />
+      </Deconstruct>
+      <InventoryIcon texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="448,64,64,64" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="448,320,64,64" depth="0.6" origin="0.5,0.5" />
+      <Body width="35" height="65" density="15" />
+      <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="5,0" handle1="-5,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+        <StatusEffect tags="medical" type="OnUse" target="UseTarget" checkconditionalalways="true" duration="1">
+          <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+          <Hook name="NTNanApplyNanite" id="hyperbuffnanite" amount="2" />
+          <!-- <Affliction identifier="hyperbuffnanite" amount="2" /> -->
+          <Affliction identifier="chemaddiction" amount="7" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </MeleeWeapon>
+    </Hyper>
+    <Vision identifier="visionbuffnanite" category="Material" cargocontaineridentifier="chemicalcrate" Tags="smallitem,chem,medical,syringe" useinhealthinterface="true" scale="0.5" impactsoundtag="impact_metal_light" maxstacksize="8">
+      <Upgrade gameversion="0.10.0.0" scale="0.5" />
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="75">
+        <RequiredSkill identifier="electrical" level="40" />
+        <RequiredSkill identifier="medical" level="60" />
+        <RequiredItem identifier="nanitebase" />
+        <RequiredItem identifier="electriciansgoggles" />
+      </Fabricate>
+      <Deconstruct time="15">
+        <RequiredItem identifier="nanitebase" />
+      </Deconstruct>
+      <InventoryIcon texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="384,64,64,64" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" sourcerect="384,320,64,64" depth="0.6" origin="0.5,0.5" />
+      <Body width="35" height="65" density="15" />
+      <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="5,0" handle1="-5,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true" />
+        <StatusEffect tags="medical" type="OnUse" target="UseTarget" checkconditionalalways="true" duration="1">
+          <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
+          <Hook name="NTNanApplyNanite" id="visionbuffnanite" amount="2" />
+          <!-- <Affliction identifier="visionbuffnanite" amount="2" /> -->
+          <Affliction identifier="hallucinating" amount="40" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </MeleeWeapon>
+    </Vision>
+    <BatteryImplant identifier="nanitebatteryimplant" category="Medical" cargocontaineridentifier="medicalcrate" Tags="smallitem,medical" canbepicked="true" useinhealthinterface="true" scale="0.25" impactsoundtag="impact_metal_light" maxstacksize="1">
+      <Upgrade gameversion="0.10.0.0" scale="0.5" />
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="75">
+        <RequiredSkill identifier="electrical" level="40" />
+        <RequiredSkill identifier="medical" level="60" />
+        <RequiredItem identifier="fulguriumbatterycell" />
+        <RequiredItem tag="heart" />
+      </Fabricate>
+      <Deconstruct time="15">
+        <RequiredItem identifier="fulguriumbatterycell" />
+      </Deconstruct>
+      <InventoryIcon texture="%ModDir%/NTCS Nanite Integration/Images/naniteBatteryImplant.png" sourcerect="20,20,150,160" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/NTCS Nanite Integration/Images/naniteBatteryImplant.png" sourcerect="20,20,150,160" depth="0.6" origin="0.5,0.5" />
+      <Body width="60" height="62" density="15" />
+      <Holdable canBeCombined="false" slots="Any,RightHand,LeftHand" handle1="0,0" msg="ItemMsgPickUpSelect">
+        <!-- Remove the item when fully used -->
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <SkillRequirementHint identifier="medical" level="80" />
+    </BatteryImplant>
+    <EmergencyEnergy identifier="emergencyenergyinjection" category="Medical" cargocontaineridentifier="medicalcrate" Tags="smallitem,medical" canbepicked="true" useinhealthinterface="true" scale="0.25" impactsoundtag="impact_metal_light" maxstacksize="4">
+      <Upgrade gameversion="0.10.0.0" scale="0.5" />
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="75">
+        <RequiredSkill identifier="electrical" level="40" />
+        <RequiredSkill identifier="medical" level="60" />
+        <RequiredItem identifier="fulguriumbatterycell" />
+        <RequiredItem identifier="plastic" />
+        <RequiredItem identifier="copper" />
+      </Fabricate>
+      <Deconstruct time="15">
+        <RequiredItem identifier="fulguriumbatterycell" />
+      </Deconstruct>
+      <InventoryIcon texture="%ModDir%/NTCS Nanite Integration/Images/emergencyEnergyInjection.png" sourcerect="8,16,116,127" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/NTCS Nanite Integration/Images/emergencyEnergyInjection.png" sourcerect="8,16,116,127" depth="0.6" origin="0.5,0.5" />
+      <Body width="60" height="62" density="15" />
+      <Holdable canBeCombined="false" slots="Any,RightHand,LeftHand" handle1="0,0" msg="ItemMsgPickUpSelect">
+        <!-- Remove the item when fully used -->
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </Holdable>
+      <SkillRequirementHint identifier="medical" level="40" />
+    </EmergencyEnergy>
+    <Item name="" identifier="fulguriumbatterycell" category="Equipment,Electrical" maxstacksize="8" tags="smallitem,loadable,mobilebattery,medical" health="200" scale="0.5" useinhealthinterface="true" cargocontaineridentifier="metalcrate" description="" impactsoundtag="impact_metal_light">
+      <Upgrade gameversion="0.10.0.0" scale="0.5" />
+      <PreferredContainer primary="batterycellrecharger" maxcondition="80" />
+      <PreferredContainer primary="stunbaton,underwaterscooter,handheldsonar,sonarbeacon,flashlight,portablepump,poweredcontainer" mincondition="25" />
+      <PreferredContainer secondary="divingcab,engcab,reactorcab" />
+      <PreferredContainer secondary="abandonedengcab,pirateengcab,wreckengcab" amount="1" spawnprobability="0.05" />
+      <Price baseprice="250" minavailable="1" minleveldifficulty="15">
+        <Price storeidentifier="merchantoutpost" sold="false" multiplier="1.25" />
+        <Price storeidentifier="merchantcity" />
+        <Price storeidentifier="merchantresearch" minavailable="2" />
+        <Price storeidentifier="merchantmilitary" />
+        <Price storeidentifier="merchantmine" sold="false" multiplier="1.25" />
+        <Price storeidentifier="merchantengineering" multiplier="0.9" minavailable="2" />
+      </Price>
+      <Deconstruct time="10">
+        <Item identifier="zinc" />
+        <Item identifier="fulgurium" />
+      </Deconstruct>
+      <Fabricate suitablefabricators="fabricator" requiredtime="15">
+        <RequiredSkill identifier="electrical" level="40" />
+        <RequiredItem identifier="fulgurium" />
+        <RequiredItem identifier="zinc" amount="2" />
+      </Fabricate>
+      <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="514,832,62,64" origin="0.5,0.5" />
+      <Sprite texture="Content/Items/Electricity/signalcomp.png" sourcerect="968,25,37,21" depth="0.55" />
+      <Body width="32" height="20" density="30" />
+      <Holdable slots="Any,RightHand,LeftHand" msg="ItemMsgPickUpSelect" />
+      <Quality>
+        <QualityStat stattype="Condition" value="0.1" />
+      </Quality>
+    </Item>
+  </Items>
+</Override>

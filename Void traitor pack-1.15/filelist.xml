@@ -501,7 +501,15 @@
   <ContainerTag file="%ModDir%/the void traitor pack/ContainerTags.xml" />
   <RandomEvents file="%ModDir%/Sounds/Station/Alerts.xml" />
   <RandomEvents file="%ModDir%/Sounds/Station/Nuclear/NuclearEvents.xml" />
-  <Dependency identifier="ntcsnaniteintegration" ids="3816472416" />
+  <Item file="%ModDir%/NTCS Nanite Integration/XML/items.xml" />
+  <Afflictions file="%ModDir%/NTCS Nanite Integration/XML/afflictions.xml" />
+  <Other file="%ModDir%/NTCS Nanite Integration/Images/buffAtlas.png" />
+  <Other file="%ModDir%/NTCS Nanite Integration/Images/itemAtlas.png" />
+  <Other file="%ModDir%/NTCS Nanite Integration/Images/naniteBatteryImplant.png" />
+  <Other file="%ModDir%/NTCS Nanite Integration/Images/emergencyEnergyInjection.png" />
+  <Text file="%ModDir%/NTCS Nanite Integration/Localization/English.xml" />
+  <Text file="%ModDir%/NTCS Nanite Integration/Localization/French.xml" />
+  <Text file="%ModDir%/NTCS Nanite Integration/Localization/Russian.xml" />
   <Other file="%ModDir%/ModConfig.xml" />
   <Item file="%ModDir%/Neurotrauma/MedicalItems.xml" />
   <Afflictions file="%ModDir%/Neurotrauma/MedicalAfflictions.xml" />

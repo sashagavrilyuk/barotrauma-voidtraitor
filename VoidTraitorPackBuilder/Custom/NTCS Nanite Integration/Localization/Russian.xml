@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<infotexts language="Russian" nowhitespace="false">
+  <entityname.nanitebase>Нанитная основа</entityname.nanitebase>
+  <entitydescription.nanitebase>Базовый материал, используется для создания конкретных видов нанит для инъекции.</entitydescription.nanitebase>
+  <entityname.naniteremover>Деактиватор нанит</entityname.naniteremover>
+  <entitydescription.naniteremover>Инъекция нанит-деактиваторов, которые отключают все наниты в организме, оставляя в теле только наниты-предтеч.</entitydescription.naniteremover>
+  <entityname.naniteprecursor>Инъекция нанит-предтеч</entityname.naniteprecursor>
+  <entitydescription.naniteprecursor>Первоочередные наниты, что подготавливают организм для дальнейшей интеграции нанит, они реплицируют до предела уровня и обслуживают другие виды нанит. Инъекция проводится перед интеграцией функциональных нанит.</entitydescription.naniteprecursor>
+  <afflictionname.precursor>Наниты-Предтеч</afflictionname.precursor>
+  <afflictiondescription.precursor>Первоочередные наниты, они реплицируют со временем и обслуживают другие виды нанит. Предтеч могут поддерживать 1 вид нанит за инъекцию без распада.</afflictiondescription.precursor>
+  <entityname.reconstructornanite>Инъекция 'Ихор'</entityname.reconstructornanite>
+  <entitydescription.reconstructornanite>Медицинские наниты, которые держат ранения закрытыми и ожоги обработанными, в основном восстанавливая внешнюю плоть. Три дозы могут быть интегрированы.</entitydescription.reconstructornanite>
+  <afflictionname.reconstructornanite>Наниты 'Ихор'</afflictionname.reconstructornanite>
+  <afflictiondescription.reconstructornanite>Наниты данного вида фокусируются на восстановлении внешних слоёв плоти. Интеграция 1: Ожоги, рваные раны. Интеграция 2: Укусы, кровотечения. Интеграция 3: Пулевые ранения.</afflictiondescription.reconstructornanite>
+  <entityname.bonefixnanite>Инъекция 'Осмий'</entityname.bonefixnanite>
+  <entitydescription.bonefixnanite>Медицинские наниты, которые сращивают сломанные кости. Три дозы могут быть интегрированы.</entitydescription.bonefixnanite>
+  <afflictionname.bonefixnanite>Наниты 'Осмий'</afflictionname.bonefixnanite>
+  <afflictiondescription.bonefixnanite>Наниты данного вида лечат кости. Интеграция 1: Восстановление тупых повреждений и костей, включая вывихи. Интеграция 2: Восстановление переломов конечностей и туловища. Интеграция 3: Восстановление шеи, головы и позвоночника.</afflictiondescription.bonefixnanite>
+  <entityname.deepfixnanite>Инъекция 'Кальцит'</entityname.deepfixnanite>
+  <entitydescription.deepfixnanite>Медицинские наниты, восстанавливающие внутренние органы и поддерживающие жизнь организма на фундаментальном уровне. Две дозы могут быть интегрированы.</entitydescription.deepfixnanite>
+  <afflictionname.deepfixnanite>Наниты 'Кальцит'</afflictionname.deepfixnanite>
+  <afflictiondescription.deepfixnanite>Наниты данного вида лечат внутренние ткани и органы. Интеграция 1: Внутренние кровотечения, инородные тела и повреждения от вибраций (требуется Real Sonar). Интеграция 2: Повреждения всех органов.</afflictiondescription.deepfixnanite>
+  <entityname.antitoxnanite>Инъекция 'Мифридат'</entityname.antitoxnanite>
+  <entitydescription.antitoxnanite>Медицинские наниты, которые растворяют яды, токсины и бактериальные инфекции, действуя как барьер против некомпетентного медперсонала или предательства. Две дозы могут быть интегрированы.</entitydescription.antitoxnanite>
+  <afflictionname.antitoxnanite>Наниты 'Мифридат'</afflictionname.antitoxnanite>
+  <afflictiondescription.antitoxnanite>Наниты данного вида нейтрализуют токсины и яды в организме. Интеграция 1: Алкоголь, передозировка опиатами, отравление бредогеном, морбузином, страданитом, цианидом и паралич. Интеграция 3: Сепсис.</afflictiondescription.antitoxnanite>
+  <entityname.oxybloodnanite>Инъекция 'Халезиум'</entityname.oxybloodnanite>
+  <entitydescription.oxybloodnanite>Медицинские наниты, помогающие организму в производстве крови, улучшении циркуляции и снижении уровня радиации, сокращая время потери сознания и дефицита кислорода. На высоком уровне интеграции способны даже перезапустить сердце. СТОИМОСТЬ ПОДДЕРЖКИ НАНИТ УДВАИВАЕТСЯ. Две дозы могут быть интегрированы.</entitydescription.oxybloodnanite>
+  <afflictionname.oxybloodnanite>Наниты 'Халезиум'</afflictionname.oxybloodnanite>
+  <afflictiondescription.oxybloodnanite>Наниты данного типа производят дополнительные кровяные клетки. Интеграция 1: Потеря крови, замедление роста гипоксии и лучевая болезнь. Интеграция 2: Фибрилляция, тампонада сердца, церебральная гипоксия и перезапуск сердца при остановке.</afflictiondescription.oxybloodnanite>
+  <entityname.neuralnanite>Инъекция 'Церебрат'</entityname.neuralnanite>
+  <entitydescription.neuralnanite>Медицинские наниты, восстанавливающие повреждённые нейроны и устраняющие галлюциногенные вещества. Одна доза может быть интегрирована.</entitydescription.neuralnanite>
+  <afflictionname.neuralnanite>Наниты 'Церебрат'</afflictionname.neuralnanite>
+  <afflictiondescription.neuralnanite>Наниты данного вида восстанавливают нейронные связи и устраняют галлюциногенные соединения. Интеграция 1: Психоз, галлюцинации, зависимость от опиатов, оглушение и кровоизлияние в мозг (требуется Real Sonar).</afflictiondescription.neuralnanite>
+  <entityname.husknanite>Инъекция 'Асклепий'</entityname.husknanite>
+  <entitydescription.husknanite>Медицинские наниты, борющиеся с паразитами и лечащие мышечный паралич. Две дозы могут быть интегрированы.</entitydescription.husknanite>
+  <afflictionname.husknanite>Наниты 'Асклепий'</afflictionname.husknanite>
+  <afflictiondescription.husknanite>Наниты данного вида сопротивляются паразитам. Интеграция 1: Инфекция велонацепса каликса останавливается на 80%. Интеграция 2: Иммунитет к инфекции велонацепса каликса.</afflictiondescription.husknanite>
+  <entityname.vigorbuffnanite>Инъекция 'Армстронг'</entityname.vigorbuffnanite>
+  <entitydescription.vigorbuffnanite>Усиливающие наниты, увеличивающие мышечную массу организма, повышая силу и плотность тканей. Одна доза может быть интегрирована.</entitydescription.vigorbuffnanite>
+  <afflictionname.vigorbuffnanite>Наниты 'Армстронг'</afflictionname.vigorbuffnanite>
+  <afflictiondescription.vigorbuffnanite>Наниты данного вида усиливают мышечную массу и укрепляют носителя. Интеграция 1: Незначительное усиление урона в ближнем бою, повышение прочности и сопротивления потоку.</afflictiondescription.vigorbuffnanite>
+  <entityname.hyperbuffnanite>Инъекция 'Драйвер'</entityname.hyperbuffnanite>
+  <entitydescription.hyperbuffnanite>Усиливающие наниты, влияющие на скорость реакции и моторные функции организма. Одна доза могут быть интегрированы.</entitydescription.hyperbuffnanite>
+  <afflictionname.hyperbuffnanite>Наниты 'Драйвер'</afflictionname.hyperbuffnanite>
+  <afflictiondescription.hyperbuffnanite>Наниты данного вида увеличивают скорость реакции и моторики. Интеграция 1: Незначительное повышение урона, скорости ремонта, передвижения и плавания.</afflictiondescription.hyperbuffnanite>
+  <entityname.visionbuffnanite>Инъекция 'Наблюдатель'</entityname.visionbuffnanite>
+  <entitydescription.visionbuffnanite>Усиливающие наниты, модифицирующие глазные ткани для сверхъестественного зрения; на высоком уровне медленно восстанавливают повреждения глаз. Побочный эффект — зрение становится достаточно острым, чтобы преломлять свет как призма. Две дозы могут быть интегрированы.</entitydescription.visionbuffnanite>
+  <afflictionname.visionbuffnanite>Наниты 'Наблюдатель'</afflictionname.visionbuffnanite>
+  <afflictiondescription.visionbuffnanite>Наниты данного вида усиливают зрение. Интеграция 1: Повышенная точность с оружием и эффективность ремонта. Интеграция 2: Исцеляет повреждения глаз (требуются NT Eyes) и "глаз сварщика" (требуется Immersive Repairs).</afflictiondescription.visionbuffnanite>
+  <entityname.laniusxenonanite>Ксено-инъекция 'Ланиус'</entityname.laniusxenonanite>
+  <entitydescription.laniusxenonanite>Ксенотехнологические наниты, малоизученные, покрывают тело тонким слоем металлического соединения, устойчивого к давлению, но ограничивающего подвижность. Примечание: устойчивы, но не иммунны. Две дозы могут быть интегрированы.</entitydescription.laniusxenonanite>
+  <afflictionname.laniusxenonanite>Ксено-наниты 'Ланиус'</afflictionname.laniusxenonanite>
+  <afflictiondescription.laniusxenonanite>Инопланетные наниты, повышающие устойчивость к высоким температурам, давлению и уменьшающие потребление кислорода. Интеграция 1: Незначительное сопротивление ожогам и нехватке кислорода. Интеграция 2: Частичная устойчивость к давлению и сниженная потребность в кислороде.</afflictiondescription.laniusxenonanite>
+  <entityname.mechfixnanite>Инъекция 'Макинис'</entityname.mechfixnanite>
+  <entitydescription.mechfixnanite>Механические наниты, медленно восстанавливающие киберконечности. Две дозы могут быть интегрированы.</entitydescription.mechfixnanite>
+  <afflictionname.mechfixnanite>Наниты 'Макинис'</afflictionname.mechfixnanite>
+  <afflictiondescription.mechfixnanite>Наниты данного вида восстанавливают механические конечности. Интеграция 1: Исправляют незатянутые болты и погнутый металл. Интеграция 2: Восстанавливает потерю материала и повреждённую электронику.</afflictiondescription.mechfixnanite>
+  <afflictionname.nanitedecay>Разрушающиеся наниты</afflictionname.nanitedecay>
+  <afflictiondescription.nanitedecay>Недостаточно нанит-предтеч для поддержки всех нанит, они медленно разрушаются! Постарайтесь найти инъекцию предтеч как можно скорее!</afflictiondescription.nanitedecay>
+</infotexts>

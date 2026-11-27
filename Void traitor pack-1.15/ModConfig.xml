@@ -5,4 +5,5 @@
   <Assembly Folder="%ModDir%/NTCS Cybernetics/CSharp/Client" Target="Client" IsScript="true" FriendlyName="InternalsAwareAssembly" />
   <Lua File="%ModDir%/Lua/Autorun/init.lua" IsAutorun="true" />
   <Lua File="%ModDir%/Lua/Autorun/__vtpack_bundled_loader.lua" IsAutorun="true" />
+  <Lua File="%ModDir%/NTCS Nanite Integration/Lua/Autorun/init.lua" IsAutorun="true" />
 </ModConfig>
