@@ -34,6 +34,7 @@ workshop_id — ID Workshop-мода.
 target_folder — имя его папки внутри итогового Void Traitor Pack.
 package_name — только контрольное имя; несовпадение выводит WARNING.
 exclude — файлы и папки мода, которые не попадают в пак; их строки убираются и из filelist.xml.
+exclude_dependency_ids — ID зависимостей, которые не переносятся из манифестов встроенных модов в filelist.xml.
 workshop_root можно оставить пустым: используется стандартная папка Barotrauma.
 
 ОГРАНИЧЕНИЕ

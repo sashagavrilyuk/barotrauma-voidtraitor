@@ -1,6 +1,7 @@
 {
   "output_folder": "Void traitor pack-1.15",
   "workshop_root": "",
+  "exclude_dependency_ids": ["3744761298"],
   "mods": [
     {
       "workshop_id": "3816469440",

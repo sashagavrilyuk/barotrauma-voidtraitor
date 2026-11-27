@@ -786,6 +786,7 @@ def main() -> None:
 
     bundled_autoruns: list[tuple[str, str]] = []
     bundled_lua_folders: list[str] = []
+    excluded_dependency_ids = set(config.get("exclude_dependency_ids", []))
     for mod_priority, (workshop_id, target_folder, expected_name, source, source_root, source_name) in enumerate(prepared_mods):
         if expected_name and source_name and source_name.casefold() != expected_name.casefold():
             print(f"WARNING: {target_folder}: package name '{source_name}' вместо ожидаемого '{expected_name}'")
@@ -796,6 +797,10 @@ def main() -> None:
         rewrite_moddir_references(destination, target_folder, named_moddirs)
 
         for child in list(source_root):
+            if child.tag.casefold() == "dependency":
+                dependency_ids = {value.strip() for value in child.get("ids", "").split(",")}
+                if dependency_ids <= excluded_dependency_ids:
+                    continue
             # an excluded file leaves the content list as well, so the game does not look for it
             relative = normalized_filelist_relative(child.attrib.get("file", ""))
             if relative is not None and is_excluded(Path(relative), excludes):
