@@ -357,9 +357,9 @@
     </Item>
     <Item hideinmenus="false" name="Plate of Boiled Thoughts" identifier="he-cookedhumanbrain" variantof="he-poisoneffectpreset_fork" health="26" category="Misc" subcategory="Food - Human" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem,forkfood,foodplate,petfood1,petfood2,petfood3" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_bottle_glass" isshootable="True" requireaimtouse="True">
       <PreferredContainer primary="table" secondary="kitchen,crewcab" spawnprobability="0.0" />
-      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="0,0,68,29" depth="0.6" origin="0.5,0.5" />
-      <ContainedSprite allowedcontainertags="table" texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="0,0,68,29" depth="0.525" origin="0.5,0.65" />
-      <InventoryIcon texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="0,0,68,29" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="0,0,68,29" depth="0.6" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="0,0,68,29" depth="0.525" origin="0.5,0.65" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="0,0,68,29" origin="0.5,0.5" />
       <Fabricate suitablefabricators="cuttingboard" requiredtime="10" requiresrecipe="false" amount="1">
         <RequiredSkill identifier="cooking" level="50" />
         <RequiredItem identifier="he-boiledhumanbrain" amount="1" />
@@ -433,9 +433,9 @@
     </Item>
     <Item hideinmenus="false" name="Roasted Liver with Fries" identifier="he-cookedhumanliverfries" variantof="he-poisoneffectpreset_fork" health="18" category="Misc" subcategory="Food - Human" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem,forkfood,foodplate,petfood1,petfood2,petfood3" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_bottle_glass" isshootable="True" requireaimtouse="True">
       <PreferredContainer primary="table" secondary="kitchen,crewcab" spawnprobability="0.0" />
-      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="69,0,68,29" depth="0.6" origin="0.5,0.5" />
-      <ContainedSprite allowedcontainertags="table" texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="69,0,68,29" depth="0.525" origin="0.5,0.65" />
-      <InventoryIcon texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="69,0,68,29" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="69,0,68,29" depth="0.6" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="69,0,68,29" depth="0.525" origin="0.5,0.65" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="69,0,68,29" origin="0.5,0.5" />
       <Fabricate suitablefabricators="cuttingboard" requiredtime="10" requiresrecipe="false" amount="1">
         <RequiredSkill identifier="cooking" level="50" />
         <RequiredItem identifier="he-roastedhumanliver" amount="1" />
@@ -509,9 +509,9 @@
     </Item>
     <Item hideinmenus="false" name="Boiled Kidney with Jerky and Seaweed" identifier="he-cookedhumankidneyjerky" variantof="he-poisoneffectpreset_fork" health="18" category="Misc" subcategory="Food - Human" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem,forkfood,foodplate,petfood1,petfood2,petfood3" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_bottle_glass" isshootable="True" requireaimtouse="True">
       <PreferredContainer primary="table" secondary="kitchen,crewcab" spawnprobability="0.0" />
-      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="138,0,68,29" depth="0.6" origin="0.5,0.5" />
-      <ContainedSprite allowedcontainertags="table" texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="138,0,68,29" depth="0.525" origin="0.5,0.65" />
-      <InventoryIcon texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="138,0,68,29" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="138,0,68,29" depth="0.6" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="138,0,68,29" depth="0.525" origin="0.5,0.65" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="138,0,68,29" origin="0.5,0.5" />
       <Fabricate suitablefabricators="cuttingboard" requiredtime="10" requiresrecipe="false" amount="1">
         <RequiredSkill identifier="cooking" level="50" />
         <RequiredItem identifier="he-boiledhumankidney" amount="1" />
@@ -587,9 +587,9 @@
     <!-- WIP | gravy, mashed pomegrenade and human roast do not yet exist, but will be later added by Hungry Europans -->
     <Item hideinmenus="false" name="Roast with Gravy, Mashed Pomegrenade and Seaweed" identifier="he-cookedhumanroastgravy" variantof="he-poisoneffectpreset_fork" health="18" category="Misc" subcategory="Food - Human" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem,forkfood,foodplate,petfood1,petfood2,petfood3" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_bottle_glass" isshootable="True" requireaimtouse="True">
       <PreferredContainer primary="table" secondary="kitchen,crewcab" spawnprobability="0.0" />
-      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="0,30,68,29" depth="0.6" origin="0.5,0.5" />
-      <ContainedSprite allowedcontainertags="table" texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="0,30,68,29" depth="0.525" origin="0.5,0.65" />
-      <InventoryIcon texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="0,30,68,29" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="0,30,68,29" depth="0.6" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="0,30,68,29" depth="0.525" origin="0.5,0.65" />
+      <InventoryIcon texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="0,30,68,29" origin="0.5,0.5" />
       <!--<Fabricate suitablefabricators="cuttingboard" requiredtime="10" requiresrecipe="false" amount="1" >
         <RequiredSkill identifier="cooking" level="50" />-->
       <!--<RequiredItem identifier="he-roastedhumanroast" amount="1" />-->

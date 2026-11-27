@@ -2,6 +2,7 @@
   "output_folder": "Void traitor pack-1.15",
   "workshop_root": "",
   "exclude_dependency_ids": ["3744761298"],
+  "external_moddirs": ["3744761298"],
   "mods": [
     {
       "workshop_id": "3816469440",
@@ -94,7 +95,8 @@
     {
       "workshop_id": "3832233018",
       "package_name": "Hungry Europans - Neurotrauma Compatibility Patch (NTCS)",
-      "target_folder": "Hungry Europans NT Patch"
+      "target_folder": "Hungry Europans NT Patch",
+      "aliases": ["3222593240"]
     },
     {
       "workshop_id": "2954998725",

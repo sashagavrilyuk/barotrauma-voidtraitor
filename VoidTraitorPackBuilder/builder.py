@@ -410,6 +410,7 @@ def collect_source_broken_references(
 def validate_xml_moddir_references(
     output: Path,
     source_broken: set[tuple[Path, str]],
+    external_moddirs: set[str],
 ) -> tuple[list[tuple[Path, str]], list[tuple[Path, str]]]:
     missing: list[tuple[Path, str]] = []
     inherited: list[tuple[Path, str]] = []
@@ -421,6 +422,10 @@ def validate_xml_moddir_references(
             continue
         for node in root.iter():
             for value in node.attrib.values():
+                named = OTHER_MODDIR_PATTERN.match(value)
+                if named and named.group(1).strip().casefold() not in external_moddirs:
+                    missing.append((xml_path.relative_to(output), value))
+                    continue
                 if not is_checkable_moddir_path(value):
                     continue
                 normalized = value.replace("\\", "/")
@@ -773,7 +778,7 @@ def main() -> None:
         source_name = source_root.attrib.get("name", "").strip()
         prepared_mods.append((workshop_id, target_folder, expected_name, source, source_root, source_name))
 
-        for alias in (workshop_id, expected_name, source_name):
+        for alias in (workshop_id, expected_name, source_name, *mod.get("aliases", [])):
             key = alias.strip().casefold()
             if not key:
                 continue
@@ -888,7 +893,8 @@ def main() -> None:
             print(f"  - {value}")
         fail("Сборка остановлена из-за отсутствующих файлов в filelist.xml")
 
-    missing_xml, inherited_xml = validate_xml_moddir_references(output, source_broken)
+    external_moddirs = {value.strip().casefold() for value in config.get("external_moddirs", [])}
+    missing_xml, inherited_xml = validate_xml_moddir_references(output, source_broken, external_moddirs)
     if inherited_xml:
         print("\nWARNING: В исходных Workshop-модах уже есть ссылки на отсутствующие пути:")
         for xml_path, value in inherited_xml[:50]:
@@ -898,7 +904,7 @@ def main() -> None:
         print("Эти ссылки не созданы сборщиком; сборка будет продолжена.")
 
     if missing_xml:
-        print("\nНайдены новые битые ссылки %ModDir%:")
+        print("\nНайдены битые ссылки %ModDir% или необъявленные внешние %ModDir:ID%:")
         for xml_path, value in missing_xml[:50]:
             print(f"  - {xml_path}: {value}")
         if len(missing_xml) > 50:

@@ -33,8 +33,10 @@ mods.json
 workshop_id — ID Workshop-мода.
 target_folder — имя его папки внутри итогового Void Traitor Pack.
 package_name — только контрольное имя; несовпадение выводит WARNING.
+aliases — дополнительные имена или Workshop ID, которые в путях перенаправляются в target_folder.
 exclude — файлы и папки мода, которые не попадают в пак; их строки убираются и из filelist.xml.
 exclude_dependency_ids — ID зависимостей, которые не переносятся из манифестов встроенных модов в filelist.xml.
+external_moddirs — ID отдельных модов сборки, которые могут оставаться в XML-путях %ModDir:ID%.
 workshop_root можно оставить пустым: используется стандартная папка Barotrauma.
 
 ОГРАНИЧЕНИЕ
