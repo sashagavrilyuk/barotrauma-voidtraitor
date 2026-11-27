@@ -1,0 +1,307 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Override>
+  <Items>
+    <!-- Liver (Overrides NT) -->
+    <Item name="" identifier="livertransplant" description="" category="Medical" scale="0.4" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,organ,liver,petfood1,petfood2,petfood3,monsterfood">
+      <Price baseprice="1000" soldbydefault="false">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="1" />
+      </Price>
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="5,479,79,52" depth="0.6" origin="0.5,0.5" />
+      <Body width="39" height="18" density="10" />
+      <Deconstruct />
+      <Throwable characterusable="true" slots="Any,RightHand,LeftHand" throwforce="4.0" aimpos="35,-10" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnImpact" target="This" Condition="0.0" setvalue="true">
+          <Explosion range="0.0" structuredamage="0" itemdamage="0" force="0.0" severlimbsprobability="0.0" decal="fruitsplatter_red" decalsize="1.0" />
+          <ParticleEmitter particle="bloodsplash" anglemin="0" anglemax="360" particleamount="2" velocitymin="0" velocitymax="0" scalemin="1.5" scalemax="2" />
+          <ParticleEmitter particle="fruitchunks" anglemin="0" anglemax="360" particleamount="10" velocitymin="200" velocitymax="300" scalemin="0.4" scalemax="0.8" />
+          <Remove />
+        </StatusEffect>
+        <StatusEffect type="Always" target="This" condition="-2.5" delay="5" interval="5" disabledeltatime="true" conditionalComparison="And">
+          <Conditional hastag="neq refrigerated" targetcontainer="true" />
+          <Conditional hastag="neq medicalfabricator" Locked="neq true" targetitemcomponent="ItemContainer" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnContained" target="This" condition="0.1" comparison="and">
+          <Conditional condition="gte 90" />
+          <Conditional hastag="refrigerated" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnFire" target="This" Condition="-25.0" />
+        <StatusEffect type="OnNotContained" target="NearbyCharacters" delay="5" interval="5" disabledeltatime="true" range="300">
+          <Affliction identifier="nausea" amount="1" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <LuaHook name="NT.RotOrgan" />
+        </StatusEffect>
+      </Throwable>
+      <!-- Sole change -->
+      <SkillRequirementHint identifier="surgery" level="40" />
+    </Item>
+    <Item name="" identifier="livertransplant_q1" variantof="livertransplant" hideinmenus="true">
+      <Price baseprice="200" soldbydefault="false">
+        <Price storeidentifier="merchantmedical" sold="false" />
+      </Price>
+    </Item>
+    <!-- Lungs (Overrides NT) -->
+    <Item name="" identifier="lungtransplant" description="" category="Medical" scale="0.4" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,organ,lung,petfood1,petfood2,petfood3,monsterfood">
+      <Price baseprice="2000" soldbydefault="false">
+        <Price locationtype="research" multiplier="1" sold="true" minavailable="2" />
+      </Price>
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="91,480,84,84" depth="0.6" origin="0.5,0.5" />
+      <Body width="30" height="30" density="10" />
+      <Deconstruct />
+      <Throwable characterusable="true" slots="Any,RightHand,LeftHand" throwforce="4.0" aimpos="35,-10" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnImpact" target="This" Condition="0.0" setvalue="true">
+          <Explosion range="0.0" structuredamage="0" itemdamage="0" force="0.0" severlimbsprobability="0.0" decal="fruitsplatter_red" decalsize="1.0" />
+          <ParticleEmitter particle="bloodsplash" anglemin="0" anglemax="360" particleamount="2" velocitymin="0" velocitymax="0" scalemin="1.5" scalemax="2" />
+          <ParticleEmitter particle="fruitchunks" anglemin="0" anglemax="360" particleamount="10" velocitymin="200" velocitymax="300" scalemin="0.4" scalemax="0.8" />
+          <Remove />
+        </StatusEffect>
+        <StatusEffect type="Always" target="This" condition="-2.5" delay="5" interval="5" disabledeltatime="true" conditionalComparison="And">
+          <Conditional hastag="neq refrigerated" targetcontainer="true" />
+          <Conditional hastag="neq medicalfabricator" Locked="neq true" targetitemcomponent="ItemContainer" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnContained" target="This" condition="0.1" comparison="and">
+          <Conditional condition="gte 90" />
+          <Conditional hastag="refrigerated" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnFire" target="This" Condition="-25.0" />
+        <StatusEffect type="OnNotContained" target="NearbyCharacters" delay="5" interval="5" disabledeltatime="true" range="300">
+          <Affliction identifier="nausea" amount="1" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <LuaHook name="NT.RotOrgan" />
+        </StatusEffect>
+      </Throwable>
+      <!-- Sole Change -->
+      <SkillRequirementHint identifier="surgery" level="40" />
+    </Item>
+    <Item name="" identifier="lungtransplant_q1" variantof="lungtransplant" hideinmenus="true">
+      <Price baseprice="400" soldbydefault="false">
+        <Price storeidentifier="merchantmedical" sold="false" />
+      </Price>
+    </Item>
+    <!-- Kidneys (Overrides NT) -->
+    <Item name="" identifier="kidneytransplant" description="" category="Medical" scale="0.4" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,organ,kidney,petfood1,petfood2,petfood3,monsterfood">
+      <Price baseprice="400" soldbydefault="false">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="2" />
+      </Price>
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="193,481,32,47" depth="0.6" origin="0.5,0.5" />
+      <Body width="14" height="20" density="10" />
+      <Deconstruct />
+      <Throwable characterusable="true" slots="Any,RightHand,LeftHand" throwforce="4.0" aimpos="35,-10" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnImpact" target="This" Condition="0.0" setvalue="true">
+          <Explosion range="0.0" structuredamage="0" itemdamage="0" force="0.0" severlimbsprobability="0.0" decal="fruitsplatter_red" decalsize="1.0" />
+          <ParticleEmitter particle="bloodsplash" anglemin="0" anglemax="360" particleamount="2" velocitymin="0" velocitymax="0" scalemin="1.5" scalemax="2" />
+          <ParticleEmitter particle="fruitchunks" anglemin="0" anglemax="360" particleamount="10" velocitymin="200" velocitymax="300" scalemin="0.4" scalemax="0.8" />
+          <Remove />
+        </StatusEffect>
+        <StatusEffect type="Always" target="This" condition="-2.5" delay="5" interval="5" disabledeltatime="true" conditionalComparison="And">
+          <Conditional hastag="neq refrigerated" targetcontainer="true" />
+          <Conditional hastag="neq medicalfabricator" Locked="neq true" targetitemcomponent="ItemContainer" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnContained" target="This" condition="0.1" comparison="and">
+          <Conditional condition="gte 90" />
+          <Conditional hastag="refrigerated" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnFire" target="This" Condition="-25.0" />
+        <StatusEffect type="OnNotContained" target="NearbyCharacters" delay="5" interval="5" disabledeltatime="true" range="300">
+          <Affliction identifier="nausea" amount="1" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <LuaHook name="NT.RotOrgan" />
+        </StatusEffect>
+      </Throwable>
+      <!-- Sole Change -->
+      <SkillRequirementHint identifier="surgery" level="40" />
+    </Item>
+    <Item name="" identifier="kidneytransplant_q1" variantof="kidneytransplant" hideinmenus="true">
+      <Price baseprice="100" soldbydefault="false">
+        <Price storeidentifier="merchantmedical" sold="false" />
+      </Price>
+    </Item>
+    <!-- Heart (Overrides NT) -->
+    <Item name="" identifier="hearttransplant" description="" category="Medical" scale="0.4" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,organ,heart,petfood1,petfood2,petfood3,monsterfood">
+      <Price baseprice="4000" soldbydefault="false">
+        <Price locationtype="research" multiplier="1" sold="true" minavailable="2" />
+      </Price>
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="238,479,28,54" depth="0.6" origin="0.5,0.5" />
+      <Body width="14" height="22" density="10" />
+      <Deconstruct />
+      <Throwable characterusable="true" slots="Any,RightHand,LeftHand" throwforce="4.0" aimpos="35,-10" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnImpact" target="This" Condition="0.0" setvalue="true">
+          <Explosion range="0.0" structuredamage="0" itemdamage="0" force="0.0" severlimbsprobability="0.0" decal="fruitsplatter_red" decalsize="1.0" />
+          <ParticleEmitter particle="bloodsplash" anglemin="0" anglemax="360" particleamount="2" velocitymin="0" velocitymax="0" scalemin="1.5" scalemax="2" />
+          <ParticleEmitter particle="fruitchunks" anglemin="0" anglemax="360" particleamount="10" velocitymin="200" velocitymax="300" scalemin="0.4" scalemax="0.8" />
+          <Remove />
+        </StatusEffect>
+        <StatusEffect type="Always" target="This" condition="-2.5" delay="5" interval="5" disabledeltatime="true" conditionalComparison="And">
+          <Conditional hastag="neq refrigerated" targetcontainer="true" />
+          <Conditional hastag="neq medicalfabricator" Locked="neq true" targetitemcomponent="ItemContainer" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnContained" target="This" condition="0.1" comparison="and">
+          <Conditional condition="gte 90" />
+          <Conditional hastag="refrigerated" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnFire" target="This" Condition="-25.0" />
+        <StatusEffect type="OnNotContained" target="NearbyCharacters" delay="5" interval="5" disabledeltatime="true" range="300">
+          <Affliction identifier="nausea" amount="1" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <LuaHook name="NT.RotOrgan" />
+        </StatusEffect>
+      </Throwable>
+      <!-- Sole Change -->
+      <SkillRequirementHint identifier="surgery" level="40" />
+    </Item>
+    <Item name="" identifier="hearttransplant_q1" variantof="hearttransplant" hideinmenus="true">
+      <Price baseprice="600" soldbydefault="false">
+        <Price storeidentifier="merchantmedical" sold="false" />
+      </Price>
+    </Item>
+    <!-- Brain (Overrides NT) -->
+    <Item name="" identifier="braintransplant" description="" category="Medical" scale="0.3" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="1.5" Tags="smallitem,organ,brain,petfood1,petfood2,petfood3,monsterfood,braintransplant">
+      <Price baseprice="0" soldbydefault="false">
+        <Price storeidentifier="merchantmedical" sold="false" />
+      </Price>
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="272,480,78,60" depth="0.6" origin="0.5,0.5" />
+      <Body width="39" height="25" density="10" />
+      <Deconstruct />
+      <Throwable characterusable="true" slots="Any,RightHand,LeftHand" throwforce="4.0" aimpos="35,-10" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnImpact" target="This" Condition="0.0" setvalue="true">
+          <Conditional hastag="neq braincontainer" targetcontainer="true" />
+          <Explosion range="0.0" structuredamage="0" itemdamage="0" force="0.0" severlimbsprobability="0.0" decal="fruitsplatter_red" decalsize="1.0" />
+          <ParticleEmitter particle="bloodsplash" anglemin="0" anglemax="360" particleamount="2" velocitymin="0" velocitymax="0" scalemin="1.5" scalemax="2" />
+          <ParticleEmitter particle="fruitchunks" anglemin="0" anglemax="360" particleamount="10" velocitymin="200" velocitymax="300" scalemin="0.4" scalemax="0.8" />
+          <Remove />
+        </StatusEffect>
+        <StatusEffect type="Always" target="This" condition="-10" comparison="and" delay="5" interval="5" disabledeltatime="true" conditionalComparison="And">
+          <Conditional hastag="neq refrigerated" targetcontainer="true" />
+          <Conditional hastag="neq braincontainer" targetcontainer="true" />
+          <Conditional hastag="neq medicalfabricator" Locked="neq true" targetitemcomponent="ItemContainer" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnContained" target="This" condition="-1" delay="5" interval="5" disabledeltatime="true" comparison="and">
+          <Conditional hastag="refrigerated" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnContained" target="This" condition="0.1" comparison="and">
+          <Conditional hastag="braincontainer" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnFire" target="This" Condition="-50.0" />
+        <StatusEffect type="OnNotContained" target="NearbyCharacters" range="300">
+          <Affliction identifier="nausea" amount="0.2" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <LuaHook name="NT.RotOrgan" />
+        </StatusEffect>
+      </Throwable>
+      <!-- Sole Change -->
+      <SkillRequirementHint identifier="surgery" level="100" />
+    </Item>
+    <!-- Osteosynthesis Implants (Overrides NT) -->
+    <Item name="" identifier="osteosynthesisimplants" category="Medical" cargocontaineridentifier="mediccrate" Tags="smallitem,medical,surgery,surgerytool" description="" useinhealthinterface="True" scale="0.4">
+      <PreferredContainer primary="medcab" />
+      <PreferredContainer secondary="locker" />
+      <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="2" spawnprobability="0.05" />
+      <Price baseprice="350" soldbydefault="false">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="1" />
+      </Price>
+      <Fabricate suitablefabricators="medicalfabricator">
+        <RequiredSkill identifier="medical" level="35" />
+        <RequiredSkill identifier="mechanical" level="20" />
+        <RequiredItem identifier="titaniumaluminiumalloy" />
+        <RequiredItem identifier="liquidoxygenite" />
+        <RequiredItem identifier="calcium" />
+      </Fabricate>
+      <Deconstruct time="10" />
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="87,403,84,67" origin="0.5,0.5" depth="0.6" />
+      <Body width="65" height="15" density="50" />
+      <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="5,0" handle1="-5,0" holdangle="10" reload="1.0" />
+      <!-- Surgery Skill changed -->
+      <SkillRequirementHint identifier="medical" level="45" />
+    </Item>
+    <!-- Spinal Cord Implants -->
+    <Item name="" identifier="spinalimplant" description="" category="Medical" scale="0.3" useinhealthinterface="True" cargocontaineridentifier="mediccrate" Tags="smallitem,medical,surgery,surgerytool">
+      <PreferredContainer primary="medcab" />
+      <PreferredContainer secondary="locker" />
+      <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="2" spawnprobability="0.05" />
+      <Price baseprice="350" soldbydefault="false">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="1" />
+      </Price>
+      <Fabricate suitablefabricators="medicalfabricator">
+        <RequiredSkill identifier="medical" level="70" />
+        <RequiredSkill identifier="mechanical" level="20" />
+        <RequiredItem identifier="titaniumaluminiumalloy" />
+        <RequiredItem identifier="liquidoxygenite" />
+        <RequiredItem identifier="calcium" />
+      </Fabricate>
+      <Deconstruct time="10" />
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="344,403,84,67" origin="0.5,0.5" depth="0.6" />
+      <Body width="60" height="90" density="20" />
+      <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="5,5" handle1="0,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect" />
+      <!-- Surgery Skill changed -->
+      <SkillRequirementHint identifier="surgery" level="45" />
+    </Item>
+    <!--  Skin Retractors-->
+    <Item name="" identifier="advretractors" category="Equipment" cargocontaineridentifier="mediccrate" Tags="smallitem,medical,surgery,surgerytool" description="" useinhealthinterface="True" scale="0.2">
+      <PreferredContainer primary="locker" />
+      <Deconstruct time="5" />
+      <Price baseprice="35" soldbydefault="true">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="1" />
+      </Price>
+      <InventoryIcon texture="%ModDir:3744761298%/Images/InventoryItemIconAtlas.png" sourcerect="256,0,64,64" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="0,128,128,128" depth="0.55" origin="0.5,0.5" />
+      <Body width="120" height="110" density="50" />
+      <MeleeWeapon slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,-13" holdangle="-90" reload="1.0" />
+      <!-- Surgery Skill changed -->
+      <SkillRequirementHint identifier="surgery" level="30" />
+    </Item>
+    <!-- Surgical Drill -->
+    <Item name="" identifier="surgicaldrill" category="Equipment" cargocontaineridentifier="mediccrate" Tags="smallitem,medical,surgery,surgerytool" description="" useinhealthinterface="True" scale="0.250">
+      <PreferredContainer primary="locker" />
+      <Deconstruct time="5" />
+      <Price baseprice="80" soldbydefault="true">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="1" />
+      </Price>
+      <InventoryIcon texture="%ModDir:3744761298%/Images/InventoryItemIconAtlas.png" sourcerect="128,0,64,64" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="256,0,128,128" depth="0.55" origin="0.5,0.5" />
+      <Body width="120" height="100" density="50" />
+      <MeleeWeapon slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,-5" holdangle="-20" reload="1.0">
+        <StatusEffect type="OnUse" target="Limb" comparison="and">
+          <Conditional analgesia="gte 1" />
+          <Sound file="%ModDir:3744761298%/Sounds/ItemApplication/Surgical/drill.ogg" range="500" />
+        </StatusEffect>
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+      </MeleeWeapon>
+      <!-- Surgery Skill changed -->
+      <SkillRequirementHint identifier="surgery" level="45" />
+    </Item>
+    <!-- Surgery Saw -->
+    <Item name="" identifier="surgerysaw" category="Equipment" cargocontaineridentifier="mediccrate" Tags="smallitem,medical,surgery,surgerytool" description="" useinhealthinterface="True" scale="0.4">
+      <PreferredContainer primary="locker" />
+      <Deconstruct time="5" />
+      <Price baseprice="100" soldbydefault="true">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="1" />
+      </Price>
+      <InventoryIcon texture="%ModDir:3744761298%/Images/InventoryItemIconAtlas.png" sourcerect="0,64,64,64" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="0,0,128,128" depth="0.55" origin="0.5,0.5" />
+      <Body width="120" height="50" density="50" />
+      <MeleeWeapon slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="-18,-7" holdangle="90" reload="1.0" />
+      <!-- Surgery Skill changed -->
+      <SkillRequirementHint identifier="surgery" level="50" />
+    </Item>
+    <!-- Tweezers -->
+    <Item name="" identifier="tweezers" category="Equipment" cargocontaineridentifier="mediccrate" Tags="smallitem,medical,surgery,surgerytool" description="" useinhealthinterface="True" scale="0.150">
+      <PreferredContainer primary="locker" />
+      <Deconstruct time="5" />
+      <Price baseprice="35" soldbydefault="true">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="1" />
+      </Price>
+      <InventoryIcon texture="%ModDir:3744761298%/Images/InventoryItemIconAtlas.png" sourcerect="448,0,64,64" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="0,256,128,128" depth="0.55" origin="0.5,0.5" />
+      <Body width="65" height="65" density="50" />
+      <MeleeWeapon slots="Any,RightHand,LeftHand" aimpos="5,0" handle1="-5,-5" holdangle="10" reload="1.0" />
+      <!-- Surgery Skill changed -->
+      <SkillRequirementHint identifier="surgery" level="30" />
+    </Item>
+  </Items>
+</Override>

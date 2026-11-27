@@ -6,7 +6,7 @@ objective.RequiredLowOxygenSeconds = 4
 objective.SuffocationKillWindowSeconds = 20
 objective.SevereOxygenThreshold = 15
 objective.LowOxygenAfflictionThreshold = 35
-objective.AdditionalLowOxygenAfflictions = {"oxygenlow", "hypoxemia", "cerebralhypoxia", "asphyxia"}
+objective.AdditionalLowOxygenAfflictions = {"oxygenlow", "hypoxemia", "asphyxia"}
 
 local function getAfflictionStrength(character, identifier)
     if character == nil or identifier == nil then return 0 end

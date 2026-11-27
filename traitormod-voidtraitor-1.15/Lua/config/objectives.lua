@@ -38,7 +38,7 @@ return {
         SuffocationKillWindowSeconds = 20,
         SevereOxygenThreshold = 15,
         LowOxygenAfflictionThreshold = 35,
-        AdditionalLowOxygenAfflictions = {"oxygenlow", "hypoxemia", "cerebralhypoxia", "asphyxia"},
+        AdditionalLowOxygenAfflictions = {"oxygenlow", "hypoxemia", "asphyxia"},
     },
 
     HealCharacters = {

@@ -286,7 +286,7 @@ end
 
 local function isDown(character, lowVitality)
     -- Neurotrauma knocks people out with its own symptom while their vitality is still above zero
-    local knockedOut = character.CharacterHealth.GetAffliction("sym_unconsciousness")
+    local knockedOut = character.CharacterHealth.GetAffliction("unconsciousness")
     return character.IsUnconscious or (knockedOut ~= nil and knockedOut.Strength > 0)
         or character.Vitality / character.MaxVitality <= lowVitality
 end

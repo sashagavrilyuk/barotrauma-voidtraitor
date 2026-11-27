@@ -8,6 +8,8 @@ assert(loadfile(packPath .. "/Lua/extensions/device_assembly.lua"))()
 assert(loadfile(packPath .. "/Lua/extensions/artifacts.lua"))()
 
 if SERVER then
+    assert(loadfile(packPath .. "/Lua/extensions/skin_ointment.lua"))()
+    assert(loadfile(packPath .. "/Lua/extensions/surgery_buttons.lua"))()
     assert(loadfile(packPath .. "/Lua/extensions/headset_stun.lua"))(packPath)
     assert(loadfile(packPath .. "/Lua/extensions/enhanced_husks_optimization.lua"))(packPath)
     return

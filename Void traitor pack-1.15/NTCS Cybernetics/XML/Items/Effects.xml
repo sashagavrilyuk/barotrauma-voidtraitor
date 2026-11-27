@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Override>
+  <Items>
+    <!-- Screwdriver SoundEffect -->
+    <Item name="" description="" identifier="ntcsfx_screwdriver" hideinmenus="true">
+      <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="0,0,1,1" origin="0.5,0.5" />
+      <Sprite texture="Content/Items/Medical/Medicines.png" sourcerect="0,0,1,1" depth="0.6" origin="0.5,0.5" />
+      <ItemComponent capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery">
+        <StatusEffect type="always" target="This" disabledeltatime="true" duration="1" stackable="false">
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/screwdriver1.ogg" range="500" />
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/screwdriver2.ogg" range="500" />
+        </StatusEffect>
+        <StatusEffect type="always" target="This" disabledeltatime="true" delay="1" stackable="false">
+          <Remove />
+        </StatusEffect>
+      </ItemComponent>
+    </Item>
+    <!-- Blunt-hit SoundEffect-->
+    <Item name="" description="" identifier="ntcsfx_cyberblunt" hideinmenus="true">
+      <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="0,0,1,1" origin="0.5,0.5" />
+      <Sprite texture="Content/Items/Medical/Medicines.png" sourcerect="0,0,1,1" depth="0.6" origin="0.5,0.5" />
+      <ItemComponent capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery">
+        <StatusEffect type="always" target="This" disabledeltatime="true" duration="1" stackable="false">
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/cyberblunt1.ogg" range="500" />
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/cyberblunt2.ogg" range="500" />
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/cyberblunt3.ogg" range="500" />
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/cyberblunt4.ogg" range="500" />
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/cyberblunt5.ogg" range="500" />
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/cyberblunt6.ogg" range="500" />
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/cyberblunt7.ogg" range="500" />
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/cyberblunt8.ogg" range="500" />
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/cyberblunt9.ogg" range="500" />
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/cyberblunt10.ogg" range="500" />
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/cyberblunt11.ogg" range="500" />
+        </StatusEffect>
+        <StatusEffect type="always" target="This" disabledeltatime="true" delay="1" stackable="false">
+          <Remove />
+        </StatusEffect>
+      </ItemComponent>
+    </Item>
+    <!-- Bite into metal SoundEffect -->
+    <Item name="" description="" identifier="ntcsfx_cyberbite" hideinmenus="true">
+      <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="0,0,1,1" origin="0.5,0.5" />
+      <Sprite texture="Content/Items/Medical/Medicines.png" sourcerect="0,0,1,1" depth="0.6" origin="0.5,0.5" />
+      <ItemComponent capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery">
+        <StatusEffect type="always" target="This" disabledeltatime="true" duration="1" stackable="false">
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/cyberbite1.ogg" range="500" />
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/cyberbite2.ogg" range="500" />
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/cyberbite3.ogg" range="500" />
+        </StatusEffect>
+        <StatusEffect type="always" target="This" disabledeltatime="true" delay="1" stackable="false">
+          <Remove />
+        </StatusEffect>
+      </ItemComponent>
+    </Item>
+    <!-- Death SoundEffect -->
+    <Item name="" description="" identifier="ntcsfx_cyberdeath" hideinmenus="true">
+      <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="0,0,1,1" origin="0.5,0.5" />
+      <Sprite texture="Content/Items/Medical/Medicines.png" sourcerect="0,0,1,1" depth="0.6" origin="0.5,0.5" />
+      <ItemComponent capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery">
+        <StatusEffect type="always" target="This" disabledeltatime="true" duration="1" stackable="false">
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/cyberdeath1.ogg" range="500" />
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/cyberdeath2.ogg" range="500" />
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/cyberdeath3.ogg" range="500" />
+        </StatusEffect>
+        <StatusEffect type="always" target="This" disabledeltatime="true" delay="1" stackable="false">
+          <Remove />
+        </StatusEffect>
+      </ItemComponent>
+    </Item>
+    <!-- Welding SoundEffect -->
+    <Item name="" description="" identifier="ntcsfx_welding" hideinmenus="true">
+      <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="0,0,1,1" origin="0.5,0.5" />
+      <Sprite texture="Content/Items/Medical/Medicines.png" sourcerect="0,0,1,1" depth="0.6" origin="0.5,0.5" />
+      <ItemComponent capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery">
+        <StatusEffect type="always" target="This" disabledeltatime="true" duration="1" stackable="false">
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/welding1.ogg" range="500" />
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/welding2.ogg" range="500" />
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/welding3.ogg" range="500" />
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/welding4.ogg" range="500" />
+          <Sound file="%ModDir%/NTCS Cybernetics/Sound/welding5.ogg" range="500" />
+        </StatusEffect>
+        <StatusEffect type="always" target="This" disabledeltatime="true" delay="1" stackable="false">
+          <Remove />
+        </StatusEffect>
+      </ItemComponent>
+    </Item>
+    <!-- Electric Spark VisualEffect -->
+    <Item name="" description="" identifier="ntcvfx_malfunction" hideinmenus="true">
+      <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="0,0,1,1" origin="0.5,0.5" />
+      <Sprite texture="Content/Items/Medical/Medicines.png" sourcerect="0,0,1,1" depth="0.6" origin="0.5,0.5" />
+      <ItemComponent capacity="1" maxstacksize="1" hideitems="true" containedstateindicatorstyle="battery">
+        <StatusEffect type="always" target="This" disabledeltatime="true" duration="1" stackable="false">
+          <Sound file="Content/Items/Electricity/Zap1.ogg" range="500" />
+          <Sound file="Content/Items/Electricity/Zap2.ogg" range="500" />
+          <Sound file="Content/Items/Electricity/Zap3.ogg" range="500" />
+          <Sound file="Content/Items/Electricity/Zap4.ogg" range="500" />
+          <Sound file="Content/Items/Electricity/Zap5.ogg" range="500" />
+          <Explosion range="50.0" stun="0" force="5.0" smoke="false" flash="true" flames="false" shockwave="false" sparks="true" underwaterbubble="false" />
+          <ParticleEmitter particle="spark" particleburstamount="5" anglemin="0" anglemax="359" velocitymin="100" velocitymax="500" scalemin="0.5" scalemax="1" />
+        </StatusEffect>
+        <StatusEffect type="always" target="This" disabledeltatime="true" delay="1" stackable="false">
+          <Remove />
+        </StatusEffect>
+      </ItemComponent>
+    </Item>
+  </Items>
+</Override>

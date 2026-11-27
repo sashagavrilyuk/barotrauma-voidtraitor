@@ -15,9 +15,8 @@ local function addModulePath(path)
 end
 
 addModulePath(packPath .. "/Lua/?.lua")
-addModulePath(packPath .. "/NT Surgery Plus/Lua/?.lua")
-addModulePath(packPath .. "/NT Cybernetics Enhanced Forked/Lua/?.lua")
-addModulePath(packPath .. "/NT Nanite Integration/Lua/?.lua")
+addModulePath(packPath .. "/NTCS Surgery Plus/Lua/?.lua")
+addModulePath(packPath .. "/NTCS Cybernetics/Lua/?.lua")
 setmodulepaths(modulePaths)
 package.path = modulePaths
 
@@ -34,6 +33,5 @@ local function runBundled(modFolder, scriptPath)
     if not ok then error(runError, 0) end
 end
 
-runBundled("NT Surgery Plus", "Lua/Autorun/init.lua")
-runBundled("NT Cybernetics Enhanced Forked", "Lua/Autorun/init.lua")
-runBundled("NT Nanite Integration", "Lua/Autorun/init.lua")
+runBundled("NTCS Surgery Plus", "Lua/Autorun/init.lua")
+runBundled("NTCS Cybernetics", "Lua/Autorun/init.lua")

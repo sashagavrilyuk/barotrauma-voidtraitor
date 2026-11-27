@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Afflictions>
+  <Affliction name="" identifier="skinointmented" description="" healableinmedicalclinic="false" targets="human" limbspecific="true" maxstrength="100" type="resistance" showiconthreshold="1" showinhealthscannerthreshold="2000" isbuff="true">
+    <icon texture="%ModDir:3744761298%/Images/AfflictionIcons.png" sheetindex="3,4" sheetelementsize="128,128" origin="0,0" />
+  </Affliction>
+</Afflictions>

@@ -15,7 +15,6 @@ config.ChatMessageType = ChatMessageType.Private    -- Error = red | Private = g
 config.Extensions = {
     dofile(Traitormod.Path .. "/Lua/extensions/attackdefendreactorblastfix.lua"),
     dofile(Traitormod.Path .. "/Lua/extensions/spectatorjobfix.lua"),
-    dofile(Traitormod.Path .. "/Lua/extensions/ntmodconflict.lua"),
     dofile(Traitormod.Path .. "/Lua/extensions/servermessageutf8fix.lua"),
     --dofile(Traitormod.Path .. "/Lua/extensions/weaponnerfs.lua"),
     --dofile(Traitormod.Path .. "/Lua/extensions/paralysisnerf.lua"),

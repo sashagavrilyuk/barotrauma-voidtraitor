@@ -571,18 +571,8 @@ Hook.Add("item.applyTreatment", "Traitormod.RoundStats.ItemTreatment", function(
     markItemTreatment(usingCharacter, targetCharacter)
 end)
 
-Hook.Add("NT.runItemMethod", "Traitormod.RoundStats.NTItemMethod", function(effect, deltaTime, item, targets)
-    local target = targets ~= nil and targets[1] or nil
-    if target == nil or effect == nil then return end
-
-    local targetCharacter
-    if LuaUserData.IsTargetType(target, "Barotrauma.Limb") then
-        targetCharacter = target.character
-    elseif LuaUserData.IsTargetType(target, "Barotrauma.Character") then
-        targetCharacter = target
-    end
-
-    markItemTreatment(effect.user, targetCharacter)
+Hook.Add("voidtraitor.surgeryButtonTreatment", "Traitormod.RoundStats.SurgeryButtonTreatment", function(usingCharacter, targetCharacter)
+    markItemTreatment(usingCharacter, targetCharacter)
 end)
 
 Hook.Add("think", "Traitormod.RoundStats.DelayedHealing", function(deltaTime)

@@ -79,7 +79,8 @@
   <ContainerTag file="%ModDir%/the void traitor pack/ContainerTags.xml" />
   <RandomEvents file="%ModDir%/Sounds/Station/Alerts.xml" />
   <RandomEvents file="%ModDir%/Sounds/Station/Nuclear/NuclearEvents.xml" />
-  <Dependency identifier="neurotrauma" ids="3190189044" order="Above" />
-  <Character file="%ModDir%/Neurotrauma/Human.xml" />
-  <Other file="%ModDir%/Neurotrauma/Ragdolls/HumanDefaultRagdoll.xml" />
+  <Dependency identifier="ntcsnaniteintegration" ids="3816472416" />
+  <Other file="%ModDir%/ModConfig.xml" />
+  <Item file="%ModDir%/Neurotrauma/MedicalItems.xml" />
+  <Afflictions file="%ModDir%/Neurotrauma/MedicalAfflictions.xml" />
 </contentpackage>

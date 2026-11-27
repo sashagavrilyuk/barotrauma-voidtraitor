@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Override>
+  <Items>
+    <!-- Surgical Drapes -->
+    <Item name="" identifier="surgicaldrapes" category="Equipment" tags="smallitem,clothing,sterile" scale="0.5" fireproof="true" description="" cargocontaineridentifier="metalcrate" impactsoundtag="impact_soft">
+      <PreferredContainer primary="medcab" minamount="0" maxamount="1" spawnprobability="0.5" />
+      <PreferredContainer primary="wreckmedcab,abandonedmedcab" minamount="0" maxamount="1" spawnprobability="0.15" />
+      <Price baseprice="100" soldbydefault="false">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="2" />
+      </Price>
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="50">
+        <RequiredSkill identifier="medical" level="15" />
+        <RequiredItem identifier="plastic" />
+        <RequiredItem identifier="rubber" />
+      </Fabricate>
+      <Deconstruct time="20">
+        <Item identifier="plastic" />
+      </Deconstruct>
+      <InventoryIcon name="Assistant Clothes Icon" texture="Content/Items/Jobgear/MiscJobGear.png" sourcerect="6,363,124,67" origin="0.5,0.5" />
+      <Sprite texture="Content/Items/Jobgear/MiscJobGear.png" sourcerect="6,363,124,67" depth="0.6" origin="0.5,0.5" />
+      <Body width="100" height="50" density="30" friction="0.8" restitution="0.01" />
+      <Wearable slots="Any,OuterClothes" msg="ItemMsgEquipSelect" autoequipwhenfull="false">
+        <sprite texture="%ModDir%/NTCS Surgery Plus/Images/drapehelmet.png" limb="Head" inheritlimbdepth="true" inheritscale="true" ignorelimbscale="true" scale="0.65" hidelimb="true" hideotherwearables="true" sourcerect="96,88,96,88" origin="0.5,0.5" />
+        <sprite texture="%ModDir%/NTCS Surgery Plus/Images/drapes.png" limb="Torso" hidelimb="true" inherittexturescale="true" hideotherwearables="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite texture="%ModDir%/NTCS Surgery Plus/Images/drapes.png" limb="Waist" hidelimb="true" inherittexturescale="true" hideotherwearables="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite texture="%ModDir%/NTCS Surgery Plus/Images/drapes.png" limb="RightForearm" hidelimb="true" inherittexturescale="true" hideotherwearables="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite texture="%ModDir%/NTCS Surgery Plus/Images/drapes.png" limb="RightHand" hidelimb="true" inherittexturescale="true" hideotherwearables="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite texture="%ModDir%/NTCS Surgery Plus/Images/drapes.png" limb="LeftHand" hidelimb="true" inherittexturescale="true" hideotherwearables="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite texture="%ModDir%/NTCS Surgery Plus/Images/drapes.png" limb="LeftForearm" hidelimb="true" inherittexturescale="true" hideotherwearables="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite texture="%ModDir%/NTCS Surgery Plus/Images/drapes.png" limb="RightArm" hidelimb="true" inherittexturescale="true" hideotherwearables="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite texture="%ModDir%/NTCS Surgery Plus/Images/drapes.png" limb="LeftArm" hidelimb="true" inherittexturescale="true" hideotherwearables="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite texture="%ModDir%/NTCS Surgery Plus/Images/drapes.png" limb="RightThigh" hidelimb="true" inherittexturescale="true" hideotherwearables="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite texture="%ModDir%/NTCS Surgery Plus/Images/drapes.png" limb="LeftThigh" hidelimb="true" inherittexturescale="true" hideotherwearables="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite texture="%ModDir%/NTCS Surgery Plus/Images/drapes.png" limb="RightLeg" hidelimb="true" inherittexturescale="true" hideotherwearables="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite texture="%ModDir%/NTCS Surgery Plus/Images/drapes.png" limb="LeftLeg" hidelimb="true" inherittexturescale="true" hideotherwearables="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite texture="%ModDir%/NTCS Surgery Plus/Images/drapes.png" limb="RightFoot" hidelimb="true" inherittexturescale="true" hideotherwearables="true" inheritorigin="true" inheritsourcerect="true" />
+        <sprite texture="%ModDir%/NTCS Surgery Plus/Images/drapes.png" limb="LeftFoot" hidelimb="true" inherittexturescale="true" hideotherwearables="true" inheritorigin="true" inheritsourcerect="true" />
+        <StatusEffect type="OnBroken" target="This">
+          <Remove />
+        </StatusEffect>
+        <StatusEffect type="OnWearing" target="Character" HideFace="true" ObstructVision="true" LowPassMultiplier="0.2" setvalue="true" disabledeltatime="true" />
+        <damagemodifier armorsector="0.0,360.0" afflictionidentifiers="traumaticshock" damagemultiplier="0.5" damagesound="LimbArmor" />
+      </Wearable>
+      <aitarget maxsightrange="50" />
+    </Item>
+    <!-- Brain Jar -->
+    <Item name="" identifier="brainjar" category="Equipment" tags="mediumitem,braincontainer" cargocontaineridentifier="metalcrate" showcontentsintooltip="true" Scale="0.4" fireproof="true" description="" impactsoundtag="impact_soft">
+      <PreferredContainer primary="medcab" />
+      <Price baseprice="200" soldbydefault="false" />
+      <Fabricate suitablefabricators="fabricator" requiredtime="30" requiresrecipe="true">
+        <Item identifier="silicon" />
+        <Item identifier="steel" />
+      </Fabricate>
+      <Deconstruct time="20">
+        <Item identifier="silicon" />
+        <Item identifier="steel" />
+        <Item identifier="mannitol" />
+      </Deconstruct>
+      <InventoryIcon texture="%ModDir%/NTCS Surgery Plus/Images/MainAtlas.png" sourcerect="0,256,87,128" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/NTCS Surgery Plus/Images/MainAtlas.png" depth="0.51" sourcerect="0,256,87,128" origin="0.5,0.5" />
+      <Body width="45" height="80" density="15" />
+      <Holdable slots="Any,RightHand,LeftHand" holdpos="0,-70" handle1="0,45" holdangle="0" msg="ItemMsgPickUpUse" canbeselected="false" canbepicked="true" allowswappingwhenpicked="false" />
+      <ItemContainer capacity="1" hideitems="false">
+        <Containable items="braintransplant" />
+      </ItemContainer>
+    </Item>
+    <!-- Artificial Brain -->
+    <Item name="" identifier="artificialbrain" description="" scale="0.3" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="1.5" Tags="smallitem,organ,petfood1,petfood2,petfood3,braintransplant">
+      <Price baseprice="0" soldbydefault="false"></Price>
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="60" requiresrecipe="true">
+        <RequiredSkill identifier="medical" level="80" />
+        <RequiredSkill identifier="surgery" level="80" />
+        <RequiredItem identifier="mannitol" />
+        <RequiredItem identifier="fpgacircuit" />
+        <RequiredItem identifier="aluminium" />
+        <RequiredItem identifier="stabilozine" />
+      </Fabricate>
+      <Deconstruct time="20">
+        <Item identifier="fpgacircuit" copycondition="true" mincondition="0.1" />
+        <Item identifier="aluminium" copycondition="true" mincondition="0.1" />
+      </Deconstruct>
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="272,480,78,60" depth="0.6" origin="0.5,0.5" />
+      <Body width="39" height="25" density="13" />
+      <Throwable characterusable="true" slots="Any,RightHand,LeftHand" throwforce="4.0" aimpos="35,-10" msg="ItemMsgPickUpSelect"></Throwable>
+    </Item>
+    <!-- Surgery Skill Book-->
+    <Item name="" identifier="skillbooksurgery" category="Equipment" Tags="smallitem,skillbook" maxstacksize="8" scale="0.5" impactsoundtag="impact_soft">
+      <PreferredContainer primary="storagecab,crewcab" />
+      <PreferredContainer secondary="locker" />
+      <Price baseprice="350" buyingpricemodifier="2.5">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" maxavailable="1" />
+      </Price>
+      <Deconstruct time="20">
+        <Item identifier="carbon" />
+      </Deconstruct>
+      <InventoryIcon texture="%ModDir%/NTCS Surgery Plus/Images/MainAtlas.png" sourcerect="420,128,35,52" origin="0.5,0.5" />
+      <Sprite texture="%ModDir%/NTCS Surgery Plus/Images/MainAtlas.png" sourcerect="386,128,31,38" depth="0.6" origin="0.5,0.5" />
+      <Body width="28" height="36" density="20" />
+      <MeleeWeapon slots="Any,RightHand+LeftHand" aimable="false" aimpos="40,-20" handle1="5,0" holdangle="260" swingamount="0,3" swingspeed="0.5" swingwhenaiming="true" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnSecondaryUse" target="This" Condition="-10" />
+        <StatusEffect type="OnSecondaryUse" target="This,Character" disabledeltatime="true">
+          <Conditional Condition="lte 0" />
+          <GiveSkill skillidentifier="surgery" amount="8" triggertalents="false" />
+          <GiveSkill skillidentifier="medical" amount="2" triggertalents="false" />
+          <RemoveItem />
+        </StatusEffect>
+      </MeleeWeapon>
+    </Item>
+  </Items>
+</Override>

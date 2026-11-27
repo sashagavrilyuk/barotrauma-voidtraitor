@@ -3,19 +3,14 @@
   "workshop_root": "",
   "mods": [
     {
-      "workshop_id": "3478084070",
-      "package_name": "NT Surgery Plus",
-      "target_folder": "NT Surgery Plus"
+      "workshop_id": "3816469440",
+      "package_name": "NTCS Surgery Plus",
+      "target_folder": "NTCS Surgery Plus"
     },
     {
-      "workshop_id": "3751439557",
-      "package_name": "NT Cybernetics Enhanced Forked",
-      "target_folder": "NT Cybernetics Enhanced Forked"
-    },
-    {
-      "workshop_id": "3592173710",
-      "package_name": "NT Nanite Integration",
-      "target_folder": "NT Nanite Integration"
+      "workshop_id": "3816467889",
+      "package_name": "NTCS Cybernetics",
+      "target_folder": "NTCS Cybernetics"
     },
     {
       "workshop_id": "3592320189",
@@ -96,8 +91,8 @@
       "target_folder": "Gravitation Grаnade"
     },
     {
-      "workshop_id": "3222593240",
-      "package_name": "Hungry Europans - Neurotrauma Compatibility Patch",
+      "workshop_id": "3832233018",
+      "package_name": "Hungry Europans - Neurotrauma Compatibility Patch (NTCS)",
       "target_folder": "Hungry Europans NT Patch"
     },
     {
@@ -122,14 +117,13 @@
     }
   ],
   "lua_order": [
-    "NT Surgery Plus",
-    "NT Cybernetics Enhanced Forked",
-    "NT Nanite Integration"
+    "NTCS Surgery Plus",
+    "NTCS Cybernetics"
   ],
   "override_winners": [
     {
       "winner": "NT Nanite Integration Cybernetics Addon",
-      "loser": "NT Cybernetics Enhanced Forked"
+      "loser": "NTCS Cybernetics"
     },
     {
       "winner": "Guns Enhanced Unofficial Addon",

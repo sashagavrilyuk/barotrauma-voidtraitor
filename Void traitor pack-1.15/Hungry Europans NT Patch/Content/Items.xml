@@ -1,6 +1,82 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Override>
   <Items>
+    <!-- ================================================
+    Legacy blood pack items (old Neurotrauma identifiers).
+    Some third-party mods (e.g. EA-HI integrations, DynamicEuropa and
+    other NT-era mods) look these identifiers up when Neurotrauma CS
+    replaces old Neurotrauma, where the IDs were renamed. These fallback
+    definitions (identical to old NT's, retextured from the CS atlas,
+    which is byte-identical to the old NT atlas) keep those lookups
+    working. If old Neurotrauma is installed too, its own Override
+    definitions replace these with no conflict.
+    ================================================ -->
+    <Item name="" identifier="bloodpackoplus" nameidentifier="bloodpackoplus" variantof="antibloodloss2">
+      <PreferredContainer primary="medcab" minamount="0" maxamount="0" notcampaign="true" />
+      <PreferredContainer secondary="medcontainer" />
+      <InventoryIcon texture="%ModDir:3744761298%/Images/InventoryItemIconAtlas.png" sourcerect="194,325,64,64" origin="0.5,0.5" />
+      <Sprite sourcerect="128,85,64,85" />
+      <Price baseprice="200">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="5" />
+      </Price>
+    </Item>
+    <Item name="" identifier="bloodpackaminus" nameidentifier="bloodpackaminus" variantof="antibloodloss2">
+      <PreferredContainer primary="medcab" minamount="0" maxamount="0" notcampaign="true" />
+      <PreferredContainer secondary="outpostmedcompartment,outpostmedcab" minamount="0" maxamount="0" spawnprobability="0" />
+      <PreferredContainer secondary="medcontainer" />
+      <InventoryIcon texture="%ModDir:3744761298%/Images/InventoryItemIconAtlas.png" sourcerect="396,328,64,64" origin="0.5,0.5" />
+      <Sprite sourcerect="192,171,64,85" />
+      <Price baseprice="200">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="5" />
+      </Price>
+    </Item>
+    <Item name="" identifier="bloodpackaplus" nameidentifier="bloodpackaplus" variantof="antibloodloss2">
+      <PreferredContainer primary="medcab" minamount="0" maxamount="0" notcampaign="true" />
+      <PreferredContainer secondary="medcontainer" />
+      <InventoryIcon texture="%ModDir:3744761298%/Images/InventoryItemIconAtlas.png" sourcerect="260,260,64,64" origin="0.5,0.5" />
+      <Sprite sourcerect="64,0,64,85" />
+      <Price baseprice="150">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="5" />
+      </Price>
+    </Item>
+    <Item name="" identifier="bloodpackbminus" nameidentifier="bloodpackbminus" variantof="antibloodloss2">
+      <PreferredContainer primary="medcab" minamount="0" maxamount="0" notcampaign="true" />
+      <PreferredContainer secondary="outpostmedcompartment,outpostmedcab" minamount="0" maxamount="0" spawnprobability="0" />
+      <PreferredContainer secondary="medcontainer" />
+      <InventoryIcon texture="%ModDir:3744761298%/Images/InventoryItemIconAtlas.png" sourcerect="331,261,64,64" origin="0.5,0.5" />
+      <Sprite sourcerect="128,0,64,85" />
+      <Price baseprice="200">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="5" />
+      </Price>
+    </Item>
+    <Item name="" identifier="bloodpackbplus" nameidentifier="bloodpackbplus" variantof="antibloodloss2">
+      <PreferredContainer primary="medcab" minamount="0" maxamount="0" notcampaign="true" />
+      <PreferredContainer secondary="medcontainer" />
+      <InventoryIcon texture="%ModDir:3744761298%/Images/InventoryItemIconAtlas.png" sourcerect="260,326,64,64" origin="0.5,0.5" />
+      <Sprite sourcerect="64,171,64,85" />
+      <Price baseprice="150">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="5" />
+      </Price>
+    </Item>
+    <Item name="" identifier="bloodpackabminus" nameidentifier="bloodpackabminus" variantof="antibloodloss2">
+      <PreferredContainer primary="medcab" minamount="0" maxamount="0" notcampaign="true" />
+      <PreferredContainer secondary="outpostmedcompartment,outpostmedcab" minamount="0" maxamount="0" spawnprobability="0" />
+      <PreferredContainer secondary="medcontainer" />
+      <InventoryIcon texture="%ModDir:3744761298%/Images/InventoryItemIconAtlas.png" sourcerect="396,263,64,64" origin="0.5,0.5" />
+      <Sprite sourcerect="64,85,64,85" />
+      <Price baseprice="150">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="5" />
+      </Price>
+    </Item>
+    <Item name="" identifier="bloodpackabplus" nameidentifier="bloodpackabplus" variantof="antibloodloss2">
+      <PreferredContainer primary="medcab" minamount="0" maxamount="0" notcampaign="true" />
+      <PreferredContainer secondary="medcontainer" />
+      <InventoryIcon texture="%ModDir:3744761298%/Images/InventoryItemIconAtlas.png" sourcerect="193,260,64,64" origin="0.5,0.5" />
+      <Sprite sourcerect="0,0,64,85" />
+      <Price baseprice="100">
+        <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="5" />
+      </Price>
+    </Item>
     <!-- TODO: Rework applied afflictions for better NT compatibility -->
     <Item name="Glass Fragments" identifier="he-glassfragments" category="Misc" subcategory="Ingredients" maxstacksize="20" cargocontaineridentifier="metalcrate" description="Shattered glass. Can be obtained through smashing bottles or crafting them from quartz at a fabricator. Used for crafting at a fabricator or bottle printer." Tags="smallitem,ingredient,glassfragments" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_glassfragments" isshootable="true" requireaimtouse="true">
       <PreferredContainer secondary="wreckmedcab,abandonedmedcab" amount="1" spawnprobability="0.01" />
@@ -77,7 +153,7 @@
         <StatusEffect type="OnFailure" target="This" Condition="-100.0" setvalue="true" />
         <StatusEffect statuseffecttags="medical" type="OnSuccess" target="UseTarget" duration="30.0">
           <Affliction identifier="organdamage" amount="0.5" />
-          <Affliction identifier="cerebralhypoxia" amount="0.5" />
+          <Affliction identifier="neurotrauma" amount="0.5" />
           <Affliction identifier="psychosis" amount="1" />
           <ReduceAffliction identifier="stun" amount="0.75" />
           <Affliction identifier="chemaddiction" amount="0.5" />
@@ -88,7 +164,7 @@
         </StatusEffect>
         <StatusEffect statuseffecttags="medical" type="OnFailure" target="UseTarget" duration="30.0">
           <Affliction identifier="organdamage" amount="1" />
-          <Affliction identifier="cerebralhypoxia" amount="1" />
+          <Affliction identifier="neurotrauma" amount="1" />
           <Affliction identifier="psychosis" amount="1.5" />
           <ReduceAffliction identifier="stun" amount="0.75" />
           <Affliction identifier="chemaddiction" amount="1" />
@@ -148,7 +224,7 @@
           <ReduceAffliction identifier="internaldamage" amount="0.2" />
           <ReduceAffliction identifier="stun" amount="0.9" />
           <Affliction identifier="chemaddiction" amount="0.3" />
-          <Affliction identifier="cerebralhypoxia" amount="0.3" />
+          <Affliction identifier="neurotrauma" amount="0.3" />
           <Affliction identifier="psychosis" amount="0.5" />
           <ReduceAffliction identifier="chemwithdrawal" amount="1.5" />
           <ReduceAffliction identifier="mood" amount="0.5" />
@@ -161,7 +237,7 @@
           <ReduceAffliction identifier="internaldamage" amount="0.1" />
           <ReduceAffliction identifier="stun" amount="0.25" />
           <Affliction identifier="chemaddiction" amount="0.6" />
-          <Affliction identifier="cerebralhypoxia" amount="0.6" />
+          <Affliction identifier="neurotrauma" amount="0.6" />
           <Affliction identifier="psychosis" amount="1" />
           <ReduceAffliction identifier="chemwithdrawal" amount="1.5" />
           <Affliction identifier="burn" amount="0.125" />
@@ -281,9 +357,9 @@
     </Item>
     <Item hideinmenus="false" name="Plate of Boiled Thoughts" identifier="he-cookedhumanbrain" variantof="he-poisoneffectpreset_fork" health="26" category="Misc" subcategory="Food - Human" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem,forkfood,foodplate,petfood1,petfood2,petfood3" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_bottle_glass" isshootable="True" requireaimtouse="True">
       <PreferredContainer primary="table" secondary="kitchen,crewcab" spawnprobability="0.0" />
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="0,0,68,29" depth="0.6" origin="0.5,0.5" />
-      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="0,0,68,29" depth="0.525" origin="0.5,0.65" />
-      <InventoryIcon texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="0,0,68,29" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="0,0,68,29" depth="0.6" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="0,0,68,29" depth="0.525" origin="0.5,0.65" />
+      <InventoryIcon texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="0,0,68,29" origin="0.5,0.5" />
       <Fabricate suitablefabricators="cuttingboard" requiredtime="10" requiresrecipe="false" amount="1">
         <RequiredSkill identifier="cooking" level="50" />
         <RequiredItem identifier="he-boiledhumanbrain" amount="1" />
@@ -357,9 +433,9 @@
     </Item>
     <Item hideinmenus="false" name="Roasted Liver with Fries" identifier="he-cookedhumanliverfries" variantof="he-poisoneffectpreset_fork" health="18" category="Misc" subcategory="Food - Human" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem,forkfood,foodplate,petfood1,petfood2,petfood3" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_bottle_glass" isshootable="True" requireaimtouse="True">
       <PreferredContainer primary="table" secondary="kitchen,crewcab" spawnprobability="0.0" />
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="69,0,68,29" depth="0.6" origin="0.5,0.5" />
-      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="69,0,68,29" depth="0.525" origin="0.5,0.65" />
-      <InventoryIcon texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="69,0,68,29" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="69,0,68,29" depth="0.6" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="69,0,68,29" depth="0.525" origin="0.5,0.65" />
+      <InventoryIcon texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="69,0,68,29" origin="0.5,0.5" />
       <Fabricate suitablefabricators="cuttingboard" requiredtime="10" requiresrecipe="false" amount="1">
         <RequiredSkill identifier="cooking" level="50" />
         <RequiredItem identifier="he-roastedhumanliver" amount="1" />
@@ -433,9 +509,9 @@
     </Item>
     <Item hideinmenus="false" name="Boiled Kidney with Jerky and Seaweed" identifier="he-cookedhumankidneyjerky" variantof="he-poisoneffectpreset_fork" health="18" category="Misc" subcategory="Food - Human" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem,forkfood,foodplate,petfood1,petfood2,petfood3" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_bottle_glass" isshootable="True" requireaimtouse="True">
       <PreferredContainer primary="table" secondary="kitchen,crewcab" spawnprobability="0.0" />
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="138,0,68,29" depth="0.6" origin="0.5,0.5" />
-      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="138,0,68,29" depth="0.525" origin="0.5,0.65" />
-      <InventoryIcon texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="138,0,68,29" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="138,0,68,29" depth="0.6" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="138,0,68,29" depth="0.525" origin="0.5,0.65" />
+      <InventoryIcon texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="138,0,68,29" origin="0.5,0.5" />
       <Fabricate suitablefabricators="cuttingboard" requiredtime="10" requiresrecipe="false" amount="1">
         <RequiredSkill identifier="cooking" level="50" />
         <RequiredItem identifier="he-boiledhumankidney" amount="1" />
@@ -511,9 +587,9 @@
     <!-- WIP | gravy, mashed pomegrenade and human roast do not yet exist, but will be later added by Hungry Europans -->
     <Item hideinmenus="false" name="Roast with Gravy, Mashed Pomegrenade and Seaweed" identifier="he-cookedhumanroastgravy" variantof="he-poisoneffectpreset_fork" health="18" category="Misc" subcategory="Food - Human" maxstacksize="1" maxstacksizecharacterinventory="1" cargocontaineridentifier="metalcrate" description="" Tags="smallitem,fooditem,forkfood,foodplate,petfood1,petfood2,petfood3" useinhealthinterface="false" scale="0.5" impactsoundtag="impact_bottle_glass" isshootable="True" requireaimtouse="True">
       <PreferredContainer primary="table" secondary="kitchen,crewcab" spawnprobability="0.0" />
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="0,30,68,29" depth="0.6" origin="0.5,0.5" />
-      <ContainedSprite allowedcontainertags="table" texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="0,30,68,29" depth="0.525" origin="0.5,0.65" />
-      <InventoryIcon texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="0,30,68,29" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="0,30,68,29" depth="0.6" origin="0.5,0.5" />
+      <ContainedSprite allowedcontainertags="table" texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="0,30,68,29" depth="0.525" origin="0.5,0.65" />
+      <InventoryIcon texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="0,30,68,29" origin="0.5,0.5" />
       <!--<Fabricate suitablefabricators="cuttingboard" requiredtime="10" requiresrecipe="false" amount="1" >
         <RequiredSkill identifier="cooking" level="50" />-->
       <!--<RequiredItem identifier="he-roastedhumanroast" amount="1" />-->

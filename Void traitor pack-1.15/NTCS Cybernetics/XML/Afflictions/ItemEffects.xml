@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Afflictions>
+  <Override>
+    <!-- Immunosuppressant Inhaler effect. Mildly decreases immunity to prevent Cyberpsychosis -->
+    <Affliction name="" description="" identifier="immunosuppressantinhaler" healableinmedicalclinic="false" limbspecific="false" targets="human" type="resistance" isbuff="true" hideiconafterdelay="true" showinhealthscannerthreshold="999" showiconthreshold="10" maxstrength="100">
+      <Effect minstrength="0" maxstrength="100" strengthchange="-0.125">
+        <StatusEffect target="Character" comparison="and">
+          <Conditional ishuman="true" immunity="gte 85" />
+          <ReduceAffliction identifier="immunity" amount="2.5" />
+        </StatusEffect>
+      </Effect>
+      <icon texture="%ModDir%/NTCS Cybernetics/Images/AfflictionIcons.png" sheetindex="0,4" sheetelementsize="128,128" origin="0,0" />
+    </Affliction>
+    <!-- Hidden, immediately causes equivalent vanilla psychosis. Separate to allow configurable resistance -->
+    <Affliction name="" description="" identifier="ntc_cyberpsychosis" healableinmedicalclinic="false" limbspecific="false" targets="human" isbuff="false" indicatorlimb="Head" showinhealthscannerthreshold="999" showiconthreshold="999" maxstrength="100" iconcolors="191,171,57,255;191,57,57,255">
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,640,128,128" color="150,26,26,255" origin="0,0" />
+      <Effect minstrength="0" maxstrength="100" strengthchange="-100">
+        <StatusEffect target="Character" comparison="and" disabledeltatime="true">
+          <Conditional ishuman="true" immunity="gte 85" />
+          <Affliction identifier="psychosis" minamount="0" maxamount="100" />
+        </StatusEffect>
+      </Effect>
+    </Affliction>
+    <!-- Resistance Affliction for Cyberpsychosis -->
+    <Affliction name="" description="" identifier="ntc_cyberpsychosis_resistance" healableinmedicalclinic="false" limbspecific="false" targets="human" isbuff="false" indicatorlimb="Head" showinhealthscannerthreshold="999" showiconthreshold="999" maxstrength="100" iconcolors="191,171,57,255;191,57,57,255">
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,640,128,128" color="150,26,26,255" origin="0,0" />
+      <Effect minstrength="0" maxstrength="100" resistancefor="ntc_cyberpsychosis" minresistance="0" maxresistance="1" strengthchange="0" />
+    </Affliction>
+  </Override>
+</Afflictions>

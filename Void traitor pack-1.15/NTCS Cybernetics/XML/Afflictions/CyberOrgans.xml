@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Afflictions>
+  <Override>
+    <!-- Cyberliver Affliction. 50% for T1, 100% for T2. -->
+    <Affliction name="Cyberliver" description="" identifier="ntc_cyberliver" healableinmedicalclinic="false" targets="human" type="resistance" isbuff="true" limbspecific="true" showinhealthscannerthreshold="0" showiconthreshold="999" maxstrength="100" iconcolors="76,102,145,255;76,102,145,255">
+      <icon texture="%ModDir%/NTCS Cybernetics/Images/AfflictionIcons.png" sheetindex="7,0" sheetelementsize="128,128" origin="0,0" />
+      <!-- In humanupdate.lua, also applies faster recovery rate for most poisons/debuffs/nausea, and resists liver damage-->
+      <!-- Overdose / Nausea resistance -->
+      <Effect minstrength="0" maxstrength="100" strengthchange="0" resistancefor="opiateoverdose,nausea" minresistance="0" maxresistance="0.5" />
+      <PeriodicEffect mininterval="300" maxinterval="1200">
+        <!-- Cyberpsychosis -->
+        <StatusEffect target="Character" multiplybymaxvitality="true" comparison="and">
+          <Conditional immunity="gte 90" />
+          <Affliction identifier="ntc_cyberpsychosis" strength="40" probability="0.1" />
+        </StatusEffect>
+        <StatusEffect target="Character" multiplybymaxvitality="true" comparison="and">
+          <Conditional immunity="gte 90" />
+          <Conditional ntc_cyberliver="gte 90" />
+          <Affliction identifier="ntc_cyberpsychosis" strength="40" probability="0.1" />
+        </StatusEffect>
+      </PeriodicEffect>
+    </Affliction>
+    <!-- Cyberkidney Affliction. 50% for T1, 100% for T2. -->
+    <Affliction name="Cyberkidney" description="" identifier="ntc_cyberkidney" healableinmedicalclinic="false" targets="human" type="resistance" isbuff="true" limbspecific="true" showinhealthscannerthreshold="0" showiconthreshold="999" maxstrength="100" iconcolors="76,102,145,255;76,102,145,255">
+      <icon texture="%ModDir%/NTCS Cybernetics/Images/AfflictionIcons.png" sheetindex="7,0" sheetelementsize="128,128" origin="0,0" />
+      <!-- Bleeding & Bloodloss resistance -->
+      <Effect minstrength="0" maxstrength="100" strengthchange="0" resistancefor="bleeding,bloodloss" minresistance="0" maxresistance="0.6">
+        <StatusEffect target="Character" disabledeltatime="true" setvalue="true" interval="1">
+          <Affliction identifier="abc_positive" amount="100" />
+          <!-- Cyberblood, fun for selfish compatibility, and prevents Cyberorgan rejection -->
+          <Affliction identifier="o_negative" amount="0" />
+          <Affliction identifier="o_positive" amount="0" />
+          <Affliction identifier="a_negative" amount="0" />
+          <Affliction identifier="a_positive" amount="0" />
+          <Affliction identifier="b_negative" amount="0" />
+          <Affliction identifier="b_positive" amount="0" />
+          <Affliction identifier="ab_negative" amount="0" />
+          <Affliction identifier="ab_positive" amount="0" />
+        </StatusEffect>
+      </Effect>
+      <PeriodicEffect mininterval="300" maxinterval="1200">
+        <!-- Cyberpsychosis -->
+        <StatusEffect target="Character" multiplybymaxvitality="true" comparison="and">
+          <Conditional immunity="gte 90" />
+          <Affliction identifier="ntc_cyberpsychosis" strength="40" probability="0.1" />
+        </StatusEffect>
+        <StatusEffect target="Character" multiplybymaxvitality="true" comparison="and">
+          <Conditional immunity="gte 90" />
+          <Conditional ntc_cyberkidney="gte 90" />
+          <Affliction identifier="ntc_cyberpsychosis" strength="40" probability="0.1" />
+        </StatusEffect>
+      </PeriodicEffect>
+    </Affliction>
+    <!-- Cyberlung Affliction. 50% for T1, 100% for T2. -->
+    <Affliction name="Cyberlungs" description="" identifier="ntc_cyberlung" healableinmedicalclinic="false" targets="human" type="resistance" isbuff="true" limbspecific="true" showinhealthscannerthreshold="0" showiconthreshold="999" maxstrength="100" iconcolors="76,102,145,255;76,102,145,255">
+      <icon texture="%ModDir%/NTCS Cybernetics/Images/AfflictionIcons.png" sheetindex="7,0" sheetelementsize="128,128" origin="0,0" />
+      <!-- in humanupdate.lua lungs also grant reduced pneumothoraxchance and hypoxemia, and hypo/hyperventilates to balance PH -->
+      <!-- Oxygen low resistance -->
+      <Effect minstrength="0" maxstrength="100" strengthchange="0" resistancefor="oxygenlow" minresistance="0" maxresistance="0.6">
+        <!-- Faster movement/attack. Raises Vigor up to 75/150/225/300 if Tier 2/3 Lung + if Tier 2/3 Heart active -->
+        <StatusEffect type="always" target="Character" interval="1" comparison="And">
+          <Conditional haste="lt 150.3" />
+          <Conditional ntc_cyberlung="gte 90" />
+          <Affliction identifier="haste" amount="0.125" />
+        </StatusEffect>
+        <StatusEffect type="always" target="Character" interval="1" comparison="And">
+          <Conditional haste="lt 75.3" />
+          <Affliction identifier="haste" amount="0.125" />
+        </StatusEffect>
+        <StatusEffect type="always" target="Character" interval="1" comparison="And">
+          <Conditional haste="lt 300.3" />
+          <Conditional ntc_cyberlung="gte 90" />
+          <Conditional ntc_cyberheart="gte 90" />
+          <Affliction identifier="haste" amount="0.125" />
+        </StatusEffect>
+        <StatusEffect type="always" target="Character" interval="1" comparison="And">
+          <Conditional haste="lt 225.3" />
+          <Conditional ntc_cyberlung="gte 90" />
+          <Conditional ntc_cyberheart="gte 40" />
+          <Affliction identifier="haste" amount="0.125" />
+        </StatusEffect>
+        <StatusEffect type="always" target="Character" interval="1" comparison="And">
+          <Conditional haste="lt 150.3" />
+          <Conditional ntc_cyberlung="gte 40" />
+          <Conditional ntc_cyberheart="gte 40" />
+          <Affliction identifier="haste" amount="0.125" />
+        </StatusEffect>
+        <StatusEffect type="always" target="Character" interval="1" comparison="And">
+          <Conditional haste="lt 225.3" />
+          <Conditional ntc_cyberlung="gte 40" />
+          <Conditional ntc_cyberheart="gte 90" />
+          <Affliction identifier="haste" amount="0.125" />
+        </StatusEffect>
+        <StatValue stattype="HoldBreathMultiplier" minvalue="1" maxvalue="0.5" />
+        <!-- Partial Pressure Protection: at most once every 30 seconds, if you're in pressure, give 5-10 seconds of Pressure Stabilization.
+        ntc_cyberlung_pressure_recovery being > 0 means its been triggered recently, and is a countdown until its next allowed to trigger.
+      -->
+        <StatusEffect target="Character" setvalue="true" interval="1" comparison="And">
+          <Conditional InPressure="true" />
+          <Conditional pressureProtection="lt 1000" />
+          <Conditional ntc_cyberlung_pressure_recovery="lte 0.1" />
+          <Affliction identifier="ntc_cyberlung_pressure_recovery" amount="31" />
+        </StatusEffect>
+      </Effect>
+      <PeriodicEffect mininterval="300" maxinterval="1200">
+        <!-- Cyberpsychosis -->
+        <StatusEffect target="Character" multiplybymaxvitality="true" comparison="and">
+          <Conditional immunity="gte 90" />
+          <Affliction identifier="ntc_cyberpsychosis" strength="40" probability="0.1" />
+        </StatusEffect>
+        <StatusEffect target="Character" multiplybymaxvitality="true" comparison="and">
+          <Conditional immunity="gte 90" />
+          <Conditional ntc_cyberlung="gte 90" />
+          <Affliction identifier="ntc_cyberpsychosis" strength="40" probability="0.1" />
+        </StatusEffect>
+      </PeriodicEffect>
+    </Affliction>
+    <!-- Affliction to handle the temporary pressure immunity -->
+    <Affliction name="Pressurized Cyberlung" description="" identifier="ntc_cyberlung_pressure_recovery" healableinmedicalclinic="false" isbuff="false" targets="human" limbspecific="false" indicatorlimb="Torso" activationthreshold="0" showiconthreshold="1" showinhealthscannerthreshold="1" maxstrength="999">
+      <Description textidentifier="afflictiondescription.ntc_cyberlung_pressure_recovery.low" minstrength="0" maxstrength="20" />
+      <Description textidentifier="afflictiondescription.ntc_cyberlung_pressure_recovery" minstrength="20" maxstrength="100" />
+      <!-- Restore partial loss from the Pressure Protection triggering  -->
+      <Effect minstrength="0" maxstrength="19.5" strengthchange="-1" />
+      <Effect minstrength="19.5" maxstrength="20" strengthchange="-1">
+        <StatusEffect type="always" target="Character" comparison="And">
+          <Conditional ntc_cyberlung="gte 90" />
+          <Affliction identifier="pressurestabilized" strength="3" />
+          <ReduceAffliction identifier="ntc_cyberlung_pressure_recovery" strength="0.5" />
+        </StatusEffect>
+      </Effect>
+      <Effect minstrength="20" maxstrength="23.5" strengthchange="-1" />
+      <Effect minstrength="23.5" maxstrength="24" strengthchange="-1">
+        <StatusEffect type="always" target="Character">
+          <Affliction identifier="pressurestabilized" strength="3" />
+          <ReduceAffliction identifier="ntc_cyberlung_pressure_recovery" strength="0.5" />
+        </StatusEffect>
+      </Effect>
+      <Effect minstrength="24" maxstrength="27.5" strengthchange="-1" />
+      <Effect minstrength="27.5" maxstrength="28" strengthchange="-1">
+        <StatusEffect type="always" target="Character">
+          <Affliction identifier="pressurestabilized" strength="3" />
+          <ReduceAffliction identifier="ntc_cyberlung_pressure_recovery" strength="0.5" />
+        </StatusEffect>
+      </Effect>
+      <Effect minstrength="28" maxstrength="100" strengthchange="-1" />
+    </Affliction>
+    <!-- Cyberheart Affliction. 50% for T1, 100% for T2. -->
+    <Affliction name="Cyberheart" description="" identifier="ntc_cyberheart" healableinmedicalclinic="false" targets="human" type="resistance" isbuff="true" limbspecific="true" showinhealthscannerthreshold="0" showiconthreshold="999" maxstrength="100" iconcolors="76,102,145,255;76,102,145,255">
+      <icon texture="%ModDir%/NTCS Cybernetics/Images/AfflictionIcons.png" sheetindex="7,0" sheetelementsize="128,128" origin="0,0" />
+      <!-- in humanupdate.lua heart also grants better bloodpressurerate -->
+      <Effect minstrength="0" maxstrength="100" strengthchange="0">
+        <!-- Faster movement/attack -->
+        <StatusEffect type="always" target="Character" interval="1" comparison="And">
+          <Conditional haste="lt 150.3" />
+          <Conditional ntc_cyberlung="gte 90" />
+          <Affliction identifier="haste" amount="0.125" />
+        </StatusEffect>
+        <StatusEffect type="always" target="Character" interval="1" comparison="And">
+          <Conditional haste="lt 75.3" />
+          <Affliction identifier="haste" amount="0.125" />
+        </StatusEffect>
+        <StatusEffect target="Character" disabledeltatime="true">
+          <StatValue stattype="MaximumHealthMultiplier" minvalue="0" maxvalue="0.2" />
+          <!-- More Vitality -->
+        </StatusEffect>
+      </Effect>
+      <PeriodicEffect mininterval="300" maxinterval="1200">
+        <!-- Cyberpsychosis -->
+        <StatusEffect target="Character" multiplybymaxvitality="true" comparison="and">
+          <Conditional immunity="gte 90" />
+          <Affliction identifier="ntc_cyberpsychosis" strength="40" probability="0.1" />
+        </StatusEffect>
+        <StatusEffect target="Character" multiplybymaxvitality="true" comparison="and">
+          <Conditional immunity="gte 90" />
+          <Conditional ntc_cyberheart="gte 90" />
+          <Affliction identifier="ntc_cyberpsychosis" strength="40" probability="0.1" />
+        </StatusEffect>
+      </PeriodicEffect>
+    </Affliction>
+    <!-- Cyberbrain Affliction. 50% for T1, 100% for T2. -->
+    <Affliction name="Cyberbrain" description="" identifier="ntc_cyberbrain" healableinmedicalclinic="false" targets="human" type="resistance" isbuff="true" limbspecific="true" showinhealthscannerthreshold="0" showiconthreshold="999" maxstrength="100" iconcolors="76,102,145,255;76,102,145,255">
+      <icon texture="%ModDir%/NTCS Cybernetics/Images/AfflictionIcons.png" sheetindex="7,0" sheetelementsize="128,128" origin="0,0" />
+      <!-- in humanupdate: Neurotrauma resistance, improved Neurotrauma/Coma recovery rate, and improved withdrawal/addiction recovery rates -->
+      <Effect minstrength="0" maxstrength="100" strengthchange="0">
+        <!-- Stat buffs -->
+        <StatValue stattype="ElectricalSkillBonus" minvalue="0" maxvalue="10" />
+        <StatValue stattype="HelmSkillBonus" minvalue="0" maxvalue="10" />
+        <StatValue stattype="MechanicalSkillBonus" minvalue="0" maxvalue="10" />
+        <StatValue stattype="MedicalSkillBonus" minvalue="0" maxvalue="10" />
+        <StatValue stattype="WeaponsSkillBonus" minvalue="0" maxvalue="10" />
+        <StatValue stattype="RangedSpreadReduction" minvalue="0.0" maxvalue="0.3" />
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" disabledeltatime="true" comparison="and">
+          <Conditional ishuman="true" analgesia="lte 3" />
+          <Affliction identifier="analgesia" amount="1" />
+          <!-- Little bit of anaesthetic for easier surgery -->
+        </StatusEffect>
+      </Effect>
+      <PeriodicEffect mininterval="300" maxinterval="1200">
+        <!-- Cyberpsychosis -->
+        <StatusEffect target="Character" multiplybymaxvitality="true" comparison="and">
+          <Conditional immunity="gte 90" />
+          <Affliction identifier="ntc_cyberpsychosis" strength="40" probability="0.15" />
+        </StatusEffect>
+        <StatusEffect target="Character" multiplybymaxvitality="true" comparison="and">
+          <Conditional immunity="gte 90" />
+          <Conditional ntc_cyberbrain="gte 90" />
+          <Affliction identifier="ntc_cyberpsychosis" strength="40" probability="0.15" />
+        </StatusEffect>
+      </PeriodicEffect>
+    </Affliction>
+    <!-- C Positive Blood Type-->
+    <Affliction name="C+" description="" identifier="abc_positive" healableinmedicalclinic="false" targets="human" type="resistance" isbuff="true" limbspecific="false" showinhealthscannerthreshold="999" showiconthreshold="999" maxstrength="1">
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0" />
+    </Affliction>
+  </Override>
+</Afflictions>

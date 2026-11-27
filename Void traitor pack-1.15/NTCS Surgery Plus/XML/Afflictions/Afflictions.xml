@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Afflictions>
+  <!-- Artificial Brain: Keeps the body going when actual brain is missing. -->
+  <Affliction name="" description="" identifier="artificialbrain" healableinmedicalclinic="false" targets="human" limbspecific="false" indicatorlimb="Head" isbuff="false" showinhealthscannerthreshold="0" showiconthreshold="0" maxstrength="2" causeofdeathdescription="Died of missing a brain" selfcauseofdeathdescription="Your brain got removed." iconcolors="127,127,127,255;127,127,127,255">
+    <icon texture="%ModDir:3744761298%/Images/AfflictionIcons.png" sheetindex="4,5" sheetelementsize="128,128" origin="0,0" />
+  </Affliction>
+  <!-- Triage tags -->
+  <!-- Green-->
+  <Affliction name="" description="" identifier="triagetag_green" type="triagetag" targets="human" healableinmedicalclinic="false" limbspecific="false" indicatorlimb="LeftLeg" isbuff="true" showinhealthscannerthreshold="999" showiconthreshold="0" maxstrength="2" iconcolors="0,145,14,255;0,145,14,255">
+    <icon texture="%ModDir%/NTCS Surgery Plus/Images/MainAtlas.png" sheetindex="5,1" sheetelementsize="128,128" origin="0,0" />
+  </Affliction>
+  <!-- Yellow -->
+  <Affliction name="" identifier="triagetag_yellow" description="" type="triagetag" targets="human" healableinmedicalclinic="false" limbspecific="false" indicatorlimb="LeftLeg" isbuff="true" showinhealthscannerthreshold="999" showiconthreshold="0" maxstrength="2" iconcolors="224,193,38,255;224,193,38,255">
+    <icon texture="%ModDir%/NTCS Surgery Plus/Images/MainAtlas.png" sheetindex="5,1" sheetelementsize="128,128" origin="0,0" />
+  </Affliction>
+  <!-- Red -->
+  <Affliction name="" identifier="triagetag_red" description="" type="triagetag" isbuff="true" targets="human" healableinmedicalclinic="false" limbspecific="false" indicatorlimb="LeftLeg" showinhealthscannerthreshold="999" showiconthreshold="0" maxstrength="2" iconcolors="188,26,26,255;188,26,26,255">
+    <icon texture="%ModDir%/NTCS Surgery Plus/Images/MainAtlas.png" sheetindex="5,1" sheetelementsize="128,128" origin="0,0" />
+  </Affliction>
+  <!-- Black -->
+  <Affliction name="" description="" identifier="triagetag_black" targets="human" healableinmedicalclinic="false" limbspecific="false" indicatorlimb="LeftLeg" type="triagetag" isbuff="true" showinhealthscannerthreshold="999" showiconthreshold="0" maxstrength="2" iconcolors="64,64,64,255;64,64,64,255">
+    <icon texture="%ModDir%/NTCS Surgery Plus/Images/MainAtlas.png" sheetindex="5,1" sheetelementsize="128,128" origin="0,0" />
+  </Affliction>
+</Afflictions>

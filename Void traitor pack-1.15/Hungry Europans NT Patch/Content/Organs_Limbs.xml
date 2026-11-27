@@ -8,7 +8,7 @@
     <!-- Overridden to change texture and scale and change rotting conditionals to stop rotting if inside an active fabricator and make the item grillable -->
     <!-- Grilled -->
     <Item name="Grilled Liver" identifier="he-grilledhumanliver" description="" health="10" category="Misc" scale="0.5" useinhealthinterface="False" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,fooditem,grilledliver,allowongrill,petfood1,petfood2,petfood3,monsterfood" requireaimtouse="true" isshootable="true">
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="38,60,47,31" depth="0.6" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="38,60,47,31" depth="0.6" origin="0.5,0.5" />
       <Body width="41" height="25" density="10" />
       <Deconstruct />
       <!-- Grilling -->
@@ -50,7 +50,7 @@
       </Holdable>
     </Item>
     <Item name="Grilled Kidney" identifier="he-grilledhumankidney" description="" health="6" category="Medical" scale="0.5" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,fooditem,grilledkidney,allowongrill,petfood1,petfood2,petfood3,monsterfood" requireaimtouse="true" isshootable="true">
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="18,60,19,28" depth="0.6" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="18,60,19,28" depth="0.6" origin="0.5,0.5" />
       <Body radius="7" height="15" density="10" />
       <Deconstruct />
       <!-- Grilling -->
@@ -92,7 +92,7 @@
       </Holdable>
     </Item>
     <Item name="Grilled Heart" identifier="he-grilledhumanheart" description="" health="8" category="Medical" scale="0.5" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,fooditem,grilledheart,allowongrill,petfood1,petfood2,petfood3,monsterfood" requireaimtouse="true" isshootable="true">
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="0,60,17,32" depth="0.6" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="0,60,17,32" depth="0.6" origin="0.5,0.5" />
       <Body width="6" height="20" density="10" />
       <Deconstruct />
       <!-- Grilling -->
@@ -134,7 +134,7 @@
       </Holdable>
     </Item>
     <Item name="Grilled Brain" identifier="he-grilledhumanbrain" description="" health="15" category="Medical" scale="0.5" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,fooditem,grilledheart,allowongrill,petfood1,petfood2,petfood3,monsterfood" requireaimtouse="true" isshootable="true">
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="86,60,47,35" depth="0.6" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="86,60,47,35" depth="0.6" origin="0.5,0.5" />
       <Body width="27" radius="14" density="10" />
       <Deconstruct />
       <!-- Grilling -->
@@ -177,7 +177,7 @@
     </Item>
     <!-- Roasted -->
     <Item name="Roasted Liver" identifier="he-roastedhumanliver" description="" health="10" category="Misc" scale="0.5" useinhealthinterface="False" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,fooditem,roastedliver,petfood1,petfood2,petfood3,monsterfood" requireaimtouse="true" isshootable="true">
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="38,60,47,31" depth="0.6" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="38,60,47,31" depth="0.6" origin="0.5,0.5" />
       <Body width="41" height="25" density="10" />
       <Deconstruct />
       <Fabricate suitablefabricators="stove" requiredtime="40" requiresrecipe="false" amount="1">
@@ -212,7 +212,7 @@
       </Holdable>
     </Item>
     <Item name="Roasted Kidney" identifier="he-roastedhumankidney" description="" health="6" category="Medical" scale="0.5" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,fooditem,roastedkidney,petfood1,petfood2,petfood3,monsterfood" requireaimtouse="true" isshootable="true">
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="18,60,19,28" depth="0.6" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="18,60,19,28" depth="0.6" origin="0.5,0.5" />
       <Body radius="7" height="15" density="10" />
       <Deconstruct />
       <Fabricate suitablefabricators="stove" requiredtime="30" requiresrecipe="false" amount="1">
@@ -247,7 +247,7 @@
       </Holdable>
     </Item>
     <Item name="Roasted Heart" identifier="he-roastedhumanheart" description="" health="8" category="Medical" scale="0.5" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,fooditem,roastedheart,petfood1,petfood2,petfood3,monsterfood" requireaimtouse="true" isshootable="true">
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="0,60,17,32" depth="0.6" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="0,60,17,32" depth="0.6" origin="0.5,0.5" />
       <Body width="6" height="20" density="10" />
       <Deconstruct />
       <Fabricate suitablefabricators="stove" requiredtime="35" requiresrecipe="false" amount="1">
@@ -282,7 +282,7 @@
       </Holdable>
     </Item>
     <Item name="Roasted Brain" identifier="he-roastedhumanbrain" description="" health="15" category="Medical" scale="0.5" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,fooditem,roastedheart,petfood1,petfood2,petfood3,monsterfood" requireaimtouse="true" isshootable="true">
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="86,60,47,35" depth="0.6" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="86,60,47,35" depth="0.6" origin="0.5,0.5" />
       <Body width="27" radius="14" density="10" />
       <Deconstruct />
       <Fabricate suitablefabricators="stove" requiredtime="60" requiresrecipe="false" amount="1">
@@ -318,7 +318,7 @@
     </Item>
     <!-- Boiled -->
     <Item name="Boiled Liver" identifier="he-boiledhumanliver" description="" health="10" category="Misc" scale="0.5" useinhealthinterface="False" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,fooditem,boiledliver,petfood1,petfood2,petfood3,monsterfood" requireaimtouse="true" isshootable="true">
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="38,60,47,31" depth="0.6" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="38,60,47,31" depth="0.6" origin="0.5,0.5" />
       <Body width="41" height="25" density="10" />
       <Deconstruct />
       <Fabricate suitablefabricators="stove" requiredtime="40" requiresrecipe="false" amount="1">
@@ -352,7 +352,7 @@
       </Holdable>
     </Item>
     <Item name="Boiled Kidney" identifier="he-boiledhumankidney" description="" health="6" category="Medical" scale="0.5" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,fooditem,boiledkidney,petfood1,petfood2,petfood3,monsterfood" requireaimtouse="true" isshootable="true">
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="18,60,19,28" depth="0.6" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="18,60,19,28" depth="0.6" origin="0.5,0.5" />
       <Body radius="7" height="15" density="10" />
       <Deconstruct />
       <Fabricate suitablefabricators="stove" requiredtime="30" requiresrecipe="false" amount="1">
@@ -386,7 +386,7 @@
       </Holdable>
     </Item>
     <Item name="Boiled Heart" identifier="he-boiledhumanheart" description="" health="8" category="Medical" scale="0.5" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,fooditem,boiledheart,petfood1,petfood2,petfood3,monsterfood" requireaimtouse="true" isshootable="true">
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="0,60,17,32" depth="0.6" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="0,60,17,32" depth="0.6" origin="0.5,0.5" />
       <Body width="6" height="20" density="10" />
       <Deconstruct />
       <Fabricate suitablefabricators="stove" requiredtime="35" requiresrecipe="false" amount="1">
@@ -420,7 +420,7 @@
       </Holdable>
     </Item>
     <Item name="Boiled Brain" identifier="he-boiledhumanbrain" description="" health="15" category="Medical" scale="0.5" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,fooditem,boiledbrain,petfood1,petfood2,petfood3,monsterfood" requireaimtouse="true" isshootable="true">
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="86,60,47,35" depth="0.6" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="86,60,47,35" depth="0.6" origin="0.5,0.5" />
       <Body width="27" radius="14" density="10" />
       <Deconstruct />
       <Fabricate suitablefabricators="stove" requiredtime="60" requiresrecipe="false" amount="1">
@@ -455,7 +455,7 @@
     </Item>
     <!-- Burned -->
     <Item name="Burned Liver" identifier="he-burnedhumanliver" description="" health="10" category="Misc" scale="0.5" SpriteColor="100,100,100,255" InventoryIconColor="100,100,100,255" useinhealthinterface="False" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,fooditem,burnedliver,allowongrill,burnedfood,petfood1,petfood2,petfood3,monsterfood" requireaimtouse="true" isshootable="true">
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="38,60,47,31" depth="0.6" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="38,60,47,31" depth="0.6" origin="0.5,0.5" />
       <Body width="41" height="25" density="10" />
       <Deconstruct />
       <!-- Grilling -->
@@ -502,7 +502,7 @@
       </Holdable>
     </Item>
     <Item name="Burned Kidney" identifier="he-burnedhumankidney" description="" health="6" category="Medical" scale="0.5" SpriteColor="100,100,100,255" InventoryIconColor="100,100,100,255" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,fooditem,burnedkidney,allowongrill,burnedfood,petfood1,petfood2,petfood3,monsterfood" requireaimtouse="true" isshootable="true">
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="18,60,19,28" depth="0.6" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="18,60,19,28" depth="0.6" origin="0.5,0.5" />
       <Body radius="7" height="15" density="10" />
       <Deconstruct />
       <!-- Grilling -->
@@ -549,7 +549,7 @@
       </Holdable>
     </Item>
     <Item name="Burned Heart" identifier="he-burnedhumanheart" description="" health="8" category="Medical" scale="0.5" SpriteColor="100,100,100,255" InventoryIconColor="100,100,100,255" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,fooditem,burnedheart,allowongrill,burnedfood,petfood1,petfood2,petfood3,monsterfood" requireaimtouse="true" isshootable="true">
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="0,60,17,32" depth="0.6" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="0,60,17,32" depth="0.6" origin="0.5,0.5" />
       <Body width="6" height="20" density="10" />
       <Deconstruct />
       <!-- Grilling -->
@@ -596,7 +596,7 @@
       </Holdable>
     </Item>
     <Item name="Burned Brain" identifier="he-burnedhumanbrain" description="" health="15" category="Medical" scale="0.5" SpriteColor="100,100,100,255" InventoryIconColor="100,100,100,255" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,fooditem,burnedbrain,allowongrill,burnedfood,petfood1,petfood2,petfood3,monsterfood" requireaimtouse="true" isshootable="true">
-      <Sprite texture="%ModDir%/Hungry Europans NT Patch/Content/Sprites.png" sourcerect="86,60,47,35" depth="0.6" origin="0.5,0.5" />
+      <Sprite texture="%ModDir:3222593240%/Content/Sprites.png" sourcerect="86,60,47,35" depth="0.6" origin="0.5,0.5" />
       <Body width="27" radius="14" density="10" />
       <Deconstruct />
       <!-- Grilling -->

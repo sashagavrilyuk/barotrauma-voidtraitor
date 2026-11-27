@@ -27,7 +27,7 @@
           <ReduceAffliction identifier="drunk" strength="0.05" />
           <ReduceAffliction identifier="trackalcoholintake" strength="0.05" />
           <ReduceAffliction identifier="concussion" strength="0.02" />
-          <Affliction identifier="table" amount="2" />
+          <Affliction identifier="safesurgery" amount="2" />
         </StatusEffect>
         <StatusEffect type="OnActive" target="This,Character" tags="sleeping" LowPassMultiplier="0.1" setvalue="true" interval="0.5" duration="0.51" multiplyafflictionsbymaxvitality="true">
           <Conditional timeframe="gte 1" targetitemcomponent="GreaterComponent" />
@@ -79,7 +79,7 @@
           <ReduceAffliction identifier="drunk" strength="0.05" />
           <ReduceAffliction identifier="trackalcoholintake" strength="0.05" />
           <ReduceAffliction identifier="concussion" strength="0.02" />
-          <Affliction identifier="table" amount="2" />
+          <Affliction identifier="safesurgery" amount="2" />
         </StatusEffect>
         <StatusEffect type="OnActive" target="This,Character" tags="sleeping" LowPassMultiplier="0.1" setvalue="true" interval="0.5" duration="0.51" multiplyafflictionsbymaxvitality="true">
           <Conditional timeframe="gte 1" targetitemcomponent="GreaterComponent" />
@@ -109,11 +109,11 @@
       <Upgrade gameversion="0.12.0.0" noninteractable="false" />
       <sprite texture="Content/Map/Outposts/Art/MedBayAssets.png" sourcerect="96,304,416,192" depth="0.97" premultiplyalpha="false" origin="0.5,0.5" />
       <ItemComponent>
-        <StatusEffect type="OnNotContained" target="NearbyCharacters" range="200" stackable="true">
-          <Affliction identifier="table" amount="2" />
-          <Affliction identifier="alv" amount="10" />
+        <StatusEffect type="OnNotContained" target="NearbyCharacters" range="200" interval="1" stackable="true" disabledeltatime="true">
+          <Affliction identifier="safesurgery" amount="2" />
+          <Affliction identifier="artificialventilation" amount="100" />
         </StatusEffect>
-        <StatusEffect type="Always" target="NearbyCharacters" range="200" delay="1" stackable="false">
+        <StatusEffect type="Always" target="NearbyCharacters" range="200" interval="1" stackable="false">
           <LuaHook name="surgerytable.update" />
         </StatusEffect>
       </ItemComponent>
@@ -139,13 +139,33 @@
           <ReduceAffliction identifier="drunk" strength="0.1" />
           <ReduceAffliction identifier="trackalcoholintake" strength="0.05" />
           <ReduceAffliction identifier="concussion" strength="0.1" />
-          <Affliction identifier="table" amount="2" />
+          <Affliction identifier="safesurgery" amount="2" />
         </StatusEffect>
         <StatusEffect type="OnActive" target="This,Character" tags="sleeping" LowPassMultiplier="0.1" setvalue="true" interval="0.5" duration="0.51" multiplyafflictionsbymaxvitality="true">
           <Conditional timeframe="gte 1" targetitemcomponent="GreaterComponent" />
           <Affliction identifier="he-sleep" amount="1" />
         </StatusEffect>
       </Controller>
+      <!-- Controller output was made editable in v1.1.4.0, disallow it on hospital beds -->
+      <Upgrade gameversion="1.1.4.0" allowingameediting="false" />
+      <ConnectionPanel selectkey="Action" canbeselected="true" msg="ItemMsgRewireScrewdriver" hudpriority="10">
+        <GuiFrame relativesize="0.15,0.6" minsize="300,450" maxsize="380,500" anchor="Center" style="ConnectionPanel" />
+        <RequiredItem items="screwdriver" type="Equipped" />
+        <output name="state_out" displayname="connection.stateout" fallbackdisplayname="connection.signalout" />
+        <output name="alive_out" displayname="connection.aliveout" />
+        <output name="conscious_out" displayname="connection.consciousout" />
+        <output name="name_out" displayname="connection.nameout" />
+        <output name="vitality_out" displayname="connection.vitalityout" />
+        <output name="heartrate_out" displayname="connection.heartrateout" />
+        <output name="breathingrate_out" displayname="connection.breathingrateout" />
+        <output name="bloodpressure_out" displayname="connection.bloodpressureout" />
+        <output name="bloodoxygen_out" displayname="connection.bloodoxygenout" />
+        <output name="neurotrauma_out" displayname="connection.neurotraumaout" />
+        <output name="organdamage_out" displayname="connection.organdamageout" />
+        <output name="insurgery_out" displayname="connection.insurgeryout" />
+        <output name="causeofdeath_out" displayname="connection.causeofdeathout" />
+        <output name="bloodph_out" displayname="connection.bloodphout" />
+      </ConnectionPanel>
       <GreaterComponent TimeFrame="0" canbeselected="false" canbepicked="false" allowingameediting="false" />
       <CustomInterface canbeselected="true" drawhudwhenequipped="true">
         <GuiFrame style="ItemUI" absoluteoffset="0,0" anchor="BottomCenter" relativesize="0.12,0.08" />
@@ -189,7 +209,7 @@
           <ReduceAffliction identifier="drunk" strength="0.05" />
           <ReduceAffliction identifier="trackalcoholintake" strength="0.05" />
           <ReduceAffliction identifier="concussion" strength="0.02" />
-          <Affliction identifier="table" amount="2" />
+          <Affliction identifier="safesurgery" amount="2" />
         </StatusEffect>
         <StatusEffect type="OnActive" target="This,Character" tags="sleeping" LowPassMultiplier="0.1" setvalue="true" interval="0.5" duration="0.51" multiplyafflictionsbymaxvitality="true">
           <Conditional timeframe="gte 1" targetitemcomponent="GreaterComponent" />
@@ -239,7 +259,7 @@
           <ReduceAffliction identifier="drunk" strength="0.05" />
           <ReduceAffliction identifier="trackalcoholintake" strength="0.05" />
           <ReduceAffliction identifier="concussion" strength="0.02" />
-          <Affliction identifier="table" amount="2" />
+          <Affliction identifier="safesurgery" amount="2" />
         </StatusEffect>
         <StatusEffect type="OnActive" target="This,Character" tags="sleeping" LowPassMultiplier="0.1" setvalue="true" interval="0.5" duration="0.51" multiplyafflictionsbymaxvitality="true">
           <Conditional timeframe="gte 1" targetitemcomponent="GreaterComponent" />
@@ -282,8 +302,8 @@
         <RequiredItem identifier="steel" />
         <RequiredItem identifier="aluminium" />
       </Fabricate>
-      <InventoryIcon texture="%ModDir:3190189044%/Images/MedBayAssets.png" sourcerect="100,311,407,184" origin="0.5,0.5" />
-      <sprite texture="%ModDir:3190189044%/Images/MedBayAssets.png" sourcerect="100,311,407,184" depth="0.53" premultiplyalpha="false" origin="0.5,0.5" />
+      <InventoryIcon texture="%ModDir:3744761298%/Images/MedBayAssets.png" sourcerect="100,311,407,184" origin="0.5,0.5" />
+      <sprite texture="%ModDir:3744761298%/Images/MedBayAssets.png" sourcerect="100,311,407,184" depth="0.53" premultiplyalpha="false" origin="0.5,0.5" />
       <Controller allowingameediting="false" UserPos="0,-300" direction="Right" hidehud="false" canbeselected="true" AllowPuttingInOtherCharacters="true" KickOutCharacterMsg="ItemMsgTakeOutSelectKey" putothercharactermsg="ItemMsgPutInsideSelectKey" SelectingKicksCharacterOut="true" AllowSelectingWhenSelectedByOther="false" selectkey="Select" forceusertostayattached="true">
         <limbposition limb="Head" position="-6,-10" allowusinglimb="true" />
         <limbposition limb="Torso" position="104,0" allowusinglimb="true" />
@@ -299,13 +319,14 @@
           <Conditional condition="gt 0" />
           <Conditional analgesia="lte 11" />
           <Affliction identifier="analgesia" amount="3" />
+          <Affliction identifier="afopioid" amount="3" />
         </StatusEffect>
-        <!-- reduce oxygen and disable "alv" for the user if welding fuel is present -->
+        <!-- reduce oxygen and disable "artificialventilation" for the user if welding fuel is present -->
         <StatusEffect type="OnActive" target="Contained,Character" targettags="weldingfuel,Human" Condition="-0.5" OxygenAvailable="-100.0" Oxygen="-15.0" conditionalComparison="And">
           <Conditional HasTag="weldingfuel" />
           <Conditional condition="gt 0" />
           <Conditional NeedsAir="true" />
-          <ReduceAffliction identifier="alv" amount="1000" />
+          <ReduceAffliction identifier="artificialventilation" amount="1000" />
         </StatusEffect>
         <!-- Do dialysis if dialyzer is present -->
         <!-- Alkalosis dialysis -->
@@ -415,19 +436,19 @@
         <!-- Subcontainers to prepare for future sprite changes - Lukako -->
         <!-- First Slot (Tanks) -->
         <SubContainer capacity="1">
-          <SlotIcon texture="%ModDir:3190189044%/Images/InventoryItemIconAtlas.png" sourcerect="357,450,32,62" origin="0.5,0.5" />
+          <SlotIcon texture="%ModDir:3744761298%/Images/InventoryItemIconAtlas.png" sourcerect="357,450,32,62" origin="0.5,0.5" />
           <Containable items="analgesictank,weldingfuel" itempos="102, -57" rotation="270" />
           <!-- Put analgesic tank on the surgerytable sprite. -->
         </SubContainer>
         <!-- Second Slot (Filters) -->
         <SubContainer capacity="1">
-          <SlotIcon texture="%ModDir:3190189044%/Images/InventoryItemIconAtlas.png" sourcerect="468,457,44,55" origin="0.5,0.5" />
+          <SlotIcon texture="%ModDir:3744761298%/Images/InventoryItemIconAtlas.png" sourcerect="468,457,44,55" origin="0.5,0.5" />
           <Containable items="dialyzer,toxfilter" itempos="23, -63" rotation="-270" />
           <!-- Put the filters on the surgerytable sprite -->
         </SubContainer>
         <!-- Third Slot (Organ Storage) -->
         <SubContainer capacity="1">
-          <SlotIcon texture="%ModDir:3190189044%/Images/InventoryItemIconAtlas.png" sourcerect="386,451,82,61" origin="0.5,0.5" />
+          <SlotIcon texture="%ModDir:3744761298%/Images/InventoryItemIconAtlas.png" sourcerect="386,451,82,61" origin="0.5,0.5" />
           <Containable items="organcrate" itempos="115, -27" />
           <!-- Slot container in the back -->
         </SubContainer>
@@ -454,12 +475,12 @@
       </ConnectionPanel>
       <Holdable selectkey="Action" pickkey="Use" slots="RightHand+LeftHand" msg="ItemMsgDetach" PickingTime="5" aimpos="85,-10" handle1="0,0" attachable="true" aimable="true">
         <!-- Artificial Ventilation and Table afflictions -->
-        <StatusEffect type="OnNotContained" target="NearbyCharacters" range="200" stackable="true">
-          <Affliction identifier="table" amount="2" />
-          <Affliction identifier="alv" amount="10" />
+        <StatusEffect type="OnNotContained" target="NearbyCharacters" range="200" interval="1" stackable="true" disabledeltatime="true">
+          <Affliction identifier="safesurgery" amount="70" />
+          <Affliction identifier="artificialventilation" amount="100" />
         </StatusEffect>
         <!-- Output value update -->
-        <StatusEffect type="Always" target="NearbyCharacters" range="200" delay="1" stackable="false">
+        <StatusEffect type="Always" target="NearbyCharacters" range="200" interval="1" stackable="false">
           <LuaHook name="surgerytable.update" />
         </StatusEffect>
         <!-- Hide contained items to prevent sprites glitching -->
@@ -467,9 +488,11 @@
         <!-- If placed, show items -->
         <StatusEffect type="OnContained" target="this" hideitems="true" setvalue="true" />
         <!-- If contained (player inventory, storage etc.) hide items.-->
+        <!-- Prevent Sub Editor shenanigans -->
+        <RequiredItem items="screwdriver" type="Equipped" requireempty="true" IgnoreInEditor="false" />
       </Holdable>
       <LightComponent range="10.0" lightcolor="255,255,255,0" IsOn="true" castshadows="false" allowingameediting="false">
-        <sprite texture="%ModDir:3190189044%/Images/MedBayAssets.png" depth="0.025" sourcerect="96,304,416,192" origin="0.5,0.5" alpha="1.0" />
+        <sprite texture="%ModDir:3744761298%/Images/MedBayAssets.png" depth="0.025" sourcerect="96,304,416,192" origin="0.5,0.5" alpha="1.0" />
       </LightComponent>
       <GreaterComponent TimeFrame="0" canbeselected="false" canbepicked="false" allowingameediting="false" />
       <CustomInterface canbeselected="true" drawhudwhenequipped="true">

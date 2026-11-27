@@ -6,6 +6,9 @@ local ADV2 = dofile(Traitormod.Path .. "/Lua/config/pointshop/attackdefend/utili
 local CreateClassProduct = ADV2.CreateClassProduct
 local CreateClassSubcategory = ADV2.CreateClassSubcategory
 
+-- A full implant powers the starting strains through a standard 15-minute round.
+local startingNaniteCharge = 200
+
 -- Both AttackDefend teams buy the same classes; each team passes its job prefix and the uniforms that differ.
 return function(teamId, identifier, prefix, uniforms)
     ---@type Pointshop.Category
@@ -37,7 +40,7 @@ return function(teamId, identifier, prefix, uniforms)
                 "supersoldiers",
             },
             Afflictions = {
-                { Identifier = "precursor", Strength = 23 },
+                { Identifier = "nanitebattery", Strength = startingNaniteCharge },
                 { Identifier = "deepfixnanite", Strength = 2 },
                 { Identifier = "hyperbuffnanite", Strength = 1 },
                 { Identifier = "fastrepair", Strength = 100 },
@@ -112,7 +115,7 @@ return function(teamId, identifier, prefix, uniforms)
                 "gunrunner",
             },
             Afflictions = {
-                { Identifier = "precursor", Strength = 23 },
+                { Identifier = "nanitebattery", Strength = startingNaniteCharge },
                 { Identifier = "deepfixnanite", Strength = 2 },
             },
             Items = {
@@ -199,7 +202,7 @@ return function(teamId, identifier, prefix, uniforms)
                 "gunrunner",
             },
             Afflictions = {
-                { Identifier = "precursor", Strength = 23 },
+                { Identifier = "nanitebattery", Strength = startingNaniteCharge },
                 { Identifier = "deepfixnanite", Strength = 2 },
             },
             Items = {
@@ -289,7 +292,7 @@ return function(teamId, identifier, prefix, uniforms)
                 "rifleman",
             },
             Afflictions = {
-                { Identifier = "precursor", Strength = 23 },
+                { Identifier = "nanitebattery", Strength = startingNaniteCharge },
                 { Identifier = "deepfixnanite", Strength = 2 },
             },
             Items = {
@@ -364,7 +367,7 @@ return function(teamId, identifier, prefix, uniforms)
                 "rifleman",
             },
             Afflictions = {
-                { Identifier = "precursor", Strength = 23 },
+                { Identifier = "nanitebattery", Strength = startingNaniteCharge },
                 { Identifier = "deepfixnanite", Strength = 2 },
             },
             Items = {
@@ -443,7 +446,7 @@ return function(teamId, identifier, prefix, uniforms)
                 "extrapowder",
             },
             Afflictions = {
-                { Identifier = "precursor", Strength = 23 },
+                { Identifier = "nanitebattery", Strength = startingNaniteCharge },
                 { Identifier = "deepfixnanite", Strength = 2 },
                 { Identifier = "visionbuffnanite", Strength = 1 },
             },
@@ -523,7 +526,7 @@ return function(teamId, identifier, prefix, uniforms)
                 "extrapowder",
             },
             Afflictions = {
-                { Identifier = "precursor", Strength = 23 },
+                { Identifier = "nanitebattery", Strength = startingNaniteCharge },
                 { Identifier = "deepfixnanite", Strength = 2 },
                 { Identifier = "visionbuffnanite", Strength = 1 },
             },
@@ -610,7 +613,7 @@ return function(teamId, identifier, prefix, uniforms)
                 "whatastench",
             },
             Afflictions = {
-                { Identifier = "precursor", Strength = 23 },
+                { Identifier = "nanitebattery", Strength = startingNaniteCharge },
                 { Identifier = "deepfixnanite", Strength = 2 },
                 { Identifier = "hyperbuffnanite", Strength = 1 },
             },
@@ -715,7 +718,7 @@ return function(teamId, identifier, prefix, uniforms)
                 "psychoclown",
             },
             Afflictions = {
-                { Identifier = "precursor", Strength = 23 },
+                { Identifier = "nanitebattery", Strength = startingNaniteCharge },
                 { Identifier = "deepfixnanite", Strength = 2 },
             },
             Items = {
@@ -787,7 +790,7 @@ return function(teamId, identifier, prefix, uniforms)
                 "psychoclown",
             },
             Afflictions = {
-                { Identifier = "precursor", Strength = 23 },
+                { Identifier = "nanitebattery", Strength = startingNaniteCharge },
                 { Identifier = "deepfixnanite", Strength = 2 },
             },
             Items = {
@@ -856,7 +859,7 @@ return function(teamId, identifier, prefix, uniforms)
                 "psychoclown",
             },
             Afflictions = {
-                { Identifier = "precursor", Strength = 23 },
+                { Identifier = "nanitebattery", Strength = startingNaniteCharge },
                 { Identifier = "deepfixnanite", Strength = 2 },
             },
             Items = {
@@ -942,7 +945,7 @@ return function(teamId, identifier, prefix, uniforms)
                 "skedaddle",
             },
             Afflictions = {
-                { Identifier = "precursor", Strength = 23 },
+                { Identifier = "nanitebattery", Strength = startingNaniteCharge },
                 { Identifier = "deepfixnanite", Strength = 2 },
                 { Identifier = "morevigor", Strength = 800 },
                 { Identifier = "rigidjoints", Strength = 200 },
@@ -1013,7 +1016,7 @@ return function(teamId, identifier, prefix, uniforms)
                 "skedaddle",
             },
             Afflictions = {
-                { Identifier = "precursor", Strength = 23 },
+                { Identifier = "nanitebattery", Strength = startingNaniteCharge },
                 { Identifier = "deepfixnanite", Strength = 2 },
                 { Identifier = "morevigor", Strength = 800 },
                 { Identifier = "rigidjoints", Strength = 200 },
@@ -1084,7 +1087,7 @@ return function(teamId, identifier, prefix, uniforms)
                 "commando",
             },
             Afflictions = {
-                { Identifier = "precursor", Strength = 23 },
+                { Identifier = "nanitebattery", Strength = startingNaniteCharge },
                 { Identifier = "deepfixnanite", Strength = 2 },
             },
             Items = {
@@ -1171,7 +1174,7 @@ return function(teamId, identifier, prefix, uniforms)
                 "commando",
             },
             Afflictions = {
-                { Identifier = "precursor", Strength = 23 },
+                { Identifier = "nanitebattery", Strength = startingNaniteCharge },
                 { Identifier = "deepfixnanite", Strength = 2 },
             },
             Items = {
@@ -1260,7 +1263,7 @@ return function(teamId, identifier, prefix, uniforms)
                 "grounded",
             },
             Afflictions = {
-                { Identifier = "precursor", Strength = 23 },
+                { Identifier = "nanitebattery", Strength = startingNaniteCharge },
                 { Identifier = "deepfixnanite", Strength = 2 },
             },
             Items = {
@@ -1348,7 +1351,7 @@ return function(teamId, identifier, prefix, uniforms)
                 "grounded",
             },
             Afflictions = {
-                { Identifier = "precursor", Strength = 23 },
+                { Identifier = "nanitebattery", Strength = startingNaniteCharge },
                 { Identifier = "deepfixnanite", Strength = 2 },
             },
             Items = {
@@ -1433,7 +1436,7 @@ return function(teamId, identifier, prefix, uniforms)
                 "implacable",
             },
             Afflictions = {
-                { Identifier = "precursor", Strength = 23 },
+                { Identifier = "nanitebattery", Strength = startingNaniteCharge },
                 { Identifier = "deepfixnanite", Strength = 2 },
             },
             Items = {
@@ -1508,7 +1511,7 @@ return function(teamId, identifier, prefix, uniforms)
                 "implacable",
             },
             Afflictions = {
-                { Identifier = "precursor", Strength = 23 },
+                { Identifier = "nanitebattery", Strength = startingNaniteCharge },
                 { Identifier = "deepfixnanite", Strength = 2 },
             },
             Items = {

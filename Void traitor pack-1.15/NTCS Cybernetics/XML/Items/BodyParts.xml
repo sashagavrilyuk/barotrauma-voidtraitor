@@ -1,0 +1,474 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Override>
+  <Items>
+    <!-- Cybernetic Arm (Normal) -->
+    <Item name="" description="" identifier="cyberarm" category="Equipment" cargocontaineridentifier="mediccrate" Tags="smallitem,medical,surgery" useinhealthinterface="True" scale="0.4">
+      <Price baseprice="1500" soldbydefault="false">
+        <Price storeidentifier="merchantresearch" sold="true" minavailable="1" />
+      </Price>
+      <PreferredContainer primary="toxcontainer" />
+      <PreferredContainer primary="locker" />
+      <Fabricate suitablefabricators="fabricator" requiredtime="60">
+        <RequiredSkill identifier="mechanical" level="70" />
+        <RequiredSkill identifier="medical" level="20" />
+        <RequiredItem identifier="titaniumaluminiumalloy" amount="2" />
+        <RequiredItem identifier="steel" amount="4" />
+        <RequiredItem identifier="fpgacircuit" amount="4" />
+        <RequiredItem identifier="fulgurium" />
+      </Fabricate>
+      <Deconstruct time="30">
+        <Item identifier="titaniumaluminiumalloy" />
+        <Item identifier="steel" amount="3" />
+        <Item identifier="fpgacircuit" amount="3" />
+        <Item identifier="fulgurium" />
+      </Deconstruct>
+      <Sprite texture="%ModDir%/NTCS Cybernetics/Images/InGameItemIconAtlas.png" sourcerect="10,4,228,47" origin="0.5,0.5" depth="0.6" />
+      <InventoryIcon texture="%ModDir%/NTCS Cybernetics/Images//InventoryItemIconAtlas.png" sourcerect="0,0,128,128" origin="0.5,0.5" />
+      <Body width="114" height="23" density="50" />
+      <MeleeWeapon slots="RightHand+LeftHand,Any" controlpose="true" aimpos="45,10" handle1="-10,0" handle2="0,5" holdangle="60" reload="1" range="100" combatpriority="20" msg="ItemMsgPickUpSelect">
+        <Attack structuredamage="10" itemdamage="5" targetimpulse="10">
+          <Affliction identifier="blunttrauma" strength="10" />
+          <Affliction identifier="stun" strength="0.5" />
+          <Sound file="Content/Items/Weapons/Smack2.ogg" range="800" />
+        </Attack>
+      </MeleeWeapon>
+      <SkillRequirementHint identifier="mechanical" level="70" />
+    </Item>
+    <!-- Cybernetic Arm (Waterproof) -->
+    <Item name="" description="" identifier="waterproofcyberarm" category="Equipment" cargocontaineridentifier="mediccrate" Tags="smallitem,medical,surgery" useinhealthinterface="True" scale="0.4">
+      <Price baseprice="2500" soldbydefault="false" minleveldifficulty="15">
+        <Price storeidentifier="merchantresearch" sold="true" minavailable="1" />
+      </Price>
+      <PreferredContainer primary="toxcontainer" />
+      <PreferredContainer primary="locker" />
+      <Fabricate suitablefabricators="fabricator" requiredtime="20">
+        <RequiredSkill identifier="mechanical" level="70" />
+        <RequiredSkill identifier="medical" level="35" />
+        <RequiredItem identifier="cyberarm" />
+        <RequiredItem identifier="fulgurium" amount="1" />
+        <RequiredItem identifier="plastic" amount="3" />
+        <RequiredItem identifier="rubber" amount="4" />
+      </Fabricate>
+      <Deconstruct time="30">
+        <Item identifier="titaniumaluminiumalloy" />
+        <Item identifier="steel" amount="3" />
+        <Item identifier="fpgacircuit" amount="3" />
+        <Item identifier="fulgurium" amount="2" />
+        <Item identifier="plastic" amount="2" />
+        <Item identifier="rubber" amount="2" />
+      </Deconstruct>
+      <Sprite texture="%ModDir%/NTCS Cybernetics/Images/InGameItemIconAtlas.png" sourcerect="10,4,228,47" origin="0.5,0.5" depth="0.6" />
+      <InventoryIcon texture="%ModDir%/NTCS Cybernetics/Images//InventoryItemIconAtlas.png" sourcerect="0,0,128,128" origin="0.5,0.5" />
+      <Body width="114" height="23" density="50" />
+      <MeleeWeapon slots="RightHand+LeftHand,Any" controlpose="true" aimpos="45,10" handle1="-10,0" handle2="0,5" holdangle="60" reload="1" range="100" combatpriority="20" msg="ItemMsgPickUpSelect">
+        <Attack structuredamage="10" itemdamage="5" targetimpulse="10">
+          <Affliction identifier="blunttrauma" strength="10" />
+          <Affliction identifier="stun" strength="0.5" />
+          <Sound file="Content/Items/Weapons/Smack2.ogg" range="800" />
+        </Attack>
+      </MeleeWeapon>
+      <SkillRequirementHint identifier="mechanical" level="70" />
+    </Item>
+    <!-- Cybernetic Leg (Normal) -->
+    <Item name="" description="" identifier="cyberleg" category="Equipment" cargocontaineridentifier="mediccrate" Tags="smallitem,medical,surgery" useinhealthinterface="True" scale="0.4">
+      <Price baseprice="1500" soldbydefault="false">
+        <Price storeidentifier="merchantresearch" sold="true" minavailable="1" />
+      </Price>
+      <PreferredContainer primary="toxcontainer" />
+      <PreferredContainer primary="locker" />
+      <Fabricate suitablefabricators="fabricator" requiredtime="60">
+        <RequiredSkill identifier="mechanical" level="70" />
+        <RequiredSkill identifier="medical" level="20" />
+        <RequiredItem identifier="titaniumaluminiumalloy" amount="2" />
+        <RequiredItem identifier="steel" amount="4" />
+        <RequiredItem identifier="fpgacircuit" amount="4" />
+        <RequiredItem identifier="fulgurium" />
+      </Fabricate>
+      <Deconstruct time="30">
+        <Item identifier="titaniumaluminiumalloy" />
+        <Item identifier="steel" amount="3" />
+        <Item identifier="fpgacircuit" amount="3" />
+        <Item identifier="fulgurium" />
+      </Deconstruct>
+      <Sprite texture="%ModDir%/NTCS Cybernetics/Images/InGameItemIconAtlas.png" sourcerect="4,64,63,238" origin="0.5,0.5" depth="0.6" />
+      <InventoryIcon texture="%ModDir%/NTCS Cybernetics/Images//InventoryItemIconAtlas.png" sourcerect="128,0,128,128" origin="0.5,0.5" />
+      <Body width="30" height="115" density="50" />
+      <MeleeWeapon slots="RightHand+LeftHand,Any" controlpose="true" aimpos="45,10" handle1="-10,0" handle2="0,5" holdangle="330" reload="1" range="100" combatpriority="20" msg="ItemMsgPickUpSelect">
+        <Attack structuredamage="10" itemdamage="5" targetimpulse="10">
+          <Affliction identifier="blunttrauma" strength="10" />
+          <Affliction identifier="stun" strength="0.5" />
+          <Sound file="Content/Items/Weapons/Smack2.ogg" range="800" />
+        </Attack>
+      </MeleeWeapon>
+      <SkillRequirementHint identifier="mechanical" level="70" />
+    </Item>
+    <!-- Cybernetic Leg (Waterproof) -->
+    <Item name="" description="" identifier="waterproofcyberleg" category="Equipment" cargocontaineridentifier="mediccrate" Tags="smallitem,medical,surgery" useinhealthinterface="True" scale="0.4">
+      <Price baseprice="2500" soldbydefault="false" minleveldifficulty="15">
+        <Price storeidentifier="merchantresearch" sold="true" minavailable="1" />
+      </Price>
+      <PreferredContainer primary="toxcontainer" />
+      <PreferredContainer primary="locker" />
+      <Fabricate suitablefabricators="fabricator" requiredtime="20">
+        <RequiredSkill identifier="mechanical" level="70" />
+        <RequiredSkill identifier="medical" level="35" />
+        <RequiredItem identifier="cyberleg" />
+        <RequiredItem identifier="fulgurium" amount="1" />
+        <RequiredItem identifier="plastic" amount="3" />
+        <RequiredItem identifier="rubber" amount="4" />
+      </Fabricate>
+      <Deconstruct time="30">
+        <Item identifier="titaniumaluminiumalloy" />
+        <Item identifier="steel" amount="3" />
+        <Item identifier="fpgacircuit" amount="3" />
+        <Item identifier="fulgurium" amount="2" />
+        <Item identifier="plastic" amount="2" />
+        <Item identifier="rubber" amount="2" />
+      </Deconstruct>
+      <Sprite texture="%ModDir%/NTCS Cybernetics/Images/InGameItemIconAtlas.png" sourcerect="4,64,63,238" origin="0.5,0.5" depth="0.6" />
+      <InventoryIcon texture="%ModDir%/NTCS Cybernetics/Images//InventoryItemIconAtlas.png" sourcerect="128,0,128,128" origin="0.5,0.5" />
+      <Body width="30" height="115" density="50" />
+      <MeleeWeapon slots="RightHand+LeftHand,Any" controlpose="true" aimpos="45,10" handle1="-10,0" handle2="0,5" holdangle="330" reload="1" range="100" combatpriority="20" msg="ItemMsgPickUpSelect">
+        <Attack structuredamage="10" itemdamage="5" targetimpulse="10">
+          <Affliction identifier="blunttrauma" strength="10" />
+          <Affliction identifier="stun" strength="0.5" />
+          <Sound file="Content/Items/Weapons/Smack2.ogg" range="800" />
+        </Attack>
+      </MeleeWeapon>
+      <SkillRequirementHint identifier="mechanical" level="70" />
+    </Item>
+    <!-- Augmented Liver (T1) -->
+    <Item name="" description="" identifier="augmentedliver" category="Medical" scale="0.4" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,organ" spritecolor="160,255,255,255" inventoryiconcolor="160,255,255,255">
+      <Price baseprice="3000" soldbydefault="false" minleveldifficulty="20">
+        <Price storeidentifier="merchantresearch" sold="true" minavailable="1" />
+      </Price>
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="20">
+        <RequiredSkill identifier="mechanical" level="70" />
+        <RequiredSkill identifier="medical" level="60" />
+        <RequiredItem tag="liver" mincondition="0.50" usecondition="false" />
+        <RequiredItem identifier="fulgurium" amount="1" />
+        <RequiredItem identifier="fpgacircuit" amount="1" />
+        <RequiredItem identifier="stabilozine" amount="1" />
+      </Fabricate>
+      <Deconstruct time="30">
+        <Item identifier="fulgurium" amount="1" />
+        <Item identifier="fpgacircuit" amount="1" />
+      </Deconstruct>
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="5,479,79,52" depth="0.6" origin="0.5,0.5" />
+      <Body width="39" height="18" density="10" />
+      <Throwable characterusable="true" slots="Any,RightHand,LeftHand" throwforce="4.0" aimpos="35,-10" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnImpact" target="This" Condition="0.0" setvalue="true">
+          <Explosion range="0.0" structuredamage="0" itemdamage="0" force="0.0" severlimbsprobability="0.0" decal="fruitsplatter1" decalsize="1.0" />
+          <ParticleEmitter particle="whitegoosplash" anglemin="0" anglemax="360" particleamount="2" velocitymin="0" velocitymax="0" scalemin="1.5" scalemax="2" />
+          <ParticleEmitter particle="fruitchunks" anglemin="0" anglemax="360" particleamount="10" velocitymin="200" velocitymax="300" scalemin="0.4" scalemax="0.8" />
+          <Remove />
+        </StatusEffect>
+        <!-- making the organ go kaputt if left outside of refrigeration -->
+        <StatusEffect type="Always" target="This" condition="-0.125">
+          <Conditional hastag="neq refrigerated" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnContained" target="This" condition="0.05" comparison="and">
+          <Conditional condition="gte 80" />
+          <Conditional hastag="refrigerated" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnFire" target="This" Condition="-25.0" />
+        <!-- yuck! organs on the floor! -->
+        <StatusEffect type="OnNotContained" target="NearbyCharacters" range="300">
+          <Affliction identifier="nausea" amount="0.2" />
+        </StatusEffect>
+        <!-- <StatusEffect type="OnBroken" target="This">
+                    <LuaHook name="NT.RotOrgan" />
+                </StatusEffect> -->
+      </Throwable>
+      <SkillRequirementHint identifier="medical" level="70" />
+      <SkillRequirementHint identifier="mechanical" level="60" />
+      <SuitableTreatment identifier="liverremoved" suitability="90" />
+    </Item>
+    <!-- Cybernetic Liver (T2) -->
+    <Item name="" description="" identifier="cyberliver" category="Medical" scale="0.4" useinhealthinterface="True" impactsoundtag="impact_metal_light" cargocontaineridentifier="organcrate" Tags="smallitem,organ" spritecolor="60,255,255,255" inventoryiconcolor="60,255,255,255">
+      <Price baseprice="5500" soldbydefault="false" minleveldifficulty="30">
+        <Price storeidentifier="merchantresearch" sold="true" minavailable="1" />
+      </Price>
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="60" requiresrecipe="true">
+        <RequiredSkill identifier="mechanical" level="90" />
+        <RequiredSkill identifier="medical" level="80" />
+        <RequiredItem identifier="fulgurium" amount="4" />
+        <RequiredItem identifier="fpgacircuit" amount="3" />
+        <RequiredItem identifier="stabilozine" amount="3" />
+        <RequiredItem identifier="plastic" amount="3" />
+      </Fabricate>
+      <Deconstruct time="30">
+        <Item identifier="fulgurium" amount="3" />
+        <Item identifier="fpgacircuit" amount="2" />
+        <Item identifier="plastic" amount="3" />
+      </Deconstruct>
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="5,479,79,52" depth="0.6" origin="0.5,0.5" />
+      <Body width="39" height="18" density="10" />
+      <Throwable characterusable="true" slots="Any,RightHand,LeftHand" throwforce="4.0" aimpos="35,-10" msg="ItemMsgPickUpSelect" />
+      <SkillRequirementHint identifier="medical" level="70" />
+      <SkillRequirementHint identifier="mechanical" level="60" />
+      <SuitableTreatment identifier="liverremoved" suitability="100" />
+    </Item>
+    <!-- Augmented Kidney (T1) -->
+    <Item name="" description="" identifier="augmentedkidney" category="Medical" scale="0.4" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,organ" spritecolor="160,255,255,255" inventoryiconcolor="160,255,255,255">
+      <Price baseprice="3000" soldbydefault="false" minleveldifficulty="20">
+        <Price storeidentifier="merchantresearch" sold="true" minavailable="1" />
+      </Price>
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="20">
+        <RequiredSkill identifier="mechanical" level="70" />
+        <RequiredSkill identifier="medical" level="60" />
+        <RequiredItem tag="kidney" mincondition="0.30" usecondition="false" />
+        <RequiredItem identifier="fulgurium" amount="1" />
+        <RequiredItem identifier="fpgacircuit" amount="1" />
+        <RequiredItem identifier="stabilozine" amount="1" />
+      </Fabricate>
+      <Deconstruct time="30">
+        <Item identifier="fulgurium" amount="1" />
+        <Item identifier="fpgacircuit" amount="1" />
+      </Deconstruct>
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="193,481,32,47" depth="0.6" origin="0.5,0.5" />
+      <Body width="14" height="20" density="10" />
+      <Throwable characterusable="true" slots="Any,RightHand,LeftHand" throwforce="4.0" aimpos="35,-10" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnImpact" target="This" Condition="0.0" setvalue="true">
+          <Explosion range="0.0" structuredamage="0" itemdamage="0" force="0.0" severlimbsprobability="0.0" decal="fruitsplatter1" decalsize="1.0" />
+          <ParticleEmitter particle="whitegoosplash" anglemin="0" anglemax="360" particleamount="2" velocitymin="0" velocitymax="0" scalemin="1.5" scalemax="2" />
+          <ParticleEmitter particle="fruitchunks" anglemin="0" anglemax="360" particleamount="10" velocitymin="200" velocitymax="300" scalemin="0.4" scalemax="0.8" />
+          <Remove />
+        </StatusEffect>
+        <!-- making the organ go kaputt if left outside of refrigeration -->
+        <StatusEffect type="Always" target="This" condition="-0.125">
+          <Conditional hastag="neq refrigerated" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnContained" target="This" condition="0.05" comparison="and">
+          <Conditional condition="gte 80" />
+          <Conditional hastag="refrigerated" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnFire" target="This" Condition="-25.0" />
+        <!-- yuck! organs on the floor! -->
+        <StatusEffect type="OnNotContained" target="NearbyCharacters" range="300">
+          <Affliction identifier="nausea" amount="0.2" />
+        </StatusEffect>
+        <!-- <StatusEffect type="OnBroken" target="This">
+                    <LuaHook name="NT.RotOrgan" />
+                </StatusEffect> -->
+      </Throwable>
+      <SkillRequirementHint identifier="medical" level="70" />
+      <SkillRequirementHint identifier="mechanical" level="60" />
+      <SuitableTreatment identifier="kidneyremoved" suitability="90" />
+    </Item>
+    <!-- Cybernetic Kidney (T2) -->
+    <Item name="" description="" identifier="cyberkidney" category="Medical" scale="0.4" useinhealthinterface="True" impactsoundtag="impact_metal_light" cargocontaineridentifier="organcrate" Tags="smallitem,organ" spritecolor="60,255,255,255" inventoryiconcolor="60,255,255,255">
+      <Price baseprice="5500" soldbydefault="false" minleveldifficulty="30">
+        <Price storeidentifier="merchantresearch" sold="true" minavailable="1" />
+      </Price>
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="60" requiresrecipe="true">
+        <RequiredSkill identifier="mechanical" level="90" />
+        <RequiredSkill identifier="medical" level="80" />
+        <RequiredItem identifier="fulgurium" amount="4" />
+        <RequiredItem identifier="fpgacircuit" amount="3" />
+        <RequiredItem identifier="stabilozine" amount="3" />
+        <RequiredItem identifier="plastic" amount="3" />
+      </Fabricate>
+      <Deconstruct time="30">
+        <Item identifier="fulgurium" amount="3" />
+        <Item identifier="fpgacircuit" amount="2" />
+        <Item identifier="plastic" amount="3" />
+      </Deconstruct>
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="193,481,32,47" depth="0.6" origin="0.5,0.5" />
+      <Body width="14" height="20" density="10" />
+      <Throwable characterusable="true" slots="Any,RightHand,LeftHand" throwforce="4.0" aimpos="35,-10" msg="ItemMsgPickUpSelect" />
+      <SkillRequirementHint identifier="medical" level="70" />
+      <SkillRequirementHint identifier="mechanical" level="60" />
+      <SuitableTreatment identifier="kidneyremoved" suitability="100" />
+    </Item>
+    <!-- Augmented Lung (T1) -->
+    <Item name="" description="" identifier="augmentedlung" category="Medical" scale="0.4" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,organ" spritecolor="160,255,255,255" inventoryiconcolor="160,255,255,255">
+      <Price baseprice="3000" soldbydefault="false" minleveldifficulty="20">
+        <Price storeidentifier="merchantresearch" sold="true" minavailable="1" />
+      </Price>
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="20">
+        <RequiredSkill identifier="mechanical" level="70" />
+        <RequiredSkill identifier="medical" level="60" />
+        <RequiredItem tag="lung" mincondition="0.50" usecondition="false" />
+        <RequiredItem identifier="fulgurium" amount="1" />
+        <RequiredItem identifier="fpgacircuit" amount="1" />
+        <RequiredItem identifier="stabilozine" amount="1" />
+      </Fabricate>
+      <Deconstruct time="30">
+        <Item identifier="fulgurium" amount="1" />
+        <Item identifier="fpgacircuit" amount="1" />
+      </Deconstruct>
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="91,480,84,84" depth="0.6" origin="0.5,0.5" />
+      <Body width="30" height="30" density="10" />
+      <Throwable characterusable="true" slots="Any,RightHand,LeftHand" throwforce="4.0" aimpos="35,-10" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnImpact" target="This" Condition="0.0" setvalue="true">
+          <Explosion range="0.0" structuredamage="0" itemdamage="0" force="0.0" severlimbsprobability="0.0" decal="fruitsplatter1" decalsize="1.0" />
+          <ParticleEmitter particle="whitegoosplash" anglemin="0" anglemax="360" particleamount="2" velocitymin="0" velocitymax="0" scalemin="1.5" scalemax="2" />
+          <ParticleEmitter particle="fruitchunks" anglemin="0" anglemax="360" particleamount="10" velocitymin="200" velocitymax="300" scalemin="0.4" scalemax="0.8" />
+          <Remove />
+        </StatusEffect>
+        <!-- making the organ go kaputt if left outside of refrigeration -->
+        <StatusEffect type="Always" target="This" condition="-0.125">
+          <Conditional hastag="neq refrigerated" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnContained" target="This" condition="0.05" comparison="and">
+          <Conditional condition="gte 80" />
+          <Conditional hastag="refrigerated" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnFire" target="This" Condition="-25.0" />
+        <!-- yuck! organs on the floor! -->
+        <StatusEffect type="OnNotContained" target="NearbyCharacters" range="300">
+          <Affliction identifier="nausea" amount="0.2" />
+        </StatusEffect>
+        <!-- <StatusEffect type="OnBroken" target="This">
+                    <LuaHook name="NT.RotOrgan" />
+                </StatusEffect> -->
+      </Throwable>
+      <SkillRequirementHint identifier="medical" level="70" />
+      <SkillRequirementHint identifier="mechanical" level="60" />
+      <SuitableTreatment identifier="lungremoved" suitability="90" />
+    </Item>
+    <!-- Cybernetic Lung (T2) -->
+    <Item name="" description="" identifier="cyberlung" category="Medical" scale="0.4" useinhealthinterface="True" impactsoundtag="impact_metal_light" cargocontaineridentifier="organcrate" Tags="smallitem,organ" spritecolor="60,255,255,255" inventoryiconcolor="60,255,255,255">
+      <Price baseprice="5500" soldbydefault="false" minleveldifficulty="30">
+        <Price storeidentifier="merchantresearch" sold="true" minavailable="1" />
+      </Price>
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="60" requiresrecipe="true">
+        <RequiredSkill identifier="mechanical" level="90" />
+        <RequiredSkill identifier="medical" level="80" />
+        <RequiredItem identifier="fulgurium" amount="4" />
+        <RequiredItem identifier="fpgacircuit" amount="3" />
+        <RequiredItem identifier="stabilozine" amount="3" />
+        <RequiredItem identifier="plastic" amount="5" />
+      </Fabricate>
+      <Deconstruct time="30">
+        <Item identifier="fulgurium" amount="3" />
+        <Item identifier="fpgacircuit" amount="2" />
+        <Item identifier="plastic" amount="3" />
+      </Deconstruct>
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="91,480,84,84" depth="0.6" origin="0.5,0.5" />
+      <Body width="30" height="30" density="10" />
+      <Throwable characterusable="true" slots="Any,RightHand,LeftHand" throwforce="4.0" aimpos="35,-10" msg="ItemMsgPickUpSelect" />
+      <SkillRequirementHint identifier="medical" level="70" />
+      <SkillRequirementHint identifier="mechanical" level="60" />
+      <SuitableTreatment identifier="lungremoved" suitability="100" />
+    </Item>
+    <!-- Augmented Heart (T1) -->
+    <Item name="" description="" identifier="augmentedheart" category="Medical" scale="0.4" useinhealthinterface="True" impactsoundtag="impact_soft" cargocontaineridentifier="organcrate" impacttolerance="5.5" Tags="smallitem,organ" spritecolor="160,255,255,255" inventoryiconcolor="160,255,255,255">
+      <Price baseprice="3000" soldbydefault="false" minleveldifficulty="20">
+        <Price storeidentifier="merchantresearch" sold="true" minavailable="1" />
+      </Price>
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="20">
+        <RequiredSkill identifier="mechanical" level="70" />
+        <RequiredSkill identifier="medical" level="60" />
+        <RequiredItem tag="heart" mincondition="0.50" usecondition="false" />
+        <RequiredItem identifier="fulgurium" amount="1" />
+        <RequiredItem identifier="fpgacircuit" amount="1" />
+        <RequiredItem identifier="stabilozine" amount="1" />
+      </Fabricate>
+      <Deconstruct time="30">
+        <Item identifier="fulgurium" amount="1" />
+        <Item identifier="fpgacircuit" amount="1" />
+      </Deconstruct>
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="238,479,28,54" depth="0.6" origin="0.5,0.5" />
+      <Body width="14" height="22" density="10" />
+      <Throwable characterusable="true" slots="Any,RightHand,LeftHand" throwforce="4.0" aimpos="35,-10" msg="ItemMsgPickUpSelect">
+        <StatusEffect type="OnImpact" target="This" Condition="0.0" setvalue="true">
+          <Explosion range="0.0" structuredamage="0" itemdamage="0" force="0.0" severlimbsprobability="0.0" decal="fruitsplatter1" decalsize="1.0" />
+          <ParticleEmitter particle="whitegoosplash" anglemin="0" anglemax="360" particleamount="2" velocitymin="0" velocitymax="0" scalemin="1.5" scalemax="2" />
+          <ParticleEmitter particle="fruitchunks" anglemin="0" anglemax="360" particleamount="10" velocitymin="200" velocitymax="300" scalemin="0.4" scalemax="0.8" />
+          <Remove />
+        </StatusEffect>
+        <!-- making the organ go kaputt if left outside of refrigeration -->
+        <StatusEffect type="Always" target="This" condition="-0.125">
+          <Conditional hastag="neq refrigerated" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnContained" target="This" condition="0.05" comparison="and">
+          <Conditional condition="gte 80" />
+          <Conditional hastag="refrigerated" targetcontainer="true" />
+        </StatusEffect>
+        <StatusEffect type="OnFire" target="This" Condition="-25.0" />
+        <!-- yuck! organs on the floor! -->
+        <StatusEffect type="OnNotContained" target="NearbyCharacters" range="300">
+          <Affliction identifier="nausea" amount="0.2" />
+        </StatusEffect>
+        <!-- <StatusEffect type="OnBroken" target="This">
+                    <LuaHook name="NT.RotOrgan" />
+                </StatusEffect> -->
+      </Throwable>
+      <SkillRequirementHint identifier="medical" level="70" />
+      <SkillRequirementHint identifier="mechanical" level="60" />
+      <SuitableTreatment identifier="heartremoved" suitability="90" />
+    </Item>
+    <!-- Cybernetic Heart (T2) -->
+    <Item name="" description="" identifier="cyberheart" category="Medical" scale="0.4" useinhealthinterface="True" impactsoundtag="impact_metal_light" cargocontaineridentifier="organcrate" Tags="smallitem,organ" spritecolor="60,255,255,255" inventoryiconcolor="60,255,255,255">
+      <Price baseprice="5500" soldbydefault="false" minleveldifficulty="30">
+        <Price storeidentifier="merchantresearch" sold="true" minavailable="1" />
+      </Price>
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="60" requiresrecipe="true">
+        <RequiredSkill identifier="mechanical" level="90" />
+        <RequiredSkill identifier="medical" level="80" />
+        <RequiredItem identifier="fulgurium" amount="4" />
+        <RequiredItem identifier="fpgacircuit" amount="3" />
+        <RequiredItem identifier="stabilozine" amount="3" />
+        <RequiredItem identifier="plastic" amount="4" />
+      </Fabricate>
+      <Deconstruct time="30">
+        <Item identifier="fulgurium" amount="3" />
+        <Item identifier="fpgacircuit" amount="2" />
+        <Item identifier="plastic" amount="3" />
+      </Deconstruct>
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="238,479,28,54" depth="0.6" origin="0.5,0.5" />
+      <Body width="14" height="22" density="10" />
+      <Throwable characterusable="true" slots="Any,RightHand,LeftHand" throwforce="4.0" aimpos="35,-10" msg="ItemMsgPickUpSelect" />
+      <SkillRequirementHint identifier="medical" level="70" />
+      <SkillRequirementHint identifier="mechanical" level="60" />
+      <SuitableTreatment identifier="heartremoved" suitability="100" />
+    </Item>
+    <!-- Augmented Brain (T1) -->
+    <Item name="" description="" identifier="augmentedbrain" category="Medical" scale="0.4" useinhealthinterface="True" impactsoundtag="impact_metal_light" cargocontaineridentifier="organcrate" Tags="smallitem,organ" spritecolor="160,255,255,255" inventoryiconcolor="160,255,255,255">
+      <Price baseprice="3000" soldbydefault="false" minleveldifficulty="20">
+        <Price storeidentifier="merchantresearch" sold="true" minavailable="1" />
+      </Price>
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="60">
+        <RequiredSkill identifier="medical" level="60" />
+        <RequiredSkill identifier="electrical" level="80" />
+        <RequiredItem identifier="fulgurium" amount="2" />
+        <RequiredItem identifier="fpgacircuit" amount="4" />
+        <RequiredItem identifier="stabilozine" amount="1" />
+      </Fabricate>
+      <Deconstruct time="30">
+        <Item identifier="fulgurium" amount="2" />
+        <Item identifier="fpgacircuit" amount="3" />
+      </Deconstruct>
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="272,480,78,60" depth="0.6" origin="0.5,0.5" />
+      <Body width="14" height="22" density="10" />
+      <Throwable characterusable="true" slots="Any,RightHand,LeftHand" throwforce="4.0" aimpos="35,-10" msg="ItemMsgPickUpSelect" />
+      <SkillRequirementHint identifier="medical" level="80" />
+      <SkillRequirementHint identifier="electrical" level="60" />
+    </Item>
+    <!-- Cybernetic Brain (T2) -->
+    <Item name="" description="" identifier="cyberbrain" category="Medical" scale="0.4" useinhealthinterface="True" impactsoundtag="impact_metal_light" cargocontaineridentifier="organcrate" Tags="smallitem,organ" spritecolor="60,255,255,255" inventoryiconcolor="60,255,255,255">
+      <Price baseprice="6000" soldbydefault="false" minleveldifficulty="30">
+        <Price storeidentifier="merchantresearch" sold="true" minavailable="1" />
+      </Price>
+      <Fabricate suitablefabricators="medicalfabricator" requiredtime="60" requiresrecipe="true">
+        <RequiredSkill identifier="medical" level="100" />
+        <RequiredSkill identifier="electrical" level="100" />
+        <RequiredItem identifier="augmentedbrain" />
+        <RequiredItem identifier="fulgurium" amount="2" />
+        <RequiredItem identifier="fpgacircuit" amount="4" />
+        <RequiredItem identifier="stabilozine" amount="1" />
+      </Fabricate>
+      <Deconstruct time="45">
+        <Item identifier="fulgurium" amount="3" />
+        <Item identifier="fpgacircuit" amount="4" />
+      </Deconstruct>
+      <Sprite texture="%ModDir:3744761298%/Images/InGameItemIconAtlas.png" sourcerect="272,480,78,60" depth="0.6" origin="0.5,0.5" />
+      <Body width="14" height="22" density="10" />
+      <Throwable characterusable="true" slots="Any,RightHand,LeftHand" throwforce="4.0" aimpos="35,-10" msg="ItemMsgPickUpSelect" />
+      <SkillRequirementHint identifier="medical" level="80" />
+      <SkillRequirementHint identifier="electrical" level="60" />
+    </Item>
+  </Items>
+</Override>

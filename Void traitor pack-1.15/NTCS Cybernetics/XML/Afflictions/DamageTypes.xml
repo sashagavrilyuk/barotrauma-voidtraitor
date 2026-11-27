@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Afflictions>
+  <Override>
+    <!-- Loose Screws: Caused by trauma, movement while damaged. Increases susceptibility to Material Loss. -->
+    <Affliction name="" description="" identifier="ntc_loosescrews" healableinmedicalclinic="false" limbspecific="true" targets="human" isbuff="false" showinhealthscannerthreshold="999" showiconthreshold="5" maxstrength="100" iconcolors="191,171,57,255;191,57,57,255">
+      <icon texture="%ModDir%/NTCS Cybernetics/Images/AfflictionIcons.png" sheetindex="1,0" sheetelementsize="128,128" origin="0,0" />
+    </Affliction>
+    <!-- Damaged Electronics: Caused by Water (if not Waterproof) and trauma. Increases susceptibility to Material Loss. -->
+    <Affliction name="" description="" identifier="ntc_damagedelectronics" healableinmedicalclinic="false" limbspecific="true" targets="human" isbuff="false" showinhealthscannerthreshold="999" showiconthreshold="5" maxstrength="100" iconcolors="191,171,57,255;191,57,57,255">
+      <icon texture="%ModDir%/NTCS Cybernetics/Images/AfflictionIcons.png" sheetindex="2,0" sheetelementsize="128,128" origin="0,0" />
+    </Affliction>
+    <!-- Bent Metal: Caused by trauma. Decreases movement speed and increases susceptibility to Material Loss. -->
+    <Affliction name="" description="" identifier="ntc_bentmetal" healableinmedicalclinic="false" limbspecific="true" targets="human" isbuff="false" showinhealthscannerthreshold="999" showiconthreshold="5" maxstrength="100" iconcolors="191,171,57,255;191,57,57,255">
+      <icon texture="%ModDir%/NTCS Cybernetics/Images/AfflictionIcons.png" sheetindex="3,0" sheetelementsize="128,128" origin="0,0" />
+    </Affliction>
+    <!-- Material Loss: Caused by trauma. Limb will be lost if the amount is too high. -->
+    <Affliction name="" description="" identifier="ntc_materialloss" healableinmedicalclinic="false" targets="human" isbuff="false" limbspecific="true" showinhealthscannerthreshold="999" showiconthreshold="5" maxstrength="100" iconcolors="191,171,57,255;191,57,57,255">
+      <icon texture="%ModDir%/NTCS Cybernetics/Images/AfflictionIcons.png" sheetindex="4,0" sheetelementsize="128,128" origin="0,0" />
+    </Affliction>
+  </Override>
+</Afflictions>
